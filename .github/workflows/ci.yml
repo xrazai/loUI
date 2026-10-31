@@ -1,13 +1,18 @@
-# Draft CI: runs the full local check. Visual baselines will move to the pinned
-# Playwright container later (ADR-0010).
+# CI gate: everything in `pnpm check` except visual regression, whose baselines are
+# Windows-only for now (ADR-0010). Linux baselines from the pinned Playwright
+# container are tracked as TEST-019.
 name: CI
 on:
   pull_request:
   push:
     branches: [main]
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -17,4 +22,13 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm check
+      - run: pnpm check:ci
+      - run: pnpm publint
+      - run: pnpm size
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-failures
+          path: .vitest/attachments
+          if-no-files-found: ignore

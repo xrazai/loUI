@@ -25,9 +25,9 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 
 ### Setup
 
-- [ ] **SETUP-005** (P1 · M) CI (GitHub Actions): install → lint → typecheck → unit → a11y → build → Storybook build → visual regression → size budget. Required checks on PRs. A draft `.github/workflows/ci.yml` running `pnpm check` exists but is untested (no remote yet); add the pinned Playwright Docker image for visual baselines.
+- [ ] **SETUP-005** (P1 · M) CI on GitHub Actions (`.github/workflows/ci.yml` runs `check:ci`, `publint`, `size` on push/PR to `main`, repo github.com/xrazai/loUI): keep it green, add branch protection with required checks, and add the visual job once Linux baselines exist (TEST-019).
 - [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, issue templates (bug, component request, token change), `CODEOWNERS`. (PR template with the Definition of Done already exists.)
-- [ ] **SETUP-009** (P2 · S) Extend `pnpm check` (or a `check:full` script) with `build-storybook`, `publint`, `attw` and `size`; replace the placeholder `size-limit` entry with per-entry budgets.
+- [ ] **SETUP-009** (P2 · S) Add `build-storybook` and `attw` to CI (budgets and `check:ci` exist).
 
 All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
 
@@ -112,8 +112,7 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
 - [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
-- [ ] **TEST-008** (P1 · S) **SSR/hydration smoke test:** render every exported component with `renderToString` and hydrate with no warnings; no `window`/`document` access at import time.
-- [ ] **TEST-009** (P1 · S) **Bundle-size budgets** with `size-limit` per entry point; tree-shaking test (importing `Button` must not pull `Chart`).
+- [ ] **TEST-009** (P1 · S) Tree-shaking test: importing `Button` alone must not pull `Chart`/`DataTable` (budgets per entry already exist).
 - [ ] **TEST-010** (P1 · M) **i18n tests:** every built-in string is in the `messages` catalog (a test fails if a JSX string literal or `aria-label` literal appears in `src/` outside the catalog); `en` and `pt-BR` catalogs have identical keys; long-string (German-like +40%) and RTL pseudo-locale smoke renders.
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
@@ -122,6 +121,9 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
+- [ ] **TEST-019** (P1 · M) Linux visual baselines generated in the pinned Playwright container (`mcr.microsoft.com/playwright:v1.64.1-noble`) via a manual `workflow_dispatch` job, committed, then a CI visual job; harness tolerance is 0.2% so regenerate from scratch after component changes.
+- [ ] **TEST-020** (P2 · S) Visual baselines for open popovers (Select, Combobox, DatePicker open only in `play`): add open-state stories or a `play`-before-screenshot harness option. Also cap Menu popover width for long labels.
+- [ ] **TEST-021** (P2 · S) Remaining read-once-after-hover style assertions (Checkbox, ChoiceTiles, Combobox, Input, RadioGroup, Select, Switch) → poll like Button/Link to remove flakiness under load.
 
 ---
 

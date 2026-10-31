@@ -53,6 +53,7 @@
     "manifest:build": "tsx scripts/manifest/build.ts",
     "manifest:check": "tsx scripts/manifest/build.ts --check",
     "check": "pnpm tokens:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "check:ci": "pnpm tokens:check && pnpm lint && pnpm typecheck && vitest run --project unit --project browser --project storybook && pnpm build && pnpm manifest:check",
     "changeset": "changeset",
     "size": "size-limit",
     "publint": "publint",
