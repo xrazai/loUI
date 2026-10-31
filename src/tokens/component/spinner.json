@@ -1,0 +1,21 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "spinner": {
+    "stroke-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Ring thickness of the Spinner (2px) at every size. Not for progress bars or icon strokes."
+    },
+    "duration": {
+      "$type": "duration",
+      "$value": {
+        "value": 700,
+        "unit": "ms"
+      },
+      "$description": "Time of one full Spinner rotation (700ms). Replaced by a static ring under prefers-reduced-motion. Not for transitions."
+    }
+  }
+}

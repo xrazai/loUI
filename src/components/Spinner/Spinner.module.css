@@ -1,0 +1,44 @@
+@layer components {
+  .root {
+    display: inline-block;
+    flex: none;
+    box-sizing: border-box;
+    inline-size: var(--ds-icon-md);
+    block-size: var(--ds-icon-md);
+    border: var(--ds-spinner-stroke-width) solid currentcolor;
+    border-block-start-color: transparent;
+    border-radius: var(--ds-radius-pill);
+    animation: spin var(--ds-spinner-duration) linear infinite;
+  }
+
+  .root[data-size='sm'] {
+    inline-size: var(--ds-icon-sm);
+    block-size: var(--ds-icon-sm);
+  }
+
+  .root[data-size='md'] {
+    inline-size: var(--ds-icon-md);
+    block-size: var(--ds-icon-md);
+  }
+
+  .root[data-size='lg'] {
+    inline-size: var(--ds-icon-lg);
+    block-size: var(--ds-icon-lg);
+  }
+
+  /*
+   * Reduced motion: no rotation. The open ring stays as a static "busy" mark; the accessible
+   * name and the busy state of the surrounding control carry the meaning.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .root {
+      animation: none;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
