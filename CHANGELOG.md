@@ -8,6 +8,13 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **TEST-010** (2026-10-31) i18n enforcement: TypeScript-API scan of every component/pattern source fails on hard-coded JSX text or user-visible/ARIA prop literals (`// i18n-ignore: <reason>` escape hatch) — 0 violations in 99 files; runtime parity check of `en`/`pt-BR` catalogs (keys, types, arity, no empty strings); +40% pseudo-locale render of 10 components at 320px asserts no overflow.
+- **TEST-021** (2026-10-31) Hover/focus style assertions poll via `expectHovered()` (8 components) — removes load-dependent flakiness.
+- **TEST-020** (2026-10-31) Open-state stories for Select, Combobox and DatePicker so popovers get visual baselines; Menu popover capped by `--ds-menu-max-width` (360px).
+- **GAP-009** (2026-10-31) `FieldError` shows `validate` / `Form validationErrors` messages over a static `errorMessage`; curated icons gain `MenuIcon` and `MessageIcon`; `AppShellNavToggle` is an icon button (children = accessible name string).
+- **GAP-010** (2026-10-31) AppShell narrow-mode close button is an `IconButton` (no wrapping or overlap, tested); `Default` AppShell story captured at 1024px.
+- **AI-015** (2026-10-31) All 136 `eslint-plugin-loui` warnings in stories resolved (new `StoryFrame` test helper instead of raw spacing, "Apply filters" instead of bare "Done", curated icons, proper nouns option); story and examples linting raised to `error`.
+- **TOK-014** (2026-10-31) Boundary audit on hover/raised surfaces: StatusSteps marker border fixed with `--ds-status-steps-marker-hover-border`; brightened-border contrast pairs and a CSS audit test (`src/tokens/surfaces.test.ts`).
 - **ARCH-010** (2026-10-31) Build: per-module `"use client"` directive added at build level (`scripts/build/use-client.ts`, a tsdown plugin; no component source touched) to every emitted module that imports React Aria/Stately or calls a hook; entry points and pure helpers stay server-safe. `exports`, `sideEffects` (CSS only), `types`, `publint` and `attw` verified. Docs: "SSR and Next.js" in the getting-started guide.
 - **REL-001** (2026-10-31) `examples/vite-app` and `examples/next-app` (Next.js 16, App Router, Server Components importing `@loui/ds` directly) install the library from a packed tarball in isolation; `pnpm examples:verify` builds both and asserts CSS tokens and fonts are emitted. New CI job `examples` (after `check`).
 - **TEST-009** (2026-10-31) Tree-shaking test `pnpm test:treeshake` (rolldown bundle of a Button-only entry must not contain DataTable, Chart, CommandPalette and others) in `check:ci`, plus a "Button only" size-limit budget (11.7 kB brotli, limit 14 kB).

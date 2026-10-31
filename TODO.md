@@ -41,7 +41,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
 - [ ] **TOK-012** (P2 · S) Paper theme: remap signal colors (success, warning, danger) inside `[data-theme="paper"]` so they pass contrast on `--ds-paper` (only neutrals and accent are remapped today).
 - [ ] **TOK-013** (P2 · S) Verify `forced-colors: active` rendering in a real browser (Playwright `forcedColors` emulation) for base focus styles and every component; the CSS exists but is unexercised.
-- [ ] **TOK-014** (P2 · S) `--ds-line-control` is 2.8:1 on `--ds-surface-hover`; audit components whose control background changes on hover or sits on hover surfaces (e.g. inside menus) and add a hover border token if needed.
 
 ### Typography and fonts
 
@@ -103,7 +102,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
 
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
-- [ ] **TEST-010** (P1 · M) **i18n tests:** every built-in string is in the `messages` catalog (a test fails if a JSX string literal or `aria-label` literal appears in `src/` outside the catalog); `en` and `pt-BR` catalogs have identical keys; long-string (German-like +40%) and RTL pseudo-locale smoke renders.
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
 - [ ] **TEST-014** (P2 · S) WCAG 2.2 specifics as explicit tests: target size ≥ 24 px (2.5.8), focus not obscured by sticky bars/toasts (2.4.11), dragging alternatives (2.5.7), consistent help, reflow at 320 px (1.4.10), text spacing override (1.4.12).
@@ -112,8 +110,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
 - [ ] **TEST-019** (P1 · S) Commit Linux visual baselines: after each component batch lands, `gh workflow run visual-baselines.yml`, `pnpm visual:pull-linux`, review, commit (the CI `visual` job then runs for real). Workflow and pull script exist.
-- [ ] **TEST-020** (P2 · S) Visual baselines for open popovers (Select, Combobox, DatePicker open only in `play`): add open-state stories or a `play`-before-screenshot harness option. Also cap Menu popover width for long labels.
-- [ ] **TEST-021** (P2 · S) Remaining read-once-after-hover style assertions (Checkbox, ChoiceTiles, Combobox, Input, RadioGroup, Select, Switch) → poll like Button/Link to remove flakiness under load.
 
 ---
 
@@ -123,8 +119,8 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 - [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
 - [ ] **AI-006** (P1 · M) **Golden examples / recipes:** small, fully tested compositions (destructive confirm, form with validation, filterable table, empty state, settings page, undo toast, approval queue). Each passes axe, keyboard-contract and visual tests, and is referenced from the manifest so agents imitate verified patterns instead of inventing markup.
-- [ ] **AI-015** (P2 · S) Resolve `eslint-plugin-loui` dogfooding warnings: 82 `no-raw-spacing` in story wrappers (move to layout primitives / tokens), `content-rules` bare "Done" button in `Popover.stories.tsx`, `properNouns` for region labels in `RadioGroup.stories.tsx`, `no-inline-style-visual` in `Avatar.stories.tsx`, non-curated icons in `AgentCard.stories.tsx`; then raise story linting to `error`. Add a manifest field for deprecated props.
 - [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
+- [ ] **AI-016** (P2 · S) Manifest field for deprecated props (consumed by `eslint-plugin-loui/no-deprecated` and the MCP server); RTL pseudo-locale smoke render.
 - [ ] **AI-013** (P3 · L) More AI-native components: tool-call/step display, citations/sources, feedback controls (thumbs), regenerate action, markdown renderer recipe for `ChatPanel.renderContent`. (Streaming, Stop/Retry, approval cards are done.)
 - [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
 
@@ -139,6 +135,7 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 ## Phase 7 — Packaging, release and governance
 
 - [ ] **REL-005** (P2 · S) Figma workflow: Tokens Studio sync, component naming parity, Code Connect mapping (optional).
+- [ ] **REL-007** (P2 · S) Investigate the 531 kB JS bundle of `examples/vite-app` (which dependencies dominate; code-splitting guidance for consumers; check lucide and React Aria tree-shaking in a real app).
 - [ ] **REL-006** (P3 · S) Telemetry-free usage guidance: how consumers report issues; security policy (`SECURITY.md`).
 
 ---
@@ -148,8 +145,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
 - [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
-- [ ] **GAP-009** (P2 · S) Field: a static `errorMessage` string hides server errors from `Form validationErrors` — let `FieldError` prefer server errors (or document the function form). Add a `menu` icon to the curated set and use it in `AppShellNavToggle` (text "Menu" today).
-- [ ] **GAP-010** (P2 · S) AppShell polish from visual review: the narrow-mode "Close menu" button wraps to two lines and overlaps the top-bar primary action — use an `IconButton` (x icon, label "Close menu") and `white-space: nowrap`; give the `Default` AppShell story a desktop `parameters.visual.width` (≥ 1024) so the in-flow sidebar layout has a baseline. CommandPalette visual baselines show only the trigger (open state not captured — see TEST-020).
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
 - [ ] **GAP-008** (P3 · S) Undo pattern as a hook (`useUndoable`) on top of Toast; the recipe already exists in `Toast.md`.
