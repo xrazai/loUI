@@ -82,7 +82,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.

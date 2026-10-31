@@ -12,7 +12,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 - Import: `import { Select } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Select/Select.tsx`
-- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
+- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
 
 ## Props
 

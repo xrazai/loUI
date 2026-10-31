@@ -27,7 +27,7 @@
     "components": 97,
     "hooks": 10,
     "utilities": 40,
-    "icons": 24
+    "icons": 26
   },
   "components": [
     {
@@ -1903,7 +1903,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- Landmarks: `aside` (Sidebar, \"Sidebar\"), `header` (TopBar), **one** `main`, optional `aside` (\"Details\"). Each `nav` in the sidebar is named by its caption.\n- The skip link is the first stop and moves focus to `main`.\n- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex=\"0\"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.\n- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.\n- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.\n- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is \"Menu\" (`pt-BR` \"Menu\"; the close button is \"Close menu\" / \"Fechar menu\")."
+            "content": "- Landmarks: `aside` (Sidebar, \"Sidebar\"), `header` (TopBar), **one** `main`, optional `aside` (\"Details\"). Each `nav` in the sidebar is named by its caption.\n- The skip link is the first stop and moves focus to `main`.\n- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex=\"0\"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.\n- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.\n- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.\n- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. It is an `IconButton` (menu icon) named \"Menu\" (`pt-BR` \"Menu\"; pass a string child to rename it); the close button is an `IconButton` (x icon) named \"Close menu\" / \"Fechar menu\", which sits on the scrim beside the panel and never wraps."
           },
           {
             "id": "content-rules",
@@ -1929,7 +1929,7 @@
             "reason": "A marketing page or a single-column document: use `Container` and let the page scroll."
           }
         ],
-        "uses": ["Button", "SkipLink"],
+        "uses": ["IconButton", "SkipLink"],
         "usedBy": []
       }
     },
@@ -1942,13 +1942,13 @@
       "sourceFile": "src/components/AppShell/AppShell.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "The button that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).\nIt is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered\ninside `AppShell`.",
+      "description": "The icon button (menu icon) that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).\nIt is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered\ninside `AppShell`.",
       "props": [
         {
           "name": "children",
-          "type": "ReactNode",
+          "type": "string",
           "required": false,
-          "description": "Button text. Default \"Menu\" from the message catalog."
+          "description": "Accessible name of the icon button. Default \"Menu\" from the message catalog."
         },
         {
           "name": "className",
@@ -2080,7 +2080,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- Landmarks: `aside` (Sidebar, \"Sidebar\"), `header` (TopBar), **one** `main`, optional `aside` (\"Details\"). Each `nav` in the sidebar is named by its caption.\n- The skip link is the first stop and moves focus to `main`.\n- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex=\"0\"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.\n- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.\n- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.\n- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is \"Menu\" (`pt-BR` \"Menu\"; the close button is \"Close menu\" / \"Fechar menu\")."
+            "content": "- Landmarks: `aside` (Sidebar, \"Sidebar\"), `header` (TopBar), **one** `main`, optional `aside` (\"Details\"). Each `nav` in the sidebar is named by its caption.\n- The skip link is the first stop and moves focus to `main`.\n- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex=\"0\"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.\n- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.\n- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.\n- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. It is an `IconButton` (menu icon) named \"Menu\" (`pt-BR` \"Menu\"; pass a string child to rename it); the close button is an `IconButton` (x icon) named \"Close menu\" / \"Fechar menu\", which sits on the scrim beside the panel and never wraps."
           },
           {
             "id": "content-rules",
@@ -2106,7 +2106,7 @@
             "reason": "A marketing page or a single-column document: use `Container` and let the page scroll."
           }
         ],
-        "uses": ["Button", "SkipLink"],
+        "uses": ["IconButton", "SkipLink"],
         "usedBy": []
       }
     },
@@ -3374,8 +3374,6 @@
         ],
         "uses": ["Spinner"],
         "usedBy": [
-          "AppShell",
-          "AppShellNavToggle",
           "ApprovalCard",
           "ChatPanel",
           "ConfirmDialog",
@@ -3550,6 +3548,12 @@
           {
             "name": "CalendarKeyboard",
             "id": "components-date-picker--calendar-keyboard",
+            "hasPlay": true
+          },
+          {
+            "name": "Open",
+            "id": "components-date-picker--open",
+            "description": "The calendar open under the field, for the visual review (TEST-020).",
             "hasPlay": true
           },
           {
@@ -7340,6 +7344,12 @@
             "hasPlay": true
           },
           {
+            "name": "Open",
+            "id": "components-combobox--open",
+            "description": "The suggestions open under the field, for the visual review (TEST-020).",
+            "hasPlay": true
+          },
+          {
             "name": "KeyboardContract",
             "id": "components-combobox--keyboard-contract",
             "hasPlay": true
@@ -9966,6 +9976,12 @@
             "hasPlay": true
           },
           {
+            "name": "Open",
+            "id": "components-date-picker--open",
+            "description": "The calendar open under the field, for the visual review (TEST-020).",
+            "hasPlay": true
+          },
+          {
             "name": "EscapeRestoresFocus",
             "id": "components-date-picker--escape-restores-focus",
             "hasPlay": true
@@ -10204,7 +10220,7 @@
           {
             "id": "validation-behavior-native-default-and-why",
             "heading": "Validation behavior: native (default), and why",
-            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language.\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
+            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
           },
           {
             "id": "accessibility",
@@ -11260,7 +11276,7 @@
           "name": "children",
           "type": "FieldErrorMessage",
           "required": false,
-          "description": "The message. A function receives the validation result. Without children, RAC shows the\nvalidation errors (the browser's message for native constraints)."
+          "description": "The message. A function receives the validation result and decides everything. A static\nmessage replaces only the browser's own constraint text; an error the app supplied (a\n`validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without\nchildren, the validation errors are shown (the browser's message for native constraints)."
         },
         {
           "name": "className",
@@ -11359,7 +11375,7 @@
           {
             "id": "validation-behavior-native-default-and-why",
             "heading": "Validation behavior: native (default), and why",
-            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language.\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
+            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
           },
           {
             "id": "accessibility",
@@ -11487,7 +11503,7 @@
           {
             "id": "validation-behavior-native-default-and-why",
             "heading": "Validation behavior: native (default), and why",
-            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language.\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
+            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
           },
           {
             "id": "accessibility",
@@ -12372,7 +12388,7 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- The summary title is \"Fix {n} fields before saving\" (pluralized; \"Fix 1 field before saving\"). `pt-BR` has \"Corrija {n} campos antes de salvar\".\n- Field messages say how to fix the problem (\"Enter a complete email address.\"). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`."
+            "content": "- The summary title is \"Fix {n} fields before saving\" (pluralized; \"Fix 1 field before saving\"). `pt-BR` has \"Corrija {n} campos antes de salvar\".\n- Field messages say how to fix the problem (\"Enter a complete email address.\"). A static `errorMessage` text replaces only the browser's own constraint text (\"Please fill out this field\"); a server error from `validationErrors` (or a `validate` message) is shown instead of it. Use the function form when you need full control: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`."
           },
           {
             "id": "examples",
@@ -12530,7 +12546,7 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- The summary title is \"Fix {n} fields before saving\" (pluralized; \"Fix 1 field before saving\"). `pt-BR` has \"Corrija {n} campos antes de salvar\".\n- Field messages say how to fix the problem (\"Enter a complete email address.\"). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`."
+            "content": "- The summary title is \"Fix {n} fields before saving\" (pluralized; \"Fix 1 field before saving\"). `pt-BR` has \"Corrija {n} campos antes de salvar\".\n- Field messages say how to fix the problem (\"Enter a complete email address.\"). A static `errorMessage` text replaces only the browser's own constraint text (\"Please fill out this field\"); a server error from `validationErrors` (or a `validate` message) is shown instead of it. Use the function form when you need full control: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`."
           },
           {
             "id": "examples",
@@ -13708,6 +13724,8 @@
         "uses": ["Icon", "Tooltip"],
         "usedBy": [
           "Alert",
+          "AppShell",
+          "AppShellNavToggle",
           "Calendar",
           "FileUpload",
           "LedgerList",
@@ -15278,7 +15296,7 @@
           {
             "id": "validation-behavior-native-default-and-why",
             "heading": "Validation behavior: native (default), and why",
-            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language.\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
+            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
           },
           {
             "id": "accessibility",
@@ -16663,6 +16681,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -16794,7 +16813,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -17084,6 +17103,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -17215,7 +17235,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -17415,6 +17435,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -17546,7 +17567,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -17618,6 +17639,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -17749,7 +17771,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -18400,6 +18422,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -18531,7 +18554,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -22258,7 +22281,7 @@
           {
             "id": "validation-behavior-native-default-and-why",
             "heading": "Validation behavior: native (default), and why",
-            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language.\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
+            "content": "React Aria fields validate in one of two modes:\n\n- `validationBehavior=\"native\"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.\n- `validationBehavior=\"aria\"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.\n\n**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior=\"aria\"`. A consumer that renders its own `Form` can set the mode for every field below it.\n\nRules for authors:\n\n- Provide an `errorMessage` that says how to fix the problem (\"Enter a complete email address.\"). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).\n- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.\n- The error text is announced when it appears (`role=\"alert\"`) and read again when focus lands on the field.\n- Putting `<form>` in the page is enough; no wrapper component is required."
           },
           {
             "id": "accessibility",
@@ -23853,6 +23876,12 @@
           {
             "name": "EscapeClosesAndRestoresFocus",
             "id": "components-select--escape-closes-and-restores-focus",
+            "hasPlay": true
+          },
+          {
+            "name": "Open",
+            "id": "components-select--open",
+            "description": "The listbox open under the trigger, for the visual review (TEST-020).",
             "hasPlay": true
           },
           {
@@ -26402,6 +26431,7 @@
         "--ds-status-steps-connector-thickness",
         "--ds-status-steps-content-z-index",
         "--ds-status-steps-gap",
+        "--ds-status-steps-marker-hover-border",
         "--ds-status-steps-marker-size",
         "--ds-status-steps-padding-block",
         "--ds-success",
@@ -26615,6 +26645,7 @@
         "--ds-line",
         "--ds-line-strong",
         "--ds-menu-indicator-size",
+        "--ds-menu-max-width",
         "--ds-menu-min-width",
         "--ds-opacity-disabled",
         "--ds-radius-lg",
@@ -26746,7 +26777,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width)."
+            "content": "- React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.\n- The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.\n- New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.\n- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020)."
           }
         ]
       },
@@ -32514,9 +32545,9 @@
       "importStatement": "import { iconNames } from '@loui/ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "Kebab-case names of the curated set with the use each icon is meant for. Source of the\nallow-list in the component manifest; keep it in sync with the exports above (tested).",
-      "signature": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
+      "signature": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
       "params": [],
-      "returns": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
+      "returns": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
       "docs": "docs/architecture/utilities.md"
     },
     {
@@ -32526,9 +32557,9 @@
       "importStatement": "import { iconSet } from '@loui/ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "The curated set by kebab-case name, for tooling and name-driven rendering.",
-      "signature": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
+      "signature": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
       "params": [],
-      "returns": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
+      "returns": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
       "docs": "docs/architecture/utilities.md"
     },
     {
@@ -32855,6 +32886,8 @@
       "ExternalLinkIcon",
       "InfoIcon",
       "LoaderIcon",
+      "MenuIcon",
+      "MessageIcon",
       "MinusIcon",
       "PlusIcon",
       "SearchIcon",

@@ -16,11 +16,11 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 ## Props
 
-| Prop        | Type                | Required | Default | Description                                                                                                                                               |
-| ----------- | ------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `FieldErrorMessage` |          |         | The message. A function receives the validation result. Without children, RAC shows the validation errors (the browser's message for native constraints). |
-| `className` | `string`            |          |         |                                                                                                                                                           |
-| `ref`       | `Ref<HTMLElement>`  |          |         |                                                                                                                                                           |
+| Prop        | Type                | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                 |
+| ----------- | ------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `FieldErrorMessage` |          |         | The message. A function receives the validation result and decides everything. A static message replaces only the browser's own constraint text; an error the app supplied (a `validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without children, the validation errors are shown (the browser's message for native constraints). |
+| `className` | `string`            |          |         |                                                                                                                                                                                                                                                                                                                                                             |
+| `ref`       | `Ref<HTMLElement>`  |          |         |                                                                                                                                                                                                                                                                                                                                                             |
 
 ## Design tokens used
 
@@ -84,7 +84,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.

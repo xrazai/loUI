@@ -120,7 +120,44 @@ Dark is the only theme. The semantic token layer (`--ds-bg`, `--ds-surface`, `--
 
 **Vite.** Import the stylesheet in `main.tsx`; nothing else is needed.
 
-**Next.js (App Router).** Import the stylesheet in `app/layout.tsx` and render `DSProvider` in a small client component, because it takes functions as props. The package does not yet ship `'use client'` directives, so import interactive components from client components (a file with `'use client'`). This is tracked under REL-001 and not yet verified in a Next.js fixture.
+**Next.js (App Router).** See [SSR and Next.js](#ssr-and-nextjs) below.
+
+### SSR and Next.js
+
+The package ships a `"use client"` directive **per module**: every file that uses hooks, React context or React Aria has it, and the entry points (`index.js`) and pure helpers do not. So a React Server Component (the default in the Next.js App Router) can import the design system directly, with no wrapper file:
+
+```tsx
+// app/layout.tsx (Server Component)
+import '@loui/ds/styles.css';
+import { DSProvider, ToastRegion } from '@loui/ds';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <DSProvider locale="en-US">
+          {children}
+          <ToastRegion />
+        </DSProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/page.tsx (Server Component): components are client references and render on the server too
+import { Button, DataTable } from '@loui/ds';
+```
+
+Rules that follow from the React Server Components model, not from the library:
+
+- Props that cross from a Server to a Client Component must be serializable. **Functions cannot**: `onPress`, `onChange`, render props such as `DataTable` column `render` or `Dialog` `footer={({ close }) => ...}`, and component values such as an `icon` prop. Put those in a file that starts with `'use client'` (a small component per interaction, see `examples/next-app/app/CreateOrderButton.tsx`).
+- `DSProvider` takes plain props (`locale`, `messages`) and works in a Server layout; `navigate` and `useHref` are functions, so wrap the provider in a client component when you use client-side routing.
+- Hooks (`useHotkeys`, `useToast`, ...) and the `toast` API only work in Client Components.
+- Import the stylesheet once in the root layout. `dist/styles.css` and the Geist fonts need no `transpilePackages` or other `next.config` settings.
+
+`sideEffects` in `package.json` lists only `**/*.css`, so bundlers drop unused components (importing `Button` alone costs about 12 kB brotli, enforced by `pnpm size` and `pnpm test:treeshake`). The packaging is verified on every pull request by building `examples/vite-app` and `examples/next-app` (Next.js 16, App Router, Turbopack) against a packed tarball: `pnpm examples:verify`.
 
 ### Next steps
 
@@ -683,7 +720,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-341 tokens; the table lists the 327 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+343 tokens; the table lists the 329 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -929,6 +966,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-matrix-grid-columns` | `0` | Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop. |
 | `--ds-matrix-grid-color` | `#A3A3A9` | Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`. |
 | `--ds-menu-min-width` | `200px` | Minimum width of a Menu (200px, the handoff default). |
+| `--ds-menu-max-width` | `360px` | Maximum width of a Menu popover (360px). A longer label wraps instead of stretching the popover across the screen; it never goes below the trigger width. |
 | `--ds-menu-indicator-size` | `18px` | Width reserved for the check or radio indicator of selectable Menu items (18px). |
 | `--ds-nav-item-padding-inline` | `10px` | Horizontal padding of a NavItem (10px). |
 | `--ds-nav-item-indicator-width` | `2px` | Width of the inset ink bar on the active NavItem (2px). |
@@ -990,6 +1028,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-status-steps-connector-thickness` | `2px` | Thickness of the decorative line between two steps (2px). |
 | `--ds-status-steps-padding-block` | `4px` | Vertical padding of a step (4px). |
 | `--ds-status-steps-gap` | `8px` | Gap between the marker and the label (8px). |
+| `--ds-status-steps-marker-hover-border` | `#86868E` | Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014). |
 | `--ds-status-steps-content-z-index` | `1` | Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer. |
 | `--ds-swatch-size-sm` | `16px` | Diameter of a small Swatch (16px), used inside options and headers. |
 | `--ds-swatch-size-md` | `20px` | Diameter of a medium Swatch (20px, default). |
@@ -1724,7 +1763,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex="0"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.
 - The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.
 - The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.
-- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is "Menu" (`pt-BR` "Menu"; the close button is "Close menu" / "Fechar menu").
+- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. It is an `IconButton` (menu icon) named "Menu" (`pt-BR` "Menu"; pass a string child to rename it); the close button is an `IconButton` (x icon) named "Close menu" / "Fechar menu", which sits on the scrim beside the panel and never wraps.
 
 #### Content rules
 
@@ -1750,11 +1789,11 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 #### Related components
 
 - Instead, see Container: A marketing page or a single-column document: use `Container` and let the page scroll.
-- Renders: Button, SkipLink
+- Renders: IconButton, SkipLink
 
 ### AppShellNavToggle
 
-> The button that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
+> The icon button (menu icon) that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
 It is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered
 inside `AppShell`.
 
@@ -1769,7 +1808,7 @@ The application layout: a sidebar, and a main column with a top bar above a scro
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `ReactNode` |  |  | Button text. Default "Menu" from the message catalog. |
+| `children` | `string` |  |  | Accessible name of the icon button. Default "Menu" from the message catalog. |
 | `className` | `string` |  |  | Class name for the wrapper. |
 
 #### Design tokens used
@@ -1818,7 +1857,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex="0"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.
 - The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.
 - The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.
-- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is "Menu" (`pt-BR` "Menu"; the close button is "Close menu" / "Fechar menu").
+- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. It is an `IconButton` (menu icon) named "Menu" (`pt-BR` "Menu"; pass a string child to rename it); the close button is an `IconButton` (x icon) named "Close menu" / "Fechar menu", which sits on the scrim beside the panel and never wraps.
 
 #### Content rules
 
@@ -1844,7 +1883,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 #### Related components
 
 - Instead, see Container: A marketing page or a single-column document: use `Container` and let the page scroll.
-- Renders: Button, SkipLink
+- Renders: IconButton, SkipLink
 
 ### Avatar
 
@@ -2210,7 +2249,7 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
 - Renders: Spinner
-- Used by: AppShell, AppShellNavToggle, ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ShortcutsHelp, ToastRegion
+- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ShortcutsHelp, ToastRegion
 
 ### Calendar
 
@@ -2227,7 +2266,7 @@ ringed and named "Today".
 - Import: `import { Calendar } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/Calendar.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
 
 #### Props
 
@@ -3267,7 +3306,7 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 - Import: `import { Combobox } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
-- Stories (Storybook title `Components/Combobox`): Default, KeyboardContract, WithDescriptionAndMeta, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
+- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
 
 #### Props
 
@@ -4113,7 +4152,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 - Import: `import { DatePicker } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/DatePicker.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
 
 #### Props
 
@@ -4323,7 +4362,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
@@ -4751,7 +4790,7 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `FieldErrorMessage` |  |  | The message. A function receives the validation result. Without children, RAC shows the validation errors (the browser's message for native constraints). |
+| `children` | `FieldErrorMessage` |  |  | The message. A function receives the validation result and decides everything. A static message replaces only the browser's own constraint text; an error the app supplied (a `validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without children, the validation errors are shown (the browser's message for native constraints). |
 | `className` | `string` |  |  |  |
 | `ref` | `Ref<HTMLElement>` |  |  |  |
 
@@ -4817,7 +4856,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
@@ -4910,7 +4949,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
@@ -5211,7 +5250,7 @@ Keep the submit button enabled: a disabled submit gives no way to learn what is 
 #### Content rules
 
 - The summary title is "Fix {n} fields before saving" (pluralized; "Fix 1 field before saving"). `pt-BR` has "Corrija {n} campos antes de salvar".
-- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
+- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces only the browser's own constraint text ("Please fill out this field"); a server error from `validationErrors` (or a `validate` message) is shown instead of it. Use the function form when you need full control: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
 
 #### Examples
 
@@ -5288,7 +5327,7 @@ Keep the submit button enabled: a disabled submit gives no way to learn what is 
 #### Content rules
 
 - The summary title is "Fix {n} fields before saving" (pluralized; "Fix 1 field before saving"). `pt-BR` has "Corrija {n} campos antes de salvar".
-- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
+- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces only the browser's own constraint text ("Please fill out this field"); a server error from `validationErrors` (or a `validate` message) is shown instead of it. Use the function form when you need full control: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
 
 #### Examples
 
@@ -5649,7 +5688,7 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 - Instead, see Button: When there is room for a text label: use `Button` with a `leading` icon. A visible word is clearer than any icon.
 - Instead, see Link: For navigation: use `Link`.
 - Renders: Icon, Tooltip
-- Used by: Alert, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
+- Used by: Alert, AppShell, AppShellNavToggle, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
 
 ### Inline
 
@@ -6162,7 +6201,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
@@ -6567,7 +6606,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -6690,7 +6729,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -6807,7 +6846,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -6911,7 +6950,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -7135,7 +7174,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -8416,7 +8455,7 @@ React Aria fields validate in one of two modes:
 
 Rules for authors:
 
-- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language.
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
@@ -8774,7 +8813,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 - Import: `import { Select } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Select/Select.tsx`
-- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
+- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
 
 #### Props
 
@@ -9864,7 +9903,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-hover-border`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
 
 #### When to use
 
@@ -9952,7 +9991,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 #### When to use
 
@@ -11874,7 +11913,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
 ```
 
 #### iconSet
@@ -11882,7 +11921,7 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
 ```
 
 #### isISODate
@@ -12035,5 +12074,5 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`
+`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`
 

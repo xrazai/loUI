@@ -82,7 +82,7 @@ Keep the submit button enabled: a disabled submit gives no way to learn what is 
 ## Content rules
 
 - The summary title is "Fix {n} fields before saving" (pluralized; "Fix 1 field before saving"). `pt-BR` has "Corrija {n} campos antes de salvar".
-- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
+- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces only the browser's own constraint text ("Please fill out this field"); a server error from `validationErrors` (or a `validate` message) is shown instead of it. Use the function form when you need full control: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
 
 ## Examples
 

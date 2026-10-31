@@ -41,7 +41,7 @@ Rules for generated UI:
 - [Alert](./ai/components/Alert.md): An inline message with a tone, an icon, an optional title, an action and a dismiss button. (experimental)
 - [ApprovalCard](./ai/components/ApprovalCard.md): A reply waiting for approval: the original message, an editable draft written by an agent and two actions, send and discard. (experimental)
 - [AppShell](./ai/components/AppShell.md): The application layout: a sidebar, and a main column with a top bar above a scrollable content region. (experimental)
-- [AppShellNavToggle](./ai/components/AppShellNavToggle.md): The button that opens the off-canvas sidebar. (experimental)
+- [AppShellNavToggle](./ai/components/AppShellNavToggle.md): The icon button (menu icon) that opens the off-canvas sidebar. (experimental)
 - [Avatar](./ai/components/Avatar.md): A circular photo or initials of a person, in grays (never a color per person). (experimental)
 - [Badge](./ai/components/Badge.md): A pill with a short status label. (experimental)
 - [Breadcrumb](./ai/components/Breadcrumb.md): The path to the current page as an ordered list of links inside a `nav` landmark. (experimental)
@@ -135,12 +135,12 @@ Rules for generated UI:
 
 ## Hooks, utilities and icons
 
-- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast; 40 utilities and constants; 24 icons.
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast; 40 utilities and constants; 26 icons.
 
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (97 components).
-- [tokens.json](./tokens.json): 341 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 343 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

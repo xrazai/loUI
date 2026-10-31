@@ -100,4 +100,4 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 - Instead, see Button: When there is room for a text label: use `Button` with a `leading` icon. A visible word is clearer than any icon.
 - Instead, see Link: For navigation: use `Link`.
 - Renders: Icon, Tooltip
-- Used by: Alert, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
+- Used by: Alert, AppShell, AppShellNavToggle, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion

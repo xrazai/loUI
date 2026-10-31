@@ -55,7 +55,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
+`--ds-accent`, `--ds-danger`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-menu-indicator-size`, `--ds-menu-max-width`, `--ds-menu-min-width`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-select-popover-max-height`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`
 
 ## When to use
 

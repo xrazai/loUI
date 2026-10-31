@@ -17,7 +17,7 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 - Import: `import { Combobox } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
-- Stories (Storybook title `Components/Combobox`): Default, KeyboardContract, WithDescriptionAndMeta, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
+- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
 
 ## Props
 

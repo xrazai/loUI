@@ -1,6 +1,6 @@
 # AppShellNavToggle
 
-> The button that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
+> The icon button (menu icon) that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
 > It is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered
 > inside `AppShell`.
 
@@ -13,10 +13,10 @@ The application layout: a sidebar, and a main column with a top bar above a scro
 
 ## Props
 
-| Prop        | Type        | Required | Default | Description                                           |
-| ----------- | ----------- | -------- | ------- | ----------------------------------------------------- |
-| `children`  | `ReactNode` |          |         | Button text. Default "Menu" from the message catalog. |
-| `className` | `string`    |          |         | Class name for the wrapper.                           |
+| Prop        | Type     | Required | Default | Description                                                                  |
+| ----------- | -------- | -------- | ------- | ---------------------------------------------------------------------------- |
+| `children`  | `string` |          |         | Accessible name of the icon button. Default "Menu" from the message catalog. |
+| `className` | `string` |          |         | Class name for the wrapper.                                                  |
 
 ## Design tokens used
 
@@ -64,7 +64,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex="0"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.
 - The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.
 - The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.
-- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is "Menu" (`pt-BR` "Menu"; the close button is "Close menu" / "Fechar menu").
+- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. It is an `IconButton` (menu icon) named "Menu" (`pt-BR` "Menu"; pass a string child to rename it); the close button is an `IconButton` (x icon) named "Close menu" / "Fechar menu", which sits on the scrim beside the panel and never wraps.
 
 ## Content rules
 
@@ -90,4 +90,4 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 ## Related components
 
 - Instead, see Container: A marketing page or a single-column document: use `Container` and let the page scroll.
-- Renders: Button, SkipLink
+- Renders: IconButton, SkipLink
