@@ -3,7 +3,7 @@ import { defineMessages } from '../../i18n';
 export const messages = defineMessages({
   en: {
     /** Accessible name of the region that holds the toasts (a landmark reachable with F6). */
-    region: 'Notifications',
+    region: 'Toast notifications',
     /** Name of the dismiss button of a toast. */
     dismiss: 'Dismiss notification',
     /** Visually hidden prefix that tells screen reader users the kind of toast; the dot alone cannot. */
@@ -13,7 +13,7 @@ export const messages = defineMessages({
     danger: 'Error',
   },
   'pt-BR': {
-    region: 'Notificações',
+    region: 'Notificações temporárias',
     dismiss: 'Dispensar notificação',
     info: 'Informação',
     success: 'Sucesso',

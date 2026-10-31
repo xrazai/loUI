@@ -21,7 +21,7 @@ A short, temporary message about something that just happened, with an optional 
 ## Anatomy
 
 ```
-ToastRegion          role=region, aria-label "Notifications", landmark (F6); fixed, bottom center; z toast
+ToastRegion          role=region, aria-label "Toast notifications", landmark (F6); fixed, bottom center; z toast
   Toast              role=alertdialog (React Aria), raised surface, strong line, radius lg, overlay shadow
     dot              decorative, colored by tone
     message          "Success: " (visually hidden) + text
@@ -59,7 +59,7 @@ The handoff closed toasts after 3.6 s, which is too short to read a sentence and
 
 ## Accessibility
 
-- The region is a landmark named "Notifications". **F6** moves focus into it (and back), so Undo is keyboard reachable. React Aria registers a region as a landmark only if it is mounted with its first toast, so `ToastRegion` renders nothing while the queue is empty and mounts the region when a toast arrives.
+- The region is a landmark named "Toast notifications". **F6** moves focus into it (and back), so Undo is keyboard reachable. React Aria registers a region as a landmark only if it is mounted with its first toast, so `ToastRegion` renders nothing while the queue is empty and mounts the region when a toast arrives.
 - Each toast is announced by React Aria's toast semantics. The tone is spoken as a prefix ("Success: ...", "Error: ...") from messages; the colored dot is decorative and `aria-hidden`.
 - Pause on hover and on focus within the region; the timer resumes on leave or blur.
 - Dismiss button named from messages ("Dismiss notification"); action is a real `Button`.

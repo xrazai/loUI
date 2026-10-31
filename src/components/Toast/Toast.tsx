@@ -76,7 +76,7 @@ function ToastItem({
  * Renders the toasts of a queue. Mount **one** near the app root, inside `DSProvider`, and call
  * `toast()` from anywhere. Built on React Aria's toast region (isolated in `toast.rac.ts`).
  *
- * The region is a landmark named "Notifications" that `F6` moves into; the timer of every toast
+ * The region is a landmark named "Toast notifications" that `F6` moves into; the timer of every toast
  * pauses while the pointer is over the region or focus is inside it (WCAG 2.2.1). Toasts stack
  * at the bottom center of the viewport, clear of side panels, above dialogs and below tooltips.
  */

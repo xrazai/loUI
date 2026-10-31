@@ -36,7 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Everything a toast can show, for the visual review. The toasts stay until dismissed. */
 export const AllTones: Story = {
-  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
+  parameters: { visual: { selector: '[role="region"][aria-label="Toast notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.info('Draft saved', { timeout: null });
@@ -49,7 +49,7 @@ export const AllTones: Story = {
 };
 
 export const WithAction: Story = {
-  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
+  parameters: { visual: { selector: '[role="region"][aria-label="Toast notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.success('3 items archived', {
@@ -62,7 +62,7 @@ export const WithAction: Story = {
 };
 
 export const LongMessage: Story = {
-  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
+  parameters: { visual: { selector: '[role="region"][aria-label="Toast notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.info(
@@ -139,7 +139,7 @@ export const PausesOnHoverAndFocus: Story = {
   },
 };
 
-/** F6 moves focus into the Notifications region. */
+/** F6 moves focus into the Toast notifications region. */
 export const KeyboardRegion: Story = {
   render: function Render() {
     const notify = useToast();
@@ -158,7 +158,7 @@ export const KeyboardRegion: Story = {
   },
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: 'Archive order' }));
-    const region = await screen.findByRole('region', { name: 'Notifications' });
+    const region = await screen.findByRole('region', { name: 'Toast notifications' });
     await userEvent.keyboard('{F6}');
     await waitFor(() => expect(region.contains(document.activeElement)).toBe(true));
   },

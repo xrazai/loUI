@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
+import { Card } from '../Card';
 import { DEFAULT_TOAST_TIMEOUT, createToastApi, createToastQueue, toast, useToast } from './queue';
 import { ToastRegion } from './Toast';
 
@@ -16,14 +17,14 @@ const toasts = () => document.querySelectorAll('[class*="toast"][data-tone]');
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('Toast', () => {
-  it('shows nothing until a toast is queued, then a labelled Notifications region', async () => {
+  it('shows nothing until a toast is queued, then a labelled region', async () => {
     const { queue, api } = setup();
     const screen = await renderWithProvider(<ToastRegion queue={queue} />);
     expect(toasts()).toHaveLength(0);
     act(() => {
       api('Order #1051 created');
     });
-    await expect.element(screen.getByRole('region', { name: 'Notifications' })).toBeVisible();
+    await expect.element(screen.getByRole('region', { name: 'Toast notifications' })).toBeVisible();
     await expect.element(screen.getByText(/Order #1051 created/)).toBeVisible();
   });
 
@@ -115,7 +116,7 @@ describe('Toast', () => {
     // Fall back to a synthetic event if the driver does not send F6.
     if (
       !screen
-        .getByRole('region', { name: 'Notifications' })
+        .getByRole('region', { name: 'Toast notifications' })
         .element()
         .contains(document.activeElement)
     ) {
@@ -123,7 +124,7 @@ describe('Toast', () => {
         new KeyboardEvent('keydown', { key: 'F6', bubbles: true }),
       );
     }
-    const region = screen.getByRole('region', { name: 'Notifications' }).element();
+    const region = screen.getByRole('region', { name: 'Toast notifications' }).element();
     await expect.poll(() => region.contains(document.activeElement)).toBe(true);
   });
 
@@ -226,7 +227,9 @@ describe('Toast', () => {
     act(() => {
       api.success('Pedido criado', { timeout: null });
     });
-    await expect.element(pt.getByRole('region', { name: 'Notificações' })).toBeVisible();
+    await expect
+      .element(pt.getByRole('region', { name: 'Notificações temporárias' }))
+      .toBeVisible();
     await expect.element(pt.getByRole('button', { name: 'Dispensar notificação' })).toBeVisible();
     await pt.unmount();
 
@@ -270,5 +273,25 @@ describe('Toast', () => {
     await expect.poll(() => toasts().length).toBe(4);
     await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
+  });
+
+  it('does not share its landmark name with a Card titled "Notifications" (landmark-unique)', async () => {
+    const { queue, api } = setup();
+    await renderWithProvider(
+      <main>
+        <h1>Settings</h1>
+        <Card title="Notifications">Choose which emails you receive.</Card>
+        <ToastRegion queue={queue} />
+      </main>,
+    );
+    act(() => {
+      api.success('Settings saved', { timeout: null });
+    });
+    await expect.poll(() => toasts().length).toBe(1);
+    await expect.poll(() => document.getAnimations().length).toBe(0);
+    // `landmark-unique` is a best-practice rule, outside the WCAG tag set of the shared helper.
+    await expectNoA11yViolations(document.body, {
+      runOnly: { type: 'rule', values: ['landmark-unique'] },
+    });
   });
 });
