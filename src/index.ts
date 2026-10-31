@@ -47,6 +47,50 @@ export type { SwitchLabelPlacement, SwitchProps } from './components/Switch';
 export { Textarea } from './components/Textarea';
 export type { TextareaMessages, TextareaProps, TextareaResize } from './components/Textarea';
 
+// Navigation and layout
+export { Accordion } from './components/Accordion';
+export type {
+  AccordionHeadingLevel,
+  AccordionItem,
+  AccordionProps,
+  AccordionVariant,
+} from './components/Accordion';
+export { Breadcrumb } from './components/Breadcrumb';
+export type { BreadcrumbItem, BreadcrumbProps } from './components/Breadcrumb';
+export { NavItem } from './components/NavItem';
+export type { NavItemProps, NavItemTone } from './components/NavItem';
+export { Pagination, getItemRange, getPageCount, getPageItems } from './components/Pagination';
+export type { PageItem, PaginationProps } from './components/Pagination';
+export { SegmentedControl } from './components/SegmentedControl';
+export type {
+  SegmentedControlOption,
+  SegmentedControlProps,
+  SegmentedControlSize,
+} from './components/SegmentedControl';
+export { Sidebar } from './components/Sidebar';
+export type {
+  SidebarItem,
+  SidebarProps,
+  SidebarSection,
+  SidebarStatus,
+  SidebarUser,
+  SidebarWorkspace,
+} from './components/Sidebar';
+export { SkipLink } from './components/SkipLink';
+export type { SkipLinkProps } from './components/SkipLink';
+export { SuggestionChip } from './components/SuggestionChip';
+export type { SuggestionChipProps } from './components/SuggestionChip';
+export { Tab, TabList, TabPanel, Tabs } from './components/Tabs';
+export type {
+  TabCountTone,
+  TabListProps,
+  TabPanelProps,
+  TabProps,
+  TabsProps,
+} from './components/Tabs';
+export { TopBar } from './components/TopBar';
+export type { TopBarHeadingLevel, TopBarProps } from './components/TopBar';
+
 // Display
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertTone } from './components/Alert';

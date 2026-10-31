@@ -135,4 +135,17 @@
     font-family: var(--ds-font-mono);
     font-variant-numeric: tabular-nums;
   }
+
+  /* Visually hidden, still announced. Same rules as the VisuallyHidden component. */
+  .ds-sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }

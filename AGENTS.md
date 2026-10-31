@@ -150,7 +150,7 @@ Target: **WCAG 2.2 Level AA**, using the WAI-ARIA Authoring Practices patterns. 
 |---|---|
 | Button / link | `Enter`; button also `Space` |
 | Checkbox / switch | `Space` toggles (switch also `Enter` optional) |
-| Radio group / segmented / choice tiles | One tab stop (roving); `←/↑` prev, `→/↓` next, wraps; `Space` selects |
+| Radio group / segmented / choice tiles | One tab stop (roving); `←/↑` prev, `→/↓` next (wrapping follows the React Aria pattern: radio groups wrap, `ToggleButtonGroup` stops at the ends); `Space` selects |
 | Tabs | Roving; `←/→` move; `Home/End`; automatic or manual activation as documented; `Tab` moves into the panel |
 | Menu | Trigger `Enter/Space/↓` opens, focus first item; `↑/↓`, `Home/End`, typeahead; `Enter/Space` activates; `Esc` closes and restores focus |
 | Combobox | `↓/↑` open/move (`aria-activedescendant`), `Enter` selects, `Esc` closes then clears, `Home/End` in list |
