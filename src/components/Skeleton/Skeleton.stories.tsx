@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Skeleton } from './Skeleton';
+import { Inline } from '../Inline';
+import { Stack } from '../Stack';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Skeleton',
@@ -25,25 +28,23 @@ export const Pill: Story = { args: { width: 96, height: 24 } };
 /** The loading region carries `aria-busy`; the skeletons themselves are hidden from assistive technology. */
 export const BusyRegion: Story = {
   render: () => (
-    <section
-      aria-busy="true"
-      aria-label="Recent orders"
-      style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 360 }}
-    >
-      {[0, 1, 2].map((row) => (
-        <div key={row} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <Skeleton circle height={28} />
-          <Skeleton lines={2} />
-        </div>
-      ))}
-    </section>
+    <StoryFrame maxWidth={360}>
+      <Stack as="section" gap={4} aria-busy="true" aria-label="Recent orders">
+        {[0, 1, 2].map((row) => (
+          <Inline key={row} gap={3} wrap={false}>
+            <Skeleton circle height={28} />
+            <Skeleton lines={2} />
+          </Inline>
+        ))}
+      </Stack>
+    </StoryFrame>
   ),
 };
 
 export const RightToLeft: Story = {
   render: () => (
-    <div dir="rtl" style={{ maxWidth: 240 }}>
+    <StoryFrame dir="rtl" maxWidth={240}>
       <Skeleton lines={3} />
-    </div>
+    </StoryFrame>
   ),
 };

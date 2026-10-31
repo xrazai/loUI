@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Container } from './Container';
+import { StoryFrame } from '../../test/StoryFrame';
 
 function Content() {
   return (
     <div
       style={{
-        padding: '16px',
+        padding: 'var(--ds-space-4)',
         border: '1px dashed var(--ds-line-strong)',
         color: 'var(--ds-text)',
       }}
@@ -48,9 +49,9 @@ export const NoGutter: Story = { args: { gutter: false } };
 export const Narrow: Story = {
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 320 }}>
+      <StoryFrame width={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

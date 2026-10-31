@@ -1,3 +1,4 @@
+import { StoryFrame } from '../../test/StoryFrame';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
@@ -47,9 +48,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ blockSize: 640, display: 'flex' }}>
+      <StoryFrame height={640} flex>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Sidebar>;

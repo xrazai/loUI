@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import { SearchInput } from './SearchInput';
 import type { SearchInputProps } from './SearchInput';
+import { StoryFrame } from '../../test/StoryFrame';
 
 type NamedByAriaLabel = Extract<SearchInputProps, { 'aria-label': string }>;
 
@@ -22,9 +23,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360, minBlockSize: 280 }}>
+      <StoryFrame maxWidth={360} minHeight={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<NamedByAriaLabel>;

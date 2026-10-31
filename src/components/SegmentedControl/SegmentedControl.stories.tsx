@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { SegmentedControl } from './SegmentedControl';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const options = [
   { value: 'list', label: 'List' },
@@ -37,9 +38,9 @@ export const FullWidth: Story = {
   args: { fullWidth: true },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -130,9 +131,9 @@ export const LongLabels: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 260 }}>
+      <StoryFrame maxWidth={260}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

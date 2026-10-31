@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Meter, Progress } from './Progress';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Progress',
@@ -12,9 +13,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Progress>;
@@ -55,7 +56,7 @@ export const Indeterminate: Story = {
 
 export const AllTones: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ds-space-4)' }}>
       <Progress value={62} label="Accent" showValue />
       <Progress value={100} tone="success" label="Success" showValue />
       <Progress value={82} tone="warning" label="Warning" showValue />

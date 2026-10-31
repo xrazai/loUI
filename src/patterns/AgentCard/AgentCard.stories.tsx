@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MessageCircle, ShoppingBag } from 'lucide-react';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import { MessageIcon, StarIcon } from '../../components/Icon/icons';
 import { AgentCard } from './AgentCard';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Patterns/AgentCard',
@@ -10,7 +11,7 @@ const meta = {
   args: {
     name: 'Marketplace agent',
     area: 'Marketplace',
-    icon: ShoppingBag,
+    icon: StarIcon,
     description:
       'Answers buyer questions and reviews of the store. You approve every reply before it is sent.',
     lastActivity: 'Last reply sent at 08:40',
@@ -23,9 +24,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof AgentCard>;
@@ -51,7 +52,7 @@ export const ComingSoon: Story = {
   args: {
     name: 'Chat agent',
     area: 'Support',
-    icon: MessageCircle,
+    icon: MessageIcon,
     status: 'soon',
     description: 'Will draft an order from the conversation.',
     lastActivity: undefined,
@@ -95,7 +96,7 @@ export const Grid: Story = {
     <ul
       style={{
         display: 'grid',
-        gap: 16,
+        gap: 'var(--ds-space-4)',
         margin: 0,
         padding: 0,
         listStyle: 'none',
@@ -106,13 +107,7 @@ export const Grid: Story = {
         <AgentCard {...args} />
       </li>
       <li>
-        <AgentCard
-          {...args}
-          name="Support agent"
-          status="testing"
-          icon={MessageCircle}
-          pending={0}
-        />
+        <AgentCard {...args} name="Support agent" status="testing" icon={MessageIcon} pending={0} />
       </li>
       <li>
         <AgentCard {...args} name="Chat agent" status="soon" pending={0} lastActivity={undefined} />

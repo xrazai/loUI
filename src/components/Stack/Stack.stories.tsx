@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Stack } from './Stack';
+import { StoryFrame } from '../../test/StoryFrame';
 
 function Box({ children }: { children: string }) {
   return (
     <div
       style={{
-        padding: '8px 12px',
+        padding: 'var(--ds-space-2) var(--ds-space-3)',
         border: '1px solid var(--ds-line)',
         borderRadius: 'var(--ds-radius-md)',
         background: 'var(--ds-surface)',
@@ -63,9 +64,9 @@ export const AsList: Story = {
 export const LongText: Story = {
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 240 }}>
+      <StoryFrame width={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   args: {

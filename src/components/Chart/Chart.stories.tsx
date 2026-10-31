@@ -4,6 +4,7 @@ import { DSProvider } from '../../providers/DSProvider';
 import { formatCurrency } from '../../utils/currency';
 import { Chart } from './Chart';
 import type { ChartDatum, ChartProps } from './Chart';
+import { StoryFrame } from '../../test/StoryFrame';
 
 type Props = Extract<ChartProps, { 'aria-label': string }>;
 
@@ -148,9 +149,9 @@ export const ManyPoints: Story = {
   args: { data: thirtyDays, 'aria-label': 'Sales, last 30 days' },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

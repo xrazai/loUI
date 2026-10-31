@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Slider } from './Slider';
 import type { SliderProps } from './Slider';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Slider',
@@ -12,9 +13,9 @@ const meta = {
   args: { label: 'Discount', defaultValue: 20, minValue: 0, maxValue: 100 },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<SliderProps>>;

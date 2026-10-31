@@ -28,7 +28,7 @@ export const WithoutDot: Story = { args: { dot: false, tone: 'success', children
 
 export const AllTones: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-2)', flexWrap: 'wrap' }}>
       <Badge>Draft</Badge>
       <Badge tone="accent">In progress</Badge>
       <Badge tone="success">Shipped</Badge>

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Tag, TagGroup } from './Tag';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Tag',
@@ -27,9 +28,9 @@ export const LongText: Story = {
   args: { children: 'a-very-long-sku-code-that-keeps-going-ORD-1048-ORD-1048-ORD-1048' },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 200 }}>
+      <StoryFrame maxWidth={200}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

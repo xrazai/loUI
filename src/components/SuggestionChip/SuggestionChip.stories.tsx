@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { SuggestionChip } from './SuggestionChip';
+import { Inline } from '../Inline';
+import { Stack } from '../Stack';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/SuggestionChip',
@@ -38,9 +41,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 280 }}>
+      <StoryFrame maxWidth={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -53,32 +56,30 @@ function ComposerExample() {
     'Can you confirm the address?',
   ];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxInlineSize: 420 }}>
-      <div
-        role="group"
-        aria-label="Suggested replies"
-        style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}
-      >
-        {suggestions.map((suggestion) => (
-          <SuggestionChip
-            key={suggestion}
-            onPress={() => {
-              setText((current) => (current ? `${current} ${suggestion}` : suggestion));
-            }}
-          >
-            {suggestion}
-          </SuggestionChip>
-        ))}
-      </div>
-      <textarea
-        aria-label="Reply"
-        value={text}
-        rows={3}
-        onChange={(event) => {
-          setText(event.target.value);
-        }}
-      />
-    </div>
+    <StoryFrame maxWidth={420}>
+      <Stack gap={3}>
+        <Inline role="group" aria-label="Suggested replies" gap={2} align="stretch">
+          {suggestions.map((suggestion) => (
+            <SuggestionChip
+              key={suggestion}
+              onPress={() => {
+                setText((current) => (current ? `${current} ${suggestion}` : suggestion));
+              }}
+            >
+              {suggestion}
+            </SuggestionChip>
+          ))}
+        </Inline>
+        <textarea
+          aria-label="Reply"
+          value={text}
+          rows={3}
+          onChange={(event) => {
+            setText(event.target.value);
+          }}
+        />
+      </Stack>
+    </StoryFrame>
   );
 }
 

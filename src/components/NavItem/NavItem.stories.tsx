@@ -3,6 +3,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { CalendarIcon, CircleCheckIcon, StarIcon } from '../Icon';
 import { NavItem } from './NavItem';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/NavItem',
@@ -11,9 +12,9 @@ const meta = {
   args: { children: 'Orders', href: '#orders', icon: StarIcon },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 240 }}>
+      <StoryFrame width={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof NavItem>;

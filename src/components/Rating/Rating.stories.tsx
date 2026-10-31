@@ -34,7 +34,7 @@ export const WithValue: Story = { args: { value: 3.5, showValue: true } };
 
 export const Sizes: Story = {
   render: (args) => (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <div style={{ display: 'grid', gap: 'var(--ds-space-3)', justifyItems: 'start' }}>
       <Rating {...args} size="sm" />
       <Rating {...args} size="md" />
       <Rating {...args} size="lg" />

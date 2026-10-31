@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { Accordion } from './Accordion';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const items = [
   {
@@ -32,9 +33,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 520 }}>
+      <StoryFrame maxWidth={520}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Accordion>;

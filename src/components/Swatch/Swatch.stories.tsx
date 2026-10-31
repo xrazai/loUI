@@ -23,7 +23,7 @@ export const Default: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-3)', alignItems: 'center' }}>
       <Swatch color="#1f3a93" label="Small" size="sm" />
       <Swatch color="#1f3a93" label="Medium" />
       <Swatch color="#1f3a93" label="Large" size="lg" />
@@ -34,7 +34,7 @@ export const Sizes: Story = {
 /** Near-black and near-white colors stay visible thanks to the inset ring. */
 export const ExtremeColors: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-3)', alignItems: 'center' }}>
       <Swatch color="#000000" label="Black" size="lg" />
       <Swatch color="#ffffff" label="White" size="lg" />
       <Swatch color="#0b0b0c" label="Canvas" size="lg" />

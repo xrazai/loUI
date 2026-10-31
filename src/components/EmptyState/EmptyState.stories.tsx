@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../Button';
 import { Icon, SearchIcon } from '../Icon';
 import { EmptyState } from './EmptyState';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/EmptyState',
@@ -54,9 +55,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 320 }}>
+      <StoryFrame maxWidth={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

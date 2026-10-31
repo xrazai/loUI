@@ -1,3 +1,4 @@
+import { StoryFrame } from '../../test/StoryFrame';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
@@ -27,9 +28,9 @@ const meta = {
   parameters: { docs: { story: { inline: false, iframeHeight: 320 } } },
   decorators: [
     (Story) => (
-      <div style={{ padding: 'var(--ds-space-12)', minBlockSize: 260 }}>
+      <StoryFrame padding={12} minHeight={260}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Popover>;
@@ -75,13 +76,13 @@ export const CloseFromInside: Story = {
   args: {
     children: ({ close }) => (
       <Button variant="primary" onPress={close}>
-        Done
+        Apply filters
       </Button>
     ),
   },
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: 'Filters' }));
-    await userEvent.click(await screen.findByRole('button', { name: 'Done' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Apply filters' }));
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
   },
 };

@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Inline } from './Inline';
+import { StoryFrame } from '../../test/StoryFrame';
 
 function Chip({ children }: { children: string }) {
   return (
     <span
       style={{
-        padding: '4px 12px',
+        padding: 'var(--ds-space-1) var(--ds-space-3)',
         border: '1px solid var(--ds-line)',
         borderRadius: 'var(--ds-radius-pill)',
         background: 'var(--ds-surface)',
@@ -76,9 +77,9 @@ export const AlignBaseline: Story = {
 export const Wrapping: Story = {
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 180 }}>
+      <StoryFrame width={180}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -88,9 +89,9 @@ export const NoWrap: Story = {
   args: { wrap: false },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 180, overflow: 'hidden' }}>
+      <StoryFrame width={180} clip>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

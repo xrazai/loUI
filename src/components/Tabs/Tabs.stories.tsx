@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { Tab, TabList, TabPanel, Tabs } from './Tabs';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Tabs',
@@ -202,9 +203,9 @@ export const Controlled: Story = {
 export const LongLabels: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 280 }}>
+      <StoryFrame maxWidth={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   render: () => (

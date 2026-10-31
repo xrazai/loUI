@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Text } from './Text';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Typography/Text',
@@ -52,9 +53,9 @@ export const Truncated: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 200 }}>
+      <StoryFrame width={200}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -67,9 +68,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 240 }}>
+      <StoryFrame width={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

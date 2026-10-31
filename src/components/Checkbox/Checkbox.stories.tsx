@@ -4,6 +4,7 @@ import type { WithLabel } from '../Field';
 import { Checkbox } from './Checkbox';
 import type { CheckboxProps } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Checkbox',
@@ -91,9 +92,9 @@ export const ReadOnly: Story = {
 export const LongLabel: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 320 }}>
+      <StoryFrame maxWidth={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   args: {

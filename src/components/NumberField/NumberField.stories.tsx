@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { NumberField } from './NumberField';
 import type { NumberFieldProps } from './NumberField';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/NumberField',
@@ -15,9 +16,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 280 }}>
+      <StoryFrame maxWidth={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<NumberFieldProps>>;

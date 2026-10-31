@@ -5,6 +5,7 @@ import type { WithLabel } from '../Field';
 import { DSProvider } from '../../providers/DSProvider';
 import { CurrencyInput } from './CurrencyInput';
 import type { CurrencyInputProps } from './CurrencyInput';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/CurrencyInput',
@@ -16,9 +17,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 280 }}>
+      <StoryFrame maxWidth={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<CurrencyInputProps>>;

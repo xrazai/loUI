@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { Heading } from './Heading';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Typography/Heading',
@@ -33,7 +34,7 @@ export const HeadingSize: Story = { args: { level: 2, size: 'heading' } };
 /** The level is the outline, the size is the look: an h2 can be small and an h3 can be big. */
 export const LevelIndependentOfSize: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ds-space-3)' }}>
       <Heading level={2} size="heading">
         h2 with the heading size
       </Heading>
@@ -53,9 +54,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 260 }}>
+      <StoryFrame width={260}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

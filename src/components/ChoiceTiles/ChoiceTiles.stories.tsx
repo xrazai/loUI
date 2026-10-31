@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { ChoiceTiles } from './ChoiceTiles';
 import type { ChoiceTilesProps } from './ChoiceTiles';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const options = [
   { value: 'pickup', label: 'Pick up', meta: 'Free' },
@@ -93,9 +94,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 300 }}>
+      <StoryFrame maxWidth={300}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -104,9 +105,9 @@ export const LongText: Story = {
 export const NarrowContainer: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 200 }}>
+      <StoryFrame maxWidth={200}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

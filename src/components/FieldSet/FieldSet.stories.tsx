@@ -3,6 +3,7 @@ import { expect, within } from 'storybook/test';
 import { Input } from '../Input';
 import { Radio, RadioGroup } from '../RadioGroup';
 import { FieldSet } from './FieldSet';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/FieldSet',
@@ -17,9 +18,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 360 }}>
+      <StoryFrame width={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof FieldSet>;
@@ -75,9 +76,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 240 }}>
+      <StoryFrame width={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -85,9 +86,9 @@ export const LongText: Story = {
 export const RightToLeft: Story = {
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ inlineSize: 360 }}>
+      <StoryFrame dir="rtl" width={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

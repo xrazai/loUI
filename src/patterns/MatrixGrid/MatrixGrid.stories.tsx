@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { MatrixGrid } from './MatrixGrid';
 import type { MatrixGridProps } from './MatrixGrid';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const rows = [
   { id: 'backpack', label: 'Backpack', meta: 'BKP-02' },
@@ -63,9 +64,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 760 }}>
+      <StoryFrame maxWidth={760}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   // The grid is up to 760 px wide; at the default 384 px frame its columns are clipped.

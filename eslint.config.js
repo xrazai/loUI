@@ -9,6 +9,8 @@ export default tseslint.config(
   {
     ignores: [
       'dist/**',
+      'examples/**',
+      '.pack/**',
       'tools/*/dist/**',
       'storybook-static/**',
       'raw_files/**',
@@ -36,13 +38,20 @@ export default tseslint.config(
   reactHooks.configs.flat.recommended,
   jsxA11y.configs.strict,
   {
-    // Dogfooding (AI-007): the design system's own stories and examples are checked with the
-    // consumer rules at warn level. Findings are reported to the maintainers, not auto-fixed.
+    // Dogfooding (AI-007, AI-015): the design system's own stories and examples are checked with
+    // the consumer rules at error level, so the examples we ship follow the rules we publish.
     files: ['src/**/*.stories.tsx', 'examples/**/*.{ts,tsx}'],
     plugins: { loui },
-    rules: Object.fromEntries(
-      Object.keys(loui.configs.recommended.rules).map((rule) => [rule, 'warn']),
-    ),
+    rules: {
+      ...Object.fromEntries(
+        Object.keys(loui.configs.recommended.rules).map((rule) => [rule, 'error']),
+      ),
+      // Region labels in the Select and RadioGroup stories are code-prefixed names.
+      'loui/content-rules': [
+        'error',
+        { properNouns: ['EU: Frankfurt', 'US: Virginia', 'SA: Sao Paulo', 'AP: Singapore'] },
+      ],
+    },
   },
   {
     files: ['**/*.js', '**/*.mjs'],

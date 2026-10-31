@@ -6,6 +6,7 @@ import { IconButton } from '../IconButton';
 import { PlusIcon, SearchIcon } from '../Icon';
 import { Kbd } from '../Kbd';
 import { TopBar } from './TopBar';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/TopBar',
@@ -97,9 +98,9 @@ export const LongTitle: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 520 }}>
+      <StoryFrame maxWidth={520}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

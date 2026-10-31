@@ -5,6 +5,7 @@ import { formatCurrency } from '../../utils/currency';
 import { ProportionBar } from '../ProportionBar';
 import { StatCard } from './StatCard';
 import type { StatCardProps } from './StatCard';
+import { StoryFrame } from '../../test/StoryFrame';
 
 type Props = Extract<StatCardProps, { tone?: 'neutral' }>;
 
@@ -22,9 +23,9 @@ const meta = {
       name === 'Grid' ? (
         <Story />
       ) : (
-        <div style={{ maxInlineSize: 280 }}>
+        <StoryFrame maxWidth={280}>
           <Story />
-        </div>
+        </StoryFrame>
       ),
   ],
 } satisfies Meta<Props>;

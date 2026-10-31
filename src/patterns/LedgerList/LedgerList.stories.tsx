@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { LedgerList } from './LedgerList';
 import type { LedgerEntry } from './LedgerList';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const entries: LedgerEntry[] = [
   {
@@ -36,9 +37,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 560 }}>
+      <StoryFrame maxWidth={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof LedgerList>;
@@ -104,9 +105,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -166,9 +167,9 @@ export const RightToLeft: Story = {
   decorators: [
     (Story) => (
       <DSProvider locale="ar">
-        <div dir="rtl" style={{ maxInlineSize: 560 }}>
+        <StoryFrame dir="rtl" maxWidth={560}>
           <Story />
-        </div>
+        </StoryFrame>
       </DSProvider>
     ),
   ],

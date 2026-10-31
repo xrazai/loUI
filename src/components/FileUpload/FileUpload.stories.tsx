@@ -4,6 +4,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { FileUpload } from './FileUpload';
 import type { FileUploadProps } from './FileUpload';
+import { StoryFrame } from '../../test/StoryFrame';
 
 function file(name: string, bytes = 2048, type = 'application/pdf'): File {
   return new File([new Uint8Array(bytes)], name, { type });
@@ -16,9 +17,9 @@ const meta = {
   args: { label: 'Attachments', description: 'PNG, JPG or PDF up to 10 MB.' },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 440 }}>
+      <StoryFrame maxWidth={440}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<FileUploadProps>>;

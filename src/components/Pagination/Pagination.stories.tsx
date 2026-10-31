@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { Pagination } from './Pagination';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Pagination',
@@ -137,9 +138,9 @@ export const NarrowContainer: Story = {
   ),
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 280 }}>
+      <StoryFrame maxWidth={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { Breadcrumb } from './Breadcrumb';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Breadcrumb',
@@ -58,9 +59,9 @@ export const LongTrail: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

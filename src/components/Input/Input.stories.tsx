@@ -5,6 +5,7 @@ import { SearchIcon } from '../Icon/icons';
 import type { WithLabel } from '../Field';
 import { Input } from './Input';
 import type { InputProps } from './Input';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Input',
@@ -16,9 +17,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 320 }}>
+      <StoryFrame maxWidth={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<InputProps>>;

@@ -4,6 +4,7 @@ import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Combobox } from './Combobox';
 import type { ComboboxOption, ComboboxProps } from './Combobox';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const customers: ComboboxOption[] = [
   { value: 'cafe', label: 'Café Central', meta: '3 orders' },
@@ -23,9 +24,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360, minBlockSize: 340 }}>
+      <StoryFrame maxWidth={360} minHeight={340}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<ComboboxProps>>;

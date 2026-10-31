@@ -1,3 +1,4 @@
+import { StoryFrame } from '../../test/StoryFrame';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
@@ -29,9 +30,9 @@ const meta = {
   parameters: { docs: { story: { inline: false, iframeHeight: 320 } } },
   decorators: [
     (Story) => (
-      <div style={{ padding: 'var(--ds-space-12)', minBlockSize: 280 }}>
+      <StoryFrame padding={12} minHeight={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Menu>;

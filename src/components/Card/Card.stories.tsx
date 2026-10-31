@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from './Card';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Card',
@@ -42,8 +43,8 @@ export const NoPadding: Story = {
     padding: 'none',
     children: (
       <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        <li style={{ padding: 12 }}>First row</li>
-        <li style={{ padding: 12 }}>Second row</li>
+        <li style={{ padding: 'var(--ds-space-3)' }}>First row</li>
+        <li style={{ padding: 'var(--ds-space-3)' }}>Second row</li>
       </ul>
     ),
   },
@@ -61,9 +62,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 320 }}>
+      <StoryFrame maxWidth={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

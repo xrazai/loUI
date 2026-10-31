@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { ChatPanel } from './ChatPanel';
 import type { ChatMessage } from './ChatPanel';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const conversation: ChatMessage[] = [
   { id: 'm1', role: 'user', content: 'How would you answer "do you ship abroad?"' },
@@ -33,9 +34,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ blockSize: 520, maxInlineSize: 360 }}>
+      <StoryFrame height={520} maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof ChatPanel>;

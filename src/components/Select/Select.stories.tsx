@@ -3,6 +3,7 @@ import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Select } from './Select';
 import type { SelectProps } from './Select';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const regions = [
   { value: 'eu', label: 'EU: Frankfurt' },
@@ -21,9 +22,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 320, minBlockSize: 280 }}>
+      <StoryFrame maxWidth={320} minHeight={280}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<SelectProps>>;

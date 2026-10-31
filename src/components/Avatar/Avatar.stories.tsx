@@ -24,7 +24,7 @@ export const Default: Story = {};
 
 export const Sizes: Story = {
   render: (args) => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-3)', alignItems: 'center' }}>
       <Avatar {...args} size="sm" />
       <Avatar {...args} size="md" />
       <Avatar {...args} size="lg" />
@@ -41,7 +41,7 @@ export const BrokenPhoto: Story = {
 
 export const Decorative: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-2)', alignItems: 'center' }}>
       <Avatar decorative name="Ada Lovelace" />
       <span>Ada Lovelace</span>
     </div>
@@ -50,7 +50,7 @@ export const Decorative: Story = {
 
 export const Shades: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12 }}>
+    <div style={{ display: 'flex', gap: 'var(--ds-space-3)' }}>
       <Avatar name="Ada Lovelace" />
       <Avatar name="Grace Hopper" />
       <Avatar name="Alan Turing" />
@@ -59,12 +59,18 @@ export const Shades: Story = {
   ),
 };
 
+const overlap = { marginInlineStart: 'calc(-1 * var(--ds-space-2))' };
+
 export const Stacked: Story = {
   render: () => (
     <div style={{ display: 'flex' }} role="group" aria-label="Project members">
       <Avatar name="Ada Lovelace" ring />
-      <Avatar name="Grace Hopper" ring style={{ marginInlineStart: -8 }} />
-      <Avatar name="Alan Turing" ring style={{ marginInlineStart: -8 }} />
+      <span style={overlap}>
+        <Avatar name="Grace Hopper" ring />
+      </span>
+      <span style={overlap}>
+        <Avatar name="Alan Turing" ring />
+      </span>
     </div>
   ),
 };

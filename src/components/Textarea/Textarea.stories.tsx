@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Textarea } from './Textarea';
 import type { TextareaProps } from './Textarea';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Textarea',
@@ -14,9 +15,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<TextareaProps>>;

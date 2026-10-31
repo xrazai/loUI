@@ -6,6 +6,7 @@ import type { WithLabel } from '../Field';
 import { Calendar } from './Calendar';
 import { DatePicker } from './DatePicker';
 import type { DatePickerProps } from './DatePicker';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/DatePicker',
@@ -19,9 +20,9 @@ const meta = {
     // Without a provider React Aria would follow the browser locale; stories pin en-US.
     (Story) => (
       <DSProvider locale="en-US">
-        <div style={{ maxInlineSize: 280, minBlockSize: 420 }}>
+        <StoryFrame maxWidth={280} minHeight={420}>
           <Story />
-        </div>
+        </StoryFrame>
       </DSProvider>
     ),
   ],

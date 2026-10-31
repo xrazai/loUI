@@ -3,6 +3,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Switch } from './Switch';
 import type { SwitchProps } from './Switch';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Switch',
@@ -14,9 +15,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<WithLabel<SwitchProps>>;

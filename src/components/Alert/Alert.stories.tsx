@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Alert } from './Alert';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Alert',
@@ -17,9 +18,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 520 }}>
+      <StoryFrame maxWidth={520}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Alert>;
@@ -125,16 +126,16 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
 
 export const AllTones: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ds-space-3)' }}>
       <Alert title="Information">Neutral message.</Alert>
       <Alert tone="success" title="Success">
         Something went well.
@@ -153,9 +154,9 @@ export const RightToLeft: Story = {
   args: { onDismiss: () => undefined, action: <Button size="sm">Details</Button> },
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ maxWidth: 520 }}>
+      <StoryFrame dir="rtl" maxWidth={520}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

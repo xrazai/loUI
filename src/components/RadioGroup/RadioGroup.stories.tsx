@@ -3,6 +3,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Radio, RadioGroup } from './RadioGroup';
 import type { RadioGroupProps } from './RadioGroup';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const options = [
   <Radio key="eu" value="eu" label="EU: Frankfurt" />,
@@ -105,9 +106,9 @@ export const ReadOnly: Story = {
 export const LongLabels: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 320 }}>
+      <StoryFrame maxWidth={320}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   args: {

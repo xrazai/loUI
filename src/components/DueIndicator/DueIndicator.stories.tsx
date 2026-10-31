@@ -60,7 +60,7 @@ export const AcrossDaylightSaving: Story = {
 
 export const AllTones: Story = {
   render: (args) => (
-    <div style={{ display: 'grid', gap: 8 }}>
+    <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
       <DueIndicator {...args} date="2026-03-07" />
       <DueIndicator {...args} date="2026-03-10" />
       <DueIndicator {...args} date="2026-04-20" />
@@ -72,7 +72,7 @@ export const AllTones: Story = {
 export const Portuguese: Story = {
   render: (args) => (
     <DSProvider locale="pt-BR">
-      <div style={{ display: 'grid', gap: 8 }}>
+      <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
         <DueIndicator {...args} date="2026-03-07" />
         <DueIndicator {...args} date="2026-03-10" />
         <DueIndicator {...args} date="2026-03-11" />

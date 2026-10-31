@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { StatusSteps } from './StatusSteps';
 import type { StatusStepsProps } from './StatusSteps';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const steps = [
   { id: 'draft', label: 'Draft' },
@@ -19,9 +20,9 @@ const meta = {
   args: { 'aria-label': 'Order status', steps, current: 1 },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 560 }}>
+      <StoryFrame maxWidth={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<Extract<StatusStepsProps, { 'aria-label': string }>>;
@@ -56,9 +57,9 @@ export const ManySteps: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 760 }}>
+      <StoryFrame maxWidth={760}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -74,9 +75,9 @@ export const LongLabels: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

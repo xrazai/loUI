@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Code } from './Code';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const snippet = `curl -X POST https://api.example.com/v1/orders \\
   -H "Content-Type: application/json" \\
@@ -39,9 +40,9 @@ export const BlockScrolls: Story = {
   args: { variant: 'block', 'aria-label': 'Request example', children: snippet },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 360 }}>
+      <StoryFrame width={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   play: async ({ canvasElement }) => {
@@ -54,9 +55,11 @@ export const BlockScrolls: Story = {
 
 export const InlineLongToken: Story = {
   render: () => (
-    <p style={{ margin: 0, inlineSize: 220, color: 'var(--ds-text)' }}>
-      Set <Code>NEXT_PUBLIC_VERY_LONG_ENVIRONMENT_VARIABLE_NAME_THAT_WRAPS</Code> first.
-    </p>
+    <StoryFrame width={220}>
+      <p style={{ margin: 0, color: 'var(--ds-text)' }}>
+        Set <Code>NEXT_PUBLIC_VERY_LONG_ENVIRONMENT_VARIABLE_NAME_THAT_WRAPS</Code> first.
+      </p>
+    </StoryFrame>
   ),
 };
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from '../Card';
 import { Grid } from './Grid';
 import type { GridProps } from './Grid';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const cards = ['Storage', 'Orders', 'Customers', 'Invoices', 'Returns', 'Shipping'].map((title) => (
   <Card key={title} title={title}>
@@ -47,9 +48,9 @@ export const NarrowContainer: Story = {
   args: { columns: undefined, minItemWidth: 'lg' } as unknown as GridProps,
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 240 }}>
+      <StoryFrame width={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { ToastRegion, createToastApi, createToastQueue } from '../../components/Toast';
 import { ApprovalCard } from './ApprovalCard';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Patterns/ApprovalCard',
@@ -24,9 +25,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 640 }}>
+      <StoryFrame maxWidth={640}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof ApprovalCard>;
@@ -77,9 +78,9 @@ export const LongText: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

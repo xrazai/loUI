@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { ColorOption } from './ColorOption';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const colors = [
   { color: '#1f3a93', label: 'Navy' },
@@ -17,9 +18,9 @@ const meta = {
   args: { color: '#1f3a93', label: 'Navy', onChange: fn() },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 240 }}>
+      <StoryFrame maxWidth={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof ColorOption>;
@@ -58,7 +59,11 @@ function GroupExample() {
     <div
       role="group"
       aria-label="Available colors"
-      style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}
+      style={{
+        display: 'grid',
+        gap: 'var(--ds-space-2)',
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+      }}
     >
       {colors.map(({ color, label }) => (
         <ColorOption
@@ -81,9 +86,9 @@ function GroupExample() {
 export const InAGroup: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   render: () => <GroupExample />,
@@ -118,9 +123,9 @@ export const RightToLeft: Story = {
   args: { defaultSelected: true },
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ maxInlineSize: 240 }}>
+      <StoryFrame dir="rtl" maxWidth={240}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

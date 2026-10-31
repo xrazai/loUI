@@ -4,6 +4,7 @@ import { DSProvider } from '../../providers/DSProvider';
 import { formatCurrency } from '../../utils/currency';
 import { ProportionBar } from './ProportionBar';
 import type { ProportionBarProps, ProportionSegment } from './ProportionBar';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const payments: ProportionSegment[] = [
   { label: 'Pix', value: 1693000 },
@@ -19,9 +20,9 @@ const meta = {
   args: { segments: payments, label: 'Payment methods' },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<ProportionBarProps>;

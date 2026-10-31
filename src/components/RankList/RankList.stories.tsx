@@ -5,6 +5,7 @@ import { formatCurrency } from '../../utils/currency';
 import { Card } from '../Card';
 import { RankList } from './RankList';
 import type { RankItem, RankListProps } from './RankList';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const fabrics: RankItem[] = [
   { id: 'linen', label: 'Linen', value: 420000, meta: '12 units · 18%', swatch: '#c9b79c' },
@@ -22,11 +23,11 @@ const meta = {
   args: { items: fabrics, format: money, 'aria-label': 'Top fabrics' },
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 420 }}>
+      <StoryFrame maxWidth={420}>
         <Card padding="none" title="Top fabrics">
           <Story />
         </Card>
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<RankListProps>;
