@@ -1,0 +1,12 @@
+@layer components {
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-3);
+  }
+
+  .items[data-orientation='horizontal'] {
+    flex-flow: row wrap;
+    gap: var(--ds-space-3) var(--ds-space-5);
+  }
+}

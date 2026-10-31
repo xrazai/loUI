@@ -1,0 +1,98 @@
+@layer components {
+  .root {
+    gap: var(--ds-space-1);
+  }
+
+  .button {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-field-choice-gap);
+
+    /* Keeps the whole row at the 24px minimum target size (WCAG 2.5.8). */
+    padding-block: calc((var(--ds-target-min) - var(--ds-lh-small)) / 2);
+    cursor: pointer;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    color: var(--ds-text);
+  }
+
+  .root[data-disabled] .button {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .root[data-readonly] .button {
+    cursor: default;
+  }
+
+  .text {
+    min-inline-size: 0;
+  }
+
+  /* Centers the box on the first line of text. */
+  .box {
+    display: grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-checkbox-box-size);
+    block-size: var(--ds-checkbox-box-size);
+    margin-block: calc((var(--ds-lh-small) - var(--ds-checkbox-box-size)) / 2);
+    background: var(--ds-bg);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-checkbox-radius);
+    color: var(--ds-text-inverse);
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      border-color var(--ds-duration) var(--ds-ease),
+      box-shadow var(--ds-duration) var(--ds-ease);
+  }
+
+  /*
+   * Forced colors: the browser repaints borders and the icon with system colors; the check or minus
+   * glyph still marks the selected state, so nothing is overridden.
+   */
+
+  /* Hover brightens the border; the fill never changes (the border must stay at 3:1 or better). */
+  .button[data-hovered] .box {
+    border-color: var(--ds-text-3);
+  }
+
+  .button[data-selected] .box,
+  .button[data-indeterminate] .box {
+    background: var(--ds-accent);
+    border-color: var(--ds-accent);
+  }
+
+  .button[data-invalid] .box {
+    border-color: var(--ds-danger);
+  }
+
+  .button[data-focus-visible] .box {
+    border-color: var(--ds-accent);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .button[data-invalid][data-focus-visible] .box {
+    border-color: var(--ds-danger);
+    box-shadow: var(--ds-focus-ring-danger);
+  }
+
+  .button[data-invalid][data-selected] .box,
+  .button[data-invalid][data-indeterminate] .box {
+    background: var(--ds-danger);
+    border-color: var(--ds-danger);
+  }
+
+  /* Description and error line up with the label text, not with the box. */
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    padding-inline-start: calc(var(--ds-checkbox-box-size) + var(--ds-field-choice-gap));
+  }
+
+  .messages:empty {
+    display: none;
+  }
+}
