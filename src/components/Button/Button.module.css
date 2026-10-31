@@ -1,0 +1,142 @@
+@layer components {
+  .root {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-block-size: var(--ds-control-h-md);
+    max-inline-size: 100%;
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-4);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+    text-align: center;
+    cursor: pointer;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Sizes: heights are the control tokens; text wraps instead of overflowing. */
+  .root[data-size='sm'] {
+    min-block-size: var(--ds-control-h-sm);
+    padding-inline: var(--ds-space-3);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .root[data-size='md'] {
+    min-block-size: var(--ds-control-h-md);
+  }
+
+  .root[data-size='lg'] {
+    min-block-size: var(--ds-control-h-lg);
+    padding-inline: var(--ds-space-5);
+    font-size: var(--ds-fs-body);
+    line-height: var(--ds-lh-body);
+  }
+
+  .root[data-full-width] {
+    display: flex;
+    inline-size: 100%;
+  }
+
+  /* Variants */
+  .root[data-variant='primary'] {
+    background: var(--ds-primary-bg);
+    color: var(--ds-primary-fg);
+  }
+
+  .root[data-variant='primary'][data-hovered] {
+    filter: brightness(var(--ds-button-hover-brightness));
+  }
+
+  .root[data-variant='secondary'] {
+    border-color: var(--ds-line-strong);
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .root[data-variant='secondary'][data-hovered] {
+    background: var(--ds-surface-hover);
+  }
+
+  .root[data-variant='ghost'] {
+    background: transparent;
+    color: var(--ds-text-2);
+  }
+
+  .root[data-variant='ghost'][data-hovered] {
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .root[data-variant='danger'] {
+    border-color: var(--ds-danger-line);
+    background: var(--ds-danger-soft);
+    color: var(--ds-danger);
+  }
+
+  .root[data-variant='danger'][data-hovered] {
+    background: var(--ds-danger-soft-hover);
+  }
+
+  .root[data-variant='danger-solid'] {
+    background: var(--ds-danger);
+    color: var(--ds-text-inverse);
+  }
+
+  .root[data-variant='danger-solid'][data-hovered] {
+    filter: brightness(var(--ds-button-danger-solid-hover-brightness));
+  }
+
+  /* Focus: accent border plus ring; the transparent outline survives forced colors. */
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  /* Disabled: reduced opacity, no hover (RAC does not set data-hovered when disabled). */
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .root[data-pending] {
+    cursor: progress;
+  }
+
+  /* Content keeps its box while pending, so the button never changes width. */
+  .content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+  }
+
+  .root[data-pending] .content {
+    opacity: 0;
+  }
+
+  .slot {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+  }
+
+  .pending {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

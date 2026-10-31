@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "button": {
+    "hover-brightness": {
+      "$type": "number",
+      "$value": 0.88,
+      "$description": "Brightness filter of the primary Button on hover (0.88): ink on dark gets slightly dimmer instead of changing color. Not for other variants or other components."
+    },
+    "danger-solid-hover-brightness": {
+      "$type": "number",
+      "$value": 0.9,
+      "$description": "Brightness filter of the danger-solid Button on hover (0.9). Use only for the confirm action of a destructive dialog."
+    }
+  }
+}
