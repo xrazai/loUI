@@ -182,6 +182,34 @@ export type {
 export { TopBar } from './components/TopBar';
 export type { TopBarHeadingLevel, TopBarProps } from './components/TopBar';
 
+// Data
+export { ActionList } from './components/ActionList';
+export type { ActionListItem, ActionListProps } from './components/ActionList';
+export { Chart, niceScale } from './components/Chart';
+export type { ChartDatum, ChartProps, ChartTone, ChartType, NiceScale } from './components/Chart';
+export { DataTable } from './components/DataTable';
+export type {
+  DataTableAlign,
+  DataTableColumn,
+  DataTableProps,
+  DataTableSelectionMode,
+  DataTableSort,
+  SortDirection,
+  SortableValue,
+} from './components/DataTable';
+export { ProportionBar } from './components/ProportionBar';
+export type { ProportionBarProps, ProportionSegment } from './components/ProportionBar';
+export { RankList } from './components/RankList';
+export type { RankItem, RankListProps, RankListSort } from './components/RankList';
+export { StatCard } from './components/StatCard';
+export type {
+  StatCardNoteTone,
+  StatCardProps,
+  StatCardSize,
+  StatCardTone,
+  StatCardTrend,
+} from './components/StatCard';
+
 // Status and selection
 export { ChoiceTiles } from './components/ChoiceTiles';
 export type {

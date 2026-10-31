@@ -133,12 +133,21 @@ export type TokenName =
   | 'z.tooltip'
   | 'opacity.disabled'
   | 'accordion.padding-inline'
+  | 'agent-card.min-height'
+  | 'agent-card.padding'
+  | 'agent-card.gap'
+  | 'agent-card.icon-box-size'
   | 'alert.success-bg'
   | 'alert.success-border'
   | 'alert.warning-bg'
   | 'alert.warning-border'
   | 'alert.danger-bg'
   | 'alert.danger-border'
+  | 'approval-card.padding'
+  | 'approval-card.header-min-height'
+  | 'approval-card.header-padding-block'
+  | 'approval-card.body-padding-block'
+  | 'approval-card.gap'
   | 'avatar.size-sm'
   | 'avatar.size-md'
   | 'avatar.size-lg'
@@ -164,12 +173,19 @@ export type TokenName =
   | 'chart.outline-w'
   | 'chart.tooltip-padding-inline'
   | 'chart.tooltip-padding-block'
+  | 'chat-panel.header-height'
+  | 'chat-panel.padding-inline'
+  | 'chat-panel.padding-block'
+  | 'chat-panel.gap'
+  | 'chat-panel.bubble-max-ratio'
+  | 'chat-panel.composer-padding'
   | 'checkbox.box-size'
   | 'checkbox.radius'
   | 'choice-tiles.min-width'
   | 'choice-tiles.gap'
   | 'choice-tiles.height-md'
   | 'choice-tiles.height-lg'
+  | 'choice-tiles.columns'
   | 'combobox.popover-max-height'
   | 'data-table.selection-col-w'
   | 'data-table.cell-padding-inline'
@@ -209,6 +225,8 @@ export type TokenName =
   | 'matrix-grid.count-width'
   | 'matrix-grid.row-min-height'
   | 'matrix-grid.padding-inline'
+  | 'matrix-grid.columns'
+  | 'matrix-grid.color'
   | 'menu.min-width'
   | 'menu.indicator-size'
   | 'nav-item.padding-inline'
@@ -235,6 +253,8 @@ export type TokenName =
   | 'rank-list.swatch-size'
   | 'rank-list.padding-block'
   | 'rank-list.padding-inline'
+  | 'rating.gap'
+  | 'rating.star-gap'
   | 'segmented-control.padding'
   | 'segmented-control.height-sm'
   | 'segmented-control.height-md'
@@ -266,6 +286,7 @@ export type TokenName =
   | 'swatch.size-sm'
   | 'swatch.size-md'
   | 'swatch.size-lg'
+  | 'swatch.color'
   | 'switch.track-width'
   | 'switch.track-height'
   | 'switch.knob-size'
@@ -409,12 +430,21 @@ export type TokenCssVar =
   | '--ds-z-tooltip'
   | '--ds-opacity-disabled'
   | '--ds-accordion-padding-inline'
+  | '--ds-agent-card-min-height'
+  | '--ds-agent-card-padding'
+  | '--ds-agent-card-gap'
+  | '--ds-agent-card-icon-box-size'
   | '--ds-alert-success-bg'
   | '--ds-alert-success-border'
   | '--ds-alert-warning-bg'
   | '--ds-alert-warning-border'
   | '--ds-alert-danger-bg'
   | '--ds-alert-danger-border'
+  | '--ds-approval-card-padding'
+  | '--ds-approval-card-header-min-height'
+  | '--ds-approval-card-header-padding-block'
+  | '--ds-approval-card-body-padding-block'
+  | '--ds-approval-card-gap'
   | '--ds-avatar-size-sm'
   | '--ds-avatar-size-md'
   | '--ds-avatar-size-lg'
@@ -440,12 +470,19 @@ export type TokenCssVar =
   | '--ds-chart-outline-w'
   | '--ds-chart-tooltip-padding-inline'
   | '--ds-chart-tooltip-padding-block'
+  | '--ds-chat-panel-header-height'
+  | '--ds-chat-panel-padding-inline'
+  | '--ds-chat-panel-padding-block'
+  | '--ds-chat-panel-gap'
+  | '--ds-chat-panel-bubble-max-ratio'
+  | '--ds-chat-panel-composer-padding'
   | '--ds-checkbox-box-size'
   | '--ds-checkbox-radius'
   | '--ds-choice-tiles-min-width'
   | '--ds-choice-tiles-gap'
   | '--ds-choice-tiles-height-md'
   | '--ds-choice-tiles-height-lg'
+  | '--ds-choice-tiles-columns'
   | '--ds-combobox-popover-max-height'
   | '--ds-data-table-selection-col-w'
   | '--ds-data-table-cell-padding-inline'
@@ -485,6 +522,8 @@ export type TokenCssVar =
   | '--ds-matrix-grid-count-width'
   | '--ds-matrix-grid-row-min-height'
   | '--ds-matrix-grid-padding-inline'
+  | '--ds-matrix-grid-columns'
+  | '--ds-matrix-grid-color'
   | '--ds-menu-min-width'
   | '--ds-menu-indicator-size'
   | '--ds-nav-item-padding-inline'
@@ -511,6 +550,8 @@ export type TokenCssVar =
   | '--ds-rank-list-swatch-size'
   | '--ds-rank-list-padding-block'
   | '--ds-rank-list-padding-inline'
+  | '--ds-rating-gap'
+  | '--ds-rating-star-gap'
   | '--ds-segmented-control-padding'
   | '--ds-segmented-control-height-sm'
   | '--ds-segmented-control-height-md'
@@ -542,6 +583,7 @@ export type TokenCssVar =
   | '--ds-swatch-size-sm'
   | '--ds-swatch-size-md'
   | '--ds-swatch-size-lg'
+  | '--ds-swatch-color'
   | '--ds-switch-track-width'
   | '--ds-switch-track-height'
   | '--ds-switch-knob-size'
@@ -703,12 +745,21 @@ export const tokenValues = {
   'z.tooltip': { cssVar: '--ds-z-tooltip', type: 'number', value: 60 },
   'opacity.disabled': { cssVar: '--ds-opacity-disabled', type: 'number', value: 0.35 },
   'accordion.padding-inline': { cssVar: '--ds-accordion-padding-inline', type: 'dimension', value: '12px' },
+  'agent-card.min-height': { cssVar: '--ds-agent-card-min-height', type: 'dimension', value: '196px' },
+  'agent-card.padding': { cssVar: '--ds-agent-card-padding', type: 'dimension', value: '20px' },
+  'agent-card.gap': { cssVar: '--ds-agent-card-gap', type: 'dimension', value: '12px' },
+  'agent-card.icon-box-size': { cssVar: '--ds-agent-card-icon-box-size', type: 'dimension', value: '40px' },
   'alert.success-bg': { cssVar: '--ds-alert-success-bg', type: 'color', value: 'rgba(95, 212, 154, 0.06)' },
   'alert.success-border': { cssVar: '--ds-alert-success-border', type: 'color', value: 'rgba(95, 212, 154, 0.3)' },
   'alert.warning-bg': { cssVar: '--ds-alert-warning-bg', type: 'color', value: 'rgba(233, 182, 92, 0.06)' },
   'alert.warning-border': { cssVar: '--ds-alert-warning-border', type: 'color', value: 'rgba(233, 182, 92, 0.3)' },
   'alert.danger-bg': { cssVar: '--ds-alert-danger-bg', type: 'color', value: 'rgba(240, 122, 110, 0.06)' },
   'alert.danger-border': { cssVar: '--ds-alert-danger-border', type: 'color', value: 'rgba(240, 122, 110, 0.3)' },
+  'approval-card.padding': { cssVar: '--ds-approval-card-padding', type: 'dimension', value: '20px' },
+  'approval-card.header-min-height': { cssVar: '--ds-approval-card-header-min-height', type: 'dimension', value: '48px' },
+  'approval-card.header-padding-block': { cssVar: '--ds-approval-card-header-padding-block', type: 'dimension', value: '12px' },
+  'approval-card.body-padding-block': { cssVar: '--ds-approval-card-body-padding-block', type: 'dimension', value: '16px' },
+  'approval-card.gap': { cssVar: '--ds-approval-card-gap', type: 'dimension', value: '16px' },
   'avatar.size-sm': { cssVar: '--ds-avatar-size-sm', type: 'dimension', value: '24px' },
   'avatar.size-md': { cssVar: '--ds-avatar-size-md', type: 'dimension', value: '28px' },
   'avatar.size-lg': { cssVar: '--ds-avatar-size-lg', type: 'dimension', value: '40px' },
@@ -734,12 +785,19 @@ export const tokenValues = {
   'chart.outline-w': { cssVar: '--ds-chart-outline-w', type: 'dimension', value: '2px' },
   'chart.tooltip-padding-inline': { cssVar: '--ds-chart-tooltip-padding-inline', type: 'dimension', value: '8px' },
   'chart.tooltip-padding-block': { cssVar: '--ds-chart-tooltip-padding-block', type: 'dimension', value: '4px' },
+  'chat-panel.header-height': { cssVar: '--ds-chat-panel-header-height', type: 'dimension', value: '56px' },
+  'chat-panel.padding-inline': { cssVar: '--ds-chat-panel-padding-inline', type: 'dimension', value: '20px' },
+  'chat-panel.padding-block': { cssVar: '--ds-chat-panel-padding-block', type: 'dimension', value: '16px' },
+  'chat-panel.gap': { cssVar: '--ds-chat-panel-gap', type: 'dimension', value: '12px' },
+  'chat-panel.bubble-max-ratio': { cssVar: '--ds-chat-panel-bubble-max-ratio', type: 'number', value: 0.88 },
+  'chat-panel.composer-padding': { cssVar: '--ds-chat-panel-composer-padding', type: 'dimension', value: '16px' },
   'checkbox.box-size': { cssVar: '--ds-checkbox-box-size', type: 'dimension', value: '18px' },
   'checkbox.radius': { cssVar: '--ds-checkbox-radius', type: 'dimension', value: '5px' },
   'choice-tiles.min-width': { cssVar: '--ds-choice-tiles-min-width', type: 'dimension', value: '120px' },
   'choice-tiles.gap': { cssVar: '--ds-choice-tiles-gap', type: 'dimension', value: '8px' },
   'choice-tiles.height-md': { cssVar: '--ds-choice-tiles-height-md', type: 'dimension', value: '40px' },
   'choice-tiles.height-lg': { cssVar: '--ds-choice-tiles-height-lg', type: 'dimension', value: '48px' },
+  'choice-tiles.columns': { cssVar: '--ds-choice-tiles-columns', type: 'number', value: 2 },
   'combobox.popover-max-height': { cssVar: '--ds-combobox-popover-max-height', type: 'dimension', value: '320px' },
   'data-table.selection-col-w': { cssVar: '--ds-data-table-selection-col-w', type: 'dimension', value: '40px' },
   'data-table.cell-padding-inline': { cssVar: '--ds-data-table-cell-padding-inline', type: 'dimension', value: '12px' },
@@ -779,6 +837,8 @@ export const tokenValues = {
   'matrix-grid.count-width': { cssVar: '--ds-matrix-grid-count-width', type: 'dimension', value: '64px' },
   'matrix-grid.row-min-height': { cssVar: '--ds-matrix-grid-row-min-height', type: 'dimension', value: '60px' },
   'matrix-grid.padding-inline': { cssVar: '--ds-matrix-grid-padding-inline', type: 'dimension', value: '20px' },
+  'matrix-grid.columns': { cssVar: '--ds-matrix-grid-columns', type: 'number', value: 0 },
+  'matrix-grid.color': { cssVar: '--ds-matrix-grid-color', type: 'color', value: '#A3A3A9' },
   'menu.min-width': { cssVar: '--ds-menu-min-width', type: 'dimension', value: '200px' },
   'menu.indicator-size': { cssVar: '--ds-menu-indicator-size', type: 'dimension', value: '18px' },
   'nav-item.padding-inline': { cssVar: '--ds-nav-item-padding-inline', type: 'dimension', value: '10px' },
@@ -805,6 +865,8 @@ export const tokenValues = {
   'rank-list.swatch-size': { cssVar: '--ds-rank-list-swatch-size', type: 'dimension', value: '14px' },
   'rank-list.padding-block': { cssVar: '--ds-rank-list-padding-block', type: 'dimension', value: '8px' },
   'rank-list.padding-inline': { cssVar: '--ds-rank-list-padding-inline', type: 'dimension', value: '20px' },
+  'rating.gap': { cssVar: '--ds-rating-gap', type: 'dimension', value: '8px' },
+  'rating.star-gap': { cssVar: '--ds-rating-star-gap', type: 'dimension', value: '2px' },
   'segmented-control.padding': { cssVar: '--ds-segmented-control-padding', type: 'dimension', value: '2px' },
   'segmented-control.height-sm': { cssVar: '--ds-segmented-control-height-sm', type: 'dimension', value: '24px' },
   'segmented-control.height-md': { cssVar: '--ds-segmented-control-height-md', type: 'dimension', value: '32px' },
@@ -836,6 +898,7 @@ export const tokenValues = {
   'swatch.size-sm': { cssVar: '--ds-swatch-size-sm', type: 'dimension', value: '16px' },
   'swatch.size-md': { cssVar: '--ds-swatch-size-md', type: 'dimension', value: '20px' },
   'swatch.size-lg': { cssVar: '--ds-swatch-size-lg', type: 'dimension', value: '32px' },
+  'swatch.color': { cssVar: '--ds-swatch-color', type: 'color', value: 'rgba(0, 0, 0, 0)' },
   'switch.track-width': { cssVar: '--ds-switch-track-width', type: 'dimension', value: '36px' },
   'switch.track-height': { cssVar: '--ds-switch-track-height', type: 'dimension', value: '20px' },
   'switch.knob-size': { cssVar: '--ds-switch-knob-size', type: 'dimension', value: '16px' },
