@@ -26,7 +26,6 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 ### Setup
 
 - [ ] **SETUP-005** (P2 · S) Branch protection on `main` with required checks (`check`, `visual`, `examples`) — owner decision (it changes how direct pushes work). CI itself is complete and green. Visual changes require regenerating baselines: `gh workflow run visual-baselines.yml` → `pnpm visual:pull-linux` → commit (see `tests/visual/README.md`).
-- [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, issue templates (bug, component request, token change), `CODEOWNERS`. (PR template with the Definition of Done already exists.)
 
 All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
 
@@ -126,7 +125,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 ## Phase 6 — Documentation site (Storybook)
 
-- [ ] **DOCS-007** (P2 · S) Publish docs (static hosting) with search; link from README.
 
 ---
 
@@ -134,7 +132,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 - [ ] **REL-005** (P2 · S) Figma workflow: Tokens Studio sync, component naming parity, Code Connect mapping (optional).
 - [ ] **REL-007** (P2 · S) Investigate the 531 kB JS bundle of `examples/vite-app` (which dependencies dominate; code-splitting guidance for consumers; check lucide and React Aria tree-shaking in a real app).
-- [ ] **REL-006** (P3 · S) Telemetry-free usage guidance: how consumers report issues; security policy (`SECURITY.md`).
 
 ---
 
