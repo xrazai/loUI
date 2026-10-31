@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "combobox": {
+    "popover-max-height": {
+      "$type": "dimension",
+      "$value": "{select.popover-max-height}",
+      "$description": "Maximum height of the Combobox list before it scrolls (same as the Select list)."
+    }
+  }
+}

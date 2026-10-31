@@ -1,0 +1,191 @@
+@layer components {
+  /* The group is the visible box (Field.module.css draws border, focus ring and states). */
+  .group {
+    gap: var(--ds-space-1);
+    padding-inline: var(--ds-field-control-padding-inline) var(--ds-space-1);
+  }
+
+  .input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-overflow: ellipsis;
+  }
+
+  .input:focus-visible {
+    box-shadow: none;
+  }
+
+  .input::placeholder {
+    color: var(--ds-text-3);
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+
+  .spinner {
+    flex: none;
+    color: var(--ds-text-3);
+  }
+
+  .trigger {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-target-min);
+    block-size: var(--ds-target-min);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-3);
+    cursor: pointer;
+  }
+
+  .trigger[data-hovered] {
+    background: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  .trigger[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .trigger[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  /* Overlay: raised surface, overlay shadow, large radius (AGENTS.md section 5). */
+  .popover {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    /* As wide as the box, but never wider than the viewport minus the overlay margin that React Aria keeps (12px per side), or the page scrolls and the list closes. */
+    min-inline-size: min(var(--trigger-width), calc(100vw - var(--ds-space-6)));
+    padding: var(--ds-space-1);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    z-index: var(--ds-z-dropdown);
+  }
+
+  .listbox {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    max-block-size: var(--ds-combobox-popover-max-height);
+    overflow: auto;
+    outline: none;
+  }
+
+  /* Label row (label, meta, check) and an optional description row. */
+  .option {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    column-gap: var(--ds-space-2);
+    box-sizing: border-box;
+    min-block-size: var(--ds-item-h);
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-field-control-padding-inline);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .optionLabel {
+    grid-column: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* The label element only groups its spans; they sit directly in the option grid. */
+  .content {
+    display: contents;
+  }
+
+  .meta {
+    grid-column: 2;
+    grid-row: 1;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    color: var(--ds-text-2);
+  }
+
+  .optionDescription {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    color: var(--ds-text-2);
+  }
+
+  .check {
+    grid-column: 3;
+    grid-row: 1;
+    color: var(--ds-accent);
+  }
+
+  .option[data-focused],
+  .option[data-hovered] {
+    background: var(--ds-surface-hover);
+  }
+
+  .option[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .option[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .empty {
+    padding-block: var(--ds-space-3);
+    padding-inline: var(--ds-field-control-padding-inline);
+    color: var(--ds-text-2);
+  }
+
+  .section + .section {
+    margin-block-start: var(--ds-space-1);
+    padding-block-start: var(--ds-space-1);
+    border-block-start: 1px solid var(--ds-line);
+  }
+
+  /* Group caption: mono, uppercase by CSS, text-2 (text-3 fails contrast on the raised surface). */
+  .sectionHeader {
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-field-control-padding-inline);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    text-transform: uppercase;
+    color: var(--ds-text-2);
+  }
+
+  @media (forced-colors: active) {
+    .option[data-focused] {
+      outline: 2px solid Highlight;
+    }
+  }
+}
