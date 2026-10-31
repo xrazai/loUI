@@ -1,0 +1,187 @@
+@layer components {
+  .root {
+    inline-size: 100%;
+  }
+
+  .label {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    font-weight: var(--ds-weight-medium);
+    color: var(--ds-text);
+  }
+
+  .group {
+    gap: var(--ds-space-2);
+    padding-inline: var(--ds-field-control-padding-inline) var(--ds-space-1);
+  }
+
+  .icon {
+    flex: none;
+    color: var(--ds-text-3);
+  }
+
+  .input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    appearance: none;
+  }
+
+  /* The native clear control of type=search would double ours. */
+  .input::-webkit-search-cancel-button,
+  .input::-webkit-search-decoration {
+    appearance: none;
+    display: none;
+  }
+
+  .input::placeholder {
+    color: var(--ds-text-3);
+  }
+
+  .input:focus-visible {
+    box-shadow: none;
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+
+  .hint {
+    display: inline-flex;
+    flex: none;
+    padding-inline-end: var(--ds-space-1);
+  }
+
+  .clear {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-target-min);
+    block-size: var(--ds-target-min);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-3);
+    cursor: pointer;
+  }
+
+  .clear[data-hovered] {
+    background: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  .clear[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  /* The hint and the clear button take turns: hint while empty, clear once there is text. */
+  .root[data-empty] .clear {
+    display: none;
+  }
+
+  .root:not([data-empty]) .hint {
+    display: none;
+  }
+
+  /* Overlay: raised surface, overlay shadow, large radius (AGENTS.md section 5). */
+  .popover {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    /* As wide as the box, never wider than the viewport minus React Aria's overlay margin. */
+    min-inline-size: min(var(--trigger-width), calc(100vw - var(--ds-space-6)));
+    padding: var(--ds-space-1);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    z-index: var(--ds-z-dropdown);
+  }
+
+  /* An empty box has nothing to suggest: no empty chrome. */
+  .popover:not(:has([role='option'])) {
+    display: none;
+  }
+
+  .listbox {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    max-block-size: var(--ds-combobox-popover-max-height);
+    overflow: auto;
+    outline: none;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+    box-sizing: border-box;
+    min-block-size: var(--ds-item-h);
+    padding-inline: var(--ds-field-control-padding-inline);
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-2);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .optionLabel {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* The typed part is brighter and heavier; no background, so contrast stays high. */
+  .mark {
+    background: transparent;
+    color: var(--ds-text);
+    font-weight: var(--ds-weight-medium);
+  }
+
+  .meta {
+    flex: none;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    color: var(--ds-text-2);
+  }
+
+  .option[data-focused],
+  .option[data-hovered] {
+    background: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  .option[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .empty {
+    padding-block: var(--ds-space-3);
+    padding-inline: var(--ds-field-control-padding-inline);
+    color: var(--ds-text-2);
+  }
+
+  @media (forced-colors: active) {
+    .option[data-focused] {
+      outline: 2px solid Highlight;
+    }
+  }
+}
