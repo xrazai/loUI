@@ -8,6 +8,13 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-PAT-03** (2026-10-31) `Swatch`: `label` or `decorative` required by the types, inset ring token, dev-time hex validation; color passed as a custom property (ADR-0002).
+- **CMP-PAT-08** (2026-10-31) `ChoiceTiles` on React Aria `RadioGroup`: one tab stop with arrow-key roving, responsive columns, 3:1 boundaries in every state (tested).
+- **CMP-PAT-05** (2026-10-31) `StatusSteps`: ordered list, step state as visually hidden text (not color or ✓ only), `aria-current="step"`, real buttons when interactive.
+- **CMP-PAT-07** (2026-10-31) `DueIndicator` built on `dueStatus` / `formatRelativeDays` / `formatDate` (no month tables), injectable `today`; tests cover DST changes and leap days.
+- **CMP-PAT-04** (2026-10-31) `ColorOption` (pattern): `aria-pressed` toggle for multi-select color choices (single choice → `ChoiceTiles`).
+- **CMP-PAT-11** (2026-10-31) `MatrixGrid` (pattern): ARIA grid with roving focus (arrows RTL-aware, Home/End, Ctrl+Home/End), cell names from messages, check-mark contrast via WCAG `readableTextOn`.
+- **CMP-PAT-12** (2026-10-31) `LedgerList` (pattern): list semantics, text sign plus color, currency in minor units or custom format, running balance and optional delete from messages.
 - **CMP-FBK-03 / ARCH-005** (2026-10-31) `Dialog` (sizes sm/md/lg, title + linked description) and `ConfirmDialog` (`alertdialog`, initial focus on Cancel, Enter never confirms, `danger-solid` action naming the object) on React Aria; stack-aware Escape — nested overlays tested (Esc closes the Dialog, then the Sheet).
 - **CMP-PAT-01** (2026-10-31) `Sheet` (generic, core): inline-end side panel on React Aria Modal, sizes 440/460/480, mono `meta`, `headerExtra`, sticky footer (`footerStart` + `footer`), reduced-motion slide.
 - **CMP-NAV-04** (2026-10-31) `Popover` (non-modal dialog, required `label`, `aria-haspopup="dialog"`, optional arrow).

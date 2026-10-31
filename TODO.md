@@ -112,16 +112,9 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 ### Patterns — `erp/` group (see ADR-008 for placement and renaming)
 
 - [ ] **CMP-PAT-02** (P1 · S) `StatCard` — Fix: label/value association (`dl` or `aria-labelledby`); tone is color-only → require text note or icon for negative/positive; `size` tokens for `num` / `num-lg`.
-- [ ] **CMP-PAT-03** (P1 · S) `Swatch` — Fix: color-only meaning — require `label` when it is the only identifier; token for inset ring; hex validation.
-- [ ] **CMP-PAT-04** (P2 · S) `ColorOption` — Fix: `aria-pressed` + visible mark ✓ (keep); disabled opacity token; swatch decorative when label present.
-- [ ] **CMP-PAT-05** (P1 · M) `StatusSteps` — Fix: ordered list semantics, steps as buttons when interactive (currently `div role="button"`), `aria-current="step"` (keep), completed/pending state announced as text (not only color/✓), hard-coded pt-BR tooltip.
 - [ ] **CMP-PAT-06** (P1 · M) `Stepper` — Fix: this is a spinbutton — use an input with `role="spinbutton"` semantics (value, min, max, `aria-valuetext`), press-and-hold repeat, direct typing, labels from messages; `aria-live` on the value is noisy.
-- [ ] **CMP-PAT-07** (P1 · M) `DueIndicator` — Fix: move `dueInfo` out of the component into a tested utility; `T12:00:00` day-diff trick → DST-safe date math with fake-timer tests; pluralization/month names via `Intl`; status is text + color (keep); `today` injectable for tests.
-- [ ] **CMP-PAT-08** (P1 · M) `ChoiceTiles` — Fix: radiogroup of buttons has no roving tabindex or arrow keys; `aria-labelledby` for group; columns responsive.
 - [ ] **CMP-PAT-09** (P2 · M) `ProportionBar` — Fix: provide a text alternative (`role="img"` + summary, or hidden table); the 4-color ramp repeats beyond 4 segments (indistinguishable) and uses `--line-strong` (low contrast); legend is the real accessible content — keep it available.
 - [ ] **CMP-PAT-10** (P2 · S) `RankList` — Fix: render an ordered list; the component silently re-sorts and truncates input (`limit`) — document or make it opt-in; clickable rows → buttons; empty text from messages.
-- [ ] **CMP-PAT-11** (P2 · L) `MatrixGrid` — Fix: ARIA grid (or table of toggle buttons) with arrow-key navigation; cell tooltip text is pt-BR and mouse-only; luminance helper for ✓ contrast on arbitrary hex → tested utility (WCAG relative luminance, not the 0.299/0.587/0.114 shortcut); horizontal scroll region labelled and focusable.
-- [ ] **CMP-PAT-12** (P2 · M) `LedgerList` — Fix: list semantics; delete button label from messages; `+`/`−` sign plus color (already text) — keep; signed-amount formatting through `Intl`; running balance label from messages.
 
 ### Patterns — `agents/` group
 
