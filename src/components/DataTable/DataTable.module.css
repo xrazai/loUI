@@ -14,6 +14,15 @@
   .scroll[data-scrollable] {
     overflow: auto;
     max-block-size: var(--ds-data-table-max-h);
+
+    /*
+     * WCAG 2.4.11: the sticky header covers the top of the scrollport. Scrolling a focused row into
+     * view (native, or React Aria's own which reads scroll-padding) must stop below it: header
+     * height = two paddings, one caption line and the 1px bottom border.
+     */
+    scroll-padding-block-start: calc(
+      2 * var(--ds-data-table-header-padding-block) + var(--ds-lh-caption) + 1px
+    );
   }
 
   .table {

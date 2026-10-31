@@ -369,6 +369,7 @@ export type TokenName =
   | 'toast.min-height'
   | 'toast.dot-size'
   | 'toast.offset'
+  | 'toast.clearance'
   | 'tooltip.max-width'
   | 'top-bar.padding-inline';
 
@@ -731,6 +732,7 @@ export type TokenCssVar =
   | '--ds-toast-min-height'
   | '--ds-toast-dot-size'
   | '--ds-toast-offset'
+  | '--ds-toast-clearance'
   | '--ds-tooltip-max-width'
   | '--ds-top-bar-padding-inline';
 
@@ -1111,6 +1113,7 @@ export const tokenValues = {
   'toast.min-height': { cssVar: '--ds-toast-min-height', type: 'dimension', value: '40px' },
   'toast.dot-size': { cssVar: '--ds-toast-dot-size', type: 'dimension', value: '6px' },
   'toast.offset': { cssVar: '--ds-toast-offset', type: 'dimension', value: '24px' },
+  'toast.clearance': { cssVar: '--ds-toast-clearance', type: 'dimension', value: '0px' },
   'tooltip.max-width': { cssVar: '--ds-tooltip-max-width', type: 'dimension', value: '240px' },
   'top-bar.padding-inline': { cssVar: '--ds-top-bar-padding-inline', type: 'dimension', value: '24px' },
 } as const satisfies Record<TokenName, TokenEntry>;

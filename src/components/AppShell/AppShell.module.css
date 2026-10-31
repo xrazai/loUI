@@ -60,6 +60,9 @@
     background-color: var(--ds-bg);
     scrollbar-width: thin;
     scrollbar-color: var(--ds-line-control) transparent;
+
+    /* The toast region overlays the bottom of the viewport; keep focused controls above it (WCAG 2.4.11). */
+    scroll-padding-block-end: var(--ds-toast-clearance);
   }
 
   .main[data-padded='true'] {
@@ -77,6 +80,7 @@
     background-color: var(--ds-bg);
     scrollbar-width: thin;
     scrollbar-color: var(--ds-line-control) transparent;
+    scroll-padding-block-end: var(--ds-toast-clearance);
   }
 
   /* Keyboard scrolling ring, drawn inside so the clipping shell cannot hide it. */

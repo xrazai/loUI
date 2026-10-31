@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 import type { Ref } from 'react';
 import { Text } from 'react-aria-components';
 import { useMessages } from '../../i18n';
@@ -31,6 +31,32 @@ function useHasToasts(queue: ToastQueue): boolean {
     () => queue.visibleToasts.length > 0,
     () => false,
   );
+}
+
+/** Page property the toast region keeps up to date so focused elements scroll clear of it. */
+const CLEARANCE_PROPERTY = '--ds-toast-clearance';
+
+/**
+ * WCAG 2.4.11 (focus not obscured): the region is fixed to the bottom of the viewport, so
+ * the browser would scroll a focused control right under it. While the region is mounted it
+ * publishes its height (plus the offset from the viewport edge) as `--ds-toast-clearance`;
+ * `base.css` and the AppShell turn that into `scroll-padding-block-end`.
+ */
+function trackClearance(node: HTMLElement): () => void {
+  const root = document.documentElement;
+  const update = () => {
+    const distance = Math.max(0, window.innerHeight - node.getBoundingClientRect().top);
+    root.style.setProperty(CLEARANCE_PROPERTY, `${String(Math.ceil(distance))}px`);
+  };
+  update();
+  const observer = new ResizeObserver(update);
+  observer.observe(node);
+  window.addEventListener('resize', update);
+  return () => {
+    observer.disconnect();
+    window.removeEventListener('resize', update);
+    root.style.removeProperty(CLEARANCE_PROPERTY);
+  };
 }
 
 function ToastItem({
@@ -90,10 +116,18 @@ export function ToastRegion({
   // React Aria registers the region as a landmark (F6) only when it is mounted with its first
   // toast, so the region is mounted here, on demand, instead of being rendered empty.
   const hasToasts = useHasToasts(queue);
+  const regionRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+      return node ? trackClearance(node) : undefined;
+    },
+    [ref],
+  );
   if (!hasToasts) return null;
   return (
     <RacToastRegion
-      {...(ref ? { ref } : {})}
+      ref={regionRef}
       queue={queue}
       aria-label={t.region}
       className={classNames(styles.region, className)}

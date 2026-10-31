@@ -516,6 +516,7 @@
     --ds-toast-min-height: var(--ds-control-h-md);
     --ds-toast-dot-size: 6px;
     --ds-toast-offset: var(--ds-space-6);
+    --ds-toast-clearance: 0px;
 
     /* tooltip */
     --ds-tooltip-max-width: 240px;

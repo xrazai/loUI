@@ -3734,6 +3734,16 @@ exports[`generated token list (TEST-006) > matches the snapshot 1`] = `
   },
   {
     "aliasOf": null,
+    "cssValue": "0px",
+    "cssVar": "--ds-toast-clearance",
+    "description": "Height of viewport the Toast region covers at the bottom (0 when no toast is shown). ToastRegion sets it on the root element while mounted; scroll containers use it as scroll-padding-block-end so focus never scrolls under a toast (WCAG 2.4.11). Do not set it by hand.",
+    "name": "toast.clearance",
+    "tier": "core",
+    "type": "dimension",
+    "value": "0px",
+  },
+  {
+    "aliasOf": null,
     "cssValue": "240px",
     "cssVar": "--ds-tooltip-max-width",
     "description": "Maximum width of a Tooltip (240px) before the text wraps. Tooltips stay short.",
