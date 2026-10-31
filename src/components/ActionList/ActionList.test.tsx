@@ -230,6 +230,8 @@ describe('ActionList', () => {
         screen.getByRole('button', { name: 'More actions for Price list 2026' }),
       );
       await expect.element(screen.getByRole('menu')).toBeVisible();
+      // Axe computes contrast from the rendered colors; wait for the open animation to end.
+      await expect.poll(() => document.getAnimations().length).toBe(0);
       await expectNoA11yViolations(document.body);
     });
   });

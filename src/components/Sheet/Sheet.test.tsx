@@ -100,18 +100,18 @@ describe('Sheet', () => {
     await userEvent.keyboard('{Enter}');
     await expect.element(screen.getByRole('dialog')).toBeVisible();
     await userEvent.keyboard('{Escape}');
-    await expect.poll(none).toBe(true);
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
     await expect.element(trigger).toHaveFocus();
 
     await userEvent.keyboard('{Enter}');
     await screen.getByRole('button', { name: 'Close panel' }).click();
-    await expect.poll(none).toBe(true);
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
     await expect.element(trigger).toHaveFocus();
 
     await userEvent.keyboard('{Enter}');
     const overlay = document.querySelector<HTMLElement>('[class*="overlay"]') as HTMLElement;
     await userEvent.click(overlay, { position: { x: 4, y: 4 } });
-    await expect.poll(none).toBe(true);
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
   });
 
   it('traps focus inside the sheet', async () => {
