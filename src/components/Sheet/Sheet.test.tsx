@@ -93,6 +93,8 @@ describe('Sheet', () => {
   });
 
   it('closes with the close button, Escape, and a press on the scrim; focus returns to the trigger', async () => {
+    // On a narrow viewport the sheet is full width and there is no scrim left to press.
+    await page.viewport(1280, 900);
     const screen = await renderWithProvider(<OrderSheet />);
     const trigger = screen.getByRole('button', { name: 'View order' });
 
