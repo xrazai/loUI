@@ -13,6 +13,11 @@
         "unit": "px"
       },
       "$description": "Gap between two stars (2px)."
+    },
+    "fill": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Width of the filled part of a partially filled Rating star. Set at runtime via style as a percentage of the star (0 by default: an empty star)."
     }
   }
 }

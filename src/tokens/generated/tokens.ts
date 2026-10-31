@@ -173,6 +173,9 @@ export type TokenName =
   | 'chart.outline-w'
   | 'chart.tooltip-padding-inline'
   | 'chart.tooltip-padding-block'
+  | 'chart.color'
+  | 'chart.tooltip-x'
+  | 'chart.tooltip-y'
   | 'chat-panel.header-height'
   | 'chat-panel.padding-inline'
   | 'chat-panel.padding-block'
@@ -194,6 +197,8 @@ export type TokenName =
   | 'data-table.bulk-bar-h'
   | 'data-table.gap'
   | 'data-table.sticky-z-index'
+  | 'data-table.col-w'
+  | 'data-table.max-h'
   | 'dialog.width-sm'
   | 'dialog.width-md'
   | 'dialog.width-lg'
@@ -246,15 +251,18 @@ export type TokenName =
   | 'proportion-bar.swatch-size'
   | 'proportion-bar.percent-col-w'
   | 'proportion-bar.hatch-size'
+  | 'proportion-bar.color'
+  | 'proportion-bar.share'
   | 'radio.size'
   | 'radio.dot-size'
   | 'rank-list.bar-h'
   | 'rank-list.position-w'
-  | 'rank-list.swatch-size'
   | 'rank-list.padding-block'
   | 'rank-list.padding-inline'
+  | 'rank-list.share'
   | 'rating.gap'
   | 'rating.star-gap'
+  | 'rating.fill'
   | 'segmented-control.padding'
   | 'segmented-control.height-sm'
   | 'segmented-control.height-md'
@@ -263,6 +271,8 @@ export type TokenName =
   | 'sheet.width-md'
   | 'sheet.width-lg'
   | 'sheet.padding'
+  | 'sheet.from'
+  | 'sheet.width'
   | 'sidebar.padding-block'
   | 'sidebar.padding-inline'
   | 'sidebar.gap'
@@ -470,6 +480,9 @@ export type TokenCssVar =
   | '--ds-chart-outline-w'
   | '--ds-chart-tooltip-padding-inline'
   | '--ds-chart-tooltip-padding-block'
+  | '--ds-chart-color'
+  | '--ds-chart-tooltip-x'
+  | '--ds-chart-tooltip-y'
   | '--ds-chat-panel-header-height'
   | '--ds-chat-panel-padding-inline'
   | '--ds-chat-panel-padding-block'
@@ -491,6 +504,8 @@ export type TokenCssVar =
   | '--ds-data-table-bulk-bar-h'
   | '--ds-data-table-gap'
   | '--ds-data-table-sticky-z-index'
+  | '--ds-data-table-col-w'
+  | '--ds-data-table-max-h'
   | '--ds-dialog-width-sm'
   | '--ds-dialog-width-md'
   | '--ds-dialog-width-lg'
@@ -543,15 +558,18 @@ export type TokenCssVar =
   | '--ds-proportion-bar-swatch-size'
   | '--ds-proportion-bar-percent-col-w'
   | '--ds-proportion-bar-hatch-size'
+  | '--ds-proportion-bar-color'
+  | '--ds-proportion-bar-share'
   | '--ds-radio-size'
   | '--ds-radio-dot-size'
   | '--ds-rank-list-bar-h'
   | '--ds-rank-list-position-w'
-  | '--ds-rank-list-swatch-size'
   | '--ds-rank-list-padding-block'
   | '--ds-rank-list-padding-inline'
+  | '--ds-rank-list-share'
   | '--ds-rating-gap'
   | '--ds-rating-star-gap'
+  | '--ds-rating-fill'
   | '--ds-segmented-control-padding'
   | '--ds-segmented-control-height-sm'
   | '--ds-segmented-control-height-md'
@@ -560,6 +578,8 @@ export type TokenCssVar =
   | '--ds-sheet-width-md'
   | '--ds-sheet-width-lg'
   | '--ds-sheet-padding'
+  | '--ds-sheet-from'
+  | '--ds-sheet-width'
   | '--ds-sidebar-padding-block'
   | '--ds-sidebar-padding-inline'
   | '--ds-sidebar-gap'
@@ -785,6 +805,9 @@ export const tokenValues = {
   'chart.outline-w': { cssVar: '--ds-chart-outline-w', type: 'dimension', value: '2px' },
   'chart.tooltip-padding-inline': { cssVar: '--ds-chart-tooltip-padding-inline', type: 'dimension', value: '8px' },
   'chart.tooltip-padding-block': { cssVar: '--ds-chart-tooltip-padding-block', type: 'dimension', value: '4px' },
+  'chart.color': { cssVar: '--ds-chart-color', type: 'color', value: '#8AB4FF' },
+  'chart.tooltip-x': { cssVar: '--ds-chart-tooltip-x', type: 'dimension', value: '0px' },
+  'chart.tooltip-y': { cssVar: '--ds-chart-tooltip-y', type: 'dimension', value: '0px' },
   'chat-panel.header-height': { cssVar: '--ds-chat-panel-header-height', type: 'dimension', value: '56px' },
   'chat-panel.padding-inline': { cssVar: '--ds-chat-panel-padding-inline', type: 'dimension', value: '20px' },
   'chat-panel.padding-block': { cssVar: '--ds-chat-panel-padding-block', type: 'dimension', value: '16px' },
@@ -806,6 +829,8 @@ export const tokenValues = {
   'data-table.bulk-bar-h': { cssVar: '--ds-data-table-bulk-bar-h', type: 'dimension', value: '36px' },
   'data-table.gap': { cssVar: '--ds-data-table-gap', type: 'dimension', value: '12px' },
   'data-table.sticky-z-index': { cssVar: '--ds-data-table-sticky-z-index', type: 'number', value: 1 },
+  'data-table.col-w': { cssVar: '--ds-data-table-col-w', type: 'dimension', value: '160px' },
+  'data-table.max-h': { cssVar: '--ds-data-table-max-h', type: 'dimension', value: '480px' },
   'dialog.width-sm': { cssVar: '--ds-dialog-width-sm', type: 'dimension', value: '420px' },
   'dialog.width-md': { cssVar: '--ds-dialog-width-md', type: 'dimension', value: '540px' },
   'dialog.width-lg': { cssVar: '--ds-dialog-width-lg', type: 'dimension', value: '680px' },
@@ -858,15 +883,18 @@ export const tokenValues = {
   'proportion-bar.swatch-size': { cssVar: '--ds-proportion-bar-swatch-size', type: 'dimension', value: '10px' },
   'proportion-bar.percent-col-w': { cssVar: '--ds-proportion-bar-percent-col-w', type: 'dimension', value: '48px' },
   'proportion-bar.hatch-size': { cssVar: '--ds-proportion-bar-hatch-size', type: 'dimension', value: '3px' },
+  'proportion-bar.color': { cssVar: '--ds-proportion-bar-color', type: 'color', value: '#EDEDEA' },
+  'proportion-bar.share': { cssVar: '--ds-proportion-bar-share', type: 'number', value: 1 },
   'radio.size': { cssVar: '--ds-radio-size', type: 'dimension', value: '18px' },
   'radio.dot-size': { cssVar: '--ds-radio-dot-size', type: 'dimension', value: '9px' },
   'rank-list.bar-h': { cssVar: '--ds-rank-list-bar-h', type: 'dimension', value: '4px' },
   'rank-list.position-w': { cssVar: '--ds-rank-list-position-w', type: 'dimension', value: '24px' },
-  'rank-list.swatch-size': { cssVar: '--ds-rank-list-swatch-size', type: 'dimension', value: '14px' },
   'rank-list.padding-block': { cssVar: '--ds-rank-list-padding-block', type: 'dimension', value: '8px' },
   'rank-list.padding-inline': { cssVar: '--ds-rank-list-padding-inline', type: 'dimension', value: '20px' },
+  'rank-list.share': { cssVar: '--ds-rank-list-share', type: 'dimension', value: '0px' },
   'rating.gap': { cssVar: '--ds-rating-gap', type: 'dimension', value: '8px' },
   'rating.star-gap': { cssVar: '--ds-rating-star-gap', type: 'dimension', value: '2px' },
+  'rating.fill': { cssVar: '--ds-rating-fill', type: 'dimension', value: '0px' },
   'segmented-control.padding': { cssVar: '--ds-segmented-control-padding', type: 'dimension', value: '2px' },
   'segmented-control.height-sm': { cssVar: '--ds-segmented-control-height-sm', type: 'dimension', value: '24px' },
   'segmented-control.height-md': { cssVar: '--ds-segmented-control-height-md', type: 'dimension', value: '32px' },
@@ -875,6 +903,8 @@ export const tokenValues = {
   'sheet.width-md': { cssVar: '--ds-sheet-width-md', type: 'dimension', value: '460px' },
   'sheet.width-lg': { cssVar: '--ds-sheet-width-lg', type: 'dimension', value: '480px' },
   'sheet.padding': { cssVar: '--ds-sheet-padding', type: 'dimension', value: '24px' },
+  'sheet.from': { cssVar: '--ds-sheet-from', type: 'dimension', value: '0px' },
+  'sheet.width': { cssVar: '--ds-sheet-width', type: 'dimension', value: '440px' },
   'sidebar.padding-block': { cssVar: '--ds-sidebar-padding-block', type: 'dimension', value: '16px' },
   'sidebar.padding-inline': { cssVar: '--ds-sidebar-padding-inline', type: 'dimension', value: '12px' },
   'sidebar.gap': { cssVar: '--ds-sidebar-gap', type: 'dimension', value: '20px' },

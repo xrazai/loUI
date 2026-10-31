@@ -50,6 +50,21 @@
       "$type": "dimension",
       "$value": "{space.1}",
       "$description": "Vertical padding of the value label of the active Chart point (4px)."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.accent}",
+      "$description": "Series color of a Chart. Each tone class sets it; it can be overridden at runtime via style (ADR-0002 amendment)."
+    },
+    "tooltip-x": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Horizontal position of the active-point label, in px from the chart's left edge. Set at runtime via style."
+    },
+    "tooltip-y": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Vertical position of the active-point label, in px from the chart's top edge. Set at runtime via style."
     }
   }
 }

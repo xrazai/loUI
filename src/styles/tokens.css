@@ -216,6 +216,9 @@
     --ds-chart-outline-w: 2px;
     --ds-chart-tooltip-padding-inline: var(--ds-space-2);
     --ds-chart-tooltip-padding-block: var(--ds-space-1);
+    --ds-chart-color: var(--ds-accent);
+    --ds-chart-tooltip-x: 0px;
+    --ds-chart-tooltip-y: 0px;
 
     /* chat-panel */
     --ds-chat-panel-header-height: 56px;
@@ -247,6 +250,8 @@
     --ds-data-table-bulk-bar-h: var(--ds-item-h);
     --ds-data-table-gap: var(--ds-space-3);
     --ds-data-table-sticky-z-index: 1;
+    --ds-data-table-col-w: 160px;
+    --ds-data-table-max-h: 480px;
 
     /* dialog */
     --ds-dialog-width-sm: 420px;
@@ -329,6 +334,8 @@
     --ds-proportion-bar-swatch-size: 10px;
     --ds-proportion-bar-percent-col-w: 48px;
     --ds-proportion-bar-hatch-size: 3px;
+    --ds-proportion-bar-color: var(--ds-text);
+    --ds-proportion-bar-share: 1;
 
     /* radio */
     --ds-radio-size: 18px;
@@ -337,13 +344,14 @@
     /* rank-list */
     --ds-rank-list-bar-h: 4px;
     --ds-rank-list-position-w: 24px;
-    --ds-rank-list-swatch-size: 14px;
     --ds-rank-list-padding-block: var(--ds-space-2);
     --ds-rank-list-padding-inline: var(--ds-space-5);
+    --ds-rank-list-share: 0px;
 
     /* rating */
     --ds-rating-gap: var(--ds-space-2);
     --ds-rating-star-gap: 2px;
+    --ds-rating-fill: 0px;
 
     /* segmented-control */
     --ds-segmented-control-padding: 2px;
@@ -358,6 +366,8 @@
     --ds-sheet-width-md: 460px;
     --ds-sheet-width-lg: 480px;
     --ds-sheet-padding: var(--ds-space-6);
+    --ds-sheet-from: 0px;
+    --ds-sheet-width: var(--ds-sheet-width-sm);
 
     /* sidebar */
     --ds-sidebar-padding-block: var(--ds-space-4);

@@ -216,7 +216,10 @@ function DataTableHeader<T>({ columns, selectAllLabel, selectionLabel }: HeaderP
           data-align={column.align ?? 'start'}
           {...(column.width === undefined
             ? {}
-            : { style: { '--ds-data-table-col-w': column.width } as CSSProperties })}
+            : {
+                'data-sized': true,
+                style: { '--ds-data-table-col-w': column.width } as CSSProperties,
+              })}
         >
           {({ allowsSorting, sortDirection }) => (
             <span className={classNames(styles.columnContent)}>

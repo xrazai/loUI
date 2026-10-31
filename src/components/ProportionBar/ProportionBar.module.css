@@ -24,22 +24,28 @@
   .segment {
     flex: var(--ds-proportion-bar-share) 1 0;
     min-inline-size: 0;
-    background-color: var(--ds-proportion-bar-color, var(--ds-text));
+    background-color: var(--ds-proportion-bar-color);
+  }
+
+  /* The ramp sets the color on the element; an explicit `color` prop wins through the inline custom property. */
+  .segment,
+  .swatch {
+    --ds-proportion-bar-color: var(--ds-text);
   }
 
   .segment[data-ramp='1'],
   .swatch[data-ramp='1'] {
-    background-color: var(--ds-proportion-bar-color, var(--ds-text-2));
+    --ds-proportion-bar-color: var(--ds-text-2);
   }
 
   .segment[data-ramp='2'],
   .swatch[data-ramp='2'] {
-    background-color: var(--ds-proportion-bar-color, var(--ds-text-3));
+    --ds-proportion-bar-color: var(--ds-text-3);
   }
 
   .segment[data-ramp='3'],
   .swatch[data-ramp='3'] {
-    background-color: var(--ds-proportion-bar-color, var(--ds-line-control));
+    --ds-proportion-bar-color: var(--ds-line-control);
   }
 
   /* From the fifth part on the ramp repeats; stripes of the track color keep the parts apart. */
@@ -81,7 +87,7 @@
     inline-size: var(--ds-proportion-bar-swatch-size);
     block-size: var(--ds-proportion-bar-swatch-size);
     border-radius: var(--ds-radius-sm);
-    background-color: var(--ds-proportion-bar-color, var(--ds-text));
+    background-color: var(--ds-proportion-bar-color);
   }
 
   .name {

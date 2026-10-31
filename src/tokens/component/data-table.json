@@ -35,6 +35,16 @@
       "$type": "number",
       "$value": 1,
       "$description": "Stacking order of a sticky DataTable header inside its scroll container (1). Local to the table, not a layer."
+    },
+    "col-w": {
+      "$type": "dimension",
+      "$value": { "value": 160, "unit": "px" },
+      "$description": "Width of a DataTable column that has a `width` prop (default 160px). Set at runtime via style on that column header; columns without `width` share the remaining space."
+    },
+    "max-h": {
+      "$type": "dimension",
+      "$value": { "value": 480, "unit": "px" },
+      "$description": "Maximum height of a scrollable DataTable (default 480px). Set at runtime via style from the `maxHeight` prop."
     }
   }
 }

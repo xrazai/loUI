@@ -47,8 +47,11 @@
   }
 
   .column {
-    inline-size: var(--ds-data-table-col-w, auto);
     cursor: default;
+  }
+
+  .column[data-sized] {
+    inline-size: var(--ds-data-table-col-w);
   }
 
   .selectionColumn,

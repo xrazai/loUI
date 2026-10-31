@@ -17,6 +17,16 @@
     "padding": {
       "$value": "{space.6}",
       "$description": "Inner padding of the Sheet body and footer (24px)."
+    },
+    "from": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Start offset of the Sheet slide-in animation. The placement classes set it (100% or -100%); not meant to be set by consumers."
+    },
+    "width": {
+      "$type": "dimension",
+      "$value": "{sheet.width-sm}",
+      "$description": "Resolved width of the Sheet. The size classes set it from `--ds-sheet-width-sm|md|lg`; not meant to be set by consumers."
     }
   }
 }
