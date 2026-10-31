@@ -52,7 +52,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Base styles
 
-- [ ] **BASE-002** (P2 · S) Add `.ds-sr-only` utility class and a `SkipLink` primitive (`VisuallyHidden` is done).
 
 ### Foundation documentation (port from `guidelines/*.html`, translate to English)
 
@@ -82,8 +81,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Forms
 
-- [ ] **CMP-FRM-09** (P1 · M) `SegmentedControl` — Fix: uses `role="tablist"` but controls a value, not panels; use `radiogroup` (single) with arrow keys, or `ToggleGroup`; roving tabindex; counts announced.
-- [ ] **CMP-FRM-10** (P2 · S) `SuggestionChip` — Fix: the "+" glyph is `aria-hidden` but the dashed affordance is the only cue of "adds text"; document behavior; `disabled` opacity .45 vs. .35 inconsistency.
 
 ### Feedback
 
@@ -98,9 +95,7 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Navigation
 
-- [ ] **CMP-NAV-01** (P1 · M) `Tabs` — Fix: roving tabindex + Left/Right/Home/End, `tabpanel` with `aria-controls`/`aria-labelledby`, activation mode (auto vs. manual), count badge announced, shortcut hint decorative.
 - [ ] **CMP-NAV-02** (P1 · L) `Menu` — Fix: items are `tabIndex=0` divs with **no keyboard activation** (no Enter/Space handler); arrow-key navigation, typeahead, `menuitemcheckbox`/`radio`, submenus (P3), disabled items, danger tone, `aria-haspopup`.
-- [ ] **CMP-NAV-03** (P1 · M) `NavItem` — Fix: `role="link"` on a `div` without `href` — render a real `<a>`/router link (polymorphic) with `aria-current="page"`; count badge text alternative ("3 pending"); icons via `Icon` (ICON-001).
 - [ ] **CMP-NAV-04** (P1 · L) `Popover` — Fix: trigger wrapper `span` with `onClick`; add `aria-expanded`, `aria-controls`, `aria-haspopup`; focus move in and return; correct `role` (a menu is not a `dialog`); collision-aware positioning; outside press via `pointerdown`.
 
 ### Inputs
@@ -114,15 +109,10 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Layout
 
-- [ ] **CMP-LAY-01** (P1 · M) `Sidebar` — Fix: width default 248 vs. token `--sidebar-w` 240 (pick one); landmark roles (`aside` + labelled `nav` per section); collapsible/responsive behavior; status block semantic; user block.
-- [ ] **CMP-LAY-02** (P1 · S) `TopBar` — Fix: height is 56 px in code vs. `--topbar-h` 64 px in tokens and ERP spec (pick one, use the token); `header` landmark; primary-action slot with shortcut hint.
-- [ ] **CMP-LAY-03** (P1 · S) `Breadcrumb` — Fix: render an ordered list; separators `aria-hidden`; truncation/collapse for long trails; use real links via polymorphic prop; hover color via CSS.
-- [ ] **CMP-LAY-04** (P1 · M) `Accordion` — Fix: heading-wrapped trigger button, `aria-controls` + `region` role/labelling, `type="single|multiple"` + `collapsible`, controlled/uncontrolled, height animation with reduced-motion.
 
 ### Data
 
 - [ ] **CMP-DAT-01** (P1 · L) `DataTable` — Fix: ARIA table structure (`rowgroup`, proper `columnheader` instead of `role` override on a button, `aria-sort`, `aria-rowcount`/`aria-rowindex` when paginated, `aria-selected` for rows); labelled selection checkboxes ("Select row {key}", "Select all rows on this page"); selection live-region summary; locale-aware sort (ARCH-007) and stable sort; reset page on data/sort change; `useMemo` missing `columns` dependency; sticky header; loading/empty/error states; column visibility (P3).
-- [ ] **CMP-DAT-02** (P1 · S) `Pagination` — Fix: `aria-label` from messages; `aria-current="page"`; announce range changes politely; page size selector (P2); disabled buttons keep focus order sensible.
 - [ ] **CMP-DAT-03** (P1 · M) `ActionList` — Fix: `role="list"` rows are not `listitem`; clickable rows are `div`s with no keyboard support/role — make them buttons/links; actions menu (`···`) label from messages and uses Menu keyboard model; drag handle (P3).
 - [ ] **CMP-DAT-04** (P1 · L) `Chart` — Fix: SVG has no accessible name/description; tooltip is mouse-only — add focusable data points / keyboard traversal; provide a visually-hidden data table alternative; no negative-value support; `Math.log10` axis breaks for tiny max values; color-only highlight needs a non-color cue; multi-series, legends, responsive label skipping tests.
 

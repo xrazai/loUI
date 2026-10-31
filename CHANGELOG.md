@@ -8,6 +8,16 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-NAV-01** (2026-10-31) `Tabs`, `TabList`, `Tab`, `TabPanel` on React Aria: roving focus, linked panels, `keyboardActivation`, tone counts with text alternative, decorative shortcut hint.
+- **CMP-FRM-09** (2026-10-31) `SegmentedControl` as a single-selection `ToggleButtonGroup` (value control, not a tablist), sizes sm/md, counts, `fullWidth`.
+- **CMP-FRM-10** (2026-10-31) `SuggestionChip`: dashed button with plus icon that inserts text (never sends).
+- **CMP-NAV-03** (2026-10-31) `NavItem`: real link (router-aware) or button, `aria-current="page"`, count pill with accessible text.
+- **CMP-LAY-01** (2026-10-31) `Sidebar`: `aside` with one labelled `nav` per section, workspace, status (`role="status"`), footer and user blocks; width token 240px (handoff's 248px dropped).
+- **CMP-LAY-02** (2026-10-31) `TopBar`: 64px `header` (handoff code had 56px), title/subtitle or breadcrumb, actions slot.
+- **CMP-LAY-03** (2026-10-31) `Breadcrumb`: ordered list in a named `nav`, decorative separators, current page as text.
+- **CMP-LAY-04** (2026-10-31) `Accordion` on React Aria Disclosure: headings wrap triggers, single/multiple expansion, controlled `value`.
+- **CMP-DAT-02** (2026-10-31) `Pagination`: named `nav`, `aria-current`, polite range summary, tested pure helpers `getPageItems` / `getPageCount` / `getItemRange`.
+- **BASE-002** (2026-10-31) `SkipLink` (moves focus to the target) and `.ds-sr-only` utility class.
 - **AI-002** (2026-10-31) Component manifest generator `scripts/manifest/` (`pnpm manifest:build`, runs after `tsdown` in `pnpm build`; `pnpm manifest:check` detects stale committed copies): props from TypeScript, TSDoc, message keys and English defaults, CSS variables used, stories, doc sections, status; hooks, utilities and icons. JSON Schema `schemas/manifest.schema.json`; tests validate schema and coverage.
 - **AI-004** (2026-10-31) Token manifest `docs/tokens.json` with descriptions and allowed contrast pairings (schema `schemas/tokens.schema.json`).
 - **AI-005** (2026-10-31) Generated `llms.txt`, `llms-full.txt` and per-component `docs/ai/components/<Name>.md`; packaged as `@loui/ds/manifest.json`, `tokens.json`, `llms.txt`, `llms-full.txt`.
