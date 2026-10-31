@@ -117,7 +117,7 @@ Authoritative values live in the token source (`src/tokens`, until then `raw_fil
 
 - **Layers (dark):** canvas `#050506` → bg `#0B0B0C` → surface `#111113` → raised `#18181B` → hover `#1F1F23`. Move one step at a time; don't skip layers. Row hover `#141416`.
 - **Lines:** `--line-subtle` internal dividers, `--line` cards, `--line-strong` controls and overlays. 1 px always. Dashed = disabled or total row.
-- **Text:** `--text` `#EDEDEA` (not pure white), `--text-2`, `--text-3`, `--text-inverse`. ⚠ `--text-3` fails 4.5:1 on raised/hover surfaces (TODO Appendix A) — do not use it for essential text there.
+- **Text:** `--text` `#EDEDEA` (not pure white), `--text-2`, `--text-3`, `--text-inverse`. Since TOK-004 `--ds-text-3` (`#86868E`) passes 4.5:1 on every surface up to `surface-hover`; use it for hierarchy (tertiary meta, captions, placeholders), not for primary content. TODO Appendix A records the original handoff failures.
 - **Signals:** accent `#8AB4FF`, success `#5FD49A`, warning `#E9B65C`, danger `#F07A6E`; soft backgrounds via `color-mix` (14%, danger 10%).
 - **Type:** Geist (400/500/600) for UI, Geist Mono (400/500) for data. Scale (px size/line): display 34/40 · title 22/30 · heading 17/24 · body 15/24 · small 14/22 · label 13/18 · meta 12/16 · caption 11.5/16 mono uppercase +8% · num 24/32 · num-lg 30/36 · icon 20. Display/title use negative tracking (−2% / −1%).
 - **Spacing:** 4 px grid — 4 8 12 16 20 24 32 48 64. Card padding 20; gaps 8–16 inside components, 24–32 between sections.

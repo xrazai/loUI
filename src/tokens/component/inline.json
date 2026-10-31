@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "inline": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Default Inline gap; set at runtime via style from the `gap` prop (a space token key)."
+    }
+  }
+}

@@ -25,6 +25,14 @@ Rules for generated UI:
 - [Accessibility](./guides/accessibility.md): WCAG 2.2 AA target, keyboard model and how it is tested.
 - [Using with AI](./guides/using-with-ai.md): The manifest, llms.txt, content rules and Storybook MCP.
 
+## Foundations
+
+- [Color](./foundations/color.md): Layers, lines, text and signal colors: usage rules and contrast.
+- [Typography](./foundations/typography.md): Geist and Geist Mono, the type scale, tracking and when to use mono.
+- [Spacing, sizing and radius](./foundations/spacing.md): The 4px grid, control and layout sizes, radius roles and elevation.
+- [States and interaction](./foundations/states.md): Rest, hover, focus, selected, disabled and invalid; keyboard model; undo vs confirm.
+- [Motion, layering and iconography](./foundations/motion.md): Durations and easing, reduced motion, the z-index stack and icon rules.
+
 ## Components
 
 - [Accordion](./ai/components/Accordion.md): A stack of sections that expand and collapse. (experimental)
@@ -32,6 +40,8 @@ Rules for generated UI:
 - [AgentCard](./ai/components/AgentCard.md): A card for one agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. (experimental)
 - [Alert](./ai/components/Alert.md): An inline message with a tone, an icon, an optional title, an action and a dismiss button. (experimental)
 - [ApprovalCard](./ai/components/ApprovalCard.md): A reply waiting for approval: the original message, an editable draft written by an agent and two actions, send and discard. (experimental)
+- [AppShell](./ai/components/AppShell.md): The application layout: a sidebar, and a main column with a top bar above a scrollable content region. (experimental)
+- [AppShellNavToggle](./ai/components/AppShellNavToggle.md): The button that opens the off-canvas sidebar. (experimental)
 - [Avatar](./ai/components/Avatar.md): A circular photo or initials of a person, in grays (never a color per person). (experimental)
 - [Badge](./ai/components/Badge.md): A pill with a short status label. (experimental)
 - [Breadcrumb](./ai/components/Breadcrumb.md): The path to the current page as an ordered list of links inside a `nav` landmark. (experimental)
@@ -43,21 +53,31 @@ Rules for generated UI:
 - [Checkbox](./ai/components/Checkbox.md): A checkbox with a native `<input type="checkbox">` (so `name` / `value` take part in form submission), an 18px box and an optional description. (experimental)
 - [CheckboxGroup](./ai/components/CheckboxGroup.md): A labelled `role="group"` of checkboxes that share one value (`string[]`), one `name`, and one description and error. (experimental)
 - [ChoiceTiles](./ai/components/ChoiceTiles.md): Single-choice tiles: a `radiogroup` whose options are drawn as big buttons with a label and an optional meta line. (experimental)
+- [Code](./ai/components/Code.md): Monospace code: inline in a sentence, or as a block (`pre` + `code`). (experimental)
 - [ColorOption](./ai/components/ColorOption.md): A selectable option that shows a color swatch and its name. (experimental)
 - [Combobox](./ai/components/Combobox.md): A text input with a filtered list of options in a popover (ARIA combobox pattern, built on React Aria `ComboBox`): the input has `role="combobox"` with `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`, so focus stays in the input while the arrow keys move through the list. (experimental)
+- [CommandPalette](./ai/components/CommandPalette.md): A command palette: a modal with a search field and a grouped list of commands, opened with `Mod+K` (configurable). (experimental)
 - [ConfirmDialog](./ai/components/ConfirmDialog.md): A destructive-action confirmation: an `alertdialog` with the question as the title, the consequence in one sentence, a Cancel button and a confirm button that names the action. (experimental)
+- [Container](./ai/components/Container.md): Centers page content and limits its line length: a maximum inline size plus a side gutter. (experimental)
 - [CurrencyInput](./ai/components/CurrencyInput.md): A money field. (experimental)
 - [DataTable](./ai/components/DataTable.md): A data table with locale-aware sorting, row selection with a bulk action bar, client-side pagination, loading and empty states. (experimental)
 - [DatePicker](./ai/components/DatePicker.md): A date field with a calendar popover (React Aria `DatePicker`). (experimental)
 - [Description](./ai/components/Description.md): Helper text under a field (the handoff `hint`). (experimental)
 - [Dialog](./ai/components/Dialog.md): A modal dialog built on React Aria `DialogTrigger`, `ModalOverlay`, `Modal` and `Dialog`. (experimental)
+- [Divider](./ai/components/Divider.md): A 1px line that separates groups of content, built on React Aria `Separator` (`<hr>`, or `role="separator"` with `aria-orientation` when vertical). (experimental)
 - [DueIndicator](./ai/components/DueIndicator.md): A due date with a status in words: "Mar 9 Overdue by 3 days", "Due today", "Due in 5 days", "Paid". (experimental)
 - [EmptyState](./ai/components/EmptyState.md): Tells the user that there is nothing to show, why, and what to do next. (experimental)
 - [FieldError](./ai/components/FieldError.md): Error text of a field. (experimental)
 - [FieldMessages](./ai/components/FieldMessages.md): Description followed by the error: the footer every field renders under its control. (experimental)
+- [FieldSet](./ai/components/FieldSet.md): Groups related fields under a caption: a real `fieldset` with a `legend`, an optional description, and disabled propagation. (experimental)
 - [FileUpload](./ai/components/FileUpload.md): A drop zone with a "Choose files" button and the list of added files (React Aria `DropZone` and `FileTrigger`). (experimental)
+- [Form](./ai/components/Form.md): A form built on React Aria `Form`: native validation by default, server errors through `validationErrors`, a vertical rhythm of `--ds-form-gap` between its children, and an optional error summary. (experimental)
+- [FormErrorSummary](./ai/components/FormErrorSummary.md): The error summary of a `Form`: after a failed submit (or new server errors) it takes focus, is announced (`role="alert"`), says how many fields need fixing, and lists them as links that move focus to the field. (experimental)
+- [Grid](./ai/components/Grid.md): A CSS grid with equal columns: a fixed `columns` count, or an auto-fill grid that keeps each item at least `minItemWidth` wide (the responsive choice for card grids). (experimental)
+- [Heading](./ai/components/Heading.md): A heading whose semantic level and visual size are separate choices, so the document outline stays correct while the design picks the size. (experimental)
 - [Icon](./ai/components/Icon.md): An inline SVG icon (Lucide, bundled) that inherits the text color and draws a 1.5px stroke. (experimental)
 - [IconButton](./ai/components/IconButton.md): A square button with a single icon and a required accessible name. (experimental)
+- [Inline](./ai/components/Inline.md): Lays its children out in a horizontal row with a consistent gap. (experimental)
 - [InlineConfirm](./ai/components/InlineConfirm.md): A two-step confirmation without a dialog: the trigger button turns into a question with Cancel and a confirm button, in place. (experimental)
 - [Input](./ai/components/Input.md): Single-line text field: label, control, description and error wired together (`for`, `aria-describedby`, `aria-invalid`), built on React Aria `TextField`. (experimental)
 - [Kbd](./ai/components/Kbd.md): A keyboard shortcut hint in mono type. (experimental)
@@ -82,15 +102,18 @@ Rules for generated UI:
 - [RankList](./ai/components/RankList.md): An ordered list of items with a value, a bar relative to the largest value and an optional detail. (experimental)
 - [Rating](./ai/components/Rating.md): A read-only star rating. (experimental)
 - [RequiredMark](./ai/components/RequiredMark.md): The visible marker of a required field, text from messages. (experimental)
+- [ScrollArea](./ai/components/ScrollArea.md): A scrolling container with thin, themed scrollbars. (experimental)
 - [SearchInput](./ai/components/SearchInput.md): A search box: leading search icon, clear button (and `Escape` clears), optional decorative shortcut hint, optional suggestions with accent-insensitive match highlighting. (experimental)
 - [SegmentedControl](./ai/components/SegmentedControl.md): A segmented control picks one value from a few options, like a radio group drawn as a bar. (experimental)
 - [Select](./ai/components/Select.md): A single-choice dropdown built on React Aria `Select`: a button that opens a listbox in a popover. (experimental)
 - [Sheet](./ai/components/Sheet.md): A side panel that slides in from the inline-end edge, for viewing or editing one record without leaving the list. (experimental)
+- [ShortcutsHelp](./ai/components/ShortcutsHelp.md): A dialog that lists the registered keyboard shortcuts (`useHotkeys` with a `description`), grouped by their `group`, one table per group with the keys drawn by `Kbd`. (experimental)
 - [Sidebar](./ai/components/Sidebar.md): The app sidebar: a workspace block, navigation sections, an optional status card, a footer slot and the signed-in user. (experimental)
 - [Skeleton](./ai/components/Skeleton.md): A placeholder block in the shape of content that is still loading. (experimental)
 - [SkipLink](./ai/components/SkipLink.md): A link that is invisible until a keyboard user focuses it, then jumps past the repeated navigation to the main content (WCAG 2.4.1 Bypass Blocks). (experimental)
 - [Slider](./ai/components/Slider.md): A single-value slider built on React Aria `Slider`: a labelled track with one thumb that is a real `<input type="range">`, so keyboard, pointer, touch and form submission (`name`) work natively. (experimental)
 - [Spinner](./ai/components/Spinner.md): An indeterminate loading ring that inherits the text color. (experimental)
+- [Stack](./ai/components/Stack.md): Lays its children out in a vertical column with a consistent gap. (experimental)
 - [StatCard](./ai/components/StatCard.md): An indicator card: a mono caption, a large mono number and a short note, optionally with a trend and a small visual (such as a `ProportionBar`) in between. (experimental)
 - [StatusSteps](./ai/components/StatusSteps.md): A horizontal indicator of progress through a linear status flow (Draft, Packed, Shipped). (experimental)
 - [SubMenu](./ai/components/SubMenu.md): An item that opens a nested menu. (experimental)
@@ -103,6 +126,7 @@ Rules for generated UI:
 - [Tabs](./ai/components/Tabs.md): Tabs switch between panels of related content. (experimental)
 - [Tag](./ai/components/Tag.md): A mono outlined label for versions, SKUs and filters. (experimental)
 - [TagGroup](./ai/components/TagGroup.md): A group of tags with one tab stop and arrow-key navigation. (experimental)
+- [Text](./ai/components/Text.md): Body text on the type scale. (experimental)
 - [Textarea](./ai/components/Textarea.md): Multi-line text field built on React Aria `TextField` + `TextArea`. (experimental)
 - [ToastRegion](./ai/components/ToastRegion.md): Renders the toasts of a queue. (experimental)
 - [Tooltip](./ai/components/Tooltip.md): An ink-style hint for a control, built on React Aria `TooltipTrigger` and `Tooltip`. (experimental)
@@ -111,12 +135,12 @@ Rules for generated UI:
 
 ## Hooks, utilities and icons
 
-- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useMediaQuery, useMessages, usePrefersReducedMotion, useToast; 37 utilities and constants; 24 icons.
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast; 40 utilities and constants; 24 icons.
 
 ## Machine-readable data
 
-- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (81 components).
-- [tokens.json](./tokens.json): 315 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (97 components).
+- [tokens.json](./tokens.json): 341 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

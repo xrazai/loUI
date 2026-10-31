@@ -27,8 +27,8 @@ export interface TextProps extends ComponentPropsWithRef<'span'> {
   size?: TextSize;
   /**
    * Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or
-   * `tertiary` (`--ds-text-3`, hints). Tertiary text fails 4.5:1 on raised and hover surfaces:
-   * never use it for essential text there. Default `default`.
+   * `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals
+   * the lowest importance: use it for meta and hints, never for primary content. Default `default`.
    */
   tone?: TextTone;
   /** Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts. */

@@ -337,9 +337,353 @@ Open an issue with the component, the browser and assistive technology, the step
 
 ---
 
+## Color
+
+Color in Loui DS is dark, flat and quiet. Hierarchy comes from five surface layers and three line weights; color itself is reserved for meaning. Use semantic tokens only (`--ds-surface`, `--ds-text-2`, `--ds-danger`); the primitive palette exists to define them. Every value, description and contrast ratio is listed on the Tokens page.
+
+### Layers
+
+Five surfaces build depth, from the darkest to the lightest. **Move one step at a time** and never skip a layer: a card sits on `bg`, something that floats sits on the card.
+
+| Token                    | Use                                                                         |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `--ds-bg-canvas`         | The page behind the app shell (the `html` element). Darkest layer.          |
+| `--ds-bg`                | App background: body, top bar, main area.                                   |
+| `--ds-surface`           | Cards, panels, table bodies and inputs at rest.                             |
+| `--ds-surface-raised`    | Menus, popovers, selected rows, anything floating above a surface.          |
+| `--ds-surface-hover`     | Hover state of controls and list items: one step above the resting surface. |
+| `--ds-surface-row-hover` | Hover for table and list rows only. Subtler, so dense data stays calm.      |
+
+### Lines
+
+Borders do the work that shadows do elsewhere. Lines are always 1px. A dashed line means disabled or a total row.
+
+| Token               | Use it for                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| `--ds-line-subtle`  | Dividers inside a card or table (row separators). Decorative.                              |
+| `--ds-line`         | The border of cards and containers.                                                        |
+| `--ds-line-strong`  | The border of overlays: menus, popovers, dialogs.                                          |
+| `--ds-line-control` | The boundary of form controls: input, select, textarea, checkbox, radio, combobox trigger. |
+
+Form control boundaries must reach 3:1 against the surface (WCAG 1.4.11). `line` and `line-strong` do not, which is why controls have their own token.
+
+### Text
+
+| Token               | Use                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| `--ds-text`         | Primary text and icons. A warm off-white, never pure white. Anything the user must read.       |
+| `--ds-text-2`       | Supporting text: descriptions, helper copy, inactive labels.                                   |
+| `--ds-text-3`       | Tertiary text: metadata, placeholders, hints. Never the only carrier of essential information. |
+| `--ds-text-inverse` | Text and icons on solid light or signal fills (primary button, selected calendar day).         |
+
+All three text tokens pass 4.5:1 on every surface up to `surface-hover` (see the table below). The rule for `text-3` is about hierarchy, not contrast: the most important thing is `text`, supporting detail is `text-2`, and only metadata steps down to `text-3`. Do not use `text-3` on tinted or filled backgrounds; there is no contrast guarantee there.
+
+`--ds-text-inverse` is measured on the fills it sits on, not on surfaces:
+
+### Signals
+
+One accent and three status colors. Each signal has a solid value for text and icons, and a soft tint for backgrounds.
+
+- **Accent** (`--ds-accent`): focus, selection, links and "open" states. This is the only accent. **Never a button fill or a large area.** The primary button is light ink on dark (`--ds-primary-bg`), and there is one primary action per screen.
+- **Success** (`--ds-success`): done, saved, healthy.
+- **Warning** (`--ds-warning`): attention needed, nothing broken.
+- **Danger** (`--ds-danger`): errors, invalid fields and destructive actions.
+
+Success, warning and danger **always come with text** (a label, a message, an icon with a name). Color is never the only carrier of meaning.
+
+### Soft tints
+
+Soft tokens are the signal color at low opacity (14%, danger 10%), composited over the surface beneath. Use them as the background of badges, banners, selected items and invalid fields, with the solid signal as the text color. The ratio of a signal on its own tint is checked in the test suite.
+
+### Paper
+
+Receipt and PDF previews are the only light surface in the system. Scope them with `[data-theme="paper"]` and use `--ds-paper-*` tokens. `--ds-paper-rule` is decorative (below 3:1) and must never be a control boundary.
+
+### Contrast changes from the handoff
+
+Three tokens were changed from the original design handoff so that every text and control pairing meets WCAG 2.2 AA (task TOK-004). The full record is in `docs/tokens/changes.md`.
+
+| Token                             | Old           | New       | Why                                                                                                                                          |
+| --------------------------------- | ------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--ds-text-3` (and `--ds-gray-7`) | `#7A7A82`     | `#86868E` | Was 3.86:1 on `surface-hover` and below 4.5:1 on `surface-raised`. Now 4.55:1 on `surface-hover`, so it passes on every surface up to there. |
+| `--ds-line-control`               | did not exist | `#64646B` | Control boundaries need 3:1. `line-strong` is about 1.5:1. Now 3.35:1 on `bg`, 3.21:1 on `surface`, 3.02:1 on `surface-raised`.              |
+| `--ds-paper-accent`               | `#B8603E`     | `#A95839` | 4.53:1 on `paper`; the old value was below 4.5:1 for text.                                                                                   |
+
+### Rules of thumb
+
+- Use `text` for what must be read, `text-2` for support, `text-3` for metadata.
+- Never use a raw hex value. If a color is missing, add a token.
+- Backgrounds are flat: no gradients, textures or illustrations.
+- A selected state combines a surface step with a non-color cue (an ink bar, a check), never color alone.
+
+---
+
+## Typography
+
+Two typefaces, ten roles, one rule: nothing is smaller than 11.5px. Geist carries the interface; Geist Mono carries data. Both are self-hosted (no runtime fetch), with metric-matched fallback faces so text does not jump while fonts load.
+
+### Typefaces
+
+| Variable         | Face       | Weights       | Use                                                            |
+| ---------------- | ---------- | ------------- | -------------------------------------------------------------- |
+| `--ds-font-sans` | Geist      | 400, 500, 600 | Interface text: titles, body, labels, buttons.                 |
+| `--ds-font-mono` | Geist Mono | 400, 500      | Data: numbers, codes, identifiers, dates, shortcuts, captions. |
+
+Weight roles: **400** for body text, **500** for labels and mono captions (not for body paragraphs), **600** for display, title and heading. Do not add a heavier weight.
+
+### The scale
+
+Use a role, never a free size. The roles are the tokens `--ds-fs-*` (size), `--ds-lh-*` (line height) and `--ds-weight-*`. Sizes in px, line heights in px.
+
+| Role    | Face     | Use it for                                                              |
+| ------- | -------- | ----------------------------------------------------------------------- |
+| display | sans 600 | One hero statement per view, at most.                                   |
+| title   | sans 600 | Page and section titles.                                                |
+| heading | sans 600 | Dialog titles, card headings.                                           |
+| body    | sans 400 | Running text; the base size of the app.                                 |
+| small   | sans 400 | Descriptions, helper text, table cells.                                 |
+| label   | sans 500 | Field labels, chips, compact buttons.                                   |
+| meta    | mono 400 | Dates, phone numbers, counts beside titles.                             |
+| caption | mono 500 | Group captions. Uppercase by CSS, +8% tracking. The floor of the scale. |
+| num     | mono 500 | Indicator figures (24px).                                               |
+| num-lg  | mono 500 | Highlighted totals such as a balance (30px).                            |
+
+### Tracking and case
+
+- **Display** has -2% tracking (-0.68px) and **title** -1% (-0.22px). Tight tracking only works at large sizes: never apply it to body text.
+- **Caption** has +8% tracking (0.92px) and is the only role set in uppercase. Uppercase is applied with CSS (`text-transform`), so write the source text in sentence case ("Order details", not "ORDER DETAILS"). Everywhere else, use sentence case too.
+- Tracking tokens are in px because DTCG dimensions have no `em`. They are exact for the fixed size of each role.
+
+### The 11.5px floor
+
+`--ds-fs-caption` (11.5px) is the smallest font size in the system and it is enforced by a test. Do not use a smaller size, in CSS or in a chart, and do not scale text down with transforms. Use `meta` (12px) or `caption` for the smallest text; never invent an in-between.
+
+### When to use mono
+
+Use Geist Mono for anything that is data rather than prose, and turn on tabular figures so columns align.
+
+- Numbers and amounts: `$1,240.00`, `3 / 12`.
+- Codes and identifiers: `ORD-1048`, `SKU-0032`.
+- Dates and phone numbers beside a title.
+- Keyboard shortcuts: `Ctrl K`.
+- Group captions.
+
+Do not set sentences, labels or buttons in mono. Format amounts and dates with `Intl` (the `formatCurrency` helper), never by hand.
+
+### Tabular numerals
+
+`font-variant-numeric: tabular-nums` gives every digit the same width, so figures in a column line up and live counters do not jitter. The `mono` prop of `Text` turns it on; for custom elements use the `.ds-tabular-nums` utility class. Mono roles (`meta`, `num`, `num-lg`) should always have it on.
+
+### Heading and Text
+
+`Heading` separates the semantic level (`h1` to `h6`, the page outline) from the visual size (`display`, `title`, `heading`). Choose the level for structure and the size for design; keep levels sequential with one `h1` per page. `Text` sets size, line height, tone and an optional mono face, and the `as` prop picks the element.
+
+Use `Heading` and `Text` instead of setting font properties by hand. Do not use a heading element only for its size.
+
+---
+
+## Spacing, sizing and radius
+
+Everything sits on a 4px grid and has a fixed size, so the same element lives in the same place in every module. Use tokens, never raw pixels.
+
+### Spacing scale
+
+Nine steps. The unit is 4px; steps are named by their multiple (`--ds-space-3` is 3 x 4px = 12px).
+
+| Variable        | Value | Use                                                      |
+| --------------- | ----- | -------------------------------------------------------- |
+| `--ds-space-1`  | 4px   | Icon-to-text gaps, tight padding.                        |
+| `--ds-space-2`  | 8px   | Default gap between related elements inside a component. |
+| `--ds-space-3`  | 12px  | Compact padding, gaps between form fields.               |
+| `--ds-space-4`  | 16px  | Standard padding and gap between components.             |
+| `--ds-space-5`  | 20px  | Card padding.                                            |
+| `--ds-space-6`  | 24px  | Gap between sections of a page.                          |
+| `--ds-space-8`  | 32px  | Large section separation.                                |
+| `--ds-space-12` | 48px  | Page-level separation.                                   |
+| `--ds-space-16` | 64px  | Hero and empty-state breathing room.                     |
+
+Rules of thumb: card padding is 20px; gaps **inside** a component are 8 to 16px; gaps **between** sections are 24 to 32px. Do not mix steps in one group, and do not use values off the grid.
+
+### Control heights
+
+Controls come in three heights. The default is 40px. Pick one size per group of controls and do not mix them in a row.
+
+| Token               | Value | Use                                    |
+| ------------------- | ----- | -------------------------------------- |
+| `--ds-control-h-sm` | 32px  | Dense toolbars and table filters.      |
+| `--ds-control-h-md` | 40px  | Default: buttons, inputs, selects.     |
+| `--ds-control-h-lg` | 48px  | Primary actions and touch-first forms. |
+
+### Fixed layout sizes
+
+| Token              | Value | Use                                                                     |
+| ------------------ | ----- | ----------------------------------------------------------------------- |
+| `--ds-item-h`      | 36px  | Menu items, navigation items, listbox options.                          |
+| `--ds-row-h`       | 52px  | Table and list rows.                                                    |
+| `--ds-row-h-dense` | 60px  | Rows with two lines of content. It is taller on purpose: it holds more. |
+| `--ds-topbar-h`    | 64px  | The top bar.                                                            |
+| `--ds-sidebar-w`   | 240px | The app sidebar.                                                        |
+
+### Target size
+
+No interactive element may be smaller than 24 x 24 CSS px (`--ds-target-min`, WCAG 2.5.8). Small visuals, such as the 18px checkbox box, reach the minimum through their label row or padding. Never shrink the clickable area to match a small icon.
+
+### Radius
+
+Radius follows the role of the element, so nested shapes look related.
+
+| Token              | Value | Elements                                                       |
+| ------------------ | ----- | -------------------------------------------------------------- |
+| `--ds-radius-sm`   | 4px   | Chips, menu items, small marks.                                |
+| `--ds-radius-md`   | 6px   | Buttons and inputs.                                            |
+| `--ds-radius-lg`   | 10px  | Cards, menus, popovers, dialogs.                               |
+| `--ds-radius-pill` | 999px | Badges and switches. Any very large value renders fully round. |
+
+The checkbox box uses a component token (`--ds-checkbox-radius`, 5px). An inner element has a smaller radius than its container.
+
+### Elevation
+
+Hierarchy comes from surface plus border, not from shadow. There are **only two shadows, and only overlays use them**.
+
+| Token                 | Use                                             |
+| --------------------- | ----------------------------------------------- |
+| `--ds-shadow-overlay` | Floating overlays: menus, popovers, toasts.     |
+| `--ds-shadow-dialog`  | Dialogs and side sheets: the highest elevation. |
+
+No inner shadows, no glow, no blur. Cards, panels and inline elements are flat. Dialogs use the `--ds-overlay` backdrop and sheets use the lighter `--ds-scrim`, both without blur.
+
+---
+
+## States and interaction
+
+Every interactive element has the same small set of states, and they look the same everywhere. Feedback is subtle: no press animation, no bounce, no confetti.
+
+### The states
+
+| State    | What changes                                                                                                               | Notes                                                        |
+| -------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Rest     | The base surface, a 1px line.                                                                                              |                                                              |
+| Hover    | One surface step lighter (`surface` becomes `surface-hover`). The primary button dims to 88% brightness instead.           | Table rows use the subtler `surface-row-hover`.              |
+| Focus    | Accent border plus a 3px ring (`--ds-focus-ring`).                                                                         | Shown for keyboard focus (`:focus-visible`). Always visible. |
+| Pressed  | No visual change.                                                                                                          | There is no press animation by design.                       |
+| Selected | Raised background plus a 2px ink bar on the left of a row; a 2px ink underline for the active tab; a check for checkboxes. | Never color alone.                                           |
+| Disabled | Opacity 35% (`--ds-opacity-disabled`), no hover; inputs also get a dashed border.                                          | One value for every component.                               |
+| Invalid  | Danger border and the danger ring (`--ds-focus-ring-danger`), with an error message in text.                               | The message says how to fix it.                              |
+| Pending  | The label is replaced by a spinner at the same width. The control stays focusable.                                         | Not disabled: focus is never lost.                           |
+
+States are CSS, not React state: components expose them as data attributes (`data-hovered`, `data-focus-visible`, `data-selected`, `data-disabled`, `data-invalid`), and styles never use inline overrides.
+
+### Fields
+
+Inputs, selects and other fields move through rest, focus, invalid and disabled. Tab into a field to see the focus ring; the other states are set by props.
+
+### Selection controls
+
+### Tabs and rows
+
+An active tab has a 2px ink underline. A selected table row has a raised background and a 2px ink bar on its inline-start edge. Both also work in forced-colors mode.
+
+### Focus
+
+Focus is always visible. Buttons, fields, tabs and panels show an accent border or a 3px ring; table rows, headers and cells show a 2px accent outline inset in the cell. A transparent outline is kept so the focus indicator also appears in forced-colors (high contrast) mode. Focus is never hidden behind sticky UI, and it is restored to the trigger when an overlay closes.
+
+### Keyboard model
+
+Keyboard first: everything is reachable and operable without a pointer, `Tab` and `Shift+Tab` walk the page in reading order, and `Ctrl K` (Command K on Apple) opens the command palette. Each row below is also a contract test.
+
+| Pattern                                | Keys                                                                                                                                                    |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Button / link                          | `Enter`; button also `Space`                                                                                                                            |
+| Checkbox / switch                      | `Space` toggles (switch also `Enter` optional)                                                                                                          |
+| Radio group / segmented / choice tiles | One tab stop (roving); `Left/Up` previous, `Right/Down` next (radio groups wrap; segmented controls stop at the ends); `Space` selects                  |
+| Tabs                                   | Roving; `Left/Right` move; `Home/End`; automatic or manual activation as documented; `Tab` moves into the panel                                         |
+| Menu                                   | Trigger `Enter/Space/Down` opens and focuses the first item; `Up/Down`, `Home/End`, typeahead; `Enter/Space` activates; `Esc` closes and restores focus |
+| Combobox                               | `Down/Up` open and move (`aria-activedescendant`), `Enter` selects, `Esc` closes then clears, `Home/End` in the list                                    |
+| Dialog / sheet                         | Focus trapped; initial focus configurable (Cancel for destructive); `Esc` closes **only the top layer**; focus returns to the trigger                   |
+| Popover                                | `Esc` closes and restores focus; focus moves in only if interactive                                                                                     |
+| Tooltip                                | Shows on focus and hover; `Esc` dismisses; content is hoverable                                                                                         |
+| Accordion / disclosure                 | `Enter/Space` toggles; optional `Up/Down/Home/End` between headers                                                                                      |
+| Slider                                 | Arrow keys step; `PageUp/PageDown` large step; `Home/End` min/max                                                                                       |
+| Number field (stepper)                 | Textbox with `aria-roledescription="Number field"`; `Up/Down` step; `PageUp/PageDown` step; `Home/End` min/max; typing allowed                          |
+| Calendar grid                          | Arrows move by day/week; `PageUp/PageDown` month; `Shift+PageUp/PageDown` year; `Home/End` first/last day of the month; `Enter/Space` selects           |
+| Data table                             | Header buttons sort (`aria-sort`); row action via a real button or link; selection checkboxes are labelled                                              |
+| Toast / alert                          | Announced through a live region; actions focusable; auto-dismiss pauses on hover and focus                                                              |
+
+Sources: the WAI-ARIA Authoring Practices and React Aria. The same table is in the [accessibility guide](../guides/accessibility.md).
+
+### Undo, or confirm
+
+Two kinds of action, two behaviors. Do not mix them.
+
+- **Undo for almost everything.** Change a status, pay, send, remove a row, link a color: do it at once and show a toast with "Undo" (short-lived, and paused while hovered or focused). It is faster and calmer than asking.
+- **Confirm only when deleting a record.** Delete a fabric, customer, sale, order or entry: open a dialog. The title is "Delete X?", one sentence states the consequence, the red button names the action (`danger-solid`, "Delete order"), and **initial focus is on Cancel**. A toast with "Undo" follows when the data can be restored.
+
+Anything that goes to a customer or touches money goes through an approval queue instead; see the [principles guide](../guides/principles.md).
+
+### Wordmark
+
+There is no logo. Until a brand exists, the product name is set in Geist 600 as plain text. Do not draw, trace or approximate a mark, and do not use an icon as a logo.
+
+---
+
+## Motion, layering and iconography
+
+Motion is minimal, layers are strictly ordered, and icons come from one small curated set.
+
+### Motion
+
+Motion explains a change; it never decorates. Only `color`, `background-color`, `border-color`, `opacity` and position change, never size or layout.
+
+| Token                    | Value                        | Use                                                                              |
+| ------------------------ | ---------------------------- | -------------------------------------------------------------------------------- |
+| `--ds-duration`          | 150ms                        | Standard transition: hover, focus and state changes.                             |
+| `--ds-duration-done`     | 320ms                        | Completion feedback: a subtle check or fill when something is done. No confetti. |
+| `--ds-duration-progress` | 300ms                        | Progress bar fill changes.                                                       |
+| `--ds-ease`              | `cubic-bezier(0.2, 0, 0, 1)` | Easing for every transition: fast start, soft landing.                           |
+
+Rules:
+
+- Use the tokens; never write a raw duration or easing.
+- No press animation, bounce, spring, parallax or looping decoration. The only continuous animation is a loading spinner.
+- Feedback for a finished task is subtle and positive: a green check, a filled progress bar, a calm toast.
+
+#### Reduced motion
+
+When the user asks for less motion (`prefers-reduced-motion: reduce`), the base stylesheet cuts every transition and animation to an instant change, globally. Components must not depend on a transition to communicate state: the end state alone has to be clear. Do not add per-component motion that bypasses this rule.
+
+### Layering
+
+Overlays use a fixed stack of z-index tokens. Raw `z-index` values are not allowed.
+
+| Layer    | Token             | Value | Why it sits here                                                                                |
+| -------- | ----------------- | ----- | ----------------------------------------------------------------------------------------------- |
+| Sheet    | `--ds-z-sheet`    | 40    | Side panels with their scrim. The panel is the sheet value plus one. The lowest overlay.        |
+| Dialog   | `--ds-z-dialog`   | 45    | Modals and their backdrop. Above sheets, so a dialog opened from a sheet stacks on top of it.   |
+| Dropdown | `--ds-z-dropdown` | 50    | Selects, comboboxes, date pickers. Above dialogs and sheets because they open from inside them. |
+| Popover  | `--ds-z-popover`  | 55    | Popovers and action menus. Above dropdowns, dialogs and sheets.                                 |
+| Toast    | `--ds-z-toast`    | 58    | Confirmations and Undo. Above every overlay so they stay visible.                               |
+| Tooltip  | `--ds-z-tooltip`  | 60    | The highest layer. It must never be hidden. Do not add layers above it.                         |
+
+Order: **sheet < dialog < dropdown < popover < toast < tooltip**. `Esc` closes only the top layer. Overlays render through a shared portal, so they never depend on the stacking context of their trigger.
+
+### Iconography
+
+Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), drawn with a 1.5px stroke in `currentColor`.
+
+- **Curated set only.** Import from the design system (`SearchIcon`, `XIcon`), not from `lucide-react`. To add an icon, add it to the set with a documented use first.
+- **Decorative unless labelled.** `Icon` hides itself from assistive technology by default; the text next to it names the control. Pass `label` only when the icon carries meaning on its own. An icon-only control is an `IconButton`, and its `label` is required.
+- **Sizes** are tokens: `xs` 12px, `sm` 14px, `md` 18px (default), `lg` 20px.
+- **Directional icons** (chevrons, arrows) take the `directional` prop so they mirror in right-to-left languages.
+- **No emoji.** No filled or colored icons, with one exception: the filled star of `Rating`. Unicode glyphs appear only inside a labelled `IconButton`.
+- Color comes from the surrounding text color. A status icon is paired with text; do not rely on its color.
+
+#### Decorative and labelled
+
+---
+
 ## Design tokens
 
-315 tokens; the table lists the 301 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+341 tokens; the table lists the 327 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -470,6 +814,9 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-alert-warning-border` | `rgba(233, 182, 92, 0.3)` | Border of a warning Alert: 30% warning over the surface beneath, resolved with color-mix. Not for text. |
 | `--ds-alert-danger-bg` | `rgba(240, 122, 110, 0.06)` | Background of a danger Alert: 6% danger over the surface beneath, resolved with color-mix. Not for text. |
 | `--ds-alert-danger-border` | `rgba(240, 122, 110, 0.3)` | Border of a danger Alert: 30% danger over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-app-shell-detail-w` | `360px` | Width of the optional detail aside of AppShell (360px). |
+| `--ds-app-shell-main-padding` | `24px` | Padding around the main content of AppShell (24px). |
+| `--ds-app-shell-nav-z-index` | `40` | Layer of the off-canvas navigation panel and its scrim below the md breakpoint. Same layer as Sheet, so a Dialog opened from the panel stacks above it. |
 | `--ds-approval-card-padding` | `20px` | Horizontal padding of the header and body of an ApprovalCard (20px). |
 | `--ds-approval-card-header-min-height` | `48px` | Minimum height of the ApprovalCard header row (48px). |
 | `--ds-approval-card-header-padding-block` | `12px` | Vertical padding of the header row (12px). |
@@ -483,6 +830,10 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-badge-height` | `24px` | Height of a Badge (24px). Badges are static labels, not targets. |
 | `--ds-badge-dot-size` | `6px` | Diameter of the decorative status dot inside a Badge (6px). Never the only carrier of meaning. |
 | `--ds-badge-padding-inline` | `8px` | Horizontal padding of a Badge (8px). |
+| `--ds-breakpoint-sm` | `480px` | Small breakpoint (480px). Large phones. Components work from 320px; nothing in the DS changes layout at this width, it is a reference for consumer apps. |
+| `--ds-breakpoint-md` | `768px` | Medium breakpoint (768px). AppShell shows the sidebar in the flow from this width up (measured on the shell's own width, with a container query) and turns it into an off-canvas panel below. CSS cannot read custom properties inside @media or @container conditions, so the CSS Module repeats this value; AppShell.test.tsx asserts they agree. |
+| `--ds-breakpoint-lg` | `1024px` | Large breakpoint (1024px). Tablets in landscape and small laptops. A reference for consumer apps (for example to show a detail pane beside a list). |
+| `--ds-breakpoint-xl` | `1280px` | Extra-large breakpoint (1280px). Desktop. The handoff prototype assumed 1180px minimum; the DS itself guarantees nothing above md. |
 | `--ds-button-hover-brightness` | `0.88` | Brightness filter of the primary Button on hover (0.88): ink on dark gets slightly dimmer instead of changing color. Not for other variants or other components. |
 | `--ds-button-danger-solid-hover-brightness` | `0.9` | Brightness filter of the danger-solid Button on hover (0.9). Use only for the confirm action of a destructive dialog. |
 | `--ds-calendar-cell-size` | `36px` | Width and height of a Calendar day cell (36px). A month grid is seven cells wide. |
@@ -517,6 +868,14 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-choice-tiles-height-lg` | `48px` | Minimum height of a large tile (48px, default). |
 | `--ds-choice-tiles-columns` | `2` | Maximum number of columns of ChoiceTiles. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers. |
 | `--ds-combobox-popover-max-height` | `320px` | Maximum height of the Combobox list before it scrolls (same as the Select list). |
+| `--ds-command-palette-width` | `640px` | Maximum width of the CommandPalette panel (640px). Narrower on small screens. |
+| `--ds-command-palette-list-max-height` | `360px` | Maximum height of the CommandPalette command list before it scrolls (360px, about 9 rows at item-h). |
+| `--ds-command-palette-offset-top` | `96px` | Distance between the top of the viewport and the CommandPalette panel (96px). The panel hangs from the top so it does not jump while the list shrinks. |
+| `--ds-container-sm` | `640px` | Maximum inline size of a small Container (640px): a single column form or a narrow article. |
+| `--ds-container-md` | `960px` | Maximum inline size of a medium Container (960px): the default for settings pages and detail views. |
+| `--ds-container-lg` | `1200px` | Maximum inline size of a large Container (1200px): dashboards and tables. |
+| `--ds-content-max` | `1200px` | Default maximum inline size of page content (1200px). Container uses it when no size is given. |
+| `--ds-content-gutter` | `24px` | Inline padding of page content, and of Container (24px). It keeps content off the viewport edge on narrow screens. |
 | `--ds-data-table-selection-col-w` | `40px` | Width of the selection checkbox column of a DataTable (40px). |
 | `--ds-data-table-cell-padding-inline` | `12px` | Horizontal padding of DataTable header and body cells (12px). |
 | `--ds-data-table-header-padding-block` | `8px` | Vertical padding of DataTable header cells (8px). |
@@ -538,6 +897,7 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-empty-state-compact-padding-block` | `24px` | Vertical padding of a compact EmptyState (24px). |
 | `--ds-empty-state-compact-padding-inline` | `20px` | Horizontal padding of a compact EmptyState (20px). |
 | `--ds-empty-state-description-max-w` | `360px` | Maximum width of the EmptyState description (360px), to keep lines short. |
+| `--ds-field-set-gap` | `12px` | Vertical gap between the legend, the description and the fields of a FieldSet (12px). |
 | `--ds-field-gap` | `6px` | Vertical gap between label, control, description and error in every form field (6px, the handoff value; no 6px step exists in the space scale). Not for spacing between fields. |
 | `--ds-field-control-padding-inline` | `10px` | Inline padding inside text-like control boxes (Input, Select trigger, Select option): 10px, the handoff value. Not for buttons. |
 | `--ds-field-choice-gap` | `10px` | Gap between a Checkbox or Radio box and its label text (10px, the handoff value). Not for form layout. |
@@ -545,7 +905,16 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-file-upload-dropzone-padding-inline` | `16px` | Horizontal padding of the FileUpload drop zone (16px). |
 | `--ds-file-upload-item-padding-block` | `12px` | Vertical padding of a file row in the FileUpload list (12px). |
 | `--ds-file-upload-item-padding-inline` | `12px` | Horizontal padding of a file row in the FileUpload list (12px). |
+| `--ds-form-gap` | `20px` | Vertical gap between the fields and groups of a Form (20px). |
+| `--ds-form-summary-padding` | `16px` | Padding of the form error summary (16px). |
+| `--ds-form-summary-gap` | `8px` | Gap between the title and the list of the error summary, and between its items (8px). |
+| `--ds-grid-min-item-sm` | `160px` | Minimum width of a Grid item at minItemWidth sm (160px): small tiles and stat numbers. |
+| `--ds-grid-min-item-md` | `240px` | Minimum width of a Grid item at minItemWidth md (240px): cards. |
+| `--ds-grid-min-item-lg` | `320px` | Minimum width of a Grid item at minItemWidth lg (320px): wide cards and previews. |
+| `--ds-grid-gap` | `16px` | Default Grid gap; set at runtime via style from the `gap` prop (a space token key). |
+| `--ds-grid-columns` | `1` | Default Grid column count; set at runtime via style from the `columns` prop. |
 | `--ds-icon-stroke-width` | `1.5px` | Rendered stroke width of every Icon (1.5px). Applied with non-scaling strokes, so it stays 1.5px at every icon size. Not for filled or colored icons. |
+| `--ds-inline-gap` | `8px` | Default Inline gap; set at runtime via style from the `gap` prop (a space token key). |
 | `--ds-kbd-height` | `18px` | Height of a Kbd keycap (18px). Inline hint, not a target. |
 | `--ds-kbd-padding-inline` | `4px` | Horizontal padding of a Kbd keycap (4px). |
 | `--ds-ledger-list-date-width` | `64px` | Width of the date column (64px). |
@@ -614,6 +983,7 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-slider-thumb-dot-size` | `16px` | Diameter of the visible Slider knob (16px), centered in the thumb hit area. |
 | `--ds-spinner-stroke-width` | `2px` | Ring thickness of the Spinner (2px) at every size. Not for progress bars or icon strokes. |
 | `--ds-spinner-duration` | `700ms` | Time of one full Spinner rotation (700ms). Replaced by a static ring under prefers-reduced-motion. Not for transitions. |
+| `--ds-stack-gap` | `16px` | Default Stack gap; set at runtime via style from the `gap` prop (a space token key). |
 | `--ds-stat-card-padding` | `20px` | Padding of a StatCard (20px, same as Card). |
 | `--ds-stat-card-gap` | `8px` | Vertical gap between the label, value, content and note of a StatCard (8px). |
 | `--ds-status-steps-marker-size` | `20px` | Diameter of the numbered or checked marker of a step (20px). |
@@ -1255,6 +1625,227 @@ The real side effect (actually sending to the customer) should be held for the u
 - Instead, see ChatPanel: Free chat with an agent: use `ChatPanel`.
 - Renders: Badge, Button, Icon, Rating, Swatch, Textarea, VisuallyHidden
 
+### AppShell
+
+> The application layout: a sidebar, and a main column with a top bar above a scrollable
+content region. The sidebar and the content scroll independently; the page itself does not.
+
+Landmarks: the sidebar (`aside`, from `Sidebar`), the top bar (`header`), one `main`
+(`id="main"`), and the optional detail `aside`. A skip link to `main` comes first.
+
+Responsive contract (TOK-010): the shell measures its own width (a container query, so it
+also works inside a frame). From `--ds-breakpoint-md` (768px) up the sidebar sits in the flow.
+Below it the sidebar leaves the flow and opens as an off-canvas panel over the content,
+controlled by `isNavOpen` and `AppShellNavToggle`; while it is open the rest of the page is
+inert, `Escape` and the scrim close it, and focus returns to the toggle. The shell works from
+320px. It fills its parent: give the parent a height, or it takes the viewport height.
+
+The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
+
+- Import: `import { AppShell } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/AppShell/AppShell.tsx`
+- Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `sidebar` | `ReactNode` |  |  | The app sidebar: a `Sidebar` element. Below the md breakpoint it becomes an off-canvas panel. |
+| `topBar` | `ReactNode` |  |  | The page header: a `TopBar` element. Put an `AppShellNavToggle` in its `children` so narrow screens can open the sidebar. |
+| `children` | `ReactNode` |  |  | The page content. It is rendered inside the one `main` landmark. |
+| `detail` | `ReactNode` |  |  | Optional detail pane at the inline end, `--ds-app-shell-detail-w` (360px) wide, for the record selected in the main content. It is an `aside` landmark with its own scroll. Below the md breakpoint it moves under the main content. |
+| `detailLabel` | `string` |  |  | Accessible name of the detail aside. Default "Details" from the message catalog. |
+| `mainId` | `string` |  | `main` | `id` of the `main` element, and the target of the skip link. Default `main`. |
+| `padded` | `boolean` |  | `true` | Pads the main content with `--ds-app-shell-main-padding`. Turn it off when the content brings its own padding (a `Container` has a gutter). Default `true`. |
+| `skipLink` | `boolean` |  | `true` | Renders the skip link as the first focusable element. Default `true`; turn it off only if the app has its own. |
+| `isNavOpen` | `boolean` |  |  | Controlled state of the off-canvas sidebar (narrow screens only). Pair with `onNavOpenChange`. |
+| `defaultNavOpen` | `boolean` |  | `false` | Initial state of the off-canvas sidebar when uncontrolled. Default `false`. |
+| `onNavOpenChange` | `(isOpen: boolean) => void` |  |  | Called when the off-canvas sidebar opens or closes (toggle, `Escape`, scrim, close button). |
+| `messages` | `Partial<{ navToggle: string; navClose: string; detail: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ AppShell: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `navToggle` | `Menu` | Text of the button that opens the navigation panel on narrow screens. |
+| `navClose` | `Close menu` | Text of the button that closes the navigation panel on narrow screens. |
+| `detail` | `Details` | Accessible name of the detail aside landmark. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`
+
+#### When to use
+
+- The frame of every screen of an app: `Sidebar` + `TopBar` + content (+ optional detail pane).
+
+#### When not to use
+
+- A marketing page or a single-column document: use `Container` and let the page scroll.
+- Inside another AppShell.
+
+#### Anatomy
+
+```
+div.root  (container, fills the parent, no page scroll)
+  SkipLink                       first focusable element
+  div.nav                        wraps the Sidebar (aside); off-canvas below md
+  div.scrim                      only when the panel is open
+  div.column
+    TopBar                       header
+    div.body
+      main#main                  scrolls on its own
+      aside "Details"            optional, 360px, scrolls on its own
+```
+
+#### Responsive decision (TOK-010)
+
+**The DS guarantees every component works from 320px wide, and AppShell collapses its sidebar into an off-canvas panel below `--ds-breakpoint-md` (768px).**
+
+Why built in rather than left to apps: a sidebar hidden by an app without a way back strands keyboard and touch users, and every product would build the same panel. It is kept simple: it reuses the same `Sidebar` element (no second copy, no lost state) and CSS does the layout.
+
+- The shell measures **its own width** with a container query, so it behaves the same in a frame, a preview or a test. The 768px in the CSS is `--ds-breakpoint-md`; CSS cannot read variables inside a query, so `AppShell.test.tsx` asserts the two agree at 767/768px.
+- From md up the sidebar sits in the flow. Below, it leaves the flow; `AppShellNavToggle` (visible only below md) opens it as a panel over a scrim.
+- While open: focus moves into the panel, the rest of the page is `inert`, `Escape`, the scrim or the "Close menu" button close it, and focus returns to the toggle. It is not a `Dialog`: it keeps the sidebar's own landmarks.
+- The detail pane moves **under** the main content (half the height at most, own scroll) below md.
+- Breakpoint tokens: `--ds-breakpoint-sm|md|lg|xl` (480 / 768 / 1024 / 1280 px); content: `--ds-content-max`, `--ds-content-gutter`; `--ds-container-sm|md|lg`.
+
+#### Accessibility
+
+- Landmarks: `aside` (Sidebar, "Sidebar"), `header` (TopBar), **one** `main`, optional `aside` ("Details"). Each `nav` in the sidebar is named by its caption.
+- The skip link is the first stop and moves focus to `main`.
+- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex="0"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.
+- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.
+- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.
+- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is "Menu" (`pt-BR` "Menu"; the close button is "Close menu" / "Fechar menu").
+
+#### Content rules
+
+- One `h1` per page: `TopBar` renders it from `title`.
+- One primary action per screen, at the end of the top bar.
+
+#### Examples
+
+```tsx
+<AppShell
+  sidebar={<Sidebar workspace={workspace} sections={sections} value={route} onChange={go} />}
+  topBar={
+    <TopBar title="Orders" actions={<Button variant="primary">New order</Button>}>
+      <AppShellNavToggle />
+    </TopBar>
+  }
+  detail={selected ? <OrderDetail order={selected} /> : undefined}
+>
+  <OrdersTable />
+</AppShell>
+```
+
+#### Related components
+
+- Instead, see Container: A marketing page or a single-column document: use `Container` and let the page scroll.
+- Renders: Button, SkipLink
+
+### AppShellNavToggle
+
+> The button that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
+It is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered
+inside `AppShell`.
+
+The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
+
+- Import: `import { AppShellNavToggle } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/AppShell/AppShell.tsx`
+- Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` |  |  | Button text. Default "Menu" from the message catalog. |
+| `className` | `string` |  |  | Class name for the wrapper. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`
+
+#### When to use
+
+- The frame of every screen of an app: `Sidebar` + `TopBar` + content (+ optional detail pane).
+
+#### When not to use
+
+- A marketing page or a single-column document: use `Container` and let the page scroll.
+- Inside another AppShell.
+
+#### Anatomy
+
+```
+div.root  (container, fills the parent, no page scroll)
+  SkipLink                       first focusable element
+  div.nav                        wraps the Sidebar (aside); off-canvas below md
+  div.scrim                      only when the panel is open
+  div.column
+    TopBar                       header
+    div.body
+      main#main                  scrolls on its own
+      aside "Details"            optional, 360px, scrolls on its own
+```
+
+#### Responsive decision (TOK-010)
+
+**The DS guarantees every component works from 320px wide, and AppShell collapses its sidebar into an off-canvas panel below `--ds-breakpoint-md` (768px).**
+
+Why built in rather than left to apps: a sidebar hidden by an app without a way back strands keyboard and touch users, and every product would build the same panel. It is kept simple: it reuses the same `Sidebar` element (no second copy, no lost state) and CSS does the layout.
+
+- The shell measures **its own width** with a container query, so it behaves the same in a frame, a preview or a test. The 768px in the CSS is `--ds-breakpoint-md`; CSS cannot read variables inside a query, so `AppShell.test.tsx` asserts the two agree at 767/768px.
+- From md up the sidebar sits in the flow. Below, it leaves the flow; `AppShellNavToggle` (visible only below md) opens it as a panel over a scrim.
+- While open: focus moves into the panel, the rest of the page is `inert`, `Escape`, the scrim or the "Close menu" button close it, and focus returns to the toggle. It is not a `Dialog`: it keeps the sidebar's own landmarks.
+- The detail pane moves **under** the main content (half the height at most, own scroll) below md.
+- Breakpoint tokens: `--ds-breakpoint-sm|md|lg|xl` (480 / 768 / 1024 / 1280 px); content: `--ds-content-max`, `--ds-content-gutter`; `--ds-container-sm|md|lg`.
+
+#### Accessibility
+
+- Landmarks: `aside` (Sidebar, "Sidebar"), `header` (TopBar), **one** `main`, optional `aside` ("Details"). Each `nav` in the sidebar is named by its caption.
+- The skip link is the first stop and moves focus to `main`.
+- `main` and the detail aside scroll independently. While they overflow they become keyboard stops (`tabindex="0"`) so the arrow keys scroll them; with nothing to scroll there is no extra tab stop.
+- The closed panel is `visibility: hidden` and `inert`, so it is out of the tab order and the accessibility tree.
+- The panel slide respects `prefers-reduced-motion`; the layout mirrors in RTL.
+- `AppShellNavToggle` reports `aria-expanded` and `aria-controls`. Its label is "Menu" (`pt-BR` "Menu"; the close button is "Close menu" / "Fechar menu").
+
+#### Content rules
+
+- One `h1` per page: `TopBar` renders it from `title`.
+- One primary action per screen, at the end of the top bar.
+
+#### Examples
+
+```tsx
+<AppShell
+  sidebar={<Sidebar workspace={workspace} sections={sections} value={route} onChange={go} />}
+  topBar={
+    <TopBar title="Orders" actions={<Button variant="primary">New order</Button>}>
+      <AppShellNavToggle />
+    </TopBar>
+  }
+  detail={selected ? <OrderDetail order={selected} /> : undefined}
+>
+  <OrdersTable />
+</AppShell>
+```
+
+#### Related components
+
+- Instead, see Container: A marketing page or a single-column document: use `Container` and let the page scroll.
+- Renders: Button, SkipLink
+
 ### Avatar
 
 > A circular photo or initials of a person, in grays (never a color per person). The `name`
@@ -1619,7 +2210,7 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
 - Renders: Spinner
-- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ToastRegion
+- Used by: AppShell, AppShellNavToggle, ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ShortcutsHelp, ToastRegion
 
 ### Calendar
 
@@ -2473,6 +3064,88 @@ div[role=radiogroup] aria-labelledby=label
 - Instead, see TagGroup: For several selections at once: use `CheckboxGroup` or `TagGroup`.
 - Renders: FieldMessages, Label
 
+### Code
+
+> Monospace code: inline in a sentence, or as a block (`pre` + `code`). A block that overflows
+becomes a keyboard stop and a labelled region so it can be scrolled without a mouse.
+It does not highlight syntax.
+
+Monospace code: inline in a sentence, or a block (`pre` + `code`).
+
+- Import: `import { Code } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Code/Code.tsx`
+- Stories (Storybook title `Typography/Code`): Default, Block, BlockScrolls, InlineLongToken, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `variant` | `'inline' \| 'block'` |  | `'inline'` | `inline` (default) is a `code` element inside running text. `block` renders a `pre` with a `code` inside it, keeps the whitespace, and scrolls sideways instead of wrapping. |
+| `aria-label` | `string` |  |  | Block only. Accessible name of the block when it scrolls and becomes a region. Defaults to "Code" from the message catalog; say what the code is when there are several ("Request body"). |
+| `messages` | `Partial<{ blockLabel: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `variant`: `inline`, `block`
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Code: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `blockLabel` | `Code` | Accessible name of a scrollable code block (a labelled region), when the consumer gives none. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-font-mono`, `--ds-fs-label`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`
+
+#### When to use
+
+- Commands, identifiers, file names and short snippets in documentation or help text.
+- A block for several lines, such as a request example.
+
+#### When not to use
+
+- For data values in the UI (IDs, amounts, shortcuts): use `Text mono`, or `Kbd` for a key.
+- For syntax highlighting or a copy button: not part of this component.
+
+#### Anatomy
+
+```
+code                 inline
+pre > code           block (scrolls sideways, keeps whitespace)
+```
+
+#### Accessibility
+
+- A block that overflows horizontally gets `tabindex="0"` and `role="region"` with a name, so keyboard users can scroll it (WCAG 2.1.1). A block that fits is a plain `pre`.
+- Inline code wraps anywhere (`overflow-wrap: anywhere`) so a long token does not overflow at 320px.
+- Block text is `--ds-text` on `--ds-surface` (≥ 4.5:1).
+
+#### Internationalization
+
+`blockLabel` has English and `pt-BR` ("Código") strings. Override per instance (`messages`), through `DSProvider`, or with `aria-label`.
+
+#### Examples
+
+```tsx
+<p>Run <Code>pnpm check</Code> before you push.</p>
+
+<Code variant="block" aria-label="Request example">
+  {`curl -X POST https://api.example.com/v1/orders`}
+</Code>
+```
+
+#### Related components
+
+- Instead, see Kbd: For data values in the UI (IDs, amounts, shortcuts): use `Text mono`, or `Kbd` for a key.
+
 ### ColorOption
 
 > A selectable option that shows a color swatch and its name. It is a toggle button
@@ -2723,6 +3396,161 @@ Label with the noun ("Customer"). Empty state text is "No results" (sentence cas
 - Instead, see SearchInput: Searching the whole app or a table: `SearchInput`.
 - Renders: FieldMessages, Icon, Label, Spinner
 
+### CommandPalette
+
+> A command palette: a modal with a search field and a grouped list of commands, opened with
+`Mod+K` (configurable). Built on React Aria `Autocomplete`, `SearchField` and `ListBox` inside a
+`ModalOverlay`: the search field is a combobox that keeps focus while the arrow keys move
+through the commands (`aria-activedescendant`), `Enter` runs the highlighted command and
+closes, `Escape` closes and focus returns to where it was.
+
+Search ignores case and accents and matches label, keywords and group. With `includeHotkeys`
+it also lists the shortcuts registered through `useHotkeys`.
+
+A modal search box that finds and runs commands from the keyboard. It opens with `Mod+K` (Command K on Apple platforms, Control K elsewhere), filters a grouped list as you type and runs the chosen command. It is the "⌘K for everything" of AGENTS.md section 5.
+
+- Import: `import { CommandPalette } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/CommandPalette/CommandPalette.tsx`
+- Stories (Storybook title `Components/CommandPalette`): Default, Open, Filtered, Empty, WithRecent, GivenOrder, LongLabels, WithRegisteredHotkeys, Controlled, PortugueseBrazil, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `commands` | `readonly Command[]` | yes |  | The commands. Search covers the label, the keywords and the group. |
+| `isOpen` | `boolean` |  |  | Controlled open state. Pair with `onOpenChange`. |
+| `defaultOpen` | `boolean` |  | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `((isOpen: boolean) => void)` |  |  | Called when the palette opens (from the hotkey) or closes (Escape, outside press, a command ran). |
+| `hotkey` | `string \| false` |  | `Mod+K` | The shortcut that opens the palette, registered in the hotkey registry. Default `'Mod+K'`. It works while an input has focus. Pass `false` to open the palette only through `isOpen`. |
+| `includeHotkeys` | `boolean` |  | `false` | Also list every shortcut registered with `useHotkeys` that has a `description`, as a command that runs its handler (grouped by the shortcut's `group`, or under "Shortcuts"). A registered shortcut whose description equals a command's label is listed once. Default `false`. |
+| `recentIds` | `readonly string[]` |  |  | Ids of recently run commands, most recent first, shown under "Recent" while the search is empty. Persisting them is up to the app: collect them in `onRun`. |
+| `maxRecent` | `number` |  | `5` | Most recent commands shown. Default `5`. |
+| `onRun` | `((commandId: string) => void)` |  |  | Called after a command was chosen, with its id, so the app can update `recentIds`. |
+| `sort` | `'alphabetical' \| 'given'` |  | `'alphabetical'` | Order of groups and commands. `alphabetical` (default) sorts both with the active locale, ignoring accents; `given` keeps the order of `commands` and lists groups in order of first use. |
+| `placeholder` | `string` |  |  | Placeholder and accessible name of the search field. Default from messages: "Search or run a command". |
+| `messages` | `Partial<{ title: string; placeholder: string; commands: string; recent: string; ungrouped: string; shortcuts: string; noResults: string; noResultsHint: string; openDescription: string; openGroup: string; resultCount: (n: number) => string; }>` |  |  | Message overrides for this instance. |
+| `className` | `string` |  |  | Class name for the palette panel. |
+| `ref` | `Ref<HTMLElement>` |  |  | Ref to the panel (`role="dialog"`). |
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ CommandPalette: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `title` | `Command palette` | Accessible name of the palette dialog. |
+| `placeholder` | `Search or run a command` | Placeholder and accessible name of the search field. |
+| `commands` | `Commands` | Accessible name of the list of commands. |
+| `recent` | `Recent` | Heading of the group of recently run commands. |
+| `ungrouped` | `Commands` | Heading for commands that have no `group`. |
+| `shortcuts` | `Shortcuts` | Heading for registered shortcuts that have no `group` (when `includeHotkeys` is set). |
+| `noResults` | `No commands found` | Shown when no command matches the search. |
+| `noResultsHint` | `Try another search term.` | Second line of the empty state: what to do next. |
+| `openDescription` | `Open the command palette` | Description of the shortcut that opens the palette, listed by `ShortcutsHelp`. |
+| `openGroup` | `General` | Group of the shortcut that opens the palette. |
+| `resultCount(n: number)` | `2 commands` | Spoken after each search: how many commands match. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-command-palette-list-max-height`, `--ds-command-palette-offset-top`, `--ds-command-palette-width`, `--ds-control-h-lg`, `--ds-dialog-gutter`, `--ds-dialog-padding`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-item-h`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-overlay`, `--ds-radius-lg`, `--ds-radius-sm`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+
+#### When to use
+
+- An app with many actions or destinations that should all be reachable without the mouse: navigate, create, filter, switch.
+- Together with `useHotkeys`, so every shortcut is also discoverable by name (`includeHotkeys`).
+
+#### When not to use
+
+- Searching data (orders, customers): use `SearchInput` with suggestions, or a results page. The palette runs commands; a command may open that search.
+- Choosing a value in a form: use `Combobox` or `Select`.
+- A short list of actions on one object: use `Menu`.
+
+#### Anatomy
+
+```
+ModalOverlay (dims the page, dialog layer)
+  Modal
+    Dialog  role="dialog"  aria-label="Command palette"
+      SearchField / Input  role="combobox"  (focus stays here)
+      ListBox  role="listbox"  aria-label="Commands"
+        Section "Recent"                (only while the search is empty)
+        Section <group>
+          Option  icon · label (match highlighted) · shortcut (Kbd)
+      status    "3 commands"            (visually hidden live region)
+```
+
+#### Behavior
+
+- Search matches the label, the `keywords` and the group, ignoring case and accents (`cafe` finds "Open café report"). The matching part of the label is highlighted. Disabled commands stay searchable but cannot run.
+- The first command is highlighted when the palette opens and after each typed character, so `Enter` runs it at once. `ArrowUp` / `ArrowDown` move the highlight; focus stays in the field.
+- `Enter` (or a click) runs the command and closes the palette. The command runs once the palette has unmounted, so a dialog it opens is not fought over by focus restoration.
+- `Escape` always closes, even when the field has text (no "clear first" step), and focus returns to the element that had it.
+- The search text resets every time the palette opens.
+- Shortcuts of the page do not fire while the palette is open (see `docs/architecture/hotkeys.md`).
+- `includeHotkeys`: a registered shortcut whose description equals a command's label is listed once (the command wins); the palette's own shortcut is not listed.
+
+#### Accessibility
+
+- A modal `dialog` named "Command palette". Focus is trapped, the page behind is inert, focus returns on close (React Aria).
+- The field follows the WAI-ARIA combobox pattern with a listbox popup: `role="combobox"`, `aria-controls`, `aria-expanded="true"` and `aria-activedescendant` for the highlighted option. React Aria delays moving `aria-activedescendant` by about 500 ms while typing so screen readers are not interrupted by the highlight change.
+- Groups are `role="group"` named by their heading. Disabled options are `aria-disabled`.
+- After each search a visually hidden `role="status"` says how many commands match ("3 commands", "No commands found").
+- Shortcuts are drawn with `Kbd`, which adds spoken key names ("Control Shift O") to the option's name.
+- Keyboard: `Mod+K` opens, `↑ ↓` move, `Enter` runs, `Esc` closes. Hover highlights like the keyboard does.
+- Motion honors `prefers-reduced-motion`; `forced-colors` gets a system border and highlight outline.
+
+#### Content rules
+
+- Labels are a verb plus an object in sentence case: "Create order", "Go to customers".
+- Group names are nouns: "Navigation", "Orders". Use `keywords` for synonyms and other languages instead of long labels.
+- Messages: `title`, `placeholder`, `commands`, `recent`, `ungrouped`, `shortcuts`, `noResults`, `noResultsHint`, `openDescription`, `openGroup`, `resultCount(n)`. English and pt-BR ship; override any of them per instance or through `DSProvider messages={{ CommandPalette: { ... } }}`.
+
+#### Examples
+
+```tsx
+<HotkeyProvider>
+  <CommandPalette
+    commands={[
+      {
+        id: 'orders',
+        label: 'Go to orders',
+        group: 'Navigation',
+        shortcut: '1',
+        onAction: () => navigate('/orders'),
+      },
+      {
+        id: 'new',
+        label: 'Create order',
+        group: 'Orders',
+        keywords: ['invoice'],
+        shortcut: 'F2',
+        onAction: createOrder,
+      },
+    ]}
+    includeHotkeys
+    recentIds={recent}
+    onRun={(id) => setRecent((ids) => [id, ...ids.filter((x) => x !== id)].slice(0, 5))}
+  />
+</HotkeyProvider>
+```
+
+Open it from a button instead of (or as well as) the hotkey:
+
+```tsx
+const [open, setOpen] = useState(false);
+<Button onPress={() => setOpen(true)}>Commands</Button>
+<CommandPalette commands={commands} isOpen={open} onOpenChange={setOpen} />
+```
+
+#### Related components
+
+- Instead, see SearchInput: Searching data (orders, customers): use `SearchInput` with suggestions, or a results page. The palette runs commands; a command may open that search.
+- Instead, see Combobox: Choosing a value in a form: use `Combobox` or `Select`.
+- Instead, see Select: Choosing a value in a form: use `Combobox` or `Select`.
+- Instead, see Menu: A short list of actions on one object: use `Menu`.
+- Renders: Icon, Kbd, VisuallyHidden
+
 ### ConfirmDialog
 
 > A destructive-action confirmation: an `alertdialog` with the question as the title, the
@@ -2860,6 +3688,82 @@ Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (4
 - Instead, see Popover: Interactive content anchored to a control: use `Popover`.
 - Instead, see Alert: A message about the page: use `Alert`.
 - Renders: Button
+
+### Container
+
+> Centers page content and limits its line length: a maximum inline size plus a side gutter.
+It carries no landmark role; put it inside `main`.
+
+Centers page content and limits its line length: a maximum inline size and a side gutter.
+
+- Import: `import { Container } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Container/Container.tsx`
+- Stories (Storybook title `Layout/Container`): Default, Small, Medium, Large, Full, NoGutter, Narrow, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'full'` |  |  | Maximum inline size: `sm` 640px, `md` 960px, `lg` 1200px (`--ds-container-*`), or `full` for no maximum. Default is the page content maximum (`--ds-content-max`, 1200px). |
+| `gutter` | `boolean` |  | `true` | Adds the content gutter (`--ds-content-gutter`, 24px) as inline padding. Default `true`. |
+| `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `sm`, `md`, `lg`, `full`
+
+#### Design tokens used
+
+`--ds-container-lg`, `--ds-container-md`, `--ds-container-sm`, `--ds-content-gutter`, `--ds-content-max`
+
+#### When to use
+
+- Inside the `main` of a page to keep content readable on wide screens.
+- Settings pages and forms (`size="sm"` or `"md"`), dashboards (`"lg"`).
+
+#### When not to use
+
+- Inside `Card`, `Dialog` or `Sheet`: those set their own padding.
+- For full-bleed content such as a table: use `size="full"` or skip the container.
+
+#### Anatomy
+
+```
+div (max-inline-size, margin-inline: auto, padding-inline: gutter)
+  children
+```
+
+#### Responsive behavior
+
+The container is `inline-size: 100%` up to its maximum, so it narrows with the viewport and keeps its gutter down to 320px.
+
+#### Accessibility
+
+- Carries no landmark role. The page's single `main` comes from `AppShell` (or your own `<main>`); put the container inside it.
+- Logical properties (`margin-inline`, `padding-inline`) make it direction-neutral.
+
+#### Examples
+
+```tsx
+<main id="main">
+  <Container size="md">
+    <Heading level={1}>Settings</Heading>…
+  </Container>
+</main>
+```
+
+Inside `AppShell`, which already pads `main`, use `<Container gutter={false}>` or `<AppShell padded={false}>`.
+
+#### Related components
+
+- Instead, see Card: Inside `Card`, `Dialog` or `Sheet`: those set their own padding.
+- Instead, see Dialog: Inside `Card`, `Dialog` or `Sheet`: those set their own padding.
+- Instead, see Sheet: Inside `Card`, `Dialog` or `Sheet`: those set their own padding.
 
 ### CurrencyInput
 
@@ -3565,6 +4469,84 @@ Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (4
 - Instead, see Sheet: Viewing or editing a record next to its list: use `Sheet`.
 - Instead, see Popover: Interactive content anchored to a control: use `Popover`.
 - Instead, see Alert: A message about the page: use `Alert`.
+- Used by: ShortcutsHelp
+
+### Divider
+
+> A 1px line that separates groups of content, built on React Aria `Separator`
+(`<hr>`, or `role="separator"` with `aria-orientation` when vertical). Prefer spacing to
+separate related things; use a divider where the content changes topic.
+
+A 1px line that separates groups of content. Built on React Aria `Separator`.
+
+- Import: `import { Divider } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Divider/Divider.tsx`
+- Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Vertical, Weights
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | `horizontal` (default) separates stacked content; `vertical` separates items in a row and needs a parent with a height. |
+| `variant` | `'subtle' \| 'default' \| 'strong'` |  | `'default'` | Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default` (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls and overlays). Default `default`. |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLElement>` |  |  | Ref to the separator element. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`, `aria-label`, `aria-labelledby`
+- From `DOMProps` (@react-types/shared): `id`
+- From `SeparatorProps` (react-aria): `elementType`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `variant`: `subtle`, `default`, `strong`
+
+#### Design tokens used
+
+`--ds-line`, `--ds-line-strong`, `--ds-line-subtle`
+
+#### When to use
+
+- Between sections of a panel or a menu-like list where the topic changes.
+- Vertically, between inline groups in a toolbar.
+
+#### When not to use
+
+- To separate closely related items: use spacing.
+- Around every field or row: borders-first hierarchy comes from surfaces, not a line between everything.
+- To wrap a Card in a Card: use a divider inside one card instead.
+
+#### Anatomy
+
+```
+hr (1px line)          horizontal
+div[role=separator]    vertical, with aria-orientation
+```
+
+#### Accessibility
+
+- Rendered by React Aria: a horizontal divider is an `<hr>`; a vertical one has `role="separator"` and `aria-orientation="vertical"`.
+- It is a thematic break for assistive technology, so do not use it as a pure visual rule between unrelated things.
+- Line colors are borders, not text; `forced-colors` paints them with `CanvasText`.
+
+#### Examples
+
+```tsx
+<Stack gap={4}>
+  <Section />
+  <Divider />
+  <Section />
+</Stack>
+
+<Inline>
+  <Button>Bold</Button>
+  <Divider orientation="vertical" />
+  <Button>Link</Button>
+</Inline>
+```
 
 ### DueIndicator
 
@@ -3943,6 +4925,80 @@ Rules for authors:
 
 - Used by: Checkbox, CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Switch, Textarea
 
+### FieldSet
+
+> Groups related fields under a caption: a real `fieldset` with a `legend`, an optional
+description, and disabled propagation. Use it for a set of fields that answer one question
+(an address, notification channels), not for every section of a form.
+
+A group of related fields under a caption: a real `fieldset` with a `legend`, an optional description and disabled propagation.
+
+- Import: `import { FieldSet } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/FieldSet/FieldSet.tsx`
+- Stories (Storybook title `Components/FieldSet`): Default, WithDescription, Disabled, WithRadioGroup, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `legend` | `ReactNode` | yes |  | Caption of the group, required. It is the `legend`: screen readers announce it before each field in the group ("Billing address, Street"). Write it in sentence case; CSS makes it a mono caption. |
+| `description` | `ReactNode` |  |  | Optional help for the whole group, linked to the fieldset with `aria-describedby`. |
+| `isDisabled` | `boolean` |  | `false` | Disables every native control inside (inputs, selects, textareas, buttons), the way `<fieldset disabled>` does: they cannot be focused or submitted and dim together. Controls that are not native elements (menus, custom widgets) are not affected: disable those individually. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-field-set-gap`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-opacity-disabled`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+
+#### When to use
+
+- A set of fields that answer one question: an address, a date range, notification channels.
+- A group that should be disabled together.
+
+#### When not to use
+
+- For every section of a form: a heading is enough to organize a long form.
+- For a single `RadioGroup` or `CheckboxGroup`: they already render a labelled group.
+
+#### Anatomy
+
+```
+fieldset
+  legend        mono caption, uppercase by CSS
+  p             description (optional)
+  div           the fields, stacked with --ds-field-set-gap
+```
+
+#### Accessibility
+
+- A `fieldset` + `legend` is announced as a named group; screen readers read the legend before each field ("Billing address, Street").
+- `isDisabled` uses the native attribute, so inputs, selects, textareas and buttons inside cannot be focused or submitted, and are skipped by constraint validation. Controls that are not native elements (menus, custom widgets) are **not** affected: disable those yourself.
+- The legend uses `--ds-text-2` (the faint `--ds-text-3` is too low-contrast for a name).
+
+#### Content rules
+
+- Legends are short nouns in sentence case ("Billing address"); CSS uppercases them. Descriptions say what the group is for, not how to fill each field.
+
+#### Examples
+
+```tsx
+<FieldSet legend="Billing address" description="Shown on every invoice.">
+  <Input label="Street" name="street" />
+  <Input label="City" name="city" />
+</FieldSet>
+
+<FieldSet legend="Shipping address" isDisabled>…</FieldSet>
+```
+
+#### Related components
+
+- Instead, see RadioGroup: For a single `RadioGroup` or `CheckboxGroup`: they already render a labelled group.
+- Instead, see CheckboxGroup: For a single `RadioGroup` or `CheckboxGroup`: they already render a labelled group.
+
 ### FileUpload
 
 > A drop zone with a "Choose files" button and the list of added files (React Aria `DropZone`
@@ -4071,6 +5127,334 @@ Dragging is only a pointer shortcut; nothing depends on it. While files are drag
 
 - Renders: Button, Description, IconButton, Progress, VisuallyHidden
 
+### Form
+
+> A form built on React Aria `Form`: native validation by default, server errors through
+`validationErrors`, a vertical rhythm of `--ds-form-gap` between its children, and an
+optional error summary. Fields inside inherit the form's `validationBehavior`.
+
+Put exactly one primary action in it, at the end ("Save changes"), and keep submit enabled:
+a disabled submit gives no way to learn what is wrong.
+
+A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
+
+- Import: `import { Form } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Form/Form.tsx`
+- Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `validationBehavior` | `'native' \| 'aria'` |  | `'native'` | Native validation (default) uses the browser's constraint validation: a failed submit focuses the first invalid field. `aria` marks fields invalid with ARIA only and never blocks the submit; use it when the server is the only validator. |
+| `validationErrors` | `ValidationErrors` |  |  | Errors from the server, keyed by the field `name`. The matching fields become invalid and show the message; the first one takes focus (or the summary does, with `errorSummary`). Clear them (pass `undefined`) when the user edits the field or submits again. |
+| `errorSummary` | `boolean` |  | `false` | Shows a `FormErrorSummary` at the top of the form. After a failed submit it takes focus and lists the invalid fields as links. Default `false`. To place the summary elsewhere, leave this off and render `FormErrorSummary` inside the form yourself. |
+| `children` | `ReactNode` |  |  | The fields and actions of the form. |
+| `messages` | `Partial<{ summaryTitle: (count: number) => string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLFormElement>` |  |  | Ref to the `<form>` element. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`, `aria-label`, `aria-labelledby`
+- From `DOMProps` (@react-types/shared): `id`
+- From `FormProps` (@react-types/shared): `action`, `autoCapitalize`, `autoComplete`, `encType`, `method`, `onInvalid`, `onReset`, `onSubmit`, `role`, `target`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Form: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `summaryTitle(count: number)` | `Fix 2 fields before saving` | Title of the error summary shown after a failed submit. `count` is the number of invalid fields. |
+
+#### Design tokens used
+
+`--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-form-gap`, `--ds-form-summary-gap`, `--ds-form-summary-padding`, `--ds-fs-small`, `--ds-lh-small`, `--ds-radius-lg`, `--ds-space-5`, `--ds-text`, `--ds-text-2`, `--ds-weight-semibold`
+
+#### When to use
+
+- Any set of fields submitted together: create or edit a record, settings, sign-in.
+- When you want a failed submit to move focus to the first problem and to list all problems.
+
+#### When not to use
+
+- A single search box or an auto-saving inline edit: use the field alone.
+- A filter bar that updates as you type: no submit, no form.
+
+#### Anatomy
+
+```
+form (flex column, gap --ds-form-gap)
+  FormErrorSummary   (errorSummary prop, or placed by hand)
+  children           fields, FieldSets, actions
+```
+
+#### Validation flow
+
+1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.
+2. React Aria displays the errors (`FieldError`) and focuses the **first invalid field**, whose error is read through `aria-describedby`.
+3. With `errorSummary`, focus goes to the **summary** instead: a `role="alert"` box, "Fix 2 fields before saving", listing each invalid field as a link that focuses it.
+4. Fixing a field (on blur, when React Aria commits the edit) updates the summary; it disappears when nothing is left.
+5. Server errors: set `validationErrors` after the request; the matching fields show their message and the summary (if on) lists them and takes focus. Clear them on the next submit or edit.
+
+Keep the submit button enabled: a disabled submit gives no way to learn what is wrong.
+
+#### Accessibility
+
+- The summary is `role="alert"` with `tabindex="-1"`, so it is announced and can take focus programmatically. The links use the field label (the required marker is excluded) and the field's error text.
+- Radio and checkbox groups count once, under the group's label.
+- Give the form a name (`aria-label` or `aria-labelledby`) when it should be a landmark.
+
+#### Content rules
+
+- The summary title is "Fix {n} fields before saving" (pluralized; "Fix 1 field before saving"). `pt-BR` has "Corrija {n} campos antes de salvar".
+- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
+
+#### Examples
+
+```tsx
+<Form aria-label="Profile" errorSummary onSubmit={save} validationErrors={errors}>
+  <Input label="Full name" name="name" isRequired />
+  <FieldSet legend="Contact">
+    <Input label="Email" name="email" type="email" isRequired />
+  </FieldSet>
+  <Button type="submit" variant="primary">
+    Save changes
+  </Button>
+</Form>
+```
+
+### FormErrorSummary
+
+> The error summary of a `Form`: after a failed submit (or new server errors) it takes focus,
+is announced (`role="alert"`), says how many fields need fixing, and lists them as links that
+move focus to the field. It renders nothing while the form is valid. Place it inside a
+`Form`, or turn it on with the form's `errorSummary` prop.
+
+A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
+
+- Import: `import { FormErrorSummary } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Form/Form.tsx`
+- Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `className` | `string` |  |  | Class name for the summary. |
+
+#### Design tokens used
+
+`--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-form-gap`, `--ds-form-summary-gap`, `--ds-form-summary-padding`, `--ds-fs-small`, `--ds-lh-small`, `--ds-radius-lg`, `--ds-space-5`, `--ds-text`, `--ds-text-2`, `--ds-weight-semibold`
+
+#### When to use
+
+- Any set of fields submitted together: create or edit a record, settings, sign-in.
+- When you want a failed submit to move focus to the first problem and to list all problems.
+
+#### When not to use
+
+- A single search box or an auto-saving inline edit: use the field alone.
+- A filter bar that updates as you type: no submit, no form.
+
+#### Anatomy
+
+```
+form (flex column, gap --ds-form-gap)
+  FormErrorSummary   (errorSummary prop, or placed by hand)
+  children           fields, FieldSets, actions
+```
+
+#### Validation flow
+
+1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.
+2. React Aria displays the errors (`FieldError`) and focuses the **first invalid field**, whose error is read through `aria-describedby`.
+3. With `errorSummary`, focus goes to the **summary** instead: a `role="alert"` box, "Fix 2 fields before saving", listing each invalid field as a link that focuses it.
+4. Fixing a field (on blur, when React Aria commits the edit) updates the summary; it disappears when nothing is left.
+5. Server errors: set `validationErrors` after the request; the matching fields show their message and the summary (if on) lists them and takes focus. Clear them on the next submit or edit.
+
+Keep the submit button enabled: a disabled submit gives no way to learn what is wrong.
+
+#### Accessibility
+
+- The summary is `role="alert"` with `tabindex="-1"`, so it is announced and can take focus programmatically. The links use the field label (the required marker is excluded) and the field's error text.
+- Radio and checkbox groups count once, under the group's label.
+- Give the form a name (`aria-label` or `aria-labelledby`) when it should be a landmark.
+
+#### Content rules
+
+- The summary title is "Fix {n} fields before saving" (pluralized; "Fix 1 field before saving"). `pt-BR` has "Corrija {n} campos antes de salvar".
+- Field messages say how to fix the problem ("Enter a complete email address."). A static `errorMessage` text replaces the server's text for that field, so use a function when the server may reply: `errorMessage={(v) => v.validationDetails.valueMissing ? 'Enter a name.' : v.validationErrors.join(' ')}`.
+
+#### Examples
+
+```tsx
+<Form aria-label="Profile" errorSummary onSubmit={save} validationErrors={errors}>
+  <Input label="Full name" name="name" isRequired />
+  <FieldSet legend="Contact">
+    <Input label="Email" name="email" type="email" isRequired />
+  </FieldSet>
+  <Button type="submit" variant="primary">
+    Save changes
+  </Button>
+</Form>
+```
+
+### Grid
+
+> A CSS grid with equal columns: a fixed `columns` count, or an auto-fill grid that keeps each
+item at least `minItemWidth` wide (the responsive choice for card grids). Gaps are space
+token keys.
+
+A grid of equal columns: either a fixed number, or as many as fit with a minimum item width.
+
+- Import: `import { Grid } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Grid/Grid.tsx`
+- Stories (Storybook title `Layout/Grid`): Default, TwoColumns, AutoFillMedium, AutoFillSmall, AutoFillLarge, NarrowContainer, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `columns` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '7' \| '8' \| '9' \| '10' \| '11' \| '12'` |  |  | A fixed number of equal columns (1 to 12). Items can shrink below their content width. |
+| `minItemWidth` | `'sm' \| 'md' \| 'lg'` |  |  | Fills the row with as many equal columns as fit, each at least this wide: `sm` 160px, `md` 240px, `lg` 320px (`--ds-grid-min-item-*`). Collapses to one column on narrow screens. |
+| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'4'` | Space between rows and columns, as a key of the space scale. Default `4`. |
+| `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the list reset is applied and `role="list"` keeps the list semantics in Safari. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-grid-columns`, `--ds-grid-gap`, `--ds-grid-min-item-lg`, `--ds-grid-min-item-md`, `--ds-grid-min-item-sm`, `--ds-space-4`
+
+#### When to use
+
+- A page of cards or stats: `minItemWidth` reflows from many columns to one without media queries.
+- A form laid out in two or three equal columns: `columns`.
+
+#### When not to use
+
+- For one column of content: use `Stack`.
+- For a row that wraps and does not need aligned columns: use `Inline`.
+- For tabular data: use `DataTable`.
+
+#### Anatomy
+
+```
+div (grid, gap)
+  children (one per cell)
+```
+
+#### Responsive behavior
+
+- `minItemWidth` uses `repeat(auto-fill, minmax(min(<width>, 100%), 1fr))`: in a container narrower than the minimum, the grid is one column and never overflows.
+- `columns` does not collapse by itself. For a layout that changes by screen size, prefer `minItemWidth`, or switch `columns` from the app with a media query or `useMediaQuery`.
+
+#### Accessibility
+
+- No semantics of its own; use `as="ul"` when the cells are list items.
+- Source order is visual order for the row-first reading direction. Do not rely on CSS placement to reorder content.
+- Cells can shrink (`minmax(0, 1fr)`), so long words wrap instead of widening a column.
+
+#### Examples
+
+```tsx
+<Grid minItemWidth="md" gap={4}>
+  <StatCard … />
+  <StatCard … />
+  <StatCard … />
+</Grid>
+
+<Grid columns={2} gap={4}>
+  <Input label="First name" />
+  <Input label="Last name" />
+</Grid>
+```
+
+#### Related components
+
+- Instead, see Stack: For one column of content: use `Stack`.
+- Instead, see Inline: For a row that wraps and does not need aligned columns: use `Inline`.
+- Instead, see DataTable: For tabular data: use `DataTable`.
+
+### Heading
+
+> A heading whose semantic level and visual size are separate choices, so the document outline
+stays correct while the design picks the size.
+
+A heading whose semantic level (`h1` to `h6`) and visual size are separate choices.
+
+- Import: `import { Heading } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Heading/Heading.tsx`
+- Stories (Storybook title `Typography/Heading`): Default, Display, Title, HeadingSize, LevelIndependentOfSize, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `level` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has nothing to do with how big the text looks: keep levels sequential and use one `h1` per page. Default `2`. |
+| `size` | `'title' \| 'display' \| 'heading'` |  |  | Visual size, independent of `level`: `display` (34px, page hero), `title` (22px) or `heading` (17px). Default: `title` for level 1, `heading` for the others. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `title`, `display`, `heading`
+
+#### Design tokens used
+
+`--ds-font-sans`, `--ds-fs-display`, `--ds-fs-heading`, `--ds-fs-title`, `--ds-lh-display`, `--ds-lh-heading`, `--ds-lh-title`, `--ds-text`, `--ds-tracking-display`, `--ds-tracking-title`, `--ds-weight-semibold`
+
+#### When to use
+
+- Any heading in page content. The level builds the outline; the size is chosen for the design.
+
+#### When not to use
+
+- For the page title inside the header: `TopBar` renders its own heading.
+- For a card caption: `Card` renders its title as a mono caption heading.
+- For bold text that is not a heading: use `Text`.
+
+#### Anatomy
+
+```
+h{level}  (semibold, size from the type scale)
+```
+
+#### Accessibility
+
+- Keep levels sequential and use one `h1` per page. Pick the level for the outline, then the size for the look: an `h1` can use `size="heading"`, an `h4` can use `size="display"`.
+- Headings use `text-wrap: balance` and break long words, so they wrap at 320px.
+- Color is `--ds-text` (≥ 4.5:1 on every base surface).
+
+#### Content rules
+
+- Sentence case. Short and specific ("Recent orders"), no trailing punctuation.
+
+#### Examples
+
+```tsx
+<Heading level={1} size="display">Orders</Heading>
+<Heading level={2}>Recent</Heading>
+<Heading level={3} size="title">Details</Heading>
+```
+
+#### Related components
+
+- Instead, see TopBar: For the page title inside the header: `TopBar` renders its own heading.
+- Instead, see Card: For a card caption: `Card` renders its title as a mono caption heading.
+- Instead, see Text: For bold text that is not a heading: use `Text`.
+
 ### Icon
 
 > An inline SVG icon (Lucide, bundled) that inherits the text color and draws a 1.5px stroke.
@@ -4161,7 +5545,7 @@ import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui
 #### Related components
 
 - Instead, see Spinner: For a loading indicator that moves: use `Spinner`.
-- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup
+- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup
 
 ### IconButton
 
@@ -4266,6 +5650,84 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 - Instead, see Link: For navigation: use `Link`.
 - Renders: Icon, Tooltip
 - Used by: Alert, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
+
+### Inline
+
+> Lays its children out in a horizontal row with a consistent gap. It wraps by default.
+Direction follows the writing mode, so it mirrors in right-to-left languages.
+
+A horizontal row of children with one consistent gap. It wraps by default, so a row never overflows a narrow screen.
+
+- Import: `import { Inline } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Inline/Inline.tsx`
+- Stories (Storybook title `Layout/Inline`): Default, LargeGap, JustifyBetween, JustifyEnd, AlignBaseline, Wrapping, NoWrap, AsList, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'2'` | Space between children, as a key of the space scale (`2` = `--ds-space-2` = 8px). Default `2`. |
+| `align` | `'center' \| 'start' \| 'end' \| 'baseline' \| 'stretch'` |  | `'center'` | Cross-axis (vertical) alignment. Default `center`. |
+| `justify` | `'center' \| 'start' \| 'end' \| 'between'` |  | `'start'` | Main-axis (horizontal) distribution. `between` pushes the first and last child to the edges. Default `start`. |
+| `wrap` | `boolean` |  | `true` | Whether children wrap onto the next line when they do not fit. Default `true`, so a row never overflows a narrow screen. |
+| `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the list reset is applied and `role="list"` keeps the list semantics in Safari. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-inline-gap`, `--ds-space-2`
+
+#### When to use
+
+- Buttons in a footer, chips, a number and its caption, a toolbar of controls.
+- Anything that should flow left to right (right to left in RTL) and wrap when out of room.
+
+#### When not to use
+
+- For a column: use `Stack`.
+- For equal columns that must line up across rows: use `Grid`.
+- For a form row where fields share the width: use `Grid` with `columns`.
+
+#### Anatomy
+
+```
+div (flex row, wrap, gap)
+  children
+```
+
+#### Accessibility
+
+- No semantics of its own: choose `as` for meaning.
+- Source order is visual order, so keyboard and reading order match. Do not reorder children with CSS.
+- Wrapping keeps content reachable at 320px and 200% zoom (WCAG 1.4.10 reflow).
+- Direction follows the writing mode, so the row mirrors in RTL.
+
+#### Content rules
+
+- Put the primary action last in a footer row (`justify="end"`), after the secondary action.
+
+#### Examples
+
+```tsx
+<Inline justify="end">
+  <Button>Cancel</Button>
+  <Button variant="primary">Save changes</Button>
+</Inline>
+
+<Inline gap={3} align="baseline">
+  <Text size="body" mono>1,240</Text>
+  <Text tone="secondary">orders this month</Text>
+</Inline>
+```
+
+#### Related components
+
+- Instead, see Stack: For a column: use `Stack`.
+- Instead, see Grid: For equal columns that must line up across rows: use `Grid`.
 
 ### InlineConfirm
 
@@ -4596,7 +6058,7 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 #### Related components
 
 - Renders: VisuallyHidden
-- Used by: SearchInput, Tab, TabList, TabPanel, Tabs
+- Used by: CommandPalette, SearchInput, ShortcutsHelp, Tab, TabList, TabPanel, Tabs
 
 ### Label
 
@@ -5152,7 +6614,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -5275,7 +6737,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -5392,7 +6854,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -5496,7 +6958,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -5720,7 +7182,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -6969,6 +8431,83 @@ Rules for authors:
 
 - Used by: Checkbox, Switch
 
+### ScrollArea
+
+> A scrolling container with thin, themed scrollbars. It scrolls inside the space its parent
+gives it: give it a height (or put it in a flex column and let it shrink).
+
+While its content overflows it becomes a keyboard stop (`tabindex="0"`) and a labelled
+`region`, so keyboard users can scroll it with the arrow keys (WCAG 2.1.1). When nothing
+overflows it is a plain container, with no tab stop and no landmark. A name is therefore
+always required.
+
+A scrolling container with thin, themed scrollbars that stays keyboard accessible.
+
+- Import: `import { ScrollArea } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/ScrollArea/ScrollArea.tsx`
+- Stories (Storybook title `Layout/ScrollArea`): Default, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `orientation` | `'both' \| 'horizontal' \| 'vertical'` |  | `'vertical'` | Which axes scroll. Default `vertical`. |
+| `aria-label` | `string` |  |  | Accessible name of the region ("Order history"). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the region. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-line-control`, `--ds-space-1`, `--ds-text-3`
+
+#### When to use
+
+- A bounded list, log or panel inside a page: a notification list, a long form step, a code output.
+- A region that must scroll on its own while the page around it does not.
+
+#### When not to use
+
+- For the page itself: let the document scroll, or use `AppShell`'s `main`.
+- For a table: `DataTable` has its own horizontal scroll and sticky parts.
+- Inside a Dialog or Sheet body: those already scroll their body.
+
+#### Anatomy
+
+```
+div (overflow auto, scrollbar-width: thin)
+  div (content wrapper, observed for size changes)
+    children
+```
+
+#### Accessibility
+
+- A scroll container must be reachable by keyboard (WCAG 2.1.1). While the content overflows, the area gets `tabindex="0"` and `role="region"` with your label; with nothing to scroll it is a plain container (no tab stop, no landmark). A `ResizeObserver` keeps this in sync as content or size changes.
+- Because focusability is dynamic, the type always requires a name, so a scrollable area is never unlabelled.
+- Arrow keys, `PageUp`/`PageDown`, `Home`/`End` scroll it natively.
+- The focus ring is drawn inside the box, so a clipping parent cannot hide it.
+- Scrollbars are the browser's thin scrollbars colored with `--ds-line-control` (3:1 on the background); on hover they brighten to `--ds-text-3`.
+
+#### Content rules
+
+- Name it for what it holds: "Order history", "Activity", not "Scrollable area".
+
+#### Examples
+
+```tsx
+<div style={{ blockSize: 240 }}>
+  <ScrollArea aria-label="Activity">{events.map(renderEvent)}</ScrollArea>
+</div>
+```
+
+#### Related components
+
+- Instead, see AppShell: For the page itself: let the document scroll, or use `AppShell`'s `main`.
+- Instead, see DataTable: For a table: `DataTable` has its own horizontal scroll and sticky parts.
+
 ### SearchInput
 
 > A search box: leading search icon, clear button (and `Escape` clears), optional decorative
@@ -7483,6 +9022,101 @@ DialogTrigger
 - Instead, see Sidebar: Page-level navigation: use `Sidebar`.
 - Renders: IconButton
 
+### ShortcutsHelp
+
+> A dialog that lists the registered keyboard shortcuts (`useHotkeys` with a `description`),
+grouped by their `group`, one table per group with the keys drawn by `Kbd`. Opens with `?` by
+default. Place it once, anywhere under the app, and it stays in sync with what is mounted.
+
+A dialog that lists the keyboard shortcuts registered on the page, one table per group, with the keys drawn by `Kbd`. It opens with `?` by default.
+
+- Import: `import { ShortcutsHelp } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/ShortcutsHelp/ShortcutsHelp.tsx`
+- Stories (Storybook title `Components/ShortcutsHelp`): Default, Open, Empty, PortugueseBrazil
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `isOpen` | `boolean` |  |  | Controlled open state. Pair with `onOpenChange`. |
+| `defaultOpen` | `boolean` |  | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `((isOpen: boolean) => void)` |  |  | Called when the dialog opens (from the hotkey) or closes. |
+| `hotkey` | `string \| false` |  | `?` | The shortcut that opens the dialog, registered in the hotkey registry. Default `'?'`. It does not fire while an input has focus, so typing a question mark still works. Pass `false` to open the dialog only through `isOpen`. |
+| `includeInactive` | `boolean` |  | `false` | Also list shortcuts whose scope is not active right now. Default `false`. |
+| `messages` | `Partial<{ title: string; description: string; ungrouped: string; empty: string; close: string; action: string; keys: string; openDescription: string; openGroup: string; }>` |  |  | Message overrides for this instance. |
+| `className` | `string` |  |  | Class name for the dialog panel. |
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ ShortcutsHelp: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `title` | `Keyboard shortcuts` | Title of the dialog. |
+| `description` | `Shortcuts that work on this page.` | Description under the title. |
+| `ungrouped` | `Other` | Heading for shortcuts that have no `group`. |
+| `empty` | `No keyboard shortcuts on this page.` | Shown when no shortcut is registered. |
+| `close` | `Close` | Label of the button that closes the dialog. |
+| `action` | `Action` | Column header: what the shortcut does. |
+| `keys` | `Shortcut` | Column header: the keys. |
+| `openDescription` | `Show keyboard shortcuts` | Description of the shortcut that opens the dialog. |
+| `openGroup` | `General` | Group of the shortcut that opens the dialog. |
+
+#### Design tokens used
+
+`--ds-font-mono`, `--ds-fs-caption`, `--ds-lh-caption`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-text`, `--ds-text-2`, `--ds-tracking-caption`, `--ds-weight-regular`
+
+#### When to use
+
+- Once per app (or per module), next to the `CommandPalette`, so users can learn the shortcuts without leaving the page.
+
+#### When not to use
+
+- To register shortcuts: use `useHotkeys`. This only lists what is registered.
+- As the only way to find a command: the `CommandPalette` also searches by name.
+
+#### Anatomy
+
+```
+Dialog "Keyboard shortcuts"  (size md, Close button)
+  table  caption = group
+    tr   th[scope=row] description · td Kbd keys
+```
+
+#### Behavior
+
+- Lists shortcuts that have a `description` (`useHotkeys`). Groups are sorted with the locale; shortcuts without a `group` go under "Other", last. Rows are sorted by description.
+- Updates while it is open: shortcuts that mount or unmount appear or disappear.
+- It lists itself ("Show keyboard shortcuts") and the `CommandPalette` shortcut.
+- While it is open, page shortcuts do not fire.
+
+#### Accessibility
+
+- A modal `dialog` named "Keyboard shortcuts" with a description; focus is trapped and returns on close.
+- Each group is a real `<table>` named by its `<caption>`; the description is the row header, the keys are the cell. The column headers exist for screen readers and are visually hidden.
+- Keys use `Kbd`, with spoken names for symbols.
+- `Escape` and the Close button close it.
+
+#### Content rules
+
+- Descriptions are verb plus object in sentence case ("Create order"), as in the command palette.
+- Messages: `title`, `description`, `ungrouped`, `empty`, `close`, `action`, `keys`, `openDescription`, `openGroup`. English and pt-BR ship.
+
+#### Examples
+
+```tsx
+<HotkeyProvider>
+  <App />
+  <ShortcutsHelp />
+</HotkeyProvider>
+```
+
+#### Related components
+
+- Instead, see CommandPalette: As the only way to find a command: the `CommandPalette` also searches by name.
+- Renders: Button, Dialog, Kbd, VisuallyHidden
+
 ### Sidebar
 
 > The app sidebar: a workspace block, navigation sections, an optional status card, a footer
@@ -7777,6 +9411,7 @@ The TODO asks for a `.ds-sr-only` utility class too. It belongs in `src/styles/b
 #### Related components
 
 - Instead, see Link: As a general "go to section" link: use `Link`.
+- Used by: AppShell, AppShellNavToggle
 
 ### Slider
 
@@ -7981,6 +9616,85 @@ One element: a ring with an open top edge. Size comes from `--ds-icon-sm|md|lg`,
 - Instead, see Skeleton: For large areas or page loads: use `Skeleton` so the layout does not jump.
 - Instead, see Progress: When you know the progress: use `Progress` with a value.
 - Used by: Button, ChatPanel, Combobox
+
+### Stack
+
+> Lays its children out in a vertical column with a consistent gap. The gap is a space token
+key, never a pixel value. Children can shrink below their content width (`min-inline-size: 0`).
+
+A vertical column of children with one consistent gap. The gap is a key of the space scale, never a pixel value.
+
+- Import: `import { Stack } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Stack/Stack.tsx`
+- Stories (Storybook title `Layout/Stack`): Default, SmallGap, LargeGap, AlignStart, AlignCenter, AlignEnd, AsList, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'4'` | Space between children, as a key of the space scale (`4` = `--ds-space-4` = 16px). Default `4`. |
+| `align` | `'center' \| 'start' \| 'end' \| 'stretch'` |  | `'stretch'` | Cross-axis (horizontal) alignment of the children. Default `stretch`. |
+| `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the list reset is applied and `role="list"` keeps the list semantics in Safari. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-space-4`, `--ds-stack-gap`
+
+#### When to use
+
+- Stack blocks of content, fields or cards with the same rhythm.
+- A list of items with a uniform gap (`as="ul"`).
+
+#### When not to use
+
+- For a row of items: use `Inline`.
+- For a grid of equal cells: use `Grid`.
+- To space one pair of elements apart once: a margin from the parent is simpler. Use the layout components for repeated structure.
+
+#### Anatomy
+
+```
+div (flex column, gap)
+  children
+```
+
+#### Accessibility
+
+- A `div` Stack adds no semantics. Choose `as` for the meaning: `ul`/`ol` for lists, `section` with a label for a region.
+- `list-style: none` removes list semantics in Safari/VoiceOver, so lists get an explicit `role="list"`.
+- Children can shrink below their content width (`min-inline-size: 0`), so long text wraps instead of overflowing at 320px.
+- Direction-neutral: `start` and `end` follow the writing direction.
+
+#### Content rules
+
+- None. Stack holds whatever its children are.
+
+#### Examples
+
+```tsx
+<Stack gap={6}>
+  <Heading level={2}>Account</Heading>
+  <Stack gap={3}>
+    <Input label="Name" />
+    <Input label="Email" />
+  </Stack>
+</Stack>
+
+<Stack as="ul" gap={2}>
+  <li>Orders</li>
+  <li>Customers</li>
+</Stack>
+```
+
+#### Related components
+
+- Instead, see Inline: For a row of items: use `Inline`.
+- Instead, see Grid: For a grid of equal cells: use `Grid`.
 
 ### StatCard
 
@@ -8285,7 +9999,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.
@@ -9211,6 +10925,86 @@ TagGroup           (grid; optional visible label)
 - Instead, see RadioGroup: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Renders: Icon
 
+### Text
+
+> Body text on the type scale. It sets size, line height, color tone and an optional mono
+face; the element (`as`) carries the meaning. Use `Heading` for headings and `Code` for code.
+
+Body text on the type scale, with a tone, an optional mono face and truncation.
+
+- Import: `import { Text } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Text/Text.tsx`
+- Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Mono, AsParagraph, Truncated, LongText, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `size` | `'body' \| 'caption' \| 'label' \| 'meta' \| 'small'` |  | `'body'` | Type scale step: `body` 15px, `small` 14px, `label` 13px, `meta` 12px, or `caption` 11.5px. `caption` is always Geist Mono, uppercase by CSS, with extra tracking: write the source text in sentence case. Default `body`. |
+| `tone` | `'default' \| 'secondary' \| 'tertiary'` |  | `'default'` | Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals the lowest importance: use it for meta and hints, never for primary content. Default `default`. |
+| `mono` | `boolean` |  | `false` | Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts. |
+| `truncate` | `boolean` |  | `false` | Keeps the text on one line and cuts it with an ellipsis. Put the full text in `title` or nearby for sighted users. |
+| `as` | `'span' \| 'dd' \| 'div' \| 'dt' \| 'em' \| 'figcaption' \| 'label' \| 'legend' \| 'li' \| 'p' \| 'small' \| 'strong'` |  | `'span'` | Element to render. Default `span`, which is safe inside any inline context; use `p` for a paragraph. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `body`, `caption`, `label`, `meta`, `small`
+- `tone`: `default`, `secondary`, `tertiary`
+
+#### Design tokens used
+
+`--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`, `--ds-weight-regular`
+
+#### When to use
+
+- Paragraphs, supporting lines, labels, counts, metadata and small captions.
+- Anywhere a size from the type scale or a secondary tone is needed on plain text.
+
+#### When not to use
+
+- Headings: use `Heading`.
+- Code: use `Code`.
+- Links: use `Link`. Field labels: use the `Label` of the field.
+
+#### Anatomy
+
+```
+span (or the element in `as`)
+```
+
+#### Accessibility
+
+- `tertiary` passes 4.5:1 on every surface (TOK-004), but it carries the lowest importance: use it for hints and meta, never for primary content.
+- Truncated text hides content visually: show the full value elsewhere (a `title`, a tooltip, a detail view) when it matters.
+- The caption's uppercase is CSS only, so screen readers read the sentence-case source.
+- Long unbroken values wrap (`overflow-wrap: break-word`).
+
+#### Content rules
+
+- Sentence case. Numbers, codes and amounts go in `mono`, formatted with `Intl` (see `utils`).
+
+#### Examples
+
+```tsx
+<Text as="p">Your order has shipped.</Text>
+<Text size="small" tone="secondary">Updated 2 minutes ago</Text>
+<Text size="caption" tone="secondary">Shipping</Text>
+<Text mono>ORD-1048</Text>
+<Text truncate>{longFileName}</Text>
+```
+
+#### Related components
+
+- Instead, see Heading: Headings: use `Heading`.
+- Instead, see Code: Code: use `Code`.
+- Instead, see Link: Links: use `Link`. Field labels: use the `Label` of the field.
+- Instead, see Label: Links: use `Link`. Field labels: use the `Label` of the field.
+
 ### Textarea
 
 > Multi-line text field built on React Aria `TextField` + `TextArea`. Same contract as `Input`.
@@ -9704,7 +11498,7 @@ span.root   (or as="h2", "div", ...)
 #### Related components
 
 - Instead, see SkipLink: For a skip link that appears on focus: use `SkipLink`.
-- Used by: Alert, ApprovalCard, Chart, ChatPanel, DataTable, FileUpload, Kbd, Link, MatrixGrid, NavItem, SegmentedControl, StatusSteps, Tab, TabList, TabPanel, Tabs, Textarea, ToastRegion
+- Used by: Alert, ApprovalCard, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Link, MatrixGrid, NavItem, SegmentedControl, ShortcutsHelp, StatusSteps, Tab, TabList, TabPanel, Tabs, Textarea, ToastRegion
 
 ---
 
@@ -9752,6 +11546,41 @@ overlay is a separate task (GAP-004).
 useHotkey(combo: string, handler: (event: KeyboardEvent) => void, { enabled, scope, allowInEditable, allowRepeat, preventDefault, platform, }?: UseHotkeyOptions): void
 ```
 
+#### useHotkeys
+
+Registers keyboard shortcuts in the registry (see `HotkeyProvider`) for as long as the
+component is mounted.
+
+- `keys`: `Mod+K`, `F2`, `N`, `1`, `Shift+/`, `Escape`. `Mod` is Command on macOS and Control
+  elsewhere.
+- Ignores editable fields (`allowInEditable`), IME composition, auto-repeat (`allowRepeat`),
+  events another handler already prevented and, for page-level shortcuts, focus inside an open
+  dialog or menu (`allowInOverlay`).
+- Only one named scope is active at a time (`useHotkeyScope`); shortcuts of other scopes wait.
+- In development, registering the same combo twice in one scope logs a warning; the most
+  recent registration wins.
+- `description` and `group` make a shortcut appear in `useRegisteredHotkeys`, the
+  command palette and `ShortcutsHelp`.
+
+Handlers may close over props and state: the latest handler always runs. The array can be
+created inline on each render.
+
+```ts
+useHotkeys(definitions: readonly HotkeyDefinition[]): void
+```
+
+#### useHotkeyScope
+
+Makes `name` the active scope while the component is mounted (and `isActive`): shortcuts
+registered with `scope: name` fire and `global` ones stop, until the component unmounts.
+Scopes stack: the most recently mounted one wins. Use it in the body of a panel, a wizard or
+an editor that has its own shortcuts. Dialogs do not need it for page shortcuts: those are
+already ignored while focus is inside an open dialog.
+
+```ts
+useHotkeyScope(name: string, { isActive }?: UseHotkeyScopeOptions): void
+```
+
 #### useMediaQuery
 
 Subscribes to a CSS media query. SSR-safe: on the server (and during hydration)
@@ -9777,6 +11606,16 @@ True when the user asks the OS for reduced motion (`prefers-reduced-motion: redu
 
 ```ts
 usePrefersReducedMotion(): boolean
+```
+
+#### useRegisteredHotkeys
+
+The shortcuts that have a `description`, in registration order, for a help dialog or a
+command list. By default only those that can fire now (active scope). Updates when
+shortcuts mount, unmount or the active scope changes. Empty during server rendering.
+
+```ts
+useRegisteredHotkeys({ includeInactive, }?: UseRegisteredHotkeysOptions): readonly RegisteredHotkey[]
 ```
 
 #### useToast
@@ -9996,6 +11835,37 @@ keeps any combining marks attached to its last letter. All occurrences are retur
 
 ```ts
 highlightMatch(text: string, query: string): HighlightSegment[]
+```
+
+#### hotkeyKeys
+
+The parts of a combo in display order, ready for `Kbd`'s `keys`: `'Mod+K'` gives
+`['Mod', 'K']`, `'Shift+/'` gives `['Shift', '/']`. Returns `[]` for a malformed combo (never throws).
+
+```ts
+hotkeyKeys(combo: string): string[]
+```
+
+#### HotkeyProvider
+
+Optional root provider for the shortcut registry. Without it `useHotkeys` uses one shared
+registry for the whole page, which is enough for most apps; add the provider to isolate the
+shortcuts of a subtree (micro frontends, tests, Storybook) or to pin the platform.
+
+Place it inside `DSProvider` and above the `CommandPalette` and `ShortcutsHelp` it feeds.
+
+```ts
+HotkeyProvider({ children, platform }: HotkeyProviderProps): React.JSX.Element
+```
+
+#### HotkeyRegistry
+
+The store behind `HotkeyProvider`, `useHotkeys` and `useRegisteredHotkeys`. One `keydown`
+listener on `document` is attached while at least one shortcut is registered. Framework
+independent so it can be tested without React.
+
+```ts
+typeof HotkeyRegistry
 ```
 
 #### iconNames

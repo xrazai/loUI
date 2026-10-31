@@ -240,7 +240,10 @@ export type TokenName =
   | 'grid.min-item-sm'
   | 'grid.min-item-md'
   | 'grid.min-item-lg'
+  | 'grid.gap'
+  | 'grid.columns'
   | 'icon.stroke-width'
+  | 'inline.gap'
   | 'kbd.height'
   | 'kbd.padding-inline'
   | 'ledger-list.date-width'
@@ -309,6 +312,7 @@ export type TokenName =
   | 'slider.thumb-dot-size'
   | 'spinner.stroke-width'
   | 'spinner.duration'
+  | 'stack.gap'
   | 'stat-card.padding'
   | 'stat-card.gap'
   | 'status-steps.marker-size'
@@ -570,7 +574,10 @@ export type TokenCssVar =
   | '--ds-grid-min-item-sm'
   | '--ds-grid-min-item-md'
   | '--ds-grid-min-item-lg'
+  | '--ds-grid-gap'
+  | '--ds-grid-columns'
   | '--ds-icon-stroke-width'
+  | '--ds-inline-gap'
   | '--ds-kbd-height'
   | '--ds-kbd-padding-inline'
   | '--ds-ledger-list-date-width'
@@ -639,6 +646,7 @@ export type TokenCssVar =
   | '--ds-slider-thumb-dot-size'
   | '--ds-spinner-stroke-width'
   | '--ds-spinner-duration'
+  | '--ds-stack-gap'
   | '--ds-stat-card-padding'
   | '--ds-stat-card-gap'
   | '--ds-status-steps-marker-size'
@@ -918,7 +926,10 @@ export const tokenValues = {
   'grid.min-item-sm': { cssVar: '--ds-grid-min-item-sm', type: 'dimension', value: '160px' },
   'grid.min-item-md': { cssVar: '--ds-grid-min-item-md', type: 'dimension', value: '240px' },
   'grid.min-item-lg': { cssVar: '--ds-grid-min-item-lg', type: 'dimension', value: '320px' },
+  'grid.gap': { cssVar: '--ds-grid-gap', type: 'dimension', value: '16px' },
+  'grid.columns': { cssVar: '--ds-grid-columns', type: 'number', value: 1 },
   'icon.stroke-width': { cssVar: '--ds-icon-stroke-width', type: 'dimension', value: '1.5px' },
+  'inline.gap': { cssVar: '--ds-inline-gap', type: 'dimension', value: '8px' },
   'kbd.height': { cssVar: '--ds-kbd-height', type: 'dimension', value: '18px' },
   'kbd.padding-inline': { cssVar: '--ds-kbd-padding-inline', type: 'dimension', value: '4px' },
   'ledger-list.date-width': { cssVar: '--ds-ledger-list-date-width', type: 'dimension', value: '64px' },
@@ -987,6 +998,7 @@ export const tokenValues = {
   'slider.thumb-dot-size': { cssVar: '--ds-slider-thumb-dot-size', type: 'dimension', value: '16px' },
   'spinner.stroke-width': { cssVar: '--ds-spinner-stroke-width', type: 'dimension', value: '2px' },
   'spinner.duration': { cssVar: '--ds-spinner-duration', type: 'duration', value: '700ms' },
+  'stack.gap': { cssVar: '--ds-stack-gap', type: 'dimension', value: '16px' },
   'stat-card.padding': { cssVar: '--ds-stat-card-padding', type: 'dimension', value: '20px' },
   'stat-card.gap': { cssVar: '--ds-stat-card-gap', type: 'dimension', value: '8px' },
   'status-steps.marker-size': { cssVar: '--ds-status-steps-marker-size', type: 'dimension', value: '20px' },

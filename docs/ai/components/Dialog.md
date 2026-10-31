@@ -129,3 +129,4 @@ Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (4
 - Instead, see Sheet: Viewing or editing a record next to its list: use `Sheet`.
 - Instead, see Popover: Interactive content anchored to a control: use `Popover`.
 - Instead, see Alert: A message about the page: use `Alert`.
+- Used by: ShortcutsHelp

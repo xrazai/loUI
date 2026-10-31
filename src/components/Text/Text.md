@@ -35,7 +35,7 @@ Other attributes and `ref` go to the root.
 
 ## Accessibility
 
-- `tertiary` fails 4.5:1 on raised and hover surfaces (TODO Appendix A). Use it only for hints on the base surfaces, never for essential text on a raised surface.
+- `tertiary` passes 4.5:1 on every surface (TOK-004), but it carries the lowest importance: use it for hints and meta, never for primary content.
 - Truncated text hides content visually: show the full value elsewhere (a `title`, a tooltip, a detail view) when it matters.
 - The caption's uppercase is CSS only, so screen readers read the sentence-case source.
 - Long unbroken values wrap (`overflow-wrap: break-word`).

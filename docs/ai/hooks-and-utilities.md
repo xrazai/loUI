@@ -46,6 +46,41 @@ overlay is a separate task (GAP-004).
 useHotkey(combo: string, handler: (event: KeyboardEvent) => void, { enabled, scope, allowInEditable, allowRepeat, preventDefault, platform, }?: UseHotkeyOptions): void
 ```
 
+### useHotkeys
+
+Registers keyboard shortcuts in the registry (see `HotkeyProvider`) for as long as the
+component is mounted.
+
+- `keys`: `Mod+K`, `F2`, `N`, `1`, `Shift+/`, `Escape`. `Mod` is Command on macOS and Control
+  elsewhere.
+- Ignores editable fields (`allowInEditable`), IME composition, auto-repeat (`allowRepeat`),
+  events another handler already prevented and, for page-level shortcuts, focus inside an open
+  dialog or menu (`allowInOverlay`).
+- Only one named scope is active at a time (`useHotkeyScope`); shortcuts of other scopes wait.
+- In development, registering the same combo twice in one scope logs a warning; the most
+  recent registration wins.
+- `description` and `group` make a shortcut appear in `useRegisteredHotkeys`, the
+  command palette and `ShortcutsHelp`.
+
+Handlers may close over props and state: the latest handler always runs. The array can be
+created inline on each render.
+
+```ts
+useHotkeys(definitions: readonly HotkeyDefinition[]): void
+```
+
+### useHotkeyScope
+
+Makes `name` the active scope while the component is mounted (and `isActive`): shortcuts
+registered with `scope: name` fire and `global` ones stop, until the component unmounts.
+Scopes stack: the most recently mounted one wins. Use it in the body of a panel, a wizard or
+an editor that has its own shortcuts. Dialogs do not need it for page shortcuts: those are
+already ignored while focus is inside an open dialog.
+
+```ts
+useHotkeyScope(name: string, { isActive }?: UseHotkeyScopeOptions): void
+```
+
 ### useMediaQuery
 
 Subscribes to a CSS media query. SSR-safe: on the server (and during hydration)
@@ -71,6 +106,16 @@ True when the user asks the OS for reduced motion (`prefers-reduced-motion: redu
 
 ```ts
 usePrefersReducedMotion(): boolean
+```
+
+### useRegisteredHotkeys
+
+The shortcuts that have a `description`, in registration order, for a help dialog or a
+command list. By default only those that can fire now (active scope). Updates when
+shortcuts mount, unmount or the active scope changes. Empty during server rendering.
+
+```ts
+useRegisteredHotkeys({ includeInactive, }?: UseRegisteredHotkeysOptions): readonly RegisteredHotkey[]
 ```
 
 ### useToast
@@ -290,6 +335,37 @@ keeps any combining marks attached to its last letter. All occurrences are retur
 
 ```ts
 highlightMatch(text: string, query: string): HighlightSegment[]
+```
+
+### hotkeyKeys
+
+The parts of a combo in display order, ready for `Kbd`'s `keys`: `'Mod+K'` gives
+`['Mod', 'K']`, `'Shift+/'` gives `['Shift', '/']`. Returns `[]` for a malformed combo (never throws).
+
+```ts
+hotkeyKeys(combo: string): string[]
+```
+
+### HotkeyProvider
+
+Optional root provider for the shortcut registry. Without it `useHotkeys` uses one shared
+registry for the whole page, which is enough for most apps; add the provider to isolate the
+shortcuts of a subtree (micro frontends, tests, Storybook) or to pin the platform.
+
+Place it inside `DSProvider` and above the `CommandPalette` and `ShortcutsHelp` it feeds.
+
+```ts
+HotkeyProvider({ children, platform }: HotkeyProviderProps): React.JSX.Element
+```
+
+### HotkeyRegistry
+
+The store behind `HotkeyProvider`, `useHotkeys` and `useRegisteredHotkeys`. One `keydown`
+listener on `document` is attached while at least one shortcut is registered. Framework
+independent so it can be tested without React.
+
+```ts
+typeof HotkeyRegistry;
 ```
 
 ### iconNames

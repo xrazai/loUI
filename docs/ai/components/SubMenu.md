@@ -72,7 +72,7 @@ Keyboard contract (AGENTS.md section 8):
 
 - Items are real `menuitem`, `menuitemcheckbox` or `menuitemradio` elements with `aria-checked`; the handoff used `tabIndex=0` divs with no keyboard activation.
 - Danger is red text plus the item's own label ("Delete order"); the colour is never the only signal. `tone="danger"` does not confirm: open a `ConfirmDialog` from `onAction`.
-- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` because `--ds-text-3` fails 4.5:1 on the raised surface.
+- The shortcut hint is visual; bind the key yourself. It uses `--ds-text-2` so the hint stays legible next to the label.
 - Focus is shown with the accent ring; forced colors use a `Highlight` outline.
 - Layer: `--ds-z-popover` (see Dialog doc, "Layers", for menus opened inside a Dialog or Sheet).
 - The `MoreActionsMenu` trigger has a tooltip that repeats its name.

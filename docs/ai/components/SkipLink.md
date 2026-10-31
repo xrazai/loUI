@@ -81,3 +81,4 @@ The TODO asks for a `.ds-sr-only` utility class too. It belongs in `src/styles/b
 ## Related components
 
 - Instead, see Link: As a general "go to section" link: use `Link`.
+- Used by: AppShell, AppShellNavToggle

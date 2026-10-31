@@ -88,4 +88,4 @@ import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui
 ## Related components
 
 - Instead, see Spinner: For a loading indicator that moves: use `Spinner`.
-- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup
+- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup

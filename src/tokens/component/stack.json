@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "stack": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Default Stack gap; set at runtime via style from the `gap` prop (a space token key)."
+    }
+  }
+}
