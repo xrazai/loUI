@@ -67,6 +67,46 @@ export type { TooltipPlacement, TooltipProps } from './components/Tooltip';
 export type { IconButtonTooltipOptions } from './components/IconButton';
 
 // Form fields
+export { Calendar, DatePicker } from './components/DatePicker';
+export type {
+  CalendarMessages,
+  CalendarProps,
+  DatePickerMessages,
+  DatePickerProps,
+  DatePickerSize,
+} from './components/DatePicker';
+export { Combobox } from './components/Combobox';
+export type {
+  ComboboxGroup,
+  ComboboxMessages,
+  ComboboxOption,
+  ComboboxProps,
+  ComboboxSize,
+} from './components/Combobox';
+export { CurrencyInput } from './components/CurrencyInput';
+export type { CurrencyInputProps } from './components/CurrencyInput';
+export { FileUpload } from './components/FileUpload';
+export type {
+  FileRejection,
+  FileRejectionReason,
+  FileUploadMessages,
+  FileUploadProps,
+} from './components/FileUpload';
+export { NumberField } from './components/NumberField';
+export type {
+  NumberFieldMessages,
+  NumberFieldProps,
+  NumberFieldSize,
+} from './components/NumberField';
+export { SearchInput } from './components/SearchInput';
+export type {
+  SearchInputMessages,
+  SearchInputProps,
+  SearchInputSize,
+  SearchSuggestion,
+} from './components/SearchInput';
+export { Slider } from './components/Slider';
+export type { SliderProps } from './components/Slider';
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
 export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
 export { Description, FieldError, FieldMessages, Label, RequiredMark } from './components/Field';

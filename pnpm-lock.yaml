@@ -166,6 +166,9 @@ importers:
 
   .:
     dependencies:
+      '@internationalized/date':
+        specifier: ^3.12.4
+        version: 3.12.4
       lucide-react:
         specifier: ~1.66.0
         version: 1.66.0(@types/react@19.3.0)(react@19.3.1)

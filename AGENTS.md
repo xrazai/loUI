@@ -159,8 +159,8 @@ Target: **WCAG 2.2 Level AA**, using the WAI-ARIA Authoring Practices patterns. 
 | Tooltip | Shows on focus and hover; `Esc` dismisses; content hoverable |
 | Accordion / disclosure | `Enter/Space` toggles; optional `↑/↓/Home/End` between headers |
 | Slider | `←/→/↑/↓` step; `PageUp/PageDown` large step; `Home/End` min/max |
-| Spinbutton (stepper) | `↑/↓` step; `PageUp/PageDown`; `Home/End`; typing allowed |
-| Calendar grid | Arrows move by day/week; `PageUp/PageDown` month; `Shift+PageUp/Down` year; `Home/End` week; `Enter/Space` selects |
+| Number field (stepper) | React Aria `NumberField`: textbox with `aria-roledescription="Number field"` (RAC intentionally avoids `role="spinbutton"`); `↑/↓` step; `PageUp/PageDown` step; `Home/End` min/max; typing allowed |
+| Calendar grid | Arrows move by day/week; `PageUp/PageDown` month; `Shift+PageUp/Down` year; `Home/End` first/last day of the month (React Aria); `Enter/Space` selects |
 | Data table | Header buttons sort (`aria-sort`); row action via real button/link; selection checkboxes labelled |
 | Toast / alert | Announced via live region; actions focusable; auto-dismiss pauses on hover/focus |
 
