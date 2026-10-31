@@ -8,6 +8,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **AI-006** (2026-10-31) Eight tested recipes in `src/recipes/` (stories under `Recipes/`, behavior + axe + keyboard tests): DestructiveConfirm, UndoableAction, FormWithValidation, FilterableTable, SettingsPage, DetailSheet, ApprovalQueue, CommandPaletteSetup; docs in `docs/recipes/*.md` embed the recipe source rewritten to `@loui/ds` imports and are kept in sync by `src/recipes/sync.ts` (a test fails when stale); served by the MCP `get_recipe` tool.
+- **GAP-008** (2026-10-31) `useUndoable`: optimistic action + Undo toast, revert on undo, commit on timeout, async commit with error toast.
 - **TEST-010** (2026-10-31) i18n enforcement: TypeScript-API scan of every component/pattern source fails on hard-coded JSX text or user-visible/ARIA prop literals (`// i18n-ignore: <reason>` escape hatch) — 0 violations in 99 files; runtime parity check of `en`/`pt-BR` catalogs (keys, types, arity, no empty strings); +40% pseudo-locale render of 10 components at 320px asserts no overflow.
 - **TEST-021** (2026-10-31) Hover/focus style assertions poll via `expectHovered()` (8 components) — removes load-dependent flakiness.
 - **TEST-020** (2026-10-31) Open-state stories for Select, Combobox and DatePicker so popovers get visual baselines; Menu popover capped by `--ds-menu-max-width` (360px).

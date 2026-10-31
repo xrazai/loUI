@@ -118,7 +118,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
 - [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
-- [ ] **AI-006** (P1 · M) **Golden examples / recipes:** small, fully tested compositions (destructive confirm, form with validation, filterable table, empty state, settings page, undo toast, approval queue). Each passes axe, keyboard-contract and visual tests, and is referenced from the manifest so agents imitate verified patterns instead of inventing markup.
 - [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
 - [ ] **AI-016** (P2 · S) Manifest field for deprecated props (consumed by `eslint-plugin-loui/no-deprecated` and the MCP server); RTL pseudo-locale smoke render.
 - [ ] **AI-013** (P3 · L) More AI-native components: tool-call/step display, citations/sources, feedback controls (thumbs), regenerate action, markdown renderer recipe for `ChatPanel.renderContent`. (Streaming, Stop/Retry, approval cards are done.)
@@ -147,7 +146,6 @@ The handoff inventory is missing common building blocks. Confirm which belong in
 - [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
-- [ ] **GAP-008** (P3 · S) Undo pattern as a hook (`useUndoable`) on top of Toast; the recipe already exists in `Toast.md`.
 
 ---
 
