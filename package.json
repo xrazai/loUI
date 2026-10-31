@@ -39,7 +39,7 @@
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build": "tsdown && pnpm manifest:build",
+    "build": "tsdown --config-loader tsx && pnpm manifest:build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . && stylelint \"src/**/*.css\"",
     "format": "prettier --write .",

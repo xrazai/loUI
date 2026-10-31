@@ -154,7 +154,7 @@ export function AppShellNavToggle(input: AppShellNavToggleProps): JSX.Element;
 
 // @public (undocumented)
 export interface AppShellNavToggleProps {
-    children?: ReactNode;
+    children?: string;
     className?: string;
 }
 
@@ -1957,6 +1957,24 @@ export interface TopBarProps extends Omit<ComponentPropsWithRef<'header'>, 'titl
 
 export { TriangleAlertIcon }
 
+// @public (undocumented)
+export interface UndoableAction {
+    apply: () => void;
+    commit?: (() => void | Promise<void>) | undefined;
+    message: ReactNode;
+    onCommit?: (() => void) | undefined;
+    onUndo?: (() => void) | undefined;
+    revert: () => void | Promise<void>;
+    timeout?: number | undefined;
+    tone?: Exclude<ToastTone, 'danger'> | undefined;
+}
+
+// @public (undocumented)
+export interface UndoableHandle {
+    key: string;
+    undo: () => void;
+}
+
 // @public
 export function useControllableState<T>(input: UseControllableStateOptions<T>): [T, (value: T) => void];
 
@@ -2015,6 +2033,20 @@ export interface UseRegisteredHotkeysOptions {
 
 // @public
 export function useToast(): ToastApi;
+
+// @public
+export function useUndoable(input?: UseUndoableOptions): UseUndoableResult;
+
+// @public (undocumented)
+export interface UseUndoableOptions {
+    messages?: Partial<typeof messages_39.en>;
+    toast?: ToastApi;
+}
+
+// @public (undocumented)
+export interface UseUndoableResult {
+    run: (action: UndoableAction) => UndoableHandle;
+}
 
 // @public
 export function VisuallyHidden(input: VisuallyHiddenProps): JSX.Element;
