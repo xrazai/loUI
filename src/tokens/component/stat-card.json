@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "stat-card": {
+    "$type": "dimension",
+    "padding": {
+      "$value": "{space.5}",
+      "$description": "Padding of a StatCard (20px, same as Card)."
+    },
+    "gap": {
+      "$value": "{space.2}",
+      "$description": "Vertical gap between the label, value, content and note of a StatCard (8px)."
+    }
+  }
+}
