@@ -1,0 +1,38 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: inline-block;
+    flex: none;
+    inline-size: var(--ds-swatch-size-md);
+    block-size: var(--ds-swatch-size-md);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-swatch-color);
+    border: 1px solid var(--ds-swatch-ring);
+    vertical-align: middle;
+
+    /* The color is the content: keep it in forced-colors mode. */
+    forced-color-adjust: none;
+  }
+
+  .root[data-size='sm'] {
+    inline-size: var(--ds-swatch-size-sm);
+    block-size: var(--ds-swatch-size-sm);
+  }
+
+  .root[data-size='lg'] {
+    inline-size: var(--ds-swatch-size-lg);
+    block-size: var(--ds-swatch-size-lg);
+  }
+
+  /* Invalid color in production: an empty, dashed circle instead of a silent transparent one. */
+  .root[data-empty] {
+    border-style: dashed;
+    border-color: var(--ds-line-control);
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      border-color: ButtonText;
+    }
+  }
+}

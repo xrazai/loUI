@@ -1,0 +1,23 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "ledger-list": {
+    "date-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Width of the date column (64px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between the columns of an entry (12px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Horizontal padding of an entry (24px)."
+    }
+  }
+}

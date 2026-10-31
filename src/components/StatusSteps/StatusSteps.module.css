@@ -1,0 +1,136 @@
+@layer components {
+  .root {
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ds-font-sans);
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    min-inline-size: 0;
+  }
+
+  /*
+   * Connector to the previous step: decorative, drawn behind the marker. It spans from the
+   * middle of the previous step to the middle of this one, at the marker's vertical center.
+   */
+  .step + .step::before {
+    content: '';
+    position: absolute;
+    inset-block-start: calc(
+      var(--ds-status-steps-padding-block) + (var(--ds-status-steps-marker-size) / 2) -
+        (var(--ds-status-steps-connector-thickness) / 2)
+    );
+    inset-inline-start: -50%;
+    inline-size: 100%;
+    block-size: var(--ds-status-steps-connector-thickness);
+    background-color: var(--ds-line-strong);
+  }
+
+  .step[data-state='complete']::before,
+  .step[data-state='current']::before {
+    background-color: var(--ds-success);
+  }
+
+  .content {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-status-steps-gap);
+    min-inline-size: 0;
+    padding: var(--ds-status-steps-padding-block) var(--ds-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+  }
+
+  button.content {
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  button.content[data-hovered] {
+    background-color: var(--ds-surface-hover);
+  }
+
+  button.content[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .marker {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--ds-status-steps-marker-size);
+    block-size: var(--ds-status-steps-marker-size);
+    border: 1.5px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-surface);
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-semibold);
+    line-height: 1;
+  }
+
+  .step[data-state='complete'] .marker {
+    border-color: var(--ds-success);
+    background-color: var(--ds-success);
+    color: var(--ds-text-inverse);
+  }
+
+  .step[data-state='current'] .marker {
+    border-color: var(--ds-primary-bg);
+    background-color: var(--ds-primary-bg);
+    color: var(--ds-text-inverse);
+  }
+
+  /* text-2: text-3 fails 4.5:1 on the hovered step of an interactive list. */
+  .label {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-meta);
+    overflow-wrap: anywhere;
+  }
+
+  .step[data-state='complete'] .label,
+  .step[data-state='current'] .label {
+    color: var(--ds-text);
+  }
+
+  @media (forced-colors: active) {
+    .step + .step::before {
+      background-color: ButtonText;
+    }
+
+    .marker {
+      border-color: ButtonText;
+    }
+
+    .step[data-state='current'] .marker,
+    .step[data-state='complete'] .marker {
+      border-color: Highlight;
+      background-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
+  }
+}

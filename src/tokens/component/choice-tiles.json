@@ -1,0 +1,33 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "choice-tiles": {
+    "min-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 120,
+        "unit": "px"
+      },
+      "$description": "Minimum tile width. Columns collapse so a tile never gets narrower than this (responsive columns)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between tiles (8px)."
+    },
+    "height-md": {
+      "$type": "dimension",
+      "$value": "{size.control-h-md}",
+      "$description": "Minimum height of a medium tile (40px)."
+    },
+    "height-lg": {
+      "$type": "dimension",
+      "$value": "{size.control-h-lg}",
+      "$description": "Minimum height of a large tile (48px, default)."
+    },
+    "columns": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "Maximum number of columns of ChoiceTiles. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers."
+    }
+  }
+}

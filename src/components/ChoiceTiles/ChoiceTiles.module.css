@@ -1,0 +1,114 @@
+@layer components {
+  /*
+   * `--ds-choice-tiles-columns` is the maximum column count (set from the `columns` prop). Each
+   * track is at least the larger of the minimum tile width and an equal share, so the grid
+   * collapses to fewer columns on narrow containers instead of squeezing the tiles.
+   */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(
+        max(
+          var(--ds-choice-tiles-min-width),
+          calc(
+            (100% - (var(--ds-choice-tiles-columns) - 1) * var(--ds-choice-tiles-gap)) /
+              var(--ds-choice-tiles-columns)
+          )
+        ),
+        1fr
+      )
+    );
+    gap: var(--ds-choice-tiles-gap);
+  }
+
+  .tile {
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  .button {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 0;
+    min-block-size: var(--ds-choice-tiles-height-lg);
+    padding: var(--ds-space-1) var(--ds-space-3);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-bg);
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .grid[data-size='md'] .button {
+    min-block-size: var(--ds-choice-tiles-height-md);
+  }
+
+  .label {
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  /* text-2: text-3 fails 4.5:1 on the selected (accent-soft) background. */
+  .meta {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-lh-caption);
+    overflow-wrap: anywhere;
+  }
+
+  /* Hover brightens the border; the fill never changes (the border must stay at 3:1 or better). */
+  .button[data-hovered] {
+    border-color: var(--ds-text-3);
+    color: var(--ds-text);
+  }
+
+  /* Selected: accent border doubled to 2px, soft accent fill and ink text. */
+  .button[data-selected] {
+    border-width: 2px;
+    border-color: var(--ds-accent);
+    background-color: var(--ds-accent-soft);
+    color: var(--ds-text);
+  }
+
+  .button[data-invalid] {
+    border-color: var(--ds-danger);
+  }
+
+  .button[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .tile[data-disabled] .button {
+    opacity: var(--ds-opacity-disabled);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  .tile[data-readonly] .button {
+    cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    .button[data-selected] {
+      border-color: Highlight;
+    }
+  }
+}

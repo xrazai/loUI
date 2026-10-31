@@ -1,0 +1,64 @@
+@layer components {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-due-indicator-gap);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    white-space: nowrap;
+  }
+
+  .dot {
+    flex: none;
+    inline-size: var(--ds-due-indicator-dot-size);
+    block-size: var(--ds-due-indicator-dot-size);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-text-2);
+  }
+
+  .date {
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-weight: var(--ds-weight-medium);
+  }
+
+  .status {
+    color: var(--ds-text-2);
+  }
+
+  .root[data-tone='danger'] .dot {
+    background-color: var(--ds-danger);
+  }
+
+  .root[data-tone='danger'] .status {
+    color: var(--ds-danger);
+  }
+
+  .root[data-tone='warning'] .dot {
+    background-color: var(--ds-warning);
+  }
+
+  .root[data-tone='warning'] .status {
+    color: var(--ds-warning);
+  }
+
+  .root[data-tone='success'] .dot {
+    background-color: var(--ds-success);
+  }
+
+  .root[data-tone='success'] .status {
+    color: var(--ds-success);
+  }
+
+  @media (forced-colors: active) {
+    .dot {
+      background-color: CanvasText;
+      forced-color-adjust: none;
+    }
+
+    .status {
+      color: CanvasText;
+    }
+  }
+}

@@ -1,0 +1,83 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    min-inline-size: 0;
+    min-block-size: var(--ds-control-h-md);
+    padding-inline: var(--ds-space-3);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .label {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* text-2: text-3 fails 4.5:1 on the selected (accent-soft) background. */
+  .mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    white-space: nowrap;
+  }
+
+  /* Hover brightens the border; the fill never changes (the border must stay at 3:1 or better). */
+  .root[data-hovered] {
+    border-color: var(--ds-text-3);
+  }
+
+  /* Selected: accent border doubled to 2px (padding compensates), soft accent fill, check mark. */
+  .root[data-selected] {
+    padding-inline: calc(var(--ds-space-3) - 1px);
+    border-width: 2px;
+    border-color: var(--ds-accent);
+    background-color: var(--ds-accent-soft);
+  }
+
+  .root[data-selected] .mark {
+    color: var(--ds-accent);
+  }
+
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    .root[data-selected] {
+      border-color: Highlight;
+    }
+
+    .root[data-selected] .mark {
+      color: ButtonText;
+    }
+  }
+}

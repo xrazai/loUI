@@ -1,0 +1,31 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "status-steps": {
+    "marker-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Diameter of the numbered or checked marker of a step (20px)."
+    },
+    "connector-thickness": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Thickness of the decorative line between two steps (2px)."
+    },
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Vertical padding of a step (4px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between the marker and the label (8px)."
+    }
+  }
+}

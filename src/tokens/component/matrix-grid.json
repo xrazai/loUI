@@ -1,0 +1,60 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "matrix-grid": {
+    "cell-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Width and height of a toggle cell (40px, above the 24px minimum target)."
+    },
+    "column-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Width of a data column (64px)."
+    },
+    "label-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 220,
+        "unit": "px"
+      },
+      "$description": "Width of the row header column (220px)."
+    },
+    "count-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Width of the optional count column (64px)."
+    },
+    "row-min-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 60,
+        "unit": "px"
+      },
+      "$description": "Minimum height of a row (60px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of rows and the header (20px)."
+    },
+    "columns": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.text-2}",
+      "$description": "Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`."
+    }
+  }
+}

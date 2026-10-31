@@ -1,0 +1,110 @@
+@layer components {
+  .root {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ds-font-sans);
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ds-ledger-list-gap);
+    padding-block: var(--ds-space-3);
+    padding-inline: var(--ds-ledger-list-padding-inline);
+    border-block-end: 1px solid var(--ds-line-subtle);
+  }
+
+  .root[data-deletable] .entry {
+    grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto auto;
+    padding-inline-end: var(--ds-space-3);
+  }
+
+  .date {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    white-space: nowrap;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-inline-size: 0;
+  }
+
+  .title {
+    overflow: hidden;
+    color: var(--ds-text);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sub {
+    overflow: hidden;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .amounts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .amount {
+    display: inline-flex;
+    gap: var(--ds-space-1);
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .entry[data-direction='zero'] .amount {
+    color: var(--ds-text-2);
+  }
+
+  .amount[data-tone='neutral'] {
+    color: var(--ds-text);
+  }
+
+  .amount[data-tone='success'] {
+    color: var(--ds-success);
+  }
+
+  .amount[data-tone='warning'] {
+    color: var(--ds-warning);
+  }
+
+  .amount[data-tone='danger'] {
+    color: var(--ds-danger);
+  }
+
+  .balance {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .amount {
+      color: CanvasText;
+    }
+  }
+}

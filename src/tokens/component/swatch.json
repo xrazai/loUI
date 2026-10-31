@@ -1,0 +1,39 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "swatch": {
+    "size-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "Diameter of a small Swatch (16px), used inside options and headers."
+    },
+    "size-md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Diameter of a medium Swatch (20px, default)."
+    },
+    "size-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$description": "Diameter of a large Swatch (32px)."
+    },
+    "color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0, 0, 0],
+        "alpha": 0,
+        "hex": "#000000"
+      },
+      "$description": "Fill of a Swatch. Transparent by default; the component sets it inline from its `color` prop (ADR-0002 amendment). Do not override it in CSS."
+    }
+  }
+}
