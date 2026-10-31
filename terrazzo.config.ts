@@ -1,3 +1,4 @@
+import { existsSync, readdirSync } from 'node:fs';
 import { defineConfig } from '@terrazzo/cli';
 import css from '@terrazzo/plugin-css';
 import loui, { cssVarName, mixCss } from './scripts/tokens/plugin';
@@ -22,8 +23,18 @@ const sources = [
   'opacity',
 ];
 
+// Component-scoped tokens (docs/contributing/component-workflow.md): one file per component,
+// token ids start with the component name, e.g. `button.hover-brightness` → --ds-button-hover-brightness.
+const componentDir = './src/tokens/component';
+const componentSources = existsSync(componentDir)
+  ? readdirSync(componentDir)
+      .filter((file) => file.endsWith('.json'))
+      .sort()
+      .map((file) => `${componentDir}/${file}`)
+  : [];
+
 export default defineConfig({
-  tokens: sources.map((name) => `./src/tokens/${name}.json`),
+  tokens: [...sources.map((name) => `./src/tokens/${name}.json`), ...componentSources],
   outDir: './src/',
   // Keep file order so tokens.css reads like the sources.
   alphabetize: false,

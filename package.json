@@ -58,7 +58,6 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "geist": "1.9.0",
     "lucide-react": "~1.66.0",
     "react-aria-components": "1.22.1",
     "react-stately": "3.51.0"
@@ -86,6 +85,7 @@
     "eslint": "~10.14.0",
     "eslint-plugin-jsx-a11y-x": "0.2.0",
     "eslint-plugin-react-hooks": "~7.1.1",
+    "geist": "1.9.0",
     "globals": "^17.13.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",

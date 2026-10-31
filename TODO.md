@@ -37,23 +37,15 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Tokens
 
-- [ ] **TOK-001** (P0 · M) Convert tokens to a DTCG JSON source of truth in three tiers: **primitive** (`gray.0–9`, `blue/green/amber/red.5`) → **semantic** (`bg`, `surface`, `text`, `line`, `primary`, `accent`…) → **component** (only where needed). Audit `tokens/tokens.json` (8 KB, Tokens Studio format) against the CSS files for parity — it is a partial export. _Depends: ADR-003_
-- [ ] **TOK-002** (P0 · M) Token build pipeline: DTCG → CSS custom properties (`@layer tokens`), TypeScript constants + types (`TokenName` unions), flat JSON for docs/AI, Tokens Studio JSON for Figma. Output is deterministic and snapshot-tested. _Depends: TOK-001_
-- [ ] **TOK-003** (P1 · M) **Close the token gaps.** Components hard-code values that must become tokens: z-index scale (40/45/50/51/60 used ad hoc), disabled opacity (.35 / .4 / .45 inconsistently), `rgba(255,255,255,.12)` inset ring on swatches, `color-mix` percentages (6/10/12/14/18/30/35%), extra control heights (26/28/22/24), icon sizes (12/14/16/18/20), 5px checkbox radius, 8px matrix-cell radius, 300 ms progress transition, 10/10.5/11/11.5/12 px font sizes, `brightness(.88/.9)` hover filters.
-- [ ] **TOK-004** (P1 · M) **Contrast audit and fixes.** Automated check of every semantic foreground/background pair against WCAG 2.2 AA (4.5:1 text, 3:1 UI/graphics). Measured findings to resolve (see Appendix A): `--text-3` fails 4.5:1 on `surface` (4.43), `surface-raised` (4.16) and `surface-hover` (3.86); `--line-strong` used as form-control border is 1.57:1 on `--bg` (needs 3:1, WCAG 1.4.11); `--paper-accent` on `--paper` is 3.92 and `--paper-rule` 2.64. Decide fixes (adjust values vs. restrict usage) with the owner. _Depends: TOK-002_
-- [ ] **TOK-005** (P1 · S) Define a **minimum font-size policy** (handoff uses 10–12 px for captions, meta and glyphs) and a single text-role scale (display, title, heading, body, small, label, meta, caption, num, num-lg, icon) exposed as composite typography tokens.
-- [ ] **TOK-006** (P1 · S) Motion tokens: `--duration` 150 ms, `--duration-done` 320 ms, `--ease`; add `prefers-reduced-motion` handling (disable `ds-pulse`/`ds-spin` loops except the spinner's reduced alternative, transitions to ≤ 1 ms).
-- [ ] **TOK-007** (P1 · S) Focus tokens and rules: keep `--focus-ring` / `--focus-ring-danger`; fix the global `:focus-visible` rule (`box-shadow`-based rings disappear in Windows forced-colors mode) — add `outline` fallback and `forced-colors: active` styles.
+- [ ] **TOK-003** (P1 · S) **Remaining token gaps** (z-index, opacity, swatch ring, icon sizes and progress duration are done): decide `color-mix` percentages for hover/tint states (6/12/18/30/35%), extra compact heights (22/24/26/28 px), 5px checkbox and 8px matrix-cell radii, `brightness(.88/.9)` hover filters. Component agents add component-scoped tokens in `src/tokens/component/`; promote repeated ones to semantic tokens.
 - [ ] **TOK-008** (P2 · M) Theme architecture: `color-scheme: dark`, `[data-theme]` scoping, `paper` scope, `prefers-contrast: more` overrides, `forced-colors` mapping to system colors. _Depends: ADR-007_
-- [ ] **TOK-009** (P2 · S) Z-index and layering tokens + documented overlay stack (menu < popover < dialog/sheet < toast < tooltip).
 - [ ] **TOK-010** (P2 · S) Breakpoint and container tokens (the handoff app assumes min-width 1180 px; define what the DS itself guarantees: components must work from 320 px wide).
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
+- [ ] **TOK-012** (P2 · S) Paper theme: remap signal colors (success, warning, danger) inside `[data-theme="paper"]` so they pass contrast on `--ds-paper` (only neutrals and accent are remapped today).
+- [ ] **TOK-013** (P2 · S) Verify `forced-colors: active` rendering in a real browser (Playwright `forcedColors` emulation) for base focus styles and every component; the CSS exists but is unexercised.
 
 ### Typography and fonts
 
-- [ ] **FONT-001** (P1 · S) Self-host Geist and Geist Mono (`woff2`, variable, Latin + Latin-Extended subsets) instead of the render-blocking Google Fonts `@import`. Confirm license (SIL OFL) and ship it in the package or document the consumer setup.
-- [ ] **FONT-002** (P1 · S) `font-display: swap` + metric-matched fallback (`size-adjust`, `ascent-override`) to avoid layout shift; preload guidance in docs.
-- [ ] **FONT-003** (P2 · S) Enable tabular numerals (`font-variant-numeric: tabular-nums`) for numeric roles and verify Geist Mono numeric glyphs for currency, dates and percentages.
 
 ### Icons
 
@@ -63,12 +55,11 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Base styles
 
-- [ ] **BASE-001** (P1 · S) Rebuild `base.css` as layered styles (`@layer reset, tokens, base, components, utilities`); fix `a` styling (accent color needs a non-color affordance for in-text links, WCAG 1.4.1); document the required root setup (`<html lang>`, `color-scheme`).
 - [ ] **BASE-002** (P2 · S) Add `.ds-sr-only` utility class and a `SkipLink` primitive (`VisuallyHidden` is done).
 
 ### Foundation documentation (port from `guidelines/*.html`, translate to English)
 
-- [ ] **FDN-001** (P1 · M) Colors: neutrals, surfaces, text, lines, signal colors → generated from token data, with contrast ratios shown per pair.
+- [ ] **FDN-001** (P1 · S) Colors page prose (usage, do and don't) on top of the generated `Foundations/Tokens` page (swatches and ratios already exist).
 - [ ] **FDN-002** (P1 · S) Typography: display, body, mono.
 - [ ] **FDN-003** (P1 · S) Spacing scale, control sizes, radius, elevation.
 - [ ] **FDN-004** (P1 · S) States (rest, hover, focus, disabled), keyboard model, principles, wordmark.
@@ -190,12 +181,10 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-003** (P0 · M) **Real-browser accessibility harness:** Playwright + `@axe-core/playwright` against built Storybook (jsdom cannot compute color contrast). Tags: `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`, `best-practice`. Run in dark theme, `forced-colors: active`, `prefers-reduced-motion: reduce` and 200% zoom.
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
 - [ ] **TEST-005** (P1 · M) **Visual regression:** Playwright `toHaveScreenshot` over all stories × states × themes × viewport widths (320, 768, 1280). Baselines produced only in the pinned CI container (font-rendering determinism). Update flow: explicit `pnpm test:visual:update` + review in PR.
-- [ ] **TEST-006** (P1 · S) **Token regression:** snapshot of built tokens (CSS + JSON); any change must be intentional and accompanied by a changeset. Contrast test over all semantic pairs (TOK-004) runs in unit CI.
 - [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
 - [ ] **TEST-008** (P1 · S) **SSR/hydration smoke test:** render every exported component with `renderToString` and hydrate with no warnings; no `window`/`document` access at import time.
 - [ ] **TEST-009** (P1 · S) **Bundle-size budgets** with `size-limit` per entry point; tree-shaking test (importing `Button` must not pull `Chart`).
 - [ ] **TEST-010** (P1 · M) **i18n tests:** every built-in string is in the `messages` catalog (a test fails if a JSX string literal or `aria-label` literal appears in `src/` outside the catalog); `en` and `pt-BR` catalogs have identical keys; long-string (German-like +40%) and RTL pseudo-locale smoke renders.
-- [ ] **TEST-011** (P1 · S) **Style-rule tests:** Stylelint rejects raw colors/px; script verifies every `var(--…)` used in CSS exists in the token build (no dangling variables).
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
 - [ ] **TEST-014** (P2 · S) WCAG 2.2 specifics as explicit tests: target size ≥ 24 px (2.5.8), focus not obscured by sticky bars/toasts (2.4.11), dragging alternatives (2.5.7), consistent help, reflow at 320 px (1.4.10), text spacing override (1.4.12).
