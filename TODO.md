@@ -25,29 +25,11 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 
 ### Setup
 
-- [ ] **SETUP-001** (P0 · S) Initialize git repository, `.gitignore`, `.editorconfig`, `.nvmrc`, `.gitattributes` (LF). Commit the handoff untouched as the first commit so migration diffs stay traceable.
-- [ ] **SETUP-002** (P0 · S) Scaffold the workspace: `pnpm`, TypeScript `strict` (+ `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`), Vite library mode, directory layout from AGENTS.md. _Depends: ADR-001, ADR-002, ADR-004_
-- [ ] **SETUP-003** (P0 · S) Lint and format: ESLint (typescript-eslint, `react-hooks`, `jsx-a11y` strict), Prettier, Stylelint. Stylelint must **forbid raw hex colors, raw `px` for spacing/radius/font-size and magic z-indexes** in component CSS (tokens only).
-- [ ] **SETUP-004** (P1 · S) Git hooks (Husky + lint-staged), Conventional Commits (commitlint), Changesets for versioning.
-- [ ] **SETUP-005** (P1 · M) CI (GitHub Actions): install → lint → typecheck → unit → a11y → build → Storybook build → visual regression → size budget. Required checks on PRs.
-- [ ] **SETUP-006** (P1 · S) Add `CLAUDE.md` containing only `@AGENTS.md` so Claude Code loads the same rules; keep AGENTS.md the single source of truth.
-- [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, PR template with the Definition of Done checklist, issue templates (bug, component request, token change), `CODEOWNERS`.
-- [ ] **SETUP-008** (P2 · S) `docs/adr/` folder with an ADR template (context, decision, consequences, status).
+- [ ] **SETUP-005** (P1 · M) CI (GitHub Actions): install → lint → typecheck → unit → a11y → build → Storybook build → visual regression → size budget. Required checks on PRs. A draft `.github/workflows/ci.yml` running `pnpm check` exists but is untested (no remote yet); add the pinned Playwright Docker image for visual baselines.
+- [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, issue templates (bug, component request, token change), `CODEOWNERS`. (PR template with the Definition of Done already exists.)
+- [ ] **SETUP-009** (P2 · S) Extend `pnpm check` (or a `check:full` script) with `build-storybook`, `publint`, `attw` and `size`; replace the placeholder `size-limit` entry with per-entry budgets.
 
-### Architecture decision records
-
-Each ADR is a short document in `docs/adr/`. Recommendations are starting points, not decisions.
-
-- [ ] **ADR-001** (P0 · M) **Headless behavior layer.** Options: React Aria Components, Radix Primitives, fully custom. _Recommendation:_ React Aria Components — it covers most of our inventory (Dialog/Modal, Popover, Tooltip, Tabs, Menu, Combobox, Select, DatePicker/Calendar, Slider, Checkbox, Radio, Switch, Table, Toast queue, Breadcrumbs, Disclosure, ProgressBar, NumberField, DropZone) with tested ARIA, focus management, i18n and RTL. Radix is the fallback. Custom only for domain patterns.
-- [ ] **ADR-002** (P0 · S) **Styling.** The handoff uses inline styles plus JS hover state, which cannot express `:hover`, `:focus-visible`, `:disabled`, `@media`, `forced-colors` or `prefers-reduced-motion`, and breaks strict CSP. _Recommendation:_ CSS Modules + `@layer` + data-attribute state (`data-variant`, `data-size`, `data-state`), consuming CSS variables only.
-- [ ] **ADR-003** (P0 · S) **Token source and naming.** Source of truth in W3C DTCG JSON, built with Style Dictionary v4. Decide whether CSS variables get a namespace prefix (handoff uses unprefixed `--bg`, `--text`, `--line`, which collide in host apps; only keyframes are prefixed `ds-`). Align `--radius` (CSS) with `radius.md` (tokens.json).
-- [ ] **ADR-004** (P0 · S) **Name, package scope, license.** The handoff calls the system "Dark System"; the repository is `loui-ds`. Confirm the public name, npm scope, CSS prefix and license (MIT vs. proprietary).
-- [ ] **ADR-005** (P0 · M) **Internationalization.** English is the default language of every built-in string. Strings come from a `messages` object on a `DSProvider` (with per-component overrides); dates, numbers, plurals and sorting use `Intl`. `pt-BR` ships as a first-class locale because the first consumer is Brazilian.
-- [ ] **ADR-006** (P1 · S) **Value APIs for money and quantities.** The handoff `CurrencyInput` returns a float in reais, while the ERP spec stores integer cents. Decide: integer minor units + ISO currency code, locale-aware formatting. Same for `Stepper`, `Slider`, `DatePicker` (ISO strings).
-- [ ] **ADR-007** (P1 · S) **Theming scope.** Dark is the default and only shipped theme in v0.x. Decide whether the semantic layer must already support a light theme and how the `paper` document palette is exposed (separate `[data-theme="paper"]` scope).
-- [ ] **ADR-008** (P1 · S) **Domain components.** `components/erp/` and `components/agents/` mix generic primitives (Sheet, StatCard, Stepper, Swatch, ChoiceTiles, ProportionBar, RankList, StatusSteps) with domain patterns (ColorOption, MatrixGrid, LedgerList, DueIndicator, AgentCard, ApprovalCard, ChatPanel). Decide the split: `core` vs. `patterns` entry point, and rename anything that leaks the ERP domain.
-- [ ] **ADR-009** (P1 · S) **Support matrix.** React 18 and 19 (peer deps), SSR and React Server Components compatibility, evergreen browsers (last 2 versions), Node LTS for tooling.
-- [ ] **ADR-010** (P1 · S) **Test and visual-regression tooling.** Confirm Vitest + Testing Library + user-event, Playwright, `@axe-core/playwright`, `vitest-axe`, Storybook test runner. Choose visual regression provider: Playwright screenshots in a pinned Docker image vs. a hosted service. _Depends: ADR-002_
+All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
 
 ---
 
@@ -82,7 +64,7 @@ Each ADR is a short document in `docs/adr/`. Recommendations are starting points
 ### Base styles
 
 - [ ] **BASE-001** (P1 · S) Rebuild `base.css` as layered styles (`@layer reset, tokens, base, components, utilities`); fix `a` styling (accent color needs a non-color affordance for in-text links, WCAG 1.4.1); document the required root setup (`<html lang>`, `color-scheme`).
-- [ ] **BASE-002** (P2 · S) Add `VisuallyHidden`, `.ds-sr-only` and skip-link primitives.
+- [ ] **BASE-002** (P2 · S) Add `.ds-sr-only` utility class and a `SkipLink` primitive (`VisuallyHidden` is done).
 
 ### Foundation documentation (port from `guidelines/*.html`, translate to English)
 
@@ -100,7 +82,7 @@ Each ADR is a short document in `docs/adr/`. Recommendations are starting points
 - [ ] **ARCH-002** (P0 · M) **Event/prop API normalization.** The handoff mixes `onChange(event)` (Input, Textarea), `onChange(value, event)` (Select), `onChange(boolean)` (Checkbox, Switch) and `onChange(value)` (Tabs, Combobox). Standardize: native elements keep native `onChange`; custom controls use `value` / `defaultValue` / `onValueChange` (or `checked` / `onCheckedChange`). Standardize `variant` vs. `tone` vs. `kind` vs. `status` naming across Button, Badge, Alert, Toast, Progress, StatCard, DueIndicator, AgentCard, ApprovalCard.
 - [ ] **ARCH-003** (P0 · S) Fix the **prop-spread ordering bug** in `Input`, `Textarea` and `Select`: `{...rest}` is spread last, so a consumer-supplied `onFocus`/`onBlur`/`style` overrides the internal handler and breaks the focus ring.
 - [ ] **ARCH-004** (P0 · M) Shared hooks and utilities: `useId`, `useControllableState`, `useEscapeKey` (scoped, stack-aware), `useOutsideClick`, `useRovingFocus`, `useMergedRef`, `useMediaQuery`, `useReducedMotion`, `useLocale`. Replace label-derived ids (`"in-" + label…`) which collide and break for non-ASCII labels.
-- [ ] **ARCH-005** (P0 · M) **Overlay management.** `Dialog`, `Sheet`, `Popover`, `Combobox`, `DatePicker`, `InlineConfirm` each attach a window-level `Escape` listener, so one key press closes every open layer. Build a layer stack (top layer handles Esc/outside click), `Portal`, focus trap, focus restore, scroll lock and `inert` background. _Depends: ADR-001_
+- [ ] **ARCH-005** (P0 · M) **Overlay management.** `Dialog`, `Sheet`, `Popover`, `Combobox`, `DatePicker`, `InlineConfirm` each attach a window-level `Escape` listener, so one key press closes every open layer. React Aria (ADR-0001) provides the layer stack, focus trap/restore, scroll lock and `inert`; this task is to wrap it consistently (shared overlay CSS, z-index tokens, portal container from `DSProvider`) and add a nested-overlay test (Esc closes only the top layer).
 - [ ] **ARCH-006** (P0 · M) `DSProvider`: locale, `messages` (all built-in strings, ARIA labels included), direction, portal container, reduced-motion override. Remove all hard-coded Portuguese from components (see Appendix B). _Depends: ADR-005_
 - [ ] **ARCH-007** (P1 · M) Locale-aware utilities with unit tests: `formatCurrency`, `formatNumber`, `formatDate`, `formatRelativeDays` (replaces `dueInfo` text + `MES` table), `compareText` (`Intl.Collator`, accent-insensitive, numeric — the handoff requires accent-insensitive alphabetical ordering but `DataTable` sorts with `>`/`<`), `normalizeSearch` (diacritics-insensitive filtering for Combobox/SearchInput).
 - [ ] **ARCH-008** (P1 · S) Form integration contract: every field supports `name`, `form`, `required`, `disabled`, `readOnly`, `aria-invalid`, `aria-describedby` wiring for hint/error, and participates in native `<form>` submission. Introduce a shared `Field` (label + control + hint + error) so Input, Textarea, Select, Combobox, DatePicker, CurrencyInput, Slider, Checkbox, RadioGroup, Switch behave identically.
@@ -208,7 +190,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
 
-- [ ] **TEST-001** (P0 · M) Vitest + Testing Library + user-event setup (jsdom for logic, Playwright browser mode for focus/layout-dependent tests); shared test utilities (`renderWithProvider`, `axe` helper, locale/theme matrix). _Depends: SETUP-002, ADR-010_
 - [ ] **TEST-002** (P0 · M) **Automated accessibility harness (unit level):** `vitest-axe` run against every story in every state (rest, hover/focus where applicable, disabled, invalid, loading, open overlays). A component cannot be marked done with an axe violation.
 - [ ] **TEST-003** (P0 · M) **Real-browser accessibility harness:** Playwright + `@axe-core/playwright` against built Storybook (jsdom cannot compute color contrast). Tags: `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`, `best-practice`. Run in dark theme, `forced-colors: active`, `prefers-reduced-motion: reduce` and 200% zoom.
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
@@ -231,7 +212,7 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
-- [ ] **AI-001** (P0 · S) Keep `AGENTS.md` accurate (it is the entry point for agents) and add `CLAUDE.md` pointer (SETUP-006). Review it whenever conventions change.
+- [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
 - [ ] **AI-002** (P1 · L) **Component manifest** (`dist/manifest.json`, JSON Schema in `schemas/`): per component → name, group, status, description, import path, props (generated from TypeScript with `react-docgen-typescript`), variants/sizes/tones, slots, default values, accessibility notes, keyboard contract, related tokens, do/don't rules, minimal + advanced examples, related components. A test fails when an exported component lacks a manifest entry or an example does not compile.
 - [ ] **AI-003** (P1 · M) Convert the 58 `*.prompt.md` files into English `docs/components/<Name>.md` usage notes with a fixed template (when to use, when not, anatomy, props table, accessibility, content rules, examples). Correct the spec drift found in the originals (Appendix B).
 - [ ] **AI-004** (P1 · M) **Token manifest for AI:** flat `tokens.json` with names, resolved values, descriptions, usage guidance ("use for…", "never use for…") and WCAG pairing hints (which text token is allowed on which surface).
