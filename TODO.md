@@ -92,12 +92,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Inputs
 
-- [ ] **CMP-INP-01** (P1 · L) `Combobox` — Fix: implement the ARIA combobox pattern (`role="combobox"`, `aria-controls`, `aria-activedescendant`, `aria-expanded`, `aria-autocomplete`); the search field has no label; Home/End/PageUp/Down; accent-insensitive filtering; async/virtualized options (P2); empty-state text from messages; multiple selection (P3).
-- [ ] **CMP-INP-02** (P1 · L) `DatePicker` — Fix: replace hard-coded pt-BR months/weekdays/placeholder with `Intl`; calendar as an ARIA grid with full arrow/PageUp/PageDown/Home/End navigation; day buttons need full-date accessible names; typed input with mask; `min`/`max`; range mode (P2); timezone-safe ISO handling.
-- [ ] **CMP-INP-03** (P2 · M) `FileUpload` — Fix: remove the simulated random progress from production code (keep as a story mock); real validation (type, size, count) with error messages; announce add/remove/progress via live region; remove button name includes file name (already done — keep); drag-and-drop keyboard alternative.
-- [ ] **CMP-INP-04** (P1 · M) `Slider` — Fix: no accessible name; add Home/End/PageUp/PageDown; step/large-step; native-input based or APG-compliant thumb; value text; range (two thumbs) as P2; touch target ≥ 24 px.
-- [ ] **CMP-INP-05** (P1 · M) `CurrencyInput` — Fix: ADR-006 value contract (integer minor units); `Intl.NumberFormat` driven symbol/separators instead of hard-coded `R$` + pt-BR; caret position stability; negative values; paste handling; max digits as prop.
-- [ ] **CMP-INP-06** (P1 · M) `SearchInput` — Fix: combobox ARIA for suggestions; clear button; accent-insensitive highlight (`Mark` matches by lowercase index only); global shortcut registration is the consumer's job — expose `shortcut` as display + optional hotkey hook; `role="search"` wrapper.
 
 ### Layout
 
@@ -111,7 +105,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 ### Patterns — `erp/` group (see ADR-008 for placement and renaming)
 
 - [ ] **CMP-PAT-02** (P1 · S) `StatCard` — Fix: label/value association (`dl` or `aria-labelledby`); tone is color-only → require text note or icon for negative/positive; `size` tokens for `num` / `num-lg`.
-- [ ] **CMP-PAT-06** (P1 · M) `Stepper` — Fix: this is a spinbutton — use an input with `role="spinbutton"` semantics (value, min, max, `aria-valuetext`), press-and-hold repeat, direct typing, labels from messages; `aria-live` on the value is noisy.
 - [ ] **CMP-PAT-09** (P2 · M) `ProportionBar` — Fix: provide a text alternative (`role="img"` + summary, or hidden table); the 4-color ramp repeats beyond 4 segments (indistinguishable) and uses `--line-strong` (low contrast); legend is the real accessible content — keep it available.
 - [ ] **CMP-PAT-10** (P2 · S) `RankList` — Fix: render an ordered list; the component silently re-sorts and truncates input (`limit`) — document or make it opt-in; clickable rows → buttons; empty text from messages.
 

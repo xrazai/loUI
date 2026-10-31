@@ -8,6 +8,13 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-INP-01** (2026-10-31) `Combobox` on React Aria: real ARIA combobox, accent-insensitive filtering, descriptions/meta/groups, empty state from messages, async mode (`filter={false}` + `isLoading`), custom values.
+- **CMP-INP-06** (2026-10-31) `SearchInput`: clear button, Esc clears, optional `role="search"` landmark, accent-safe match highlighting, decorative shortcut hint, suggestions.
+- **CMP-INP-02** (2026-10-31) `DatePicker` + standalone `Calendar`: locale-driven segments and month names (no hard-coded pt-BR), ARIA grid with full-date day names, min/max, ISO `YYYY-MM-DD` at the API, Today/Clear actions. Adds `@internationalized/date` dependency.
+- **CMP-INP-04** (2026-10-31) `Slider`: named native-range thumb, 24px hit area, Home/End/PageUp/PageDown, formatted value text.
+- **CMP-INP-05** (2026-10-31) `CurrencyInput` (ADR-0006): integer minor units + ISO currency, `Intl` symbol and separators, digits-only typing (shift in from the right) with caret pinned to the end, locale-aware paste, optional negatives, `maxDigits`; the form submits the integer.
+- **CMP-PAT-06** (2026-10-31) `NumberField` (successor of the handoff `Stepper`): direct typing, press-and-hold steppers labelled from messages, suffix, formatting; React Aria's textbox + roledescription semantics.
+- **CMP-INP-03** (2026-10-31) `FileUpload` on React Aria `DropZone` + `FileTrigger`: type/size/count validation with pluralized messages, live-region announcements, consumer-supplied progress, form submission (simulated progress only in stories).
 - **CMP-DSP-06** (2026-10-31) `Rating` (read-only): half stars, pluralized localized label ("3.5 out of 5 stars"); the filled star is the documented exception to the outline-icon rule.
 - **CMP-AGT-01** (2026-10-31) `AgentCard` (pattern): stretched-link card with a single accessible name, statuses `testing | active | paused | soon` from messages, pending-approval count.
 - **CMP-AGT-02** (2026-10-31) `ApprovalCard` (pattern): named `article`, editable draft, rating for reviews, warning flag, Discard (ghost) + Send (secondary); undo recipe with Toast.
