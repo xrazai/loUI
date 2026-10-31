@@ -140,11 +140,10 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
-- [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
 - [ ] **GAP-011** (P2 · S) Select/Combobox popover: the focus ring of a focused option is clipped on the left/right edges (only top/bottom visible) — inspect the ListBox/Popover overflow and option inset.
 - [ ] **GAP-012** (P3 · S) AppShell at 320px: the TopBar title truncates to "Ord…" while badges keep full width — define shrink priorities (title wins, actions collapse into a Menu).
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
-- [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
+- [ ] **GAP-007** (P3 · M) Data visualization expansion: stacked bars, standalone legend component, shared chart a11y layer. (`Sparkline` and `DonutMeter` are done.)
 
 ---
 

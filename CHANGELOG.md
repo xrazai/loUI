@@ -8,6 +8,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **GAP-005** (2026-10-31) `Toggle` (React Aria `ToggleButton`, text or icon-only with required label, secondary/ghost, sizes) and `ToggleGroup` (multiple → `toolbar`, single → `radiogroup`; comparison with SegmentedControl documented); `TagInput` (Enter/comma/paste adds, Backspace removes last, duplicates ignored with a polite message, `maxTags`/`validateTag` errors, one hidden form field per tag, en + pt-BR).
+- **GAP-007** (partial, 2026-10-31) `Sparkline` (line/area, gaps for missing values, last/min/max markers, own scale that does not flatten trends, named or decorative) and `DonutMeter` (React Aria `Meter`, locale-formatted center value, tones, sizes, required name).
 - **DOCS-007** (2026-10-31) Storybook published on GitHub Pages at https://xrazai.github.io/loUI/ (workflow `pages.yml` on every push to `main`), with `llms.txt`, `llms-full.txt`, `manifest.json` and `tokens.json` served at the site root for agents; Storybook chrome themed with the DS palette and "Loui DS" branding.
 - **SETUP-007 / REL-006** (2026-10-31) `CONTRIBUTING.md`, `SECURITY.md`, `CODEOWNERS`, issue forms (bug, component request, token change).
 - **TEST-019** (2026-10-31) 782 Linux visual baselines committed (generated in the pinned Playwright container); the CI `visual` job now runs on every push. First fully green run with jobs `check`, `visual` and `examples`.
