@@ -75,14 +75,14 @@ export function Tooltip({
       {children}
       {/* RAC writes an inline z-index; the style prop is the only way to use the tooltip layer. */}
       <AriaTooltip
-        ref={ref}
+        {...(ref ? { ref } : {})}
         placement={placement}
         offset={0}
         className={classNames(styles.root, className)}
         style={{ zIndex: 'var(--ds-z-tooltip)' }}
       >
-        <span className={styles.content}>{content}</span>
-        {shortcut ? <span className={styles.shortcut}>{shortcut}</span> : null}
+        <span className={classNames(styles.content)}>{content}</span>
+        {shortcut ? <span className={classNames(styles.shortcut)}>{shortcut}</span> : null}
       </AriaTooltip>
     </TooltipTrigger>
   );

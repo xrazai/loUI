@@ -1,0 +1,187 @@
+@layer components {
+  /* The scrim dims the page; the panel is aligned to the inline-end edge. */
+  .overlay {
+    /* React Aria sets only the viewport custom properties; the overlay covers the visual viewport. */
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--visual-viewport-height, 100%);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    background: var(--ds-scrim);
+  }
+
+  .overlay[data-entering] {
+    animation: sheet-scrim-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .overlay[data-exiting] {
+    animation: sheet-scrim-out var(--ds-duration) var(--ds-ease);
+  }
+
+  .modal {
+    --ds-sheet-width: var(--ds-sheet-width-sm);
+    --ds-sheet-from: 100%;
+
+    box-sizing: border-box;
+    display: flex;
+    inline-size: var(--ds-sheet-width);
+    max-inline-size: 100%;
+    block-size: 100%;
+    background: var(--ds-surface);
+    border-inline-start: 1px solid var(--ds-line-strong);
+    box-shadow: var(--ds-shadow-dialog);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .modal:dir(rtl) {
+    --ds-sheet-from: -100%;
+  }
+
+  .modal[data-size='md'] {
+    --ds-sheet-width: var(--ds-sheet-width-md);
+  }
+
+  .modal[data-size='lg'] {
+    --ds-sheet-width: var(--ds-sheet-width-lg);
+  }
+
+  .modal[data-entering] {
+    animation: sheet-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .modal[data-exiting] {
+    animation: sheet-out var(--ds-duration) var(--ds-ease);
+  }
+
+  .sheet {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-inline-size: 0;
+    min-block-size: 0;
+    outline: none;
+  }
+
+  .header {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-space-3);
+    block-size: var(--ds-topbar-h);
+    padding-block: 0;
+    padding-inline: var(--ds-sheet-padding) var(--ds-space-4);
+    border-block-end: 1px solid var(--ds-line-subtle);
+  }
+
+  .title {
+    min-inline-size: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--ds-fs-heading);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-heading);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .meta {
+    flex: none;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    white-space: nowrap;
+  }
+
+  .close {
+    margin-inline-start: auto;
+  }
+
+  .description {
+    flex: none;
+    margin: 0;
+    padding: var(--ds-space-3) var(--ds-sheet-padding) 0;
+    color: var(--ds-text-2);
+  }
+
+  .body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-block-size: 0;
+    overflow: hidden auto;
+  }
+
+  .body[data-padded] {
+    gap: var(--ds-space-4);
+    padding: var(--ds-sheet-padding);
+  }
+
+  .footer {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-4) var(--ds-sheet-padding);
+    border-block-start: 1px solid var(--ds-line-subtle);
+  }
+
+  .footerStart,
+  .footerEnd {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+
+  .footerEnd {
+    margin-inline-start: auto;
+  }
+
+  @keyframes sheet-scrim-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes sheet-scrim-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes sheet-in {
+    from {
+      transform: translateX(var(--ds-sheet-from));
+    }
+  }
+
+  @keyframes sheet-out {
+    to {
+      transform: translateX(var(--ds-sheet-from));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay[data-entering],
+    .overlay[data-exiting],
+    .modal[data-entering],
+    .modal[data-exiting] {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .modal {
+      border-color: CanvasText;
+    }
+  }
+}

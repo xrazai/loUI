@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "menu": {
+    "$type": "dimension",
+    "min-width": {
+      "$value": { "value": 200, "unit": "px" },
+      "$description": "Minimum width of a Menu (200px, the handoff default)."
+    },
+    "indicator-size": {
+      "$value": "{size.icon-md}",
+      "$description": "Width reserved for the check or radio indicator of selectable Menu items (18px)."
+    }
+  }
+}

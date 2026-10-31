@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "popover": {
+    "$type": "dimension",
+    "min-width": {
+      "$value": { "value": 180, "unit": "px" },
+      "$description": "Minimum width of a Popover (180px)."
+    },
+    "arrow-size": {
+      "$value": { "value": 8, "unit": "px" },
+      "$description": "Width of the optional Popover arrow (8px); its height is half of this."
+    },
+    "padding": {
+      "$value": "{space.3}",
+      "$description": "Inner padding of a Popover with free content (12px)."
+    }
+  }
+}

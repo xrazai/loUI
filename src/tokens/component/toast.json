@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "toast": {
+    "$type": "dimension",
+    "max-width": {
+      "$value": { "value": 420, "unit": "px" },
+      "$description": "Maximum width of a Toast (420px). It shrinks to the viewport on narrow screens."
+    },
+    "min-height": {
+      "$value": "{size.control-h-md}",
+      "$description": "Minimum height of a Toast (40px)."
+    },
+    "dot-size": {
+      "$value": { "value": 6, "unit": "px" },
+      "$description": "Diameter of the tone dot of a Toast (6px). Decorative: the tone is also spoken."
+    },
+    "offset": {
+      "$value": "{space.6}",
+      "$description": "Distance between the Toast region and the bottom edge of the viewport (24px)."
+    }
+  }
+}

@@ -1,0 +1,154 @@
+@layer components {
+  /* The overlay dims the page; React Aria positions it over the visual viewport. */
+  .overlay {
+    /* React Aria sets only the viewport custom properties; the overlay covers the visual viewport. */
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--visual-viewport-height, 100%);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ds-dialog-gutter);
+    background: var(--ds-overlay);
+  }
+
+  .overlay[data-entering] {
+    animation: dialog-overlay-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .overlay[data-exiting] {
+    animation: dialog-overlay-out var(--ds-duration) var(--ds-ease);
+  }
+
+  .modal {
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: var(--ds-dialog-width-sm);
+    max-block-size: 100%;
+    display: flex;
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-dialog);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .modal[data-size='md'] {
+    max-inline-size: var(--ds-dialog-width-md);
+  }
+
+  .modal[data-size='lg'] {
+    max-inline-size: var(--ds-dialog-width-lg);
+  }
+
+  .modal[data-entering] {
+    animation: dialog-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .modal[data-exiting] {
+    animation: dialog-out var(--ds-duration) var(--ds-ease);
+  }
+
+  .dialog {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: 0;
+    outline: none;
+  }
+
+  .header {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    padding: var(--ds-dialog-padding) var(--ds-dialog-padding) 0;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--ds-fs-heading);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-heading);
+    overflow-wrap: anywhere;
+  }
+
+  .description {
+    margin: 0;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-space-3);
+    min-block-size: 0;
+    padding: var(--ds-space-4) var(--ds-dialog-padding);
+    overflow-y: auto;
+  }
+
+  .footer {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-4) var(--ds-dialog-padding);
+  }
+
+  .footer[data-divided] {
+    border-block-start: 1px solid var(--ds-line);
+  }
+
+  @keyframes dialog-overlay-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dialog-overlay-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--ds-space-2));
+    }
+  }
+
+  @keyframes dialog-out {
+    to {
+      opacity: 0;
+      transform: translateY(var(--ds-space-2));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay[data-entering],
+    .overlay[data-exiting],
+    .modal[data-entering],
+    .modal[data-exiting] {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .modal {
+      border-color: CanvasText;
+    }
+  }
+}

@@ -199,6 +199,7 @@ describe('Tooltip', () => {
       </main>,
     );
     await expect.element(screen.getByRole('tooltip')).toBeVisible();
+    await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
   });
 });

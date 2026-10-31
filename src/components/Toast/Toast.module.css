@@ -1,0 +1,105 @@
+@layer components {
+  /* Bottom center, clear of side panels. The region ignores the pointer; each toast takes it. */
+  .region {
+    position: fixed;
+    inset-block-end: var(--ds-toast-offset);
+    inset-inline: 0;
+    z-index: var(--ds-z-toast);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-space-2);
+    padding-inline: var(--ds-space-4);
+    outline: none;
+    pointer-events: none;
+  }
+
+  .toast {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    inline-size: max-content;
+    max-inline-size: min(100%, var(--ds-toast-max-width));
+    min-block-size: var(--ds-toast-min-height);
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-4) var(--ds-space-1);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    outline: none;
+    pointer-events: auto;
+    animation: toast-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .toast[data-focus-visible] {
+    border-color: var(--ds-accent);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  /* The dot repeats the tone; the spoken prefix and the text carry the meaning. */
+  .dot {
+    flex: none;
+    inline-size: var(--ds-toast-dot-size);
+    block-size: var(--ds-toast-dot-size);
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-text-2);
+  }
+
+  .toast[data-tone='success'] .dot {
+    background: var(--ds-success);
+  }
+
+  .toast[data-tone='warning'] .dot {
+    background: var(--ds-warning);
+  }
+
+  .toast[data-tone='danger'] .dot {
+    background: var(--ds-danger);
+  }
+
+  .content {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .message {
+    overflow-wrap: anywhere;
+  }
+
+  .actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-space-1);
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--ds-space-2));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .toast {
+      border-color: CanvasText;
+    }
+
+    .dot {
+      background: CanvasText;
+    }
+  }
+}

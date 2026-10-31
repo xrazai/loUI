@@ -1,0 +1,83 @@
+@layer components {
+  /* Overlay: raised surface, strong line, overlay shadow, large radius (AGENTS.md section 5). */
+  .root {
+    box-sizing: border-box;
+    min-inline-size: var(--ds-popover-min-width);
+
+    /* Distance from the trigger; the positioning engine adds the margin on the trigger side. */
+    margin: var(--ds-space-1);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .root[data-arrow] {
+    margin: calc(var(--ds-space-1) + var(--ds-popover-arrow-size) / 2);
+  }
+
+  .dialog {
+    padding: var(--ds-popover-padding);
+    outline: none;
+  }
+
+  .arrow svg {
+    display: block;
+    inline-size: var(--ds-popover-arrow-size);
+    block-size: calc(var(--ds-popover-arrow-size) / 2);
+    fill: var(--ds-surface-raised);
+    stroke: var(--ds-line-strong);
+    stroke-width: 1px;
+  }
+
+  /* The arrow is drawn pointing down (popover above the trigger); turn it for the other sides. */
+  .root[data-placement='bottom'] .arrow svg {
+    transform: rotate(180deg);
+  }
+
+  .root[data-placement='left'] .arrow svg {
+    transform: rotate(-90deg);
+  }
+
+  .root[data-placement='right'] .arrow svg {
+    transform: rotate(90deg);
+  }
+
+  .root[data-entering] {
+    animation: popover-in var(--ds-duration) var(--ds-ease);
+  }
+
+  .root[data-exiting] {
+    animation: popover-out var(--ds-duration) var(--ds-ease);
+  }
+
+  @keyframes popover-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes popover-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .root[data-entering],
+    .root[data-exiting] {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .arrow svg {
+      fill: Canvas;
+      stroke: CanvasText;
+    }
+  }
+}

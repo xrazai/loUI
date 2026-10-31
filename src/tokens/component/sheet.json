@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "sheet": {
+    "$type": "dimension",
+    "width-sm": {
+      "$value": { "value": 440, "unit": "px" },
+      "$description": "Width of a small Sheet (440px): the handoff default side panel."
+    },
+    "width-md": {
+      "$value": { "value": 460, "unit": "px" },
+      "$description": "Width of a medium Sheet (460px)."
+    },
+    "width-lg": {
+      "$value": { "value": 480, "unit": "px" },
+      "$description": "Width of a large Sheet (480px)."
+    },
+    "padding": {
+      "$value": "{space.6}",
+      "$description": "Inner padding of the Sheet body and footer (24px)."
+    }
+  }
+}

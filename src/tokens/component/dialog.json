@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "dialog": {
+    "$type": "dimension",
+    "width-sm": {
+      "$value": { "value": 420, "unit": "px" },
+      "$description": "Maximum width of a small Dialog (420px): confirmations and short forms. The handoff default."
+    },
+    "width-md": {
+      "$value": { "value": 540, "unit": "px" },
+      "$description": "Maximum width of a medium Dialog (540px): forms with several fields."
+    },
+    "width-lg": {
+      "$value": { "value": 680, "unit": "px" },
+      "$description": "Maximum width of a large Dialog (680px): dialogs with a table or a preview."
+    },
+    "gutter": {
+      "$value": "{space.6}",
+      "$description": "Minimum distance between a Dialog and the viewport edge (24px)."
+    },
+    "padding": {
+      "$value": "{space.5}",
+      "$description": "Inner padding of the Dialog header, body and footer (20px, the card padding)."
+    }
+  }
+}
