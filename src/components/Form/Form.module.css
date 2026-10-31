@@ -1,0 +1,51 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-form-gap);
+    min-inline-size: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  .summary {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-form-summary-gap);
+    padding: var(--ds-form-summary-padding);
+    border: 1px solid var(--ds-danger-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-danger-soft);
+    color: var(--ds-text);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .summary:focus-visible {
+    border-color: var(--ds-danger);
+    box-shadow: var(--ds-focus-ring-danger);
+  }
+
+  .summaryTitle {
+    margin: 0;
+    font-weight: var(--ds-weight-semibold);
+  }
+
+  .summaryList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-form-summary-gap);
+    margin: 0;
+    padding-inline-start: var(--ds-space-5);
+  }
+
+  .summaryMessage {
+    color: var(--ds-text-2);
+  }
+
+  @media (forced-colors: active) {
+    .summary {
+      border-color: CanvasText;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: row;
+    gap: var(--ds-inline-gap, var(--ds-space-2));
+    min-inline-size: 0;
+  }
+
+  .root:where(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .root[data-wrap='wrap'] {
+    flex-wrap: wrap;
+  }
+
+  .root[data-wrap='nowrap'] {
+    flex-wrap: nowrap;
+  }
+
+  .root[data-align='start'] {
+    align-items: flex-start;
+  }
+
+  .root[data-align='center'] {
+    align-items: center;
+  }
+
+  .root[data-align='end'] {
+    align-items: flex-end;
+  }
+
+  .root[data-align='baseline'] {
+    align-items: baseline;
+  }
+
+  .root[data-align='stretch'] {
+    align-items: stretch;
+  }
+
+  .root[data-justify='start'] {
+    justify-content: flex-start;
+  }
+
+  .root[data-justify='center'] {
+    justify-content: center;
+  }
+
+  .root[data-justify='end'] {
+    justify-content: flex-end;
+  }
+
+  .root[data-justify='between'] {
+    justify-content: space-between;
+  }
+}

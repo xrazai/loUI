@@ -1,0 +1,27 @@
+@layer components {
+  .root {
+    display: grid;
+    grid-template-columns: repeat(var(--ds-grid-columns, 1), minmax(0, 1fr));
+    gap: var(--ds-grid-gap, var(--ds-space-4));
+    min-inline-size: 0;
+  }
+
+  .root:where(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* min() keeps one column from overflowing a container narrower than the minimum. */
+  .root[data-min-item='sm'] {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ds-grid-min-item-sm), 100%), 1fr));
+  }
+
+  .root[data-min-item='md'] {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ds-grid-min-item-md), 100%), 1fr));
+  }
+
+  .root[data-min-item='lg'] {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ds-grid-min-item-lg), 100%), 1fr));
+  }
+}

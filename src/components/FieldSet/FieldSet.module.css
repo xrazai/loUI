@@ -1,0 +1,43 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-field-set-gap);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* A mono caption, like the Card title. --ds-text-2: text-3 is too faint for a name. */
+  .legend {
+    padding: 0;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    text-transform: uppercase;
+  }
+
+  .description {
+    margin: 0;
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-field-set-gap);
+    min-inline-size: 0;
+  }
+
+  .root[data-disabled='true'] .fields {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+}

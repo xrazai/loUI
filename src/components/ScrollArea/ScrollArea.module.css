@@ -1,0 +1,53 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    min-block-size: 0;
+    min-inline-size: 0;
+    max-block-size: 100%;
+    max-inline-size: 100%;
+    overflow: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-line-control) transparent;
+  }
+
+  .root[data-orientation='vertical'] {
+    overflow: hidden auto;
+  }
+
+  .root[data-orientation='horizontal'] {
+    overflow: auto hidden;
+  }
+
+  .root[data-orientation='both'] {
+    overflow: auto;
+  }
+
+  /* The wrapper lets the hook see content growth; it must not change the layout. */
+  .content {
+    display: flow-root;
+    min-inline-size: 0;
+  }
+
+  .root[data-orientation='horizontal'] > .content,
+  .root[data-orientation='both'] > .content {
+    inline-size: max-content;
+    min-inline-size: 100%;
+  }
+
+  .root:hover {
+    scrollbar-color: var(--ds-text-3) transparent;
+  }
+
+  /* Keyboard focus ring drawn inside, so a clipping parent cannot hide it. */
+  .root:focus-visible {
+    outline-color: var(--ds-accent);
+    outline-offset: calc(-1 * var(--ds-space-1));
+    box-shadow: none;
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      scrollbar-color: auto;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+@layer components {
+  .root {
+    flex: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: var(--ds-line);
+  }
+
+  .root[data-orientation='horizontal'] {
+    inline-size: 100%;
+    block-size: 1px;
+  }
+
+  .root[data-orientation='vertical'] {
+    align-self: stretch;
+    inline-size: 1px;
+    block-size: auto;
+  }
+
+  .root[data-variant='subtle'] {
+    background-color: var(--ds-line-subtle);
+  }
+
+  .root[data-variant='strong'] {
+    background-color: var(--ds-line-strong);
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      background-color: CanvasText;
+    }
+  }
+}

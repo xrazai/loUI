@@ -1,0 +1,27 @@
+@layer components {
+  .root {
+    margin: 0;
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-weight: var(--ds-weight-semibold);
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  .root[data-size='display'] {
+    font-size: var(--ds-fs-display);
+    line-height: var(--ds-lh-display);
+    letter-spacing: var(--ds-tracking-display);
+  }
+
+  .root[data-size='title'] {
+    font-size: var(--ds-fs-title);
+    line-height: var(--ds-lh-title);
+    letter-spacing: var(--ds-tracking-title);
+  }
+
+  .root[data-size='heading'] {
+    font-size: var(--ds-fs-heading);
+    line-height: var(--ds-lh-heading);
+  }
+}

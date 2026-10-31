@@ -1,0 +1,30 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-stack-gap, var(--ds-space-4));
+    min-inline-size: 0;
+  }
+
+  .root:where(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .root[data-align='start'] {
+    align-items: flex-start;
+  }
+
+  .root[data-align='center'] {
+    align-items: center;
+  }
+
+  .root[data-align='end'] {
+    align-items: flex-end;
+  }
+
+  .root[data-align='stretch'] {
+    align-items: stretch;
+  }
+}

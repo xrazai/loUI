@@ -1,0 +1,29 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: var(--ds-content-max);
+    min-inline-size: 0;
+    margin-inline: auto;
+  }
+
+  .root[data-gutter='true'] {
+    padding-inline: var(--ds-content-gutter);
+  }
+
+  .root[data-size='sm'] {
+    max-inline-size: var(--ds-container-sm);
+  }
+
+  .root[data-size='md'] {
+    max-inline-size: var(--ds-container-md);
+  }
+
+  .root[data-size='lg'] {
+    max-inline-size: var(--ds-container-lg);
+  }
+
+  .root[data-size='full'] {
+    max-inline-size: none;
+  }
+}

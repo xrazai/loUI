@@ -1,0 +1,41 @@
+@layer components {
+  .inline {
+    padding-block: 1px;
+    padding-inline: var(--ds-space-1);
+    border: 1px solid var(--ds-line-subtle);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: inherit;
+    overflow-wrap: anywhere;
+  }
+
+  .block {
+    box-sizing: border-box;
+    max-inline-size: 100%;
+    margin: 0;
+    padding: var(--ds-space-3) var(--ds-space-4);
+    overflow-x: auto;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-small);
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-line-control) transparent;
+    tab-size: 2;
+  }
+
+  .blockCode {
+    font-family: inherit;
+    font-size: inherit;
+    white-space: pre;
+  }
+
+  .block:focus-visible {
+    border-color: var(--ds-accent);
+  }
+}
