@@ -36,10 +36,7 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 ### Tokens
 
 - [ ] **TOK-003** (P1 · S) **Remaining token gaps** (z-index, opacity, swatch ring, icon sizes and progress duration are done): decide `color-mix` percentages for hover/tint states (6/12/18/30/35%), extra compact heights (22/24/26/28 px), 5px checkbox and 8px matrix-cell radii, `brightness(.88/.9)` hover filters. Component agents add component-scoped tokens in `src/tokens/component/`; promote repeated ones to semantic tokens.
-- [ ] **TOK-008** (P2 · M) Theme architecture: `color-scheme: dark`, `[data-theme]` scoping, `paper` scope, `prefers-contrast: more` overrides, `forced-colors` mapping to system colors. _Depends: ADR-007_
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
-- [ ] **TOK-012** (P2 · S) Paper theme: remap signal colors (success, warning, danger) inside `[data-theme="paper"]` so they pass contrast on `--ds-paper` (only neutrals and accent are remapped today).
-- [ ] **TOK-013** (P2 · S) Verify `forced-colors: active` rendering in a real browser (Playwright `forcedColors` emulation) for base focus styles and every component; the CSS exists but is unexercised.
 
 ### Typography and fonts
 
@@ -103,7 +100,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
-- [ ] **TEST-014** (P2 · S) WCAG 2.2 specifics as explicit tests: target size ≥ 24 px (2.5.8), focus not obscured by sticky bars/toasts (2.4.11), dragging alternatives (2.5.7), consistent help, reflow at 320 px (1.4.10), text spacing override (1.4.12).
 - [ ] **TEST-015** (P2 · S) Flaky-test policy: retries only in visual CI, quarantine label, weekly review; coverage reported but not the quality gate (a11y + contract tests are).
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
@@ -140,7 +136,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
-- [ ] **GAP-011** (P2 · S) Select/Combobox popover: the focus ring of a focused option is clipped on the left/right edges (only top/bottom visible) — inspect the ListBox/Popover overflow and option inset.
 - [ ] **GAP-012** (P3 · S) AppShell at 320px: the TopBar title truncates to "Ord…" while badges keep full width — define shrink priorities (title wins, actions collapse into a Menu).
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: stacked bars, standalone legend component, shared chart a11y layer. (`Sparkline` and `DonutMeter` are done.)
