@@ -33,6 +33,7 @@ const {
   Card,
   Chart,
   Checkbox,
+  CommandPalette,
   CheckboxGroup,
   ChoiceTiles,
   Combobox,
@@ -92,11 +93,13 @@ const {
   Tabs,
   Tag,
   TagGroup,
+  ShortcutsHelp,
   Textarea,
   ToastRegion,
   Tooltip,
   TopBar,
   VisuallyHidden,
+  HotkeyProvider,
 } = core;
 const { AgentCard, ApprovalCard, ChatPanel, ColorOption, LedgerList, MatrixGrid } = patterns;
 
@@ -104,6 +107,15 @@ const trigger = <Button>Open</Button>;
 
 /** Minimal valid instances. Open overlays render their content in a portal, so closed is the SSR case. */
 const CASES: Record<string, () => ReactElement> = {
+  CommandPalette: () => (
+    <CommandPalette commands={[{ id: 'a', label: 'Alpha', onAction: () => undefined }]} />
+  ),
+  HotkeyProvider: () => (
+    <HotkeyProvider>
+      <ShortcutsHelp />
+    </HotkeyProvider>
+  ),
+  ShortcutsHelp: () => <ShortcutsHelp />,
   Accordion: () => (
     <Accordion items={[{ value: 'a', title: 'Shipping', content: <p>Details</p> }]} />
   ),
@@ -308,7 +320,16 @@ const PARTS: Record<string, string> = {
   Label: 'Input',
   RequiredMark: 'Input',
   DSProvider: 'every case (the wrapper)',
+  HotkeyRegistry: 'HotkeyProvider (store class, not a component)',
 };
+
+/** Components that render no markup until opened (an empty string is correct for them). */
+const RENDERS_NOTHING_WHEN_CLOSED = new Set([
+  'ToastRegion',
+  'CommandPalette',
+  'ShortcutsHelp',
+  'HotkeyProvider',
+]);
 
 function exportedComponents(module: Record<string, unknown>): string[] {
   return Object.entries(module)
@@ -338,8 +359,9 @@ describe('SSR smoke test (TEST-008)', () => {
 
   it.each(Object.entries(CASES))('renders %s to a string', (name, make) => {
     const html = renderToString(<DSProvider>{make()}</DSProvider>);
-    // ToastRegion renders nothing until a toast is queued; everything else must produce markup.
-    if (name !== 'ToastRegion') expect(html.length, `${name} rendered nothing`).toBeGreaterThan(0);
+    // Closed overlays render nothing until opened; everything else must produce markup.
+    if (!RENDERS_NOTHING_WHEN_CLOSED.has(name))
+      expect(html.length, `${name} rendered nothing`).toBeGreaterThan(0);
   });
 
   it('renders every part inside its parent', () => {

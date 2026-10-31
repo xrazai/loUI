@@ -15,6 +15,16 @@ export type { LinkProps, LinkVariant } from './components/Link';
 export { Spinner } from './components/Spinner';
 export type { SpinnerProps, SpinnerSize } from './components/Spinner';
 
+// Command palette and shortcuts
+export { CommandPalette } from './components/CommandPalette';
+export type {
+  Command,
+  CommandPaletteMessages,
+  CommandPaletteProps,
+} from './components/CommandPalette';
+export { ShortcutsHelp } from './components/ShortcutsHelp';
+export type { ShortcutsHelpMessages, ShortcutsHelpProps } from './components/ShortcutsHelp';
+
 // Overlays and feedback
 export { ConfirmDialog, Dialog } from './components/Dialog';
 export type {
