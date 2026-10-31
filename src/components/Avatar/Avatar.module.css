@@ -1,0 +1,58 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-line);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-weight: var(--ds-weight-semibold);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .root[data-shade='1'] {
+    background-color: var(--ds-line-strong);
+  }
+
+  .root[data-shade='2'] {
+    background-color: var(--ds-surface-hover);
+  }
+
+  .root[data-size='sm'] {
+    inline-size: var(--ds-avatar-size-sm);
+    block-size: var(--ds-avatar-size-sm);
+    font-size: calc(var(--ds-avatar-size-sm) * var(--ds-avatar-initials-ratio));
+  }
+
+  .root[data-size='md'] {
+    inline-size: var(--ds-avatar-size-md);
+    block-size: var(--ds-avatar-size-md);
+    font-size: calc(var(--ds-avatar-size-md) * var(--ds-avatar-initials-ratio));
+  }
+
+  .root[data-size='lg'] {
+    inline-size: var(--ds-avatar-size-lg);
+    block-size: var(--ds-avatar-size-lg);
+    font-size: calc(var(--ds-avatar-size-lg) * var(--ds-avatar-initials-ratio));
+  }
+
+  .root[data-ring] {
+    border: var(--ds-avatar-ring-width) solid var(--ds-surface);
+  }
+
+  .image {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      border: 1px solid CanvasText;
+    }
+  }
+}

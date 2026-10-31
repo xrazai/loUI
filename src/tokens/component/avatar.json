@@ -1,0 +1,42 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "avatar": {
+    "size-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Diameter of a small Avatar (24px)."
+    },
+    "size-md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$description": "Diameter of the default Avatar (28px)."
+    },
+    "size-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Diameter of a large Avatar (40px)."
+    },
+    "ring-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Width of the optional Avatar ring (2px) that separates stacked avatars from the surface."
+    },
+    "initials-ratio": {
+      "$type": "number",
+      "$value": 0.4,
+      "$description": "Initials font size as a share of the Avatar size (0.4). Keeps two letters inside the circle at every size."
+    }
+  }
+}
