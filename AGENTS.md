@@ -218,6 +218,8 @@ Rules:
 - Never update a visual baseline or API snapshot without reviewing the diff and saying why in the PR.
 - Never disable an axe rule globally. A scoped exception needs a comment with the reason and a TODO ID.
 - Stories are the single source of states: unit, axe and visual tests all iterate over them.
+- `expectNoA11yViolations` runs only WCAG-tagged axe rules; best-practice rules such as `landmark-unique` must be run explicitly when relevant (e.g. multiple landmarks with names). React Aria's live announcer (`[data-live-announcer]`) is excluded by design (documented in `src/test/axe.ts`).
+- The visual harness composes stories and does **not** run `beforeEach`; stories that need setup must do it in `play` and opt in with `parameters.visual.play`. Shared global state (e.g. the toast queue) is reset by the harness.
 
 ## 11. Definition of Done
 
