@@ -113,7 +113,7 @@ describe('Popover', () => {
 
   it('keeps a field boundary at 3:1 on the raised popover surface, at rest and hovered (TOK-014)', async () => {
     const screen = await renderWithProvider(<Filters defaultOpen />);
-    const dialog = screen.getByRole('dialog').element();
+    const dialog = screen.getByRole('dialog').element() as HTMLElement;
     const input = screen.getByRole('textbox', { name: 'Customer' });
     const box = input.element().parentElement as HTMLElement;
     // The nearest ancestor that paints a background is the popover surface.
