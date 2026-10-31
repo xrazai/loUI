@@ -12,17 +12,11 @@ import {
 
 # Design tokens
 
-Every value below is generated from `src/tokens/generated/tokens.json`, which Terrazzo builds from the DTCG sources in `src/tokens/*.json`. Contrast ratios are computed from the resolved values (WCAG 2.2 relative luminance); translucent tokens are flattened over each surface.
+The complete reference. Every value below is generated from `src/tokens/generated/tokens.json`, which Terrazzo builds from the DTCG sources in `src/tokens/*.json`, so this page cannot drift from the code. Contrast ratios are computed from the resolved values (WCAG 2.2 relative luminance); translucent tokens are flattened over each surface.
+
+For when and how to use them, read the usage pages: [Color](?path=/docs/foundations-color--docs), [Typography](?path=/docs/foundations-typography--docs), [Spacing, sizing and radius](?path=/docs/foundations-spacing-sizing-and-radius--docs), [States and interaction](?path=/docs/foundations-states-and-interaction--docs) and [Motion, layering and iconography](?path=/docs/foundations-motion-layering-and-iconography--docs). The rules behind them are in the [Principles](?path=/docs/guides-principles--docs) guide.
 
 Every CSS variable is prefixed `--ds-`. Components use **semantic** tokens only; the primitive palette exists to define them.
-
-## Principles
-
-1. **One accent.** `--ds-accent` is for focus, selection, links and open states. Never a button fill or a large area.
-2. **Ink for action.** The primary button is light on dark (`--ds-primary-bg`). One primary action per screen.
-3. **Borders first.** Hierarchy comes from surface plus border. Shadows only on overlays.
-
-Move one surface layer at a time: `bg-canvas`, `bg`, `surface`, `surface-raised`, `surface-hover`. Do not skip layers.
 
 ## Colors: semantic
 
@@ -44,7 +38,7 @@ The only light surface, for receipt and PDF previews, scoped with `[data-theme="
 
 ## Typography
 
-Geist for the interface, Geist Mono for numbers, codes and shortcuts. Weights: 400, 500, 600 (sans), 400, 500 (mono). **The minimum font size is 11.5px** (`--ds-fs-caption`); nothing in the system may be smaller. Use `font-variant-numeric: tabular-nums` (the `.ds-tabular-nums` utility) on every numeric role.
+Weights: 400, 500, 600 (sans), 400, 500 (mono). **The minimum font size is 11.5px** (`--ds-fs-caption`). Use `font-variant-numeric: tabular-nums` (the `.ds-tabular-nums` utility) on every numeric role.
 
 <FontFamilies />
 
@@ -52,7 +46,7 @@ Geist for the interface, Geist Mono for numbers, codes and shortcuts. Weights: 4
 
 ## Spacing
 
-A 4px grid. Card padding is 20px, gaps inside components are 8 to 16px, gaps between sections are 24 to 32px.
+A 4px grid.
 
 <DimensionTable prefix="space." />
 
@@ -62,25 +56,19 @@ A 4px grid. Card padding is 20px, gaps inside components are 8 to 16px, gaps bet
 
 ## Sizes
 
-Controls are 32 / 40 / 48. Interactive targets are never smaller than 24px (WCAG 2.5.8).
-
 <DimensionTable prefix="size." />
 
 ## Elevation
 
-Only overlays are elevated. Cards, panels and inline elements use surface plus border and no shadow.
+Only overlays are elevated.
 
 <ShadowTable />
 
 ## Focus
 
-Focus is a 3px accent ring plus an accent border; `base.css` adds a transparent outline so it stays visible in forced-colors mode.
-
 <ValueTable prefixes={['focus-ring']} />
 
 ## Motion
-
-Minimal: 150ms, only color, opacity and position. Honour `prefers-reduced-motion` (handled globally in `base.css`).
 
 <ValueTable prefixes={['motion.']} />
 

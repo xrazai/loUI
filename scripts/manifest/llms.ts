@@ -12,6 +12,8 @@ import type {
 } from './types';
 
 export interface Guide {
+  /** Folder under `docs/`: hand-written `guides` or the `foundations` usage pages. */
+  dir?: 'guides' | 'foundations';
   /** File name without extension, e.g. `principles`. */
   slug: string;
   title: string;
@@ -41,6 +43,30 @@ export const GUIDE_META: { slug: string; description: string }[] = [
   {
     slug: 'using-with-ai',
     description: 'The manifest, llms.txt, content rules and Storybook MCP.',
+  },
+];
+
+export const FOUNDATION_META: { slug: string; description: string }[] = [
+  {
+    slug: 'color',
+    description: 'Layers, lines, text and signal colors: usage rules and contrast.',
+  },
+  {
+    slug: 'typography',
+    description: 'Geist and Geist Mono, the type scale, tracking and when to use mono.',
+  },
+  {
+    slug: 'spacing',
+    description: 'The 4px grid, control and layout sizes, radius roles and elevation.',
+  },
+  {
+    slug: 'states',
+    description:
+      'Rest, hover, focus, selected, disabled and invalid; keyboard model; undo vs confirm.',
+  },
+  {
+    slug: 'motion',
+    description: 'Durations and easing, reduced motion, the z-index stack and icon rules.',
   },
 ];
 
@@ -207,8 +233,16 @@ export function renderLlmsTxt(manifest: Manifest, tokens: TokenManifest, guides:
   );
   out.push('Rules for generated UI:', '', ...RULES.map((r) => `- ${r}`), '');
   out.push('## Guides', '');
-  for (const g of guides) out.push(`- [${g.title}](./guides/${g.slug}.md): ${g.description}`);
+  for (const g of guides.filter((x) => (x.dir ?? 'guides') === 'guides'))
+    out.push(`- [${g.title}](./guides/${g.slug}.md): ${g.description}`);
   out.push('');
+  const foundations = guides.filter((x) => x.dir === 'foundations');
+  if (foundations.length > 0) {
+    out.push('## Foundations', '');
+    for (const g of foundations)
+      out.push(`- [${g.title}](./foundations/${g.slug}.md): ${g.description}`);
+    out.push('');
+  }
   out.push('## Components', '');
   for (const c of manifest.components) {
     out.push(

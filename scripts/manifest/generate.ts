@@ -8,6 +8,7 @@ import * as prettier from 'prettier';
 import { buildManifest } from './components';
 import type { BuildOptions } from './components';
 import {
+  FOUNDATION_META,
   GUIDE_META,
   renderComponentPage,
   renderFunctionsPage,
@@ -34,14 +35,23 @@ async function pretty(root: string, file: string, text: string): Promise<string>
 }
 
 function readGuides(root: string): Guide[] {
-  const dir = path.join(root, 'docs/guides');
-  const present = existsSync(dir) ? new Set(readdirSync(dir)) : new Set<string>();
   const guides: Guide[] = [];
-  for (const meta of GUIDE_META) {
-    if (!present.has(`${meta.slug}.md`)) continue;
-    const content = readFileSync(path.join(dir, `${meta.slug}.md`), 'utf8').replace(/\r\n/g, '\n');
-    const title = /^#\s+(.+)$/m.exec(content)?.[1]?.trim() ?? meta.slug;
-    guides.push({ slug: meta.slug, title, description: meta.description, content });
+  const sources = [
+    { dir: 'guides', metas: GUIDE_META },
+    { dir: 'foundations', metas: FOUNDATION_META },
+  ] as const;
+  for (const { dir, metas } of sources) {
+    const folder = path.join(root, 'docs', dir);
+    const present = existsSync(folder) ? new Set(readdirSync(folder)) : new Set<string>();
+    for (const meta of metas) {
+      if (!present.has(`${meta.slug}.md`)) continue;
+      const content = readFileSync(path.join(folder, `${meta.slug}.md`), 'utf8')
+        .replace(/\r\n/g, '\n')
+        // Storybook-only markers for live examples (docs/foundations/*.md).
+        .replace(/^<!-- demo:[a-z0-9-]+ -->\n+/gm, '');
+      const title = /^#\s+(.+)$/m.exec(content)?.[1]?.trim() ?? meta.slug;
+      guides.push({ dir, slug: meta.slug, title, description: meta.description, content });
+    }
   }
   return guides;
 }
@@ -71,7 +81,9 @@ export async function generate(root: string, options: BuildOptions = {}): Promis
   }
 
   const distOnly = new Map<string, string>();
-  for (const guide of guides) distOnly.set(`guides/${guide.slug}.md`, guide.content);
+  for (const guide of guides) {
+    distOnly.set(`${guide.dir ?? 'guides'}/${guide.slug}.md`, guide.content);
+  }
   const rules = path.join(root, 'docs/ai/content-rules.json');
   if (existsSync(rules)) distOnly.set('ai/content-rules.json', readFileSync(rules, 'utf8'));
   const schemas = path.join(root, 'schemas');

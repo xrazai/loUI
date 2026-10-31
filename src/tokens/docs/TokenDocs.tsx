@@ -86,15 +86,22 @@ function Name({ token }: { token: FlatToken }) {
 export function ColorTable({
   tier,
   paper = false,
+  names,
+  backgrounds: backgroundsProp,
 }: {
   tier: 'primitive' | 'semantic';
   paper?: boolean;
+  /** Only these tokens, in this order (for example `['color.text', 'color.text-2']`). */
+  names?: readonly string[];
+  /** Surfaces to measure against, as token names (default: bg, surface, surface-raised). */
+  backgrounds?: readonly string[];
 }) {
   const isPaper = (t: FlatToken) => t.name.startsWith('color.paper');
-  const rows = tokens.filter(
+  const all = tokens.filter(
     (t) => t.type === 'color' && t.tier === tier && isPaper(t) === paper && t.cssVar !== null,
   );
-  const backgrounds = paper ? PAPER_BACKGROUNDS : BACKGROUNDS;
+  const rows = names ? names.flatMap((n) => all.filter((t) => t.name === n)) : all;
+  const backgrounds = backgroundsProp ?? (paper ? PAPER_BACKGROUNDS : BACKGROUNDS);
   return (
     <Table
       head={['Swatch', 'Variable', 'Value', 'Use', ...backgrounds.map((b) => `On ${b.slice(6)}`)]}
