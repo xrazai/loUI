@@ -16,6 +16,13 @@ const meta = {
 } satisfies Meta<typeof FormWithValidation>;
 
 export default meta;
+
+/** The country is required; its options render in a popover outside the canvas. */
+async function chooseCountry(canvasElement: HTMLElement) {
+  await userEvent.click(within(canvasElement).getByRole('button', { name: /Country/ }));
+  await userEvent.click(await within(document.body).findByRole('option', { name: 'Brazil' }));
+}
+
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
@@ -40,6 +47,7 @@ export const Saved: Story = {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole('textbox', { name: /Full name/ }), 'Ana Souza');
     await userEvent.type(canvas.getByRole('textbox', { name: /Email/ }), 'ana@example.com');
+    await chooseCountry(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: 'Save customer' }));
     await waitFor(() => expect(canvas.getByRole('status')).toHaveTextContent('Saved'));
     await expect(args.saveCustomer).toHaveBeenCalledTimes(1);
@@ -59,6 +67,7 @@ export const ServerError: Story = {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole('textbox', { name: /Full name/ }), 'Ana Souza');
     await userEvent.type(canvas.getByRole('textbox', { name: /Email/ }), 'taken@example.com');
+    await chooseCountry(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: 'Save customer' }));
     await waitFor(() =>
       expect(
