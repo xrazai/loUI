@@ -1,0 +1,135 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-3);
+    min-inline-size: 0;
+  }
+
+  /* The track shows through the gaps, so neighbouring parts are always separated. */
+  .track {
+    display: flex;
+    gap: var(--ds-proportion-bar-segment-gap);
+    overflow: hidden;
+    block-size: var(--ds-proportion-bar-height);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-bg);
+  }
+
+  /* Every ramp step keeps 3:1 against `bg`; an empty bar shows a visible track instead. */
+  .track[data-empty] {
+    background-color: var(--ds-line);
+  }
+
+  .segment {
+    flex: var(--ds-proportion-bar-share) 1 0;
+    min-inline-size: 0;
+    background-color: var(--ds-proportion-bar-color, var(--ds-text));
+  }
+
+  .segment[data-ramp='1'],
+  .swatch[data-ramp='1'] {
+    background-color: var(--ds-proportion-bar-color, var(--ds-text-2));
+  }
+
+  .segment[data-ramp='2'],
+  .swatch[data-ramp='2'] {
+    background-color: var(--ds-proportion-bar-color, var(--ds-text-3));
+  }
+
+  .segment[data-ramp='3'],
+  .swatch[data-ramp='3'] {
+    background-color: var(--ds-proportion-bar-color, var(--ds-line-control));
+  }
+
+  /* From the fifth part on the ramp repeats; stripes of the track color keep the parts apart. */
+  .segment[data-hatched],
+  .swatch[data-hatched] {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 var(--ds-proportion-bar-hatch-size),
+      var(--ds-bg) var(--ds-proportion-bar-hatch-size) calc(var(--ds-proportion-bar-hatch-size) * 2)
+    );
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns:
+      var(--ds-proportion-bar-swatch-size) minmax(0, 1fr) var(--ds-proportion-bar-percent-col-w)
+      auto;
+    gap: var(--ds-space-3);
+    align-items: center;
+    padding-block: var(--ds-space-3);
+    border-block-start: 1px solid var(--ds-line-subtle);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .item:first-child {
+    border-block-start: none;
+  }
+
+  .swatch {
+    inline-size: var(--ds-proportion-bar-swatch-size);
+    block-size: var(--ds-proportion-bar-swatch-size);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-proportion-bar-color, var(--ds-text));
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .percent,
+  .amount {
+    font-family: var(--ds-font-mono);
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .percent {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+  }
+
+  .amount {
+    font-weight: var(--ds-weight-medium);
+  }
+
+  @media (forced-colors: active) {
+    .track {
+      border: 1px solid canvastext;
+    }
+
+    .segment,
+    .swatch {
+      forced-color-adjust: none;
+      background-color: canvastext;
+    }
+
+    .segment[data-ramp='1'],
+    .swatch[data-ramp='1'] {
+      background-color: graytext;
+    }
+
+    .segment[data-ramp='2'],
+    .swatch[data-ramp='2'] {
+      background-color: linktext;
+    }
+
+    .segment[data-ramp='3'],
+    .swatch[data-ramp='3'] {
+      background-color: highlight;
+    }
+  }
+}

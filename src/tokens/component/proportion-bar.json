@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "proportion-bar": {
+    "$type": "dimension",
+    "height": {
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Height of the ProportionBar track (10px)."
+    },
+    "segment-gap": {
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Gap between segments of a ProportionBar (2px). The track shows through, so neighbours are always separated."
+    },
+    "swatch-size": {
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Size of a legend swatch of a ProportionBar (10px)."
+    },
+    "percent-col-w": {
+      "$value": { "value": 48, "unit": "px" },
+      "$description": "Width of the percentage column in the ProportionBar legend (48px)."
+    },
+    "hatch-size": {
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Stripe width of the hatch pattern that tells apart segments beyond the fourth (3px)."
+    }
+  }
+}
