@@ -98,15 +98,9 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Data
 
-- [ ] **CMP-DAT-01** (P1 · L) `DataTable` — Fix: ARIA table structure (`rowgroup`, proper `columnheader` instead of `role` override on a button, `aria-sort`, `aria-rowcount`/`aria-rowindex` when paginated, `aria-selected` for rows); labelled selection checkboxes ("Select row {key}", "Select all rows on this page"); selection live-region summary; locale-aware sort (ARCH-007) and stable sort; reset page on data/sort change; `useMemo` missing `columns` dependency; sticky header; loading/empty/error states; column visibility (P3).
-- [ ] **CMP-DAT-03** (P1 · M) `ActionList` — Fix: `role="list"` rows are not `listitem`; clickable rows are `div`s with no keyboard support/role — make them buttons/links; actions menu (`···`) label from messages and uses Menu keyboard model; drag handle (P3).
-- [ ] **CMP-DAT-04** (P1 · L) `Chart` — Fix: SVG has no accessible name/description; tooltip is mouse-only — add focusable data points / keyboard traversal; provide a visually-hidden data table alternative; no negative-value support; `Math.log10` axis breaks for tiny max values; color-only highlight needs a non-color cue; multi-series, legends, responsive label skipping tests.
 
 ### Patterns — `erp/` group (see ADR-008 for placement and renaming)
 
-- [ ] **CMP-PAT-02** (P1 · S) `StatCard` — Fix: label/value association (`dl` or `aria-labelledby`); tone is color-only → require text note or icon for negative/positive; `size` tokens for `num` / `num-lg`.
-- [ ] **CMP-PAT-09** (P2 · M) `ProportionBar` — Fix: provide a text alternative (`role="img"` + summary, or hidden table); the 4-color ramp repeats beyond 4 segments (indistinguishable) and uses `--line-strong` (low contrast); legend is the real accessible content — keep it available.
-- [ ] **CMP-PAT-10** (P2 · S) `RankList` — Fix: render an ordered list; the component silently re-sorts and truncates input (`limit`) — document or make it opt-in; clickable rows → buttons; empty text from messages.
 
 ### Patterns — `agents/` group
 

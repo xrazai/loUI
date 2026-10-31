@@ -8,6 +8,12 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-DAT-01** (2026-10-31) `DataTable` on React Aria `Table`: real table semantics, `aria-sort`, locale-aware stable sort (asc → desc → none), labelled row/page selection checkboxes, live "N selected" bulk-action bar (space reserved to avoid layout shift), page reset on sort/data change, sticky header, loading and empty states, active row; controlled or uncontrolled selection, sort and page.
+- **CMP-DAT-03** (2026-10-31) `ActionList` on React Aria `GridList`: keyboard-operable rows, per-row `MoreActionsMenu` named "More actions for {title}", focus returns to the menu button after Escape.
+- **CMP-DAT-04** (2026-10-31) `Chart` (SVG bar + line): accessible name/description, arrow-key traversal with polite announcements, visually hidden data table, negative and tiny values (`niceScale`, unit-tested), highlight with text and outline cue (not color only).
+- **CMP-PAT-02** (2026-10-31) `StatCard`: `dl` semantics; a non-neutral tone requires a `note` or `trend` text (type error + dev warning); localized trend text.
+- **CMP-PAT-09** (2026-10-31) `ProportionBar`: `role="img"` summary, legend with percentages, hatching beyond four segments so parts never look alike.
+- **CMP-PAT-10** (2026-10-31) `RankList`: ordered list, actionable rows are buttons, opt-in `sort` and `limit` (renders as given by default).
 - **CMP-INP-01** (2026-10-31) `Combobox` on React Aria: real ARIA combobox, accent-insensitive filtering, descriptions/meta/groups, empty state from messages, async mode (`filter={false}` + `isLoading`), custom values.
 - **CMP-INP-06** (2026-10-31) `SearchInput`: clear button, Esc clears, optional `role="search"` landmark, accent-safe match highlighting, decorative shortcut hint, suggestions.
 - **CMP-INP-02** (2026-10-31) `DatePicker` + standalone `Calendar`: locale-driven segments and month names (no hard-coded pt-BR), ARIA grid with full-date day names, min/max, ISO `YYYY-MM-DD` at the API, Today/Clear actions. Adds `@internationalized/date` dependency.
