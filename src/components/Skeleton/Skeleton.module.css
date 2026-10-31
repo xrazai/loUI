@@ -1,0 +1,66 @@
+@layer components {
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: var(--ds-skeleton-pulse-opacity);
+    }
+  }
+
+  .block,
+  .line {
+    display: block;
+    box-sizing: border-box;
+    block-size: var(--skeleton-height, var(--ds-skeleton-height));
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-surface-hover);
+    animation-name: pulse;
+    animation-duration: var(--ds-skeleton-pulse-duration);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .block {
+    inline-size: var(--skeleton-width, 100%);
+  }
+
+  .block[data-shape='circle'] {
+    inline-size: var(--skeleton-height, var(--ds-skeleton-height));
+    flex: none;
+    border-radius: var(--ds-radius-pill);
+  }
+
+  .lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    inline-size: var(--skeleton-width, 100%);
+  }
+
+  .line {
+    inline-size: 100%;
+  }
+
+  .line[data-last] {
+    inline-size: 60%;
+  }
+
+  /* The pulse is the only motion; without it the block is a static placeholder. */
+  @media (prefers-reduced-motion: reduce) {
+    .block,
+    .line {
+      animation: none;
+    }
+  }
+
+  /* Forced colors drop background colors: keep the placeholder visible with an outline. */
+  @media (forced-colors: active) {
+    .block,
+    .line {
+      border: 1px solid;
+    }
+  }
+}

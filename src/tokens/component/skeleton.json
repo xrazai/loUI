@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "skeleton": {
+    "height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Default height of a Skeleton block (12px), roughly one line of small text."
+    },
+    "pulse-duration": {
+      "$type": "duration",
+      "$value": {
+        "value": 1400,
+        "unit": "ms"
+      },
+      "$description": "Duration of one Skeleton pulse (1400ms). Switched off under prefers-reduced-motion."
+    },
+    "pulse-opacity": {
+      "$type": "number",
+      "$value": 0.45,
+      "$description": "Lowest opacity of the Skeleton pulse (0.45). Opacity is the only animated property."
+    }
+  }
+}
