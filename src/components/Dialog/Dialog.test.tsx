@@ -264,7 +264,12 @@ describe('Dialog', () => {
       const screen = await renderWithProvider(<SheetWithDialog />);
       const sheet = screen.getByRole('dialog', { name: 'Order' });
       await expect.element(sheet).toBeVisible();
-      await screen.getByRole('button', { name: 'Delete order' }).click();
+      // Open from the keyboard: focus restoration targets the element that had focus, and a
+      // pointer click during the sheet's entry animation does not always leave it focused.
+      const trigger = screen.getByRole('button', { name: 'Delete order' });
+      trigger.element().focus();
+      await expect.element(trigger).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
       await expect
         .element(screen.getByRole('dialog', { name: 'Delete order #1048?' }))
         .toBeVisible();

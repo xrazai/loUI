@@ -108,6 +108,7 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
+- [ ] **TEST-022** (P2 · S) Investigate focus restoration after a pointer-opened Dialog inside a Sheet: when the trigger is clicked during the sheet entry animation, focus sometimes does not return to it on Escape (flaky on Linux CI). The nested-overlay test now opens from the keyboard; add a dedicated pointer test once understood.
 
 ---
 
