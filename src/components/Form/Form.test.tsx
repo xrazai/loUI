@@ -7,6 +7,7 @@ import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Radio, RadioGroup } from '../RadioGroup';
+import { Select } from '../Select';
 import { Form, FormErrorSummary } from './Form';
 import type { FormProps } from './Form';
 
@@ -233,6 +234,30 @@ describe('Form error summary', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Save changes' }));
     await expect.element(screen.getByText('Fix 1 field before saving')).toBeVisible();
     await expect.element(screen.getByRole('link', { name: 'Region' })).toBeVisible();
+  });
+
+  it('names a required Select by its label, not by its option texts', async () => {
+    // Regression: the hidden native select sits inside its own label, so `labels[0].textContent`
+    // was the label followed by every option.
+    const screen = await renderWithProvider(
+      <Form aria-label="Plan" errorSummary>
+        <Select
+          label="Country"
+          name="country"
+          isRequired
+          options={[
+            { value: 'br', label: 'Brazil' },
+            { value: 'pt', label: 'Portugal' },
+          ]}
+        />
+        <Button type="submit">Save changes</Button>
+      </Form>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await expect.element(screen.getByText('Fix 1 field before saving')).toBeVisible();
+    const link = screen.getByRole('link', { name: 'Country' });
+    await expect.element(link).toBeVisible();
+    expect(link.element().textContent).not.toMatch(/Brazil|Portugal/);
   });
 
   it('can be placed by hand with FormErrorSummary', async () => {

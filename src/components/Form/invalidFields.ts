@@ -30,7 +30,25 @@ function textOf(ids: string | null, root: Document): string {
     .join(' ');
 }
 
+/**
+ * Label of a React Aria `Select`. Its native `select` is a hidden mirror for form submission
+ * (inside an `aria-hidden` box, wrapped in an unnamed `label` next to every option), so the
+ * accessible name comes from the visible trigger, whose `aria-labelledby` ends with the label id.
+ */
+function selectLabel(control: HTMLElement, root: Document): string {
+  if (!(control instanceof HTMLSelectElement) || !control.closest('[aria-hidden="true"]'))
+    return '';
+  const trigger = control
+    .closest('[data-rac]')
+    ?.querySelector<HTMLElement>('button[aria-haspopup="listbox"]');
+  if (!trigger) return '';
+  const labelId = trigger.getAttribute('aria-labelledby')?.split(/\s+/).pop() ?? null;
+  return trigger.getAttribute('aria-label') ?? textOf(labelId, root);
+}
+
 function labelOf(control: HTMLElement, root: Document): string {
+  const fromSelect = selectLabel(control, root);
+  if (fromSelect) return fromSelect;
   const group = control.closest<HTMLElement>(GROUPS);
   if (
     group &&
