@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "command-palette": {
+    "$type": "dimension",
+    "width": {
+      "$value": { "value": 640, "unit": "px" },
+      "$description": "Maximum width of the CommandPalette panel (640px). Narrower on small screens."
+    },
+    "list-max-height": {
+      "$value": { "value": 360, "unit": "px" },
+      "$description": "Maximum height of the CommandPalette command list before it scrolls (360px, about 9 rows at item-h)."
+    },
+    "offset-top": {
+      "$value": { "value": 96, "unit": "px" },
+      "$description": "Distance between the top of the viewport and the CommandPalette panel (96px). The panel hangs from the top so it does not jump while the list shrinks."
+    }
+  }
+}

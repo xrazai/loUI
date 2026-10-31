@@ -30,6 +30,17 @@ const KEY_ALIASES: Record<string, string> = {
   right: 'arrowright',
 };
 
+/** Splits a combo into its key (after the last `+`, except that `+` itself is written `Mod++` or `+`) and the modifiers before it. */
+function splitCombo(combo: string): { keyText: string; modifierText: string } {
+  if (combo === '+') return { keyText: '+', modifierText: '' };
+  if (combo.endsWith('++')) return { keyText: '+', modifierText: combo.slice(0, -2) };
+  const split = combo.lastIndexOf('+');
+  return {
+    keyText: combo.slice(split + 1),
+    modifierText: split === -1 ? '' : combo.slice(0, split),
+  };
+}
+
 /**
  * Parses a combo such as `Mod+K`, `Shift+/`, `Alt+N`, `Escape` or `Mod+Enter`.
  * Modifiers: `Mod` (Command on macOS, Control elsewhere), `Ctrl`, `Meta`/`Cmd`,
@@ -37,20 +48,7 @@ const KEY_ALIASES: Record<string, string> = {
  * Returns `undefined` (and throws in development) for malformed combos.
  */
 export function parseHotkey(combo: string): ParsedHotkey | undefined {
-  // Split off the key: the text after the last "+", except that "+" itself is written "Mod++" or "+".
-  let keyText: string;
-  let modifierText: string;
-  if (combo === '+') {
-    keyText = '+';
-    modifierText = '';
-  } else if (combo.endsWith('++')) {
-    keyText = '+';
-    modifierText = combo.slice(0, -2);
-  } else {
-    const split = combo.lastIndexOf('+');
-    keyText = combo.slice(split + 1);
-    modifierText = split === -1 ? '' : combo.slice(0, split);
-  }
+  const { keyText, modifierText } = splitCombo(combo);
 
   const key = keyText.trim().toLowerCase();
   if (key === '') {
@@ -148,4 +146,28 @@ export function isEditableTarget(target: EventTarget | null): boolean {
   if (target.isContentEditable) return true;
   if (target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return true;
   return target instanceof HTMLInputElement && !NON_TEXT_INPUT_TYPES.has(target.type);
+}
+
+/**
+ * The parts of a combo in display order, ready for `Kbd`'s `keys`: `'Mod+K'` gives
+ * `['Mod', 'K']`, `'Shift+/'` gives `['Shift', '/']`. Returns `[]` for a malformed combo (never throws).
+ */
+export function hotkeyKeys(combo: string): string[] {
+  const { keyText, modifierText } = splitCombo(combo);
+  const key = keyText.trim();
+  if (key === '') return [];
+  const modifiers = modifierText === '' ? [] : modifierText.split('+').map((part) => part.trim());
+  return [...modifiers, key];
+}
+
+/**
+ * A canonical string for a parsed hotkey on the given platform, so that `Mod+K` and `Ctrl+K`
+ * compare equal on Windows and Linux. Used to detect conflicts.
+ */
+export function canonicalHotkey(hotkey: ParsedHotkey, mac: boolean): string {
+  const meta = hotkey.meta || (hotkey.mod && mac);
+  const ctrl = hotkey.ctrl || (hotkey.mod && !mac);
+  return [meta && 'meta', ctrl && 'ctrl', hotkey.alt && 'alt', hotkey.shift && 'shift', hotkey.key]
+    .filter(Boolean)
+    .join('+');
 }

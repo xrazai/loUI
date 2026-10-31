@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { matchesHotkey, parseHotkey } from './hotkey';
+import { canonicalHotkey, hotkeyKeys, matchesHotkey, parseHotkey } from './hotkey';
 import type { HotkeyEventLike } from './hotkey';
 
 function event(init: Partial<HotkeyEventLike>): HotkeyEventLike {
@@ -138,5 +138,42 @@ describe('matchesHotkey', () => {
   it('supports explicit Ctrl and Meta on any platform', () => {
     expect(matchesHotkey(event({ key: 's', ctrlKey: true }), parse('Ctrl+S'), true)).toBe(true);
     expect(matchesHotkey(event({ key: 's', metaKey: true }), parse('Meta+S'), false)).toBe(true);
+  });
+});
+
+describe('hotkeyKeys', () => {
+  it('splits a combo into display parts for Kbd', () => {
+    expect(hotkeyKeys('Mod+K')).toEqual(['Mod', 'K']);
+    expect(hotkeyKeys('Mod+Shift+P')).toEqual(['Mod', 'Shift', 'P']);
+    expect(hotkeyKeys('F2')).toEqual(['F2']);
+    expect(hotkeyKeys('1')).toEqual(['1']);
+    expect(hotkeyKeys('Shift+/')).toEqual(['Shift', '/']);
+    expect(hotkeyKeys('Mod++')).toEqual(['Mod', '+']);
+    expect(hotkeyKeys('+')).toEqual(['+']);
+  });
+
+  it('returns an empty list for a malformed combo instead of throwing', () => {
+    expect(hotkeyKeys('')).toEqual([]);
+    expect(hotkeyKeys('Mod+')).toEqual([]);
+  });
+});
+
+describe('canonicalHotkey', () => {
+  it('resolves Mod per platform so equivalent combos compare equal', () => {
+    expect(canonicalHotkey(parse('Mod+K'), false)).toBe(canonicalHotkey(parse('Ctrl+K'), false));
+    expect(canonicalHotkey(parse('Mod+K'), true)).toBe(canonicalHotkey(parse('Cmd+K'), true));
+    expect(canonicalHotkey(parse('Mod+K'), true)).not.toBe(canonicalHotkey(parse('Ctrl+K'), true));
+  });
+
+  it('ignores case, aliases and modifier order', () => {
+    expect(canonicalHotkey(parse('shift+ctrl+k'), false)).toBe(
+      canonicalHotkey(parse('Ctrl+Shift+K'), false),
+    );
+    expect(canonicalHotkey(parse('Esc'), false)).toBe(canonicalHotkey(parse('Escape'), false));
+  });
+
+  it('tells plain keys from modified ones', () => {
+    expect(canonicalHotkey(parse('N'), false)).not.toBe(canonicalHotkey(parse('Shift+N'), false));
+    expect(canonicalHotkey(parse('1'), false)).not.toBe(canonicalHotkey(parse('2'), false));
   });
 });

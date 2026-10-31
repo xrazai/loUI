@@ -1,0 +1,49 @@
+@layer components {
+  .table {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .table + .table {
+    margin-block-start: var(--ds-space-4);
+  }
+
+  /* Group caption: mono, uppercase by CSS, text-2 (text-3 fails contrast on the raised surface). */
+  .caption {
+    padding-block: var(--ds-space-1);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    text-align: start;
+    text-transform: uppercase;
+    color: var(--ds-text-2);
+  }
+
+  .table tr {
+    border-block-start: 1px solid var(--ds-line-subtle);
+  }
+
+  .action,
+  .keys {
+    padding-block: var(--ds-space-2);
+    vertical-align: middle;
+  }
+
+  .action {
+    font-weight: var(--ds-weight-regular);
+    text-align: start;
+    color: var(--ds-text);
+    overflow-wrap: anywhere;
+  }
+
+  .keys {
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--ds-text-2);
+  }
+}
