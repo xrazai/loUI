@@ -33,6 +33,22 @@ jobs:
           name: vitest-failures
           path: .vitest/attachments
           if-no-files-found: ignore
+  # Packaging check (REL-001): packs the library and builds the Vite and Next.js (App Router)
+  # examples against the tarball in isolation. Needs the `check` job so a broken build fails there first.
+  examples:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm examples:verify
   # Visual regression in the same pinned container that generated the Linux baselines
   # (.github/workflows/visual-baselines.yml). Skipped while no `*-chromium-linux.png` exists.
   visual:

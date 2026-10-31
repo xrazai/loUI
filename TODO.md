@@ -59,7 +59,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ## Phase 2 — Architecture and shared primitives
 
-- [ ] **ARCH-010** (P1 · M) Build and exports: ESM with per-component entry points, `exports` map, `sideEffects` for CSS, generated `.d.ts` (the handoff `.d.ts` files rely on the global `JSX` namespace, removed in React 19), `"use client"` banners, `publint` + `are-the-types-wrong` in CI.
 - [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
 
 ---
@@ -104,8 +103,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
 
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
-- [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
-- [ ] **TEST-009** (P1 · S) Tree-shaking test: importing `Button` alone must not pull `Chart`/`DataTable` (budgets per entry already exist).
 - [ ] **TEST-010** (P1 · M) **i18n tests:** every built-in string is in the `messages` catalog (a test fails if a JSX string literal or `aria-label` literal appears in `src/` outside the catalog); `en` and `pt-BR` catalogs have identical keys; long-string (German-like +40%) and RTL pseudo-locale smoke renders.
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
@@ -141,10 +138,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 ## Phase 7 — Packaging, release and governance
 
-- [ ] **REL-001** (P1 · M) Package build output verified in a clean consumer app (Vite + Next.js fixtures in `examples/`), including CSS delivery and tree-shaking.
-- [ ] **REL-002** (P1 · S) Changesets release flow, provenance-enabled npm publish (or private registry), pre-release channel (`0.x`).
-- [ ] **REL-003** (P2 · S) Versioning policy: semver, what counts as breaking (token value change? visual change?), deprecation window, support policy.
-- [ ] **REL-004** (P2 · S) Component lifecycle process (proposal → experimental → stable → deprecated) with checklist and owner.
 - [ ] **REL-005** (P2 · S) Figma workflow: Tokens Studio sync, component naming parity, Code Connect mapping (optional).
 - [ ] **REL-006** (P3 · S) Telemetry-free usage guidance: how consumers report issues; security policy (`SECURITY.md`).
 

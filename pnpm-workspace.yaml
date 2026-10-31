@@ -1,6 +1,7 @@
 # Workspace: the root package is @loui/ds; tools/* hold companion packages
 # (ESLint plugin, MCP server).
 packages:
+  - '.'
   - tools/*
 
 # pnpm 12 settings live here. Lifecycle scripts of dependencies are opt-in.
@@ -10,3 +11,8 @@ minimumReleaseAgeExclude:
   - eslint@10.14.0
   - geist@1.9.0
   - lucide-react@1.66.0
+  - '@microsoft/api-extractor-model@7.33.16'
+  - '@microsoft/api-extractor@7.60.1'
+  - '@rushstack/node-core-library@5.25.2'
+  - '@rushstack/terminal@0.24.8'
+  - '@rushstack/ts-command-line@5.3.18'

@@ -15,3 +15,12 @@ playwright-report/
 __screenshots__/*-actual.png
 __screenshots__/*-diff.png
 .vitest/
+
+# Consumer examples (REL-001)
+.pack/
+examples/*/node_modules/
+examples/*/.next/
+examples/*/dist/
+examples/*/pnpm-lock.yaml
+examples/*/next-env.d.ts
+examples/*/*.tsbuildinfo

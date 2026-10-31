@@ -102,7 +102,44 @@ Dark is the only theme. The semantic token layer (`--ds-bg`, `--ds-surface`, `--
 
 **Vite.** Import the stylesheet in `main.tsx`; nothing else is needed.
 
-**Next.js (App Router).** Import the stylesheet in `app/layout.tsx` and render `DSProvider` in a small client component, because it takes functions as props. The package does not yet ship `'use client'` directives, so import interactive components from client components (a file with `'use client'`). This is tracked under REL-001 and not yet verified in a Next.js fixture.
+**Next.js (App Router).** See [SSR and Next.js](#ssr-and-nextjs) below.
+
+## SSR and Next.js
+
+The package ships a `"use client"` directive **per module**: every file that uses hooks, React context or React Aria has it, and the entry points (`index.js`) and pure helpers do not. So a React Server Component (the default in the Next.js App Router) can import the design system directly, with no wrapper file:
+
+```tsx
+// app/layout.tsx (Server Component)
+import '@loui/ds/styles.css';
+import { DSProvider, ToastRegion } from '@loui/ds';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <DSProvider locale="en-US">
+          {children}
+          <ToastRegion />
+        </DSProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/page.tsx (Server Component): components are client references and render on the server too
+import { Button, DataTable } from '@loui/ds';
+```
+
+Rules that follow from the React Server Components model, not from the library:
+
+- Props that cross from a Server to a Client Component must be serializable. **Functions cannot**: `onPress`, `onChange`, render props such as `DataTable` column `render` or `Dialog` `footer={({ close }) => ...}`, and component values such as an `icon` prop. Put those in a file that starts with `'use client'` (a small component per interaction, see `examples/next-app/app/CreateOrderButton.tsx`).
+- `DSProvider` takes plain props (`locale`, `messages`) and works in a Server layout; `navigate` and `useHref` are functions, so wrap the provider in a client component when you use client-side routing.
+- Hooks (`useHotkeys`, `useToast`, ...) and the `toast` API only work in Client Components.
+- Import the stylesheet once in the root layout. `dist/styles.css` and the Geist fonts need no `transpilePackages` or other `next.config` settings.
+
+`sideEffects` in `package.json` lists only `**/*.css`, so bundlers drop unused components (importing `Button` alone costs about 12 kB brotli, enforced by `pnpm size` and `pnpm test:treeshake`). The packaging is verified on every pull request by building `examples/vite-app` and `examples/next-app` (Next.js 16, App Router, Turbopack) against a packed tarball: `pnpm examples:verify`.
 
 ## Next steps
 
