@@ -1,0 +1,76 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-space-3);
+    padding: var(--ds-space-3);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+  }
+
+  .root[data-tone='success'] {
+    border-color: var(--ds-alert-success-border);
+    background-color: var(--ds-alert-success-bg);
+  }
+
+  .root[data-tone='warning'] {
+    border-color: var(--ds-alert-warning-border);
+    background-color: var(--ds-alert-warning-bg);
+  }
+
+  .root[data-tone='danger'] {
+    border-color: var(--ds-alert-danger-border);
+    background-color: var(--ds-alert-danger-bg);
+  }
+
+  /* The icon is decorative; it sits on the first line of text. */
+  .icon {
+    flex: none;
+    margin-block-start: var(--ds-space-1);
+    color: var(--ds-accent);
+  }
+
+  .root[data-tone='success'] .icon {
+    color: var(--ds-success);
+  }
+
+  .root[data-tone='warning'] .icon {
+    color: var(--ds-warning);
+  }
+
+  .root[data-tone='danger'] .icon {
+    color: var(--ds-danger);
+  }
+
+  .content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .title {
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+  }
+
+  .body {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-space-2);
+    align-self: center;
+  }
+}

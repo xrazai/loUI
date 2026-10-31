@@ -1,0 +1,113 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "alert": {
+    "success-bg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.372549, 0.831373, 0.603922],
+        "alpha": 0.06,
+        "hex": "#5FD49A"
+      },
+      "$description": "Background of a success Alert: 6% success over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.success",
+            "percent": 6
+          }
+        }
+      }
+    },
+    "success-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.372549, 0.831373, 0.603922],
+        "alpha": 0.3,
+        "hex": "#5FD49A"
+      },
+      "$description": "Border of a success Alert: 30% success over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.success",
+            "percent": 30
+          }
+        }
+      }
+    },
+    "warning-bg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.913725, 0.713725, 0.360784],
+        "alpha": 0.06,
+        "hex": "#E9B65C"
+      },
+      "$description": "Background of a warning Alert: 6% warning over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.warning",
+            "percent": 6
+          }
+        }
+      }
+    },
+    "warning-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.913725, 0.713725, 0.360784],
+        "alpha": 0.3,
+        "hex": "#E9B65C"
+      },
+      "$description": "Border of a warning Alert: 30% warning over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.warning",
+            "percent": 30
+          }
+        }
+      }
+    },
+    "danger-bg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.06,
+        "hex": "#F07A6E"
+      },
+      "$description": "Background of a danger Alert: 6% danger over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.danger",
+            "percent": 6
+          }
+        }
+      }
+    },
+    "danger-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.3,
+        "hex": "#F07A6E"
+      },
+      "$description": "Border of a danger Alert: 30% danger over the surface beneath, resolved with color-mix. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.danger",
+            "percent": 30
+          }
+        }
+      }
+    }
+  }
+}
