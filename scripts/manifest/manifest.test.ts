@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -147,6 +147,30 @@ describe('content rules', () => {
       for (const text of rule.examples.bad)
         expect(re.test(text) === forbid, `${rule.id}: bad "${text}"`).toBe(true);
     }
+  });
+});
+
+describe('recipes', () => {
+  it('lists one entry per recipe doc, with a description and an existing doc path', () => {
+    const { recipes, counts } = generated.manifest;
+    expect(recipes.map((r) => r.name)).toContain('UndoableAction');
+    expect(counts.recipes).toBe(recipes.length);
+    for (const recipe of recipes) {
+      expect(recipe.description, recipe.name).not.toBe('');
+      expect(existsSync(path.join(root, 'docs', recipe.doc)), recipe.doc).toBe(true);
+    }
+  });
+
+  it('is linked from llms.txt, included in llms-full.txt and copied to dist', () => {
+    const text = generated.common.get('llms.txt') ?? '';
+    expect(text).toContain('## Recipes');
+    for (const r of generated.manifest.recipes) {
+      expect(text).toContain(`[${r.name}](./${r.doc})`);
+      expect(generated.distOnly.has(r.doc)).toBe(true);
+    }
+    const full = generated.common.get('llms-full.txt') ?? '';
+    expect(full).toContain('## Recipes');
+    expect(full).toContain('### UndoableAction');
   });
 });
 

@@ -127,6 +127,29 @@ so it is safe in dependency arrays.
 useToast(): ToastApi
 ```
 
+### useUndoable
+
+Undo, don't confirm (AGENTS.md section 5): applies a reversible action immediately, shows a
+toast with an **Undo** button, then either reverts it (Undo) or commits it (the toast times
+out or is dismissed).
+
+- `apply` runs now; the screen updates at once.
+- Undo calls `revert`. Closing or timing out calls the optional async `commit`; if that
+  fails, the change is reverted and an error toast stays until dismissed.
+- The timer lives in the toast, so it pauses on hover and focus (WCAG 2.2.1) and the commit
+  waits for it. A pending commit still runs if the component that started it unmounts.
+- Mount one `ToastRegion` near the app root.
+
+Use it for reversible actions (archive, mark as done, change status). Deleting still asks
+for a confirmation first (`ConfirmDialog`); the Undo toast follows it.
+
+Deferring the commit means a closed tab loses a pending change. When that matters, persist in
+`apply` and make `revert` send the inverse change instead (omit `commit`).
+
+```ts
+useUndoable({ toast, messages: overrides, }?: UseUndoableOptions): UseUndoableResult
+```
+
 ## Utilities and constants
 
 ### compareText
@@ -374,7 +397,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
 ```
 
 ### iconSet
@@ -382,7 +405,7 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
 ```
 
 ### isISODate
@@ -535,4 +558,4 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`
+`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`

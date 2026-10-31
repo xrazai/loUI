@@ -250,6 +250,16 @@ export function renderLlmsTxt(manifest: Manifest, tokens: TokenManifest, guides:
     );
   }
   out.push('');
+  if (manifest.recipes.length > 0) {
+    out.push('## Recipes', '');
+    out.push(
+      'Tested compositions for common situations. Start from the one that fits, keep its structure and wording, then validate what you produce.',
+      '',
+    );
+    for (const r of manifest.recipes)
+      out.push(`- [${r.name}](./${r.doc}): ${firstSentence(r.description)} (${r.status})`);
+    out.push('');
+  }
   out.push('## Hooks, utilities and icons', '');
   out.push(
     `- [Hooks and utilities](./ai/hooks-and-utilities.md): ${manifest.hooks.map((h) => h.name).join(', ')}; ${String(manifest.utilities.length)} utilities and constants; ${String(manifest.icons.names.length)} icons.`,
@@ -306,7 +316,12 @@ function tokenSummary(tokens: TokenManifest): string {
   return `${out.join('\n').trimEnd()}\n`;
 }
 
-export function renderLlmsFull(manifest: Manifest, tokens: TokenManifest, guides: Guide[]): string {
+export function renderLlmsFull(
+  manifest: Manifest,
+  tokens: TokenManifest,
+  guides: Guide[],
+  recipes: { name: string; content: string }[] = [],
+): string {
   const out: string[] = ['# Loui DS: full documentation', '', `> ${SUMMARY}`, ''];
   out.push('Rules for generated UI:', '', ...RULES.map((r) => `- ${r}`), '');
   for (const g of guides) {
@@ -317,6 +332,10 @@ export function renderLlmsFull(manifest: Manifest, tokens: TokenManifest, guides
   out.push('---', '', '## Components', '');
   for (const c of manifest.components) out.push(demote(renderComponentPage(c), 1), '');
   out.push('---', '', demote(renderFunctionsPage(manifest)), '');
+  if (recipes.length > 0) {
+    out.push('---', '', '## Recipes', '');
+    for (const recipe of recipes) out.push(demote(recipe.content, 1), '');
+  }
   return out.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 

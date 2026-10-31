@@ -126,14 +126,32 @@ export interface ManifestIcons {
   names: string[];
 }
 
+/** A tested composition of components, documented in `docs/recipes/<name>.md`. */
+export interface ManifestRecipe {
+  /** PascalCase name, also the Storybook title `Recipes/<name>`. */
+  name: string;
+  /** What the recipe does, in one paragraph. */
+  description: string;
+  status: string;
+  /** Path of the doc, relative to the docs root (`docs/` and `dist/`). */
+  doc: string;
+}
+
 export interface Manifest {
   $schema: string;
   schemaVersion: 1;
   package: { name: string; version: string };
   generator: string;
   entryPoints: { path: string; importPath: string; description: string }[];
-  counts: { components: number; hooks: number; utilities: number; icons: number };
+  counts: {
+    components: number;
+    hooks: number;
+    utilities: number;
+    icons: number;
+    recipes: number;
+  };
   components: ManifestComponent[];
+  recipes: ManifestRecipe[];
   providers: ManifestProvider[];
   hooks: ManifestFunction[];
   utilities: ManifestFunction[];

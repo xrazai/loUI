@@ -133,14 +133,27 @@ Rules for generated UI:
 - [TopBar](./ai/components/TopBar.md): The page header: a title with an optional subtitle, or a breadcrumb trail, and an actions slot. (experimental)
 - [VisuallyHidden](./ai/components/VisuallyHidden.md): Hides content visually while keeping it available to assistive technology. (stable)
 
+## Recipes
+
+Tested compositions for common situations. Start from the one that fits, keep its structure and wording, then validate what you produce.
+
+- [ApprovalQueue](./recipes/approval-queue.md): A queue of replies written by an agent that wait for a person to approve them before anything reaches a customer. (experimental)
+- [CommandPaletteSetup](./recipes/command-palette-setup.md): Keyboard first, wired end to end: one list of destinations and actions feeds the bare-key shortcuts, the command palette (`Mod+K`) and the shortcuts help (`?`). (experimental)
+- [DestructiveConfirm](./recipes/destructive-confirm.md): Delete a record from a row action: ask first in a dialog that names the object and the consequence, then delete and offer Undo in a toast. (experimental)
+- [DetailSheet](./recipes/detail-sheet.md): Open a record next to its list: a row opens a side `Sheet` with the details in editable fields, a footer with the destructive action at the start and Cancel plus one primary action at the end. (experimental)
+- [FilterableTable](./recipes/filterable-table.md): A list of records with search, status filters that show counts, a sortable table, row selection with a bulk action and an empty state that tells the user what to do. (experimental)
+- [FormWithValidation](./recipes/form-with-validation.md): A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and "Saved" next to it. (experimental)
+- [SettingsPage](./recipes/settings-page.md): A settings screen: app shell, a top bar with the page's one primary action and its keyboard shortcut, and one card per topic with switches, a select and a radio group. (experimental)
+- [UndoableAction](./recipes/undoable-action.md): A reversible action (archive, mark as done, change status) that happens at once, with no confirmation, and an Undo in a toast. (experimental)
+
 ## Hooks, utilities and icons
 
-- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast; 40 utilities and constants; 26 icons.
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast, useUndoable; 40 utilities and constants; 26 icons.
 
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (97 components).
-- [tokens.json](./tokens.json): 343 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 345 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

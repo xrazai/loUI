@@ -53,7 +53,7 @@
     "tokens:build": "tz build",
     "tokens:check": "node scripts/tokens/check.mjs",
     "manifest:build": "tsx scripts/manifest/build.ts",
-    "manifest:check": "tsx scripts/manifest/build.ts --check",
+    "manifest:check": "tsx scripts/manifest/build.ts --check && tsx src/recipes/sync.ts --check",
     "check": "pnpm tokens:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:tools && pnpm build",
     "check:ci": "pnpm tokens:check && pnpm lint && pnpm typecheck && vitest run --project unit --project browser --project storybook && pnpm test:tools && pnpm build && pnpm manifest:check && pnpm test:treeshake && pnpm api:check",
     "changeset": "changeset",

@@ -10,6 +10,7 @@ import type { ComponentDoc, PropItem } from 'react-docgen-typescript';
 import ts from 'typescript';
 import { analyze, docOf, signatureOf, toRelative } from './source';
 import type { Analysis, PublicExport } from './source';
+import { readRecipeDocs } from './recipes';
 import { backticked, bullets, codeBlocks, findSection, parseDoc } from './markdown';
 import type {
   InheritedGroup,
@@ -606,6 +607,7 @@ export async function buildManifest(root: string, options: BuildOptions = {}): P
     ...exportsByKind('constant').map((e) => toFunction(e, 'constant')),
   ].sort((a, b) => a.name.localeCompare(b.name));
   const iconNames = exportsByKind('icon').map((e) => e.name);
+  const recipes = readRecipeDocs(root);
 
   return {
     $schema: SCHEMA_URL,
@@ -634,8 +636,15 @@ export async function buildManifest(root: string, options: BuildOptions = {}): P
       hooks: hooks.length,
       utilities: utilities.length,
       icons: iconNames.length,
+      recipes: recipes.length,
     },
     components,
+    recipes: recipes.map(({ name, description, status, doc }) => ({
+      name,
+      description,
+      status,
+      doc,
+    })),
     providers,
     hooks,
     utilities,

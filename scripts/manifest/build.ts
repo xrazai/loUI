@@ -60,7 +60,7 @@ if (check) {
   }
   for (const [file, text] of distOnly) write(path.join(root, 'dist', file), text);
   console.log(
-    `Manifest: ${String(manifest.counts.components)} components, ${String(manifest.counts.hooks)} hooks, ` +
+    `Manifest: ${String(manifest.counts.components)} components, ${String(manifest.counts.recipes)} recipes, ${String(manifest.counts.hooks)} hooks, ` +
       `${String(manifest.counts.utilities)} utilities, ${String(manifest.counts.icons)} icons, ` +
       `${String(tokens.counts.tokens)} tokens -> docs/ and dist/.`,
   );

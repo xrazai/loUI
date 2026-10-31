@@ -12,6 +12,7 @@
     "entryPoints",
     "counts",
     "components",
+    "recipes",
     "providers",
     "hooks",
     "utilities",
@@ -44,16 +45,18 @@
     },
     "counts": {
       "type": "object",
-      "required": ["components", "hooks", "utilities", "icons"],
+      "required": ["components", "hooks", "utilities", "icons", "recipes"],
       "additionalProperties": false,
       "properties": {
         "components": { "type": "integer", "minimum": 0 },
         "hooks": { "type": "integer", "minimum": 0 },
         "utilities": { "type": "integer", "minimum": 0 },
-        "icons": { "type": "integer", "minimum": 0 }
+        "icons": { "type": "integer", "minimum": 0 },
+        "recipes": { "type": "integer", "minimum": 0 }
       }
     },
     "components": { "type": "array", "items": { "$ref": "#/$defs/component" } },
+    "recipes": { "type": "array", "items": { "$ref": "#/$defs/recipe" } },
     "providers": { "type": "array", "items": { "$ref": "#/$defs/provider" } },
     "hooks": { "type": "array", "items": { "$ref": "#/$defs/function" } },
     "utilities": { "type": "array", "items": { "$ref": "#/$defs/function" } },
@@ -80,6 +83,17 @@
   },
   "$defs": {
     "status": { "enum": ["experimental", "stable", "deprecated"] },
+    "recipe": {
+      "type": "object",
+      "required": ["name", "description", "status", "doc"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "doc": { "type": "string", "pattern": "^recipes/[a-z0-9-]+[.]md$" }
+      }
+    },
     "prop": {
       "type": "object",
       "required": ["name", "type", "required", "description"],

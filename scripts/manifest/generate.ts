@@ -16,6 +16,7 @@ import {
   renderLlmsTxt,
 } from './llms';
 import type { Guide } from './llms';
+import { readRecipeDocs } from './recipes';
 import { buildTokenManifest } from './tokens';
 import type { Manifest, TokenManifest } from './types';
 
@@ -60,6 +61,7 @@ export async function generate(root: string, options: BuildOptions = {}): Promis
   const manifest = await buildManifest(root, options);
   const tokens = buildTokenManifest(root);
   const guides = readGuides(root);
+  const recipeDocs = readRecipeDocs(root);
 
   const common = new Map<string, string>();
   common.set(
@@ -68,7 +70,7 @@ export async function generate(root: string, options: BuildOptions = {}): Promis
   );
   common.set('tokens.json', await pretty(root, 'tokens.json', JSON.stringify(tokens, null, 2)));
   common.set('llms.txt', renderLlmsTxt(manifest, tokens, guides));
-  common.set('llms-full.txt', renderLlmsFull(manifest, tokens, guides));
+  common.set('llms-full.txt', renderLlmsFull(manifest, tokens, guides, recipeDocs));
   common.set(
     'ai/hooks-and-utilities.md',
     await pretty(root, 'x.md', renderFunctionsPage(manifest)),
@@ -84,6 +86,7 @@ export async function generate(root: string, options: BuildOptions = {}): Promis
   for (const guide of guides) {
     distOnly.set(`${guide.dir ?? 'guides'}/${guide.slug}.md`, guide.content);
   }
+  for (const recipe of recipeDocs) distOnly.set(recipe.doc, recipe.content);
   const rules = path.join(root, 'docs/ai/content-rules.json');
   if (existsSync(rules)) distOnly.set('ai/content-rules.json', readFileSync(rules, 'utf8'));
   const schemas = path.join(root, 'schemas');

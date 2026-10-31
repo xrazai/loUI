@@ -60,6 +60,10 @@ claude mcp add --transport http loui-storybook http://localhost:6006/mcp
 
 Details, tools and limitations: `docs/ai/storybook-mcp.md`.
 
+## Recipes
+
+Tested compositions (destructive confirm, undoable action, form with validation, filterable table, settings page, detail sheet, approval queue, command palette) live in `docs/recipes/`. They are listed in `llms.txt`, included in `llms-full.txt` and in the `recipes` array of `manifest.json` (name, description, status, doc path). Prefer a recipe when one fits.
+
 ## Roadmap
 
-An ESLint plugin that enforces these rules (AI-007), a dedicated Loui MCP server backed by the manifest with `validate_snippet` (AI-008), tested recipes (AI-006) and a Claude Code skill (AI-009) are tracked in the project TODO.
+An ESLint plugin that enforces these rules (AI-007), a dedicated Loui MCP server backed by the manifest with `validate_snippet` (AI-008), and a Claude Code skill (AI-009) are tracked in the project TODO.
