@@ -8,6 +8,14 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-FBK-03 / ARCH-005** (2026-10-31) `Dialog` (sizes sm/md/lg, title + linked description) and `ConfirmDialog` (`alertdialog`, initial focus on Cancel, Enter never confirms, `danger-solid` action naming the object) on React Aria; stack-aware Escape — nested overlays tested (Esc closes the Dialog, then the Sheet).
+- **CMP-PAT-01** (2026-10-31) `Sheet` (generic, core): inline-end side panel on React Aria Modal, sizes 440/460/480, mono `meta`, `headerExtra`, sticky footer (`footerStart` + `footer`), reduced-motion slide.
+- **CMP-NAV-04** (2026-10-31) `Popover` (non-modal dialog, required `label`, `aria-haspopup="dialog"`, optional arrow).
+- **CMP-FBK-04** (2026-10-31) `Tooltip`: ink style, optional shortcut hint, 500 ms delay, Esc dismiss; `IconButton` gains an optional `tooltip` prop.
+- **CMP-NAV-02** (2026-10-31) `Menu`, `MenuItem` (danger tone, shortcut hint, selection modes), `MenuSection`, `MenuSeparator`, `SubMenu`, `MoreActionsMenu` — full keyboard model from React Aria.
+- **CMP-FBK-02** (2026-10-31) `Toast`: `toast()` / `useToast()` queue + `ToastRegion`; tones, action (Undo recipe in `Toast.md`), default timeout 5000 ms (handoff 3.6 s was too short), pause on hover/focus (WCAG 2.2.1), F6 region; every `UNSTABLE_*` React Aria import isolated in `toast.rac.ts`.
+- **CMP-FBK-07** (2026-10-31) `InlineConfirm`: initial focus on Cancel (configurable), scoped Escape, focus returns to the trigger.
+- **TOK-LAYERS** (2026-10-31) Z-index scale reordered so overlays opened inside modals render on top: sheet 40 < dialog 45 < dropdown 50 < popover 55 < toast 58 < tooltip 60.
 - **CMP-NAV-01** (2026-10-31) `Tabs`, `TabList`, `Tab`, `TabPanel` on React Aria: roving focus, linked panels, `keyboardActivation`, tone counts with text alternative, decorative shortcut hint.
 - **CMP-FRM-09** (2026-10-31) `SegmentedControl` as a single-selection `ToggleButtonGroup` (value control, not a tablist), sizes sm/md, counts, `fullWidth`.
 - **CMP-FRM-10** (2026-10-31) `SuggestionChip`: dashed button with plus icon that inserts text (never sends).

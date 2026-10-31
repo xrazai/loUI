@@ -67,7 +67,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 - [ ] **ARCH-001** (P0 · M) Component conventions (see AGENTS.md): `forwardRef`/ref as prop (React 19), `className`, `...rest` spread **before** internal handlers' merge point, `data-*` state attributes, `asChild`/`render` pattern if needed, `displayName`. _Depends: ADR-001, ADR-002_
 - [ ] **ARCH-002** (P0 · M) **Event/prop API normalization.** The handoff mixes `onChange(event)` (Input, Textarea), `onChange(value, event)` (Select), `onChange(boolean)` (Checkbox, Switch) and `onChange(value)` (Tabs, Combobox). Standardize: native elements keep native `onChange`; custom controls use `value` / `defaultValue` / `onValueChange` (or `checked` / `onCheckedChange`). Standardize `variant` vs. `tone` vs. `kind` vs. `status` naming across Button, Badge, Alert, Toast, Progress, StatCard, DueIndicator, AgentCard, ApprovalCard.
-- [ ] **ARCH-005** (P0 · M) **Overlay management.** `Dialog`, `Sheet`, `Popover`, `Combobox`, `DatePicker`, `InlineConfirm` each attach a window-level `Escape` listener, so one key press closes every open layer. React Aria (ADR-0001) provides the layer stack, focus trap/restore, scroll lock and `inert`; this task is to wrap it consistently (shared overlay CSS, z-index tokens, portal container from `DSProvider`) and add a nested-overlay test (Esc closes only the top layer).
 - [ ] **ARCH-010** (P1 · M) Build and exports: ESM with per-component entry points, `exports` map, `sideEffects` for CSS, generated `.d.ts` (the handoff `.d.ts` files rely on the global `JSX` namespace, removed in React 19), `"use client"` banners, `publint` + `are-the-types-wrong` in CI.
 - [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
 
@@ -84,10 +83,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Feedback
 
-- [ ] **CMP-FBK-02** (P1 · L) `Toast` — Fix: needs a `Toaster` provider/queue and live region; auto-dismiss with **pause on hover/focus**, keyboard-reachable "Undo" (the ERP's 3.6 s undo window fails WCAG 2.2.1 unless pausable/extendable); position that avoids side panels; `onClose` label from messages. Tone dot is color-only — text carries the meaning.
-- [ ] **CMP-FBK-03** (P1 · L) `Dialog` — Fix: focus trap, initial focus API (the principle says **Cancel gets focus** on destructive confirms), focus restore, scroll lock, `inert` background, `aria-labelledby` + `aria-describedby` (description is not linked today), stack-aware Esc, `contained` mode for docs only. _Depends: ARCH-005_
-- [ ] **CMP-FBK-04** (P1 · M) `Tooltip` — Fix: `aria-describedby`, dismiss with Esc (WCAG 1.4.13), hoverable content, delay tokens, collision-aware placement, no tooltip-only essential info; `side` supports all four.
-- [ ] **CMP-FBK-07** (P1 · S) `InlineConfirm` — Fix: confirm button is auto-focused, contradicting the "focus on Cancel" principle — make initial focus configurable with Cancel as default; window-level Esc → scoped; restore focus to trigger.
 
 ### Display
 
@@ -95,8 +90,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Navigation
 
-- [ ] **CMP-NAV-02** (P1 · L) `Menu` — Fix: items are `tabIndex=0` divs with **no keyboard activation** (no Enter/Space handler); arrow-key navigation, typeahead, `menuitemcheckbox`/`radio`, submenus (P3), disabled items, danger tone, `aria-haspopup`.
-- [ ] **CMP-NAV-04** (P1 · L) `Popover` — Fix: trigger wrapper `span` with `onClick`; add `aria-expanded`, `aria-controls`, `aria-haspopup`; focus move in and return; correct `role` (a menu is not a `dialog`); collision-aware positioning; outside press via `pointerdown`.
 
 ### Inputs
 
@@ -118,7 +111,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Patterns — `erp/` group (see ADR-008 for placement and renaming)
 
-- [ ] **CMP-PAT-01** (P1 · L) `Sheet` — Fix: same overlay requirements as Dialog (focus trap/restore, inert, scroll lock, stack-aware Esc); `aria-labelledby` (label only works when `title` is a string today); width tokens (440/460/480 are ERP-specific sizes → `sm/md/lg`); header height uses `--topbar-h`.
 - [ ] **CMP-PAT-02** (P1 · S) `StatCard` — Fix: label/value association (`dl` or `aria-labelledby`); tone is color-only → require text note or icon for negative/positive; `size` tokens for `num` / `num-lg`.
 - [ ] **CMP-PAT-03** (P1 · S) `Swatch` — Fix: color-only meaning — require `label` when it is the only identifier; token for inset ring; hex validation.
 - [ ] **CMP-PAT-04** (P2 · S) `ColorOption` — Fix: `aria-pressed` + visible mark ✓ (keep); disabled opacity token; swatch decorative when label present.
