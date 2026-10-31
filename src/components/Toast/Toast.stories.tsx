@@ -36,6 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Everything a toast can show, for the visual review. The toasts stay until dismissed. */
 export const AllTones: Story = {
+  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.info('Draft saved', { timeout: null });
@@ -48,6 +49,7 @@ export const AllTones: Story = {
 };
 
 export const WithAction: Story = {
+  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.success('3 items archived', {
@@ -60,6 +62,7 @@ export const WithAction: Story = {
 };
 
 export const LongMessage: Story = {
+  parameters: { visual: { selector: '[role="region"][aria-label="Notifications"]' } },
   render: function Render() {
     useEffect(() => {
       toast.info(

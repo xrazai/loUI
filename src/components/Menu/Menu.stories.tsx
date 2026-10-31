@@ -126,6 +126,7 @@ export const RadioItems: Story = {
 };
 
 export const WithSections: Story = {
+  parameters: { visual: { height: 320 } },
   args: {
     trigger: <Button>Options</Button>,
     defaultOpen: true,
@@ -168,6 +169,7 @@ export const WithSubmenu: Story = {
 };
 
 export const LongLabels: Story = {
+  parameters: { visual: { height: 320, width: 800 } },
   args: {
     defaultOpen: true,
     children: [

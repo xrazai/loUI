@@ -53,6 +53,7 @@ export const Start: Story = { args: { placement: 'start', defaultOpen: true } };
 export const End: Story = { args: { placement: 'end', defaultOpen: true } };
 
 export const LongText: Story = {
+  parameters: { visual: { height: 160 } },
   args: {
     defaultOpen: true,
     content: 'Creates a draft order for the selected customer and opens it for editing',

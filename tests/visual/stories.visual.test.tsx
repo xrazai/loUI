@@ -26,6 +26,8 @@ interface VisualParameters {
   width?: number;
   /** CSS selector of the element to capture instead of the frame (for portaled overlays). */
   selector?: string;
+  /** Minimum height of the capture frame in CSS px, to leave room for a popover that opens below the trigger. */
+  height?: number;
 }
 
 const DEFAULT_WIDTH = 384;
@@ -102,7 +104,13 @@ for (const [path, module] of Object.entries(modules).sort(([a], [b]) => a.locale
 
       it(`${Story.id} (${exportName})`, async () => {
         const screen = await render(
-          <div data-visual-frame style={{ inlineSize: visual.width ?? DEFAULT_WIDTH }}>
+          <div
+            data-visual-frame
+            style={{
+              inlineSize: visual.width ?? DEFAULT_WIDTH,
+              ...(visual.height === undefined ? {} : { minBlockSize: visual.height }),
+            }}
+          >
             <DSProvider>
               <Story />
             </DSProvider>

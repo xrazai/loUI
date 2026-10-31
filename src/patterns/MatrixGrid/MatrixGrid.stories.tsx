@@ -68,6 +68,8 @@ const meta = {
       </div>
     ),
   ],
+  // The grid is up to 760 px wide; at the default 384 px frame its columns are clipped.
+  parameters: { visual: { width: 800 } },
 } satisfies Meta<typeof MatrixGrid>;
 
 export default meta;

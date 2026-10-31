@@ -1,9 +1,26 @@
+import { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Sheet } from '../Sheet';
 import { Dialog } from './Dialog';
+
+/**
+ * Sets `dir="rtl"` on the document while the story is mounted: the overlay is portaled to the
+ * body, so a wrapper element would not mirror it.
+ */
+function RtlDocument({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    const previous = document.documentElement.dir;
+    document.documentElement.dir = 'rtl';
+    return () => {
+      document.documentElement.dir = previous;
+    };
+  }, []);
+  return <div dir="rtl">{children}</div>;
+}
 
 const meta = {
   title: 'Components/Dialog',
@@ -54,16 +71,27 @@ export const Default: Story = {
 };
 
 /** Open for the visual review. */
-export const Open: Story = { args: { defaultOpen: true } };
+export const Open: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true },
+};
 
-export const Medium: Story = { args: { defaultOpen: true, size: 'md' } };
-export const Large: Story = { args: { defaultOpen: true, size: 'lg' } };
+export const Medium: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true, size: 'md' },
+};
+export const Large: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true, size: 'lg' },
+};
 
 export const WithoutBody: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: { defaultOpen: true, children: undefined, description: 'You can edit it again later.' },
 };
 
 export const LongContent: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: {
     defaultOpen: true,
     title: 'Terms of service',
@@ -76,6 +104,7 @@ export const LongContent: Story = {
 };
 
 export const LongTitle: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: {
     defaultOpen: true,
     title:
@@ -85,7 +114,10 @@ export const LongTitle: Story = {
 
 /** A Dialog opened from a Sheet. Escape closes the Dialog first and leaves the Sheet open. */
 export const InsideSheet: Story = {
-  parameters: { docs: { story: { inline: false, iframeHeight: 520 } } },
+  parameters: {
+    docs: { story: { inline: false, iframeHeight: 520 } },
+    visual: { selector: '[role="dialog"]' },
+  },
   render: () => (
     <Sheet
       defaultOpen
@@ -121,12 +153,13 @@ export const InsideSheet: Story = {
 };
 
 export const RightToLeft: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: { defaultOpen: true },
   decorators: [
     (Story) => (
-      <div dir="rtl">
+      <RtlDocument>
         <Story />
-      </div>
+      </RtlDocument>
     ),
   ],
 };

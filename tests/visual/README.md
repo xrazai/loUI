@@ -40,6 +40,7 @@ Set under `parameters.visual` in a story or in its `meta`:
 | `play`     | `boolean` | Run the story's `play` function before the capture, for focus, hover, open and pressed states.      |
 | `width`    | `number`  | Frame width in CSS px (never wider than the test viewport). Default 384.                            |
 | `selector` | `string`  | Capture this element instead of the frame, for overlays rendered through a portal (dialogs, menus). |
+| `height`   | `number`  | Minimum frame height in CSS px, so a popover that opens below its trigger is not cut off.           |
 
 `play` is off by default because most play functions only assert behavior. Turn it on for stories whose purpose is to show a state (`Focused`, `Hovered`).
 

@@ -67,10 +67,14 @@ export const EscapeCancels: Story = {
 };
 
 /** Open for the visual review. */
-export const Open: Story = { args: { defaultOpen: true } };
+export const Open: Story = {
+  parameters: { visual: { selector: '[role="alertdialog"]' } },
+  args: { defaultOpen: true },
+};
 
 /** A non-destructive confirmation: primary button, focus on the action. */
 export const Neutral: Story = {
+  parameters: { visual: { selector: '[role="alertdialog"]' } },
   args: {
     defaultOpen: true,
     tone: 'neutral',
@@ -82,10 +86,12 @@ export const Neutral: Story = {
 };
 
 export const Pending: Story = {
+  parameters: { visual: { selector: '[role="alertdialog"]' } },
   args: { defaultOpen: true, isPending: true, closeOnConfirm: false },
 };
 
 export const WithDetails: Story = {
+  parameters: { visual: { selector: '[role="alertdialog"]' } },
   args: {
     defaultOpen: true,
     children: (

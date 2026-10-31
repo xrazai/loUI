@@ -6,12 +6,12 @@ import { defineConfig } from 'vitest/config';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 
-function browser(name: string) {
+function browser(name: string, viewport?: { width: number; height: number }) {
   return {
     enabled: true,
     headless: true,
     provider: playwright(),
-    instances: [{ browser: 'chromium' as const, name }],
+    instances: [{ browser: 'chromium' as const, name, ...(viewport ? { viewport } : {}) }],
   };
 }
 
@@ -47,7 +47,8 @@ export default defineConfig({
           name: 'visual',
           include: ['tests/visual/**/*.test.tsx'],
           setupFiles: ['src/test/setup.ts'],
-          browser: browser('visual'),
+          // Wide enough for the widest stories (DataTable, MatrixGrid); a fixed size keeps captures deterministic.
+          browser: browser('visual', { width: 1024, height: 800 }),
         },
       },
       {

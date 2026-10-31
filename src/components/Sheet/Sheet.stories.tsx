@@ -1,9 +1,26 @@
+import { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Sheet } from './Sheet';
+
+/**
+ * Sets `dir="rtl"` on the document while the story is mounted: the overlay is portaled to the
+ * body, so a wrapper element would not mirror it.
+ */
+function RtlDocument({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    const previous = document.documentElement.dir;
+    document.documentElement.dir = 'rtl';
+    return () => {
+      document.documentElement.dir = previous;
+    };
+  }, []);
+  return <div dir="rtl">{children}</div>;
+}
 
 const meta = {
   title: 'Components/Sheet',
@@ -60,10 +77,19 @@ export const Default: Story = {
 };
 
 /** Open for the visual review. */
-export const Open: Story = { args: { defaultOpen: true } };
+export const Open: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true },
+};
 
-export const Medium: Story = { args: { defaultOpen: true, size: 'md' } };
-export const Large: Story = { args: { defaultOpen: true, size: 'lg' } };
+export const Medium: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true, size: 'md' },
+};
+export const Large: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
+  args: { defaultOpen: true, size: 'lg' },
+};
 
 export const CloseButton: Story = {
   play: async ({ canvasElement }) => {
@@ -77,6 +103,7 @@ export const CloseButton: Story = {
 
 /** Long content scrolls in the body; the header and the footer stay in view. */
 export const LongContent: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: {
     defaultOpen: true,
     children: Array.from({ length: 40 }, (_, index) => (
@@ -87,6 +114,7 @@ export const LongContent: Story = {
 
 /** A list or table that bleeds to the edges. */
 export const NotPadded: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: {
     defaultOpen: true,
     padded: false,
@@ -109,6 +137,7 @@ export const NotPadded: Story = {
 };
 
 export const LongTitle: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: {
     defaultOpen: true,
     title: 'Order for a customer with a very long registered company name that does not fit',
@@ -116,16 +145,18 @@ export const LongTitle: Story = {
 };
 
 export const WithDescription: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: { defaultOpen: true, description: 'Edit the lines and the delivery date.' },
 };
 
 export const RightToLeft: Story = {
+  parameters: { visual: { selector: '[role="dialog"]' } },
   args: { defaultOpen: true },
   decorators: [
     (Story) => (
-      <div dir="rtl">
+      <RtlDocument>
         <Story />
-      </div>
+      </RtlDocument>
     ),
   ],
 };

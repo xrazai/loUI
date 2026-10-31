@@ -19,6 +19,8 @@ const meta = {
     rows: orders,
     'aria-label': 'Orders',
   },
+  // Four columns need more than the default 384 px frame; narrower, the Customer column collapses.
+  parameters: { visual: { width: 640 } },
 } satisfies Meta<Props>;
 
 export default meta;
