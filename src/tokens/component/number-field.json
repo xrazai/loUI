@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "number-field": {
+    "value-min-width": {
+      "$type": "dimension",
+      "$value": { "value": 56, "unit": "px" },
+      "$description": "Minimum width of the NumberField value box between the stepper buttons (56px, about four digits plus a suffix in mono)."
+    }
+  }
+}

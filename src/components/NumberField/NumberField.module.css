@@ -1,0 +1,47 @@
+@layer components {
+  .group {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+  }
+
+  .box {
+    flex: 1;
+    min-inline-size: var(--ds-number-field-value-min-width);
+    gap: var(--ds-space-1);
+    padding-inline: var(--ds-field-control-padding-inline);
+  }
+
+  /* The box (not the input) draws the border and the focus ring, as in Input. */
+  .input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-family: var(--ds-font-mono);
+    font-size: inherit;
+    line-height: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .input:focus-visible {
+    box-shadow: none;
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+
+  .suffix {
+    flex: none;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    color: var(--ds-text-3);
+  }
+}

@@ -1,0 +1,139 @@
+@layer components {
+  .root {
+    inline-size: 100%;
+  }
+
+  .header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+  }
+
+  .output {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-text-2);
+  }
+
+  .track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    block-size: var(--ds-slider-thumb-size);
+    touch-action: none;
+    cursor: pointer;
+  }
+
+  .rail,
+  .fill {
+    position: absolute;
+    block-size: var(--ds-slider-track-height);
+    border-radius: var(--ds-radius-pill);
+  }
+
+  .rail {
+    inset-inline: 0;
+    background: var(--ds-line-control);
+  }
+
+  /* RAC positions the fill (inset-inline-start and width); only the look is ours. */
+  .fill {
+    background: var(--ds-accent);
+  }
+
+  /* The thumb is the 24px hit area; the visible knob is the dot inside it. */
+  .thumb {
+    box-sizing: border-box;
+    inline-size: var(--ds-slider-thumb-size);
+    block-size: var(--ds-slider-thumb-size);
+
+    /* RAC translates the thumb by -50% on both axes; the track is exactly one thumb tall. */
+    inset-block-start: calc(var(--ds-slider-thumb-size) / 2);
+    display: grid;
+    place-items: center;
+    border-radius: var(--ds-radius-pill);
+    outline: none;
+    cursor: grab;
+  }
+
+  .dot {
+    box-sizing: border-box;
+    inline-size: var(--ds-slider-thumb-dot-size);
+    block-size: var(--ds-slider-thumb-dot-size);
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-text);
+    border: 1px solid var(--ds-line-strong);
+    transition: border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .thumb[data-hovered] .dot,
+  .thumb[data-dragging] .dot {
+    border-color: var(--ds-accent);
+  }
+
+  .thumb[data-dragging] {
+    cursor: grabbing;
+  }
+
+  .thumb[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] .track {
+    cursor: not-allowed;
+  }
+
+  .root[data-disabled] .rail,
+  .root[data-disabled] .fill,
+  .root[data-disabled] .dot {
+    opacity: var(--ds-opacity-disabled);
+  }
+
+  /*
+   * Text keeps full opacity and drops to text-3 instead: no native control is labelled here,
+   * so axe checks the contrast of the disabled label and value.
+   */
+  .root[data-disabled] .header .label,
+  .root[data-disabled] .header .output {
+    opacity: 1;
+    color: var(--ds-text-3);
+  }
+
+  .root[data-disabled] .thumb {
+    cursor: not-allowed;
+  }
+
+  .root[data-disabled] .fill {
+    background: var(--ds-text-3);
+  }
+
+  @media (forced-colors: active) {
+    .rail {
+      background: CanvasText;
+    }
+
+    .fill {
+      background: Highlight;
+    }
+
+    .dot {
+      background: ButtonText;
+      border-color: ButtonText;
+    }
+
+    .thumb[data-focus-visible] {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      transition: none;
+    }
+  }
+}

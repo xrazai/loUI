@@ -1,0 +1,6 @@
+@layer components {
+  /* Right-aligned digits: the cents stay in one column across a list of fields. */
+  .input {
+    text-align: end;
+  }
+}

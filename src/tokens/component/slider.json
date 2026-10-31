@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "slider": {
+    "$type": "dimension",
+    "track-height": {
+      "$value": { "value": 4, "unit": "px" },
+      "$description": "Thickness of the Slider track and fill (4px, the handoff value)."
+    },
+    "thumb-size": {
+      "$value": "{size.target-min}",
+      "$description": "Width and height of the Slider thumb hit area (24px, WCAG 2.5.8). The visible knob is thumb-dot-size; the ring on focus follows this box."
+    },
+    "thumb-dot-size": {
+      "$value": { "value": 16, "unit": "px" },
+      "$description": "Diameter of the visible Slider knob (16px), centered in the thumb hit area."
+    }
+  }
+}
