@@ -35,6 +35,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
+    "start": "storybook dev -p 6006",
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -59,7 +60,7 @@
     "publint": "publint",
     "attw": "attw --pack . --profile esm-only --exclude-entrypoints styles.css llms.txt llms-full.txt",
     "prepare": "husky",
-    "test:tools": "pnpm --filter eslint-plugin-loui test"
+    "test:tools": "pnpm -r --filter \"./tools/*\" test"
   },
   "peerDependencies": {
     "react": "^19.0.0",

@@ -65,10 +65,15 @@ Generated, always in sync with the source, committed under `docs/` and shipped i
 - [`docs/ai/content-rules.json`](docs/ai/content-rules.json): microcopy rules as data.
 - [`docs/ai/components/`](docs/ai/components): one Markdown page per component.
 
+## Quick start (Windows)
+
+Double-click `start.cmd` in the repo root (or run it from a terminal). It installs pnpm and the dependencies if they are missing, starts Storybook and opens http://localhost:6006 in your browser. On any OS, `pnpm install` then `pnpm start` does the same.
+
 ## Scripts
 
 | Command                                        | Purpose                                                           |
 | ---------------------------------------------- | ----------------------------------------------------------------- |
+| `pnpm start`                                   | Start Storybook on port 6006 and open it in the browser           |
 | `pnpm storybook`                               | Storybook on port 6006 (also serves the MCP endpoint at `/mcp`)   |
 | `pnpm build`                                   | Library build to `dist/`, then the AI manifests                   |
 | `pnpm build-storybook`                         | Static Storybook                                                  |
