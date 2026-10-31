@@ -52,6 +52,15 @@ export type TokenName =
   | 'color.paper-muted'
   | 'color.paper-rule'
   | 'color.paper-accent'
+  | 'color.paper-success'
+  | 'color.paper-warning'
+  | 'color.paper-danger'
+  | 'color.paper-success-soft'
+  | 'color.paper-warning-soft'
+  | 'color.paper-danger-soft'
+  | 'color.paper-danger-soft-hover'
+  | 'color.paper-danger-line'
+  | 'color.paper-accent-soft'
   | 'focus-ring'
   | 'focus-ring-danger'
   | 'font.sans'
@@ -219,6 +228,12 @@ export type TokenName =
   | 'dialog.width-lg'
   | 'dialog.gutter'
   | 'dialog.padding'
+  | 'donut-meter.size-sm'
+  | 'donut-meter.size-md'
+  | 'donut-meter.size-lg'
+  | 'donut-meter.stroke-w'
+  | 'donut-meter.value'
+  | 'donut-meter.color'
   | 'due-indicator.dot-size'
   | 'due-indicator.gap'
   | 'empty-state.padding-block'
@@ -313,6 +328,11 @@ export type TokenName =
   | 'slider.track-height'
   | 'slider.thumb-size'
   | 'slider.thumb-dot-size'
+  | 'sparkline.stroke-w'
+  | 'sparkline.dot-r'
+  | 'sparkline.marker-r'
+  | 'sparkline.area-opacity'
+  | 'sparkline.color'
   | 'spinner.stroke-width'
   | 'spinner.duration'
   | 'stack.gap'
@@ -336,6 +356,10 @@ export type TokenName =
   | 'tabs.indicator-height'
   | 'tabs.count-size'
   | 'tabs.count-padding-inline'
+  | 'tag-input.padding-block'
+  | 'tag-input.padding-inline'
+  | 'tag-input.gap'
+  | 'tag-input.input-min-width'
   | 'tag.height'
   | 'tag.remove-size'
   | 'tag.padding-inline'
@@ -400,6 +424,15 @@ export type TokenCssVar =
   | '--ds-paper-muted'
   | '--ds-paper-rule'
   | '--ds-paper-accent'
+  | '--ds-paper-success'
+  | '--ds-paper-warning'
+  | '--ds-paper-danger'
+  | '--ds-paper-success-soft'
+  | '--ds-paper-warning-soft'
+  | '--ds-paper-danger-soft'
+  | '--ds-paper-danger-soft-hover'
+  | '--ds-paper-danger-line'
+  | '--ds-paper-accent-soft'
   | '--ds-focus-ring'
   | '--ds-focus-ring-danger'
   | '--ds-font-sans'
@@ -557,6 +590,12 @@ export type TokenCssVar =
   | '--ds-dialog-width-lg'
   | '--ds-dialog-gutter'
   | '--ds-dialog-padding'
+  | '--ds-donut-meter-size-sm'
+  | '--ds-donut-meter-size-md'
+  | '--ds-donut-meter-size-lg'
+  | '--ds-donut-meter-stroke-w'
+  | '--ds-donut-meter-value'
+  | '--ds-donut-meter-color'
   | '--ds-due-indicator-dot-size'
   | '--ds-due-indicator-gap'
   | '--ds-empty-state-padding-block'
@@ -651,6 +690,11 @@ export type TokenCssVar =
   | '--ds-slider-track-height'
   | '--ds-slider-thumb-size'
   | '--ds-slider-thumb-dot-size'
+  | '--ds-sparkline-stroke-w'
+  | '--ds-sparkline-dot-r'
+  | '--ds-sparkline-marker-r'
+  | '--ds-sparkline-area-opacity'
+  | '--ds-sparkline-color'
   | '--ds-spinner-stroke-width'
   | '--ds-spinner-duration'
   | '--ds-stack-gap'
@@ -674,6 +718,10 @@ export type TokenCssVar =
   | '--ds-tabs-indicator-height'
   | '--ds-tabs-count-size'
   | '--ds-tabs-count-padding-inline'
+  | '--ds-tag-input-padding-block'
+  | '--ds-tag-input-padding-inline'
+  | '--ds-tag-input-gap'
+  | '--ds-tag-input-input-min-width'
   | '--ds-tag-height'
   | '--ds-tag-remove-size'
   | '--ds-tag-padding-inline'
@@ -745,7 +793,16 @@ export const tokenValues = {
   'color.paper-ink-2': { cssVar: '--ds-paper-ink-2', type: 'color', value: '#3A3A3A' },
   'color.paper-muted': { cssVar: '--ds-paper-muted', type: 'color', value: '#6B6B6B' },
   'color.paper-rule': { cssVar: '--ds-paper-rule', type: 'color', value: '#9A968C' },
-  'color.paper-accent': { cssVar: '--ds-paper-accent', type: 'color', value: '#A95839' },
+  'color.paper-accent': { cssVar: '--ds-paper-accent', type: 'color', value: '#944A2D' },
+  'color.paper-success': { cssVar: '--ds-paper-success', type: 'color', value: '#17683D' },
+  'color.paper-warning': { cssVar: '--ds-paper-warning', type: 'color', value: '#7F5200' },
+  'color.paper-danger': { cssVar: '--ds-paper-danger', type: 'color', value: '#A8231B' },
+  'color.paper-success-soft': { cssVar: '--ds-paper-success-soft', type: 'color', value: 'rgba(23, 104, 61, 0.14)' },
+  'color.paper-warning-soft': { cssVar: '--ds-paper-warning-soft', type: 'color', value: 'rgba(127, 82, 0, 0.14)' },
+  'color.paper-danger-soft': { cssVar: '--ds-paper-danger-soft', type: 'color', value: 'rgba(168, 35, 27, 0.1)' },
+  'color.paper-danger-soft-hover': { cssVar: '--ds-paper-danger-soft-hover', type: 'color', value: 'rgba(168, 35, 27, 0.18)' },
+  'color.paper-danger-line': { cssVar: '--ds-paper-danger-line', type: 'color', value: 'rgba(168, 35, 27, 0.35)' },
+  'color.paper-accent-soft': { cssVar: '--ds-paper-accent-soft', type: 'color', value: 'rgba(148, 74, 45, 0.14)' },
   'focus-ring': { cssVar: '--ds-focus-ring', type: 'shadow', value: '0px 0px 0px 3px rgba(138, 180, 255, 0.25)' },
   'focus-ring-danger': { cssVar: '--ds-focus-ring-danger', type: 'shadow', value: '0px 0px 0px 3px rgba(240, 122, 110, 0.25)' },
   'font.sans': { cssVar: '--ds-font-sans', type: 'fontFamily', value: 'Geist, "Geist Fallback", system-ui, sans-serif' },
@@ -913,6 +970,12 @@ export const tokenValues = {
   'dialog.width-lg': { cssVar: '--ds-dialog-width-lg', type: 'dimension', value: '680px' },
   'dialog.gutter': { cssVar: '--ds-dialog-gutter', type: 'dimension', value: '24px' },
   'dialog.padding': { cssVar: '--ds-dialog-padding', type: 'dimension', value: '20px' },
+  'donut-meter.size-sm': { cssVar: '--ds-donut-meter-size-sm', type: 'dimension', value: '48px' },
+  'donut-meter.size-md': { cssVar: '--ds-donut-meter-size-md', type: 'dimension', value: '72px' },
+  'donut-meter.size-lg': { cssVar: '--ds-donut-meter-size-lg', type: 'dimension', value: '96px' },
+  'donut-meter.stroke-w': { cssVar: '--ds-donut-meter-stroke-w', type: 'dimension', value: '10px' },
+  'donut-meter.value': { cssVar: '--ds-donut-meter-value', type: 'number', value: 0 },
+  'donut-meter.color': { cssVar: '--ds-donut-meter-color', type: 'color', value: '#8AB4FF' },
   'due-indicator.dot-size': { cssVar: '--ds-due-indicator-dot-size', type: 'dimension', value: '8px' },
   'due-indicator.gap': { cssVar: '--ds-due-indicator-gap', type: 'dimension', value: '8px' },
   'empty-state.padding-block': { cssVar: '--ds-empty-state-padding-block', type: 'dimension', value: '48px' },
@@ -1007,6 +1070,11 @@ export const tokenValues = {
   'slider.track-height': { cssVar: '--ds-slider-track-height', type: 'dimension', value: '4px' },
   'slider.thumb-size': { cssVar: '--ds-slider-thumb-size', type: 'dimension', value: '24px' },
   'slider.thumb-dot-size': { cssVar: '--ds-slider-thumb-dot-size', type: 'dimension', value: '16px' },
+  'sparkline.stroke-w': { cssVar: '--ds-sparkline-stroke-w', type: 'dimension', value: '1.5px' },
+  'sparkline.dot-r': { cssVar: '--ds-sparkline-dot-r', type: 'dimension', value: '2.5px' },
+  'sparkline.marker-r': { cssVar: '--ds-sparkline-marker-r', type: 'dimension', value: '2px' },
+  'sparkline.area-opacity': { cssVar: '--ds-sparkline-area-opacity', type: 'number', value: 0.12 },
+  'sparkline.color': { cssVar: '--ds-sparkline-color', type: 'color', value: '#A3A3A9' },
   'spinner.stroke-width': { cssVar: '--ds-spinner-stroke-width', type: 'dimension', value: '2px' },
   'spinner.duration': { cssVar: '--ds-spinner-duration', type: 'duration', value: '700ms' },
   'stack.gap': { cssVar: '--ds-stack-gap', type: 'dimension', value: '16px' },
@@ -1030,6 +1098,10 @@ export const tokenValues = {
   'tabs.indicator-height': { cssVar: '--ds-tabs-indicator-height', type: 'dimension', value: '2px' },
   'tabs.count-size': { cssVar: '--ds-tabs-count-size', type: 'dimension', value: '20px' },
   'tabs.count-padding-inline': { cssVar: '--ds-tabs-count-padding-inline', type: 'dimension', value: '6px' },
+  'tag-input.padding-block': { cssVar: '--ds-tag-input-padding-block', type: 'dimension', value: '3px' },
+  'tag-input.padding-inline': { cssVar: '--ds-tag-input-padding-inline', type: 'dimension', value: '10px' },
+  'tag-input.gap': { cssVar: '--ds-tag-input-gap', type: 'dimension', value: '4px' },
+  'tag-input.input-min-width': { cssVar: '--ds-tag-input-input-min-width', type: 'dimension', value: '96px' },
   'tag.height': { cssVar: '--ds-tag-height', type: 'dimension', value: '24px' },
   'tag.remove-size': { cssVar: '--ds-tag-remove-size', type: 'dimension', value: '24px' },
   'tag.padding-inline': { cssVar: '--ds-tag-padding-inline', type: 'dimension', value: '8px' },

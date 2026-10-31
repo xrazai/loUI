@@ -56,7 +56,16 @@
     --ds-paper-ink-2: #3a3a3a;
     --ds-paper-muted: #6b6b6b;
     --ds-paper-rule: #9a968c;
-    --ds-paper-accent: #a95839;
+    --ds-paper-accent: #944a2d;
+    --ds-paper-success: #17683d;
+    --ds-paper-warning: #7f5200;
+    --ds-paper-danger: #a8231b;
+    --ds-paper-success-soft: color-mix(in oklab, var(--ds-paper-success) 14%, transparent);
+    --ds-paper-warning-soft: color-mix(in oklab, var(--ds-paper-warning) 14%, transparent);
+    --ds-paper-danger-soft: color-mix(in oklab, var(--ds-paper-danger) 10%, transparent);
+    --ds-paper-danger-soft-hover: color-mix(in oklab, var(--ds-paper-danger) 18%, transparent);
+    --ds-paper-danger-line: color-mix(in oklab, var(--ds-paper-danger) 35%, transparent);
+    --ds-paper-accent-soft: color-mix(in oklab, var(--ds-paper-accent) 14%, transparent);
 
     /* focus-ring */
     --ds-focus-ring: 0px 0px 0px 3px color-mix(in oklab, var(--ds-accent) 25%, transparent);
@@ -285,6 +294,14 @@
     --ds-dialog-gutter: var(--ds-space-6);
     --ds-dialog-padding: var(--ds-space-5);
 
+    /* donut-meter */
+    --ds-donut-meter-size-sm: 48px;
+    --ds-donut-meter-size-md: 72px;
+    --ds-donut-meter-size-lg: 96px;
+    --ds-donut-meter-stroke-w: 10px;
+    --ds-donut-meter-value: 0;
+    --ds-donut-meter-color: var(--ds-accent);
+
     /* due-indicator */
     --ds-due-indicator-dot-size: 8px;
     --ds-due-indicator-gap: var(--ds-space-2);
@@ -435,6 +452,13 @@
     --ds-slider-thumb-size: var(--ds-target-min);
     --ds-slider-thumb-dot-size: 16px;
 
+    /* sparkline */
+    --ds-sparkline-stroke-w: 1.5px;
+    --ds-sparkline-dot-r: 2.5px;
+    --ds-sparkline-marker-r: 2px;
+    --ds-sparkline-area-opacity: 0.12;
+    --ds-sparkline-color: var(--ds-text-2);
+
     /* spinner */
     --ds-spinner-stroke-width: 2px;
     --ds-spinner-duration: 700ms;
@@ -471,6 +495,12 @@
     --ds-tabs-indicator-height: 2px;
     --ds-tabs-count-size: 20px;
     --ds-tabs-count-padding-inline: 6px;
+
+    /* tag-input */
+    --ds-tag-input-padding-block: 3px;
+    --ds-tag-input-padding-inline: var(--ds-field-control-padding-inline);
+    --ds-tag-input-gap: var(--ds-space-1);
+    --ds-tag-input-input-min-width: 96px;
 
     /* tag */
     --ds-tag-height: var(--ds-target-min);
