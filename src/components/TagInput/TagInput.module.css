@@ -1,0 +1,98 @@
+@layer components {
+  /*
+   * The box itself (border, background, hover, focus ring, invalid and disabled states) is
+   * the shared `.control` of Field.module.css. This module only lays out tags and input.
+   */
+  .root {
+    position: relative;
+  }
+
+  .control {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: flex-end;
+    gap: var(--ds-tag-input-gap);
+    min-block-size: var(--ds-control-h-md);
+    padding-block: var(--ds-tag-input-padding-block);
+    padding-inline: var(--ds-tag-input-padding-inline);
+    cursor: text;
+  }
+
+  .root[data-size='sm'] .control {
+    min-block-size: var(--ds-control-h-sm);
+  }
+
+  .root[data-size='lg'] .control {
+    min-block-size: var(--ds-control-h-lg);
+  }
+
+  .root[data-disabled] .control {
+    cursor: not-allowed;
+  }
+
+  /* The tag group dissolves into the box, so tags and input share one wrapping flow. */
+  .root .tags {
+    display: contents;
+  }
+
+  /* The tag list may shrink below the width of a long tag, which then truncates with an ellipsis. */
+  .tags > * {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  /* The input is one tag high, so it lines up with the last row of tags. */
+  .input {
+    flex: 1 1 var(--ds-tag-input-input-min-width);
+    min-inline-size: 0;
+    block-size: var(--ds-tag-height);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    outline: none;
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+
+  .input::placeholder {
+    color: var(--ds-text-3);
+  }
+
+  /*
+   * The live region is always in the page so that changes are announced. It is hidden visually,
+   * like VisuallyHidden, until a notice has to be seen by everyone.
+   */
+  .status {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .status[data-visible] {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    white-space: normal;
+  }
+}

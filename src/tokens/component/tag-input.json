@@ -1,0 +1,25 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tag-input": {
+    "padding-block": {
+      "$type": "dimension",
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Vertical padding inside the TagInput box (3px): one row of tags plus border is exactly the small control height (32px). The box is at least as tall as the control height of its size, and grows when tags wrap."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{field.control-padding-inline}",
+      "$description": "Horizontal padding inside the TagInput box (10px), the same as other text fields."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Gap between tags, and between the last tag and the text input (4px)."
+    },
+    "input-min-width": {
+      "$type": "dimension",
+      "$value": { "value": 96, "unit": "px" },
+      "$description": "Minimum width of the text input. When less room is left on the line, the input wraps to the next one (96px)."
+    }
+  }
+}
