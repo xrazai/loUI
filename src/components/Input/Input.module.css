@@ -1,0 +1,55 @@
+@layer components {
+  .input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--ds-field-control-padding-inline);
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* The wrapper shows the focus ring (Field.module.css); the input keeps its transparent outline for forced-colors. */
+  .input:focus-visible {
+    box-shadow: none;
+  }
+
+  .input[data-mono] {
+    font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+
+  .adornmentStart,
+  .adornmentEnd {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    color: var(--ds-text-3);
+  }
+
+  .adornmentStart {
+    padding-inline-start: var(--ds-field-control-padding-inline);
+  }
+
+  .adornmentEnd {
+    padding-inline-end: var(--ds-field-control-padding-inline);
+  }
+
+  .adornmentStart + .input {
+    padding-inline-start: var(--ds-space-2);
+  }
+
+  .input:has(+ .adornmentEnd) {
+    padding-inline-end: var(--ds-space-2);
+  }
+}
