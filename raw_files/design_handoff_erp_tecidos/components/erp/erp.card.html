@@ -1,0 +1,58 @@
+<!-- @dsCard group="Components" viewport="760x1180" name="ERP" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+const brl = (c) => (c / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const { Sheet, StatCard, Swatch, ColorOption, StatusSteps, Stepper, DueIndicator, ChoiceTiles, ProportionBar, RankList, MatrixGrid, LedgerList, Button, Input, Badge, Tabs } = DS;
+const CORES = [["c1", "Branco", "#F2F0EA"], ["c3", "Preto", "#1B1B1D"], ["c4", "Marinho", "#23304F"], ["c7", "Terracota", "#B8603E"], ["c9", "Mostarda", "#C9A23A"]].map(([id, label, hex]) => ({ id, label, hex }));
+function Demo() {
+  const [st, sst] = React.useState(1), [n, sn] = React.useState(3), [pay, sp] = React.useState("Pix"), [sel, ss] = React.useState(["c7"]);
+  const [links, sl] = React.useState(["l-c1", "l-c7", "t-c1", "t-c3", "t-c4", "t-c9"]), [open, so] = React.useState(true);
+  const tog = (id) => ss((s) => s.includes(id) ? s.filter((x) => x !== id) : [...s, id]);
+  return <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div><Cap>StatCard · Tabs</Cap><Tabs style={{ marginBottom: 14 }} value="pagar" items={[{ value: "caixa", label: "Caixa do dia", shortcut: "1" }, { value: "pagar", label: "A pagar", count: 3, tone: "danger", shortcut: "2" }, { value: "receber", label: "A receber", count: 5, shortcut: "3" }]} /><div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 12 }}>
+      <StatCard label="Vendido" value="R$ 37.655,30" note="+12% vs 30 dias anteriores" noteTone="success" />
+      <StatCard label="Vence em 7 dias" value="R$ 2.350,00" tone="warning" note="Têxtil Sul 30 out" />
+      <StatCard label="Pix" value="R$ 1.693,00" aside="55%" note="12 vendas"><ProportionBar height={4} segments={[{ label: "Pix", value: 55, color: "var(--text-2)" }, { label: "", value: 45, color: "var(--line)" }]} /></StatCard>
+    </div></div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div><Cap>StatusSteps</Cap><StatusSteps steps={["Novo", "Separado", "Enviado", "Entregue"]} current={st} complete={st === 3} onSelect={sst} /></div>
+      <div><Cap>DueIndicator</Cap><div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <DueIndicator date="2026-10-28" today="2026-10-30" /><DueIndicator date="2026-10-30" today="2026-10-30" /><DueIndicator date="2026-11-14" today="2026-10-30" />
+      </div></div>
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div><Cap>ChoiceTiles</Cap><ChoiceTiles options={["Pix", "Dinheiro", "Débito", "Crédito"]} value={pay} onChange={sp} /></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}><div><Cap>Stepper</Cap><Stepper label="Parcelas" value={n} onChange={sn} min={2} max={12} suffix="×" /></div>
+        <div><Cap>Swatch</Cap><div style={{ display: "flex", gap: 8 }}>{CORES.map((c) => <Swatch key={c.id} hex={c.hex} label={c.label} />)}</div></div></div>
+    </div>
+    <div><Cap>ColorOption</Cap><div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 6 }}>
+      {CORES.map((c) => <ColorOption key={c.id} hex={c.hex} label={c.label} selected={sel.includes(c.id)} disabled={c.id === "c1"} mark={c.id === "c1" ? "já vinculada" : undefined} onClick={() => tog(c.id)} />)}
+    </div></div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div><Cap>ProportionBar</Cap><ProportionBar legend format={brl} segments={[{ label: "Pix", value: 1693000 }, { label: "Dinheiro", value: 573400 }, { label: "Débito", value: 538800 }, { label: "Crédito", value: 359600 }]} /></div>
+      <div><Cap>RankList</Cap><div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: "var(--radius-lg)" }}>
+        <RankList format={brl} limit={4} items={CORES.map((c, i) => ({ id: c.id, label: c.label, swatch: c.hex, value: [412000, 380500, 221000, 640900, 150300][i], meta: [12, 10, 7, 18, 4][i] + " un." }))} /></div></div>
+    </div>
+    <div><Cap>MatrixGrid</Cap><MatrixGrid corner="Tecido" countLabel="Cores" labelWidth={160} cell={60} rows={[{ id: "l", label: "Linho natural", meta: "LIN · R$ 89,90" }, { id: "t", label: "Tricoline", meta: "TRI · R$ 32,90" }]} cols={CORES}
+      isOn={(r, c) => links.includes(r + "-" + c)} onToggle={(r, c) => sl((s) => s.includes(r + "-" + c) ? s.filter((x) => x !== r + "-" + c) : [...s, r + "-" + c])} /></div>
+    <div><Cap>Sheet · LedgerList</Cap>
+      <div style={{ position: "relative", height: 330, border: "1px solid var(--line-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden", background: "var(--bg)" }}>
+        <div style={{ padding: 16 }}><Button onClick={() => so(true)}>Abrir painel</Button></div>
+        <Sheet contained open={open} onClose={() => so(false)} width={420} padded={false} title="Têxtil Sul" meta="(11) 93333-2211"
+          footer={<><Button variant="danger">Excluir</Button><div style={{ marginLeft: "auto" }}><Button variant="primary">Registrar pagamento</Button></div></>}>
+          <LedgerList format={brl} onDelete={() => {}} entries={[
+            { id: "a", date: "15 out", title: "Pagamento", sub: "Boleto", delta: -128000, balance: 256000 },
+            { id: "b", date: "30 set", title: "Linho natural e viscose", sub: "3× de R$ 1.280,00", delta: 384000, balance: 384000 }]} />
+        </Sheet>
+      </div></div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

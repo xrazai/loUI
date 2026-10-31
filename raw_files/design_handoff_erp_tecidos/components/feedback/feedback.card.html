@@ -1,0 +1,36 @@
+<!-- @dsCard group="Components" viewport="700x440" name="Feedback" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { Alert, Toast, Dialog, Tooltip, Progress, Button, IconButton, Spinner, InlineConfirm } = DS;
+function Demo() {
+  return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <Cap>Alert · Progress · Toast</Cap>
+      <Alert title="Manutenção programada">Domingo, 02:00–03:00 UTC.</Alert>
+      <Alert tone="danger" title="Pagamento recusado" action={<a href="#">Atualizar</a>}>Cartão final 4242.</Alert>
+      <Progress value={62} label="Armazenamento" meta="6,2 / 10 GB" />
+      <Toast tone="neutral" actionLabel="Desfazer" onClose={() => {}}>3 itens arquivados</Toast>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, paddingTop: 30, flexWrap: "wrap" }}>
+        <Spinner label="Salvando…" />
+        <Tooltip content="Copiar link" shortcut="⌘C" forceOpen><IconButton label="Copiar">⧉</IconButton></Tooltip>
+        <Button variant="primary" disabled leading={<Spinner size={14} />}>Enviando</Button>
+      </div>
+      <InlineConfirm label="Remover item" confirmLabel="Remover" size="sm" />
+    </div>
+    <div style={{ position: "relative", minHeight: 300, background: "var(--bg-canvas)", borderRadius: "var(--radius)" }}>
+      <Dialog contained title="Excluir projeto?" description="“Northwind Web” e seus 14 ambientes serão removidos. Isso não pode ser desfeito."
+        footer={<><Button>Cancelar</Button><Button variant="danger-solid">Excluir</Button></>} />
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

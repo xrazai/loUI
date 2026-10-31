@@ -1,0 +1,24 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Display" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { Badge, Tag, Card, Avatar, Kbd } = DS;
+function Demo() {
+  return <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div><Cap>Badge · Tag · Kbd</Cap><Row gap={8}><Badge>Rascunho</Badge><Badge tone="accent">Aberto</Badge><Badge tone="success">Enviado</Badge><Badge tone="warning">Pendente</Badge><Badge tone="danger">Falhou</Badge><Tag>v2.4.0</Tag><Tag onRemove={() => {}}>linho</Tag><Kbd>⌘K</Kbd></Row></div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <Card title="Card"><span style={{ fontSize: 13, color: "var(--text-2)" }}>Superfície com borda, sem sombra.</span></Card>
+      <Card title="Avatar"><div style={{ display: "flex" }}><Avatar initials="AL" /><Avatar initials="MK" tone={1} style={{ marginLeft: -8 }} /><Avatar initials="+4" tone={2} style={{ marginLeft: -8 }} /></div></Card>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

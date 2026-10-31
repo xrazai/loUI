@@ -1,0 +1,48 @@
+<!-- @dsCard group="Components" viewport="700x640" name="Data" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { DataTable, Badge, Button, Chart, ActionList, EmptyState, Skeleton, Pagination } = DS;
+const ST = { open: ["Aberto", "accent"], shipped: ["Enviado", "success"], issue: ["Problema", "danger"] };
+const ROWS = [["1050", "Halden & Co.", "open", 1240], ["1049", "Mira Têxtil", "shipped", 4815.5], ["1048", "Fjord Studio", "issue", 89], ["1047", "Oakline Supply", "shipped", 732.2], ["1046", "Atelier Nove", "open", 960], ["1045", "Brightwater", "shipped", 310], ["1044", "Kessler GmbH", "shipped", 6120.75]].map(([id, customer, status, total]) => ({ id, customer, status, total }));
+const money = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const WEEK = [["Seg", 42], ["Ter", 58], ["Qua", 36], ["Qui", 71], ["Sex", 64], ["Sáb", 22], ["Dom", 15]].map(([label, value]) => ({ label, value }));
+const TREND = [12, 18, 15, 22, 28, 26, 34, 31, 39, 44, 41, 52].map((v, i) => ({ label: ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][i], value: v * 1000 }));
+function Demo() {
+  const [sel, ss] = React.useState("1048"), [pg, sp] = React.useState(3);
+  return <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div><Cap>DataTable</Cap>
+      <DataTable selectable pageSize={4} rows={ROWS} activeKey={sel} onRowClick={(r) => ss(r.id)}
+        bulkActions={(k, clear) => <Button size="sm" onClick={clear}>Arquivar</Button>}
+        columns={[{ key: "id", label: "Pedido", width: "80px", mono: true, muted: true, render: (r) => "#" + r.id },
+          { key: "customer", label: "Cliente" },
+          { key: "status", label: "Status", width: "100px", render: (r) => <Badge tone={ST[r.status][1]}>{ST[r.status][0]}</Badge> },
+          { key: "total", label: "Total", width: "110px", align: "right", mono: true, render: (r) => money(r.total) }]} />
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 20 }}>
+      <div><Cap>Chart · bar</Cap><Chart data={WEEK} height={140} /></div>
+      <div><Cap>Chart · line</Cap><Chart type="line" data={TREND} height={140} format={(v) => (v / 1000) + "k"} /></div>
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 20, alignItems: "start" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}><Cap>ActionList · Pagination</Cap>
+        <ActionList items={[{ id: "a", title: "Tabela de preços 2026.pdf", description: "Atualizado por Ana · ontem", meta: "2,4 MB", actions: [{ label: "Baixar" }, { label: "Renomear" }, { separator: true }, { label: "Excluir", danger: true }] },
+          { id: "b", title: "Catálogo verão.zip", description: "Enviado por Marcos", meta: "48 MB", actions: [{ label: "Baixar" }, { separator: true }, { label: "Excluir", danger: true }] }]} />
+        <Pagination page={pg} pageCount={9} onChange={sp} total={68} pageSize={8} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}><Cap>EmptyState · Skeleton</Cap>
+        <EmptyState compact title="Nenhum pedido ainda" description="Pedidos criados aqui aparecem nesta lista." action={<Button size="sm" variant="primary">Novo pedido</Button>} />
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}><Skeleton circle height={28} /><div style={{ flex: 1 }}><Skeleton lines={2} height={10} /></div><Skeleton width={64} height={22} radius="var(--radius-pill)" /></div>
+      </div>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

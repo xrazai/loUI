@@ -1,0 +1,21 @@
+:root {
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Densidade Ampla — legibilidade e foco */
+  --fs-display: 34px;  --lh-display: 40px;  --tracking-display: -0.02em;
+  --fs-title: 22px;    --lh-title: 30px;    --tracking-title: -0.01em;
+  --fs-heading: 17px;  --lh-heading: 24px;
+  --fs-body: 15px;     --lh-body: 24px;
+  --fs-small: 14px;    --lh-small: 22px;
+  --fs-label: 13px;    --lh-label: 18px;
+  --fs-num-lg: 30px;  --lh-num-lg: 36px;  /* números de destaque (saldo, total) */
+  --fs-num: 24px;     --lh-num: 32px;     /* números de indicadores */
+  --fs-icon: 20px;    /* glifos de texto em botões só-ícone (×, ›) */
+  --fs-meta: 12px;     --lh-meta: 16px;     /* datas, telefones, contagens ao lado de títulos */
+  --fs-caption: 11.5px; --lh-caption: 16px; --tracking-caption: 0.08em;
+}

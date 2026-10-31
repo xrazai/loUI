@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Navigation" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { Tabs, Menu, NavItem, Popover, Button, Checkbox } = DS;
+function Demo() {
+  const [t, st] = React.useState("Visão geral"), [n, sn] = React.useState("Hoje"), [f, sf] = React.useState({ a: true, b: false });
+  return <div style={{ display: "grid", gridTemplateColumns: "170px 1fr 200px", gap: 24, alignItems: "start" }}>
+    <div><Cap>NavItem</Cap>{[["Hoje", "sun", 6], ["Pedidos", "package", 3, "warning"], ["Financeiro", "wallet", 1, "danger"], ["Clientes", "users"]].map(([l, ic, c, tn]) => <NavItem key={l} icon={ic} label={l} count={c} tone={tn} active={n === l} onClick={() => sn(l)} />)}</div>
+    <div><Cap>Tabs · Popover</Cap><Tabs value={t} onChange={st} items={["Visão geral", "Atividade", "Configurações"]} />
+      <div style={{ marginTop: 14 }}><Popover width={220} trigger={<Button size="sm">Filtros</Button>}>{(close) => <div style={{ padding: 8, display: "flex", flexDirection: "column", gap: 10 }}>
+        <Checkbox checked={f.a} onChange={(v) => sf({ ...f, a: v })} label="Só abertos" /><Checkbox checked={f.b} onChange={(v) => sf({ ...f, b: v })} label="Com problema" />
+        <Button size="sm" variant="primary" onClick={close}>Aplicar</Button></div>}</Popover></div>
+    </div>
+    <div><Cap>Menu</Cap><Menu items={[{ label: "Renomear", shortcut: "R" }, { label: "Duplicar", shortcut: "⌘D" }, { separator: true }, { label: "Excluir", shortcut: "⌫", danger: true }]} /></div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

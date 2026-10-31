@@ -1,0 +1,31 @@
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+
+  --control-h-sm: 32px;
+  --control-h: 40px;
+  --control-h-lg: 48px;
+  --item-h: 36px;   /* itens de menu, navegação, opções */
+  --row-h: 52px;    /* linhas de tabela e listas */
+  --sidebar-w: 240px;
+  --topbar-h: 64px;
+
+  --shadow-overlay: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-dialog: 0 24px 48px rgba(0, 0, 0, 0.7);
+
+  --duration: 150ms;
+  --duration-done: 320ms; /* feedback de conclusão (sutil) */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

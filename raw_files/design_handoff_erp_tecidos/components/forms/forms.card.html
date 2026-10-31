@@ -1,0 +1,31 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Forms" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { Button, IconButton, Input, Select, Checkbox, RadioGroup, Switch, SegmentedControl, Kbd } = DS;
+function Demo() {
+  const [c1, s1] = React.useState(true), [c2, s2] = React.useState(false), [r, sr] = React.useState("Semanal"), [sw, ssw] = React.useState(true), [seg, sseg] = React.useState("week"), [reg, sreg] = React.useState("EU — Frankfurt");
+  return <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div><Cap>Button</Cap><Row><Button variant="primary">Primário</Button><Button>Secundário</Button><Button variant="ghost">Ghost</Button><Button variant="danger">Excluir</Button><Button variant="primary" disabled>Desabilitado</Button><Button size="sm">Pequeno</Button><Button trailing={<Kbd>⌘K</Kbd>}>Buscar</Button><IconButton label="Adicionar">+</IconButton><IconButton label="Mais" variant="ghost">···</IconButton></Row></div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+      <Input label="Nome" placeholder="ex.: Northwind" hint="Visível ao time." />
+      <Input label="E-mail" defaultValue="ana@northwind" error="E-mail incompleto." />
+      <Select label="Região" value={reg} onChange={sreg} options={["EU — Frankfurt", "US — Virgínia", "SA — São Paulo"]} />
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, alignItems: "start" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}><Checkbox checked={c1} onChange={s1} label="Notificações" /><Checkbox checked={c2} onChange={s2} label="Resumo semanal" /></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}><RadioGroup value={r} onChange={sr} options={["Diário", "Semanal", "Nunca"]} /><SegmentedControl value={seg} onChange={sseg} options={[{ value: "day", label: "Dia" }, { value: "week", label: "Semana" }, { value: "month", label: "Mês" }]} /></div>
+      <Switch checked={sw} onChange={ssw} label="Auto-sync" description="A cada 5 min" />
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

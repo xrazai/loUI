@@ -1,0 +1,31 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Layout" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head><body style="padding:24px;box-sizing:border-box"><div id="root"></div>
+<script type="text/babel">
+const DS = (() => { for (const k of Object.keys(window)) { try { const v = window[k]; if (v && typeof v === "object" && v.Button && v.Badge && v.Dialog) return v; } catch (e) {} } return {}; })();
+const Row = ({ children, gap = 10 }) => <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap }}>{children}</div>;
+const Cap = ({ children }) => <div style={{ font: "500 11px var(--font-mono)", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 10 }}>{children}</div>;
+
+const { Sidebar, TopBar, Accordion, Button, SearchInput } = DS;
+function Demo() {
+  const [pg, sp] = React.useState("settings"), [q, sq] = React.useState("");
+  return <div style={{ display: "flex", height: 372, border: "1px solid var(--line-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+    <Sidebar width={220} workspace={{ name: "Minha loja", subtitle: "Sexta, 30 out" }} value={pg} onChange={sp} status={{ title: "Caixa aberto", meta: "Desde 09:02", value: "R$ 2.340" }}
+      sections={[{ title: "Rotina", items: [{ value: "hoje", label: "Hoje", icon: "sun", count: 6 }, { value: "caixa", label: "Caixa", icon: "banknote" }] }, { title: "Gestão", items: [{ value: "financeiro", label: "Financeiro", icon: "wallet", count: 1, tone: "danger" }, { value: "settings", label: "Configurações", icon: "settings" }] }]} />
+    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+      <TopBar breadcrumb={[{ label: "Configurações", onClick: () => {} }, { label: "Loja" }]} actions={<Button size="sm" variant="primary">Salvar</Button>} style={{ padding: "0 16px" }} />
+      <div style={{ padding: 16 }}>
+        <Accordion defaultValue={["frete"]} items={[
+          { value: "frete", title: "Frete", meta: "3 regras", content: "Grátis acima de R$ 500,00. Expresso: +R$ 24,00 por pedido." },
+          { value: "impostos", title: "Impostos", content: "Valores exibidos sem impostos; o cálculo ocorre no checkout." },
+          { value: "devolucoes", title: "Devoluções", content: "Até 7 dias após o recebimento, com tecido intacto." }]} />
+      </div>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>
