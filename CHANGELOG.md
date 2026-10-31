@@ -8,6 +8,10 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **ARCH-001 / ARCH-002** (2026-10-31) Component conventions applied across all migrated components: ref as a prop (React 19), `className`, composed handlers, `data-*` state from React Aria, TSDoc on props; event/prop API normalized to React Aria naming (`isSelected`, `isDisabled`, `onChange(value)`, `value`/`defaultValue`), shared `variant` / `size` / `tone` vocabulary.
+- **TEST-002 / TEST-003** (2026-10-31) Accessibility harness in place: every story runs as a test in real Chromium with the Storybook a11y addon (violations fail), and every component has `expectNoA11yViolations` browser tests per state (WCAG 2.0–2.2 A/AA tags, including color contrast). Forced-colors, zoom and reflow checks continue in TOK-013 / TEST-014.
+- **DOCS-001 / DOCS-002** (2026-10-31) Storybook 10 with docs, a11y, Vitest and MCP addons; CSF3 stories with `play` keyboard tests for every component.
+- **AI-003** (2026-10-31) Every migrated component has an English `<Name>.md` (when to use, accessibility, content rules, differences from the handoff), replacing the 58 Portuguese `*.prompt.md` files; aggregated into `docs/ai/components/` by the manifest build.
 - **CMP-DAT-01** (2026-10-31) `DataTable` on React Aria `Table`: real table semantics, `aria-sort`, locale-aware stable sort (asc → desc → none), labelled row/page selection checkboxes, live "N selected" bulk-action bar (space reserved to avoid layout shift), page reset on sort/data change, sticky header, loading and empty states, active row; controlled or uncontrolled selection, sort and page.
 - **CMP-DAT-03** (2026-10-31) `ActionList` on React Aria `GridList`: keyboard-operable rows, per-row `MoreActionsMenu` named "More actions for {title}", focus returns to the menu button after Escape.
 - **CMP-DAT-04** (2026-10-31) `Chart` (SVG bar + line): accessible name/description, arrow-key traversal with polite announcements, visually hidden data table, negative and tiny values (`niceScale`, unit-tested), highlight with text and outline cue (not color only).

@@ -43,6 +43,7 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
 - [ ] **TOK-012** (P2 · S) Paper theme: remap signal colors (success, warning, danger) inside `[data-theme="paper"]` so they pass contrast on `--ds-paper` (only neutrals and accent are remapped today).
 - [ ] **TOK-013** (P2 · S) Verify `forced-colors: active` rendering in a real browser (Playwright `forcedColors` emulation) for base focus styles and every component; the CSS exists but is unexercised.
+- [ ] **TOK-014** (P2 · S) `--ds-line-control` is 2.8:1 on `--ds-surface-hover`; audit components whose control background changes on hover or sits on hover surfaces (e.g. inside menus) and add a hover border token if needed.
 
 ### Typography and fonts
 
@@ -65,8 +66,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ## Phase 2 — Architecture and shared primitives
 
-- [ ] **ARCH-001** (P0 · M) Component conventions (see AGENTS.md): `forwardRef`/ref as prop (React 19), `className`, `...rest` spread **before** internal handlers' merge point, `data-*` state attributes, `asChild`/`render` pattern if needed, `displayName`. _Depends: ADR-001, ADR-002_
-- [ ] **ARCH-002** (P0 · M) **Event/prop API normalization.** The handoff mixes `onChange(event)` (Input, Textarea), `onChange(value, event)` (Select), `onChange(boolean)` (Checkbox, Switch) and `onChange(value)` (Tabs, Combobox). Standardize: native elements keep native `onChange`; custom controls use `value` / `defaultValue` / `onValueChange` (or `checked` / `onCheckedChange`). Standardize `variant` vs. `tone` vs. `kind` vs. `status` naming across Button, Badge, Alert, Toast, Progress, StatCard, DueIndicator, AgentCard, ApprovalCard.
 - [ ] **ARCH-010** (P1 · M) Build and exports: ESM with per-component entry points, `exports` map, `sideEffects` for CSS, generated `.d.ts` (the handoff `.d.ts` files rely on the global `JSX` namespace, removed in React 19), `"use client"` banners, `publint` + `are-the-types-wrong` in CI.
 - [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
 
@@ -111,8 +110,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
 
-- [ ] **TEST-002** (P0 · M) **Automated accessibility harness (unit level):** `vitest-axe` run against every story in every state (rest, hover/focus where applicable, disabled, invalid, loading, open overlays). A component cannot be marked done with an axe violation.
-- [ ] **TEST-003** (P0 · M) **Real-browser accessibility harness:** Playwright + `@axe-core/playwright` against built Storybook (jsdom cannot compute color contrast). Tags: `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`, `best-practice`. Run in dark theme, `forced-colors: active`, `prefers-reduced-motion: reduce` and 200% zoom.
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
 - [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
 - [ ] **TEST-008** (P1 · S) **SSR/hydration smoke test:** render every exported component with `renderToString` and hydrate with no warnings; no `window`/`document` access at import time.
@@ -123,6 +120,8 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-014** (P2 · S) WCAG 2.2 specifics as explicit tests: target size ≥ 24 px (2.5.8), focus not obscured by sticky bars/toasts (2.4.11), dragging alternatives (2.5.7), consistent help, reflow at 320 px (1.4.10), text spacing override (1.4.12).
 - [ ] **TEST-015** (P2 · S) Flaky-test policy: retries only in visual CI, quarantine label, weekly review; coverage reported but not the quality gate (a11y + contract tests are).
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
+- [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
+- [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
 
 ---
 
@@ -131,21 +130,18 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
 - [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
-- [ ] **AI-003** (P1 · M) Convert the 58 `*.prompt.md` files into English `docs/components/<Name>.md` usage notes with a fixed template (when to use, when not, anatomy, props table, accessibility, content rules, examples). Correct the spec drift found in the originals (Appendix B).
 - [ ] **AI-006** (P1 · M) **Golden examples / recipes:** small, fully tested compositions (destructive confirm, form with validation, filterable table, empty state, settings page, undo toast, approval queue). Each passes axe, keyboard-contract and visual tests, and is referenced from the manifest so agents imitate verified patterns instead of inventing markup.
 - [ ] **AI-007** (P1 · M) **Design rules as executable checks.** ESLint plugin `eslint-plugin-<name>`: no raw colors/px in app code, no inline `style` colors, no deprecated props, one `variant="primary"` Button per JSX scope (heuristic warning), icon-only buttons require `label`, microcopy lint (sentence case, no exclamation marks, no emoji, verb+object button text) where statically checkable.
 - [ ] **AI-008** (P2 · L) **MCP server** exposing the DS to agents: `list_components`, `get_component` (props + examples + a11y), `search_tokens`, `get_recipe`, `validate_snippet` (type/lint/axe on a snippet). Backed by the manifest.
 - [ ] **AI-009** (P2 · M) Claude Code skill (`.claude/skills/<name>/SKILL.md`) — the handoff references a `SKILL.md` that was not delivered; create it from AGENTS.md essentials + manifest pointers.
 - [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
-- [ ] **AI-013** (P3 · L) **AI-native components** (streaming message, thinking/progress state, tool-call/step display, citations/sources, feedback controls, approval gate, stop/retry). Seed from `ChatPanel`, `ApprovalCard`, `AgentCard`; follow the "approve before sending, autonomy per task, undo not confirm" agent principles.
+- [ ] **AI-013** (P3 · L) More AI-native components: tool-call/step display, citations/sources, feedback controls (thumbs), regenerate action, markdown renderer recipe for `ChatPanel.renderContent`. (Streaming, Stop/Retry, approval cards are done.)
 - [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
 
 ---
 
 ## Phase 6 — Documentation site (Storybook)
 
-- [ ] **DOCS-001** (P1 · M) Storybook with Vite builder, MDX docs, addons: a11y, interactions, viewport, themes (dark/forced-colors), controls, docs. Theme Storybook itself with the DS tokens.
-- [ ] **DOCS-002** (P1 · M) Story conventions: CSF3, one `Default` + one story per variant/size/state, `play` functions for interactions, `argTypes` generated from types. Replace the 9 handoff `*.card.html` showcase files (Babel-in-browser, unpinned `_ds_bundle.js`, missing from the delivery).
 - [ ] **DOCS-003** (P1 · M) Foundations section generated from tokens (FDN-001…005).
 - [ ] **DOCS-007** (P2 · S) Publish docs (static hosting) with search; link from README.
 
@@ -167,13 +163,13 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
 - [ ] **GAP-001** (P2 · M) Layout primitives: `Stack`, `Inline`, `Grid`, `Container`, `Divider/Separator`, `ScrollArea`, `AppShell` (Sidebar + TopBar + content landmarks + skip link).
-- [ ] **GAP-002** (P2 · M) Typography components: `Text`, `Heading` (semantic level separate from visual size), `Link`, `Code`.
-- [ ] **GAP-003** (P2 · M) `Field` / `FormGroup` / `FieldSet`, form-level error summary, inline validation timing guidance ("only after first submit attempt").
+- [ ] **GAP-002** (P2 · M) Typography components: `Text`, `Heading` (semantic level separate from visual size), `Code`. (`Link` is done.)
+- [ ] **GAP-003** (P2 · M) `Form` wrapper (form-level `validationBehavior`, server errors via RAC `Form` `validationErrors`), `FieldSet`, form-level error summary. (`Field` parts are done.)
 - [ ] **GAP-004** (P2 · L) Command palette (⌘K "search or run"), plus a `useHotkeys` hook with a shortcut registry and conflict detection (the keyboard model F2/F9/N/Enter/Esc/1–4 comes from the ERP spec — extract only the generic mechanism).
-- [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup`, `NumberField` (successor of Stepper), `TagInput`, `Table` primitives for static tables.
+- [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
-- [ ] **GAP-008** (P3 · S) Undo pattern as a documented recipe/hook (`useUndoable`) built on Toast — "undo instead of confirm" is a core product principle.
+- [ ] **GAP-008** (P3 · S) Undo pattern as a hook (`useUndoable`) on top of Toast; the recipe already exists in `Toast.md`.
 
 ---
 
