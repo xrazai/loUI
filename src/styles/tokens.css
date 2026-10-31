@@ -173,6 +173,11 @@
     --ds-alert-danger-bg: color-mix(in oklab, var(--ds-danger) 6%, transparent);
     --ds-alert-danger-border: color-mix(in oklab, var(--ds-danger) 30%, transparent);
 
+    /* app-shell */
+    --ds-app-shell-detail-w: 360px;
+    --ds-app-shell-main-padding: var(--ds-content-gutter);
+    --ds-app-shell-nav-z-index: var(--ds-z-sheet);
+
     /* approval-card */
     --ds-approval-card-padding: var(--ds-space-5);
     --ds-approval-card-header-min-height: 48px;
@@ -191,6 +196,12 @@
     --ds-badge-height: 24px;
     --ds-badge-dot-size: 6px;
     --ds-badge-padding-inline: var(--ds-space-2);
+
+    /* breakpoint */
+    --ds-breakpoint-sm: 480px;
+    --ds-breakpoint-md: 768px;
+    --ds-breakpoint-lg: 1024px;
+    --ds-breakpoint-xl: 1280px;
 
     /* button */
     --ds-button-hover-brightness: 0.88;
@@ -242,6 +253,20 @@
     /* combobox */
     --ds-combobox-popover-max-height: var(--ds-select-popover-max-height);
 
+    /* command-palette */
+    --ds-command-palette-width: 640px;
+    --ds-command-palette-list-max-height: 360px;
+    --ds-command-palette-offset-top: 96px;
+
+    /* container */
+    --ds-container-sm: 640px;
+    --ds-container-md: 960px;
+    --ds-container-lg: 1200px;
+
+    /* content */
+    --ds-content-max: 1200px;
+    --ds-content-gutter: var(--ds-space-6);
+
     /* data-table */
     --ds-data-table-selection-col-w: 40px;
     --ds-data-table-cell-padding-inline: var(--ds-space-3);
@@ -271,6 +296,9 @@
     --ds-empty-state-compact-padding-inline: var(--ds-space-5);
     --ds-empty-state-description-max-w: 360px;
 
+    /* field-set */
+    --ds-field-set-gap: var(--ds-space-3);
+
     /* field */
     --ds-field-gap: 6px;
     --ds-field-control-padding-inline: 10px;
@@ -281,6 +309,16 @@
     --ds-file-upload-dropzone-padding-inline: var(--ds-space-4);
     --ds-file-upload-item-padding-block: var(--ds-space-3);
     --ds-file-upload-item-padding-inline: var(--ds-space-3);
+
+    /* form */
+    --ds-form-gap: var(--ds-space-5);
+    --ds-form-summary-padding: var(--ds-space-4);
+    --ds-form-summary-gap: var(--ds-space-2);
+
+    /* grid */
+    --ds-grid-min-item-sm: 160px;
+    --ds-grid-min-item-md: 240px;
+    --ds-grid-min-item-lg: 320px;
 
     /* icon */
     --ds-icon-stroke-width: 1.5px;

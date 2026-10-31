@@ -143,6 +143,9 @@ export type TokenName =
   | 'alert.warning-border'
   | 'alert.danger-bg'
   | 'alert.danger-border'
+  | 'app-shell.detail-w'
+  | 'app-shell.main-padding'
+  | 'app-shell.nav-z-index'
   | 'approval-card.padding'
   | 'approval-card.header-min-height'
   | 'approval-card.header-padding-block'
@@ -156,6 +159,10 @@ export type TokenName =
   | 'badge.height'
   | 'badge.dot-size'
   | 'badge.padding-inline'
+  | 'breakpoint.sm'
+  | 'breakpoint.md'
+  | 'breakpoint.lg'
+  | 'breakpoint.xl'
   | 'button.hover-brightness'
   | 'button.danger-solid-hover-brightness'
   | 'calendar.cell-size'
@@ -190,6 +197,14 @@ export type TokenName =
   | 'choice-tiles.height-lg'
   | 'choice-tiles.columns'
   | 'combobox.popover-max-height'
+  | 'command-palette.width'
+  | 'command-palette.list-max-height'
+  | 'command-palette.offset-top'
+  | 'container.sm'
+  | 'container.md'
+  | 'container.lg'
+  | 'content.max'
+  | 'content.gutter'
   | 'data-table.selection-col-w'
   | 'data-table.cell-padding-inline'
   | 'data-table.header-padding-block'
@@ -211,6 +226,7 @@ export type TokenName =
   | 'empty-state.compact-padding-block'
   | 'empty-state.compact-padding-inline'
   | 'empty-state.description-max-w'
+  | 'field-set.gap'
   | 'field.gap'
   | 'field.control-padding-inline'
   | 'field.choice-gap'
@@ -218,6 +234,12 @@ export type TokenName =
   | 'file-upload.dropzone-padding-inline'
   | 'file-upload.item-padding-block'
   | 'file-upload.item-padding-inline'
+  | 'form.gap'
+  | 'form.summary-padding'
+  | 'form.summary-gap'
+  | 'grid.min-item-sm'
+  | 'grid.min-item-md'
+  | 'grid.min-item-lg'
   | 'icon.stroke-width'
   | 'kbd.height'
   | 'kbd.padding-inline'
@@ -451,6 +473,9 @@ export type TokenCssVar =
   | '--ds-alert-warning-border'
   | '--ds-alert-danger-bg'
   | '--ds-alert-danger-border'
+  | '--ds-app-shell-detail-w'
+  | '--ds-app-shell-main-padding'
+  | '--ds-app-shell-nav-z-index'
   | '--ds-approval-card-padding'
   | '--ds-approval-card-header-min-height'
   | '--ds-approval-card-header-padding-block'
@@ -464,6 +489,10 @@ export type TokenCssVar =
   | '--ds-badge-height'
   | '--ds-badge-dot-size'
   | '--ds-badge-padding-inline'
+  | '--ds-breakpoint-sm'
+  | '--ds-breakpoint-md'
+  | '--ds-breakpoint-lg'
+  | '--ds-breakpoint-xl'
   | '--ds-button-hover-brightness'
   | '--ds-button-danger-solid-hover-brightness'
   | '--ds-calendar-cell-size'
@@ -498,6 +527,14 @@ export type TokenCssVar =
   | '--ds-choice-tiles-height-lg'
   | '--ds-choice-tiles-columns'
   | '--ds-combobox-popover-max-height'
+  | '--ds-command-palette-width'
+  | '--ds-command-palette-list-max-height'
+  | '--ds-command-palette-offset-top'
+  | '--ds-container-sm'
+  | '--ds-container-md'
+  | '--ds-container-lg'
+  | '--ds-content-max'
+  | '--ds-content-gutter'
   | '--ds-data-table-selection-col-w'
   | '--ds-data-table-cell-padding-inline'
   | '--ds-data-table-header-padding-block'
@@ -519,6 +556,7 @@ export type TokenCssVar =
   | '--ds-empty-state-compact-padding-block'
   | '--ds-empty-state-compact-padding-inline'
   | '--ds-empty-state-description-max-w'
+  | '--ds-field-set-gap'
   | '--ds-field-gap'
   | '--ds-field-control-padding-inline'
   | '--ds-field-choice-gap'
@@ -526,6 +564,12 @@ export type TokenCssVar =
   | '--ds-file-upload-dropzone-padding-inline'
   | '--ds-file-upload-item-padding-block'
   | '--ds-file-upload-item-padding-inline'
+  | '--ds-form-gap'
+  | '--ds-form-summary-padding'
+  | '--ds-form-summary-gap'
+  | '--ds-grid-min-item-sm'
+  | '--ds-grid-min-item-md'
+  | '--ds-grid-min-item-lg'
   | '--ds-icon-stroke-width'
   | '--ds-kbd-height'
   | '--ds-kbd-padding-inline'
@@ -777,6 +821,9 @@ export const tokenValues = {
   'alert.warning-border': { cssVar: '--ds-alert-warning-border', type: 'color', value: 'rgba(233, 182, 92, 0.3)' },
   'alert.danger-bg': { cssVar: '--ds-alert-danger-bg', type: 'color', value: 'rgba(240, 122, 110, 0.06)' },
   'alert.danger-border': { cssVar: '--ds-alert-danger-border', type: 'color', value: 'rgba(240, 122, 110, 0.3)' },
+  'app-shell.detail-w': { cssVar: '--ds-app-shell-detail-w', type: 'dimension', value: '360px' },
+  'app-shell.main-padding': { cssVar: '--ds-app-shell-main-padding', type: 'dimension', value: '24px' },
+  'app-shell.nav-z-index': { cssVar: '--ds-app-shell-nav-z-index', type: 'number', value: 40 },
   'approval-card.padding': { cssVar: '--ds-approval-card-padding', type: 'dimension', value: '20px' },
   'approval-card.header-min-height': { cssVar: '--ds-approval-card-header-min-height', type: 'dimension', value: '48px' },
   'approval-card.header-padding-block': { cssVar: '--ds-approval-card-header-padding-block', type: 'dimension', value: '12px' },
@@ -790,6 +837,10 @@ export const tokenValues = {
   'badge.height': { cssVar: '--ds-badge-height', type: 'dimension', value: '24px' },
   'badge.dot-size': { cssVar: '--ds-badge-dot-size', type: 'dimension', value: '6px' },
   'badge.padding-inline': { cssVar: '--ds-badge-padding-inline', type: 'dimension', value: '8px' },
+  'breakpoint.sm': { cssVar: '--ds-breakpoint-sm', type: 'dimension', value: '480px' },
+  'breakpoint.md': { cssVar: '--ds-breakpoint-md', type: 'dimension', value: '768px' },
+  'breakpoint.lg': { cssVar: '--ds-breakpoint-lg', type: 'dimension', value: '1024px' },
+  'breakpoint.xl': { cssVar: '--ds-breakpoint-xl', type: 'dimension', value: '1280px' },
   'button.hover-brightness': { cssVar: '--ds-button-hover-brightness', type: 'number', value: 0.88 },
   'button.danger-solid-hover-brightness': { cssVar: '--ds-button-danger-solid-hover-brightness', type: 'number', value: 0.9 },
   'calendar.cell-size': { cssVar: '--ds-calendar-cell-size', type: 'dimension', value: '36px' },
@@ -824,6 +875,14 @@ export const tokenValues = {
   'choice-tiles.height-lg': { cssVar: '--ds-choice-tiles-height-lg', type: 'dimension', value: '48px' },
   'choice-tiles.columns': { cssVar: '--ds-choice-tiles-columns', type: 'number', value: 2 },
   'combobox.popover-max-height': { cssVar: '--ds-combobox-popover-max-height', type: 'dimension', value: '320px' },
+  'command-palette.width': { cssVar: '--ds-command-palette-width', type: 'dimension', value: '640px' },
+  'command-palette.list-max-height': { cssVar: '--ds-command-palette-list-max-height', type: 'dimension', value: '360px' },
+  'command-palette.offset-top': { cssVar: '--ds-command-palette-offset-top', type: 'dimension', value: '96px' },
+  'container.sm': { cssVar: '--ds-container-sm', type: 'dimension', value: '640px' },
+  'container.md': { cssVar: '--ds-container-md', type: 'dimension', value: '960px' },
+  'container.lg': { cssVar: '--ds-container-lg', type: 'dimension', value: '1200px' },
+  'content.max': { cssVar: '--ds-content-max', type: 'dimension', value: '1200px' },
+  'content.gutter': { cssVar: '--ds-content-gutter', type: 'dimension', value: '24px' },
   'data-table.selection-col-w': { cssVar: '--ds-data-table-selection-col-w', type: 'dimension', value: '40px' },
   'data-table.cell-padding-inline': { cssVar: '--ds-data-table-cell-padding-inline', type: 'dimension', value: '12px' },
   'data-table.header-padding-block': { cssVar: '--ds-data-table-header-padding-block', type: 'dimension', value: '8px' },
@@ -845,6 +904,7 @@ export const tokenValues = {
   'empty-state.compact-padding-block': { cssVar: '--ds-empty-state-compact-padding-block', type: 'dimension', value: '24px' },
   'empty-state.compact-padding-inline': { cssVar: '--ds-empty-state-compact-padding-inline', type: 'dimension', value: '20px' },
   'empty-state.description-max-w': { cssVar: '--ds-empty-state-description-max-w', type: 'dimension', value: '360px' },
+  'field-set.gap': { cssVar: '--ds-field-set-gap', type: 'dimension', value: '12px' },
   'field.gap': { cssVar: '--ds-field-gap', type: 'dimension', value: '6px' },
   'field.control-padding-inline': { cssVar: '--ds-field-control-padding-inline', type: 'dimension', value: '10px' },
   'field.choice-gap': { cssVar: '--ds-field-choice-gap', type: 'dimension', value: '10px' },
@@ -852,6 +912,12 @@ export const tokenValues = {
   'file-upload.dropzone-padding-inline': { cssVar: '--ds-file-upload-dropzone-padding-inline', type: 'dimension', value: '16px' },
   'file-upload.item-padding-block': { cssVar: '--ds-file-upload-item-padding-block', type: 'dimension', value: '12px' },
   'file-upload.item-padding-inline': { cssVar: '--ds-file-upload-item-padding-inline', type: 'dimension', value: '12px' },
+  'form.gap': { cssVar: '--ds-form-gap', type: 'dimension', value: '20px' },
+  'form.summary-padding': { cssVar: '--ds-form-summary-padding', type: 'dimension', value: '16px' },
+  'form.summary-gap': { cssVar: '--ds-form-summary-gap', type: 'dimension', value: '8px' },
+  'grid.min-item-sm': { cssVar: '--ds-grid-min-item-sm', type: 'dimension', value: '160px' },
+  'grid.min-item-md': { cssVar: '--ds-grid-min-item-md', type: 'dimension', value: '240px' },
+  'grid.min-item-lg': { cssVar: '--ds-grid-min-item-lg', type: 'dimension', value: '320px' },
   'icon.stroke-width': { cssVar: '--ds-icon-stroke-width', type: 'dimension', value: '1.5px' },
   'kbd.height': { cssVar: '--ds-kbd-height', type: 'dimension', value: '18px' },
   'kbd.padding-inline': { cssVar: '--ds-kbd-padding-inline', type: 'dimension', value: '4px' },

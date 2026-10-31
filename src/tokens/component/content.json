@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "content": {
+    "$type": "dimension",
+    "max": {
+      "$value": { "value": 1200, "unit": "px" },
+      "$description": "Default maximum inline size of page content (1200px). Container uses it when no size is given."
+    },
+    "gutter": {
+      "$value": "{space.6}",
+      "$description": "Inline padding of page content, and of Container (24px). It keeps content off the viewport edge on narrow screens."
+    }
+  }
+}

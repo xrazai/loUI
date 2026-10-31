@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "breakpoint": {
+    "$type": "dimension",
+    "sm": {
+      "$value": { "value": 480, "unit": "px" },
+      "$description": "Small breakpoint (480px). Large phones. Components work from 320px; nothing in the DS changes layout at this width, it is a reference for consumer apps."
+    },
+    "md": {
+      "$value": { "value": 768, "unit": "px" },
+      "$description": "Medium breakpoint (768px). AppShell shows the sidebar in the flow from this width up (measured on the shell's own width, with a container query) and turns it into an off-canvas panel below. CSS cannot read custom properties inside @media or @container conditions, so the CSS Module repeats this value; AppShell.test.tsx asserts they agree."
+    },
+    "lg": {
+      "$value": { "value": 1024, "unit": "px" },
+      "$description": "Large breakpoint (1024px). Tablets in landscape and small laptops. A reference for consumer apps (for example to show a detail pane beside a list)."
+    },
+    "xl": {
+      "$value": { "value": 1280, "unit": "px" },
+      "$description": "Extra-large breakpoint (1280px). Desktop. The handoff prototype assumed 1180px minimum; the DS itself guarantees nothing above md."
+    }
+  }
+}

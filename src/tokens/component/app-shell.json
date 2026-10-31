@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "app-shell": {
+    "detail-w": {
+      "$type": "dimension",
+      "$value": { "value": 360, "unit": "px" },
+      "$description": "Width of the optional detail aside of AppShell (360px)."
+    },
+    "main-padding": {
+      "$type": "dimension",
+      "$value": "{content.gutter}",
+      "$description": "Padding around the main content of AppShell (24px)."
+    },
+    "nav-z-index": {
+      "$type": "number",
+      "$value": "{z.sheet}",
+      "$description": "Layer of the off-canvas navigation panel and its scrim below the md breakpoint. Same layer as Sheet, so a Dialog opened from the panel stacks above it."
+    }
+  }
+}

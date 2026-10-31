@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "field-set": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Vertical gap between the legend, the description and the fields of a FieldSet (12px)."
+    }
+  }
+}

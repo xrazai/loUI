@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "grid": {
+    "$type": "dimension",
+    "min-item-sm": {
+      "$value": { "value": 160, "unit": "px" },
+      "$description": "Minimum width of a Grid item at minItemWidth sm (160px): small tiles and stat numbers."
+    },
+    "min-item-md": {
+      "$value": { "value": 240, "unit": "px" },
+      "$description": "Minimum width of a Grid item at minItemWidth md (240px): cards."
+    },
+    "min-item-lg": {
+      "$value": { "value": 320, "unit": "px" },
+      "$description": "Minimum width of a Grid item at minItemWidth lg (320px): wide cards and previews."
+    }
+  }
+}
