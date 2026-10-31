@@ -1,0 +1,31 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "agent-card": {
+    "min-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 196,
+        "unit": "px"
+      },
+      "$description": "Minimum height of an AgentCard (196px), so cards in a grid line up."
+    },
+    "padding": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Inner padding of an AgentCard (20px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Vertical gap between the header, description and footer (12px)."
+    },
+    "icon-box-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Side of the square that frames the agent icon (40px)."
+    }
+  }
+}

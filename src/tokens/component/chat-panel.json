@@ -1,0 +1,38 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "chat-panel": {
+    "header-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      },
+      "$description": "Height of the ChatPanel header (56px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of the header and the message list (20px)."
+    },
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Vertical padding of the message list (16px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between messages (12px)."
+    },
+    "bubble-max-ratio": {
+      "$type": "number",
+      "$value": 0.88,
+      "$description": "Maximum width of a message bubble as a share of the list width (0.88)."
+    },
+    "composer-padding": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Padding of the composer area (16px)."
+    }
+  }
+}

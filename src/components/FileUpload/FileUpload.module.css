@@ -1,0 +1,122 @@
+@layer components {
+  .root {
+    inline-size: 100%;
+  }
+
+  .label {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    font-weight: var(--ds-weight-medium);
+    color: var(--ds-text);
+  }
+
+  /* Dashed boundary, like disabled inputs elsewhere but at full strength: this is the target. */
+  .zone {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-space-2);
+    padding-block: var(--ds-file-upload-dropzone-padding-block);
+    padding-inline: var(--ds-file-upload-dropzone-padding-inline);
+    text-align: center;
+    background: var(--ds-bg);
+    border: 1px dashed var(--ds-line-control);
+    border-radius: var(--ds-radius-lg);
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .zone[data-drop-target] {
+    border-color: var(--ds-accent);
+    background: var(--ds-accent-soft);
+  }
+
+  .zone[data-focus-within],
+  .zone[data-focus-visible] {
+    border-color: var(--ds-accent);
+  }
+
+  .zone[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .dropLabel {
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    color: var(--ds-text-2);
+  }
+
+  .errors {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    color: var(--ds-danger);
+  }
+
+  .error {
+    margin: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    padding-block: var(--ds-file-upload-item-padding-block);
+    padding-inline: var(--ds-file-upload-item-padding-inline);
+    background: var(--ds-surface);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-md);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+  }
+
+  .name {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    color: var(--ds-text);
+  }
+
+  .status {
+    flex: none;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    color: var(--ds-text-2);
+  }
+
+  .status[data-done] {
+    color: var(--ds-success);
+  }
+
+  @media (forced-colors: active) {
+    .zone[data-drop-target] {
+      outline: 2px solid Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zone {
+      transition: none;
+    }
+  }
+}

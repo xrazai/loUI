@@ -1,0 +1,181 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    min-block-size: 0;
+    min-inline-size: 0;
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-2);
+    box-sizing: border-box;
+    block-size: var(--ds-chat-panel-header-height);
+    padding-inline: var(--ds-chat-panel-padding-inline);
+    border-block-end: 1px solid var(--ds-line-subtle);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--ds-fs-body);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-body);
+  }
+
+  .viewport {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--ds-chat-panel-gap);
+    min-block-size: 0;
+    padding-block: var(--ds-chat-panel-padding-block);
+    padding-inline: var(--ds-chat-panel-padding-inline);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    outline: none;
+  }
+
+  /* The list is a keyboard-scrollable region: show focus inside it. */
+  .list:focus-visible {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: calc(-1 * var(--ds-space-1));
+  }
+
+  .intro {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    text-wrap: pretty;
+  }
+
+  .prompts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+  }
+
+  .prompt {
+    box-sizing: border-box;
+    padding: var(--ds-space-3);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font: inherit;
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .prompt[data-hovered] {
+    border-color: var(--ds-text-3);
+  }
+
+  .prompt[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .prompt[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-space-1);
+  }
+
+  .row[data-role='user'] {
+    align-items: flex-end;
+  }
+
+  .bubble {
+    box-sizing: border-box;
+    max-inline-size: calc(100% * var(--ds-chat-panel-bubble-max-ratio));
+    padding: var(--ds-space-3);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+    white-space: pre-wrap;
+  }
+
+  /* With renderContent the consumer's markup decides how whitespace behaves. */
+  .bubble[data-custom] {
+    white-space: normal;
+  }
+
+  .row[data-role='user'] .bubble {
+    border-color: transparent;
+    background-color: var(--ds-surface-hover);
+  }
+
+  .row[data-status='error'] .bubble {
+    border-color: var(--ds-danger-line);
+    color: var(--ds-danger);
+  }
+
+  .thinking {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .jump {
+    position: absolute;
+    inset-block-end: var(--ds-space-3);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    box-shadow: var(--ds-shadow-overlay);
+  }
+
+  [dir='rtl'] .jump {
+    translate: 50% 0;
+  }
+
+  .composer {
+    display: flex;
+    flex: none;
+    align-items: flex-end;
+    gap: var(--ds-space-2);
+    padding: var(--ds-chat-panel-composer-padding);
+    border-block-start: 1px solid var(--ds-line-subtle);
+  }
+
+  .field {
+    flex: 1;
+    min-inline-size: 0;
+  }
+}

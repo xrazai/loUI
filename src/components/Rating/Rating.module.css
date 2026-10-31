@@ -1,0 +1,61 @@
+@layer components {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-rating-gap);
+    vertical-align: middle;
+  }
+
+  .stars {
+    display: inline-flex;
+    gap: var(--ds-rating-star-gap);
+  }
+
+  .star {
+    position: relative;
+    display: inline-flex;
+  }
+
+  /* The unfilled star is a solid glyph in a quiet color; the filled one is clipped on top of it. */
+  .empty {
+    fill: currentcolor;
+    color: var(--ds-line-control);
+  }
+
+  .filled {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    overflow: hidden;
+    inline-size: var(--ds-rating-fill);
+    color: var(--ds-warning);
+  }
+
+  .full {
+    fill: currentcolor;
+    color: var(--ds-warning);
+
+    /* Keeps the clipped star at the full star width instead of squeezing it. */
+    flex: none;
+  }
+
+  .value {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+  }
+
+  /* The filled part may mirror in RTL: start edge follows the writing direction. */
+  @media (forced-colors: active) {
+    .empty {
+      color: GrayText;
+    }
+
+    .full,
+    .filled {
+      color: CanvasText;
+    }
+  }
+}

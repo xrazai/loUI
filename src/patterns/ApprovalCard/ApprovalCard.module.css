@@ -1,0 +1,106 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    overflow: hidden;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .header {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-space-2) var(--ds-space-3);
+    min-block-size: var(--ds-approval-card-header-min-height);
+    padding-block: var(--ds-approval-card-header-padding-block);
+    padding-inline: var(--ds-approval-card-padding);
+    border-block-end: 1px solid var(--ds-line-subtle);
+  }
+
+  .heading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    margin: 0;
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+  }
+
+  .author {
+    font-family: var(--ds-font-mono);
+    overflow-wrap: anywhere;
+  }
+
+  .item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .itemName {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .when {
+    margin-inline-start: auto;
+    color: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-approval-card-gap);
+    padding-block: var(--ds-approval-card-body-padding-block);
+    padding-inline: var(--ds-approval-card-padding);
+  }
+
+  .message {
+    padding: var(--ds-space-3);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-bg);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+  }
+
+  .flag {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-space-2);
+    margin: 0;
+    color: var(--ds-warning);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .flag > svg {
+    flex: none;
+    margin-block-start: var(--ds-space-1);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+
+  .send {
+    margin-inline-start: auto;
+  }
+}

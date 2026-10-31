@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "file-upload": {
+    "$type": "dimension",
+    "dropzone-padding-block": {
+      "$value": "{space.5}",
+      "$description": "Vertical padding of the FileUpload drop zone (20px, the handoff value)."
+    },
+    "dropzone-padding-inline": {
+      "$value": "{space.4}",
+      "$description": "Horizontal padding of the FileUpload drop zone (16px)."
+    },
+    "item-padding-block": {
+      "$value": "{space.3}",
+      "$description": "Vertical padding of a file row in the FileUpload list (12px)."
+    },
+    "item-padding-inline": {
+      "$value": "{space.3}",
+      "$description": "Horizontal padding of a file row in the FileUpload list (12px)."
+    }
+  }
+}

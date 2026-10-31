@@ -1,0 +1,157 @@
+@layer components {
+  .root {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-agent-card-gap);
+    min-block-size: var(--ds-agent-card-min-height);
+    min-inline-size: 0;
+    padding: var(--ds-agent-card-padding);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    transition: border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Not available yet: dashed, flat, quieter text. */
+  .root[data-status='soon'] {
+    border-style: dashed;
+    background-color: transparent;
+  }
+
+  .root[data-interactive]:hover {
+    border-color: var(--ds-line-strong);
+  }
+
+  /* The link or button is inside the card; its focus ring is drawn on the whole card. */
+  .root:has(.action[data-focus-visible]) {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+  }
+
+  .iconBox {
+    display: grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-agent-card-icon-box-size);
+    block-size: var(--ds-agent-card-icon-box-size);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-surface-raised);
+  }
+
+  .root[data-status='soon'] .iconBox {
+    color: var(--ds-text-3);
+  }
+
+  .titles {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .name {
+    margin: 0;
+    font-size: var(--ds-fs-body);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-body);
+    overflow-wrap: anywhere;
+  }
+
+  .root[data-status='soon'] .name {
+    color: var(--ds-text-2);
+  }
+
+  .area {
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .action {
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* Stretched link: the hit area covers the card. */
+  .action::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--ds-radius-lg);
+  }
+
+  .description {
+    margin: 0;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    text-wrap: pretty;
+  }
+
+  .footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+    margin-block-start: auto;
+    padding-block-start: var(--ds-space-3);
+    border-block-start: 1px solid var(--ds-line-subtle);
+  }
+
+  .last {
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .pending {
+    display: flex;
+    flex: none;
+    align-items: baseline;
+    gap: var(--ds-space-2);
+    white-space: nowrap;
+  }
+
+  .count {
+    color: var(--ds-accent);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-heading);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pendingText {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  @media (forced-colors: active) {
+    .root:has(.action[data-focus-visible]) {
+      outline-color: Highlight;
+    }
+  }
+}

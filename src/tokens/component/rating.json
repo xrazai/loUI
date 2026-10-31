@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "rating": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between the stars and the optional numeric value (8px)."
+    },
+    "star-gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Gap between two stars (2px)."
+    }
+  }
+}

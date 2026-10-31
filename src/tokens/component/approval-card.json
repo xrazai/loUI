@@ -1,0 +1,33 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "approval-card": {
+    "padding": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of the header and body of an ApprovalCard (20px)."
+    },
+    "header-min-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Minimum height of the ApprovalCard header row (48px)."
+    },
+    "header-padding-block": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Vertical padding of the header row (12px)."
+    },
+    "body-padding-block": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Vertical padding of the body (16px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Gap between the message, the draft, the flag and the actions (16px)."
+    }
+  }
+}
