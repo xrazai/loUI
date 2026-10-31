@@ -25,7 +25,7 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 
 ### Setup
 
-- [ ] **SETUP-005** (P1 · M) CI on GitHub Actions (`.github/workflows/ci.yml` runs `check:ci`, `publint`, `size` on push/PR to `main`, repo github.com/xrazai/loUI): keep it green, add branch protection with required checks, and add the visual job once Linux baselines exist (TEST-019).
+- [ ] **SETUP-005** (P2 · S) Branch protection on `main` with required checks (`check`, `visual`, `examples`) — owner decision (it changes how direct pushes work). CI itself is complete and green. Visual changes require regenerating baselines: `gh workflow run visual-baselines.yml` → `pnpm visual:pull-linux` → commit (see `tests/visual/README.md`).
 - [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, issue templates (bug, component request, token change), `CODEOWNERS`. (PR template with the Definition of Done already exists.)
 
 All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
@@ -109,7 +109,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
-- [ ] **TEST-019** (P1 · S) Commit Linux visual baselines: after each component batch lands, `gh workflow run visual-baselines.yml`, `pnpm visual:pull-linux`, review, commit (the CI `visual` job then runs for real). Workflow and pull script exist.
 
 ---
 
