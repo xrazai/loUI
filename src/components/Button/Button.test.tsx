@@ -4,10 +4,24 @@ import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { Icon, PlusIcon } from '../Icon';
+import { Kbd } from '../Kbd';
 import { Button } from './Button';
 
 const height = (el: Element) => el.getBoundingClientRect().height;
 const width = (el: Element) => el.getBoundingClientRect().width;
+
+/** WCAG contrast ratio between two opaque `rgb()` computed colors. */
+function contrast(foreground: string, background: string): number {
+  const luminance = (color: string) => {
+    const [r = 0, g = 0, b = 0] = (color.match(/[\d.]+/g) ?? []).slice(0, 3).map((channel) => {
+      const value = Number(channel) / 255;
+      return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const [light, dark] = [luminance(foreground), luminance(background)].sort((x, y) => y - x);
+  return ((light ?? 0) + 0.05) / ((dark ?? 0) + 0.05);
+}
 
 describe('Button', () => {
   describe('rendering', () => {
@@ -279,6 +293,30 @@ describe('Button', () => {
           )}
         </main>,
       );
+      await expectNoA11yViolations(screen.container);
+    });
+
+    it('keeps a Kbd hint readable on the primary and danger-solid fills', async () => {
+      // Regression: the keycap kept its light text color on the light primary fill (2.13:1).
+      const screen = await renderWithProvider(
+        <main>
+          <Button variant="primary" trailing={<Kbd keys={['N']} />}>
+            Create order
+          </Button>
+          <Button variant="danger-solid" trailing={<Kbd keys={['D']} />}>
+            Delete order
+          </Button>
+        </main>,
+      );
+      for (const key of screen.container.querySelectorAll('kbd')) {
+        const button = key.closest('button');
+        if (!button) throw new Error('Kbd is not inside a button');
+        const ratio = contrast(
+          getComputedStyle(key).color,
+          getComputedStyle(button).backgroundColor,
+        );
+        expect(ratio).toBeGreaterThanOrEqual(4.5);
+      }
       await expectNoA11yViolations(screen.container);
     });
 

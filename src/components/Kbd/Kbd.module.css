@@ -6,10 +6,12 @@
     gap: var(--ds-space-1);
     block-size: var(--ds-kbd-height);
     padding-inline: var(--ds-kbd-padding-inline);
-    border: 1px solid var(--ds-line-strong);
+    border: 1px solid var(--ds-kbd-border, var(--ds-line-strong));
     border-radius: var(--ds-radius-sm);
     background-color: transparent;
-    color: var(--ds-text-2);
+
+    /* Filled buttons set --ds-kbd-fg and --ds-kbd-border so the keycap stays readable on them. */
+    color: var(--ds-kbd-fg, var(--ds-text-2));
     font-family: var(--ds-font-mono);
     font-size: var(--ds-fs-caption);
     font-weight: var(--ds-weight-medium);

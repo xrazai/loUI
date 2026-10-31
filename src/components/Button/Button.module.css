@@ -50,6 +50,10 @@
   .root[data-variant='primary'] {
     background: var(--ds-primary-bg);
     color: var(--ds-primary-fg);
+
+    /* A Kbd hint inside adapts to the ink fill (Kbd reads these two properties). */
+    --ds-kbd-fg: var(--ds-primary-fg-muted);
+    --ds-kbd-border: var(--ds-primary-fg-muted);
   }
 
   .root[data-variant='primary'][data-hovered] {
@@ -89,6 +93,9 @@
   .root[data-variant='danger-solid'] {
     background: var(--ds-danger);
     color: var(--ds-text-inverse);
+
+    --ds-kbd-fg: var(--ds-text-inverse);
+    --ds-kbd-border: var(--ds-text-inverse);
   }
 
   .root[data-variant='danger-solid'][data-hovered] {
