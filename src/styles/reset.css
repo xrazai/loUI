@@ -1,0 +1,50 @@
+/* Minimal reset. Opinions (colors, type, focus) live in base.css. */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* stylelint-disable-next-line property-no-vendor-prefix -- iOS Safari still needs the prefix */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+    margin: 0;
+  }
+
+  :where(img, picture, video, canvas) {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  :where(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  :where(button, [role='button'], select, summary, label[for]) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, [aria-disabled='true']) {
+    cursor: not-allowed;
+  }
+
+  :where(table) {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  :where([hidden]:not([hidden='until-found'])) {
+    display: none !important;
+  }
+}

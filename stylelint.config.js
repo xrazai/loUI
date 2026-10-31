@@ -21,6 +21,10 @@ export default {
         'font-size',
         'border-radius',
         'box-shadow',
+        'outline-color',
+        'opacity',
+        'transition-duration',
+        'animation-duration',
       ],
       {
         ignoreValues: [
@@ -28,6 +32,7 @@ export default {
           'currentColor',
           'inherit',
           '0',
+          '1',
           'none',
           '/^var\\(--ds-[a-z0-9-]+\\)$/',
         ],
@@ -39,8 +44,8 @@ export default {
   },
   overrides: [
     {
-      // The tokens task generates files here; they may contain raw values.
-      files: ['src/tokens/**/*.css', 'src/styles/**/*.css'],
+      // Foundation files define the values (generated tokens.css, reset, base, fonts).
+      files: ['src/styles/**/*.css'],
       rules: {
         'scale-unlimited/declaration-strict-value': null,
       },

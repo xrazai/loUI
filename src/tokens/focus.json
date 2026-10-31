@@ -1,0 +1,75 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "focus-ring": {
+    "$value": {
+      "color": {
+        "colorSpace": "srgb",
+        "components": [0.541176, 0.705882, 1],
+        "alpha": 0.25,
+        "hex": "#8AB4FF"
+      },
+      "offsetX": {
+        "value": 0,
+        "unit": "px"
+      },
+      "offsetY": {
+        "value": 0,
+        "unit": "px"
+      },
+      "blur": {
+        "value": 0,
+        "unit": "px"
+      },
+      "spread": {
+        "value": 3,
+        "unit": "px"
+      }
+    },
+    "$description": "Focus halo: 3px ring, 25% accent over the surface beneath, used as box-shadow next to an accent border. base.css adds a transparent outline so focus stays visible in forced-colors mode. Not a hover or selected style.",
+    "$type": "shadow",
+    "$extensions": {
+      "com.loui-ds": {
+        "mix": {
+          "color": "color.accent",
+          "percent": 25
+        }
+      }
+    }
+  },
+  "focus-ring-danger": {
+    "$value": {
+      "color": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.25,
+        "hex": "#F07A6E"
+      },
+      "offsetX": {
+        "value": 0,
+        "unit": "px"
+      },
+      "offsetY": {
+        "value": 0,
+        "unit": "px"
+      },
+      "blur": {
+        "value": 0,
+        "unit": "px"
+      },
+      "spread": {
+        "value": 3,
+        "unit": "px"
+      }
+    },
+    "$description": "Focus halo for invalid fields: 3px ring, 25% danger over the surface beneath. Use instead of focus-ring when the control is in an error state. Not a general error style.",
+    "$type": "shadow",
+    "$extensions": {
+      "com.loui-ds": {
+        "mix": {
+          "color": "color.danger",
+          "percent": 25
+        }
+      }
+    }
+  }
+}

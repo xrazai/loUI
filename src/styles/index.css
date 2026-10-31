@@ -1,5 +1,12 @@
 /*
- * Cascade layer order for the whole design system (ADR-0002).
- * Tokens, reset and base styles are filled in by the tokens and base tasks.
+ * Loui DS stylesheet entry (ADR-0002, ADR-0003, ADR-0007).
+ * Layer order is fixed here so consumers can override predictably:
+ *   reset < tokens < base < components < utilities
+ * Component CSS Modules declare their rules inside `@layer components`.
  */
 @layer reset, tokens, base, components, utilities;
+
+@import url('./reset.css');
+@import url('./tokens.css');
+@import url('./base.css');
+@import url('./fonts.css');

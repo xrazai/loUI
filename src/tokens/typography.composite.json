@@ -1,0 +1,127 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "typography": {
+    "$type": "typography",
+    "display": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.display}",
+        "fontWeight": "{weight.semibold}",
+        "letterSpacing": "{tracking.display}",
+        "lineHeight": 1.1765
+      },
+      "$description": "Display role: 34/40, semibold, -2% tracking. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "title": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.title}",
+        "fontWeight": "{weight.semibold}",
+        "letterSpacing": "{tracking.title}",
+        "lineHeight": 1.3636
+      },
+      "$description": "Title role: 22/30, semibold, -1% tracking. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "heading": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.heading}",
+        "fontWeight": "{weight.semibold}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.4118
+      },
+      "$description": "Heading role: 17/24, semibold. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "body": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.body}",
+        "fontWeight": "{weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.6
+      },
+      "$description": "Body role: 15/24, regular. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "small": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.small}",
+        "fontWeight": "{weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.5714
+      },
+      "$description": "Small role: 14/22, regular. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "label": {
+      "$value": {
+        "fontFamily": "{font.sans}",
+        "fontSize": "{fs.label}",
+        "fontWeight": "{weight.medium}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.3846
+      },
+      "$description": "Label role: 13/18, medium. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "meta": {
+      "$value": {
+        "fontFamily": "{font.mono}",
+        "fontSize": "{fs.meta}",
+        "fontWeight": "{weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.3333
+      },
+      "$description": "Meta role: 12/16, mono regular. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "caption": {
+      "$value": {
+        "fontFamily": "{font.mono}",
+        "fontSize": "{fs.caption}",
+        "fontWeight": "{weight.medium}",
+        "letterSpacing": "{tracking.caption}",
+        "lineHeight": 1.3913
+      },
+      "$description": "Caption role: 11.5/16, mono medium, uppercase (text-transform applied in CSS), +8% tracking. Floor of the scale. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "num": {
+      "$value": {
+        "fontFamily": "{font.mono}",
+        "fontSize": "{fs.num}",
+        "fontWeight": "{weight.medium}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.3333
+      },
+      "$description": "Indicator number role: 24/32, mono medium, tabular-nums. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    },
+    "num-lg": {
+      "$value": {
+        "fontFamily": "{font.mono}",
+        "fontSize": "{fs.num-lg}",
+        "fontWeight": "{weight.medium}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": 1.2
+      },
+      "$description": "Highlight number role: 30/36, mono medium, tabular-nums. Composite for documentation and design tools; CSS uses the individual fs, lh and weight variables."
+    }
+  }
+}

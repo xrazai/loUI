@@ -10,3 +10,6 @@ __screenshots__
 AGENTS.md
 TODO.md
 CHANGELOG.md
+src/tokens/generated
+src/styles/tokens.css
+src/tokens/__snapshots__

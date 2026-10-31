@@ -1,0 +1,97 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "size": {
+    "$type": "dimension",
+    "control-h-sm": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$description": "Height of small controls (32px). Dense toolbars. Must still meet the 24px minimum target (size.target-min)."
+    },
+    "control-h-md": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Height of default controls (40px): buttons, inputs, selects. The handoff --control-h."
+    },
+    "control-h-lg": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Height of large controls (48px): primary actions and touch-first forms."
+    },
+    "item-h": {
+      "$value": {
+        "value": 36,
+        "unit": "px"
+      },
+      "$description": "Height of menu items, navigation items and listbox options (36px)."
+    },
+    "row-h": {
+      "$value": {
+        "value": 52,
+        "unit": "px"
+      },
+      "$description": "Height of table and list rows (52px)."
+    },
+    "row-h-dense": {
+      "$value": {
+        "value": 60,
+        "unit": "px"
+      },
+      "$description": "Height of dense rows with two lines of content (60px). Taller than row-h because it holds more content."
+    },
+    "sidebar-w": {
+      "$value": {
+        "value": 240,
+        "unit": "px"
+      },
+      "$description": "Width of the app sidebar (240px)."
+    },
+    "topbar-h": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Height of the top bar (64px)."
+    },
+    "icon-xs": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Icon size extra small (12px): inline status glyphs, chevrons in chips."
+    },
+    "icon-sm": {
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$description": "Icon size small (14px): icons inside dense controls."
+    },
+    "icon-md": {
+      "$value": {
+        "value": 18,
+        "unit": "px"
+      },
+      "$description": "Icon size medium (18px): default icon beside text and in nav items."
+    },
+    "icon-lg": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Icon size large (20px): icon-only buttons and empty states."
+    },
+    "target-min": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Minimum interactive target size (24px, WCAG 2.5.8). No interactive element may be smaller in either dimension."
+    }
+  }
+}

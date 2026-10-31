@@ -1,0 +1,69 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "space": {
+    "1": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Space step 1 (4px): the grid unit. Icon-to-text gaps and tight padding."
+    },
+    "2": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "Space step 2 (8px). Default gap between related elements inside a component."
+    },
+    "3": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Space step 3 (12px). Compact padding and form field gaps."
+    },
+    "4": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "Space step 4 (16px). Standard padding and gap between components."
+    },
+    "5": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Space step 5 (20px). Card padding."
+    },
+    "6": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Space step 6 (24px). Gap between sections inside a page."
+    },
+    "8": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$description": "Space step 8 (32px). Large section separation."
+    },
+    "12": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Space step 12 (48px). Page-level separation."
+    },
+    "16": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Space step 16 (64px). Largest spacing; hero and empty-state breathing room."
+    },
+    "$type": "dimension"
+  }
+}

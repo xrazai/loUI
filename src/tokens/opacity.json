@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "opacity": {
+    "$type": "number",
+    "disabled": {
+      "$value": 0.35,
+      "$description": "Opacity of disabled controls. One value for every component (the handoff .4 and .45 are unified). Disabled elements are exempt from contrast rules. Not for decorative fading."
+    }
+  }
+}

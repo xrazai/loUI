@@ -1,0 +1,34 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "radius": {
+    "$type": "dimension",
+    "sm": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Small radius (4px): chips, menu items, checkboxes."
+    },
+    "md": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Medium radius (6px): buttons and inputs. The handoff --radius."
+    },
+    "lg": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "Large radius (10px): cards, menus, popovers, dialogs."
+    },
+    "pill": {
+      "$value": {
+        "value": 999,
+        "unit": "px"
+      },
+      "$description": "Pill radius (999px): badges and switches. Any very large value renders fully round; do not use on large rectangles."
+    }
+  }
+}

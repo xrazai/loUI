@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  ColorTable,
+  DimensionTable,
+  FontFamilies,
+  ShadowTable,
+  TypeScale,
+  ValueTable,
+} from './docs/TokenDocs';
+
+<Meta title="Foundations/Tokens" />
+
+# Design tokens
+
+Every value below is generated from `src/tokens/generated/tokens.json`, which Terrazzo builds from the DTCG sources in `src/tokens/*.json`. Contrast ratios are computed from the resolved values (WCAG 2.2 relative luminance); translucent tokens are flattened over each surface.
+
+Every CSS variable is prefixed `--ds-`. Components use **semantic** tokens only; the primitive palette exists to define them.
+
+## Principles
+
+1. **One accent.** `--ds-accent` is for focus, selection, links and open states. Never a button fill or a large area.
+2. **Ink for action.** The primary button is light on dark (`--ds-primary-bg`). One primary action per screen.
+3. **Borders first.** Hierarchy comes from surface plus border. Shadows only on overlays.
+
+Move one surface layer at a time: `bg-canvas`, `bg`, `surface`, `surface-raised`, `surface-hover`. Do not skip layers.
+
+## Colors: semantic
+
+Contrast columns show the ratio of each token as a foreground (or border) against the three surfaces it is used on. Text needs 4.5:1 (WCAG 1.4.3); control boundaries and graphics need 3:1 (1.4.11). Backgrounds, tints and decorative lines have no ratio requirement and show n/a.
+
+<ColorTable tier="semantic" />
+
+## Colors: primitive palette
+
+Raw ramp values. Do not use them in components.
+
+<ColorTable tier="primitive" />
+
+## Colors: paper theme
+
+The only light surface, for receipt and PDF previews, scoped with `[data-theme="paper"]`. Ratios are against `paper`.
+
+<ColorTable tier="semantic" paper />
+
+## Typography
+
+Geist for the interface, Geist Mono for numbers, codes and shortcuts. Weights: 400, 500, 600 (sans), 400, 500 (mono). **The minimum font size is 11.5px** (`--ds-fs-caption`); nothing in the system may be smaller. Use `font-variant-numeric: tabular-nums` (the `.ds-tabular-nums` utility) on every numeric role.
+
+<FontFamilies />
+
+<TypeScale />
+
+## Spacing
+
+A 4px grid. Card padding is 20px, gaps inside components are 8 to 16px, gaps between sections are 24 to 32px.
+
+<DimensionTable prefix="space." />
+
+## Radius
+
+<DimensionTable prefix="radius." shape="box" />
+
+## Sizes
+
+Controls are 32 / 40 / 48. Interactive targets are never smaller than 24px (WCAG 2.5.8).
+
+<DimensionTable prefix="size." />
+
+## Elevation
+
+Only overlays are elevated. Cards, panels and inline elements use surface plus border and no shadow.
+
+<ShadowTable />
+
+## Focus
+
+Focus is a 3px accent ring plus an accent border; `base.css` adds a transparent outline so it stays visible in forced-colors mode.
+
+<ValueTable prefixes={['focus-ring']} />
+
+## Motion
+
+Minimal: 150ms, only color, opacity and position. Honour `prefers-reduced-motion` (handled globally in `base.css`).
+
+<ValueTable prefixes={['motion.']} />
+
+## Layers and opacity
+
+<ValueTable prefixes={['z.', 'opacity.']} />

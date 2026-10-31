@@ -1,0 +1,51 @@
+/*
+ * Self-hosted Geist (UI) and Geist Mono (data), SIL OFL 1.1 (see fonts/LICENSE.txt).
+ * Files are the variable woff2 builds from the `geist` npm package (v1.9.0), copied
+ * verbatim to ./fonts so the built package ships them next to dist/styles.css.
+ * Only the weights the system uses are exposed: sans 400-600, mono 400-500.
+ * font-display: swap shows the fallback immediately, then swaps once the font loads.
+ */
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('./fonts/Geist-Variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('./fonts/GeistMono-Variable.woff2') format('woff2');
+}
+
+/*
+ * Metric-matched fallbacks (reduce layout shift when the swap happens).
+ * Approximate: measured on average advance width of a mixed Latin/digit sample at weight 400.
+ *   Geist 0.5439 em vs Arial 0.5331 em   -> size-adjust 102%
+ *   Geist Mono 0.600 em vs Courier New 0.600 em -> size-adjust 100%
+ * Vertical metrics are Geist's own (ascent 1005, descent 295, line gap 0 per 1000 upm),
+ * divided by size-adjust for the sans face.
+ * Courier New, Liberation Mono and Cousine share one advance width; Menlo is within 0.4%.
+ */
+@font-face {
+  font-family: 'Geist Fallback';
+  font-weight: 400 600;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo');
+  size-adjust: 102%;
+  ascent-override: 98.5%;
+  descent-override: 28.9%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Geist Mono Fallback';
+  font-weight: 400 500;
+  src: local('Courier New'), local('Liberation Mono'), local('Cousine'), local('Menlo');
+  size-adjust: 100%;
+  ascent-override: 100.5%;
+  descent-override: 29.5%;
+  line-gap-override: 0%;
+}

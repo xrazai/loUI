@@ -1,0 +1,138 @@
+/*
+ * Base styles: page defaults, focus, themes, reduced motion, forced colors.
+ * Only var(--ds-*) values; keep this file small.
+ */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--ds-bg-canvas);
+  }
+
+  body {
+    background: var(--ds-bg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-body);
+    line-height: var(--ds-lh-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::placeholder {
+    color: var(--ds-text-3);
+    opacity: 1;
+  }
+
+  /* Links are accent AND underlined: color alone does not identify a link (WCAG 1.4.1). */
+  a {
+    color: var(--ds-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  :where(code, kbd, samp, pre) {
+    font-family: var(--ds-font-mono);
+  }
+
+  /*
+   * Focus (TOK-007): accent ring from the token. The transparent outline is invisible in
+   * normal rendering but forced-colors mode repaints it, so focus never disappears there
+   * (box-shadow is dropped in forced colors).
+   */
+  :focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  /* Paper theme (ADR-0007): the only light scope, for receipt and PDF previews. */
+  [data-theme='paper'] {
+    --ds-bg-canvas: var(--ds-paper);
+    --ds-bg: var(--ds-paper);
+    --ds-surface: var(--ds-paper);
+    --ds-surface-raised: var(--ds-paper);
+    --ds-surface-hover: color-mix(in oklab, var(--ds-paper-ink) 6%, var(--ds-paper));
+    --ds-surface-row-hover: color-mix(in oklab, var(--ds-paper-ink) 4%, var(--ds-paper));
+    --ds-line-subtle: var(--ds-paper-rule);
+    --ds-line: var(--ds-paper-rule);
+    --ds-line-strong: var(--ds-paper-rule);
+    --ds-line-control: var(--ds-paper-muted);
+    --ds-text: var(--ds-paper-ink);
+    --ds-text-2: var(--ds-paper-ink-2);
+    --ds-text-3: var(--ds-paper-muted);
+    --ds-text-inverse: var(--ds-paper);
+    --ds-primary-bg: var(--ds-paper-ink);
+    --ds-primary-fg: var(--ds-paper);
+    --ds-accent: var(--ds-paper-accent);
+    --ds-focus-ring: 0 0 0 3px color-mix(in oklab, var(--ds-paper-accent) 25%, transparent);
+
+    color-scheme: light;
+    background: var(--ds-paper);
+    color: var(--ds-paper-ink);
+  }
+
+  @keyframes ds-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes ds-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  /* TOK-006: no motion when the user asks for less. Components keep state changes instant. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+
+    a {
+      color: LinkText;
+    }
+  }
+}
+
+@layer utilities {
+  /*
+   * Numbers, codes and amounts: Geist Mono with tabular figures so columns align and
+   * values do not jitter when they change. Apply to every numeric role (fs-num, fs-num-lg,
+   * fs-meta, table number cells).
+   */
+  .ds-tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-mono {
+    font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}

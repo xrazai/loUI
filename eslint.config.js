@@ -6,7 +6,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'storybook-static/**', 'raw_files/**', 'coverage/**', '.changeset/**'],
+    ignores: [
+      'dist/**',
+      'storybook-static/**',
+      'raw_files/**',
+      'coverage/**',
+      '.changeset/**',
+      'src/tokens/generated/**',
+    ],
   },
   js.configs.recommended,
   tseslint.configs.strictTypeChecked,

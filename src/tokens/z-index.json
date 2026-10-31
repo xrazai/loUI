@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "z": {
+    "$type": "number",
+    "dropdown": {
+      "$value": 40,
+      "$description": "Layer of dropdowns, selects, comboboxes and date pickers. Above page content, below popovers."
+    },
+    "popover": {
+      "$value": 45,
+      "$description": "Layer of popovers and action menus. Above dropdowns."
+    },
+    "sheet": {
+      "$value": 50,
+      "$description": "Layer of side sheets. The scrim uses this value and the panel uses this value + 1 (calc)."
+    },
+    "dialog": {
+      "$value": 55,
+      "$description": "Layer of dialogs and their overlay. Above sheets, because a dialog can open from a sheet."
+    },
+    "toast": {
+      "$value": 58,
+      "$description": "Layer of toasts. Above dialogs so confirmations stay visible; below tooltips."
+    },
+    "tooltip": {
+      "$value": 60,
+      "$description": "Layer of tooltips. The highest layer in the system. Do not add layers above it."
+    }
+  }
+}

@@ -1,0 +1,102 @@
+@layer components {
+  .scroll {
+    overflow-x: auto;
+    margin-block: var(--ds-space-4);
+  }
+
+  .table {
+    inline-size: 100%;
+    background: var(--ds-surface);
+    color: var(--ds-text);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--ds-space-2) var(--ds-space-3);
+    border-block-end: 1px solid var(--ds-line-subtle);
+    text-align: start;
+    vertical-align: middle;
+  }
+
+  .table th {
+    color: var(--ds-text-2);
+    font-weight: var(--ds-weight-medium);
+  }
+
+  .table tbody tr:last-child > * {
+    border-block-end: 0;
+  }
+
+  .code,
+  .mono {
+    white-space: nowrap;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .alias {
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .desc {
+    white-space: normal;
+    min-inline-size: 16rem;
+    color: var(--ds-text-2);
+  }
+
+  .swatch {
+    display: block;
+    inline-size: var(--ds-control-h-md);
+    block-size: var(--ds-control-h-sm);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .ratio {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    white-space: nowrap;
+  }
+
+  .ratio[data-fail] {
+    color: var(--ds-danger);
+  }
+
+  .level {
+    color: var(--ds-text-3);
+  }
+
+  .bar {
+    display: block;
+    block-size: var(--ds-space-2);
+    background: var(--ds-accent);
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .box {
+    display: block;
+    inline-size: var(--ds-control-h-lg);
+    block-size: var(--ds-control-h-md);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-control);
+  }
+
+  .card {
+    display: block;
+    inline-size: var(--ds-sidebar-w);
+    block-size: var(--ds-control-h-lg);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+  }
+}

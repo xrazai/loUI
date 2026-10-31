@@ -1,0 +1,283 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "$type": "color",
+    "bg-canvas": {
+      "$value": "{color.gray.0}",
+      "$description": "Page canvas behind the app shell (the html element). The darkest layer. Not for cards or controls."
+    },
+    "bg": {
+      "$value": "{color.gray.1}",
+      "$description": "Default app background (body, top bar, main area). One step above the canvas. Not for cards; use surface."
+    },
+    "surface": {
+      "$value": "{color.gray.2}",
+      "$description": "Cards, panels, table bodies and inputs at rest. Move one layer at a time: bg, surface, surface-raised, surface-hover."
+    },
+    "surface-raised": {
+      "$value": "{color.gray.3}",
+      "$description": "Menus, popovers, selected rows and anything floating above a surface. Not for page backgrounds."
+    },
+    "surface-hover": {
+      "$value": "{color.gray.4}",
+      "$description": "Hover state of controls and list items: one step lighter than the resting surface. Do not use at rest."
+    },
+    "surface-row-hover": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.078431, 0.078431, 0.086275],
+        "hex": "#141416"
+      },
+      "$description": "Hover background of table and list rows only; subtler than surface-hover so dense data stays calm. Not for buttons or menu items."
+    },
+    "line-subtle": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.117647, 0.117647, 0.133333],
+        "hex": "#1E1E22"
+      },
+      "$description": "Internal dividers inside a card or table (row separators). Decorative, so exempt from the 3:1 non-text contrast rule. Never use it as a control boundary."
+    },
+    "line": {
+      "$value": "{color.gray.5}",
+      "$description": "Default 1px border of cards and containers. Not for form control boundaries; use line-control."
+    },
+    "line-strong": {
+      "$value": "{color.gray.6}",
+      "$description": "Border of overlays, menus, popovers, dialogs and cards that must stand out. Not for form control boundaries (use line-control); it is below 3:1."
+    },
+    "line-control": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.392157, 0.392157, 0.419608],
+        "hex": "#64646B"
+      },
+      "$description": "Boundary of form controls: input, select, textarea, checkbox, radio and combobox triggers. At least 3:1 on bg, surface and surface-raised (WCAG 1.4.11). New in TOK-004. Not for decorative dividers."
+    },
+    "text": {
+      "$value": "{color.gray.9}",
+      "$description": "Primary text and icons. Warm off-white, not pure white. Use for anything that must be read first."
+    },
+    "text-2": {
+      "$value": "{color.gray.8}",
+      "$description": "Secondary text: descriptions, supporting copy, inactive labels."
+    },
+    "text-3": {
+      "$value": "{color.gray.7}",
+      "$description": "Tertiary text: metadata, placeholders, hints. Meets 4.5:1 on every surface up to surface-hover. Do not use on surfaces lighter than surface-hover or on colored fills."
+    },
+    "text-inverse": {
+      "$value": "{color.gray.1}",
+      "$description": "Text and icons on solid light or signal fills (selected day in a calendar, solid badges). Not on dark surfaces."
+    },
+    "primary-bg": {
+      "$value": "{color.gray.9}",
+      "$description": "Fill of the primary button and the tooltip: light ink on a dark UI. One primary action per screen. Hover is brightness .88, not a new token."
+    },
+    "primary-fg": {
+      "$value": "{color.gray.1}",
+      "$description": "Text and icons on primary-bg."
+    },
+    "primary-fg-muted": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.352941, 0.352941, 0.376471],
+        "hex": "#5A5A60"
+      },
+      "$description": "Secondary text on primary-bg (for example the shortcut hint in a tooltip). Only valid on primary-bg."
+    },
+    "accent": {
+      "$value": "{color.blue.5}",
+      "$description": "The single accent: focus, selection, links and open states. Never a button fill or a large area. Always pair with text or a shape, never color alone."
+    },
+    "success": {
+      "$value": "{color.green.5}",
+      "$description": "Success signal: done, saved, healthy. Always accompanied by text or an icon. Not decorative."
+    },
+    "warning": {
+      "$value": "{color.amber.5}",
+      "$description": "Warning signal: attention needed, nothing broken. Always accompanied by text or an icon."
+    },
+    "danger": {
+      "$value": "{color.red.5}",
+      "$description": "Error and destructive signal: errors, delete buttons, invalid fields. Always accompanied by text or an icon."
+    },
+    "accent-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.541176, 0.705882, 1],
+        "alpha": 0.14,
+        "hex": "#8AB4FF"
+      },
+      "$description": "Tinted background for accent states (selected item, info). 14% accent over the surface beneath, resolved with color-mix so it adapts to the surface. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.accent",
+            "percent": 14
+          }
+        }
+      }
+    },
+    "success-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.372549, 0.831373, 0.603922],
+        "alpha": 0.14,
+        "hex": "#5FD49A"
+      },
+      "$description": "Tinted background for success states (badge, banner). 14% success over the surface beneath. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.success",
+            "percent": 14
+          }
+        }
+      }
+    },
+    "warning-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.913725, 0.713725, 0.360784],
+        "alpha": 0.14,
+        "hex": "#E9B65C"
+      },
+      "$description": "Tinted background for warning states (badge, banner). 14% warning over the surface beneath. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.warning",
+            "percent": 14
+          }
+        }
+      }
+    },
+    "danger-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.1,
+        "hex": "#F07A6E"
+      },
+      "$description": "Tinted background for error states (badge, banner, invalid field). 10% danger over the surface beneath. Not for text.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.danger",
+            "percent": 10
+          }
+        }
+      }
+    },
+    "danger-soft-hover": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.18,
+        "hex": "#F07A6E"
+      },
+      "$description": "Hover state of danger-soft surfaces such as the ghost-danger button. 18% danger over the surface beneath.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.danger",
+            "percent": 18
+          }
+        }
+      }
+    },
+    "danger-line": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.941176, 0.478431, 0.431373],
+        "alpha": 0.35,
+        "hex": "#F07A6E"
+      },
+      "$description": "Border of danger-tinted surfaces (error banner, destructive confirmation). 35% danger over the surface beneath. Not a form control boundary; invalid fields use danger.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.danger",
+            "percent": 35
+          }
+        }
+      }
+    },
+    "overlay": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.019608, 0.019608, 0.023529],
+        "alpha": 0.72,
+        "hex": "#050506"
+      },
+      "$description": "Backdrop behind dialogs. Flat, no blur. Not for side sheets; use scrim."
+    },
+    "scrim": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.019608, 0.019608, 0.023529],
+        "alpha": 0.55,
+        "hex": "#050506"
+      },
+      "$description": "Backdrop behind side sheets. Lighter than overlay so the page stays visible. Not for dialogs."
+    },
+    "swatch-ring": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1, 1, 1],
+        "alpha": 0.12,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Inset 1px ring drawn inside color swatches and avatars so dark swatches stay visible on dark surfaces. Not a general border."
+    },
+    "paper": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.956863, 0.94902, 0.92549],
+        "hex": "#F4F2EC"
+      },
+      "$description": "Paper surface of printed-document previews (receipt, PDF). The only light surface in the system; use inside [data-theme=\"paper\"] only."
+    },
+    "paper-ink": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.082353, 0.082353, 0.082353],
+        "hex": "#151515"
+      },
+      "$description": "Primary text on paper. Paper theme only."
+    },
+    "paper-ink-2": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.227451, 0.227451, 0.227451],
+        "hex": "#3A3A3A"
+      },
+      "$description": "Secondary text on paper. Paper theme only."
+    },
+    "paper-muted": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.419608, 0.419608, 0.419608],
+        "hex": "#6B6B6B"
+      },
+      "$description": "Tertiary text and control boundaries on paper (above 4.5:1 on paper). Paper theme only."
+    },
+    "paper-rule": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.603922, 0.588235, 0.54902],
+        "hex": "#9A968C"
+      },
+      "$description": "Decorative rules and dividers on paper (table lines, totals). Below 3:1, so never a control boundary or text. Paper theme only."
+    },
+    "paper-accent": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.662745, 0.345098, 0.223529],
+        "hex": "#A95839"
+      },
+      "$description": "Accent on paper: links and highlighted figures (4.53:1 on paper). Darkened from #B8603E in TOK-004. Paper theme only."
+    }
+  }
+}

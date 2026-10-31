@@ -1,0 +1,446 @@
+{
+  "$comment": "Contrast pairs checked by contrast.test.ts. background lists layers bottom first (soft tokens are composited over the layer below). min: 4.5 text (WCAG 1.4.3), 3 UI boundaries and graphics (1.4.11). Disabled controls, decorative lines (line, line-subtle, line-strong, paper-rule) and placeholders-as-labels are intentionally not listed.",
+  "pairs": [
+    {
+      "id": "text-on-bg-canvas",
+      "foreground": "color.text",
+      "background": ["color.bg-canvas"],
+      "min": 4.5,
+      "usage": "Primary text and icons on bg-canvas"
+    },
+    {
+      "id": "text-on-bg",
+      "foreground": "color.text",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "Primary text and icons on bg"
+    },
+    {
+      "id": "text-on-surface",
+      "foreground": "color.text",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "Primary text and icons on surface"
+    },
+    {
+      "id": "text-on-surface-raised",
+      "foreground": "color.text",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "Primary text and icons on surface-raised"
+    },
+    {
+      "id": "text-on-surface-hover",
+      "foreground": "color.text",
+      "background": ["color.surface-hover"],
+      "min": 4.5,
+      "usage": "Primary text and icons on surface-hover"
+    },
+    {
+      "id": "text-on-surface-row-hover",
+      "foreground": "color.text",
+      "background": ["color.surface-row-hover"],
+      "min": 4.5,
+      "usage": "Primary text and icons on surface-row-hover"
+    },
+    {
+      "id": "text-2-on-bg-canvas",
+      "foreground": "color.text-2",
+      "background": ["color.bg-canvas"],
+      "min": 4.5,
+      "usage": "Secondary text on bg-canvas"
+    },
+    {
+      "id": "text-2-on-bg",
+      "foreground": "color.text-2",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "Secondary text on bg"
+    },
+    {
+      "id": "text-2-on-surface",
+      "foreground": "color.text-2",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "Secondary text on surface"
+    },
+    {
+      "id": "text-2-on-surface-raised",
+      "foreground": "color.text-2",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "Secondary text on surface-raised"
+    },
+    {
+      "id": "text-2-on-surface-hover",
+      "foreground": "color.text-2",
+      "background": ["color.surface-hover"],
+      "min": 4.5,
+      "usage": "Secondary text on surface-hover"
+    },
+    {
+      "id": "text-2-on-surface-row-hover",
+      "foreground": "color.text-2",
+      "background": ["color.surface-row-hover"],
+      "min": 4.5,
+      "usage": "Secondary text on surface-row-hover"
+    },
+    {
+      "id": "text-3-on-bg-canvas",
+      "foreground": "color.text-3",
+      "background": ["color.bg-canvas"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on bg-canvas"
+    },
+    {
+      "id": "text-3-on-bg",
+      "foreground": "color.text-3",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on bg"
+    },
+    {
+      "id": "text-3-on-surface",
+      "foreground": "color.text-3",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on surface"
+    },
+    {
+      "id": "text-3-on-surface-raised",
+      "foreground": "color.text-3",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on surface-raised"
+    },
+    {
+      "id": "text-3-on-surface-hover",
+      "foreground": "color.text-3",
+      "background": ["color.surface-hover"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on surface-hover"
+    },
+    {
+      "id": "text-3-on-surface-row-hover",
+      "foreground": "color.text-3",
+      "background": ["color.surface-row-hover"],
+      "min": 4.5,
+      "usage": "Tertiary text, hints and placeholders on surface-row-hover"
+    },
+    {
+      "id": "accent-on-bg",
+      "foreground": "color.accent",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "accent text, icons and links on bg"
+    },
+    {
+      "id": "accent-on-surface",
+      "foreground": "color.accent",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "accent text, icons and links on surface"
+    },
+    {
+      "id": "accent-on-surface-raised",
+      "foreground": "color.accent",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "accent text, icons and links on surface-raised"
+    },
+    {
+      "id": "accent-on-accent-soft",
+      "foreground": "color.accent",
+      "background": ["color.surface", "color.accent-soft"],
+      "min": 4.5,
+      "usage": "accent text on its soft tint over surface (badge, banner)"
+    },
+    {
+      "id": "text-on-accent-soft",
+      "foreground": "color.text",
+      "background": ["color.surface", "color.accent-soft"],
+      "min": 4.5,
+      "usage": "Primary text on accent-soft over surface"
+    },
+    {
+      "id": "text-inverse-on-accent",
+      "foreground": "color.text-inverse",
+      "background": ["color.accent"],
+      "min": 4.5,
+      "usage": "Inverse text on a solid accent fill"
+    },
+    {
+      "id": "success-on-bg",
+      "foreground": "color.success",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "success text, icons and links on bg"
+    },
+    {
+      "id": "success-on-surface",
+      "foreground": "color.success",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "success text, icons and links on surface"
+    },
+    {
+      "id": "success-on-surface-raised",
+      "foreground": "color.success",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "success text, icons and links on surface-raised"
+    },
+    {
+      "id": "success-on-success-soft",
+      "foreground": "color.success",
+      "background": ["color.surface", "color.success-soft"],
+      "min": 4.5,
+      "usage": "success text on its soft tint over surface (badge, banner)"
+    },
+    {
+      "id": "text-on-success-soft",
+      "foreground": "color.text",
+      "background": ["color.surface", "color.success-soft"],
+      "min": 4.5,
+      "usage": "Primary text on success-soft over surface"
+    },
+    {
+      "id": "text-inverse-on-success",
+      "foreground": "color.text-inverse",
+      "background": ["color.success"],
+      "min": 4.5,
+      "usage": "Inverse text on a solid success fill"
+    },
+    {
+      "id": "warning-on-bg",
+      "foreground": "color.warning",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "warning text, icons and links on bg"
+    },
+    {
+      "id": "warning-on-surface",
+      "foreground": "color.warning",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "warning text, icons and links on surface"
+    },
+    {
+      "id": "warning-on-surface-raised",
+      "foreground": "color.warning",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "warning text, icons and links on surface-raised"
+    },
+    {
+      "id": "warning-on-warning-soft",
+      "foreground": "color.warning",
+      "background": ["color.surface", "color.warning-soft"],
+      "min": 4.5,
+      "usage": "warning text on its soft tint over surface (badge, banner)"
+    },
+    {
+      "id": "text-on-warning-soft",
+      "foreground": "color.text",
+      "background": ["color.surface", "color.warning-soft"],
+      "min": 4.5,
+      "usage": "Primary text on warning-soft over surface"
+    },
+    {
+      "id": "text-inverse-on-warning",
+      "foreground": "color.text-inverse",
+      "background": ["color.warning"],
+      "min": 4.5,
+      "usage": "Inverse text on a solid warning fill"
+    },
+    {
+      "id": "danger-on-bg",
+      "foreground": "color.danger",
+      "background": ["color.bg"],
+      "min": 4.5,
+      "usage": "danger text, icons and links on bg"
+    },
+    {
+      "id": "danger-on-surface",
+      "foreground": "color.danger",
+      "background": ["color.surface"],
+      "min": 4.5,
+      "usage": "danger text, icons and links on surface"
+    },
+    {
+      "id": "danger-on-surface-raised",
+      "foreground": "color.danger",
+      "background": ["color.surface-raised"],
+      "min": 4.5,
+      "usage": "danger text, icons and links on surface-raised"
+    },
+    {
+      "id": "danger-on-danger-soft",
+      "foreground": "color.danger",
+      "background": ["color.surface", "color.danger-soft"],
+      "min": 4.5,
+      "usage": "danger text on its soft tint over surface (badge, banner)"
+    },
+    {
+      "id": "text-on-danger-soft",
+      "foreground": "color.text",
+      "background": ["color.surface", "color.danger-soft"],
+      "min": 4.5,
+      "usage": "Primary text on danger-soft over surface"
+    },
+    {
+      "id": "text-inverse-on-danger",
+      "foreground": "color.text-inverse",
+      "background": ["color.danger"],
+      "min": 4.5,
+      "usage": "Inverse text on a solid danger fill"
+    },
+    {
+      "id": "danger-on-danger-soft-hover",
+      "foreground": "color.danger",
+      "background": ["color.surface", "color.danger-soft-hover"],
+      "min": 4.5,
+      "usage": "danger text on the hovered ghost-danger button over surface"
+    },
+    {
+      "id": "primary-fg-on-primary-bg",
+      "foreground": "color.primary-fg",
+      "background": ["color.primary-bg"],
+      "min": 4.5,
+      "usage": "Primary button label"
+    },
+    {
+      "id": "primary-fg-muted-on-primary-bg",
+      "foreground": "color.primary-fg-muted",
+      "background": ["color.primary-bg"],
+      "min": 4.5,
+      "usage": "Secondary text on primary-bg (tooltip shortcut hint)"
+    },
+    {
+      "id": "line-control-on-bg",
+      "foreground": "color.line-control",
+      "background": ["color.bg"],
+      "min": 3,
+      "usage": "Form control boundary (input, select, checkbox, radio, combobox trigger) on bg, WCAG 1.4.11"
+    },
+    {
+      "id": "accent-focus-on-bg",
+      "foreground": "color.accent",
+      "background": ["color.bg"],
+      "min": 3,
+      "usage": "Focus indicator (accent border) on bg, WCAG 2.4.11"
+    },
+    {
+      "id": "danger-focus-on-bg",
+      "foreground": "color.danger",
+      "background": ["color.bg"],
+      "min": 3,
+      "usage": "Focus indicator and boundary of an invalid control on bg"
+    },
+    {
+      "id": "primary-bg-on-bg",
+      "foreground": "color.primary-bg",
+      "background": ["color.bg"],
+      "min": 3,
+      "usage": "Selection bar, active tab underline and checked control fill on bg"
+    },
+    {
+      "id": "line-control-on-surface",
+      "foreground": "color.line-control",
+      "background": ["color.surface"],
+      "min": 3,
+      "usage": "Form control boundary (input, select, checkbox, radio, combobox trigger) on surface, WCAG 1.4.11"
+    },
+    {
+      "id": "accent-focus-on-surface",
+      "foreground": "color.accent",
+      "background": ["color.surface"],
+      "min": 3,
+      "usage": "Focus indicator (accent border) on surface, WCAG 2.4.11"
+    },
+    {
+      "id": "danger-focus-on-surface",
+      "foreground": "color.danger",
+      "background": ["color.surface"],
+      "min": 3,
+      "usage": "Focus indicator and boundary of an invalid control on surface"
+    },
+    {
+      "id": "primary-bg-on-surface",
+      "foreground": "color.primary-bg",
+      "background": ["color.surface"],
+      "min": 3,
+      "usage": "Selection bar, active tab underline and checked control fill on surface"
+    },
+    {
+      "id": "line-control-on-surface-raised",
+      "foreground": "color.line-control",
+      "background": ["color.surface-raised"],
+      "min": 3,
+      "usage": "Form control boundary (input, select, checkbox, radio, combobox trigger) on surface-raised, WCAG 1.4.11"
+    },
+    {
+      "id": "accent-focus-on-surface-raised",
+      "foreground": "color.accent",
+      "background": ["color.surface-raised"],
+      "min": 3,
+      "usage": "Focus indicator (accent border) on surface-raised, WCAG 2.4.11"
+    },
+    {
+      "id": "danger-focus-on-surface-raised",
+      "foreground": "color.danger",
+      "background": ["color.surface-raised"],
+      "min": 3,
+      "usage": "Focus indicator and boundary of an invalid control on surface-raised"
+    },
+    {
+      "id": "primary-bg-on-surface-raised",
+      "foreground": "color.primary-bg",
+      "background": ["color.surface-raised"],
+      "min": 3,
+      "usage": "Selection bar, active tab underline and checked control fill on surface-raised"
+    },
+    {
+      "id": "primary-bg-on-surface-hover",
+      "foreground": "color.primary-bg",
+      "background": ["color.surface-hover"],
+      "min": 3,
+      "usage": "Selection bar on a hovered row"
+    },
+    {
+      "id": "paper-ink-on-paper",
+      "foreground": "color.paper-ink",
+      "background": ["color.paper"],
+      "min": 7,
+      "usage": "Primary text on paper"
+    },
+    {
+      "id": "paper-ink-2-on-paper",
+      "foreground": "color.paper-ink-2",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "Secondary text on paper"
+    },
+    {
+      "id": "paper-muted-on-paper",
+      "foreground": "color.paper-muted",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "Tertiary text on paper"
+    },
+    {
+      "id": "paper-accent-on-paper",
+      "foreground": "color.paper-accent",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "Accent text and links on paper"
+    },
+    {
+      "id": "paper-muted-boundary-on-paper",
+      "foreground": "color.paper-muted",
+      "background": ["color.paper"],
+      "min": 3,
+      "usage": "Control boundary on paper, WCAG 1.4.11"
+    }
+  ]
+}

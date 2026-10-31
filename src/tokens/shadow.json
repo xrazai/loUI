@@ -1,0 +1,60 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "shadow": {
+    "$type": "shadow",
+    "overlay": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0, 0, 0],
+          "alpha": 0.6,
+          "hex": "#000000"
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 12,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 32,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "Shadow for floating overlays: menus, popovers, toasts. The only elevation besides dialog. Never on cards or inline elements."
+    },
+    "dialog": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0, 0, 0],
+          "alpha": 0.7,
+          "hex": "#000000"
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 24,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 48,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "Shadow for dialogs and side sheets: the highest elevation. Never on inline elements."
+    }
+  }
+}
