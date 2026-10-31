@@ -58,7 +58,7 @@ describe('RankList', () => {
 
     it('renders a decorative swatch only when given', async () => {
       const screen = await renderWithProvider(<RankList items={fabrics} />);
-      const swatches = screen.container.querySelectorAll('li span[class*="swatch"]');
+      const swatches = screen.container.querySelectorAll('li [data-size]');
       expect(swatches).toHaveLength(1);
       expect(swatches[0]?.getAttribute('aria-hidden')).toBe('true');
       expect(getComputedStyle(swatches[0] as Element).backgroundColor).toBe('rgb(138, 180, 255)');

@@ -77,5 +77,5 @@ div.root
 - **No silent sorting or truncation.** The handoff always sorted descending and kept six rows; here the items render as given, and `sort` / `limit` are opt-in props. Migrating: add `sort="desc" limit={6}`.
 - An ordered list instead of `div`s; actionable rows are buttons instead of `div role="button"`; `it.onClick` is `onAction`.
 - Empty text comes from messages (the Portuguese default is gone); `showPos` is `showPosition`.
-- The swatch is a small decorative element using the `--ds-swatch-ring` token (it can be replaced by the `Swatch` pattern when it exists).
+- The swatch is the core `Swatch` (`decorative`, size `sm`); it takes a hex color.
 - Bars align across rows (subgrid), values and positions use `Intl`.

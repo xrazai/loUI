@@ -88,16 +88,6 @@
     min-inline-size: 0;
   }
 
-  .swatch {
-    flex: none;
-    box-sizing: border-box;
-    inline-size: var(--ds-rank-list-swatch-size);
-    block-size: var(--ds-rank-list-swatch-size);
-    border: 1px solid var(--ds-swatch-ring);
-    border-radius: var(--ds-radius-sm);
-    background-color: var(--ds-rank-list-swatch);
-  }
-
   .text {
     overflow: hidden;
     text-overflow: ellipsis;

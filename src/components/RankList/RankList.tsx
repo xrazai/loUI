@@ -1,6 +1,7 @@
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 import { Button } from 'react-aria-components';
 import { useDSLocale, useMessages } from '../../i18n';
+import { Swatch } from '../Swatch';
 import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
 import { messages } from './RankList.messages';
@@ -17,7 +18,7 @@ export interface RankItem {
   value: number;
   /** Detail under the value, in mono type: `12 units · 18%`. */
   meta?: ReactNode;
-  /** CSS color of a small decorative swatch before the label (`#8AB4FF`, `var(--ds-success)`). The label names it; the swatch is hidden from assistive technology. */
+  /** Hex color (`#8AB4FF`) of a small decorative `Swatch` before the label. The label names it; the swatch is hidden from assistive technology. */
   swatch?: string;
   /** Makes the row a button that calls this when pressed (for example to open the customer). */
   onAction?: () => void;
@@ -55,11 +56,8 @@ function safe(value: number): number {
   return Number.isFinite(value) && value > 0 ? value : 0;
 }
 
-function rowStyle(share: number, swatch: string | undefined): CSSProperties {
-  return {
-    '--ds-rank-list-share': `${String(share)}%`,
-    ...(swatch ? { '--ds-rank-list-swatch': swatch } : {}),
-  } as CSSProperties;
+function rowStyle(share: number): CSSProperties {
+  return { '--ds-rank-list-share': `${String(share)}%` } as CSSProperties;
 }
 
 /**
@@ -126,7 +124,7 @@ export function RankList({
                 </span>
               ) : null}
               <span className={styles.label}>
-                {item.swatch ? <span className={styles.swatch} aria-hidden="true" /> : null}
+                {item.swatch ? <Swatch color={item.swatch} size="sm" decorative /> : null}
                 <span className={styles.text}>{item.label}</span>
               </span>
               <span className={styles.value}>{renderValue(item.value)}</span>
@@ -141,13 +139,13 @@ export function RankList({
               {item.onAction ? (
                 <Button
                   className={classNames(styles.row)}
-                  style={rowStyle(share, item.swatch)}
+                  style={rowStyle(share)}
                   onPress={item.onAction}
                 >
                   {content}
                 </Button>
               ) : (
-                <div className={styles.row} style={rowStyle(share, item.swatch)}>
+                <div className={styles.row} style={rowStyle(share)}>
                   {content}
                 </div>
               )}
