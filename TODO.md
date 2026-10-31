@@ -68,10 +68,7 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 - [ ] **ARCH-001** (P0 · M) Component conventions (see AGENTS.md): `forwardRef`/ref as prop (React 19), `className`, `...rest` spread **before** internal handlers' merge point, `data-*` state attributes, `asChild`/`render` pattern if needed, `displayName`. _Depends: ADR-001, ADR-002_
 - [ ] **ARCH-002** (P0 · M) **Event/prop API normalization.** The handoff mixes `onChange(event)` (Input, Textarea), `onChange(value, event)` (Select), `onChange(boolean)` (Checkbox, Switch) and `onChange(value)` (Tabs, Combobox). Standardize: native elements keep native `onChange`; custom controls use `value` / `defaultValue` / `onValueChange` (or `checked` / `onCheckedChange`). Standardize `variant` vs. `tone` vs. `kind` vs. `status` naming across Button, Badge, Alert, Toast, Progress, StatCard, DueIndicator, AgentCard, ApprovalCard.
-- [ ] **ARCH-003** (P0 · S) Fix the **prop-spread ordering bug** in `Input`, `Textarea` and `Select`: `{...rest}` is spread last, so a consumer-supplied `onFocus`/`onBlur`/`style` overrides the internal handler and breaks the focus ring.
 - [ ] **ARCH-005** (P0 · M) **Overlay management.** `Dialog`, `Sheet`, `Popover`, `Combobox`, `DatePicker`, `InlineConfirm` each attach a window-level `Escape` listener, so one key press closes every open layer. React Aria (ADR-0001) provides the layer stack, focus trap/restore, scroll lock and `inert`; this task is to wrap it consistently (shared overlay CSS, z-index tokens, portal container from `DSProvider`) and add a nested-overlay test (Esc closes only the top layer).
-- [ ] **ARCH-008** (P1 · S) Form integration contract: every field supports `name`, `form`, `required`, `disabled`, `readOnly`, `aria-invalid`, `aria-describedby` wiring for hint/error, and participates in native `<form>` submission. Introduce a shared `Field` (label + control + hint + error) so Input, Textarea, Select, Combobox, DatePicker, CurrencyInput, Slider, Checkbox, RadioGroup, Switch behave identically.
-- [ ] **ARCH-009** (P1 · S) Disabled/read-only/loading/invalid state model shared across controls (single opacity token, dashed border for disabled inputs, `aria-busy` + Spinner for `loading`).
 - [ ] **ARCH-010** (P1 · M) Build and exports: ESM with per-component entry points, `exports` map, `sideEffects` for CSS, generated `.d.ts` (the handoff `.d.ts` files rely on the global `JSX` namespace, removed in React 19), `"use client"` banners, `publint` + `are-the-types-wrong` in CI.
 - [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
 
@@ -85,12 +82,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Forms
 
-- [ ] **CMP-FRM-03** (P1 · M) `Input` — Fix: id via `useId`; `aria-invalid`, `aria-describedby` for hint/error; error announced (`role="alert"` only after validation); prop-spread bug (ARCH-003); border contrast (TOK-004); `readOnly`; `required` marker.
-- [ ] **CMP-FRM-04** (P1 · S) `Textarea` — Fix: same as Input; `aside` text needs association; auto-grow option; character count with live region (debounced).
-- [ ] **CMP-FRM-05** (P1 · M) `Select` — Fix: label/id association, `hint`/`error`, `aria-invalid`, placeholder option, groups; prop-spread bug; decide native `<select>` vs. custom listbox (ADR-001).
-- [ ] **CMP-FRM-06** (P1 · M) `Checkbox` — Fix: currently a `div role="checkbox"`; use native input (visually styled) for form participation, `name`/`value`, `indeterminate`, accessible name when no label (type error), click target includes label.
-- [ ] **CMP-FRM-07** (P1 · M) `RadioGroup` — Fix: roving tabindex + arrow-key navigation (every radio is tabbable today); `aria-labelledby` for the group, `required`/`invalid`; native radios.
-- [ ] **CMP-FRM-08** (P1 · M) `Switch` — Fix: `role="switch"` sits on an inner span while the row is also clickable (double toggle risk, no accessible name); use a native checkbox with `role="switch"`; `aria-labelledby`/`aria-describedby`.
 - [ ] **CMP-FRM-09** (P1 · M) `SegmentedControl` — Fix: uses `role="tablist"` but controls a value, not panels; use `radiogroup` (single) with arrow keys, or `ToggleGroup`; roving tabindex; counts announced.
 - [ ] **CMP-FRM-10** (P2 · S) `SuggestionChip` — Fix: the "+" glyph is `aria-hidden` but the dashed affordance is the only cue of "adds text"; document behavior; `disabled` opacity .45 vs. .35 inconsistency.
 

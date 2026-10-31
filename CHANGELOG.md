@@ -8,6 +8,15 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **ARCH-008 / ARCH-009** (2026-10-31) Shared `Field` building blocks (`Label`, `Description`, `FieldError`, `FieldMessages`, `RequiredMark`) used by every field; one disabled/invalid/required model. Validation defaults to `native` (errors appear after the first submit attempt, focus moves to the first invalid field); `aria` opt-in for live feedback.
+- **ARCH-003** (2026-10-31) Handoff prop-spread bug fixed by design (consumer `onFocus`/`onBlur` composed with internal handlers); regression tests in Input, Textarea and Select.
+- **CMP-FRM-03** (2026-10-31) `Input` on React Aria `TextField`: label/description/error wiring, `mono`, adornments, sizes, read-only, dashed disabled border.
+- **CMP-FRM-04** (2026-10-31) `Textarea`: associated `aside`, `autoGrow`, debounced polite character count (pluralized messages).
+- **CMP-FRM-05** (2026-10-31) `Select` on React Aria: placeholder from messages, sections, disabled items, typeahead, check icon; keeps consumer order (`sortByText` documented for alphabetical lists).
+- **CMP-FRM-06** (2026-10-31) `Checkbox` + `CheckboxGroup` (native input via RAC `CheckboxField`): indeterminate, description outside the accessible name, form participation.
+- **CMP-FRM-07** (2026-10-31) `RadioGroup` + `Radio`: single tab stop with roving focus, label required by the types, vertical by default.
+- **CMP-FRM-08** (2026-10-31) `Switch` (RAC `SwitchField`): no double toggle, label placement start/end, off track meets 3:1.
+- **TOOLING** (2026-10-31) Stylelint allows `currentcolor` and CSS system colors (forced-colors blocks); ADR-0002 amended for dynamic values as `--ds-<component>-*` custom properties.
 - **ICON-001 / ICON-002 / ICON-003** (2026-10-31) `Icon` wrapping bundled `lucide-react` (no CDN): decorative by default, `label` → `role="img"`, sizes `xs…lg` from tokens, 1.5px non-scaling stroke, `directional` RTL mirroring; curated allow-list of 24 icons (`iconSet`, `iconNames`) exported for the manifest.
 - **CMP-FRM-01** (2026-10-31) `Button` on React Aria: variants `primary | secondary | ghost | danger | danger-solid`, sizes 32/40/48 (handoff docs said 28/32/40), `leading`/`trailing`, `fullWidth`, width-stable `isPending`; CSS-only hover via component tokens.
 - **CMP-FRM-02** (2026-10-31) `IconButton`: `label` required by the type system, no duplicate `title`, ≥ 24px target, no text-glyph children.
