@@ -113,4 +113,4 @@ Rules for authors:
 
 ## Related components
 
-- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, Textarea
+- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea

@@ -93,3 +93,4 @@ TagGroup           (grid; optional visible label)
 - Instead, see Select: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Instead, see RadioGroup: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Renders: Icon
+- Used by: TagInput

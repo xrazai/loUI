@@ -84,4 +84,4 @@ TooltipTrigger
 ## Related components
 
 - Instead, see Popover: Interactive content (links, buttons, forms): use `Popover`.
-- Used by: IconButton
+- Used by: IconButton, Toggle

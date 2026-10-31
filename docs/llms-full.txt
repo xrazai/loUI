@@ -18,6 +18,8 @@ Rules for generated UI:
 
 ## Getting started
 
+Browse every component live in Storybook: <https://xrazai.github.io/loUI/>. AI tools can load <https://xrazai.github.io/loUI/llms.txt> (see [Using with AI](./using-with-ai.md)).
+
 ### Requirements
 
 - React 19 and React DOM 19 (peer dependencies). React 18 is not supported.
@@ -436,6 +438,8 @@ Soft tokens are the signal color at low opacity (14%, danger 10%), composited ov
 
 Receipt and PDF previews are the only light surface in the system. Scope them with `[data-theme="paper"]` and use `--ds-paper-*` tokens. `--ds-paper-rule` is decorative (below 3:1) and must never be a control boundary.
 
+Inside the scope, `--ds-success`, `--ds-warning`, `--ds-danger` and `--ds-accent` are remapped to darker twins (`--ds-paper-success`, `--ds-paper-warning`, `--ds-paper-danger`, `--ds-paper-accent`), and their tints (`--ds-success-soft` and the others) are remapped with them, so badges, alerts and tinted buttons keep 4.5:1 on the paper. The `Components/Card` story `PaperReceipt` shows the scope.
+
 ### Contrast changes from the handoff
 
 Three tokens were changed from the original design handoff so that every text and control pairing meets WCAG 2.2 AA (task TOK-004). The full record is in `docs/tokens/changes.md`.
@@ -444,7 +448,7 @@ Three tokens were changed from the original design handoff so that every text an
 | --------------------------------- | ------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--ds-text-3` (and `--ds-gray-7`) | `#7A7A82`     | `#86868E` | Was 3.86:1 on `surface-hover` and below 4.5:1 on `surface-raised`. Now 4.55:1 on `surface-hover`, so it passes on every surface up to there. |
 | `--ds-line-control`               | did not exist | `#64646B` | Control boundaries need 3:1. `line-strong` is about 1.5:1. Now 3.35:1 on `bg`, 3.21:1 on `surface`, 3.02:1 on `surface-raised`.              |
-| `--ds-paper-accent`               | `#B8603E`     | `#A95839` | 4.53:1 on `paper`; the old value was below 4.5:1 for text.                                                                                   |
+| `--ds-paper-accent`               | `#B8603E`     | `#944A2D` | 5.7:1 on `paper`, 4.7:1 on its 14% tint (TOK-012); the original was below 4.5:1 for text.                                                    |
 
 ### Rules of thumb
 
@@ -720,7 +724,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-345 tokens; the table lists the 331 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+370 tokens; the table lists the 356 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -759,7 +763,16 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-paper-ink-2` | `#3A3A3A` | Secondary text on paper. Paper theme only. |
 | `--ds-paper-muted` | `#6B6B6B` | Tertiary text and control boundaries on paper (above 4.5:1 on paper). Paper theme only. |
 | `--ds-paper-rule` | `#9A968C` | Decorative rules and dividers on paper (table lines, totals). Below 3:1, so never a control boundary or text. Paper theme only. |
-| `--ds-paper-accent` | `#A95839` | Accent on paper: links and highlighted figures (4.53:1 on paper). Darkened from #B8603E in TOK-004. Paper theme only. |
+| `--ds-paper-accent` | `#944A2D` | Accent on paper: links and highlighted figures (5.7:1 on paper, 4.7:1 on paper-accent-soft). Darkened from #B8603E in TOK-004 and again from #A95839 in TOK-012 so accent text passes on its own tint. Paper theme only. |
+| `--ds-paper-success` | `#17683D` | Success signal on paper: text, icons and borders (6.1:1 on paper, 4.9:1 on paper-success-soft). Remaps success inside [data-theme="paper"] only (TOK-012). |
+| `--ds-paper-warning` | `#7F5200` | Warning signal on paper: text, icons and borders (6.0:1 on paper, 4.9:1 on paper-warning-soft). Remaps warning inside [data-theme="paper"] only (TOK-012). |
+| `--ds-paper-danger` | `#A8231B` | Error and destructive signal on paper (6.4:1 on paper, 4.8:1 on paper-danger-soft-hover). Remaps danger inside [data-theme="paper"] only (TOK-012). |
+| `--ds-paper-success-soft` | `rgba(23, 104, 61, 0.14)` | Tinted background for success states on paper. 14% paper-success over the paper. Not for text. Paper theme only. |
+| `--ds-paper-warning-soft` | `rgba(127, 82, 0, 0.14)` | Tinted background for warning states on paper. 14% paper-warning over the paper. Not for text. Paper theme only. |
+| `--ds-paper-danger-soft` | `rgba(168, 35, 27, 0.1)` | Tinted background for error states on paper. 10% paper-danger over the paper. Not for text. Paper theme only. |
+| `--ds-paper-danger-soft-hover` | `rgba(168, 35, 27, 0.18)` | Hover state of paper-danger-soft surfaces. 18% paper-danger over the paper. Paper theme only. |
+| `--ds-paper-danger-line` | `rgba(168, 35, 27, 0.35)` | Border of danger-tinted surfaces on paper. 35% paper-danger over the paper. Paper theme only. |
+| `--ds-paper-accent-soft` | `rgba(148, 74, 45, 0.14)` | Tinted background for accent states on paper (selected item, info badge). 14% paper-accent over the paper. Not for text. Paper theme only. |
 | `--ds-focus-ring` | `0px 0px 0px 3px rgba(138, 180, 255, 0.25)` | Focus halo: 3px ring, 25% accent over the surface beneath, used as box-shadow next to an accent border. base.css adds a transparent outline so focus stays visible in forced-colors mode. Not a hover or selected style. |
 | `--ds-focus-ring-danger` | `0px 0px 0px 3px rgba(240, 122, 110, 0.25)` | Focus halo for invalid fields: 3px ring, 25% danger over the surface beneath. Use instead of focus-ring when the control is in an error state. Not a general error style. |
 | `--ds-font-sans` | `Geist, "Geist Fallback", system-ui, sans-serif` | UI font stack: self-hosted Geist, then a metric-matched Arial fallback face, then the system font. Use for all interface text. Not for numbers, codes or data (use font.mono). |
@@ -927,6 +940,12 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-dialog-width-lg` | `680px` | Maximum width of a large Dialog (680px): dialogs with a table or a preview. |
 | `--ds-dialog-gutter` | `24px` | Minimum distance between a Dialog and the viewport edge (24px). |
 | `--ds-dialog-padding` | `20px` | Inner padding of the Dialog header, body and footer (20px, the card padding). |
+| `--ds-donut-meter-size-sm` | `48px` | Diameter of a small DonutMeter (48px). |
+| `--ds-donut-meter-size-md` | `72px` | Diameter of a medium DonutMeter (72px). |
+| `--ds-donut-meter-size-lg` | `96px` | Diameter of a large DonutMeter (96px). |
+| `--ds-donut-meter-stroke-w` | `10px` | Thickness of the ring in units of the 100-unit drawing box (10), so it scales with the diameter: 4.8px at 48px, 9.6px at 96px. |
+| `--ds-donut-meter-value` | `0` | Filled share of the ring, 0 to 100. Set at runtime via style (ADR-0002 amendment); the ring is drawn with a dash of this length on a path of length 100. |
+| `--ds-donut-meter-color` | `#8AB4FF` | Color of the filled part of the ring. Each tone sets it. |
 | `--ds-due-indicator-dot-size` | `8px` | Diameter of the tone dot before the date (8px). Decorative: the status is always text. |
 | `--ds-due-indicator-gap` | `8px` | Gap between the dot, the date and the status text (8px). |
 | `--ds-empty-state-padding-block` | `48px` | Vertical padding of an EmptyState (48px). |
@@ -1021,6 +1040,11 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-slider-track-height` | `4px` | Thickness of the Slider track and fill (4px, the handoff value). |
 | `--ds-slider-thumb-size` | `24px` | Width and height of the Slider thumb hit area (24px, WCAG 2.5.8). The visible knob is thumb-dot-size; the ring on focus follows this box. |
 | `--ds-slider-thumb-dot-size` | `16px` | Diameter of the visible Slider knob (16px), centered in the thumb hit area. |
+| `--ds-sparkline-stroke-w` | `1.5px` | Stroke width of the Sparkline line and of its marker rings (1.5px, same as icons and Chart). |
+| `--ds-sparkline-dot-r` | `2.5px` | Radius of the solid last-value dot of a Sparkline (2.5px). |
+| `--ds-sparkline-marker-r` | `2px` | Radius of the hollow minimum and maximum markers of a Sparkline (2px). |
+| `--ds-sparkline-area-opacity` | `0.12` | Opacity of the area under the line of an area Sparkline (0.12). |
+| `--ds-sparkline-color` | `#A3A3A9` | Series color of a Sparkline. Each tone sets it (neutral by default). |
 | `--ds-spinner-stroke-width` | `2px` | Ring thickness of the Spinner (2px) at every size. Not for progress bars or icon strokes. |
 | `--ds-spinner-duration` | `700ms` | Time of one full Spinner rotation (700ms). Replaced by a static ring under prefers-reduced-motion. Not for transitions. |
 | `--ds-stack-gap` | `16px` | Default Stack gap; set at runtime via style from the `gap` prop (a space token key). |
@@ -1044,6 +1068,10 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-tabs-indicator-height` | `2px` | Thickness of the active-tab underline (2px, ink colored). |
 | `--ds-tabs-count-size` | `20px` | Minimum width and height of the count pill inside a Tab (20px). A label, not a target. |
 | `--ds-tabs-count-padding-inline` | `6px` | Horizontal padding of the count pill inside a Tab (6px). |
+| `--ds-tag-input-padding-block` | `3px` | Vertical padding inside the TagInput box (3px): one row of tags plus border is exactly the small control height (32px). The box is at least as tall as the control height of its size, and grows when tags wrap. |
+| `--ds-tag-input-padding-inline` | `10px` | Horizontal padding inside the TagInput box (10px), the same as other text fields. |
+| `--ds-tag-input-gap` | `4px` | Gap between tags, and between the last tag and the text input (4px). |
+| `--ds-tag-input-input-min-width` | `96px` | Minimum width of the text input. When less room is left on the line, the input wraps to the next one (96px). |
 | `--ds-tag-height` | `24px` | Height of a Tag (24px): meets the minimum target size of its remove button. |
 | `--ds-tag-remove-size` | `24px` | Width and height of the remove button inside a Tag (24px, WCAG 2.5.8). |
 | `--ds-tag-padding-inline` | `8px` | Horizontal padding of a Tag (8px). |
@@ -1053,6 +1081,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-toast-min-height` | `40px` | Minimum height of a Toast (40px). |
 | `--ds-toast-dot-size` | `6px` | Diameter of the tone dot of a Toast (6px). Decorative: the tone is also spoken. |
 | `--ds-toast-offset` | `24px` | Distance between the Toast region and the bottom edge of the viewport (24px). |
+| `--ds-toast-clearance` | `0px` | Height of viewport the Toast region covers at the bottom (0 when no toast is shown). ToastRegion sets it on the root element while mounted; scroll containers use it as scroll-padding-block-end so focus never scrolls under a toast (WCAG 2.4.11). Do not set it by hand. |
 | `--ds-tooltip-max-width` | `240px` | Maximum width of a Tooltip (240px) before the text wraps. Tooltips stay short. |
 | `--ds-top-bar-padding-inline` | `24px` | Horizontal padding of the TopBar (24px). Its height is size.topbar-h (64px; the handoff code used 56px). |
 
@@ -1721,7 +1750,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`
+`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`, `--ds-toast-clearance`
 
 #### When to use
 
@@ -1815,7 +1844,7 @@ The application layout: a sidebar, and a main column with a top bar above a scro
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`
+`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`, `--ds-toast-clearance`
 
 #### When to use
 
@@ -2380,7 +2409,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - Import: `import { Card } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Card/Card.tsx`
-- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft
+- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt
 
 #### Props
 
@@ -4589,6 +4618,115 @@ div[role=separator]    vertical, with aria-orientation
 </Inline>
 ```
 
+### DonutMeter
+
+> A circular meter for one proportion: how much of a whole is used, done or filled (storage
+used, goal reached, stock level). The percentage is printed in the center, formatted with
+`Intl` for the active locale. Built on React Aria `Meter` (`role="meter"` with
+`aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext`).
+
+It needs an accessible name: a visible `label` (printed under the ring), `aria-label` or
+`aria-labelledby`. For a task that makes progress use `Progress`; for a bar use `Meter`;
+for one proportion among several use `ProportionBar`.
+
+A circular meter for one proportion: how much of a whole is used, done or filled (storage used, goal reached, stock level). The percentage is printed in the center, formatted with `Intl` for the active locale. Built on React Aria `Meter` (`role="meter"`). It is a separate component from `Progress`/`Meter`, in its own folder, and does not change them.
+
+- TODO `GAP-007`.
+
+- Import: `import { DonutMeter } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/DonutMeter/DonutMeter.tsx`
+- Stories (Storybook title `Components/DonutMeter`): Default, Small, Large, Neutral, Success, Warning, Danger, Empty, Full, CustomRange, CustomCenter, WithoutCenterValue, AriaLabelOnly, LongLabel, Portuguese, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  | `'accent'` | Color of the ring: `accent` (default), `neutral`, `success`, `warning` or `danger`. Color is never the only signal: the percentage is printed in the center and the label says what it is. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Diameter token: `sm` 48px, `md` 72px (default), `lg` 96px. |
+| `showValue` | `boolean` |  | `true` | Prints the percentage in the center. On by default. Turn it off when the center is empty on purpose. |
+| `centerLabel` | `ReactNode` |  |  | Replaces the percentage in the center ("12" over "days"). Visual only: screen readers get `valueLabel` (or the percentage) as the value of the meter. |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the meter element. |
+| `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
+| `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the field. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`
+- From `DOMProps` (@react-types/shared): `id`
+- From `ProgressBarBaseProps` (react-aria): `formatOptions`, `maxValue`, `minValue`, `value`, `valueLabel`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `sm`, `md`, `lg`
+- `tone`: `neutral`, `accent`, `success`, `warning`, `danger`
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-danger`, `--ds-donut-meter-color`, `--ds-donut-meter-size-lg`, `--ds-donut-meter-size-md`, `--ds-donut-meter-size-sm`, `--ds-donut-meter-stroke-w`, `--ds-donut-meter-value`, `--ds-duration-progress`, `--ds-ease`, `--ds-font-mono`, `--ds-fs-heading`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-num`, `--ds-lh-heading`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-num`, `--ds-space-2`, `--ds-success`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+
+#### When to use
+
+- One share of a known total, as a compact visual in a card or a table cell.
+- When the center number is the main message and the ring supports it.
+
+#### When not to use
+
+- Progress of a task that is running: use `Progress`.
+- A bar in a column or a row: use `Meter` (`Progress` module).
+- Several parts of a whole: use `ProportionBar`.
+- A trend over time: use `Sparkline` or `Chart`.
+
+#### Anatomy
+
+```
+div[role=meter] aria-valuenow/min/max/valuetext
+  div.ring
+    svg[aria-hidden]   (track circle + filled circle)
+    span.center        (percentage or centerLabel)
+  label                (optional, under the ring)
+```
+
+#### Accessibility
+
+- `role="meter"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` from React Aria. An accessible name is required (types and a development warning). The drawing is hidden from assistive technology; the center text is covered by `aria-valuetext`.
+- Color is never the only signal: the percentage is printed in the center. The ring and track keep 3:1 against the surface in every tone.
+- Motion: the ring animates 300ms; none under `prefers-reduced-motion`. Forced colors: track `GrayText`, ring `CanvasText`.
+- Not interactive and not focusable.
+
+#### Content rules
+
+- Label: what is measured, in sentence case ("Storage used"). The unit and total belong in `valueLabel` ("6.2 of 10 GB").
+- Pair a tone change with text that says why ("Almost full").
+
+#### Examples
+
+```tsx
+<DonutMeter label="Storage used" value={62} />
+
+<DonutMeter
+  label="Storage"
+  value={6.2}
+  maxValue={10}
+  valueLabel="6.2 of 10 GB"
+  tone="warning"
+  size="lg"
+/>
+
+<DonutMeter aria-label="Trial" value={40} centerLabel="12 d" valueLabel="12 days left" />
+```
+
+#### Related components
+
+- Instead, see Progress: Progress of a task that is running: use `Progress`.
+- Instead, see Meter: A bar in a column or a row: use `Meter` (`Progress` module).
+- Instead, see ProportionBar: Several parts of a whole: use `ProportionBar`.
+- Instead, see Sparkline: A trend over time: use `Sparkline` or `Chart`.
+- Instead, see Chart: A trend over time: use `Sparkline` or `Chart`.
+
 ### DueIndicator
 
 > A due date with a status in words: "Mar 9  Overdue by 3 days", "Due today", "Due in 5 days",
@@ -4964,7 +5102,7 @@ Rules for authors:
 
 #### Related components
 
-- Used by: Checkbox, CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Switch, Textarea
+- Used by: Checkbox, CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Switch, TagInput, Textarea
 
 ### FieldSet
 
@@ -5586,7 +5724,7 @@ import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui
 #### Related components
 
 - Instead, see Spinner: For a loading indicator that moves: use `Spinner`.
-- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup
+- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup, Toggle
 
 ### IconButton
 
@@ -6216,7 +6354,7 @@ Rules for authors:
 
 #### Related components
 
-- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, Textarea
+- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea
 
 ### LedgerList
 
@@ -9565,6 +9703,108 @@ Label with the thing being set ("Discount"), not an instruction. Put the unit in
 - Instead, see RadioGroup: Fewer than about five discrete choices: `RadioGroup` or a segmented control.
 - Renders: Label
 
+### Sparkline
+
+> A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. It
+shows the shape of a series, not its values: put the current number next to it.
+
+It is an image with a required text summary (`aria-label`), or `decorative` when the same
+information is written next to it. It is not interactive and not focusable. The vertical
+range is the data's own minimum to maximum, so a small change on a large number still
+shows; use `Chart` when readers need axes, values per point or zero as a reference.
+
+A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. It shows the shape of a series, not its values: put the current number next to it.
+
+- TODO `GAP-007`.
+
+- Import: `import { Sparkline } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Sparkline/Sparkline.tsx`
+- Stories (Storybook title `Components/Sparkline`): Default, Area, Accent, Success, Warning, Danger, LastValue, MinMax, Larger, IncludeZero, FlatSeries, WithGaps, SinglePoint, Empty, Decorative, NarrowContainer, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `data` | `readonly (number \| null \| undefined)[]` | yes |  | The values in display order, usually time. `null`, `undefined` and non-finite numbers are gaps: the line breaks there. An empty array draws nothing. |
+| `variant` | `'area' \| 'line'` |  | `'line'` | `line` (default) or `area`, which also fills softly under the line. |
+| `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  | `'neutral'` | Color of the line: `neutral` (default), `accent`, `success`, `warning` or `danger`. Color is never the only signal: say what the trend means in the accessible name or next to it. |
+| `width` | `number` |  | `96` | Width in px (user units). Shrinks to fit a narrower container. Default 96. |
+| `height` | `number` |  | `24` | Height in px (user units). Default 24. |
+| `showLast` | `boolean` |  | `false` | Draws a solid dot on the last value, the current one. |
+| `showMinMax` | `boolean` |  | `false` | Draws hollow markers on the lowest and the highest value (omitted when all values are equal). |
+| `includeZero` | `boolean` |  | `false` | Keeps 0 in the vertical range. Default: the range is the data's own minimum to maximum. |
+| `className` | `string` |  |  |  |
+| `aria-label` | `string` |  |  | Summary of the trend, required unless `decorative` or `aria-labelledby`: "Revenue, last 7 days: up 12%". |
+| `aria-labelledby` | `string` |  |  | Id of the element that summarizes the trend. |
+| `decorative` | `boolean` |  | `false` | Hides the sparkline from assistive technology. Use it only when the same information is in text next to it (a number and "+12%"): the line alone is never the only source. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `variant`: `area`, `line`
+- `tone`: `neutral`, `accent`, `success`, `warning`, `danger`
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-danger`, `--ds-sparkline-area-opacity`, `--ds-sparkline-color`, `--ds-sparkline-dot-r`, `--ds-sparkline-marker-r`, `--ds-sparkline-stroke-w`, `--ds-success`, `--ds-text-2`, `--ds-warning`
+
+#### When to use
+
+- Next to a number in a `StatCard`, a table row or a list item, to show the recent trend.
+- When the shape matters more than exact values.
+
+#### When not to use
+
+- When readers need axes, values per point or keyboard exploration: use `Chart`.
+- To show a quantity within a range: use `Meter` or `DonutMeter`.
+- As the only place a number appears: the sparkline is a summary, not a source.
+
+#### Anatomy
+
+```
+svg[role=img] aria-label            (or aria-hidden when decorative)
+  path.area                         (variant="area" only)
+  path.line                         (one per run of values, a gap starts a new one)
+  circle.marker[min|max]            (showMinMax: hollow rings)
+  circle.last                       (showLast: solid dot)
+```
+
+#### Accessibility
+
+- It is an `img` with a required text summary: say what a sighted reader sees, with the numbers that matter ("Orders, last 7 days: up 12%"). Use `decorative` only when that text is already next to the sparkline.
+- It is not focusable and not interactive; there are no tooltips. For exploration use `Chart`.
+- Color is never the only signal: tone changes the line color, the trend must be in the name or next to it. Min and max are hollow rings and the last value is a solid dot, so they differ by shape.
+- Line, markers and area use `--ds-text-2` or a signal color (3:1 or better on the dark surfaces). Forced colors: everything is drawn in `CanvasText`.
+- Under 200% zoom and in narrow containers it shrinks with the container.
+
+#### Content rules
+
+- Summaries are one short sentence in sentence case with the period and the direction: "Revenue, last 30 days: up 8%".
+
+#### Differences from `Chart`
+
+The vertical range is the data's own minimum to maximum, not a "nice" axis that includes zero (`niceScale`), because a trend line on `98, 100, 102` must not be flattened. For that reason `niceScale` and the `Chart` layout helpers are not reused; the geometry lives in `sparklineLayout.ts` and is unit tested.
+
+#### Examples
+
+```tsx
+<Sparkline data={daily} aria-label="Orders, last 7 days: up 12%" tone="success" showLast />
+
+<p>
+  Orders 1,248 <Sparkline data={daily} decorative /> +12%
+</p>
+```
+
+#### Related components
+
+- Instead, see Chart: When readers need axes, values per point or keyboard exploration: use `Chart`.
+- Instead, see Meter: To show a quantity within a range: use `Meter` or `DonutMeter`.
+- Instead, see DonutMeter: To show a quantity within a range: use `Meter` or `DonutMeter`.
+
 ### Spinner
 
 > An indeterminate loading ring that inherits the text color.
@@ -10871,6 +11111,7 @@ TagGroup           (grid; optional visible label)
 - Instead, see Select: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Instead, see RadioGroup: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Renders: Icon
+- Used by: TagInput
 
 ### TagGroup
 
@@ -10965,6 +11206,177 @@ TagGroup           (grid; optional visible label)
 - Instead, see Select: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Instead, see RadioGroup: For choosing one option from a list: use `Select` or `RadioGroup`.
 - Renders: Icon
+- Used by: TagInput
+
+### TagInput
+
+> A text field that turns what you type into removable tags: `Enter` or a comma adds the
+tag, pasting `a, b, c` adds three, `Backspace` on the empty input removes the last one.
+Duplicates are ignored with a polite message; `maxTags` and `validateTag` reject with an
+error that is read aloud.
+
+Built from `TagGroup` / `Tag` and React Aria `TextField`. The tags are a keyboard-navigable
+list (one tab stop; `Shift+Tab` from the input reaches it, `Backspace` or `Delete` on a tag
+removes it), the input is a normal text box. The value is the list of tags; with `name` each
+tag is submitted as a hidden field.
+
+For choosing from known options use `Combobox`; for filters that are always visible use
+`ToggleGroup`.
+
+A text field that turns what you type into removable tags: `Enter` or a comma adds a tag, pasting `a, b, c` adds three, `Backspace` on the empty input removes the last one. Built from `TagGroup` / `Tag` and React Aria `TextField`. The value is the list of tags; with `name` each tag is submitted as a hidden form field.
+
+- TODO `GAP-005`.
+
+- Import: `import { TagInput } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/TagInput/TagInput.tsx`
+- Stories (Storybook title `Components/TagInput`): Default, AddWithKeyboard, WithTags, BackspaceRemovesLast, RemoveWithKeyboard, Duplicate, MaxTags, Validation, Invalid, Required, Disabled, ReadOnly, Small, Large, ManyTagsWrap, LongTag, SemicolonDelimiter, Controlled, InForm, Portuguese, RightToLeft, Focused
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `readonly string[]` |  |  | The tags (controlled). Pair with `onChange`. |
+| `defaultValue` | `readonly string[]` |  |  | The initial tags (uncontrolled). |
+| `onChange` | `((tags: string[]) => void)` |  |  | Called with the full list of tags whenever a tag is added or removed. |
+| `name` | `string` |  |  | Name used to submit the tags with a form. Each tag is submitted as its own hidden field with this name (read them with `formData.getAll(name)`). The text being typed is never submitted. |
+| `form` | `string` |  |  | The `id` of the `<form>` the hidden fields belong to, when the field is outside it. |
+| `inputValue` | `string` |  |  | The text in the input, not yet a tag (controlled). Pair with `onInputChange`. |
+| `defaultInputValue` | `string` |  |  | The initial text in the input (uncontrolled). |
+| `onInputChange` | `((text: string) => void)` |  |  | Called with the text of the input as the user types. |
+| `delimiters` | `readonly string[]` |  | `[',']` | Characters that end a tag while typing and split pasted text. `Enter` always adds the tag, and line breaks always split pasted text. Default `[',']`. Pass `[]` to use only `Enter`. |
+| `maxTags` | `number` |  |  | Maximum number of tags. Trying to add another shows an error and keeps the text. |
+| `validateTag` | `((tag: string) => string \| null)` |  |  | Decides whether a tag may be added. Return a message to reject it ("Use letters and digits only."); return nothing to accept it. The message is shown as the field error and read aloud. It receives the trimmed text. |
+| `caseSensitive` | `boolean` |  | `false` | Treat "Linen" and "linen" as different tags. Default: they are the same, and the second is ignored. |
+| `addOnBlur` | `boolean` |  | `true` | Turns the text left in the input into a tag when the input loses focus. Default `true`. |
+| `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
+| `errorMessage` | `FieldErrorMessage` |  |  | Error text from your own validation, shown while the field is invalid (`isInvalid`). The messages of `validateTag` and `maxTags` take its place while they apply. |
+| `placeholder` | `string` |  |  | Text shown while the field has no tags and no text. Never a substitute for the label. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. The box grows when tags wrap. |
+| `className` | `string` |  |  | Class name for the field root. |
+| `inputClassName` | `string` |  |  | Class name for the text `<input>`. |
+| `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the text `<input>`. The `ref` prop points at the field root. |
+| `messages` | `Partial<{ tagsLabel: (fieldLabel?: string) => string; added: (tag: string) => string; addedMany: (count: number) => string; removed: (tag: string) => string; duplicate: (tag: string) => string; duplicates: (count: number) => string; maxReached: (max: number) => string; } & { ...; }>` |  |  | Message overrides for this instance: `tagsLabel`, `added`, `addedMany`, `removed`, `duplicate`, `duplicates`, `maxReached`, `requiredMark`. The remove button of a tag uses the `Tag` messages. |
+| `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the field root `<div>`. |
+| `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
+| `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the field. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`
+- From `AriaTextFieldProps` (react-aria): `aria-activedescendant`, `aria-autocomplete`, `aria-controls`, `aria-haspopup`, `enterKeyHint`
+- From `AriaValidationProps` (@react-types/shared): `aria-errormessage`
+- From `DOMProps` (@react-types/shared): `id`
+- From `FocusableDOMProps` (@react-types/shared): `excludeFromTabOrder`
+- From `FocusableProps` (@react-types/shared): `autoFocus`
+- From `FocusEvents` (@react-types/shared): `onBlur`, `onFocus`, `onFocusChange`
+- From `InputBase` (@react-types/shared): `isDisabled`, `isReadOnly`
+- From `KeyboardEvents` (@react-types/shared): `onKeyDown`, `onKeyUp`
+- From `RACValidation` (react-aria-components): `validationBehavior`
+- From `TextFieldProps` (react-aria-components): `isInvalid`
+- From `TextInputDOMEvents` (@react-types/shared): `onBeforeInput`, `onCompositionEnd`, `onCompositionStart`, `onCompositionUpdate`, `onCopy`, `onCut`, `onInput`, `onPaste`, `onSelect`
+- From `TextInputDOMProps` (@react-types/shared): `autoComplete`, `autoCorrect`, `spellCheck`
+- From `Validation` (@react-types/shared): `isRequired`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `sm`, `md`, `lg`
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ TagInput: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `tagsLabel(fieldLabel?: string)` | `{fieldLabel?}, added tags` | Name of the list of added tags. `fieldLabel` is the text label of the field, when it has one. |
+| `added(tag: string)` | `Added “{tag}”.` | Announced (polite) after one tag is added. |
+| `addedMany(count: number)` | `Added 2 tags.` | Announced (polite) after several tags are added at once (paste). |
+| `removed(tag: string)` | `Removed “{tag}”.` | Announced (polite) after a tag is removed with Backspace on the empty input. |
+| `duplicate(tag: string)` | `“{tag}” is already added.` | Shown and announced (polite) when a typed tag is already in the list and was ignored. |
+| `duplicates(count: number)` | `2 duplicate tags were skipped.` | Shown and announced (polite) when several pasted tags were ignored as duplicates. |
+| `maxReached(max: number)` | `You can add up to 2 tags.` | Error shown when the user tries to add a tag beyond the maximum. |
+
+#### Design tokens used
+
+`--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-fs-label`, `--ds-lh-label`, `--ds-tag-height`, `--ds-tag-input-gap`, `--ds-tag-input-input-min-width`, `--ds-tag-input-padding-block`, `--ds-tag-input-padding-inline`, `--ds-text-2`, `--ds-text-3`
+
+#### When to use
+
+- Free-form lists the user types: keywords, e-mail recipients, labels, SKUs.
+- When the list can grow beyond what you want to show as checkboxes.
+
+#### When not to use
+
+- Choosing from known options: use `Combobox` (or `Select`).
+- A fixed set of filters that are always visible: use `ToggleGroup`.
+- Showing tags the user cannot edit: use `TagGroup`.
+
+#### Anatomy
+
+```
+div (field root)
+  Label
+  div.control                     (the bordered box, wraps over several rows)
+    TagGroup[role=grid] aria-label    (only while there are tags; one row per tag)
+      Tag > text + remove button (24x24)
+    input[type=text]              (the textbox; named by the Label)
+  Description
+  FieldError                      (role=alert: validation and maximum)
+  div[role=status]                (polite: added, removed, duplicate; visible for a duplicate)
+  input[type=hidden] x N          (only with `name`)
+```
+
+#### Behavior
+
+| Input                                        | Result                                                                                                          |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |
+| A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |
+| Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |
+| `Backspace` on an empty input                | Removes the last tag (announced: "Removed “silk”.").                                                            |
+| Duplicate                                    | Ignored, input cleared, polite message "“linen” is already added." Not an error.                                |
+| Beyond `maxTags` / rejected by `validateTag` | Error (`role="alert"`, field invalid), nothing is added, the text stays so it can be fixed.                     |
+| Blur with text                               | Adds it (`addOnBlur`).                                                                                          |
+
+#### Accessibility
+
+- The input is a normal `textbox` named by the label. The tags are a `grid` named "Fabrics, added tags" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.
+- Remove buttons are 24x24 and named "Remove linen" (message `Tag.remove`).
+- Additions, removals and duplicates are announced in one polite `role="status"` region; errors are in the field's `role="alert"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.
+- The click target of the whole box focuses the input.
+- Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields.
+
+#### Content rules
+
+- Label as a noun phrase ("Fabrics", "Recipients"). Placeholder: an example or an action ("Add a fabric"), never the label.
+- `validateTag` messages say how to fix it: "Enter a complete email address."
+- Tags are shown as typed (trimmed); sorting is up to you.
+
+#### Messages (`messages` prop, or `DSProvider messages={{ TagInput: … }}`)
+
+`tagsLabel(fieldLabel?)`, `added(tag)`, `addedMany(count)`, `removed(tag)`, `duplicate(tag)`, `duplicates(count)`, `maxReached(max)`, `requiredMark`. English and `pt-BR` ship with the library. The remove button uses the `Tag` messages.
+
+#### Examples
+
+```tsx
+<TagInput label="Fabrics" name="fabrics" value={fabrics} onChange={setFabrics} maxTags={10} />
+
+<TagInput
+  label="Recipients"
+  delimiters={[',', ';']}
+  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}
+/>
+```
+
+#### Related components
+
+- Instead, see Combobox: Choosing from known options: use `Combobox` (or `Select`).
+- Instead, see Select: Choosing from known options: use `Combobox` (or `Select`).
+- Instead, see ToggleGroup: A fixed set of filters that are always visible: use `ToggleGroup`.
+- Instead, see TagGroup: Showing tags the user cannot edit: use `TagGroup`.
+- Renders: FieldMessages, Label, Tag, TagGroup
 
 ### Text
 
@@ -11306,6 +11718,236 @@ Rules:
 - Instead, see Dialog: Anything the user must read to proceed: use `Dialog` or `Alert`. A toast disappears.
 - Renders: Button, IconButton, VisuallyHidden
 
+### Toggle
+
+> A button that stays pressed: it switches one setting on or off (bold text, a filter, "show
+archived"). Built on React Aria `ToggleButton`: a native `<button>` with `aria-pressed`,
+toggled by `Enter` and `Space`.
+
+Use it for an independent on/off choice that applies at once. For a setting inside a form
+use `Switch` or `Checkbox`; for several related toggles use `ToggleGroup`; for one value out
+of a few use `SegmentedControl`.
+
+A button that stays pressed: it switches one setting on or off (bold text, a filter, "show archived") and applies it at once. A native `<button>` with `aria-pressed`, built on React Aria `ToggleButton`. Looks like `Button` (`secondary` and `ghost`), with a clear pressed state.
+
+- TODO `GAP-005`.
+
+- Import: `import { Toggle } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Toggle/Toggle.tsx`
+- Stories (Storybook title `Components/Toggle`): Default, Pressed, Ghost, GhostPressed, Small, Large, WithLeadingIcon, IconOnly, IconOnlyWithTooltip, Disabled, DisabledPressed, KeyboardToggle, Controlled, LongLabel, RightToLeft, Focused
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` |  |  | Label: a short noun or verb in sentence case ("Bold", "Show archived"). |
+| `leading` | `ReactNode` |  |  | Node before the label, usually `<Icon size="sm" />`. Decorative; the label names the toggle. |
+| `aria-label` | `string` |  |  | Replaces the accessible name when the visible label is not enough. Rarely needed. |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the toggle. |
+| `icon` | `LucideIcon` |  |  | The icon to draw: one of the curated set (for example `StarIcon`). Decorative inside the button. |
+| `label` | `string` |  |  | Accessible name of an icon-only toggle, required. Name what the toggle controls, not what it looks like and not its state ("Bold", "Show archived"): the pressed state is announced separately. |
+| `tooltip` | `boolean \| ToggleTooltipOptions` |  |  | Shows `label` in a `Tooltip` on hover and keyboard focus. Pass `true`, or an object to add a shortcut or change the side. The `label` stays the accessible name. |
+| `id` | `string` |  |  | Inside a `ToggleGroup`: the value of this toggle in the group's `value` (required there, unique in the group). Standalone: the DOM id. |
+| `variant` | `'secondary' \| 'ghost'` |  |  | Visual style, as for `Button`. `secondary` (default) has a border; `ghost` has none at rest. Inside a `ToggleGroup` it defaults to the group's `variant`. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  |  | Height token: `sm` 32px, `md` 40px (default), `lg` 48px. Inside a `ToggleGroup` it defaults to the group's `size`. |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLButtonElement>` |  |  | Ref to the underlying `<button>` element. |
+
+##### Inherited props
+
+- From `AriaBaseButtonProps` (react-aria): `aria-controls`, `aria-disabled`, `aria-expanded`, `aria-haspopup`, `aria-pressed`, `preventFocusOnPress`
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`
+- From `ButtonProps` (react-aria): `isDisabled`
+- From `FocusableDOMProps` (@react-types/shared): `excludeFromTabOrder`
+- From `FocusableProps` (@react-types/shared): `autoFocus`
+- From `FocusEvents` (@react-types/shared): `onBlur`, `onFocus`, `onFocusChange`
+- From `HoverEvents` (@react-types/shared): `onHoverChange`, `onHoverEnd`, `onHoverStart`
+- From `KeyboardEvents` (@react-types/shared): `onKeyDown`, `onKeyUp`
+- From `PressEvents` (@react-types/shared): `onClick`, `onPress`, `onPressChange`, `onPressEnd`, `onPressStart`, `onPressUp`
+- From `SlotProps` (react-aria-components): `slot`
+- From `ToggleButtonProps` (react-aria): `defaultSelected`, `isSelected`, `onChange`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `variant`: `secondary`, `ghost`
+- `size`: `sm`, `md`, `lg`
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-weight-medium`
+
+#### When to use
+
+- One independent on/off choice in a toolbar or filter bar: Bold, Show archived, Only mine.
+- An icon-only on/off control (Favorite, Pin) with a required `label`.
+
+#### When not to use
+
+- A setting that is saved with a form: use `Switch` or `Checkbox`.
+- Several related toggles that share a value: use `ToggleGroup`.
+- One value out of a few options (View: List, Board): use `SegmentedControl`.
+- An action that does something once: use `Button`.
+
+#### Anatomy
+
+```
+button[aria-pressed]
+  leading   (optional, decorative)
+  label     (or a single icon when icon-only)
+```
+
+#### Accessibility
+
+- Semantics: `<button aria-pressed="true|false">`. Inside a single-selection `ToggleGroup` it is a `radio` with `aria-checked`.
+- Keyboard: `Tab` focuses; `Space` and `Enter` toggle.
+- The pressed state is shown by a brighter border, a raised fill and ink text, never by color alone. Focus is the accent border and ring.
+- Icon-only toggles need a `label` that names what the toggle controls, not its state: the pressed state is announced by the browser. The icon is decorative.
+- Targets are at least 32px (`sm`). Forced colors: the pressed toggle gets a `Highlight` border and an underline.
+
+#### Content rules
+
+- Label with a short noun or verb phrase in sentence case: "Bold", "Show archived". Do not change the label when the state changes ("Hide archived" would be read as the opposite of the state).
+
+#### Examples
+
+```tsx
+<Toggle isSelected={showArchived} onChange={setShowArchived}>
+  Show archived
+</Toggle>
+
+<Toggle icon={StarIcon} label="Favorite" tooltip variant="ghost" />
+```
+
+#### Related components
+
+- Instead, see Switch: A setting that is saved with a form: use `Switch` or `Checkbox`.
+- Instead, see Checkbox: A setting that is saved with a form: use `Switch` or `Checkbox`.
+- Instead, see ToggleGroup: Several related toggles that share a value: use `ToggleGroup`.
+- Instead, see SegmentedControl: One value out of a few options (View: List, Board): use `SegmentedControl`.
+- Instead, see Button: An action that does something once: use `Button`.
+- Renders: Icon, Tooltip
+
+### ToggleGroup
+
+> A row (or column) of related `Toggle`s that share one value: the list of pressed `id`s.
+
+With the default `multiple` selection the toggles are independent (bold, italic, underline;
+or a set of filters) and the group is a `toolbar`. With `single` selection it behaves like
+a radio group that can also be empty.
+
+`ToggleGroup` vs `SegmentedControl`: a `SegmentedControl` is one value of one setting (View:
+List, Board), exactly one option is always selected. A `ToggleGroup` is a set of on/off
+choices where none, one or several are on.
+
+Built on React Aria `ToggleButtonGroup`: one tab stop, arrow keys move between toggles (they
+stop at the ends), `Space` and `Enter` toggle the focused one.
+
+A row (or column) of related `Toggle`s that share one value: the list of pressed `id`s. With the default `multiple` selection the toggles are independent (bold, italic, underline; a set of filters). With `single` selection at most one is pressed. Built on React Aria `ToggleButtonGroup`.
+
+- TODO `GAP-005`.
+
+- Import: `import { ToggleGroup } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/ToggleGroup/ToggleGroup.tsx`
+- Stories (Storybook title `Components/ToggleGroup`): Default, Preselected, Ghost, Small, Large, Vertical, IconOnly, SingleSelection, DisabledToggle, DisabledGroup, KeyboardSelection, Controlled, Wrapping, RightToLeft, Focused
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | yes |  | The `Toggle` children. Each needs an `id` that is unique in the group. |
+| `aria-label` | `string` |  |  | Accessible name of the group ("Text formatting"). Required: name this or use `aria-labelledby`. |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the group. |
+| `selectionMode` | `'single' \| 'multiple'` |  | `'multiple'` | `multiple` (default): any number of toggles can be pressed, independently (text formatting, filters); the group is a toolbar. `single`: at most one is pressed; the group is a radio group. To pick exactly one value of a setting prefer `SegmentedControl`. |
+| `value` | `readonly string[]` |  |  | The `id`s of the pressed toggles (controlled). Pair with `onChange`. |
+| `defaultValue` | `readonly string[]` |  |  | The `id`s of the toggles that start pressed (uncontrolled). |
+| `onChange` | `(value: string[]) => void` |  |  | Called with the `id`s of all pressed toggles after the user presses or releases one. |
+| `disallowEmptySelection` | `boolean` |  |  | Keeps at least one toggle pressed. Pointless in `multiple` mode unless you want that rule. |
+| `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | Layout and arrow keys: `horizontal` (default, `←` `→`) or `vertical` (`↑` `↓`). |
+| `variant` | `'secondary' \| 'ghost'` |  |  | Visual style handed down to every `Toggle` that does not set its own. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  |  | Size handed down to every `Toggle` that does not set its own. |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the group element. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`
+- From `ToggleGroupProps` (react-stately): `isDisabled`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `variant`: `secondary`, `ghost`
+- `size`: `sm`, `md`, `lg`
+
+#### Design tokens used
+
+`--ds-space-2`
+
+#### ToggleGroup or SegmentedControl
+
+|           | `SegmentedControl`                           | `ToggleGroup`                                                    |
+| --------- | -------------------------------------------- | ---------------------------------------------------------------- |
+| Meaning   | One value of one setting (View: List, Board) | Independent on/off choices (Bold, Italic; filters)               |
+| Selection | Exactly one option, always                   | None, one or several (`multiple`), or none/one                   |
+| Role      | `radiogroup` of `radio`                      | `toolbar` of `button[aria-pressed]` (`radiogroup` when `single`) |
+| Value     | `string`                                     | `string[]`                                                       |
+| Content   | `options` array with optional counts         | `Toggle` children, text or icon-only                             |
+
+Rule of thumb: if choosing one option makes the others "not selected" and one must always be on, use `SegmentedControl`. If each choice can stand alone, use `ToggleGroup`. Use `single` here only when "nothing selected" is meaningful (for example an optional filter).
+
+#### When to use
+
+- Text formatting (Bold, Italic), list markers, or a small set of filters that combine.
+
+#### When not to use
+
+- A single on/off choice: use `Toggle`.
+- Choosing one value of a setting: use `SegmentedControl`.
+- A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
+
+#### Anatomy
+
+```
+div[role=toolbar] aria-label       (or role=radiogroup when single)
+  button[aria-pressed]             (one `Toggle` per choice, each with an id)
+```
+
+#### Accessibility
+
+- Semantics: `multiple` is a `toolbar` (a group of buttons with `aria-pressed`); `single` is a `radiogroup` of `radio` buttons. The group needs an accessible name (enforced by the types).
+- Keyboard: one tab stop; `←` / `→` (`↑` / `↓` when vertical) move focus and stop at the ends (React Aria does not wrap); `Space` and `Enter` press the focused toggle. Disabled toggles are skipped.
+- Pressed state is shown by border, fill and ink text, not by color alone.
+- Icon-only toggles need a `label`.
+
+#### Content rules
+
+- Group name: a noun phrase ("Text formatting", "Filters"). Toggle labels: one word or a short phrase in sentence case.
+
+#### Examples
+
+```tsx
+<ToggleGroup aria-label="Text formatting" value={marks} onChange={setMarks}>
+  <Toggle id="fav" icon={StarIcon} label="Favorite" />
+  <Toggle id="pin" icon={StarIcon} label="Pinned" />
+</ToggleGroup>
+
+<ToggleGroup aria-label="Order filters" defaultValue={['mine']}>
+  <Toggle id="mine">Only mine</Toggle>
+  <Toggle id="late">Late</Toggle>
+</ToggleGroup>
+```
+
+#### Related components
+
+- Instead, see Toggle: A single on/off choice: use `Toggle`.
+- Instead, see SegmentedControl: Choosing one value of a setting: use `SegmentedControl`.
+- Instead, see CheckboxGroup: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
+- Instead, see Select: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
+- Instead, see Combobox: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
+
 ### Tooltip
 
 > An ink-style hint for a control, built on React Aria `TooltipTrigger` and `Tooltip`.
@@ -11392,7 +12034,7 @@ TooltipTrigger
 #### Related components
 
 - Instead, see Popover: Interactive content (links, buttons, forms): use `Popover`.
-- Used by: IconButton
+- Used by: IconButton, Toggle
 
 ### TopBar
 

@@ -24,7 +24,7 @@
     }
   ],
   "counts": {
-    "components": 97,
+    "components": 102,
     "hooks": 11,
     "utilities": 40,
     "icons": 26,
@@ -1800,7 +1800,8 @@
         "--ds-space-12",
         "--ds-space-2",
         "--ds-space-3",
-        "--ds-text"
+        "--ds-text",
+        "--ds-toast-clearance"
       ],
       "stories": {
         "title": "Layout/AppShell",
@@ -1977,7 +1978,8 @@
         "--ds-space-12",
         "--ds-space-2",
         "--ds-space-3",
-        "--ds-text"
+        "--ds-text",
+        "--ds-toast-clearance"
       ],
       "stories": {
         "title": "Layout/AppShell",
@@ -3827,6 +3829,12 @@
           {
             "name": "RightToLeft",
             "id": "components-card--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "PaperReceipt",
+            "id": "components-card--paper-receipt",
+            "description": "The paper scope (`data-theme=\"paper\"`): the only light surface, for receipt and PDF previews.\nSuccess, warning and danger use their darker paper twins (TOK-012), so badges, alerts and\ntinted buttons keep 4.5:1 on the paper.",
             "hasPlay": false
           }
         ]
@@ -10765,6 +10773,355 @@
       }
     },
     {
+      "name": "DonutMeter",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { DonutMeter } from '@loui/ds';",
+      "folder": "src/components/DonutMeter",
+      "sourceFile": "src/components/DonutMeter/DonutMeter.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A circular meter for one proportion: how much of a whole is used, done or filled (storage\nused, goal reached, stock level). The percentage is printed in the center, formatted with\n`Intl` for the active locale. Built on React Aria `Meter` (`role=\"meter\"` with\n`aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext`).\n\nIt needs an accessible name: a visible `label` (printed under the ring), `aria-label` or\n`aria-labelledby`. For a task that makes progress use `Progress`; for a bar use `Meter`;\nfor one proportion among several use `ProportionBar`.",
+      "props": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'accent' | 'success' | 'warning' | 'danger'",
+          "required": false,
+          "default": "'accent'",
+          "description": "Color of the ring: `accent` (default), `neutral`, `success`, `warning` or `danger`. Color\nis never the only signal: the percentage is printed in the center and the label says what\nit is.",
+          "values": ["neutral", "accent", "success", "warning", "danger"]
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'",
+          "description": "Diameter token: `sm` 48px, `md` 72px (default), `lg` 96px.",
+          "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Prints the percentage in the center. On by default. Turn it off when the center is empty on purpose."
+        },
+        {
+          "name": "centerLabel",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Replaces the percentage in the center (\"12\" over \"days\"). Visual only: screen readers get\n`valueLabel` (or the percentage) as the value of the meter."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "description": "Ref to the meter element."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label. Prefer it: sighted and assistive technology users see the same name."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name when there is no visible label (for example a search box with an icon)."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the field."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@react-types/shared",
+          "interface": "AriaLabelingProps",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-details",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "DOMProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria",
+          "interface": "ProgressBarBaseProps",
+          "domGeneric": false,
+          "count": 5,
+          "props": [
+            {
+              "name": "formatOptions",
+              "type": "NumberFormatOptions",
+              "required": false
+            },
+            {
+              "name": "maxValue",
+              "type": "number",
+              "required": false
+            },
+            {
+              "name": "minValue",
+              "type": "number",
+              "required": false
+            },
+            {
+              "name": "value",
+              "type": "number",
+              "required": false
+            },
+            {
+              "name": "valueLabel",
+              "type": "ReactNode",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMAttributes",
+          "domGeneric": true,
+          "count": 6
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMEvents",
+          "domGeneric": true,
+          "count": 64
+        }
+      ],
+      "variants": {
+        "size": ["sm", "md", "lg"],
+        "tone": ["neutral", "accent", "success", "warning", "danger"]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-danger",
+        "--ds-donut-meter-color",
+        "--ds-donut-meter-size-lg",
+        "--ds-donut-meter-size-md",
+        "--ds-donut-meter-size-sm",
+        "--ds-donut-meter-stroke-w",
+        "--ds-donut-meter-value",
+        "--ds-duration-progress",
+        "--ds-ease",
+        "--ds-font-mono",
+        "--ds-fs-heading",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-fs-num",
+        "--ds-lh-heading",
+        "--ds-lh-label",
+        "--ds-lh-meta",
+        "--ds-lh-num",
+        "--ds-space-2",
+        "--ds-success",
+        "--ds-surface-hover",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-warning",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/DonutMeter",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-donut-meter--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Small",
+            "id": "components-donut-meter--small",
+            "hasPlay": false
+          },
+          {
+            "name": "Large",
+            "id": "components-donut-meter--large",
+            "hasPlay": false
+          },
+          {
+            "name": "Neutral",
+            "id": "components-donut-meter--neutral",
+            "hasPlay": false
+          },
+          {
+            "name": "Success",
+            "id": "components-donut-meter--success",
+            "hasPlay": false
+          },
+          {
+            "name": "Warning",
+            "id": "components-donut-meter--warning",
+            "hasPlay": false
+          },
+          {
+            "name": "Danger",
+            "id": "components-donut-meter--danger",
+            "hasPlay": false
+          },
+          {
+            "name": "Empty",
+            "id": "components-donut-meter--empty",
+            "hasPlay": false
+          },
+          {
+            "name": "Full",
+            "id": "components-donut-meter--full",
+            "hasPlay": false
+          },
+          {
+            "name": "CustomRange",
+            "id": "components-donut-meter--custom-range",
+            "hasPlay": true
+          },
+          {
+            "name": "CustomCenter",
+            "id": "components-donut-meter--custom-center",
+            "hasPlay": false
+          },
+          {
+            "name": "WithoutCenterValue",
+            "id": "components-donut-meter--without-center-value",
+            "hasPlay": false
+          },
+          {
+            "name": "AriaLabelOnly",
+            "id": "components-donut-meter--aria-label-only",
+            "hasPlay": true
+          },
+          {
+            "name": "LongLabel",
+            "id": "components-donut-meter--long-label",
+            "hasPlay": false
+          },
+          {
+            "name": "Portuguese",
+            "id": "components-donut-meter--portuguese",
+            "hasPlay": true
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-donut-meter--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/DonutMeter/DonutMeter.md",
+        "summary": "A circular meter for one proportion: how much of a whole is used, done or filled (storage used, goal reached, stock level). The percentage is printed in the center, formatted with `Intl` for the active locale. Built on React Aria `Meter` (`role=\"meter\"`). It is a separate component from `Progress`/`Meter`, in its own folder, and does not change them.\n\n- TODO `GAP-007`.",
+        "whenToUse": [
+          "One share of a known total, as a compact visual in a card or a table cell.",
+          "When the center number is the main message and the ring supports it."
+        ],
+        "whenNotToUse": [
+          "Progress of a task that is running: use `Progress`.",
+          "A bar in a column or a row: use `Meter` (`Progress` module).",
+          "Several parts of a whole: use `ProportionBar`.",
+          "A trend over time: use `Sparkline` or `Chart`."
+        ],
+        "keyboard": [],
+        "examples": [
+          "<DonutMeter label=\"Storage used\" value={62} />\n\n<DonutMeter\n  label=\"Storage\"\n  value={6.2}\n  maxValue={10}\n  valueLabel=\"6.2 of 10 GB\"\n  tone=\"warning\"\n  size=\"lg\"\n/>\n\n<DonutMeter aria-label=\"Trial\" value={40} centerLabel=\"12 d\" valueLabel=\"12 days left\" />"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- One share of a known total, as a compact visual in a card or a table cell.\n- When the center number is the main message and the ring supports it."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Progress of a task that is running: use `Progress`.\n- A bar in a column or a row: use `Meter` (`Progress` module).\n- Several parts of a whole: use `ProportionBar`.\n- A trend over time: use `Sparkline` or `Chart`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv[role=meter] aria-valuenow/min/max/valuetext\n  div.ring\n    svg[aria-hidden]   (track circle + filled circle)\n    span.center        (percentage or centerLabel)\n  label                (optional, under the ring)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                    | Type                                                          | Default     | Notes                                                                                     |\n| ----------------------- | ------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |\n| `value`                 | `number`                                                      | `0`         | Within `minValue` and `maxValue`; clamped.                                                |\n| `minValue` / `maxValue` | `number`                                                      | `0` / `100` |                                                                                           |\n| `label`                 | `ReactNode`                                                   | none        | Visible name under the ring. One of `label`, `aria-label`, `aria-labelledby` is required. |\n| `valueLabel`            | `string`                                                      | percentage  | What screen readers hear (\"6.2 of 10 GB\"). The center still shows the percentage.         |\n| `tone`                  | `'neutral' \\| 'accent' \\| 'success' \\| 'warning' \\| 'danger'` | `'accent'`  | Color of the ring. Never the only signal.                                                 |\n| `size`                  | `'sm' \\| 'md' \\| 'lg'`                                        | `'md'`      | Diameter 48 / 72 / 96px (`--ds-donut-meter-size-*`).                                      |\n| `showValue`             | `boolean`                                                     | `true`      | Prints the percentage in the center.                                                      |\n| `centerLabel`           | `ReactNode`                                                   | none        | Replaces the percentage in the center (visual only; pair with `valueLabel`).              |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- `role=\"meter\"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` from React Aria. An accessible name is required (types and a development warning). The drawing is hidden from assistive technology; the center text is covered by `aria-valuetext`.\n- Color is never the only signal: the percentage is printed in the center. The ring and track keep 3:1 against the surface in every tone.\n- Motion: the ring animates 300ms; none under `prefers-reduced-motion`. Forced colors: track `GrayText`, ring `CanvasText`.\n- Not interactive and not focusable."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Label: what is measured, in sentence case (\"Storage used\"). The unit and total belong in `valueLabel` (\"6.2 of 10 GB\").\n- Pair a tone change with text that says why (\"Almost full\")."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<DonutMeter label=\"Storage used\" value={62} />\n\n<DonutMeter\n  label=\"Storage\"\n  value={6.2}\n  maxValue={10}\n  valueLabel=\"6.2 of 10 GB\"\n  tone=\"warning\"\n  size=\"lg\"\n/>\n\n<DonutMeter aria-label=\"Trial\" value={40} centerLabel=\"12 d\" valueLabel=\"12 days left\" />\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Progress",
+            "reason": "Progress of a task that is running: use `Progress`."
+          },
+          {
+            "name": "Meter",
+            "reason": "A bar in a column or a row: use `Meter` (`Progress` module)."
+          },
+          {
+            "name": "ProportionBar",
+            "reason": "Several parts of a whole: use `ProportionBar`."
+          },
+          {
+            "name": "Sparkline",
+            "reason": "A trend over time: use `Sparkline` or `Chart`."
+          },
+          {
+            "name": "Chart",
+            "reason": "A trend over time: use `Sparkline` or `Chart`."
+          }
+        ],
+        "uses": [],
+        "usedBy": []
+      }
+    },
+    {
       "name": "DueIndicator",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -11534,6 +11891,7 @@
           "RadioGroup",
           "Select",
           "Switch",
+          "TagInput",
           "Textarea"
         ]
       }
@@ -13208,7 +13566,8 @@
           "SubMenu",
           "SuggestionChip",
           "Tag",
-          "TagGroup"
+          "TagGroup",
+          "Toggle"
         ]
       }
     },
@@ -15326,6 +15685,7 @@
           "RadioGroup",
           "Select",
           "Slider",
+          "TagInput",
           "Textarea"
         ]
       }
@@ -25563,6 +25923,318 @@
       }
     },
     {
+      "name": "Sparkline",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Sparkline } from '@loui/ds';",
+      "folder": "src/components/Sparkline",
+      "sourceFile": "src/components/Sparkline/Sparkline.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. It\nshows the shape of a series, not its values: put the current number next to it.\n\nIt is an image with a required text summary (`aria-label`), or `decorative` when the same\ninformation is written next to it. It is not interactive and not focusable. The vertical\nrange is the data's own minimum to maximum, so a small change on a large number still\nshows; use `Chart` when readers need axes, values per point or zero as a reference.",
+      "props": [
+        {
+          "name": "data",
+          "type": "readonly (number | null | undefined)[]",
+          "required": true,
+          "description": "The values in display order, usually time. `null`, `undefined` and non-finite numbers are\ngaps: the line breaks there. An empty array draws nothing."
+        },
+        {
+          "name": "variant",
+          "type": "'area' | 'line'",
+          "required": false,
+          "default": "'line'",
+          "description": "`line` (default) or `area`, which also fills softly under the line.",
+          "values": ["area", "line"]
+        },
+        {
+          "name": "tone",
+          "type": "'neutral' | 'accent' | 'success' | 'warning' | 'danger'",
+          "required": false,
+          "default": "'neutral'",
+          "description": "Color of the line: `neutral` (default), `accent`, `success`, `warning` or `danger`. Color is\nnever the only signal: say what the trend means in the accessible name or next to it.",
+          "values": ["neutral", "accent", "success", "warning", "danger"]
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "required": false,
+          "default": "96",
+          "description": "Width in px (user units). Shrinks to fit a narrower container. Default 96."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "default": "24",
+          "description": "Height in px (user units). Default 24."
+        },
+        {
+          "name": "showLast",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Draws a solid dot on the last value, the current one."
+        },
+        {
+          "name": "showMinMax",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Draws hollow markers on the lowest and the highest value (omitted when all values are equal)."
+        },
+        {
+          "name": "includeZero",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Keeps 0 in the vertical range. Default: the range is the data's own minimum to maximum."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Summary of the trend, required unless `decorative` or `aria-labelledby`: \"Revenue, last 7 days: up 12%\"."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that summarizes the trend."
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Hides the sparkline from assistive technology. Use it only when the same information\nis in text next to it (a number and \"+12%\"): the line alone is never the only source."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 50
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "SVGAttributes",
+          "domGeneric": true,
+          "count": 259
+        }
+      ],
+      "variants": {
+        "variant": ["area", "line"],
+        "tone": ["neutral", "accent", "success", "warning", "danger"]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-danger",
+        "--ds-sparkline-area-opacity",
+        "--ds-sparkline-color",
+        "--ds-sparkline-dot-r",
+        "--ds-sparkline-marker-r",
+        "--ds-sparkline-stroke-w",
+        "--ds-success",
+        "--ds-text-2",
+        "--ds-warning"
+      ],
+      "stories": {
+        "title": "Components/Sparkline",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-sparkline--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Area",
+            "id": "components-sparkline--area",
+            "hasPlay": false
+          },
+          {
+            "name": "Accent",
+            "id": "components-sparkline--accent",
+            "hasPlay": false
+          },
+          {
+            "name": "Success",
+            "id": "components-sparkline--success",
+            "hasPlay": false
+          },
+          {
+            "name": "Warning",
+            "id": "components-sparkline--warning",
+            "hasPlay": false
+          },
+          {
+            "name": "Danger",
+            "id": "components-sparkline--danger",
+            "hasPlay": false
+          },
+          {
+            "name": "LastValue",
+            "id": "components-sparkline--last-value",
+            "hasPlay": false
+          },
+          {
+            "name": "MinMax",
+            "id": "components-sparkline--min-max",
+            "hasPlay": false
+          },
+          {
+            "name": "Larger",
+            "id": "components-sparkline--larger",
+            "hasPlay": false
+          },
+          {
+            "name": "IncludeZero",
+            "id": "components-sparkline--include-zero",
+            "hasPlay": false
+          },
+          {
+            "name": "FlatSeries",
+            "id": "components-sparkline--flat-series",
+            "hasPlay": false
+          },
+          {
+            "name": "WithGaps",
+            "id": "components-sparkline--with-gaps",
+            "hasPlay": false
+          },
+          {
+            "name": "SinglePoint",
+            "id": "components-sparkline--single-point",
+            "hasPlay": false
+          },
+          {
+            "name": "Empty",
+            "id": "components-sparkline--empty",
+            "hasPlay": false
+          },
+          {
+            "name": "Decorative",
+            "id": "components-sparkline--decorative",
+            "hasPlay": true
+          },
+          {
+            "name": "NarrowContainer",
+            "id": "components-sparkline--narrow-container",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-sparkline--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Sparkline/Sparkline.md",
+        "summary": "A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. It shows the shape of a series, not its values: put the current number next to it.\n\n- TODO `GAP-007`.",
+        "whenToUse": [
+          "Next to a number in a `StatCard`, a table row or a list item, to show the recent trend.",
+          "When the shape matters more than exact values."
+        ],
+        "whenNotToUse": [
+          "When readers need axes, values per point or keyboard exploration: use `Chart`.",
+          "To show a quantity within a range: use `Meter` or `DonutMeter`.",
+          "As the only place a number appears: the sparkline is a summary, not a source."
+        ],
+        "keyboard": [],
+        "examples": [
+          "<Sparkline data={daily} aria-label=\"Orders, last 7 days: up 12%\" tone=\"success\" showLast />\n\n<p>\n  Orders 1,248 <Sparkline data={daily} decorative /> +12%\n</p>"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Next to a number in a `StatCard`, a table row or a list item, to show the recent trend.\n- When the shape matters more than exact values."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- When readers need axes, values per point or keyboard exploration: use `Chart`.\n- To show a quantity within a range: use `Meter` or `DonutMeter`.\n- As the only place a number appears: the sparkline is a summary, not a source."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\nsvg[role=img] aria-label            (or aria-hidden when decorative)\n  path.area                         (variant=\"area\" only)\n  path.line                         (one per run of values, a gap starts a new one)\n  circle.marker[min|max]            (showMinMax: hollow rings)\n  circle.last                       (showLast: solid dot)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                             | Type                                                          | Default      | Notes                                                                                |\n| -------------------------------- | ------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------ |\n| `data`                           | `(number \\| null \\| undefined)[]`                             | required     | Values in display order. `null`, `undefined`, `NaN` and `Infinity` are gaps.         |\n| `aria-label` / `aria-labelledby` | `string`                                                      | one of three | A text summary of the trend. Required unless `decorative`. Enforced by the types.    |\n| `decorative`                     | `true`                                                        | none         | Hides it from assistive technology. Only when the same facts are written next to it. |\n| `variant`                        | `'line' \\| 'area'`                                            | `'line'`     | `area` fills softly under the line.                                                  |\n| `tone`                           | `'neutral' \\| 'accent' \\| 'success' \\| 'warning' \\| 'danger'` | `'neutral'`  | Color of the line. Never the only signal.                                            |\n| `width` / `height`               | `number`                                                      | 96 / 24      | Size in px. Shrinks to a narrower container, keeping its aspect ratio.               |\n| `showLast`                       | `boolean`                                                     | `false`      | Solid dot on the last value.                                                         |\n| `showMinMax`                     | `boolean`                                                     | `false`      | Hollow rings on the lowest and the highest value (not drawn when all are equal).     |\n| `includeZero`                    | `boolean`                                                     | `false`      | Keeps 0 in the vertical range. Default: the data's own min to max.                   |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- It is an `img` with a required text summary: say what a sighted reader sees, with the numbers that matter (\"Orders, last 7 days: up 12%\"). Use `decorative` only when that text is already next to the sparkline.\n- It is not focusable and not interactive; there are no tooltips. For exploration use `Chart`.\n- Color is never the only signal: tone changes the line color, the trend must be in the name or next to it. Min and max are hollow rings and the last value is a solid dot, so they differ by shape.\n- Line, markers and area use `--ds-text-2` or a signal color (3:1 or better on the dark surfaces). Forced colors: everything is drawn in `CanvasText`.\n- Under 200% zoom and in narrow containers it shrinks with the container."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Summaries are one short sentence in sentence case with the period and the direction: \"Revenue, last 30 days: up 8%\"."
+          },
+          {
+            "id": "differences-from-chart",
+            "heading": "Differences from `Chart`",
+            "content": "The vertical range is the data's own minimum to maximum, not a \"nice\" axis that includes zero (`niceScale`), because a trend line on `98, 100, 102` must not be flattened. For that reason `niceScale` and the `Chart` layout helpers are not reused; the geometry lives in `sparklineLayout.ts` and is unit tested."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Sparkline data={daily} aria-label=\"Orders, last 7 days: up 12%\" tone=\"success\" showLast />\n\n<p>\n  Orders 1,248 <Sparkline data={daily} decorative /> +12%\n</p>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Chart",
+            "reason": "When readers need axes, values per point or keyboard exploration: use `Chart`."
+          },
+          {
+            "name": "Meter",
+            "reason": "To show a quantity within a range: use `Meter` or `DonutMeter`."
+          },
+          {
+            "name": "DonutMeter",
+            "reason": "To show a quantity within a range: use `Meter` or `DonutMeter`."
+          }
+        ],
+        "uses": [],
+        "usedBy": []
+      }
+    },
+    {
       "name": "Spinner",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -29672,7 +30344,7 @@
           }
         ],
         "uses": ["Icon"],
-        "usedBy": []
+        "usedBy": ["TagInput"]
       }
     },
     {
@@ -30021,6 +30693,745 @@
           }
         ],
         "uses": ["Icon"],
+        "usedBy": ["TagInput"]
+      }
+    },
+    {
+      "name": "TagInput",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { TagInput } from '@loui/ds';",
+      "folder": "src/components/TagInput",
+      "sourceFile": "src/components/TagInput/TagInput.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A text field that turns what you type into removable tags: `Enter` or a comma adds the\ntag, pasting `a, b, c` adds three, `Backspace` on the empty input removes the last one.\nDuplicates are ignored with a polite message; `maxTags` and `validateTag` reject with an\nerror that is read aloud.\n\nBuilt from `TagGroup` / `Tag` and React Aria `TextField`. The tags are a keyboard-navigable\nlist (one tab stop; `Shift+Tab` from the input reaches it, `Backspace` or `Delete` on a tag\nremoves it), the input is a normal text box. The value is the list of tags; with `name` each\ntag is submitted as a hidden field.\n\nFor choosing from known options use `Combobox`; for filters that are always visible use\n`ToggleGroup`.",
+      "props": [
+        {
+          "name": "value",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "The tags (controlled). Pair with `onChange`."
+        },
+        {
+          "name": "defaultValue",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "The initial tags (uncontrolled)."
+        },
+        {
+          "name": "onChange",
+          "type": "((tags: string[]) => void)",
+          "required": false,
+          "description": "Called with the full list of tags whenever a tag is added or removed."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Name used to submit the tags with a form. Each tag is submitted as its own hidden field with\nthis name (read them with `formData.getAll(name)`). The text being typed is never submitted."
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "description": "The `id` of the `<form>` the hidden fields belong to, when the field is outside it."
+        },
+        {
+          "name": "inputValue",
+          "type": "string",
+          "required": false,
+          "description": "The text in the input, not yet a tag (controlled). Pair with `onInputChange`."
+        },
+        {
+          "name": "defaultInputValue",
+          "type": "string",
+          "required": false,
+          "description": "The initial text in the input (uncontrolled)."
+        },
+        {
+          "name": "onInputChange",
+          "type": "((text: string) => void)",
+          "required": false,
+          "description": "Called with the text of the input as the user types."
+        },
+        {
+          "name": "delimiters",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[',']",
+          "description": "Characters that end a tag while typing and split pasted text. `Enter` always adds the tag,\nand line breaks always split pasted text. Default `[',']`. Pass `[]` to use only `Enter`."
+        },
+        {
+          "name": "maxTags",
+          "type": "number",
+          "required": false,
+          "description": "Maximum number of tags. Trying to add another shows an error and keeps the text."
+        },
+        {
+          "name": "validateTag",
+          "type": "((tag: string) => string | null)",
+          "required": false,
+          "description": "Decides whether a tag may be added. Return a message to reject it (\"Use letters and digits\nonly.\"); return nothing to accept it. The message is shown as the field error and read\naloud. It receives the trimmed text."
+        },
+        {
+          "name": "caseSensitive",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Treat \"Linen\" and \"linen\" as different tags. Default: they are the same, and the second is ignored."
+        },
+        {
+          "name": "addOnBlur",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Turns the text left in the input into a tag when the input loses focus. Default `true`."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Helper text under the control. Linked with `aria-describedby`."
+        },
+        {
+          "name": "errorMessage",
+          "type": "FieldErrorMessage",
+          "required": false,
+          "description": "Error text from your own validation, shown while the field is invalid (`isInvalid`). The\nmessages of `validateTag` and `maxTags` take its place while they apply."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Text shown while the field has no tags and no text. Never a substitute for the label."
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'",
+          "description": "Control height: `sm` 32px, `md` 40px (default), `lg` 48px. The box grows when tags wrap.",
+          "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Class name for the field root."
+        },
+        {
+          "name": "inputClassName",
+          "type": "string",
+          "required": false,
+          "description": "Class name for the text `<input>`."
+        },
+        {
+          "name": "inputRef",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "description": "Ref to the text `<input>`. The `ref` prop points at the field root."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ tagsLabel: (fieldLabel?: string) => string; added: (tag: string) => string; addedMany: (count: number) => string; removed: (tag: string) => string; duplicate: (tag: string) => string; duplicates: (count: number) => string; maxReached: (max: number) => string; } & { ...; }>",
+          "required": false,
+          "description": "Message overrides for this instance: `tagsLabel`, `added`, `addedMany`, `removed`,\n`duplicate`, `duplicates`, `maxReached`, `requiredMark`. The remove button of a tag uses the\n`Tag` messages."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "description": "Ref to the field root `<div>`."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label. Prefer it: sighted and assistive technology users see the same name."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name when there is no visible label (for example a search box with an icon)."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the field."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@react-types/shared",
+          "interface": "AriaLabelingProps",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-details",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria",
+          "interface": "AriaTextFieldProps",
+          "domGeneric": false,
+          "count": 5,
+          "props": [
+            {
+              "name": "aria-activedescendant",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-autocomplete",
+              "type": "'none' | 'inline' | 'list' | 'both'",
+              "required": false
+            },
+            {
+              "name": "aria-controls",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-haspopup",
+              "type": "boolean | \"false\" | \"true\" | \"menu\" | \"listbox\" | \"tree\" | \"grid\" | \"dialog\"",
+              "required": false
+            },
+            {
+              "name": "enterKeyHint",
+              "type": "'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "AriaValidationProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "aria-errormessage",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "DOMProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusableDOMProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "excludeFromTabOrder",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusableProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "autoFocus",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusEvents",
+          "domGeneric": false,
+          "count": 3,
+          "props": [
+            {
+              "name": "onBlur",
+              "type": "(e: FocusEvent<HTMLInputElement, Element>) => void",
+              "required": false
+            },
+            {
+              "name": "onFocus",
+              "type": "(e: FocusEvent<HTMLInputElement, Element>) => void",
+              "required": false
+            },
+            {
+              "name": "onFocusChange",
+              "type": "(isFocused: boolean) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "InputBase",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "isDisabled",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "isReadOnly",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "KeyboardEvents",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "onKeyDown",
+              "type": "(e: KeyboardEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onKeyUp",
+              "type": "(e: KeyboardEvent) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria-components",
+          "interface": "RACValidation",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "validationBehavior",
+              "type": "'native' | 'aria'",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria-components",
+          "interface": "TextFieldProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "isInvalid",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "TextInputDOMEvents",
+          "domGeneric": false,
+          "count": 9,
+          "props": [
+            {
+              "name": "onBeforeInput",
+              "type": "FormEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onCompositionEnd",
+              "type": "CompositionEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onCompositionStart",
+              "type": "CompositionEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onCompositionUpdate",
+              "type": "CompositionEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onCopy",
+              "type": "ClipboardEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onCut",
+              "type": "ClipboardEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onInput",
+              "type": "FormEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onPaste",
+              "type": "ClipboardEventHandler<HTMLInputElement>",
+              "required": false
+            },
+            {
+              "name": "onSelect",
+              "type": "ReactEventHandler<HTMLInputElement>",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "TextInputDOMProps",
+          "domGeneric": false,
+          "count": 3,
+          "props": [
+            {
+              "name": "autoComplete",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "autoCorrect",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "spellCheck",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "Validation",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "isRequired",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMAttributes",
+          "domGeneric": true,
+          "count": 6
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMEvents",
+          "domGeneric": true,
+          "count": 64
+        }
+      ],
+      "variants": {
+        "size": ["sm", "md", "lg"]
+      },
+      "messages": {
+        "providerKey": "TagInput",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "tagsLabel",
+            "kind": "function",
+            "default": "{fieldLabel?}, added tags",
+            "signature": "(fieldLabel?: string)",
+            "description": "Name of the list of added tags. `fieldLabel` is the text label of the field, when it has one."
+          },
+          {
+            "key": "added",
+            "kind": "function",
+            "default": "Added “{tag}”.",
+            "signature": "(tag: string)",
+            "description": "Announced (polite) after one tag is added."
+          },
+          {
+            "key": "addedMany",
+            "kind": "function",
+            "default": "Added 2 tags.",
+            "signature": "(count: number)",
+            "description": "Announced (polite) after several tags are added at once (paste)."
+          },
+          {
+            "key": "removed",
+            "kind": "function",
+            "default": "Removed “{tag}”.",
+            "signature": "(tag: string)",
+            "description": "Announced (polite) after a tag is removed with Backspace on the empty input."
+          },
+          {
+            "key": "duplicate",
+            "kind": "function",
+            "default": "“{tag}” is already added.",
+            "signature": "(tag: string)",
+            "description": "Shown and announced (polite) when a typed tag is already in the list and was ignored."
+          },
+          {
+            "key": "duplicates",
+            "kind": "function",
+            "default": "2 duplicate tags were skipped.",
+            "signature": "(count: number)",
+            "description": "Shown and announced (polite) when several pasted tags were ignored as duplicates."
+          },
+          {
+            "key": "maxReached",
+            "kind": "function",
+            "default": "You can add up to 2 tags.",
+            "signature": "(max: number)",
+            "description": "Error shown when the user tries to add a tag beyond the maximum."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-control-h-lg",
+        "--ds-control-h-md",
+        "--ds-control-h-sm",
+        "--ds-fs-label",
+        "--ds-lh-label",
+        "--ds-tag-height",
+        "--ds-tag-input-gap",
+        "--ds-tag-input-input-min-width",
+        "--ds-tag-input-padding-block",
+        "--ds-tag-input-padding-inline",
+        "--ds-text-2",
+        "--ds-text-3"
+      ],
+      "stories": {
+        "title": "Components/TagInput",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-tag-input--default",
+            "hasPlay": true
+          },
+          {
+            "name": "AddWithKeyboard",
+            "id": "components-tag-input--add-with-keyboard",
+            "description": "Enter and the comma add a tag; the input is cleared each time.",
+            "hasPlay": true
+          },
+          {
+            "name": "WithTags",
+            "id": "components-tag-input--with-tags",
+            "hasPlay": true
+          },
+          {
+            "name": "BackspaceRemovesLast",
+            "id": "components-tag-input--backspace-removes-last",
+            "description": "`Backspace` on the empty input removes the last tag.",
+            "hasPlay": true
+          },
+          {
+            "name": "RemoveWithKeyboard",
+            "id": "components-tag-input--remove-with-keyboard",
+            "description": "The input is a tab stop of its own; `Shift+Tab` reaches the tags, where `Delete` removes one.",
+            "hasPlay": true
+          },
+          {
+            "name": "Duplicate",
+            "id": "components-tag-input--duplicate",
+            "description": "A duplicate is ignored (case does not matter) and a polite message says so.",
+            "hasPlay": true
+          },
+          {
+            "name": "MaxTags",
+            "id": "components-tag-input--max-tags",
+            "hasPlay": true
+          },
+          {
+            "name": "Validation",
+            "id": "components-tag-input--validation",
+            "hasPlay": true
+          },
+          {
+            "name": "Invalid",
+            "id": "components-tag-input--invalid",
+            "hasPlay": false
+          },
+          {
+            "name": "Required",
+            "id": "components-tag-input--required",
+            "hasPlay": false
+          },
+          {
+            "name": "Disabled",
+            "id": "components-tag-input--disabled",
+            "hasPlay": true
+          },
+          {
+            "name": "ReadOnly",
+            "id": "components-tag-input--read-only",
+            "hasPlay": false
+          },
+          {
+            "name": "Small",
+            "id": "components-tag-input--small",
+            "hasPlay": false
+          },
+          {
+            "name": "Large",
+            "id": "components-tag-input--large",
+            "hasPlay": false
+          },
+          {
+            "name": "ManyTagsWrap",
+            "id": "components-tag-input--many-tags-wrap",
+            "hasPlay": false
+          },
+          {
+            "name": "LongTag",
+            "id": "components-tag-input--long-tag",
+            "hasPlay": false
+          },
+          {
+            "name": "SemicolonDelimiter",
+            "id": "components-tag-input--semicolon-delimiter",
+            "hasPlay": false
+          },
+          {
+            "name": "Controlled",
+            "id": "components-tag-input--controlled",
+            "hasPlay": true
+          },
+          {
+            "name": "InForm",
+            "id": "components-tag-input--in-form",
+            "hasPlay": true
+          },
+          {
+            "name": "Portuguese",
+            "id": "components-tag-input--portuguese",
+            "hasPlay": true
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-tag-input--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "Focused",
+            "id": "components-tag-input--focused",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/TagInput/TagInput.md",
+        "summary": "A text field that turns what you type into removable tags: `Enter` or a comma adds a tag, pasting `a, b, c` adds three, `Backspace` on the empty input removes the last one. Built from `TagGroup` / `Tag` and React Aria `TextField`. The value is the list of tags; with `name` each tag is submitted as a hidden form field.\n\n- TODO `GAP-005`.",
+        "whenToUse": [
+          "Free-form lists the user types: keywords, e-mail recipients, labels, SKUs.",
+          "When the list can grow beyond what you want to show as checkboxes."
+        ],
+        "whenNotToUse": [
+          "Choosing from known options: use `Combobox` (or `Select`).",
+          "A fixed set of filters that are always visible: use `ToggleGroup`.",
+          "Showing tags the user cannot edit: use `TagGroup`."
+        ],
+        "keyboard": [
+          "The input is a normal `textbox` named by the label. The tags are a `grid` named \"Fabrics, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input."
+        ],
+        "examples": [
+          "<TagInput label=\"Fabrics\" name=\"fabrics\" value={fabrics} onChange={setFabrics} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Free-form lists the user types: keywords, e-mail recipients, labels, SKUs.\n- When the list can grow beyond what you want to show as checkboxes."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Choosing from known options: use `Combobox` (or `Select`).\n- A fixed set of filters that are always visible: use `ToggleGroup`.\n- Showing tags the user cannot edit: use `TagGroup`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv (field root)\n  Label\n  div.control                     (the bordered box, wraps over several rows)\n    TagGroup[role=grid] aria-label    (only while there are tags; one row per tag)\n      Tag > text + remove button (24x24)\n    input[type=text]              (the textbox; named by the Label)\n  Description\n  FieldError                      (role=alert: validation and maximum)\n  div[role=status]                (polite: added, removed, duplicate; visible for a duplicate)\n  input[type=hidden] x N          (only with `name`)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                                                     | Type                           | Default      | Notes                                                                                                |\n| -------------------------------------------------------- | ------------------------------ | ------------ | ---------------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`               | `ReactNode` / `string`         | one required | Names the field. Enforced by the types.                                                              |\n| `value` / `defaultValue`                                 | `readonly string[]`            | `[]`         | Controlled / uncontrolled tags.                                                                      |\n| `onChange`                                               | `(tags: string[]) => void`     | none         | Called with the full list after each addition or removal.                                            |\n| `inputValue` / `defaultInputValue` / `onInputChange`     | `string`                       | `''`         | The text being typed, when you need to own it.                                                       |\n| `name` / `form`                                          | `string`                       | none         | Each tag is submitted as its own field (`formData.getAll(name)`). The draft text is never submitted. |\n| `delimiters`                                             | `readonly string[]`            | `[',']`      | End a tag while typing and split pasted text. `Enter` always adds; line breaks always split a paste. |\n| `maxTags`                                                | `number`                       | none         | Error \"You can add up to N tags.\" when exceeded; the text is kept.                                   |\n| `validateTag`                                            | `(tag) => string \\| undefined` | none         | Return a message to reject a tag. Shown as the field error and read aloud.                           |\n| `caseSensitive`                                          | `boolean`                      | `false`      | By default `Linen` and `linen` are the same tag.                                                     |\n| `addOnBlur`                                              | `boolean`                      | `true`       | Turns the text left in the input into a tag on blur.                                                 |\n| `description` / `errorMessage`                           | `ReactNode`                    | none         | Helper text; your own error while `isInvalid`.                                                       |\n| `placeholder`                                            | `string`                       | none         | Shown only while there are no tags.                                                                  |\n| `size`                                                   | `'sm' \\| 'md' \\| 'lg'`         | `'md'`       | Minimum height 32 / 40 / 48px; the box grows when tags wrap.                                         |\n| `isDisabled` / `isReadOnly` / `isRequired` / `isInvalid` | `boolean`                      | `false`      | `isRequired` is satisfied by one tag. Read-only and disabled fields show no remove buttons.          |\n| `messages`                                               | see below                      | none         | Per-instance message overrides.                                                                      |"
+          },
+          {
+            "id": "behavior",
+            "heading": "Behavior",
+            "content": "| Input                                        | Result                                                                                                          |\n| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |\n| `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |\n| A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |\n| Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |\n| `Backspace` on an empty input                | Removes the last tag (announced: \"Removed “silk”.\").                                                            |\n| Duplicate                                    | Ignored, input cleared, polite message \"“linen” is already added.\" Not an error.                                |\n| Beyond `maxTags` / rejected by `validateTag` | Error (`role=\"alert\"`, field invalid), nothing is added, the text stays so it can be fixed.                     |\n| Blur with text                               | Adds it (`addOnBlur`).                                                                                          |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- The input is a normal `textbox` named by the label. The tags are a `grid` named \"Fabrics, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.\n- Remove buttons are 24x24 and named \"Remove linen\" (message `Tag.remove`).\n- Additions, removals and duplicates are announced in one polite `role=\"status\"` region; errors are in the field's `role=\"alert\"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.\n- The click target of the whole box focuses the input.\n- Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Label as a noun phrase (\"Fabrics\", \"Recipients\"). Placeholder: an example or an action (\"Add a fabric\"), never the label.\n- `validateTag` messages say how to fix it: \"Enter a complete email address.\"\n- Tags are shown as typed (trimmed); sorting is up to you."
+          },
+          {
+            "id": "messages-messages-prop-or-dsprovider-messages-taginput",
+            "heading": "Messages (`messages` prop, or `DSProvider messages={{ TagInput: … }}`)",
+            "content": "`tagsLabel(fieldLabel?)`, `added(tag)`, `addedMany(count)`, `removed(tag)`, `duplicate(tag)`, `duplicates(count)`, `maxReached(max)`, `requiredMark`. English and `pt-BR` ship with the library. The remove button uses the `Tag` messages."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<TagInput label=\"Fabrics\" name=\"fabrics\" value={fabrics} onChange={setFabrics} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Combobox",
+            "reason": "Choosing from known options: use `Combobox` (or `Select`)."
+          },
+          {
+            "name": "Select",
+            "reason": "Choosing from known options: use `Combobox` (or `Select`)."
+          },
+          {
+            "name": "ToggleGroup",
+            "reason": "A fixed set of filters that are always visible: use `ToggleGroup`."
+          },
+          {
+            "name": "TagGroup",
+            "reason": "Showing tags the user cannot edit: use `TagGroup`."
+          }
+        ],
+        "uses": ["FieldMessages", "Label", "Tag", "TagGroup"],
         "usedBy": []
       }
     },
@@ -31175,6 +32586,856 @@
       }
     },
     {
+      "name": "Toggle",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Toggle } from '@loui/ds';",
+      "folder": "src/components/Toggle",
+      "sourceFile": "src/components/Toggle/Toggle.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A button that stays pressed: it switches one setting on or off (bold text, a filter, \"show\narchived\"). Built on React Aria `ToggleButton`: a native `<button>` with `aria-pressed`,\ntoggled by `Enter` and `Space`.\n\nUse it for an independent on/off choice that applies at once. For a setting inside a form\nuse `Switch` or `Checkbox`; for several related toggles use `ToggleGroup`; for one value out\nof a few use `SegmentedControl`.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Label: a short noun or verb in sentence case (\"Bold\", \"Show archived\")."
+        },
+        {
+          "name": "leading",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Node before the label, usually `<Icon size=\"sm\" />`. Decorative; the label names the toggle."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Replaces the accessible name when the visible label is not enough. Rarely needed."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the toggle."
+        },
+        {
+          "name": "icon",
+          "type": "LucideIcon",
+          "required": false,
+          "description": "The icon to draw: one of the curated set (for example `StarIcon`). Decorative inside the button."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name of an icon-only toggle, required. Name what the toggle controls, not what\nit looks like and not its state (\"Bold\", \"Show archived\"): the pressed state is announced\nseparately."
+        },
+        {
+          "name": "tooltip",
+          "type": "boolean | ToggleTooltipOptions",
+          "required": false,
+          "description": "Shows `label` in a `Tooltip` on hover and keyboard focus. Pass `true`, or an object to add\na shortcut or change the side. The `label` stays the accessible name."
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": "Inside a `ToggleGroup`: the value of this toggle in the group's `value` (required there,\nunique in the group). Standalone: the DOM id."
+        },
+        {
+          "name": "variant",
+          "type": "'secondary' | 'ghost'",
+          "required": false,
+          "description": "Visual style, as for `Button`. `secondary` (default) has a border; `ghost` has none at rest.\nInside a `ToggleGroup` it defaults to the group's `variant`.",
+          "values": ["secondary", "ghost"]
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "description": "Height token: `sm` 32px, `md` 40px (default), `lg` 48px. Inside a `ToggleGroup` it defaults\nto the group's `size`.",
+          "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false,
+          "description": "Ref to the underlying `<button>` element."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "react-aria",
+          "interface": "AriaBaseButtonProps",
+          "domGeneric": false,
+          "count": 6,
+          "props": [
+            {
+              "name": "aria-controls",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-disabled",
+              "type": "boolean | \"true\" | \"false\"",
+              "required": false
+            },
+            {
+              "name": "aria-expanded",
+              "type": "boolean | \"true\" | \"false\"",
+              "required": false
+            },
+            {
+              "name": "aria-haspopup",
+              "type": "boolean | \"true\" | \"false\" | \"menu\" | \"listbox\" | \"tree\" | \"grid\" | \"dialog\"",
+              "required": false
+            },
+            {
+              "name": "aria-pressed",
+              "type": "boolean | \"true\" | \"false\" | \"mixed\"",
+              "required": false
+            },
+            {
+              "name": "preventFocusOnPress",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "AriaLabelingProps",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-details",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria",
+          "interface": "ButtonProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "isDisabled",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusableDOMProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "excludeFromTabOrder",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusableProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "autoFocus",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "FocusEvents",
+          "domGeneric": false,
+          "count": 3,
+          "props": [
+            {
+              "name": "onBlur",
+              "type": "(e: FocusEvent<Element, Element>) => void",
+              "required": false
+            },
+            {
+              "name": "onFocus",
+              "type": "(e: FocusEvent<Element, Element>) => void",
+              "required": false
+            },
+            {
+              "name": "onFocusChange",
+              "type": "(isFocused: boolean) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "HoverEvents",
+          "domGeneric": false,
+          "count": 3,
+          "props": [
+            {
+              "name": "onHoverChange",
+              "type": "(isHovering: boolean) => void",
+              "required": false
+            },
+            {
+              "name": "onHoverEnd",
+              "type": "(e: HoverEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onHoverStart",
+              "type": "(e: HoverEvent) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "KeyboardEvents",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "onKeyDown",
+              "type": "(e: KeyboardEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onKeyUp",
+              "type": "(e: KeyboardEvent) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "PressEvents",
+          "domGeneric": false,
+          "count": 6,
+          "props": [
+            {
+              "name": "onClick",
+              "type": "(e: MouseEvent<FocusableElement, MouseEvent>) => void",
+              "required": false
+            },
+            {
+              "name": "onPress",
+              "type": "(e: PressEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onPressChange",
+              "type": "(isPressed: boolean) => void",
+              "required": false
+            },
+            {
+              "name": "onPressEnd",
+              "type": "(e: PressEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onPressStart",
+              "type": "(e: PressEvent) => void",
+              "required": false
+            },
+            {
+              "name": "onPressUp",
+              "type": "(e: PressEvent) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria-components",
+          "interface": "SlotProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "slot",
+              "type": "string | null",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-aria",
+          "interface": "ToggleButtonProps",
+          "domGeneric": false,
+          "count": 3,
+          "props": [
+            {
+              "name": "defaultSelected",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "isSelected",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "onChange",
+              "type": "(isSelected: boolean) => void",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMAttributes",
+          "domGeneric": true,
+          "count": 6
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMEvents",
+          "domGeneric": true,
+          "count": 63
+        }
+      ],
+      "variants": {
+        "variant": ["secondary", "ghost"],
+        "size": ["sm", "md", "lg"]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-control-h-lg",
+        "--ds-control-h-md",
+        "--ds-control-h-sm",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-font-sans",
+        "--ds-fs-body",
+        "--ds-fs-label",
+        "--ds-fs-small",
+        "--ds-lh-body",
+        "--ds-lh-label",
+        "--ds-lh-small",
+        "--ds-line-strong",
+        "--ds-opacity-disabled",
+        "--ds-radius-md",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-4",
+        "--ds-space-5",
+        "--ds-surface-hover",
+        "--ds-surface-raised",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/Toggle",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-toggle--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Pressed",
+            "id": "components-toggle--pressed",
+            "hasPlay": true
+          },
+          {
+            "name": "Ghost",
+            "id": "components-toggle--ghost",
+            "hasPlay": false
+          },
+          {
+            "name": "GhostPressed",
+            "id": "components-toggle--ghost-pressed",
+            "hasPlay": false
+          },
+          {
+            "name": "Small",
+            "id": "components-toggle--small",
+            "hasPlay": false
+          },
+          {
+            "name": "Large",
+            "id": "components-toggle--large",
+            "hasPlay": false
+          },
+          {
+            "name": "WithLeadingIcon",
+            "id": "components-toggle--with-leading-icon",
+            "hasPlay": false
+          },
+          {
+            "name": "IconOnly",
+            "id": "components-toggle--icon-only",
+            "hasPlay": true
+          },
+          {
+            "name": "IconOnlyWithTooltip",
+            "id": "components-toggle--icon-only-with-tooltip",
+            "hasPlay": false
+          },
+          {
+            "name": "Disabled",
+            "id": "components-toggle--disabled",
+            "hasPlay": true
+          },
+          {
+            "name": "DisabledPressed",
+            "id": "components-toggle--disabled-pressed",
+            "hasPlay": false
+          },
+          {
+            "name": "KeyboardToggle",
+            "id": "components-toggle--keyboard-toggle",
+            "description": "`Space` and `Enter` toggle the focused button.",
+            "hasPlay": true
+          },
+          {
+            "name": "Controlled",
+            "id": "components-toggle--controlled",
+            "hasPlay": true
+          },
+          {
+            "name": "LongLabel",
+            "id": "components-toggle--long-label",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-toggle--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "Focused",
+            "id": "components-toggle--focused",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Toggle/Toggle.md",
+        "summary": "A button that stays pressed: it switches one setting on or off (bold text, a filter, \"show archived\") and applies it at once. A native `<button>` with `aria-pressed`, built on React Aria `ToggleButton`. Looks like `Button` (`secondary` and `ghost`), with a clear pressed state.\n\n- TODO `GAP-005`.",
+        "whenToUse": [
+          "One independent on/off choice in a toolbar or filter bar: Bold, Show archived, Only mine.",
+          "An icon-only on/off control (Favorite, Pin) with a required `label`."
+        ],
+        "whenNotToUse": [
+          "A setting that is saved with a form: use `Switch` or `Checkbox`.",
+          "Several related toggles that share a value: use `ToggleGroup`.",
+          "One value out of a few options (View: List, Board): use `SegmentedControl`.",
+          "An action that does something once: use `Button`."
+        ],
+        "keyboard": ["Keyboard: `Tab` focuses; `Space` and `Enter` toggle."],
+        "examples": [
+          "<Toggle isSelected={showArchived} onChange={setShowArchived}>\n  Show archived\n</Toggle>\n\n<Toggle icon={StarIcon} label=\"Favorite\" tooltip variant=\"ghost\" />"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- One independent on/off choice in a toolbar or filter bar: Bold, Show archived, Only mine.\n- An icon-only on/off control (Favorite, Pin) with a required `label`."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A setting that is saved with a form: use `Switch` or `Checkbox`.\n- Several related toggles that share a value: use `ToggleGroup`.\n- One value out of a few options (View: List, Board): use `SegmentedControl`.\n- An action that does something once: use `Button`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\nbutton[aria-pressed]\n  leading   (optional, decorative)\n  label     (or a single icon when icon-only)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                             | Type                                   | Default       | Notes                                                            |\n| -------------------------------- | -------------------------------------- | ------------- | ---------------------------------------------------------------- |\n| `children`                       | `ReactNode`                            | required\\*    | Label in sentence case. \\*Not used by an icon-only toggle.       |\n| `icon` + `label`                 | `IconComponent` + `string`             | none          | Icon-only: `label` is required and becomes `aria-label`.         |\n| `tooltip`                        | `boolean \\| { shortcut?, placement? }` | off           | Icon-only only: shows `label` in a `Tooltip` on hover and focus. |\n| `leading`                        | `ReactNode`                            | none          | Decorative node before the label.                                |\n| `variant`                        | `'secondary' \\| 'ghost'`               | `'secondary'` | As for `Button`. Inside a `ToggleGroup`: the group's `variant`.  |\n| `size`                           | `'sm' \\| 'md' \\| 'lg'`                 | `'md'`        | 32 / 40 / 48px. Inside a `ToggleGroup`: the group's `size`.      |\n| `isSelected` / `defaultSelected` | `boolean`                              | `false`       | Controlled / uncontrolled pressed state.                         |\n| `onChange`                       | `(isSelected: boolean) => void`        | none          | Called with the new state.                                       |\n| `id`                             | `string`                               | none          | Inside a `ToggleGroup`: the toggle's value (required there).     |\n| `isDisabled`                     | `boolean`                              | `false`       | Reduced opacity, not focusable.                                  |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- Semantics: `<button aria-pressed=\"true|false\">`. Inside a single-selection `ToggleGroup` it is a `radio` with `aria-checked`.\n- Keyboard: `Tab` focuses; `Space` and `Enter` toggle.\n- The pressed state is shown by a brighter border, a raised fill and ink text, never by color alone. Focus is the accent border and ring.\n- Icon-only toggles need a `label` that names what the toggle controls, not its state: the pressed state is announced by the browser. The icon is decorative.\n- Targets are at least 32px (`sm`). Forced colors: the pressed toggle gets a `Highlight` border and an underline."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Label with a short noun or verb phrase in sentence case: \"Bold\", \"Show archived\". Do not change the label when the state changes (\"Hide archived\" would be read as the opposite of the state)."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Toggle isSelected={showArchived} onChange={setShowArchived}>\n  Show archived\n</Toggle>\n\n<Toggle icon={StarIcon} label=\"Favorite\" tooltip variant=\"ghost\" />\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Switch",
+            "reason": "A setting that is saved with a form: use `Switch` or `Checkbox`."
+          },
+          {
+            "name": "Checkbox",
+            "reason": "A setting that is saved with a form: use `Switch` or `Checkbox`."
+          },
+          {
+            "name": "ToggleGroup",
+            "reason": "Several related toggles that share a value: use `ToggleGroup`."
+          },
+          {
+            "name": "SegmentedControl",
+            "reason": "One value out of a few options (View: List, Board): use `SegmentedControl`."
+          },
+          {
+            "name": "Button",
+            "reason": "An action that does something once: use `Button`."
+          }
+        ],
+        "uses": ["Icon", "Tooltip"],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "ToggleGroup",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { ToggleGroup } from '@loui/ds';",
+      "folder": "src/components/ToggleGroup",
+      "sourceFile": "src/components/ToggleGroup/ToggleGroup.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A row (or column) of related `Toggle`s that share one value: the list of pressed `id`s.\n\nWith the default `multiple` selection the toggles are independent (bold, italic, underline;\nor a set of filters) and the group is a `toolbar`. With `single` selection it behaves like\na radio group that can also be empty.\n\n`ToggleGroup` vs `SegmentedControl`: a `SegmentedControl` is one value of one setting (View:\nList, Board), exactly one option is always selected. A `ToggleGroup` is a set of on/off\nchoices where none, one or several are on.\n\nBuilt on React Aria `ToggleButtonGroup`: one tab stop, arrow keys move between toggles (they\nstop at the ends), `Space` and `Enter` toggle the focused one.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "The `Toggle` children. Each needs an `id` that is unique in the group."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name of the group (\"Text formatting\"). Required: name this or use `aria-labelledby`."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the group."
+        },
+        {
+          "name": "selectionMode",
+          "type": "'single' | 'multiple'",
+          "required": false,
+          "default": "'multiple'",
+          "description": "`multiple` (default): any number of toggles can be pressed, independently (text formatting,\nfilters); the group is a toolbar. `single`: at most one is pressed; the group is a radio\ngroup. To pick exactly one value of a setting prefer `SegmentedControl`.",
+          "values": ["single", "multiple"]
+        },
+        {
+          "name": "value",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "The `id`s of the pressed toggles (controlled). Pair with `onChange`."
+        },
+        {
+          "name": "defaultValue",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "The `id`s of the toggles that start pressed (uncontrolled)."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string[]) => void",
+          "required": false,
+          "description": "Called with the `id`s of all pressed toggles after the user presses or releases one."
+        },
+        {
+          "name": "disallowEmptySelection",
+          "type": "boolean",
+          "required": false,
+          "description": "Keeps at least one toggle pressed. Pointless in `multiple` mode unless you want that rule."
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "required": false,
+          "default": "'horizontal'",
+          "description": "Layout and arrow keys: `horizontal` (default, `←` `→`) or `vertical` (`↑` `↓`).",
+          "values": ["horizontal", "vertical"]
+        },
+        {
+          "name": "variant",
+          "type": "'secondary' | 'ghost'",
+          "required": false,
+          "description": "Visual style handed down to every `Toggle` that does not set its own.",
+          "values": ["secondary", "ghost"]
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "description": "Size handed down to every `Toggle` that does not set its own.",
+          "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "description": "Ref to the group element."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@react-types/shared",
+          "interface": "AriaLabelingProps",
+          "domGeneric": false,
+          "count": 2,
+          "props": [
+            {
+              "name": "aria-describedby",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "aria-details",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "react-stately",
+          "interface": "ToggleGroupProps",
+          "domGeneric": false,
+          "count": 1,
+          "props": [
+            {
+              "name": "isDisabled",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMAttributes",
+          "domGeneric": true,
+          "count": 6
+        },
+        {
+          "source": "@react-types/shared",
+          "interface": "GlobalDOMEvents",
+          "domGeneric": true,
+          "count": 64
+        }
+      ],
+      "variants": {
+        "variant": ["secondary", "ghost"],
+        "size": ["sm", "md", "lg"]
+      },
+      "cssVariables": ["--ds-space-2"],
+      "stories": {
+        "title": "Components/ToggleGroup",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-toggle-group--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Preselected",
+            "id": "components-toggle-group--preselected",
+            "hasPlay": true
+          },
+          {
+            "name": "Ghost",
+            "id": "components-toggle-group--ghost",
+            "hasPlay": false
+          },
+          {
+            "name": "Small",
+            "id": "components-toggle-group--small",
+            "hasPlay": false
+          },
+          {
+            "name": "Large",
+            "id": "components-toggle-group--large",
+            "hasPlay": false
+          },
+          {
+            "name": "Vertical",
+            "id": "components-toggle-group--vertical",
+            "hasPlay": true
+          },
+          {
+            "name": "IconOnly",
+            "id": "components-toggle-group--icon-only",
+            "hasPlay": false
+          },
+          {
+            "name": "SingleSelection",
+            "id": "components-toggle-group--single-selection",
+            "hasPlay": true
+          },
+          {
+            "name": "DisabledToggle",
+            "id": "components-toggle-group--disabled-toggle",
+            "hasPlay": true
+          },
+          {
+            "name": "DisabledGroup",
+            "id": "components-toggle-group--disabled-group",
+            "hasPlay": true
+          },
+          {
+            "name": "KeyboardSelection",
+            "id": "components-toggle-group--keyboard-selection",
+            "description": "One tab stop. Arrows move focus (and stop at the ends), Space and Enter press.",
+            "hasPlay": true
+          },
+          {
+            "name": "Controlled",
+            "id": "components-toggle-group--controlled",
+            "hasPlay": true
+          },
+          {
+            "name": "Wrapping",
+            "id": "components-toggle-group--wrapping",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-toggle-group--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "Focused",
+            "id": "components-toggle-group--focused",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/ToggleGroup/ToggleGroup.md",
+        "summary": "A row (or column) of related `Toggle`s that share one value: the list of pressed `id`s. With the default `multiple` selection the toggles are independent (bold, italic, underline; a set of filters). With `single` selection at most one is pressed. Built on React Aria `ToggleButtonGroup`.\n\n- TODO `GAP-005`.",
+        "whenToUse": [
+          "Text formatting (Bold, Italic), list markers, or a small set of filters that combine."
+        ],
+        "whenNotToUse": [
+          "A single on/off choice: use `Toggle`.",
+          "Choosing one value of a setting: use `SegmentedControl`.",
+          "A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection."
+        ],
+        "keyboard": [
+          "Keyboard: one tab stop; `←` / `→` (`↑` / `↓` when vertical) move focus and stop at the ends (React Aria does not wrap); `Space` and `Enter` press the focused toggle. Disabled toggles are skipped."
+        ],
+        "examples": [
+          "<ToggleGroup aria-label=\"Text formatting\" value={marks} onChange={setMarks}>\n  <Toggle id=\"fav\" icon={StarIcon} label=\"Favorite\" />\n  <Toggle id=\"pin\" icon={StarIcon} label=\"Pinned\" />\n</ToggleGroup>\n\n<ToggleGroup aria-label=\"Order filters\" defaultValue={['mine']}>\n  <Toggle id=\"mine\">Only mine</Toggle>\n  <Toggle id=\"late\">Late</Toggle>\n</ToggleGroup>"
+        ],
+        "sections": [
+          {
+            "id": "togglegroup-or-segmentedcontrol",
+            "heading": "ToggleGroup or SegmentedControl",
+            "content": "|           | `SegmentedControl`                           | `ToggleGroup`                                                    |\n| --------- | -------------------------------------------- | ---------------------------------------------------------------- |\n| Meaning   | One value of one setting (View: List, Board) | Independent on/off choices (Bold, Italic; filters)               |\n| Selection | Exactly one option, always                   | None, one or several (`multiple`), or none/one                   |\n| Role      | `radiogroup` of `radio`                      | `toolbar` of `button[aria-pressed]` (`radiogroup` when `single`) |\n| Value     | `string`                                     | `string[]`                                                       |\n| Content   | `options` array with optional counts         | `Toggle` children, text or icon-only                             |\n\nRule of thumb: if choosing one option makes the others \"not selected\" and one must always be on, use `SegmentedControl`. If each choice can stand alone, use `ToggleGroup`. Use `single` here only when \"nothing selected\" is meaningful (for example an optional filter)."
+          },
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Text formatting (Bold, Italic), list markers, or a small set of filters that combine."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A single on/off choice: use `Toggle`.\n- Choosing one value of a setting: use `SegmentedControl`.\n- A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv[role=toolbar] aria-label       (or role=radiogroup when single)\n  button[aria-pressed]             (one `Toggle` per choice, each with an id)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                             | Type                         | Default          | Notes                                                       |\n| -------------------------------- | ---------------------------- | ---------------- | ----------------------------------------------------------- |\n| `aria-label` / `aria-labelledby` | `string`                     | one required     | Names the group (\"Text formatting\"). Enforced by the types. |\n| `children`                       | `Toggle`s                    | required         | Each `Toggle` needs a unique `id`.                          |\n| `selectionMode`                  | `'multiple' \\| 'single'`     | `'multiple'`     | See the table above.                                        |\n| `value` / `defaultValue`         | `readonly string[]`          | `[]`             | Controlled / uncontrolled list of pressed ids.              |\n| `onChange`                       | `(value: string[]) => void`  | none             | Called with all pressed ids after each change.              |\n| `disallowEmptySelection`         | `boolean`                    | `false`          | Keeps at least one toggle pressed.                          |\n| `orientation`                    | `'horizontal' \\| 'vertical'` | `'horizontal'`   | Layout and arrow keys.                                      |\n| `variant` / `size`               | as `Toggle`                  | `secondary`/`md` | Defaults for the toggles; a toggle's own props win.         |\n| `isDisabled`                     | `boolean`                    | `false`          | Disables every toggle.                                      |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- Semantics: `multiple` is a `toolbar` (a group of buttons with `aria-pressed`); `single` is a `radiogroup` of `radio` buttons. The group needs an accessible name (enforced by the types).\n- Keyboard: one tab stop; `←` / `→` (`↑` / `↓` when vertical) move focus and stop at the ends (React Aria does not wrap); `Space` and `Enter` press the focused toggle. Disabled toggles are skipped.\n- Pressed state is shown by border, fill and ink text, not by color alone.\n- Icon-only toggles need a `label`."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Group name: a noun phrase (\"Text formatting\", \"Filters\"). Toggle labels: one word or a short phrase in sentence case."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<ToggleGroup aria-label=\"Text formatting\" value={marks} onChange={setMarks}>\n  <Toggle id=\"fav\" icon={StarIcon} label=\"Favorite\" />\n  <Toggle id=\"pin\" icon={StarIcon} label=\"Pinned\" />\n</ToggleGroup>\n\n<ToggleGroup aria-label=\"Order filters\" defaultValue={['mine']}>\n  <Toggle id=\"mine\">Only mine</Toggle>\n  <Toggle id=\"late\">Late</Toggle>\n</ToggleGroup>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Toggle",
+            "reason": "A single on/off choice: use `Toggle`."
+          },
+          {
+            "name": "SegmentedControl",
+            "reason": "Choosing one value of a setting: use `SegmentedControl`."
+          },
+          {
+            "name": "CheckboxGroup",
+            "reason": "A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection."
+          },
+          {
+            "name": "Select",
+            "reason": "A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection."
+          },
+          {
+            "name": "Combobox",
+            "reason": "A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection."
+          }
+        ],
+        "uses": [],
+        "usedBy": []
+      }
+    },
+    {
       "name": "Tooltip",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -31407,7 +33668,7 @@
           }
         ],
         "uses": [],
-        "usedBy": ["IconButton"]
+        "usedBy": ["IconButton", "Toggle"]
       }
     },
     {

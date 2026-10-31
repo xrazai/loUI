@@ -72,6 +72,7 @@ import { TabsProps as TabsProps_2 } from 'react-aria-components';
 import { TagGroupProps as TagGroupProps_2 } from 'react-aria-components';
 import { TextFieldProps } from 'react-aria-components';
 import { ToggleButtonGroupProps } from 'react-aria-components';
+import { ToggleButtonProps } from 'react-aria-components';
 import { TriangleAlert as TriangleAlertIcon } from 'lucide-react';
 import { UNSTABLE_ToastQueue } from 'react-aria-components';
 import { useLocale } from 'react-aria-components';
@@ -598,6 +599,18 @@ export interface DividerProps extends Omit<SeparatorProps, 'className' | 'style'
 export type DividerVariant = 'subtle' | 'default' | 'strong';
 
 // @public
+export function DonutMeter(input: DonutMeterProps): JSX.Element;
+
+// @public (undocumented)
+export type DonutMeterProps = DonutMeterBaseProps & FieldLabelingProps;
+
+// @public (undocumented)
+export type DonutMeterSize = 'sm' | 'md' | 'lg';
+
+// @public (undocumented)
+export type DonutMeterTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+
+// @public
 export type DSMessages = Readonly<Record<string, MessageOverrides | undefined>>;
 
 // @public
@@ -987,6 +1000,17 @@ export const iconSet: {
 
 // @public (undocumented)
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg';
+
+// @public (undocumented)
+export interface IconToggleProps extends ToggleBaseProps {
+    // (undocumented)
+    children?: undefined;
+    icon: IconComponent;
+    label: string;
+    // (undocumented)
+    leading?: undefined;
+    tooltip?: boolean | ToggleTooltipOptions;
+}
 
 export { InfoIcon }
 
@@ -1633,6 +1657,18 @@ export type SortDirection = 'asc' | 'desc';
 export type SpaceKey = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16;
 
 // @public
+export function Sparkline(input: SparklineProps): JSX.Element;
+
+// @public (undocumented)
+export type SparklineProps = SparklineBaseProps & SparklineNaming;
+
+// @public (undocumented)
+export type SparklineTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+
+// @public (undocumented)
+export type SparklineVariant = 'line' | 'area';
+
+// @public
 export function Spinner(input: SpinnerProps): JSX.Element;
 
 // @public (undocumented)
@@ -1815,6 +1851,18 @@ export interface TagGroupProps<T extends object = object> extends Omit<TagGroupP
     renderEmptyState?: () => ReactNode;
 }
 
+// @public
+export function TagInput(input: TagInputProps): JSX.Element;
+
+// @public (undocumented)
+export type TagInputMessages = Partial<typeof messages_37.en & typeof messages_7.en>;
+
+// @public (undocumented)
+export type TagInputProps = TagInputBaseProps & FieldLabelingProps;
+
+// @public (undocumented)
+export type TagInputSize = 'sm' | 'md' | 'lg';
+
 // @public (undocumented)
 export interface TagProps extends Omit<ComponentPropsWithRef<'span'>, 'children' | 'id' | 'onClick'> {
     children: ReactNode;
@@ -1833,7 +1881,7 @@ export { Text_2 as Text }
 export function Textarea(input: TextareaProps): JSX.Element;
 
 // @public (undocumented)
-export type TextareaMessages = Partial<typeof messages_37.en & typeof messages_7.en>;
+export type TextareaMessages = Partial<typeof messages_38.en & typeof messages_7.en>;
 
 // @public (undocumented)
 export type TextareaProps = TextareaBaseProps & FieldLabelingProps;
@@ -1855,6 +1903,20 @@ export interface TextProps extends ComponentPropsWithRef<'span'> {
 
 // @public (undocumented)
 export type TextSize = 'body' | 'small' | 'label' | 'meta' | 'caption';
+
+// @public (undocumented)
+export interface TextToggleProps extends ToggleBaseProps {
+    'aria-label'?: string;
+    'aria-labelledby'?: string;
+    children: ReactNode;
+    // (undocumented)
+    icon?: undefined;
+    // (undocumented)
+    label?: undefined;
+    leading?: ReactNode;
+    // (undocumented)
+    tooltip?: undefined;
+}
 
 // @public (undocumented)
 export type TextTone = 'default' | 'secondary' | 'tertiary';
@@ -1901,13 +1963,43 @@ export function ToastRegion(input: ToastRegionProps): JSX.Element | null;
 // @public (undocumented)
 export interface ToastRegionProps {
     className?: string;
-    messages?: Partial<typeof messages_38.en>;
+    messages?: Partial<typeof messages_39.en>;
     queue?: ToastQueue;
     ref?: Ref<HTMLDivElement>;
 }
 
 // @public (undocumented)
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
+
+// @public
+export function Toggle(props: ToggleProps): JSX.Element;
+
+// @public
+export function ToggleGroup(input: ToggleGroupProps): JSX.Element;
+
+// @public (undocumented)
+export type ToggleGroupOrientation = 'horizontal' | 'vertical';
+
+// @public (undocumented)
+export type ToggleGroupProps = LabelledByText_3 | LabelledByElement_3;
+
+// @public (undocumented)
+export type ToggleGroupSelectionMode = 'single' | 'multiple';
+
+// @public (undocumented)
+export type ToggleProps = TextToggleProps | IconToggleProps;
+
+// @public (undocumented)
+export type ToggleSize = 'sm' | 'md' | 'lg';
+
+// @public (undocumented)
+export interface ToggleTooltipOptions {
+    placement?: TooltipPlacement;
+    shortcut?: string;
+}
+
+// @public (undocumented)
+export type ToggleVariant = 'secondary' | 'ghost';
 
 // @public
 export function toISODate(date: Date, options?: {
@@ -2039,7 +2131,7 @@ export function useUndoable(input?: UseUndoableOptions): UseUndoableResult;
 
 // @public (undocumented)
 export interface UseUndoableOptions {
-    messages?: Partial<typeof messages_39.en>;
+    messages?: Partial<typeof messages_40.en>;
     toast?: ToastApi;
 }
 

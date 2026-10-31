@@ -53,7 +53,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`
+`--ds-accent`, `--ds-app-shell-detail-w`, `--ds-app-shell-main-padding`, `--ds-app-shell-nav-z-index`, `--ds-bg`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-line-control`, `--ds-line-subtle`, `--ds-scrim`, `--ds-shadow-dialog`, `--ds-space-1`, `--ds-space-12`, `--ds-space-2`, `--ds-space-3`, `--ds-text`, `--ds-toast-clearance`
 
 ## When to use
 
