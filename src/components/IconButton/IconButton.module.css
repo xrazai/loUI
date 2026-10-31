@@ -1,0 +1,68 @@
+@layer components {
+  .root {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-control-h-md);
+    block-size: var(--ds-control-h-md);
+    min-inline-size: var(--ds-target-min);
+    min-block-size: var(--ds-target-min);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+    cursor: pointer;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .root[data-size='sm'] {
+    inline-size: var(--ds-control-h-sm);
+    block-size: var(--ds-control-h-sm);
+  }
+
+  .root[data-size='md'] {
+    inline-size: var(--ds-control-h-md);
+    block-size: var(--ds-control-h-md);
+  }
+
+  .root[data-size='lg'] {
+    inline-size: var(--ds-control-h-lg);
+    block-size: var(--ds-control-h-lg);
+  }
+
+  .root[data-variant='secondary'] {
+    border-color: var(--ds-line-strong);
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .root[data-variant='secondary'][data-hovered] {
+    background: var(--ds-surface-hover);
+  }
+
+  .root[data-variant='ghost'] {
+    background: transparent;
+    color: var(--ds-text-2);
+  }
+
+  .root[data-variant='ghost'][data-hovered] {
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  /* Focus: accent border plus ring; the transparent outline survives forced colors. */
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+}
