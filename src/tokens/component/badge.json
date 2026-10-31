@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "badge": {
+    "height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Height of a Badge (24px). Badges are static labels, not targets."
+    },
+    "dot-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Diameter of the decorative status dot inside a Badge (6px). Never the only carrier of meaning."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Horizontal padding of a Badge (8px)."
+    }
+  }
+}
