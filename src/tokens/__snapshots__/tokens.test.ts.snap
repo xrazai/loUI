@@ -2974,6 +2974,16 @@ exports[`generated token list (TEST-006) > matches the snapshot 1`] = `
   },
   {
     "aliasOf": null,
+    "cssValue": "1",
+    "cssVar": "--ds-status-steps-content-z-index",
+    "description": "Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer.",
+    "name": "status-steps.content-z-index",
+    "tier": "core",
+    "type": "number",
+    "value": 1,
+  },
+  {
+    "aliasOf": null,
     "cssValue": "16px",
     "cssVar": "--ds-swatch-size-sm",
     "description": "Diameter of a small Swatch (16px), used inside options and headers.",

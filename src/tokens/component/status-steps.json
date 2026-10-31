@@ -26,6 +26,11 @@
       "$type": "dimension",
       "$value": "{space.2}",
       "$description": "Gap between the marker and the label (8px)."
+    },
+    "content-z-index": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer."
     }
   }
 }
