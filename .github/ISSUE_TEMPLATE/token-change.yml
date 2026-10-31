@@ -1,0 +1,37 @@
+name: Token change
+description: Add, change or remove a design token.
+labels: [tokens]
+body:
+  - type: input
+    id: token
+    attributes:
+      label: Token
+      description: For example --ds-text-3, or the name of a new token.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Change
+      options: [Add, Change value, Rename, Remove]
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why
+      description: Which component or need requires it? Missing values must become tokens, never raw values.
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Proposed value
+      description: Value and layer (primitive, semantic, component). Include contrast ratios for text and surface pairings.
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - label: Existing visual baselines will change
+        - label: This is breaking for consumers (rename, removal, or a pairing that no longer passes AA)

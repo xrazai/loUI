@@ -1,0 +1,38 @@
+name: Component request
+description: Propose a new component or a new capability of an existing one.
+labels: [component]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What do you need to build that you cannot build today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: Props, variants, states and the keyboard contract, as far as you know.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing components or recipes you tried, and why they do not fit.
+  - type: textarea
+    id: reference
+    attributes:
+      label: References
+      description: Links to the WAI-ARIA pattern, React Aria component or similar designs.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Entry point
+      options:
+        - '@loui/ds (core)'
+        - '@loui/ds/patterns (domain pattern)'
+        - Not sure
+    validations:
+      required: true

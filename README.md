@@ -2,6 +2,8 @@
 
 A dark, minimal, functional React design system for internal tools, dashboards and apps. Design tokens, accessible components built on [React Aria Components](https://react-aria.adobe.com/), and AI-ready documentation, in one package: `@loui/ds`.
 
+**Live Storybook:** <https://xrazai.github.io/loUI/> · **For AI agents:** [llms.txt](https://xrazai.github.io/loUI/llms.txt), [llms-full.txt](https://xrazai.github.io/loUI/llms-full.txt), [manifest.json](https://xrazai.github.io/loUI/manifest.json), [tokens.json](https://xrazai.github.io/loUI/tokens.json)
+
 > Status: pre-release (`0.0.0`, private, unlicensed). All components are `experimental`; APIs can still change.
 
 ## Highlights

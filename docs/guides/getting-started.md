@@ -1,5 +1,7 @@
 # Getting started
 
+Browse every component live in Storybook: <https://xrazai.github.io/loUI/>. AI tools can load <https://xrazai.github.io/loUI/llms.txt> (see [Using with AI](./using-with-ai.md)).
+
 ## Requirements
 
 - React 19 and React DOM 19 (peer dependencies). React 18 is not supported.

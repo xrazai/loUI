@@ -1,0 +1,46 @@
+# Publishes Storybook (plus the machine-readable AI files) to GitHub Pages (DOCS-007).
+# Site: https://xrazai.github.io/loUI/  ·  Storybook builds with relative asset URLs, so the sub-path works.
+name: Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: pages
+  cancel-in-progress: false
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build-storybook
+      - name: Add AI-readable files at the site root
+        run: |
+          for f in llms.txt llms-full.txt manifest.json tokens.json; do
+            cp "docs/$f" "storybook-static/$f"
+          done
+          touch storybook-static/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

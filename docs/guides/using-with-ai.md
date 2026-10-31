@@ -20,6 +20,8 @@ Loui DS is built to be operated by AI coding agents as well as by people. Everyt
 | `ai/components/<Name>.md` | One generated Markdown page per component: import, props table, variants, messages, tokens used, and the hand-written usage notes.                                                                                                                                                                              |
 | `ai/content-rules.json`   | The microcopy rules as data (casing, button labels, errors, empty states, forbidden characters), validated by `schemas/content-rules.schema.json`.                                                                                                                                                              |
 
+The published site serves the four root files by URL, so an agent can fetch them without cloning: <https://xrazai.github.io/loUI/llms.txt>, <https://xrazai.github.io/loUI/llms-full.txt>, <https://xrazai.github.io/loUI/manifest.json> and <https://xrazai.github.io/loUI/tokens.json>.
+
 In the repository these live in `docs/`. In the published package they are in `dist/` and exported as `@loui/ds/manifest.json` and friends once the package is published.
 
 ## Regenerating
