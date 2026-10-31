@@ -127,7 +127,8 @@ describe('Button', () => {
       const button = screen.getByRole('button');
       expect(getComputedStyle(button.element()).filter).toBe('none');
       await userEvent.hover(button);
-      expect(getComputedStyle(button.element()).filter).toBe('brightness(0.88)');
+      // RAC sets `data-hovered` after the pointer event is handled, so poll instead of reading once.
+      await expect.poll(() => getComputedStyle(button.element()).filter).toBe('brightness(0.88)');
     });
 
     it('does not apply hover styling to a disabled button', async () => {

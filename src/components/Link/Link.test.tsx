@@ -33,7 +33,9 @@ describe('Link', () => {
       const link = screen.getByRole('link');
       expect(getComputedStyle(link.element()).textDecorationLine).toBe('none');
       await userEvent.hover(link);
-      expect(getComputedStyle(link.element()).textDecorationLine).toBe('underline');
+      await expect
+        .poll(() => getComputedStyle(link.element()).textDecorationLine)
+        .toBe('underline');
     });
 
     it('restores the underline of standalone links on keyboard focus', async () => {
