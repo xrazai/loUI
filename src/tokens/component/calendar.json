@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "calendar": {
+    "cell-size": {
+      "$type": "dimension",
+      "$value": "{size.item-h}",
+      "$description": "Width and height of a Calendar day cell (36px). A month grid is seven cells wide."
+    },
+    "weekday-height": {
+      "$type": "dimension",
+      "$value": "{size.target-min}",
+      "$description": "Height of the weekday header row of a Calendar (24px)."
+    },
+    "today-ring-width": {
+      "$type": "dimension",
+      "$value": { "value": 1, "unit": "px" },
+      "$description": "Border width of the ring that marks today in a Calendar (1px)."
+    }
+  }
+}

@@ -1,0 +1,106 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    font-family: var(--ds-font-sans);
+    color: var(--ds-text);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-2);
+  }
+
+  .heading {
+    margin: 0;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    font-weight: var(--ds-weight-medium);
+    text-align: center;
+  }
+
+  .grid {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .weekday {
+    block-size: var(--ds-calendar-weekday-height);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    font-weight: var(--ds-weight-medium);
+    color: var(--ds-text-2);
+    text-align: center;
+  }
+
+  /* The td is the focus target; the span inside draws the day. */
+  .cell {
+    padding: 0;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .day {
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    inline-size: var(--ds-calendar-cell-size);
+    block-size: var(--ds-calendar-cell-size);
+    border: var(--ds-calendar-today-ring-width) solid transparent;
+    border-radius: var(--ds-radius-sm);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .day[data-today] {
+    border-color: var(--ds-text-3);
+  }
+
+  .cell[data-hovered] .day {
+    background: var(--ds-surface-hover);
+  }
+
+  .cell[data-selected] .day {
+    background: var(--ds-accent);
+    border-color: var(--ds-accent);
+    color: var(--ds-text-inverse);
+    font-weight: var(--ds-weight-semibold);
+  }
+
+  .cell[data-focus-visible] .day {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .cell[data-outside-month] {
+    visibility: hidden;
+  }
+
+  .cell[data-disabled] .day,
+  .cell[data-unavailable] .day {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .cell[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    .cell[data-selected] .day {
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .cell[data-focus-visible] .day {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+  }
+}

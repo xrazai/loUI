@@ -1,0 +1,100 @@
+@layer components {
+  /* The group is the visible box (Field.module.css draws border, focus ring and states). */
+  .group {
+    gap: var(--ds-space-1);
+    padding-inline: var(--ds-field-control-padding-inline) var(--ds-space-1);
+  }
+
+  .input {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    min-inline-size: 0;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .segment {
+    padding-inline: var(--ds-space-1);
+    border-radius: var(--ds-radius-sm);
+    caret-color: transparent;
+    outline: none;
+  }
+
+  .segment[data-type='literal'] {
+    padding-inline: 0;
+    color: var(--ds-text-3);
+  }
+
+  .segment[data-placeholder] {
+    color: var(--ds-text-3);
+  }
+
+  .segment[data-focused] {
+    background: var(--ds-accent);
+    color: var(--ds-text-inverse);
+  }
+
+  .segment[data-disabled] {
+    color: var(--ds-text-3);
+  }
+
+  .trigger {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-target-min);
+    block-size: var(--ds-target-min);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-3);
+    cursor: pointer;
+  }
+
+  .trigger[data-hovered] {
+    background: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  .trigger[data-focus-visible] {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .trigger[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  /* Overlay: raised surface, overlay shadow, large radius (AGENTS.md section 5). */
+  .popover {
+    box-sizing: border-box;
+    padding: var(--ds-space-3);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    z-index: var(--ds-z-dropdown);
+  }
+
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    outline: none;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding-block-start: var(--ds-space-2);
+    border-block-start: 1px solid var(--ds-line);
+  }
+}
