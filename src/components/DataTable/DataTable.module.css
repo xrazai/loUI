@@ -1,0 +1,235 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-data-table-gap);
+    min-inline-size: 0;
+  }
+
+  /* The table scrolls inside its own area only when `maxHeight` is set. */
+  .scroll {
+    min-inline-size: 0;
+  }
+
+  .scroll[data-scrollable] {
+    overflow: auto;
+    max-block-size: var(--ds-data-table-max-h);
+  }
+
+  .table {
+    inline-size: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--ds-text);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    outline: none;
+  }
+
+  /* Header */
+  .column,
+  .selectionColumn {
+    box-sizing: border-box;
+    padding-block: var(--ds-data-table-header-padding-block);
+    padding-inline: var(--ds-data-table-cell-padding-inline);
+    border-block-end: 1px solid var(--ds-line-subtle);
+    background-color: var(--ds-bg);
+    color: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    text-align: start;
+    text-transform: uppercase;
+    outline: none;
+  }
+
+  .column {
+    inline-size: var(--ds-data-table-col-w, auto);
+    cursor: default;
+  }
+
+  .selectionColumn,
+  .selectionCell {
+    inline-size: var(--ds-data-table-selection-col-w);
+    padding-inline: var(--ds-data-table-cell-padding-inline);
+  }
+
+  .column[aria-sort] {
+    cursor: pointer;
+  }
+
+  .column[aria-sort]:hover,
+  .column[aria-sort='ascending'],
+  .column[aria-sort='descending'] {
+    color: var(--ds-text);
+  }
+
+  .column[aria-sort='none']:hover {
+    color: var(--ds-text-2);
+  }
+
+  .columnContent {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    max-inline-size: 100%;
+  }
+
+  .column[data-align='end'] {
+    text-align: end;
+  }
+
+  .column[data-align='end'] .columnContent {
+    justify-content: flex-end;
+  }
+
+  .columnLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sortIcon {
+    flex: none;
+    color: var(--ds-text-3);
+  }
+
+  .sortIcon[data-sorted] {
+    color: var(--ds-text);
+  }
+
+  .column[data-focus-visible],
+  .row[data-focus-visible],
+  .cell[data-focus-visible] {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: -2px;
+  }
+
+  .root[data-sticky] .column,
+  .root[data-sticky] .selectionColumn {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--ds-data-table-sticky-z-index);
+  }
+
+  /* Body */
+  .row {
+    block-size: var(--ds-row-h);
+    outline: none;
+  }
+
+  .cell,
+  .selectionCell {
+    position: relative;
+    box-sizing: border-box;
+    padding-inline: var(--ds-data-table-cell-padding-inline);
+    border-block-end: 1px solid var(--ds-line-subtle);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: start;
+    outline: none;
+    vertical-align: middle;
+  }
+
+  .cell[data-align='end'] {
+    text-align: end;
+  }
+
+  .cell[data-mono] {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .cell[data-muted] {
+    color: var(--ds-text-2);
+  }
+
+  .selectionCell {
+    overflow: visible;
+  }
+
+  .row[data-hovered] > .cell,
+  .row[data-hovered] > .selectionCell {
+    background-color: var(--ds-surface-row-hover);
+  }
+
+  .row[data-clickable] {
+    cursor: pointer;
+  }
+
+  /* Selected and active rows: raised background and a 2px ink bar on the inline-start edge. */
+  .row[data-selected] > .cell,
+  .row[data-selected] > .selectionCell,
+  .row[data-active] > .cell,
+  .row[data-active] > .selectionCell {
+    background-color: var(--ds-surface-raised);
+  }
+
+  .row[data-selected] > :first-child::before,
+  .row[data-active] > :first-child::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--ds-data-table-active-bar-w);
+    background-color: var(--ds-text);
+  }
+
+  .row[data-skeleton] {
+    cursor: default;
+  }
+
+  /* Bulk action bar */
+  .bulkBar {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    box-sizing: border-box;
+    block-size: var(--ds-data-table-bulk-bar-h);
+    padding-block: 0;
+    padding-inline: var(--ds-space-3) var(--ds-space-2);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-surface-raised);
+  }
+
+  /* Holds the place of the bar while nothing is selected. */
+  .bulkBar[data-reserved] {
+    visibility: hidden;
+  }
+
+  .bulkCount {
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+  }
+
+  .bulkActions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    margin-inline-start: auto;
+  }
+
+  .pagination {
+    align-self: stretch;
+  }
+
+  @media (forced-colors: active) {
+    .row[data-selected] > :first-child::before,
+    .row[data-active] > :first-child::before {
+      forced-color-adjust: none;
+      background-color: highlight;
+    }
+
+    .column[data-focus-visible],
+    .row[data-focus-visible],
+    .cell[data-focus-visible] {
+      outline-color: highlight;
+    }
+  }
+}

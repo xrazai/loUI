@@ -1,0 +1,40 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "data-table": {
+    "selection-col-w": {
+      "$type": "dimension",
+      "$value": { "value": 40, "unit": "px" },
+      "$description": "Width of the selection checkbox column of a DataTable (40px)."
+    },
+    "cell-padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Horizontal padding of DataTable header and body cells (12px)."
+    },
+    "header-padding-block": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Vertical padding of DataTable header cells (8px)."
+    },
+    "active-bar-w": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Width of the ink bar on the inline-start edge of the active (or selected) DataTable row (2px)."
+    },
+    "bulk-bar-h": {
+      "$type": "dimension",
+      "$value": "{size.item-h}",
+      "$description": "Height of the bulk action bar shown above a DataTable while rows are selected (36px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between the bulk bar, the table and the pagination of a DataTable (12px)."
+    },
+    "sticky-z-index": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Stacking order of a sticky DataTable header inside its scroll container (1). Local to the table, not a layer."
+    }
+  }
+}
