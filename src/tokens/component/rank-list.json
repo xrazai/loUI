@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "rank-list": {
+    "$type": "dimension",
+    "bar-h": {
+      "$value": { "value": 4, "unit": "px" },
+      "$description": "Height of the relative bar of a RankList row (4px)."
+    },
+    "position-w": {
+      "$value": { "value": 24, "unit": "px" },
+      "$description": "Width of the position column of a RankList (24px)."
+    },
+    "swatch-size": {
+      "$value": { "value": 14, "unit": "px" },
+      "$description": "Size of the optional color swatch of a RankList row (14px)."
+    },
+    "padding-block": {
+      "$value": "{space.2}",
+      "$description": "Vertical padding of a RankList row (8px)."
+    },
+    "padding-inline": {
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of a RankList row (20px, aligned with Card padding)."
+    }
+  }
+}
