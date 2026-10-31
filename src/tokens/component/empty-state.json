@@ -1,0 +1,33 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "empty-state": {
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.12}",
+      "$description": "Vertical padding of an EmptyState (48px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Horizontal padding of an EmptyState (24px)."
+    },
+    "compact-padding-block": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Vertical padding of a compact EmptyState (24px)."
+    },
+    "compact-padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of a compact EmptyState (20px)."
+    },
+    "description-max-w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 360,
+        "unit": "px"
+      },
+      "$description": "Maximum width of the EmptyState description (360px), to keep lines short."
+    }
+  }
+}
