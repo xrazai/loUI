@@ -22,22 +22,23 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 
 ## Props
 
-| Prop         | Type                       | Default       | Notes                                                              |
-| ------------ | -------------------------- | ------------- | ------------------------------------------------------------------ |
-| `label`      | `string` (required)        | none          | Accessible name, set as `aria-label`. Omitting it is a type error. |
-| `icon`       | `IconComponent` (required) | none          | One of the curated set, such as `PlusIcon`.                        |
-| `variant`    | `'secondary' \| 'ghost'`   | `'secondary'` | Bordered, or borderless at rest.                                   |
-| `size`       | `'sm' \| 'md' \| 'lg'`     | `'md'`        | 32, 40, 48 px square (`--ds-control-h-*`); icon 14, 18, 20 px.     |
-| `isDisabled` | `boolean`                  | `false`       | Native `disabled`, 35% opacity.                                    |
-| `onPress`    | `(e: PressEvent) => void`  | none          | React Aria press event.                                            |
-| `className`  | `string`                   | none          | Merged with the component class.                                   |
+| Prop         | Type                       | Default                    | Notes                                                              |
+| ------------ | -------------------------- | -------------------------- | ------------------------------------------------------------------ |
+| `label`      | `string` (required)        | none                       | Accessible name, set as `aria-label`. Omitting it is a type error. |
+| `icon`       | `IconComponent` (required) | none                       | One of the curated set, such as `PlusIcon`.                        |
+| `variant`    | `'secondary' \| 'ghost'`   | `'secondary'`              | Bordered, or borderless at rest.                                   |
+| `size`       | `'sm' \| 'md' \| 'lg'`     | `'md'`                     | 32, 40, 48 px square (`--ds-control-h-*`); icon 14, 18, 20 px.     |
+| `isDisabled` | `boolean`                  | `false`                    | Native `disabled`, 35% opacity.                                    |
+| `onPress`    | `(e: PressEvent) => void`  | none                       | React Aria press event.                                            |
+| `tooltip`    | `boolean                   | { shortcut?, placement? }` | `false`                                                            | Shows `label` in a `Tooltip` on hover and focus. |
+| `className`  | `string`                   | none                       | Merged with the component class.                                   |
 
 Other React Aria `Button` props and `ref` pass through. `children`, `style`, `isPending`, `aria-label` and `aria-labelledby` are not accepted: the label is the single source of the name.
 
 ## Accessibility
 
 - `label` is required by the type (`label: string`), which enforces AGENTS.md section 8.
-- The name is `aria-label` only. The handoff set `title` too, which duplicated the name and was not available to keyboard or touch users. A tooltip (shown on hover **and** focus, dismissible with `Esc`) will be added with the `Tooltip` component; until then use a clear `label`.
+- The name is `aria-label` only. The handoff set `title` too, which duplicated the name and was not available to keyboard or touch users. Set `tooltip` to show the label (and an optional shortcut) in a `Tooltip` on hover **and** focus, dismissible with `Esc`.
 - The icon is `aria-hidden` and `focusable="false"`; the button is never named by its glyph.
 - Target size: 32 / 40 / 48 px, above the 24px minimum of WCAG 2.5.8 (`--ds-target-min` is also enforced as `min-inline-size` and `min-block-size`).
 - Keys: `Tab` focuses, `Enter` and `Space` press.

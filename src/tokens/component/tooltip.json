@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tooltip": {
+    "$type": "dimension",
+    "max-width": {
+      "$value": {
+        "value": 240,
+        "unit": "px"
+      },
+      "$description": "Maximum width of a Tooltip (240px) before the text wraps. Tooltips stay short."
+    }
+  }
+}

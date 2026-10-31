@@ -1,0 +1,248 @@
+{
+  "$schema": "../../schemas/content-rules.schema.json",
+  "version": 1,
+  "source": "AGENTS.md section 6",
+  "language": "en",
+  "description": "Microcopy rules of Loui DS as data, for linters, MCP tools and prompts. Rules marked check=static can be enforced on string literals; check=review needs a human or model judgement.",
+  "tone": {
+    "voice": "Direct, calm, technical without jargon.",
+    "address": "Speak to 'you', usually implied ('Select an order').",
+    "avoid": ["marketing language", "jokes", "blame", "urgency theatre"]
+  },
+  "contexts": [
+    "button",
+    "title",
+    "label",
+    "tab",
+    "menu-item",
+    "toast",
+    "empty-state",
+    "error",
+    "confirmation",
+    "tooltip",
+    "description"
+  ],
+  "forbidden": {
+    "characters": [
+      {
+        "value": "!",
+        "reason": "No exclamation marks anywhere in UI text.",
+        "appliesTo": ["*"]
+      }
+    ],
+    "emoji": true,
+    "decorativeEllipsis": {
+      "value": "…",
+      "allowedIn": ["menu-item"],
+      "reason": "An ellipsis is only for menu items that open something that needs more input ('Move to…'). Never in buttons, toasts or loading text."
+    },
+    "phrases": [
+      {
+        "value": "Click here",
+        "reason": "Name the destination or the action instead.",
+        "appliesTo": ["button", "label"]
+      },
+      { "value": "Invalid", "reason": "Say how to fix the problem.", "appliesTo": ["error"] },
+      { "value": "Oops", "reason": "Calm tone: state what happened.", "appliesTo": ["*"] },
+      {
+        "value": "Successfully",
+        "reason": "Redundant: the past tense already says it worked.",
+        "appliesTo": ["toast"]
+      }
+    ],
+    "bareButtonLabels": ["OK", "Okay", "Send", "Submit", "Yes", "No", "Continue", "Done"]
+  },
+  "rules": [
+    {
+      "id": "sentence-case",
+      "area": "casing",
+      "severity": "warn",
+      "check": "static",
+      "description": "Sentence case in titles, buttons, tabs and labels: only the first word and proper nouns are capitalized; all-caps text is applied with CSS, never typed. The pattern is a heuristic that flags a second capitalized word at the start (Title Case, ALL CAPS).",
+      "appliesTo": ["button", "title", "tab", "label", "menu-item"],
+      "pattern": "^\\p{Lu}\\S*\\s+\\p{Lu}",
+      "match": "forbid",
+      "examples": {
+        "good": ["New order", "Mark as shipped"],
+        "bad": ["New Order", "NEW ORDER", "Mark As Shipped"]
+      }
+    },
+    {
+      "id": "button-verb-object",
+      "area": "buttons",
+      "severity": "error",
+      "check": "review",
+      "description": "Buttons are a verb plus an object. Never a bare OK or Send.",
+      "appliesTo": ["button"],
+      "examples": {
+        "good": ["Create order", "Mark as shipped", "Retry charge", "Delete order"],
+        "bad": ["OK", "Send", "Submit", "Yes"]
+      }
+    },
+    {
+      "id": "destructive-names-object",
+      "area": "confirmation",
+      "severity": "error",
+      "check": "review",
+      "description": "A destructive confirmation names the object and the consequence in one sentence. The confirm button names the action; initial focus is on Cancel.",
+      "appliesTo": ["confirmation"],
+      "examples": {
+        "good": [
+          "Delete 'Northwind Web'? 'Northwind Web' and its 14 environments will be removed. This can't be undone."
+        ],
+        "bad": ["Are you sure?", "Delete this item?"]
+      }
+    },
+    {
+      "id": "toast-past-tense",
+      "area": "toast",
+      "severity": "error",
+      "check": "review",
+      "description": "Toasts are short and in the past tense: what just happened. A toast for a reversible action offers Undo.",
+      "appliesTo": ["toast"],
+      "examples": {
+        "good": ["Order #1051 created", "3 items archived"],
+        "bad": ["Creating order...", "Success!", "Order was successfully created!"]
+      }
+    },
+    {
+      "id": "empty-state-what-and-next",
+      "area": "empty-state",
+      "severity": "warn",
+      "check": "review",
+      "description": "An empty state says what happened and what to do next.",
+      "appliesTo": ["empty-state"],
+      "examples": {
+        "good": ["No orders found. Try another filter or search term."],
+        "bad": ["Nothing here", "No data"]
+      }
+    },
+    {
+      "id": "error-says-how-to-fix",
+      "area": "error",
+      "severity": "error",
+      "check": "review",
+      "description": "Errors say how to fix the problem. Never just that something is invalid.",
+      "appliesTo": ["error"],
+      "examples": {
+        "good": ["Enter a complete email address."],
+        "bad": ["Invalid email!", "Error"]
+      }
+    },
+    {
+      "id": "no-exclamation",
+      "area": "punctuation",
+      "severity": "error",
+      "check": "static",
+      "description": "No exclamation marks.",
+      "appliesTo": ["*"],
+      "pattern": "!",
+      "match": "forbid",
+      "examples": { "good": ["Order saved"], "bad": ["Order saved!"] }
+    },
+    {
+      "id": "no-emoji",
+      "area": "punctuation",
+      "severity": "error",
+      "check": "static",
+      "description": "No emoji. Icons come from the icon set; unicode glyphs only inside labelled IconButtons.",
+      "appliesTo": ["*"],
+      "pattern": "\\p{Extended_Pictographic}",
+      "match": "forbid",
+      "examples": { "good": ["Order shipped"], "bad": ["Order shipped 🎉"] }
+    },
+    {
+      "id": "no-decorative-ellipsis",
+      "area": "punctuation",
+      "severity": "error",
+      "check": "static",
+      "description": "The ellipsis is only for menu items that open something ('Move to…'). No 'Loading...' or 'Saving...'.",
+      "appliesTo": ["button", "title", "label", "toast", "tab", "empty-state", "error"],
+      "pattern": "(…|\\.\\.\\.)",
+      "match": "forbid",
+      "examples": { "good": ["Saving"], "bad": ["Saving..."] }
+    },
+    {
+      "id": "mono-for-data",
+      "area": "typography",
+      "severity": "warn",
+      "check": "review",
+      "description": "Numbers, codes, amounts and shortcuts use the mono font (Geist Mono): ORD-1048, $1,240.00, ⌘K.",
+      "appliesTo": ["*"],
+      "examples": { "good": ["ORD-1048", "$1,240.00", "⌘K"], "bad": [] }
+    },
+    {
+      "id": "format-with-intl",
+      "area": "formatting",
+      "severity": "error",
+      "check": "review",
+      "description": "Currency, dates and numbers are formatted with Intl for the active locale (formatCurrency, formatDate, formatNumber). Never hand-build them. Money is an integer in minor units.",
+      "appliesTo": ["*"],
+      "examples": {
+        "good": ["formatCurrency(124000, 'USD', locale)"],
+        "bad": ["'$' + (cents / 100).toFixed(2)"]
+      }
+    },
+    {
+      "id": "alphabetical-lists",
+      "area": "ordering",
+      "severity": "warn",
+      "check": "review",
+      "description": "Lists, groups, columns and select options are alphabetical (locale-aware, accent-insensitive) by default. Exceptions: tasks (by urgency) and dated records (newest first). Use sortByText.",
+      "appliesTo": ["*"],
+      "examples": { "good": ["sortByText(items, (i) => i.name, locale)"], "bad": [] }
+    },
+    {
+      "id": "color-never-alone",
+      "area": "accessibility",
+      "severity": "error",
+      "check": "review",
+      "description": "Status and meaning are always stated in text; color and icons only reinforce them.",
+      "appliesTo": ["*"],
+      "examples": {
+        "good": ["Badge text 'Failed' in the danger tone"],
+        "bad": ["A red dot with no text"]
+      }
+    },
+    {
+      "id": "no-text-in-components",
+      "area": "i18n",
+      "severity": "error",
+      "check": "review",
+      "description": "Built-in strings and ARIA labels live in the message catalog (<Name>.messages.ts), never as literals in component code. Product copy passed through props belongs to the consumer.",
+      "appliesTo": ["*"],
+      "examples": { "good": ["t.dismiss"], "bad": ["aria-label=\"Dismiss alert\""] }
+    }
+  ],
+  "patterns": {
+    "button": {
+      "template": "{Verb} {object}",
+      "examples": ["Create order", "Mark as shipped", "Retry charge"]
+    },
+    "destructiveConfirmation": {
+      "title": "Delete {object}?",
+      "body": "{Object} and {dependents} will be removed. This can't be undone.",
+      "confirmButton": "Delete {object}",
+      "cancelButton": "Cancel",
+      "initialFocus": "cancel",
+      "followUp": "Toast with Undo when the action is reversible"
+    },
+    "reversibleAction": {
+      "confirm": false,
+      "feedback": "Toast in the past tense with an Undo action"
+    },
+    "toast": {
+      "template": "{Object} {past-tense verb}",
+      "examples": ["Order #1051 created", "3 items archived"]
+    },
+    "emptyState": {
+      "template": "{What happened}. {What to do}.",
+      "examples": ["No orders found. Try another filter or search term."]
+    },
+    "error": {
+      "template": "{Instruction to fix}.",
+      "examples": ["Enter a complete email address.", "Choose a date in the future."]
+    },
+    "saved": { "template": "Saved", "note": "Save automatically and show 'Saved'." }
+  }
+}

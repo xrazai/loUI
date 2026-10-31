@@ -1,0 +1,357 @@
+# Hooks and utilities
+
+> Hooks, locale-aware utilities and message helpers exported from `@loui/ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).
+
+## Hooks
+
+### useControllableState
+
+Controlled/uncontrolled state for the `value` / `defaultValue` / `onValueChange`
+convention (AGENTS.md section 9). Thin wrapper over react-stately's `useControlledState`,
+which also warns in development when a component switches between modes.
+
+```tsx
+const [value, setValue] = useControllableState({
+  value: props.value,
+  defaultValue: props.defaultValue ?? '',
+  onChange: props.onValueChange,
+});
+```
+
+```ts
+useControllableState<T>({ value, defaultValue, onChange, }: UseControllableStateOptions<T>): [T, (value: T) => void]
+```
+
+### useDSLocale
+
+Returns the active locale (BCP 47 tag) set by `DSProvider`; `en-US` without a provider.
+
+```ts
+useDSLocale(): string
+```
+
+### useHotkey
+
+Runs `handler` when a single key combo is pressed.
+
+- `combo`: modifiers joined with `+` and one key, e.g. `Mod+K`, `Shift+/`, `Alt+N`, `Escape`.
+  `Mod` is Command on macOS and Control elsewhere.
+- Ignores events from editable fields (unless `allowInEditable`), IME composition,
+  key auto-repeat (unless `allowRepeat`) and events another handler already prevented.
+
+This is deliberately small. A shortcut registry with conflict detection and a help
+overlay is a separate task (GAP-004).
+
+```ts
+useHotkey(combo: string, handler: (event: KeyboardEvent) => void, { enabled, scope, allowInEditable, allowRepeat, preventDefault, platform, }?: UseHotkeyOptions): void
+```
+
+### useMediaQuery
+
+Subscribes to a CSS media query. SSR-safe: on the server (and during hydration)
+it returns `defaultValue` (`false` unless given), then the real value after hydration.
+
+Prefer CSS media queries for styling; use this only when behavior (not appearance) depends on the query.
+
+```ts
+useMediaQuery(query: string, defaultValue?: boolean): boolean
+```
+
+### useMessages
+
+Returns a component's messages for the active locale.
+
+```ts
+useMessages<M extends MessageSet>(componentKey: string, catalog: MessageCatalog<M>, overrides?: MessageOverrides): M
+```
+
+### usePrefersReducedMotion
+
+True when the user asks the OS for reduced motion (`prefers-reduced-motion: reduce`).
+
+```ts
+usePrefersReducedMotion(): boolean
+```
+
+## Utilities and constants
+
+### compareText
+
+Compares two strings alphabetically for `locale`; usable as an `Array.prototype.sort` comparator.
+
+```ts
+compareText(a: string, b: string, locale: string): number
+```
+
+### contrastRatio
+
+WCAG contrast ratio between two hex colors, from `1` (identical) to `21` (black on white). Order does not matter.
+
+```ts
+contrastRatio(a: string, b: string): number
+```
+
+### createTextCollator
+
+Collator for alphabetical order as the product requires (AGENTS.md section 5, rule 5b):
+accent- and case-insensitive (`sensitivity: 'base'`) with natural number order
+(`numeric: true`, so `Item 2` sorts before `Item 10`). The instance is shared
+and cached per locale; do not mutate it.
+
+```ts
+createTextCollator(locale: string): Intl.Collator
+```
+
+### daysBetween
+
+Whole days from `isoA` to `isoB` (positive when `isoB` is later). Uses UTC
+date math, so daylight-saving changes cannot produce 23- or 25-hour "days".
+Invalid input throws in development and returns `NaN` in production.
+
+```ts
+daysBetween(isoA: ISODate, isoB: ISODate): number
+```
+
+### DEFAULT_LOCALE
+
+Default locale.
+
+```ts
+'en-US' | 'pt-BR';
+```
+
+### defineMessages
+
+Declares a component's catalog. Identity function that type-checks that
+`pt-BR` has exactly the same keys and signatures as `en`.
+
+```ts
+defineMessages<M extends MessageSet>(catalog: { readonly en: M; readonly "pt-BR": NoInfer<M>; readonly [locale: string]: NoInfer<M> | undefined; }): MessageCatalog<M>
+```
+
+### dueStatus
+
+Urgency of a due date: overdue (`< 0` days) is `danger`, due within a week
+(`0` to `7`) is `warning`, later is `neutral`. The visible text always comes
+from messages (color is never the only signal, AGENTS.md section 5).
+
+```ts
+dueStatus(dueISO: ISODate, todayISO: ISODate): DueStatus
+```
+
+### formatCurrency
+
+Formats money held as an integer in minor units (ADR-0006):
+`formatCurrency(123456, 'USD', 'en-US')` is `$1,234.56`.
+
+The amount is passed to `Intl` as an exact decimal string, so there is no
+floating-point drift. Non-integer or unsafe amounts throw in development
+(a sign of a unit bug at the call site) and are rounded in production.
+
+```ts
+formatCurrency(minorUnits: number, currency: string, locale: string, options?: FormatCurrencyOptions): string
+```
+
+### formatDate
+
+Formats an ISO date for `locale`. Formatting happens in UTC, so the day never
+shifts with the viewer's time zone. Invalid input throws in development and
+is returned unchanged in production.
+
+`formatDate('2026-10-31', 'en-US', 'medium')` is `Oct 31, 2026`.
+
+```ts
+formatDate(iso: ISODate, locale: string, style?: DateStyle): string
+```
+
+### formatNumber
+
+Formats a decimal number for `locale` (`1234.5` becomes `1,234.5` in `en-US`).
+
+```ts
+formatNumber(value: number, locale: string, options?: FormatNumberOptions): string
+```
+
+### formatPercent
+
+Formats a ratio as a percentage: `0.256` becomes `26%` in `en-US`.
+Pass `maximumFractionDigits` for more precision.
+
+```ts
+formatPercent(ratio: number, locale: string, options?: Omit<FormatNumberOptions, "unit" | "unitDisplay">): string
+```
+
+### formatRelativeDays
+
+Relative day label from `Intl.RelativeTimeFormat` with `numeric: 'auto'`:
+`-1` is `yesterday`, `0` is `today`, `1` is `tomorrow`, `3` is `in 3 days`.
+`days` must be an integer (throws in development, rounded in production).
+
+```ts
+formatRelativeDays(days: number, locale: string): string
+```
+
+### getCurrencyDigits
+
+Number of minor-unit digits of a currency (2 for USD/BRL, 0 for JPY, 3 for KWD),
+read from `Intl` so we never keep our own table.
+
+```ts
+getCurrencyDigits(currency: string, locale: string): number
+```
+
+### getInitials
+
+Initials of a person's name: the first letter of the first and of the last word
+(`Ana Maria da Silva` gives `AS`), or one letter for a single word. Uses `Intl.Segmenter`,
+so combined characters stay whole, and upper-cases with the locale rules (`i` in `tr`).
+
+```ts
+getInitials(name: string, locale: string): string
+```
+
+### highlightMatch
+
+Splits `text` into matched and unmatched segments for highlighting, ignoring case
+and accents. The segments always concatenate back to `text` exactly, and a match
+keeps any combining marks attached to its last letter. All occurrences are returned.
+
+`highlightMatch('Crème brûlée', 'creme')` gives `[{ text: 'Crème', match: true }, { text: ' brûlée', match: false }]`.
+
+```ts
+highlightMatch(text: string, query: string): HighlightSegment[]
+```
+
+### iconNames
+
+Kebab-case names of the curated set with the use each icon is meant for. Source of the
+allow-list in the component manifest; keep it in sync with the exports above (tested).
+
+```ts
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
+```
+
+### iconSet
+
+The curated set by kebab-case name, for tooling and name-driven rendering.
+
+```ts
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
+```
+
+### isISODate
+
+True if `value` is a real calendar date written as `YYYY-MM-DD`.
+
+```ts
+isISODate(value: string): value is ISODate
+```
+
+### matchesSearch
+
+True when `text` contains `query`, ignoring case and accents. An empty query matches everything.
+
+```ts
+matchesSearch(text: string, query: string): boolean
+```
+
+### normalizeSearch
+
+Normalizes text for accent- and case-insensitive search: `Café` and `cafe` both
+become `cafe`. Works per code point so it stays index-aligned with `highlightMatch`.
+
+```ts
+normalizeSearch(text: string): string
+```
+
+### parseCurrencyInput
+
+Parses what the user typed in a currency field into integer minor units, using
+the digits-only typing model: every digit shifts in from the right, and any
+other character (separators, symbols, spaces, a sign) is ignored. Typing
+`1`, `2`, `3` into a USD field yields `1`, `12`, `123`, shown as `$0.01`,
+`$0.12`, `$1.23`. Digits of the locale's numbering system (e.g. Arabic-Indic)
+and full-width digits count as digits. Empty input is `0`. Input longer than
+15 digits is cut, so the result is always a safe integer.
+
+`currency` is validated through `Intl` (throws `RangeError` for an invalid code).
+Pasting `12` into a USD field means `$0.12` by this model; callers that want
+to accept pasted decimals must handle paste before calling this function.
+
+```ts
+parseCurrencyInput(text: string, currency: string, locale: string): number
+```
+
+### plural
+
+Picks a plural form for `count` using `Intl.PluralRules`.
+Call it from catalog functions, passing that catalog's own locale:
+`selected: (n: number) => plural('en', n, { one: '1 selected', other: `${n} selected` })`.
+
+```ts
+plural(locale: string, count: number, forms: PluralForms): string
+```
+
+### readableTextOn
+
+Which text color is more readable on a background color: `'light'` (white-ish
+text, for dark backgrounds) or `'dark'`. Picks whichever of white or black has
+the higher WCAG contrast, replacing the handoff's 0.299/0.587/0.114 shortcut.
+
+```ts
+readableTextOn(backgroundHex: string): "light" | "dark"
+```
+
+### relativeLuminance
+
+WCAG 2.x relative luminance of a hex color: `0` (black) to `1` (white).
+Accepts `#rgb` and `#rrggbb`. Invalid colors throw in development and count as black in production.
+
+```ts
+relativeLuminance(hex: string): number
+```
+
+### sortByText
+
+Returns a new array sorted alphabetically by `getText(item)`. Stable: items whose
+text compares equal (for example `Ana` and `ana`, or `é` and `e`) keep their input order.
+
+```ts
+sortByText<T>(items: readonly T[], getText: (item: T) => string, locale: string): T[]
+```
+
+### SUPPORTED_LOCALES
+
+Locales that ship with built-in message catalogs (ADR-0005).
+
+```ts
+readonly[('en-US', 'pt-BR')];
+```
+
+### toISODate
+
+Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the
+user sees on their clock). Pass `{ utc: true }` to use the UTC day instead.
+Invalid dates and years outside 0000-9999 throw in development and give `''` in production.
+
+```ts
+toISODate(date: Date, options?: { utc?: boolean; }): ISODate
+```
+
+### warnDeprecated
+
+Logs a deprecation warning once per `name`. Development only: a no-op in
+production builds and on the server-side of production. Call it from the
+deprecated component's body or module, passing what to use instead.
+
+`warnDeprecated('OldButton', 'Use Button with variant="ghost" instead.')`
+
+```ts
+warnDeprecated(name: string, message: string): void
+```
+
+## Icons
+
+Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
+
+`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`

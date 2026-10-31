@@ -1,0 +1,73 @@
+# Loui DS
+
+> Loui DS is a dark, minimal, functional React design system (React 19, React Aria Components, CSS Modules, DTCG tokens) for internal tools, dashboards and apps. It is built to be operated by humans and AI agents.
+
+Package @loui/ds@0.0.0. Entry points: `@loui/ds`, `@loui/ds/patterns`, `@loui/ds/styles.css`. All component and token names below are exact; do not invent others.
+
+Rules for generated UI:
+
+- Use only components, hooks and tokens exported by the package; never write raw colors, px sizes, z-indexes or inline styles.
+- One primary action per screen (`Button variant="primary"`), top right. The accent blue is for focus, selection and links only.
+- Hierarchy comes from surface plus border; shadows only on overlays.
+- Color never carries meaning alone: pair it with text or an icon with a name.
+- Every interactive element needs an accessible name; icon-only controls require a `label`.
+- Microcopy: English, sentence case, buttons are verb + object, no exclamation marks, no emoji. See content-rules.json.
+- No user-visible string literals in components: use the message catalog and `DSProvider`.
+- Money is integer minor units plus an ISO 4217 code; format dates, numbers and money with the provided utilities.
+- Do not use `experimental` or `deprecated` components in recipes or generated code unless the user asks.
+
+## Guides
+
+- [Introduction](./guides/introduction.md): What Loui DS is and how it is organized.
+- [Getting started](./guides/getting-started.md): Install, load the stylesheet, wrap the app in DSProvider, fonts, SSR.
+- [Principles](./guides/principles.md): The three visual rules, the product principles and the agent principles.
+- [Content guidelines](./guides/content-guidelines.md): Microcopy rules: tone, casing, buttons, errors, empty states, numbers.
+- [Accessibility](./guides/accessibility.md): WCAG 2.2 AA target, keyboard model and how it is tested.
+- [Using with AI](./guides/using-with-ai.md): The manifest, llms.txt, content rules and Storybook MCP.
+
+## Components
+
+- [Alert](./ai/components/Alert.md): An inline message with a tone, an icon, an optional title, an action and a dismiss button. (experimental)
+- [Avatar](./ai/components/Avatar.md): A circular photo or initials of a person, in grays (never a color per person). (experimental)
+- [Badge](./ai/components/Badge.md): A pill with a short status label. (experimental)
+- [Button](./ai/components/Button.md): An action button built on React Aria's `Button`. (experimental)
+- [Card](./ai/components/Card.md): A bordered surface that groups related content. (experimental)
+- [Checkbox](./ai/components/Checkbox.md): A checkbox with a native `<input type="checkbox">` (so `name` / `value` take part in form submission), an 18px box and an optional description. (experimental)
+- [CheckboxGroup](./ai/components/CheckboxGroup.md): A labelled `role="group"` of checkboxes that share one value (`string[]`), one `name`, and one description and error. (experimental)
+- [Description](./ai/components/Description.md): Helper text under a field (the handoff `hint`). (experimental)
+- [EmptyState](./ai/components/EmptyState.md): Tells the user that there is nothing to show, why, and what to do next. (experimental)
+- [FieldError](./ai/components/FieldError.md): Error text of a field. (experimental)
+- [FieldMessages](./ai/components/FieldMessages.md): Description followed by the error: the footer every field renders under its control. (experimental)
+- [Icon](./ai/components/Icon.md): An inline SVG icon (Lucide, bundled) that inherits the text color and draws a 1.5px stroke. (experimental)
+- [IconButton](./ai/components/IconButton.md): A square button with a single icon and a required accessible name. (experimental)
+- [Input](./ai/components/Input.md): Single-line text field: label, control, description and error wired together (`for`, `aria-describedby`, `aria-invalid`), built on React Aria `TextField`. (experimental)
+- [Kbd](./ai/components/Kbd.md): A keyboard shortcut hint in mono type. (experimental)
+- [Label](./ai/components/Label.md): The visible label of a field. (experimental)
+- [Link](./ai/components/Link.md): A link built on React Aria's `Link`. (experimental)
+- [Meter](./ai/components/Meter.md): A bar that shows a quantity within a known range (disk used, quota, score), as opposed to progress of a task. (experimental)
+- [Progress](./ai/components/Progress.md): A thin bar for a task that makes progress: determinate with a `value`, or indeterminate when the amount is unknown. (experimental)
+- [Radio](./ai/components/Radio.md): One option of a `RadioGroup`. (experimental)
+- [RadioGroup](./ai/components/RadioGroup.md): A labelled `role="radiogroup"` of mutually exclusive options with native radio inputs. (experimental)
+- [RequiredMark](./ai/components/RequiredMark.md): The visible marker of a required field, text from messages. (experimental)
+- [Select](./ai/components/Select.md): A single-choice dropdown built on React Aria `Select`: a button that opens a listbox in a popover. (experimental)
+- [Skeleton](./ai/components/Skeleton.md): A placeholder block in the shape of content that is still loading. (experimental)
+- [Spinner](./ai/components/Spinner.md): An indeterminate loading ring that inherits the text color. (experimental)
+- [Switch](./ai/components/Switch.md): An on/off setting that applies immediately. (experimental)
+- [Tag](./ai/components/Tag.md): A mono outlined label for versions, SKUs and filters. (experimental)
+- [TagGroup](./ai/components/TagGroup.md): A group of tags with one tab stop and arrow-key navigation. (experimental)
+- [Textarea](./ai/components/Textarea.md): Multi-line text field built on React Aria `TextField` + `TextArea`. (experimental)
+- [VisuallyHidden](./ai/components/VisuallyHidden.md): Hides content visually while keeping it available to assistive technology. (experimental)
+
+## Hooks, utilities and icons
+
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useMediaQuery, useMessages, usePrefersReducedMotion; 28 utilities and constants; 24 icons.
+
+## Machine-readable data
+
+- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (30 components).
+- [tokens.json](./tokens.json): 232 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [content-rules.json](./ai/content-rules.json): microcopy rules as data.
+
+## Optional
+
+- [llms-full.txt](./llms-full.txt): guides, token summary and every component page in one file.
