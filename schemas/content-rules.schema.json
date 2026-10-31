@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://loui.dev/schemas/content-rules.schema.json",
+  "title": "Loui DS content rules",
+  "description": "Machine-readable microcopy rules (docs/ai/content-rules.json).",
+  "type": "object",
+  "required": [
+    "version",
+    "language",
+    "description",
+    "tone",
+    "contexts",
+    "forbidden",
+    "rules",
+    "patterns"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "source": { "type": "string" },
+    "language": { "type": "string" },
+    "description": { "type": "string", "minLength": 1 },
+    "tone": {
+      "type": "object",
+      "required": ["voice", "address"],
+      "additionalProperties": false,
+      "properties": {
+        "voice": { "type": "string" },
+        "address": { "type": "string" },
+        "avoid": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "contexts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "forbidden": {
+      "type": "object",
+      "required": ["characters", "emoji", "decorativeEllipsis", "phrases", "bareButtonLabels"],
+      "additionalProperties": false,
+      "properties": {
+        "characters": { "type": "array", "items": { "$ref": "#/$defs/forbiddenItem" } },
+        "emoji": { "type": "boolean" },
+        "decorativeEllipsis": {
+          "type": "object",
+          "required": ["value", "allowedIn", "reason"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "string" },
+            "allowedIn": { "type": "array", "items": { "type": "string" } },
+            "reason": { "type": "string" }
+          }
+        },
+        "phrases": { "type": "array", "items": { "$ref": "#/$defs/forbiddenItem" } },
+        "bareButtonLabels": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "rules": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/rule" } },
+    "patterns": { "type": "object", "additionalProperties": { "type": "object" } }
+  },
+  "$defs": {
+    "forbiddenItem": {
+      "type": "object",
+      "required": ["value", "reason", "appliesTo"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "appliesTo": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["id", "area", "severity", "check", "description", "appliesTo", "examples"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z]+(-[a-z]+)*$" },
+        "area": { "type": "string" },
+        "severity": { "enum": ["error", "warn"] },
+        "check": {
+          "enum": ["static", "review"],
+          "description": "static rules can be enforced on string literals; review rules need judgement."
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "appliesTo": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "pattern": {
+          "type": "string",
+          "description": "Unicode-aware (flag u) regular expression for static rules."
+        },
+        "match": {
+          "enum": ["forbid", "require"],
+          "default": "require",
+          "description": "forbid: the text must not match pattern. require (default): the text must match pattern."
+        },
+        "examples": {
+          "type": "object",
+          "required": ["good", "bad"],
+          "additionalProperties": false,
+          "properties": {
+            "good": { "type": "array", "items": { "type": "string" } },
+            "bad": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "if": { "properties": { "check": { "const": "static" } }, "required": ["check"] },
+      "then": { "required": ["pattern"] }
+    }
+  }
+}

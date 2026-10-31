@@ -156,3 +156,50 @@ describe('IconButton', () => {
     await expectNoA11yViolations(screen.container);
   });
 });
+
+describe('IconButton tooltip', () => {
+  it('shows no tooltip by default', async () => {
+    await renderWithProvider(<IconButton label="Add order" icon={PlusIcon} />);
+    await userEvent.tab();
+    expect(document.querySelector('[role="tooltip"]')).toBeNull();
+  });
+
+  it('shows the label in a tooltip on keyboard focus and keeps the aria-label', async () => {
+    const screen = await renderWithProvider(
+      <IconButton label="Add order" icon={PlusIcon} tooltip />,
+    );
+    await userEvent.tab();
+    const tip = screen.getByRole('tooltip');
+    await expect.element(tip).toHaveTextContent('Add order');
+    const button = screen.getByRole('button', { name: 'Add order' });
+    expect(button.element().getAttribute('aria-label')).toBe('Add order');
+    await userEvent.keyboard('{Escape}');
+    await expect.poll(() => document.querySelector('[role="tooltip"]')).toBeNull();
+  });
+
+  it('adds the shortcut and placement from the options', async () => {
+    const screen = await renderWithProvider(
+      <IconButton
+        label="Add order"
+        icon={PlusIcon}
+        tooltip={{ shortcut: 'N', placement: 'bottom' }}
+      />,
+    );
+    await userEvent.tab();
+    expect(screen.getByRole('tooltip').element().textContent).toContain('N');
+    const tip = screen.getByRole('tooltip').element().getBoundingClientRect();
+    const button = screen.getByRole('button').element().getBoundingClientRect();
+    expect(tip.top).toBeGreaterThanOrEqual(button.bottom);
+  });
+
+  it('has no axe violations with the tooltip open', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <IconButton label="Add order" icon={PlusIcon} tooltip />
+      </main>,
+    );
+    await userEvent.tab();
+    await expect.element(screen.getByRole('tooltip')).toBeVisible();
+    await expectNoA11yViolations(document.body);
+  });
+});
