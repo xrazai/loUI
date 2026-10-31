@@ -70,7 +70,7 @@ Sources: the WAI-ARIA Authoring Practices and React Aria. The same table is in t
 Two kinds of action, two behaviors. Do not mix them.
 
 - **Undo for almost everything.** Change a status, pay, send, remove a row, link a color: do it at once and show a toast with "Undo" (short-lived, and paused while hovered or focused). It is faster and calmer than asking.
-- **Confirm only when deleting a record.** Delete a fabric, customer, sale, order or entry: open a dialog. The title is "Delete X?", one sentence states the consequence, the red button names the action (`danger-solid`, "Delete order"), and **initial focus is on Cancel**. A toast with "Undo" follows when the data can be restored.
+- **Confirm only when deleting a record.** Delete a product, customer, sale, order or entry: open a dialog. The title is "Delete X?", one sentence states the consequence, the red button names the action (`danger-solid`, "Delete order"), and **initial focus is on Cancel**. A toast with "Undo" follows when the data can be restored.
 
 <!-- demo:confirm -->
 

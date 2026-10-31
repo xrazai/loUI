@@ -38,7 +38,7 @@ A mono outlined label for versions, SKUs and filters. `Tag` is static text on it
 
 ## When to use
 
-- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.
+- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.
 - Show applied filters that the user can remove (`TagGroup` with `onRemove`).
 - Let the user toggle filters (`TagGroup` with `selectionMode`).
 
@@ -72,14 +72,14 @@ TagGroup           (grid; optional visible label)
 ## Content rules
 
 - Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.
-- Write a `textValue` that reads well after "Remove": "Remove linen".
+- Write a `textValue` that reads well after "Remove": "Remove notebook".
 
 ## Examples
 
 ```tsx
 <Tag>v2.4.0</Tag>
 
-<TagGroup label="Fabric" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
+<TagGroup label="Product" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
   {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}
 </TagGroup>
 ```

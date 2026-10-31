@@ -111,13 +111,13 @@ A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus c
 
 ## Content rules
 
-Label the thing being priced ("Price per meter"). The currency symbol is automatic, never part of the label. Errors say how to fix: "Enter a price above zero."
+Label the thing being priced ("Price per unit"). The currency symbol is automatic, never part of the label. Errors say how to fix: "Enter a price above zero."
 
 ## Example
 
 ```tsx
 <CurrencyInput
-  label="Price per meter"
+  label="Price per unit"
   currency="BRL"
   name="price"
   value={priceMinor}

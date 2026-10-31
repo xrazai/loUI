@@ -5270,7 +5270,7 @@
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<Checkbox label=\"I accept the terms\" name=\"terms\" isRequired errorMessage=\"Accept the terms to continue.\" />\n\n<CheckboxGroup label=\"Notify me about\" name=\"topics\" defaultValue={['orders']}>\n  <Checkbox value=\"orders\" label=\"New orders\" />\n  <Checkbox value=\"stock\" label=\"Low stock\" description=\"When a fabric drops below its minimum.\" />\n</CheckboxGroup>\n```"
+            "content": "```tsx\n<Checkbox label=\"I accept the terms\" name=\"terms\" isRequired errorMessage=\"Accept the terms to continue.\" />\n\n<CheckboxGroup label=\"Notify me about\" name=\"topics\" defaultValue={['orders']}>\n  <Checkbox value=\"orders\" label=\"New orders\" />\n  <Checkbox value=\"stock\" label=\"Low stock\" description=\"When a product drops below its minimum.\" />\n</CheckboxGroup>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -5707,7 +5707,7 @@
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<Checkbox label=\"I accept the terms\" name=\"terms\" isRequired errorMessage=\"Accept the terms to continue.\" />\n\n<CheckboxGroup label=\"Notify me about\" name=\"topics\" defaultValue={['orders']}>\n  <Checkbox value=\"orders\" label=\"New orders\" />\n  <Checkbox value=\"stock\" label=\"Low stock\" description=\"When a fabric drops below its minimum.\" />\n</CheckboxGroup>\n```"
+            "content": "```tsx\n<Checkbox label=\"I accept the terms\" name=\"terms\" isRequired errorMessage=\"Accept the terms to continue.\" />\n\n<CheckboxGroup label=\"Notify me about\" name=\"topics\" defaultValue={['orders']}>\n  <Checkbox value=\"orders\" label=\"New orders\" />\n  <Checkbox value=\"stock\" label=\"Low stock\" description=\"When a product drops below its minimum.\" />\n</CheckboxGroup>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -9032,12 +9032,12 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "Label the thing being priced (\"Price per meter\"). The currency symbol is automatic, never part of the label. Errors say how to fix: \"Enter a price above zero.\""
+            "content": "Label the thing being priced (\"Price per unit\"). The currency symbol is automatic, never part of the label. Errors say how to fix: \"Enter a price above zero.\""
           },
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<CurrencyInput\n  label=\"Price per meter\"\n  currency=\"BRL\"\n  name=\"price\"\n  value={priceMinor}\n  onChange={setPriceMinor}\n/>\n```"
+            "content": "```tsx\n<CurrencyInput\n  label=\"Price per unit\"\n  currency=\"BRL\"\n  name=\"price\"\n  value={priceMinor}\n  onChange={setPriceMinor}\n/>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -22046,7 +22046,7 @@
           "name": "aria-label",
           "type": "string",
           "required": false,
-          "description": "Accessible name of the list (\"Top fabrics\"). Optional: a list inside a titled `Card` is already named by it."
+          "description": "Accessible name of the list (\"Top products\"). Optional: a list inside a titled `Card` is already named by it."
         },
         {
           "name": "aria-labelledby",
@@ -22220,7 +22220,7 @@
         "path": "src/components/RankList/RankList.md",
         "summary": "An ordered list of items with a value, a bar relative to the largest value and an optional detail. Rows can be plain or buttons. Meant to sit inside a `Card` without body padding.",
         "whenToUse": [
-          "\"Top fabrics\", \"best customers\", \"colors by sales\": a short ranking with comparable values."
+          "\"Top products\", \"best customers\", \"colors by sales\": a short ranking with comparable values."
         ],
         "whenNotToUse": [
           "Several columns, sorting by the user, selection: use `DataTable`.",
@@ -22233,7 +22233,7 @@
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- \"Top fabrics\", \"best customers\", \"colors by sales\": a short ranking with comparable values."
+            "content": "- \"Top products\", \"best customers\", \"colors by sales\": a short ranking with comparable values."
           },
           {
             "id": "when-not-to-use",
@@ -22258,12 +22258,12 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- Labels are names, not sentences. Meta is short and mono: `12 units · 18%`.\n- Use this for things (fabrics, colors, customers). Give customers an `onAction` that opens the profile."
+            "content": "- Labels are names, not sentences. Meta is short and mono: `12 units · 18%`.\n- Use this for things (products, colors, customers). Give customers an `onAction` that opens the profile."
           },
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<Card padding=\"none\" title=\"Top fabrics\">\n  <RankList\n    sort=\"desc\"\n    limit={6}\n    format={(v) => formatCurrency(v, 'USD', locale)}\n    items={fabrics.map((f) => ({\n      id: f.id,\n      label: f.name,\n      value: f.totalMinor,\n      swatch: f.hex,\n      meta: `${f.units} units · ${f.pct}`,\n    }))}\n  />\n</Card>\n```"
+            "content": "```tsx\n<Card padding=\"none\" title=\"Top products\">\n  <RankList\n    sort=\"desc\"\n    limit={6}\n    format={(v) => formatCurrency(v, 'USD', locale)}\n    items={products.map((f) => ({\n      id: f.id,\n      label: f.name,\n      value: f.totalMinor,\n      swatch: f.hex,\n      meta: `${f.units} units · ${f.pct}`,\n    }))}\n  />\n</Card>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -30268,7 +30268,7 @@
         "path": "src/components/Tag/Tag.md",
         "summary": "A mono outlined label for versions, SKUs and filters. `Tag` is static text on its own (with an optional remove button); inside a `TagGroup` it is an item with keyboard navigation, selection and removal. `TagGroup` is built on React Aria `TagGroup`, `TagList` and `Tag`.",
         "whenToUse": [
-          "Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.",
+          "Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.",
           "Show applied filters that the user can remove (`TagGroup` with `onRemove`).",
           "Let the user toggle filters (`TagGroup` with `selectionMode`)."
         ],
@@ -30279,13 +30279,13 @@
         ],
         "keyboard": [],
         "examples": [
-          "<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Fabric\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>"
+          "<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Product\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>"
         ],
         "sections": [
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.\n- Show applied filters that the user can remove (`TagGroup` with `onRemove`).\n- Let the user toggle filters (`TagGroup` with `selectionMode`)."
+            "content": "- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.\n- Show applied filters that the user can remove (`TagGroup` with `onRemove`).\n- Let the user toggle filters (`TagGroup` with `selectionMode`)."
           },
           {
             "id": "when-not-to-use",
@@ -30310,12 +30310,12 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.\n- Write a `textValue` that reads well after \"Remove\": \"Remove linen\"."
+            "content": "- Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.\n- Write a `textValue` that reads well after \"Remove\": \"Remove notebook\"."
           },
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\n<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Fabric\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>\n```"
+            "content": "```tsx\n<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Product\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -30617,7 +30617,7 @@
         "path": "src/components/Tag/Tag.md",
         "summary": "A mono outlined label for versions, SKUs and filters. `Tag` is static text on its own (with an optional remove button); inside a `TagGroup` it is an item with keyboard navigation, selection and removal. `TagGroup` is built on React Aria `TagGroup`, `TagList` and `Tag`.",
         "whenToUse": [
-          "Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.",
+          "Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.",
           "Show applied filters that the user can remove (`TagGroup` with `onRemove`).",
           "Let the user toggle filters (`TagGroup` with `selectionMode`)."
         ],
@@ -30628,13 +30628,13 @@
         ],
         "keyboard": [],
         "examples": [
-          "<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Fabric\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>"
+          "<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Product\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>"
         ],
         "sections": [
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.\n- Show applied filters that the user can remove (`TagGroup` with `onRemove`).\n- Let the user toggle filters (`TagGroup` with `selectionMode`)."
+            "content": "- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.\n- Show applied filters that the user can remove (`TagGroup` with `onRemove`).\n- Let the user toggle filters (`TagGroup` with `selectionMode`)."
           },
           {
             "id": "when-not-to-use",
@@ -30659,12 +30659,12 @@
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.\n- Write a `textValue` that reads well after \"Remove\": \"Remove linen\"."
+            "content": "- Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.\n- Write a `textValue` that reads well after \"Remove\": \"Remove notebook\"."
           },
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\n<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Fabric\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>\n```"
+            "content": "```tsx\n<Tag>v2.4.0</Tag>\n\n<TagGroup label=\"Product\" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>\n  {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}\n</TagGroup>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -30779,7 +30779,7 @@
           "type": "boolean",
           "required": false,
           "default": "false",
-          "description": "Treat \"Linen\" and \"linen\" as different tags. Default: they are the same, and the second is ignored."
+          "description": "Treat \"Notebook\" and \"notebook\" as different tags. Default: they are the same, and the second is ignored."
         },
         {
           "name": "addOnBlur",
@@ -31359,10 +31359,10 @@
           "Showing tags the user cannot edit: use `TagGroup`."
         ],
         "keyboard": [
-          "The input is a normal `textbox` named by the label. The tags are a `grid` named \"Fabrics, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input."
+          "The input is a normal `textbox` named by the label. The tags are a `grid` named \"Products, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input."
         ],
         "examples": [
-          "<TagInput label=\"Fabrics\" name=\"fabrics\" value={fabrics} onChange={setFabrics} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>"
+          "<TagInput label=\"Products\" name=\"products\" value={products} onChange={setProducts} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>"
         ],
         "sections": [
           {
@@ -31383,22 +31383,22 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop                                                     | Type                           | Default      | Notes                                                                                                |\n| -------------------------------------------------------- | ------------------------------ | ------------ | ---------------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`               | `ReactNode` / `string`         | one required | Names the field. Enforced by the types.                                                              |\n| `value` / `defaultValue`                                 | `readonly string[]`            | `[]`         | Controlled / uncontrolled tags.                                                                      |\n| `onChange`                                               | `(tags: string[]) => void`     | none         | Called with the full list after each addition or removal.                                            |\n| `inputValue` / `defaultInputValue` / `onInputChange`     | `string`                       | `''`         | The text being typed, when you need to own it.                                                       |\n| `name` / `form`                                          | `string`                       | none         | Each tag is submitted as its own field (`formData.getAll(name)`). The draft text is never submitted. |\n| `delimiters`                                             | `readonly string[]`            | `[',']`      | End a tag while typing and split pasted text. `Enter` always adds; line breaks always split a paste. |\n| `maxTags`                                                | `number`                       | none         | Error \"You can add up to N tags.\" when exceeded; the text is kept.                                   |\n| `validateTag`                                            | `(tag) => string \\| undefined` | none         | Return a message to reject a tag. Shown as the field error and read aloud.                           |\n| `caseSensitive`                                          | `boolean`                      | `false`      | By default `Linen` and `linen` are the same tag.                                                     |\n| `addOnBlur`                                              | `boolean`                      | `true`       | Turns the text left in the input into a tag on blur.                                                 |\n| `description` / `errorMessage`                           | `ReactNode`                    | none         | Helper text; your own error while `isInvalid`.                                                       |\n| `placeholder`                                            | `string`                       | none         | Shown only while there are no tags.                                                                  |\n| `size`                                                   | `'sm' \\| 'md' \\| 'lg'`         | `'md'`       | Minimum height 32 / 40 / 48px; the box grows when tags wrap.                                         |\n| `isDisabled` / `isReadOnly` / `isRequired` / `isInvalid` | `boolean`                      | `false`      | `isRequired` is satisfied by one tag. Read-only and disabled fields show no remove buttons.          |\n| `messages`                                               | see below                      | none         | Per-instance message overrides.                                                                      |"
+            "content": "| Prop                                                     | Type                           | Default      | Notes                                                                                                |\n| -------------------------------------------------------- | ------------------------------ | ------------ | ---------------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`               | `ReactNode` / `string`         | one required | Names the field. Enforced by the types.                                                              |\n| `value` / `defaultValue`                                 | `readonly string[]`            | `[]`         | Controlled / uncontrolled tags.                                                                      |\n| `onChange`                                               | `(tags: string[]) => void`     | none         | Called with the full list after each addition or removal.                                            |\n| `inputValue` / `defaultInputValue` / `onInputChange`     | `string`                       | `''`         | The text being typed, when you need to own it.                                                       |\n| `name` / `form`                                          | `string`                       | none         | Each tag is submitted as its own field (`formData.getAll(name)`). The draft text is never submitted. |\n| `delimiters`                                             | `readonly string[]`            | `[',']`      | End a tag while typing and split pasted text. `Enter` always adds; line breaks always split a paste. |\n| `maxTags`                                                | `number`                       | none         | Error \"You can add up to N tags.\" when exceeded; the text is kept.                                   |\n| `validateTag`                                            | `(tag) => string \\| undefined` | none         | Return a message to reject a tag. Shown as the field error and read aloud.                           |\n| `caseSensitive`                                          | `boolean`                      | `false`      | By default `Notebook` and `notebook` are the same tag.                                               |\n| `addOnBlur`                                              | `boolean`                      | `true`       | Turns the text left in the input into a tag on blur.                                                 |\n| `description` / `errorMessage`                           | `ReactNode`                    | none         | Helper text; your own error while `isInvalid`.                                                       |\n| `placeholder`                                            | `string`                       | none         | Shown only while there are no tags.                                                                  |\n| `size`                                                   | `'sm' \\| 'md' \\| 'lg'`         | `'md'`       | Minimum height 32 / 40 / 48px; the box grows when tags wrap.                                         |\n| `isDisabled` / `isReadOnly` / `isRequired` / `isInvalid` | `boolean`                      | `false`      | `isRequired` is satisfied by one tag. Read-only and disabled fields show no remove buttons.          |\n| `messages`                                               | see below                      | none         | Per-instance message overrides.                                                                      |"
           },
           {
             "id": "behavior",
             "heading": "Behavior",
-            "content": "| Input                                        | Result                                                                                                          |\n| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |\n| `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |\n| A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |\n| Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |\n| `Backspace` on an empty input                | Removes the last tag (announced: \"Removed “silk”.\").                                                            |\n| Duplicate                                    | Ignored, input cleared, polite message \"“linen” is already added.\" Not an error.                                |\n| Beyond `maxTags` / rejected by `validateTag` | Error (`role=\"alert\"`, field invalid), nothing is added, the text stays so it can be fixed.                     |\n| Blur with text                               | Adds it (`addOnBlur`).                                                                                          |"
+            "content": "| Input                                        | Result                                                                                                          |\n| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |\n| `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |\n| A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |\n| Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |\n| `Backspace` on an empty input                | Removes the last tag (announced: \"Removed “headphones”.\").                                                      |\n| Duplicate                                    | Ignored, input cleared, polite message \"“notebook” is already added.\" Not an error.                             |\n| Beyond `maxTags` / rejected by `validateTag` | Error (`role=\"alert\"`, field invalid), nothing is added, the text stays so it can be fixed.                     |\n| Blur with text                               | Adds it (`addOnBlur`).                                                                                          |"
           },
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- The input is a normal `textbox` named by the label. The tags are a `grid` named \"Fabrics, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.\n- Remove buttons are 24x24 and named \"Remove linen\" (message `Tag.remove`).\n- Additions, removals and duplicates are announced in one polite `role=\"status\"` region; errors are in the field's `role=\"alert\"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.\n- The click target of the whole box focuses the input.\n- Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields."
+            "content": "- The input is a normal `textbox` named by the label. The tags are a `grid` named \"Products, added tags\" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.\n- Remove buttons are 24x24 and named \"Remove notebook\" (message `Tag.remove`).\n- Additions, removals and duplicates are announced in one polite `role=\"status\"` region; errors are in the field's `role=\"alert\"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.\n- The click target of the whole box focuses the input.\n- Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields."
           },
           {
             "id": "content-rules",
             "heading": "Content rules",
-            "content": "- Label as a noun phrase (\"Fabrics\", \"Recipients\"). Placeholder: an example or an action (\"Add a fabric\"), never the label.\n- `validateTag` messages say how to fix it: \"Enter a complete email address.\"\n- Tags are shown as typed (trimmed); sorting is up to you."
+            "content": "- Label as a noun phrase (\"Products\", \"Recipients\"). Placeholder: an example or an action (\"Add a product\"), never the label.\n- `validateTag` messages say how to fix it: \"Enter a complete email address.\"\n- Tags are shown as typed (trimmed); sorting is up to you."
           },
           {
             "id": "messages-messages-prop-or-dsprovider-messages-taginput",
@@ -31408,7 +31408,7 @@
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\n<TagInput label=\"Fabrics\" name=\"fabrics\" value={fabrics} onChange={setFabrics} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>\n```"
+            "content": "```tsx\n<TagInput label=\"Products\" name=\"products\" value={products} onChange={setProducts} maxTags={10} />\n\n<TagInput\n  label=\"Recipients\"\n  delimiters={[',', ';']}\n  validateTag={(tag) => (tag.includes('@') ? undefined : 'Enter a complete email address.')}\n/>\n```"
           }
         ]
       },

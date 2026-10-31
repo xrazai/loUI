@@ -91,7 +91,7 @@ export function Example() {
   return (
     <>
       <Alert tone="warning" title="Low stock">
-        3 rolls of linen are left. Reorder to avoid delays.
+        3 boxes of notebooks are left. Reorder to avoid delays.
       </Alert>
       <Button variant="primary" onPress={() => console.log('created')}>
         Create order
@@ -657,7 +657,7 @@ Sources: the WAI-ARIA Authoring Practices and React Aria. The same table is in t
 Two kinds of action, two behaviors. Do not mix them.
 
 - **Undo for almost everything.** Change a status, pay, send, remove a row, link a color: do it at once and show a toast with "Undo" (short-lived, and paused while hovered or focused). It is faster and calmer than asking.
-- **Confirm only when deleting a record.** Delete a fabric, customer, sale, order or entry: open a dialog. The title is "Delete X?", one sentence states the consequence, the red button names the action (`danger-solid`, "Delete order"), and **initial focus is on Cancel**. A toast with "Undo" follows when the data can be restored.
+- **Confirm only when deleting a record.** Delete a product, customer, sale, order or entry: open a dialog. The title is "Delete X?", one sentence states the consequence, the red button names the action (`danger-solid`, "Delete order"), and **initial focus is on Cancel**. A toast with "Undo" follows when the data can be restored.
 
 Anything that goes to a customer or touches money goes through an approval queue instead; see the [principles guide](../guides/principles.md).
 
@@ -2902,7 +2902,7 @@ A checkbox with a native `<input type="checkbox">`, an 18px box and an optional 
 
 <CheckboxGroup label="Notify me about" name="topics" defaultValue={['orders']}>
   <Checkbox value="orders" label="New orders" />
-  <Checkbox value="stock" label="Low stock" description="When a fabric drops below its minimum." />
+  <Checkbox value="stock" label="Low stock" description="When a product drops below its minimum." />
 </CheckboxGroup>
 ```
 
@@ -3005,7 +3005,7 @@ A checkbox with a native `<input type="checkbox">`, an 18px box and an optional 
 
 <CheckboxGroup label="Notify me about" name="topics" defaultValue={['orders']}>
   <Checkbox value="orders" label="New orders" />
-  <Checkbox value="stock" label="Low stock" description="When a fabric drops below its minimum." />
+  <Checkbox value="stock" label="Low stock" description="When a product drops below its minimum." />
 </CheckboxGroup>
 ```
 
@@ -3948,13 +3948,13 @@ A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus c
 
 #### Content rules
 
-Label the thing being priced ("Price per meter"). The currency symbol is automatic, never part of the label. Errors say how to fix: "Enter a price above zero."
+Label the thing being priced ("Price per unit"). The currency symbol is automatic, never part of the label. Errors say how to fix: "Enter a price above zero."
 
 #### Example
 
 ```tsx
 <CurrencyInput
-  label="Price per meter"
+  label="Price per unit"
   currency="BRL"
   name="price"
   value={priceMinor}
@@ -8309,7 +8309,7 @@ An ordered list of items with a value, a bar relative to the largest value and a
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `items` | `readonly RankItem[]` | yes |  | The rows, rendered **in the order given** unless `sort` is set. This differs from the handoff, which always sorted descending and kept only six rows: sorting and truncating silently changes the data, so both are opt-in. |
-| `aria-label` | `string` |  |  | Accessible name of the list ("Top fabrics"). Optional: a list inside a titled `Card` is already named by it. |
+| `aria-label` | `string` |  |  | Accessible name of the list ("Top products"). Optional: a list inside a titled `Card` is already named by it. |
 | `aria-labelledby` | `string` |  |  | Id of the element that names the list. |
 | `sort` | `'desc' \| 'asc'` |  |  | Sorts by `value` (`desc` largest first, `asc` smallest first) before `limit` is applied. Ties keep their input order. |
 | `limit` | `number` |  |  | Shows only the first `limit` rows (after `sort`). Default: all rows. |
@@ -8336,7 +8336,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### When to use
 
-- "Top fabrics", "best customers", "colors by sales": a short ranking with comparable values.
+- "Top products", "best customers", "colors by sales": a short ranking with comparable values.
 
 #### When not to use
 
@@ -8381,17 +8381,17 @@ div.root
 #### Content rules
 
 - Labels are names, not sentences. Meta is short and mono: `12 units · 18%`.
-- Use this for things (fabrics, colors, customers). Give customers an `onAction` that opens the profile.
+- Use this for things (products, colors, customers). Give customers an `onAction` that opens the profile.
 
 #### Example
 
 ```tsx
-<Card padding="none" title="Top fabrics">
+<Card padding="none" title="Top products">
   <RankList
     sort="desc"
     limit={6}
     format={(v) => formatCurrency(v, 'USD', locale)}
-    items={fabrics.map((f) => ({
+    items={products.map((f) => ({
       id: f.id,
       label: f.name,
       value: f.totalMinor,
@@ -11058,7 +11058,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### When to use
 
-- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.
+- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.
 - Show applied filters that the user can remove (`TagGroup` with `onRemove`).
 - Let the user toggle filters (`TagGroup` with `selectionMode`).
 
@@ -11092,14 +11092,14 @@ TagGroup           (grid; optional visible label)
 #### Content rules
 
 - Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.
-- Write a `textValue` that reads well after "Remove": "Remove linen".
+- Write a `textValue` that reads well after "Remove": "Remove notebook".
 
 #### Examples
 
 ```tsx
 <Tag>v2.4.0</Tag>
 
-<TagGroup label="Fabric" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
+<TagGroup label="Product" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
   {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}
 </TagGroup>
 ```
@@ -11153,7 +11153,7 @@ A mono outlined label for versions, SKUs and filters. `Tag` is static text on it
 
 #### When to use
 
-- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `linen`.
+- Show an attribute or identifier: `v2.4.0`, `ORD-1048`, `notebook`.
 - Show applied filters that the user can remove (`TagGroup` with `onRemove`).
 - Let the user toggle filters (`TagGroup` with `selectionMode`).
 
@@ -11187,14 +11187,14 @@ TagGroup           (grid; optional visible label)
 #### Content rules
 
 - Short, lowercase or code-like values are fine (`v2.4.0`, `ORD-1048`); filters use the user's own words.
-- Write a `textValue` that reads well after "Remove": "Remove linen".
+- Write a `textValue` that reads well after "Remove": "Remove notebook".
 
 #### Examples
 
 ```tsx
 <Tag>v2.4.0</Tag>
 
-<TagGroup label="Fabric" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
+<TagGroup label="Product" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
   {tags.map((tag) => <Tag key={tag} id={tag}>{tag}</Tag>)}
 </TagGroup>
 ```
@@ -11247,7 +11247,7 @@ A text field that turns what you type into removable tags: `Enter` or a comma ad
 | `delimiters` | `readonly string[]` |  | `[',']` | Characters that end a tag while typing and split pasted text. `Enter` always adds the tag, and line breaks always split pasted text. Default `[',']`. Pass `[]` to use only `Enter`. |
 | `maxTags` | `number` |  |  | Maximum number of tags. Trying to add another shows an error and keeps the text. |
 | `validateTag` | `((tag: string) => string \| null)` |  |  | Decides whether a tag may be added. Return a message to reject it ("Use letters and digits only."); return nothing to accept it. The message is shown as the field error and read aloud. It receives the trimmed text. |
-| `caseSensitive` | `boolean` |  | `false` | Treat "Linen" and "linen" as different tags. Default: they are the same, and the second is ignored. |
+| `caseSensitive` | `boolean` |  | `false` | Treat "Notebook" and "notebook" as different tags. Default: they are the same, and the second is ignored. |
 | `addOnBlur` | `boolean` |  | `true` | Turns the text left in the input into a tag when the input loses focus. Default `true`. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text from your own validation, shown while the field is invalid (`isInvalid`). The messages of `validateTag` and `maxTags` take its place while they apply. |
@@ -11335,22 +11335,22 @@ div (field root)
 | `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |
 | A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |
 | Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |
-| `Backspace` on an empty input                | Removes the last tag (announced: "Removed “silk”.").                                                            |
-| Duplicate                                    | Ignored, input cleared, polite message "“linen” is already added." Not an error.                                |
+| `Backspace` on an empty input                | Removes the last tag (announced: "Removed “headphones”.").                                                      |
+| Duplicate                                    | Ignored, input cleared, polite message "“notebook” is already added." Not an error.                             |
 | Beyond `maxTags` / rejected by `validateTag` | Error (`role="alert"`, field invalid), nothing is added, the text stays so it can be fixed.                     |
 | Blur with text                               | Adds it (`addOnBlur`).                                                                                          |
 
 #### Accessibility
 
-- The input is a normal `textbox` named by the label. The tags are a `grid` named "Fabrics, added tags" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.
-- Remove buttons are 24x24 and named "Remove linen" (message `Tag.remove`).
+- The input is a normal `textbox` named by the label. The tags are a `grid` named "Products, added tags" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.
+- Remove buttons are 24x24 and named "Remove notebook" (message `Tag.remove`).
 - Additions, removals and duplicates are announced in one polite `role="status"` region; errors are in the field's `role="alert"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.
 - The click target of the whole box focuses the input.
 - Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields.
 
 #### Content rules
 
-- Label as a noun phrase ("Fabrics", "Recipients"). Placeholder: an example or an action ("Add a fabric"), never the label.
+- Label as a noun phrase ("Products", "Recipients"). Placeholder: an example or an action ("Add a product"), never the label.
 - `validateTag` messages say how to fix it: "Enter a complete email address."
 - Tags are shown as typed (trimmed); sorting is up to you.
 
@@ -11361,7 +11361,7 @@ div (field root)
 #### Examples
 
 ```tsx
-<TagInput label="Fabrics" name="fabrics" value={fabrics} onChange={setFabrics} maxTags={10} />
+<TagInput label="Products" name="products" value={products} onChange={setProducts} maxTags={10} />
 
 <TagInput
   label="Recipients"

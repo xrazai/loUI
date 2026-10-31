@@ -18,7 +18,7 @@ An ordered list of items with a value, a bar relative to the largest value and a
 | Prop              | Type                           | Required | Default | Description                                                                                                                                                                                                                 |
 | ----------------- | ------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `items`           | `readonly RankItem[]`          | yes      |         | The rows, rendered **in the order given** unless `sort` is set. This differs from the handoff, which always sorted descending and kept only six rows: sorting and truncating silently changes the data, so both are opt-in. |
-| `aria-label`      | `string`                       |          |         | Accessible name of the list ("Top fabrics"). Optional: a list inside a titled `Card` is already named by it.                                                                                                                |
+| `aria-label`      | `string`                       |          |         | Accessible name of the list ("Top products"). Optional: a list inside a titled `Card` is already named by it.                                                                                                               |
 | `aria-labelledby` | `string`                       |          |         | Id of the element that names the list.                                                                                                                                                                                      |
 | `sort`            | `'desc' \| 'asc'`              |          |         | Sorts by `value` (`desc` largest first, `asc` smallest first) before `limit` is applied. Ties keep their input order.                                                                                                       |
 | `limit`           | `number`                       |          |         | Shows only the first `limit` rows (after `sort`). Default: all rows.                                                                                                                                                        |
@@ -45,7 +45,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## When to use
 
-- "Top fabrics", "best customers", "colors by sales": a short ranking with comparable values.
+- "Top products", "best customers", "colors by sales": a short ranking with comparable values.
 
 ## When not to use
 
@@ -90,17 +90,17 @@ div.root
 ## Content rules
 
 - Labels are names, not sentences. Meta is short and mono: `12 units · 18%`.
-- Use this for things (fabrics, colors, customers). Give customers an `onAction` that opens the profile.
+- Use this for things (products, colors, customers). Give customers an `onAction` that opens the profile.
 
 ## Example
 
 ```tsx
-<Card padding="none" title="Top fabrics">
+<Card padding="none" title="Top products">
   <RankList
     sort="desc"
     limit={6}
     format={(v) => formatCurrency(v, 'USD', locale)}
-    items={fabrics.map((f) => ({
+    items={products.map((f) => ({
       id: f.id,
       label: f.name,
       value: f.totalMinor,

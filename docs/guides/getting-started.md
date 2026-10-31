@@ -73,7 +73,7 @@ export function Example() {
   return (
     <>
       <Alert tone="warning" title="Low stock">
-        3 rolls of linen are left. Reorder to avoid delays.
+        3 boxes of notebooks are left. Reorder to avoid delays.
       </Alert>
       <Button variant="primary" onPress={() => console.log('created')}>
         Create order
