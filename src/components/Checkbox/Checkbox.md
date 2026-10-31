@@ -48,7 +48,7 @@ A checkbox with a native `<input type="checkbox">`, an 18px box and an optional 
 
 <CheckboxGroup label="Notify me about" name="topics" defaultValue={['orders']}>
   <Checkbox value="orders" label="New orders" />
-  <Checkbox value="stock" label="Low stock" description="When a fabric drops below its minimum." />
+  <Checkbox value="stock" label="Low stock" description="When a product drops below its minimum." />
 </CheckboxGroup>
 ```
 

@@ -9,10 +9,10 @@ import { SearchInput } from './SearchInput';
 import type { SearchInputProps } from './SearchInput';
 
 const items = [
-  { label: 'Linho natural', meta: 'SKU-204' },
-  { label: 'Algodão cru', meta: 'SKU-118' },
-  'Seda pura',
-  'Linho tingido',
+  { label: 'Caderno liso', meta: 'SKU-204' },
+  { label: 'Lâmpada de mesa', meta: 'SKU-118' },
+  'Fone sem fio',
+  'Caderno pautado',
 ];
 
 function Search(props: Partial<Extract<SearchInputProps, { 'aria-label': string }>>) {
@@ -41,8 +41,8 @@ describe('SearchInput', () => {
       const clear = () => screen.container.querySelector('button');
       expect(clear() && getComputedStyle(clear() as Element).display).toBe('none');
       await userEvent.click(field);
-      await userEvent.keyboard('lin');
-      expect(onChange).toHaveBeenLastCalledWith('lin');
+      await userEvent.keyboard('cad');
+      expect(onChange).toHaveBeenLastCalledWith('cad');
       await expect.element(screen.getByRole('button', { name: 'Clear search' })).toBeVisible();
       await screen.getByRole('button', { name: 'Clear search' }).click();
       await expect.element(field).toHaveValue('');
@@ -66,8 +66,8 @@ describe('SearchInput', () => {
       const onSubmit = vi.fn();
       const screen = await renderWithProvider(<Search onSubmit={onSubmit} />);
       await userEvent.click(screen.getByRole('searchbox'));
-      await userEvent.keyboard('seda{Enter}');
-      expect(onSubmit).toHaveBeenCalledWith('seda');
+      await userEvent.keyboard('fone{Enter}');
+      expect(onSubmit).toHaveBeenCalledWith('fone');
     });
 
     it('wraps in a labelled search landmark when asked', async () => {
@@ -83,7 +83,7 @@ describe('SearchInput', () => {
     it('works controlled and uncontrolled, and submits with the form', async () => {
       let data: FormData | undefined;
       function Controlled() {
-        const [value, setValue] = useState('seda');
+        const [value, setValue] = useState('fone');
         return (
           <form
             onSubmit={(event) => {
@@ -95,7 +95,7 @@ describe('SearchInput', () => {
             <button
               type="button"
               onClick={() => {
-                setValue('linho');
+                setValue('caderno');
               }}
             >
               Set
@@ -106,11 +106,11 @@ describe('SearchInput', () => {
       }
       const screen = await renderWithProvider(<Controlled />);
       const field = screen.getByRole('searchbox');
-      await expect.element(field).toHaveValue('seda');
+      await expect.element(field).toHaveValue('fone');
       await screen.getByRole('button', { name: 'Set' }).click();
-      await expect.element(field).toHaveValue('linho');
+      await expect.element(field).toHaveValue('caderno');
       await screen.getByRole('button', { name: 'Go' }).click();
-      expect(data?.get('q')).toBe('linho');
+      expect(data?.get('q')).toBe('caderno');
       await screen.unmount();
       const uncontrolled = await renderWithProvider(<Search defaultValue="abc" />);
       await expect.element(uncontrolled.getByRole('searchbox')).toHaveValue('abc');
@@ -167,11 +167,11 @@ describe('SearchInput', () => {
       const field = screen.getByRole('combobox', { name: 'Search products' });
       await userEvent.click(field);
       expect(document.querySelector('[role="listbox"]')).toBeNull();
-      await userEvent.keyboard('ALGODAO');
+      await userEvent.keyboard('LAMPADA');
       await expect.element(screen.getByRole('listbox')).toBeVisible();
       expect(screen.getByRole('option').elements()).toHaveLength(1);
       const marks = [...document.querySelectorAll('mark')].map((node) => node.textContent);
-      expect(marks).toEqual(['Algodão']);
+      expect(marks).toEqual(['Lâmpada']);
       expect(getComputedStyle(document.querySelector('mark') as Element).backgroundColor).toBe(
         'rgba(0, 0, 0, 0)',
       );
@@ -180,7 +180,7 @@ describe('SearchInput', () => {
     it('limits results with maxResults and shows meta in mono', async () => {
       const screen = await renderWithProvider(<Search suggestions={items} maxResults={1} />);
       await userEvent.click(screen.getByRole('combobox'));
-      await userEvent.keyboard('lin');
+      await userEvent.keyboard('cad');
       expect(screen.getByRole('option').elements()).toHaveLength(1);
       const meta = [...document.querySelectorAll('[role="option"] span')].find(
         (node) => node.textContent === 'SKU-204',
@@ -193,15 +193,15 @@ describe('SearchInput', () => {
       const screen = await renderWithProvider(<Search suggestions={items} onSelect={onSelect} />);
       const field = screen.getByRole('combobox');
       await userEvent.click(field);
-      await userEvent.keyboard('lin{ArrowDown}');
+      await userEvent.keyboard('cad{ArrowDown}');
       expect(field.element().getAttribute('aria-activedescendant')).not.toBeNull();
       await userEvent.keyboard('{ArrowDown}{Enter}');
       expect(onSelect).toHaveBeenCalledWith({
-        label: 'Linho tingido',
+        label: 'Caderno pautado',
         meta: undefined,
         data: undefined,
       });
-      await expect.element(field).toHaveValue('Linho tingido');
+      await expect.element(field).toHaveValue('Caderno pautado');
       await expect.poll(() => document.querySelector('[role="listbox"]')).toBeNull();
     });
 
@@ -230,15 +230,15 @@ describe('SearchInput', () => {
       const screen = await renderWithProvider(<Search suggestions={items} onClear={onClear} />);
       const field = screen.getByRole('combobox');
       await userEvent.click(field);
-      await userEvent.keyboard('lin');
+      await userEvent.keyboard('cad');
       await expect.element(screen.getByRole('listbox')).toBeVisible();
       await userEvent.keyboard('{Escape}');
       await expect.poll(() => document.querySelector('[role="listbox"]')).toBeNull();
-      await expect.element(field).toHaveValue('lin');
+      await expect.element(field).toHaveValue('cad');
       await userEvent.keyboard('{Escape}');
       await expect.element(field).toHaveValue('');
       expect(onClear).toHaveBeenCalledTimes(1);
-      await userEvent.keyboard('seda');
+      await userEvent.keyboard('fone');
       // While the list is open the rest of the page is hidden from the accessibility tree.
       (screen.container.querySelector('button') as HTMLElement).click();
       await expect.element(field).toHaveValue('');
@@ -247,7 +247,7 @@ describe('SearchInput', () => {
     it('uses the dropdown layer, the raised surface and fits a full-width box', async () => {
       const screen = await renderWithProvider(<Search suggestions={items} />);
       await userEvent.click(screen.getByRole('combobox'));
-      await userEvent.keyboard('lin');
+      await userEvent.keyboard('cad');
       const popover = screen
         .getByRole('listbox')
         .element()
@@ -270,8 +270,8 @@ describe('SearchInput', () => {
       }
       const screen = await renderWithProvider(<Controlled />);
       await userEvent.click(screen.getByRole('combobox'));
-      await userEvent.keyboard('seda');
-      expect(screen.container.querySelector('output')?.textContent).toBe('seda');
+      await userEvent.keyboard('fone');
+      expect(screen.container.querySelector('output')?.textContent).toBe('fone');
     });
   });
 
@@ -280,7 +280,7 @@ describe('SearchInput', () => {
       const screen = await renderWithProvider(
         <main>
           <Search />
-          <Search defaultValue="linho" />
+          <Search defaultValue="caderno" />
           <Search shortcut={['/']} aria-label="With hint" />
           <Search isDisabled aria-label="Disabled" />
           <SearchInput label="Visible label" />
@@ -298,7 +298,7 @@ describe('SearchInput', () => {
         </main>,
       );
       await userEvent.click(screen.getByRole('combobox'));
-      await userEvent.keyboard('lin');
+      await userEvent.keyboard('cad');
       await expect.element(screen.getByRole('listbox')).toBeVisible();
       await expectNoA11yViolations(document.body);
       await userEvent.keyboard('zzz');

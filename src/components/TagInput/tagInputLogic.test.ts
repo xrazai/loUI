@@ -36,21 +36,21 @@ describe('hasDelimiter', () => {
 
 describe('addTags', () => {
   it('trims and appends in order', () => {
-    const result = addTags({ ...base, entries: [' linen ', 'cotton'] });
-    expect(result.tags).toEqual(['linen', 'cotton']);
-    expect(result.added).toEqual(['linen', 'cotton']);
+    const result = addTags({ ...base, entries: [' notebook ', 'backpack'] });
+    expect(result.tags).toEqual(['notebook', 'backpack']);
+    expect(result.added).toEqual(['notebook', 'backpack']);
   });
 
   it('skips empty entries', () => {
-    const result = addTags({ ...base, entries: ['', '   ', 'silk'] });
-    expect(result.tags).toEqual(['silk']);
+    const result = addTags({ ...base, entries: ['', '   ', 'headphones'] });
+    expect(result.tags).toEqual(['headphones']);
     expect(result.duplicates).toEqual([]);
   });
 
   it('ignores duplicates of existing tags, ignoring case by default', () => {
-    const result = addTags({ ...base, current: ['Linen'], entries: ['linen', 'silk'] });
-    expect(result.tags).toEqual(['Linen', 'silk']);
-    expect(result.duplicates).toEqual(['linen']);
+    const result = addTags({ ...base, current: ['Notebook'], entries: ['notebook', 'headphones'] });
+    expect(result.tags).toEqual(['Notebook', 'headphones']);
+    expect(result.duplicates).toEqual(['notebook']);
   });
 
   it('ignores repeats inside the same batch', () => {
@@ -62,11 +62,11 @@ describe('addTags', () => {
   it('treats different case as different when caseSensitive', () => {
     const result = addTags({
       ...base,
-      current: ['Linen'],
-      entries: ['linen'],
+      current: ['Notebook'],
+      entries: ['notebook'],
       caseSensitive: true,
     });
-    expect(result.tags).toEqual(['Linen', 'linen']);
+    expect(result.tags).toEqual(['Notebook', 'notebook']);
   });
 
   it('uses the locale for case folding', () => {

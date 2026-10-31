@@ -7,11 +7,11 @@ import { formatCurrency } from '../../utils/currency';
 import { RankList } from './RankList';
 import type { RankItem } from './RankList';
 
-const fabrics: RankItem[] = [
-  { id: 'linen', label: 'Linen', value: 4200, meta: '12 units · 18%' },
-  { id: 'cotton', label: 'Cotton', value: 9800, meta: '30 units · 42%', swatch: '#8ab4ff' },
-  { id: 'silk', label: 'Silk', value: 1500 },
-  { id: 'wool', label: 'Wool', value: 9800 },
+const products: RankItem[] = [
+  { id: 'notebook', label: 'Notebook', value: 4200, meta: '12 units · 18%' },
+  { id: 'backpack', label: 'Backpack', value: 9800, meta: '30 units · 42%', swatch: '#8ab4ff' },
+  { id: 'headphones', label: 'Headphones', value: 1500 },
+  { id: 'lamp', label: 'Lamp', value: 9800 },
 ];
 
 function labels(container: Element): string[] {
@@ -23,29 +23,29 @@ function labels(container: Element): string[] {
 describe('RankList', () => {
   describe('structure', () => {
     it('is an ordered list with one item per row, in the order given', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} />);
+      const screen = await renderWithProvider(<RankList items={products} />);
       await expect.element(screen.getByRole('list')).toBeVisible();
       expect(screen.container.querySelector('ol')).not.toBeNull();
       expect(screen.getByRole('listitem').elements()).toHaveLength(4);
-      expect(labels(screen.container)).toEqual(['Linen', 'Cotton', 'Silk', 'Wool']);
+      expect(labels(screen.container)).toEqual(['Notebook', 'Backpack', 'Headphones', 'Lamp']);
     });
 
     it('shows the position, the formatted value and the meta of each row', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} />);
+      const screen = await renderWithProvider(<RankList items={products} />);
       const first = screen.getByRole('listitem').first().element();
-      expect(first.textContent).toBe('1Linen4,20012 units · 18%');
+      expect(first.textContent).toBe('1Notebook4,20012 units · 18%');
     });
 
     it('can hide the positions', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} showPosition={false} />);
+      const screen = await renderWithProvider(<RankList items={products} showPosition={false} />);
       expect(screen.getByRole('listitem').first().element().textContent).toBe(
-        'Linen4,20012 units · 18%',
+        'Notebook4,20012 units · 18%',
       );
       expect(screen.container.querySelector('[data-positions]')).toBeNull();
     });
 
     it('draws bars relative to the largest value and keeps them out of the accessibility tree', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} />);
+      const screen = await renderWithProvider(<RankList items={products} />);
       const fills = [...screen.container.querySelectorAll('li span[class*="fill"]')];
       const widths = fills.map((fill) => fill.getBoundingClientRect().width);
       const track = fills[1]?.parentElement as Element;
@@ -57,7 +57,7 @@ describe('RankList', () => {
     });
 
     it('renders a decorative swatch only when given', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} />);
+      const screen = await renderWithProvider(<RankList items={products} />);
       const swatches = screen.container.querySelectorAll('li [data-size]');
       expect(swatches).toHaveLength(1);
       expect(swatches[0]?.getAttribute('aria-hidden')).toBe('true');
@@ -66,27 +66,27 @@ describe('RankList', () => {
 
     it('formats values with the format prop', async () => {
       const screen = await renderWithProvider(
-        <RankList items={fabrics} format={(value) => formatCurrency(value, 'USD', 'en-US')} />,
+        <RankList items={products} format={(value) => formatCurrency(value, 'USD', 'en-US')} />,
       );
       expect(screen.getByRole('listitem').first().element().textContent).toContain('$42.00');
     });
 
     it('formats numbers with the provider locale', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} />, { locale: 'pt-BR' });
+      const screen = await renderWithProvider(<RankList items={products} />, { locale: 'pt-BR' });
       expect(screen.getByRole('listitem').first().element().textContent).toContain('4.200');
     });
 
     it('is named by aria-label when given', async () => {
       const screen = await renderWithProvider(
-        <RankList items={fabrics} aria-label="Top fabrics" />,
+        <RankList items={products} aria-label="Top products" />,
       );
-      await expect.element(screen.getByRole('list', { name: 'Top fabrics' })).toBeVisible();
+      await expect.element(screen.getByRole('list', { name: 'Top products' })).toBeVisible();
     });
 
     it('merges className, forwards the ref and passes other props through', async () => {
       const ref = createRef<HTMLDivElement>();
       await renderWithProvider(
-        <RankList ref={ref} items={fabrics} className="extra" data-testid="r" />,
+        <RankList ref={ref} items={products} className="extra" data-testid="r" />,
       );
       expect(ref.current).toBeInstanceOf(HTMLDivElement);
       expect(ref.current?.classList.contains('extra')).toBe(true);
@@ -119,31 +119,36 @@ describe('RankList', () => {
     });
 
     it('sorts descending by value with a stable order for ties', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} sort="desc" />);
-      expect(labels(screen.container)).toEqual(['Cotton', 'Wool', 'Linen', 'Silk']);
+      const screen = await renderWithProvider(<RankList items={products} sort="desc" />);
+      expect(labels(screen.container)).toEqual(['Backpack', 'Lamp', 'Notebook', 'Headphones']);
     });
 
     it('sorts ascending', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} sort="asc" />);
-      expect(labels(screen.container)).toEqual(['Silk', 'Linen', 'Cotton', 'Wool']);
+      const screen = await renderWithProvider(<RankList items={products} sort="asc" />);
+      expect(labels(screen.container)).toEqual(['Headphones', 'Notebook', 'Backpack', 'Lamp']);
     });
 
     it('limits after sorting and numbers the positions of what is shown', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} sort="desc" limit={2} />);
-      expect(labels(screen.container)).toEqual(['Cotton', 'Wool']);
+      const screen = await renderWithProvider(<RankList items={products} sort="desc" limit={2} />);
+      expect(labels(screen.container)).toEqual(['Backpack', 'Lamp']);
       expect(screen.getByRole('listitem').elements()).toHaveLength(2);
-      expect(screen.getByRole('listitem').first().element().textContent).toMatch(/^1Cotton/);
+      expect(screen.getByRole('listitem').first().element().textContent).toMatch(/^1Backpack/);
     });
 
     it('limits without sorting', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} limit={1} />);
-      expect(labels(screen.container)).toEqual(['Linen']);
+      const screen = await renderWithProvider(<RankList items={products} limit={1} />);
+      expect(labels(screen.container)).toEqual(['Notebook']);
     });
 
     it('does not mutate the input', async () => {
-      const copy = [...fabrics];
+      const copy = [...products];
       await renderWithProvider(<RankList items={copy} sort="desc" />);
-      expect(copy.map((item) => item.label)).toEqual(['Linen', 'Cotton', 'Silk', 'Wool']);
+      expect(copy.map((item) => item.label)).toEqual([
+        'Notebook',
+        'Backpack',
+        'Headphones',
+        'Lamp',
+      ]);
     });
   });
 
@@ -200,7 +205,7 @@ describe('RankList', () => {
     });
 
     it('is empty when the limit is 0', async () => {
-      const screen = await renderWithProvider(<RankList items={fabrics} limit={0} />);
+      const screen = await renderWithProvider(<RankList items={products} limit={0} />);
       await expect.element(screen.getByText('No data for this period')).toBeVisible();
     });
   });
@@ -229,12 +234,12 @@ describe('RankList', () => {
     it('has no axe violations for plain, actionable, sorted and empty lists', async () => {
       const screen = await renderWithProvider(
         <div>
-          <RankList items={fabrics} aria-label="Top fabrics" />
+          <RankList items={products} aria-label="Top products" />
           <RankList
             sort="desc"
             limit={3}
             showPosition={false}
-            items={fabrics.map((item) => ({ ...item, onAction: vi.fn() }))}
+            items={products.map((item) => ({ ...item, onAction: vi.fn() }))}
             aria-label="Top customers"
           />
           <RankList items={[]} />

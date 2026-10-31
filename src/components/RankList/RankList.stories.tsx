@@ -7,11 +7,11 @@ import { RankList } from './RankList';
 import type { RankItem, RankListProps } from './RankList';
 import { StoryFrame } from '../../test/StoryFrame';
 
-const fabrics: RankItem[] = [
-  { id: 'linen', label: 'Linen', value: 420000, meta: '12 units · 18%', swatch: '#c9b79c' },
-  { id: 'cotton', label: 'Cotton', value: 980000, meta: '30 units · 42%', swatch: '#f4f2ec' },
-  { id: 'silk', label: 'Silk', value: 150000, meta: '3 units · 6%', swatch: '#8ab4ff' },
-  { id: 'wool', label: 'Wool', value: 760000, meta: '22 units · 33%', swatch: '#5a5a60' },
+const products: RankItem[] = [
+  { id: 'notebook', label: 'Notebook', value: 420000, meta: '12 units · 18%', swatch: '#c9b79c' },
+  { id: 'backpack', label: 'Backpack', value: 980000, meta: '30 units · 42%', swatch: '#f4f2ec' },
+  { id: 'headphones', label: 'Headphones', value: 150000, meta: '3 units · 6%', swatch: '#8ab4ff' },
+  { id: 'lamp', label: 'Lamp', value: 760000, meta: '22 units · 33%', swatch: '#5a5a60' },
 ];
 
 const money = (value: number) => formatCurrency(value, 'USD', 'en-US');
@@ -20,11 +20,11 @@ const meta = {
   title: 'Components/RankList',
   component: RankList,
   tags: ['autodocs'],
-  args: { items: fabrics, format: money, 'aria-label': 'Top fabrics' },
+  args: { items: products, format: money, 'aria-label': 'Top products' },
   decorators: [
     (Story) => (
       <StoryFrame maxWidth={420}>
-        <Card padding="none" title="Top fabrics">
+        <Card padding="none" title="Top products">
           <Story />
         </Card>
       </StoryFrame>
@@ -41,7 +41,7 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     const items = canvas.getAllByRole('listitem');
     await expect(items).toHaveLength(4);
-    await expect(items[0]).toHaveTextContent('Linen');
+    await expect(items[0]).toHaveTextContent('Notebook');
   },
 };
 
@@ -51,16 +51,16 @@ export const SortedAndLimited: Story = {
   play: async ({ canvasElement }) => {
     const items = within(canvasElement).getAllByRole('listitem');
     await expect(items).toHaveLength(3);
-    await expect(items[0]).toHaveTextContent('Cotton');
-    await expect(items[1]).toHaveTextContent('Wool');
-    await expect(items[2]).toHaveTextContent('Linen');
+    await expect(items[0]).toHaveTextContent('Backpack');
+    await expect(items[1]).toHaveTextContent('Lamp');
+    await expect(items[2]).toHaveTextContent('Notebook');
   },
 };
 
 export const WithoutPositions: Story = { args: { showPosition: false, sort: 'desc' } };
 
 export const WithoutSwatchOrMeta: Story = {
-  args: { items: fabrics.map((item) => ({ label: item.label, value: item.value })) },
+  args: { items: products.map((item) => ({ label: item.label, value: item.value })) },
 };
 
 /** Rows with `onAction` are buttons: Tab reaches them, Enter or Space press. */
@@ -97,10 +97,10 @@ export const LongLabels: Story = {
   args: {
     items: [
       {
-        label: 'Printed viscose twill, 150 cm wide, lilac floral on off-white background',
+        label: 'Wireless noise-cancelling headphones, 40 h battery, matte graphite finish',
         value: 90,
       },
-      { label: 'Linen', value: 45, meta: 'a very long meta text that stays on one line' },
+      { label: 'Notebook', value: 45, meta: 'a very long meta text that stays on one line' },
     ],
   },
 };
@@ -118,10 +118,10 @@ export const BarsAlign: Story = {
 
 export const PortugueseBrazil: Story = {
   args: {
-    items: fabrics,
+    items: products,
     format: (value: number) => formatCurrency(value, 'BRL', 'pt-BR'),
     sort: 'desc',
-    'aria-label': 'Tecidos mais vendidos',
+    'aria-label': 'Produtos mais vendidos',
   },
   decorators: [
     (Story) => (

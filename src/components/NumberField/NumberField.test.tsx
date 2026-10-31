@@ -19,12 +19,12 @@ describe('NumberField', () => {
   });
 
   it('is a text input with the "Number field" role description, named by its label', async () => {
-    const screen = await renderWithProvider(<Quantity description="Pieces per roll." />);
+    const screen = await renderWithProvider(<Quantity description="Pieces per box." />);
     const field = screen.getByRole('textbox', { name: 'Quantity' });
     await expect.element(field).toHaveValue('5');
     expect(field.element().getAttribute('aria-roledescription')).toBe('Number field');
     expect(field.element().getAttribute('inputmode')).toBe('numeric');
-    await expect.element(field).toHaveAccessibleDescription('Pieces per roll.');
+    await expect.element(field).toHaveAccessibleDescription('Pieces per box.');
   });
 
   it('steps with the buttons, named from messages, and disables them at the limits', async () => {
@@ -268,7 +268,7 @@ describe('NumberField', () => {
         <main>
           <Quantity label="Default" />
           <Quantity label="With suffix" suffix="m" />
-          <Quantity label="Described" description="Pieces per roll." />
+          <Quantity label="Described" description="Pieces per box." />
           <Quantity label="Required" isRequired />
           <Quantity label="Invalid" isInvalid errorMessage="Too many." />
           <Quantity label="Disabled" isDisabled />

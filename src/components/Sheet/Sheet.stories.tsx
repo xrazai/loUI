@@ -120,7 +120,7 @@ export const NotPadded: Story = {
     padded: false,
     children: (
       <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        {['Cotton twill', 'Linen blend', 'Wool crepe'].map((name) => (
+        {['Canvas backpack', 'Leather notebook', 'Desk lamp'].map((name) => (
           <li
             key={name}
             style={{

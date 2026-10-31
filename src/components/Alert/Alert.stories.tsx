@@ -42,7 +42,7 @@ export const Warning: Story = {
   args: {
     tone: 'warning',
     title: 'Low stock',
-    children: '3 rolls of linen are left. Reorder to avoid delays.',
+    children: '3 boxes of notebooks are left. Reorder to avoid delays.',
   },
 };
 

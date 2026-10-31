@@ -17,11 +17,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Removable: Story = {
-  args: { children: 'linen', onRemove: () => undefined },
+  args: { children: 'notebook', onRemove: () => undefined },
 };
 
 export const Disabled: Story = {
-  args: { children: 'linen', isDisabled: true, onRemove: () => undefined },
+  args: { children: 'notebook', isDisabled: true, onRemove: () => undefined },
 };
 
 export const LongText: Story = {
@@ -36,7 +36,7 @@ export const LongText: Story = {
 };
 
 export const RightToLeft: Story = {
-  args: { children: 'linen', onRemove: () => undefined },
+  args: { children: 'notebook', onRemove: () => undefined },
   decorators: [
     (Story) => (
       <div dir="rtl">
@@ -47,10 +47,10 @@ export const RightToLeft: Story = {
 };
 
 function RemovableGroup() {
-  const [tags, setTags] = useState(['linen', 'cotton', 'silk', 'wool']);
+  const [tags, setTags] = useState(['notebook', 'backpack', 'headphones', 'lamp']);
   return (
     <TagGroup
-      label="Fabric filters"
+      label="Product filters"
       onRemove={(keys) => {
         setTags((current) => current.filter((tag) => !keys.has(tag)));
       }}
@@ -74,10 +74,10 @@ export const RemovableGroupStory: Story = {
     await userEvent.tab();
     await userEvent.keyboard('{ArrowRight}');
     await userEvent.keyboard('{Backspace}');
-    await expect(canvas.queryByText('cotton')).toBeNull();
+    await expect(canvas.queryByText('backpack')).toBeNull();
     await expect(canvas.getAllByRole('row')).toHaveLength(3);
-    await userEvent.click(canvas.getByRole('button', { name: 'Remove wool' }));
-    await expect(canvas.queryByText('wool')).toBeNull();
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove lamp' }));
+    await expect(canvas.queryByText('lamp')).toBeNull();
   },
 };
 
@@ -94,16 +94,16 @@ export const GroupStatic: Story = {
 export const GroupSelectable: Story = {
   name: 'Group: selectable',
   render: () => (
-    <TagGroup label="Show fabrics" selectionMode="multiple" defaultSelectedKeys={['linen']}>
-      <Tag id="linen">linen</Tag>
-      <Tag id="cotton">cotton</Tag>
-      <Tag id="silk">silk</Tag>
+    <TagGroup label="Show products" selectionMode="multiple" defaultSelectedKeys={['notebook']}>
+      <Tag id="notebook">notebook</Tag>
+      <Tag id="backpack">backpack</Tag>
+      <Tag id="headphones">headphones</Tag>
     </TagGroup>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('row', { name: 'cotton' }));
-    await expect(canvas.getByRole('row', { name: 'cotton' })).toHaveAttribute(
+    await userEvent.click(canvas.getByRole('row', { name: 'backpack' }));
+    await expect(canvas.getByRole('row', { name: 'backpack' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
@@ -113,9 +113,9 @@ export const GroupSelectable: Story = {
 export const GroupWithDisabledTag: Story = {
   name: 'Group: disabled tag',
   render: () => (
-    <TagGroup label="Fabric" onRemove={() => undefined} disabledKeys={['cotton']}>
-      <Tag id="linen">linen</Tag>
-      <Tag id="cotton">cotton</Tag>
+    <TagGroup label="Product" onRemove={() => undefined} disabledKeys={['backpack']}>
+      <Tag id="notebook">notebook</Tag>
+      <Tag id="backpack">backpack</Tag>
     </TagGroup>
   ),
 };
@@ -123,7 +123,7 @@ export const GroupWithDisabledTag: Story = {
 export const GroupEmpty: Story = {
   name: 'Group: empty',
   render: () => (
-    <TagGroup label="Fabric filters" renderEmptyState={() => <span>No filters applied</span>}>
+    <TagGroup label="Product filters" renderEmptyState={() => <span>No filters applied</span>}>
       {[]}
     </TagGroup>
   ),

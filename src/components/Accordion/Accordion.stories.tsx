@@ -14,12 +14,12 @@ const items = [
   {
     value: 'returns',
     title: 'Can I return an order?',
-    content: 'You can return unused fabric within 30 days of delivery.',
+    content: 'You can return unused items within 30 days of delivery.',
   },
   {
     value: 'samples',
-    title: 'Do you send fabric samples?',
-    content: 'Yes. Samples are free for orders above a minimum of 10 meters.',
+    title: 'Do you send product samples?',
+    content: 'Yes. Samples are free for orders above a minimum of 10 units.',
   },
 ];
 
@@ -62,7 +62,7 @@ export const InitiallyExpanded: Story = {
       'aria-expanded',
       'true',
     );
-    await expect(canvas.getByText(/unused fabric/)).toBeVisible();
+    await expect(canvas.getByText(/unused items/)).toBeVisible();
   },
 };
 

@@ -258,10 +258,10 @@ describe('CurrencyInput', () => {
 
   it('marks the field invalid when controlled and links the description and the error', async () => {
     const screen = await renderWithProvider(
-      <Price isInvalid errorMessage="Too expensive." description="Per meter." />,
+      <Price isInvalid errorMessage="Too expensive." description="Per unit." />,
     );
     const field = screen.getByRole('textbox');
-    await expect.element(field).toHaveAccessibleDescription(/Per meter\./);
+    await expect.element(field).toHaveAccessibleDescription(/Per unit./);
     await expect.element(field).toHaveAccessibleDescription(/Too expensive\./);
     expect(field.element().getAttribute('aria-invalid')).toBe('true');
   });
@@ -321,7 +321,7 @@ describe('CurrencyInput', () => {
         <main>
           <Price label="Empty" />
           <Price label="Filled" defaultValue={123456} />
-          <Price label="Described" description="Per meter." />
+          <Price label="Described" description="Per unit." />
           <Price label="Required" isRequired />
           <Price label="Invalid" isInvalid errorMessage="Too expensive." />
           <Price label="Disabled" isDisabled defaultValue={100} />

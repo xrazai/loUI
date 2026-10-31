@@ -11,7 +11,7 @@ const meta = {
   title: 'Components/TagInput',
   component: TagInput,
   tags: ['autodocs'],
-  args: { label: 'Fabrics', placeholder: 'Add a fabric', onChange: fn() },
+  args: { label: 'Products', placeholder: 'Add a product', onChange: fn() },
   argTypes: {
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
   },
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('textbox', { name: 'Fabrics' })).toBeInTheDocument();
+    await expect(canvas.getByRole('textbox', { name: 'Products' })).toBeInTheDocument();
   },
 };
 
@@ -38,74 +38,74 @@ export const Default: Story = {
 export const AddWithKeyboard: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole('textbox', { name: 'Fabrics' });
+    const input = canvas.getByRole('textbox', { name: 'Products' });
     await userEvent.click(input);
-    await userEvent.keyboard('linen{Enter}');
-    await expect(args.onChange).toHaveBeenLastCalledWith(['linen']);
-    await userEvent.keyboard('silk,');
-    await expect(args.onChange).toHaveBeenLastCalledWith(['linen', 'silk']);
-    await expect(canvas.getByRole('button', { name: 'Remove silk' })).toBeInTheDocument();
+    await userEvent.keyboard('notebook{Enter}');
+    await expect(args.onChange).toHaveBeenLastCalledWith(['notebook']);
+    await userEvent.keyboard('headphones,');
+    await expect(args.onChange).toHaveBeenLastCalledWith(['notebook', 'headphones']);
+    await expect(canvas.getByRole('button', { name: 'Remove headphones' })).toBeInTheDocument();
     await expect(input).toHaveValue('');
   },
 };
 
 export const WithTags: Story = {
-  args: { defaultValue: ['linen', 'cotton', 'silk'] },
+  args: { defaultValue: ['notebook', 'backpack', 'headphones'] },
   play: async ({ canvasElement }) => {
     await expect(
-      within(canvasElement).getByRole('grid', { name: 'Fabrics, added tags' }),
+      within(canvasElement).getByRole('grid', { name: 'Products, added tags' }),
     ).toBeInTheDocument();
   },
 };
 
 /** `Backspace` on the empty input removes the last tag. */
 export const BackspaceRemovesLast: Story = {
-  args: { defaultValue: ['linen', 'cotton', 'silk'] },
+  args: { defaultValue: ['notebook', 'backpack', 'headphones'] },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Fabrics' }));
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Products' }));
     await userEvent.keyboard('{Backspace}');
-    await expect(args.onChange).toHaveBeenLastCalledWith(['linen', 'cotton']);
-    await expect(canvas.queryByRole('button', { name: 'Remove silk' })).toBeNull();
+    await expect(args.onChange).toHaveBeenLastCalledWith(['notebook', 'backpack']);
+    await expect(canvas.queryByRole('button', { name: 'Remove headphones' })).toBeNull();
   },
 };
 
 /** The input is a tab stop of its own; `Shift+Tab` reaches the tags, where `Delete` removes one. */
 export const RemoveWithKeyboard: Story = {
-  args: { defaultValue: ['linen', 'cotton'] },
+  args: { defaultValue: ['notebook', 'backpack'] },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Fabrics' }));
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Products' }));
     await userEvent.tab({ shift: true });
     await userEvent.tab({ shift: true });
     await userEvent.keyboard('{Delete}');
-    await expect(args.onChange).toHaveBeenLastCalledWith(['linen']);
+    await expect(args.onChange).toHaveBeenLastCalledWith(['notebook']);
   },
 };
 
 /** A duplicate is ignored (case does not matter) and a polite message says so. */
 export const Duplicate: Story = {
-  args: { defaultValue: ['Linen'] },
+  args: { defaultValue: ['Notebook'] },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Fabrics' }));
-    await userEvent.keyboard('linen{Enter}');
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Products' }));
+    await userEvent.keyboard('notebook{Enter}');
     await expect(args.onChange).not.toHaveBeenCalled();
-    await expect(canvas.getAllByText('“linen” is already added.').length).toBeGreaterThan(0);
+    await expect(canvas.getAllByText('“notebook” is already added.').length).toBeGreaterThan(0);
   },
 };
 
 export const MaxTags: Story = {
   args: {
-    defaultValue: ['linen', 'silk'],
+    defaultValue: ['notebook', 'headphones'],
     maxTags: 2,
-    description: 'Up to 2 fabrics.',
+    description: 'Up to 2 products.',
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole('textbox', { name: 'Fabrics' });
+    const input = canvas.getByRole('textbox', { name: 'Products' });
     await userEvent.click(input);
-    await userEvent.keyboard('wool{Enter}');
+    await userEvent.keyboard('lamp{Enter}');
     await expect(args.onChange).not.toHaveBeenCalled();
     await expect(canvas.getByRole('alert')).toHaveTextContent('You can add up to 2 tags.');
     await expect(input).toBeInvalid();
@@ -114,44 +114,46 @@ export const MaxTags: Story = {
 
 export const Validation: Story = {
   args: {
-    description: 'One word per fabric.',
-    validateTag: (tag) => (/\s/.test(tag) ? 'Use one word per fabric.' : undefined),
+    description: 'One word per product.',
+    validateTag: (tag) => (/\s/.test(tag) ? 'Use one word per product.' : undefined),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Fabrics' }));
-    await userEvent.keyboard('organic cotton{Enter}');
-    await expect(canvas.getByRole('alert')).toHaveTextContent('Use one word per fabric.');
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Products' }));
+    await userEvent.keyboard('wireless headphones{Enter}');
+    await expect(canvas.getByRole('alert')).toHaveTextContent('Use one word per product.');
   },
 };
 
 export const Invalid: Story = {
-  args: { isInvalid: true, errorMessage: 'Add at least one fabric.' },
+  args: { isInvalid: true, errorMessage: 'Add at least one product.' },
 };
 
 export const Required: Story = { args: { isRequired: true } };
 
 export const Disabled: Story = {
-  args: { isDisabled: true, defaultValue: ['linen', 'silk'] },
+  args: { isDisabled: true, defaultValue: ['notebook', 'headphones'] },
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole('textbox', { name: 'Fabrics' })).toBeDisabled();
+    await expect(within(canvasElement).getByRole('textbox', { name: 'Products' })).toBeDisabled();
   },
 };
 
-export const ReadOnly: Story = { args: { isReadOnly: true, defaultValue: ['linen', 'silk'] } };
+export const ReadOnly: Story = {
+  args: { isReadOnly: true, defaultValue: ['notebook', 'headphones'] },
+};
 
-export const Small: Story = { args: { size: 'sm', defaultValue: ['linen'] } };
+export const Small: Story = { args: { size: 'sm', defaultValue: ['notebook'] } };
 
-export const Large: Story = { args: { size: 'lg', defaultValue: ['linen'] } };
+export const Large: Story = { args: { size: 'lg', defaultValue: ['notebook'] } };
 
 export const ManyTagsWrap: Story = {
   args: {
     defaultValue: [
-      'organic cotton',
-      'washed linen',
-      'raw silk',
-      'brushed wool',
-      'viscose twill',
+      'wireless headphones',
+      'leather notebook',
+      'canvas backpack',
+      'brass desk lamp',
+      'ceramic mug',
       'jacquard',
     ],
   },
@@ -173,10 +175,10 @@ export const SemicolonDelimiter: Story = {
 };
 
 function ControlledExample() {
-  const [tags, setTags] = useState<string[]>(['linen']);
+  const [tags, setTags] = useState<string[]>(['notebook']);
   return (
     <>
-      <TagInput label="Fabrics" value={tags} onChange={setTags} />
+      <TagInput label="Products" value={tags} onChange={setTags} />
       <p>Tags: {tags.join(', ') || 'none'}</p>
     </>
   );
@@ -186,16 +188,16 @@ export const Controlled: Story = {
   render: () => <ControlledExample />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Fabrics' }));
-    await userEvent.keyboard('silk{Enter}');
-    await expect(canvas.getByText('Tags: linen, silk')).toBeInTheDocument();
-    await userEvent.click(canvas.getByRole('button', { name: 'Remove linen' }));
-    await expect(canvas.getByText('Tags: silk')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Products' }));
+    await userEvent.keyboard('headphones{Enter}');
+    await expect(canvas.getByText('Tags: notebook, headphones')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove notebook' }));
+    await expect(canvas.getByText('Tags: headphones')).toBeInTheDocument();
   },
 };
 
 export const InForm: Story = {
-  args: { name: 'fabrics', defaultValue: ['linen', 'silk'] },
+  args: { name: 'products', defaultValue: ['notebook', 'headphones'] },
   render: (args) => (
     <form>
       <TagInput {...args} />
@@ -203,12 +205,15 @@ export const InForm: Story = {
   ),
   play: async ({ canvasElement }) => {
     const form = canvasElement.querySelector('form');
-    await expect(form ? new FormData(form).getAll('fabrics') : []).toEqual(['linen', 'silk']);
+    await expect(form ? new FormData(form).getAll('products') : []).toEqual([
+      'notebook',
+      'headphones',
+    ]);
   },
 };
 
 export const Portuguese: Story = {
-  args: { label: 'Tecidos', placeholder: 'Adicione um tecido', defaultValue: ['linho'] },
+  args: { label: 'Produtos', placeholder: 'Adicione um produto', defaultValue: ['caderno'] },
   render: (args) => (
     <DSProvider locale="pt-BR">
       <TagInput {...args} />
@@ -216,15 +221,15 @@ export const Portuguese: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('button', { name: 'Remover linho' })).toBeInTheDocument();
-    await userEvent.click(canvas.getByRole('textbox', { name: 'Tecidos' }));
-    await userEvent.keyboard('linho{Enter}');
-    await expect(canvas.getAllByText('“linho” já foi adicionada.').length).toBeGreaterThan(0);
+    await expect(canvas.getByRole('button', { name: 'Remover caderno' })).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Produtos' }));
+    await userEvent.keyboard('caderno{Enter}');
+    await expect(canvas.getAllByText('“caderno” já foi adicionada.').length).toBeGreaterThan(0);
   },
 };
 
 export const RightToLeft: Story = {
-  args: { defaultValue: ['linen', 'silk'] },
+  args: { defaultValue: ['notebook', 'headphones'] },
   decorators: [
     (Story) => (
       <DSProvider locale="ar">
@@ -237,9 +242,9 @@ export const RightToLeft: Story = {
 };
 
 export const Focused: Story = {
-  args: { defaultValue: ['linen'] },
+  args: { defaultValue: ['notebook'] },
   parameters: { visual: { play: true } },
   play: async ({ canvasElement }) => {
-    await userEvent.click(within(canvasElement).getByRole('textbox', { name: 'Fabrics' }));
+    await userEvent.click(within(canvasElement).getByRole('textbox', { name: 'Products' }));
   },
 };

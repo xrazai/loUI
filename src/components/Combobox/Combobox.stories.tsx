@@ -9,9 +9,9 @@ import { StoryFrame } from '../../test/StoryFrame';
 const customers: ComboboxOption[] = [
   { value: 'cafe', label: 'Café Central', meta: '3 orders' },
   { value: 'halden', label: 'Halden & Co.', meta: '12 orders' },
-  { value: 'mira', label: 'Mira Têxtil', description: 'São Paulo' },
-  { value: 'nordic', label: 'Nordic Linen', description: 'Oslo', meta: '8 orders' },
-  { value: 'sol', label: 'Sol Tecidos' },
+  { value: 'mira', label: 'Mira Armazém', description: 'São Paulo' },
+  { value: 'nordic', label: 'Nordic Goods', description: 'Oslo', meta: '8 orders' },
+  { value: 'sol', label: 'Sol Market' },
 ];
 
 const meta = {
@@ -86,7 +86,7 @@ export const WithDescriptionAndMeta: Story = {
 export const WithSelection: Story = {
   args: { defaultValue: 'mira' },
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole('combobox')).toHaveValue('Mira Têxtil');
+    await expect(within(canvasElement).getByRole('combobox')).toHaveValue('Mira Armazém');
   },
 };
 

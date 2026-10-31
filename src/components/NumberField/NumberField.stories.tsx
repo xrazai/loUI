@@ -79,7 +79,7 @@ export const FormattedUnit: Story = {
 };
 
 export const WithDescription: Story = {
-  args: { description: 'Pieces per roll.' },
+  args: { description: 'Pieces per box.' },
 };
 
 export const Required: Story = {

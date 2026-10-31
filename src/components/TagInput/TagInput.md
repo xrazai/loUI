@@ -44,7 +44,7 @@ div (field root)
 | `delimiters`                                             | `readonly string[]`            | `[',']`      | End a tag while typing and split pasted text. `Enter` always adds; line breaks always split a paste. |
 | `maxTags`                                                | `number`                       | none         | Error "You can add up to N tags." when exceeded; the text is kept.                                   |
 | `validateTag`                                            | `(tag) => string \| undefined` | none         | Return a message to reject a tag. Shown as the field error and read aloud.                           |
-| `caseSensitive`                                          | `boolean`                      | `false`      | By default `Linen` and `linen` are the same tag.                                                     |
+| `caseSensitive`                                          | `boolean`                      | `false`      | By default `Notebook` and `notebook` are the same tag.                                               |
 | `addOnBlur`                                              | `boolean`                      | `true`       | Turns the text left in the input into a tag on blur.                                                 |
 | `description` / `errorMessage`                           | `ReactNode`                    | none         | Helper text; your own error while `isInvalid`.                                                       |
 | `placeholder`                                            | `string`                       | none         | Shown only while there are no tags.                                                                  |
@@ -59,22 +59,22 @@ div (field root)
 | `Enter` with text                            | Adds the tag (trimmed), clears the input. Does not submit the form. `Enter` on an empty input submits as usual. |
 | A delimiter key (`,`)                        | Same as `Enter`; the character is never typed.                                                                  |
 | Paste with delimiters or line breaks         | Adds every piece. Duplicates are skipped; a message counts them. A paste without delimiters is a normal paste.  |
-| `Backspace` on an empty input                | Removes the last tag (announced: "Removed “silk”.").                                                            |
-| Duplicate                                    | Ignored, input cleared, polite message "“linen” is already added." Not an error.                                |
+| `Backspace` on an empty input                | Removes the last tag (announced: "Removed “headphones”.").                                                      |
+| Duplicate                                    | Ignored, input cleared, polite message "“notebook” is already added." Not an error.                             |
 | Beyond `maxTags` / rejected by `validateTag` | Error (`role="alert"`, field invalid), nothing is added, the text stays so it can be fixed.                     |
 | Blur with text                               | Adds it (`addOnBlur`).                                                                                          |
 
 ## Accessibility
 
-- The input is a normal `textbox` named by the label. The tags are a `grid` named "Fabrics, added tags" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.
-- Remove buttons are 24x24 and named "Remove linen" (message `Tag.remove`).
+- The input is a normal `textbox` named by the label. The tags are a `grid` named "Products, added tags" with one `row` per tag (React Aria `TagGroup`): `Shift+Tab` from the input reaches the tags; a row, then its remove button, are tab stops; `←` / `→` move between tags; `Backspace` or `Delete` on a focused tag removes it. After the last tag is removed focus returns to the input.
+- Remove buttons are 24x24 and named "Remove notebook" (message `Tag.remove`).
 - Additions, removals and duplicates are announced in one polite `role="status"` region; errors are in the field's `role="alert"` message, linked with `aria-describedby`. Only duplicates are also shown as text below the box, so the notice is not color-only; the error is text and the box border turns danger.
 - The click target of the whole box focuses the input.
 - Contrast: the box border is `--ds-line-control` (3:1) in every state, as in the other fields.
 
 ## Content rules
 
-- Label as a noun phrase ("Fabrics", "Recipients"). Placeholder: an example or an action ("Add a fabric"), never the label.
+- Label as a noun phrase ("Products", "Recipients"). Placeholder: an example or an action ("Add a product"), never the label.
 - `validateTag` messages say how to fix it: "Enter a complete email address."
 - Tags are shown as typed (trimmed); sorting is up to you.
 
@@ -85,7 +85,7 @@ div (field root)
 ## Examples
 
 ```tsx
-<TagInput label="Fabrics" name="fabrics" value={fabrics} onChange={setFabrics} maxTags={10} />
+<TagInput label="Products" name="products" value={products} onChange={setProducts} maxTags={10} />
 
 <TagInput
   label="Recipients"

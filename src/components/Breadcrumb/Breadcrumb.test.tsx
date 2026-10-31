@@ -52,7 +52,10 @@ describe('Breadcrumb', () => {
           <Breadcrumb
             items={[
               { label: 'Purchase orders awaiting approval', href: '#a' },
-              { label: 'Supplier: Fabrics and Notions International Trading Company', href: '#b' },
+              {
+                label: 'Supplier: Stationery and Accessories International Trading Company',
+                href: '#b',
+              },
               { label: 'ORD-1048 line items with partial shipment and credit note' },
             ]}
           />

@@ -62,7 +62,7 @@ export interface DataTableColumn<T> {
   render?: (row: T) => ReactNode;
   /**
    * Marks the column whose text names each row for assistive technology and completes the
-   * selection checkbox name ("Select row Zeta Textiles"). Choose the most descriptive column.
+   * selection checkbox name ("Select row Zeta Supplies"). Choose the most descriptive column.
    * Default: the first column.
    */
   isRowHeader?: boolean;

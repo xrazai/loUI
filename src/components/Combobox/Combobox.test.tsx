@@ -12,8 +12,8 @@ import type { ComboboxProps } from './Combobox';
 const customers = [
   { value: 'cafe', label: 'Café Central' },
   { value: 'halden', label: 'Halden & Co.', meta: '12 orders' },
-  { value: 'mira', label: 'Mira Têxtil', description: 'São Paulo' },
-  { value: 'nordic', label: 'Nordic Linen' },
+  { value: 'mira', label: 'Mira Armazém', description: 'São Paulo' },
+  { value: 'nordic', label: 'Nordic Goods' },
 ];
 
 function Customers(props: Partial<ComboboxProps>) {
@@ -53,7 +53,7 @@ describe('Combobox', () => {
       screen.getByRole('listbox').element().id,
     );
     await userEvent.clear(input);
-    await userEvent.keyboard('textil');
+    await userEvent.keyboard('armazem');
     await expect.element(screen.getByRole('option', { name: /Mira/ })).toBeVisible();
     expect(screen.getByRole('option').elements()).toHaveLength(1);
   });
@@ -103,7 +103,7 @@ describe('Combobox', () => {
     await screen.getByRole('button', { name: /Show options/ }).click();
     expect(screen.getByRole('option').elements()).toHaveLength(4);
     await screen.getByRole('option', { name: /Nordic/ }).click();
-    await expect.element(input).toHaveValue('Nordic Linen');
+    await expect.element(input).toHaveValue('Nordic Goods');
     await screen.getByRole('button', { name: /Show options/ }).click();
     const selected = screen.getByRole('option', { name: /Nordic/ }).element();
     expect(selected.getAttribute('aria-selected')).toBe('true');
@@ -148,7 +148,7 @@ describe('Combobox', () => {
     expect(getComputedStyle(meta as Element).fontFamily).toContain('Geist Mono');
     await expect
       .element(screen.getByRole('option', { name: /Mira/ }))
-      .toHaveAccessibleName('Mira Têxtil São Paulo');
+      .toHaveAccessibleName('Mira Armazém São Paulo');
   });
 
   it('renders sections with captions and skips disabled options', async () => {
@@ -217,7 +217,7 @@ describe('Combobox', () => {
     );
     await screen.getByRole('button', { name: 'Save' }).click();
     expect(data?.get('customer')).toBe('mira');
-    await expect.element(screen.getByRole('combobox')).toHaveValue('Mira Têxtil');
+    await expect.element(screen.getByRole('combobox')).toHaveValue('Mira Armazém');
   });
 
   it('works controlled and uncontrolled', async () => {
@@ -240,7 +240,7 @@ describe('Combobox', () => {
     }
     const controlled = await renderWithProvider(<Controlled />);
     const input = controlled.getByRole('combobox');
-    await expect.element(input).toHaveValue('Nordic Linen');
+    await expect.element(input).toHaveValue('Nordic Goods');
     await controlled.getByRole('button', { name: /Show options/ }).click();
     await controlled.getByRole('option', { name: /Halden/ }).click();
     expect(controlled.container.querySelector('output')?.textContent).toBe('halden');
@@ -248,7 +248,7 @@ describe('Combobox', () => {
     await expect.element(input).toHaveValue('Café Central');
     await controlled.unmount();
     const uncontrolled = await renderWithProvider(<Customers defaultValue="mira" />);
-    await expect.element(uncontrolled.getByRole('combobox')).toHaveValue('Mira Têxtil');
+    await expect.element(uncontrolled.getByRole('combobox')).toHaveValue('Mira Armazém');
   });
 
   it('supports async loading: no client filter, a spinner, and a Loading row when empty', async () => {
@@ -323,7 +323,7 @@ describe('Combobox', () => {
     const readOnly = await renderWithProvider(<Customers isReadOnly defaultValue="mira" />);
     await userEvent.click(readOnly.getByRole('combobox'));
     await userEvent.keyboard('x');
-    await expect.element(readOnly.getByRole('combobox')).toHaveValue('Mira Têxtil');
+    await expect.element(readOnly.getByRole('combobox')).toHaveValue('Mira Armazém');
   });
 
   it('styles the overlay: raised surface, overlay shadow, radius lg, dropdown layer, 36px items, as wide as the box', async () => {
@@ -343,7 +343,7 @@ describe('Combobox', () => {
       getComputedStyle(document.documentElement).getPropertyValue('--ds-z-dropdown').trim(),
     );
     expect(
-      screen.getByRole('option', { name: 'Nordic Linen' }).element().getBoundingClientRect().height,
+      screen.getByRole('option', { name: 'Nordic Goods' }).element().getBoundingClientRect().height,
     ).toBe(36);
     const box = screen.getByRole('combobox').element().parentElement as HTMLElement;
     expect(popover.getBoundingClientRect().width).toBeGreaterThanOrEqual(

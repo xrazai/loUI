@@ -52,7 +52,7 @@ export const LongTrail: Story = {
   args: {
     items: [
       { label: 'Purchase orders awaiting approval', href: '#a' },
-      { label: 'Supplier: Fabrics and Notions International Trading Company', href: '#b' },
+      { label: 'Supplier: Stationery and Accessories International Trading Company', href: '#b' },
       { label: 'Delivery batch 2026-10-31 from the northern warehouse', href: '#c' },
       { label: 'ORD-1048 line items with partial shipment and credit note' },
     ],

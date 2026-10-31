@@ -53,9 +53,9 @@ export const AlphabeticalByDefault: Story = {
       'ana lima',
       'Bruno Costa',
       'Casa Norte',
-      'Émile Tecidos',
+      'Émile Studio',
       'Eva Moda',
-      'Zeta Textiles',
+      'Zeta Supplies',
     ]);
   },
 };
@@ -235,7 +235,7 @@ export const LongText: Story = {
     rows: [
       {
         id: 'ORD-2001',
-        customer: 'Companhia Brasileira de Tecidos Finos e Acabamentos Industriais Ltda',
+        customer: 'Companhia Brasileira de Papéis Finos e Acabamentos Industriais Ltda',
         status: 'Pending',
         total: 99900,
         date: '2026-10-29',

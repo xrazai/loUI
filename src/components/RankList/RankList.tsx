@@ -12,7 +12,7 @@ export type RankListSort = 'asc' | 'desc';
 export interface RankItem {
   /** Stable id of the row. Falls back to the label, so give one when labels can repeat. */
   id?: string;
-  /** Name of the item: a fabric, a color, a customer. Truncated with an ellipsis when it does not fit. */
+  /** Name of the item: a product, a color, a customer. Truncated with an ellipsis when it does not fit. */
   label: string;
   /** The number the row is ranked by. Negative and non-finite values draw an empty bar. */
   value: number;
@@ -28,7 +28,7 @@ export interface RankListProps extends Omit<
   ComponentPropsWithRef<'div'>,
   'children' | 'aria-label' | 'aria-labelledby'
 > {
-  /** Accessible name of the list ("Top fabrics"). Optional: a list inside a titled `Card` is already named by it. */
+  /** Accessible name of the list ("Top products"). Optional: a list inside a titled `Card` is already named by it. */
   'aria-label'?: string;
   /** Id of the element that names the list. */
   'aria-labelledby'?: string;

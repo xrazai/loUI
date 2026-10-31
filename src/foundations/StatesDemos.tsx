@@ -85,7 +85,7 @@ export const statesDemos = {
   fields: (
     <Demo caption="Rest, invalid and disabled. Tab into any field to see the focus ring.">
       <div className={styles.row} data-gap="lg">
-        <Input label="Customer" defaultValue="Zeta Textiles" />
+        <Input label="Customer" defaultValue="Zeta Supplies" />
         <Input
           label="Email"
           defaultValue="zeta@"
@@ -118,7 +118,7 @@ export const statesDemos = {
             <Tab id="history">History</Tab>
           </TabList>
           <TabPanel id="details">Customer and address.</TabPanel>
-          <TabPanel id="items">Fabrics on this order.</TabPanel>
+          <TabPanel id="items">Items on this order.</TabPanel>
           <TabPanel id="history">Every change made to the order.</TabPanel>
         </Tabs>
         <div className={styles.tableWrap}>

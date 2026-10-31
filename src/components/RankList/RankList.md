@@ -6,7 +6,7 @@ An ordered list of items with a value, a bar relative to the largest value and a
 
 ## When to use
 
-- "Top fabrics", "best customers", "colors by sales": a short ranking with comparable values.
+- "Top products", "best customers", "colors by sales": a short ranking with comparable values.
 
 ## When not to use
 
@@ -51,17 +51,17 @@ div.root
 ## Content rules
 
 - Labels are names, not sentences. Meta is short and mono: `12 units · 18%`.
-- Use this for things (fabrics, colors, customers). Give customers an `onAction` that opens the profile.
+- Use this for things (products, colors, customers). Give customers an `onAction` that opens the profile.
 
 ## Example
 
 ```tsx
-<Card padding="none" title="Top fabrics">
+<Card padding="none" title="Top products">
   <RankList
     sort="desc"
     limit={6}
     format={(v) => formatCurrency(v, 'USD', locale)}
-    items={fabrics.map((f) => ({
+    items={products.map((f) => ({
       id: f.id,
       label: f.name,
       value: f.totalMinor,

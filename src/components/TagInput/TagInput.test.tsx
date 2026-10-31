@@ -11,7 +11,7 @@ function Example(props: Partial<TagInputProps>) {
   return (
     <>
       <button type="button">Before</button>
-      <TagInput label="Fabrics" {...props} />
+      <TagInput label="Products" {...props} />
       <button type="button">After</button>
     </>
   );
@@ -36,15 +36,19 @@ describe('TagInput', () => {
   describe('rendering and ARIA', () => {
     it('is a text box named by its label', async () => {
       const screen = await renderWithProvider(<Example />);
-      await expect.element(screen.getByRole('textbox', { name: 'Fabrics' })).toBeVisible();
+      await expect.element(screen.getByRole('textbox', { name: 'Products' })).toBeVisible();
     });
 
     it('renders the initial tags as a named grid of rows, each with a remove button', async () => {
-      const screen = await renderWithProvider(<Example defaultValue={['linen', 'silk']} />);
-      await expect.element(screen.getByRole('grid', { name: 'Fabrics, added tags' })).toBeVisible();
+      const screen = await renderWithProvider(
+        <Example defaultValue={['notebook', 'headphones']} />,
+      );
+      await expect
+        .element(screen.getByRole('grid', { name: 'Products, added tags' }))
+        .toBeVisible();
       expect(screen.getByRole('row').elements()).toHaveLength(2);
-      await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Remove silk' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove headphones' })).toBeVisible();
     });
 
     it('renders no list when there are no tags', async () => {
@@ -64,20 +68,20 @@ describe('TagInput', () => {
 
     it('shows the placeholder only while there are no tags', async () => {
       const empty = await renderWithProvider(
-        <TagInput label="Fabrics" placeholder="Add a fabric" />,
+        <TagInput label="Products" placeholder="Add a product" />,
       );
-      await expect.element(empty.getByPlaceholder('Add a fabric')).toBeVisible();
+      await expect.element(empty.getByPlaceholder('Add a product')).toBeVisible();
       await empty.unmount();
       const filled = await renderWithProvider(
-        <TagInput label="Fabrics" placeholder="Add a fabric" defaultValue={['a']} />,
+        <TagInput label="Products" placeholder="Add a product" defaultValue={['a']} />,
       );
-      expect(filled.getByPlaceholder('Add a fabric').elements()).toHaveLength(0);
+      expect(filled.getByPlaceholder('Add a product').elements()).toHaveLength(0);
     });
 
     it('links the description to the input', async () => {
       const screen = await renderWithProvider(<Example description="Separate with commas." />);
       await expect
-        .element(screen.getByRole('textbox', { name: 'Fabrics' }))
+        .element(screen.getByRole('textbox', { name: 'Products' }))
         .toHaveAccessibleDescription('Separate with commas.');
     });
 
@@ -99,7 +103,7 @@ describe('TagInput', () => {
     it('puts the input on the same row as the tags while there is room', async () => {
       const screen = await renderWithProvider(
         <div style={{ inlineSize: 400 }}>
-          <TagInput label="Fabrics" defaultValue={['linen', 'silk']} />
+          <TagInput label="Products" defaultValue={['notebook', 'headphones']} />
         </div>,
       );
       const input = screen.getByRole('textbox').element().getBoundingClientRect();
@@ -109,10 +113,16 @@ describe('TagInput', () => {
     });
 
     it('wraps tags onto more rows and keeps the input on the last one', async () => {
-      const tags = ['organic cotton', 'washed linen', 'raw silk', 'brushed wool', 'viscose twill'];
+      const tags = [
+        'wireless headphones',
+        'leather notebook',
+        'canvas backpack',
+        'brass desk lamp',
+        'ceramic mug',
+      ];
       const screen = await renderWithProvider(
         <div style={{ inlineSize: 240 }}>
-          <TagInput label="Fabrics" defaultValue={tags} />
+          <TagInput label="Products" defaultValue={tags} />
         </div>,
       );
       const input = screen.getByRole('textbox').element().getBoundingClientRect();
@@ -127,7 +137,7 @@ describe('TagInput', () => {
       const screen = await renderWithProvider(
         <div style={{ inlineSize: 200 }}>
           <TagInput
-            label="Fabrics"
+            label="Products"
             defaultValue={['Awaiting supplier confirmation for the previous quarter shipment']}
           />
         </div>,
@@ -144,7 +154,7 @@ describe('TagInput', () => {
         <TagInput
           ref={ref}
           inputRef={inputRef}
-          label="Fabrics"
+          label="Products"
           className="extra"
           inputClassName="extra-input"
           data-testid="field"
@@ -173,11 +183,11 @@ describe('TagInput', () => {
     it('adds a tag with Enter, trims it and clears the input', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(<Example onChange={onChange} />);
-      const input = screen.getByRole('textbox', { name: 'Fabrics' });
+      const input = screen.getByRole('textbox', { name: 'Products' });
       await userEvent.click(input);
-      await userEvent.keyboard('  linen  {Enter}');
-      expect(onChange).toHaveBeenLastCalledWith(['linen']);
-      await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toBeVisible();
+      await userEvent.keyboard('  notebook  {Enter}');
+      expect(onChange).toHaveBeenLastCalledWith(['notebook']);
+      await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toBeVisible();
       await expect.element(input).toHaveValue('');
       await expect.element(input).toHaveFocus();
     });
@@ -185,10 +195,10 @@ describe('TagInput', () => {
     it('adds a tag with a comma and never types the comma', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(<Example onChange={onChange} />);
-      const input = screen.getByRole('textbox', { name: 'Fabrics' });
+      const input = screen.getByRole('textbox', { name: 'Products' });
       await userEvent.click(input);
-      await userEvent.keyboard('silk,cotton,');
-      expect(onChange).toHaveBeenLastCalledWith(['silk', 'cotton']);
+      await userEvent.keyboard('headphones,backpack,');
+      expect(onChange).toHaveBeenLastCalledWith(['headphones', 'backpack']);
       await expect.element(input).toHaveValue('');
     });
 
@@ -225,12 +235,12 @@ describe('TagInput', () => {
             onSubmit(event.nativeEvent);
           }}
         >
-          <TagInput label="Fabrics" name="fabrics" />
+          <TagInput label="Products" name="products" />
           <button type="submit">Save</button>
         </form>,
       );
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linen{Enter}');
+      await userEvent.keyboard('notebook{Enter}');
       expect(onSubmit).not.toHaveBeenCalled();
       await userEvent.keyboard('{Enter}');
       expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -240,10 +250,10 @@ describe('TagInput', () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(<Example onChange={onChange} />);
       const input = screen.getByRole('textbox').element();
-      const event = paste(input, 'linen, cotton ,silk\nwool');
+      const event = paste(input, 'notebook, backpack ,headphones\nlamp');
       expect(event.defaultPrevented).toBe(true);
-      expect(onChange).toHaveBeenLastCalledWith(['linen', 'cotton', 'silk', 'wool']);
-      await expect.element(screen.getByRole('button', { name: 'Remove wool' })).toBeVisible();
+      expect(onChange).toHaveBeenLastCalledWith(['notebook', 'backpack', 'headphones', 'lamp']);
+      await expect.element(screen.getByRole('button', { name: 'Remove lamp' })).toBeVisible();
       await vi.waitFor(() => {
         expect(status(screen.container)).toBe('Added 4 tags.');
       });
@@ -251,7 +261,7 @@ describe('TagInput', () => {
 
     it('leaves a paste without delimiters to the browser', async () => {
       const screen = await renderWithProvider(<Example />);
-      const event = paste(screen.getByRole('textbox').element(), 'linen');
+      const event = paste(screen.getByRole('textbox').element(), 'notebook');
       expect(event.defaultPrevented).toBe(false);
     });
 
@@ -259,22 +269,22 @@ describe('TagInput', () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(<Example onChange={onChange} />);
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linen');
+      await userEvent.keyboard('notebook');
       await userEvent.click(screen.getByRole('button', { name: 'After' }));
-      expect(onChange).toHaveBeenLastCalledWith(['linen']);
+      expect(onChange).toHaveBeenLastCalledWith(['notebook']);
       await screen.unmount();
 
       const off = vi.fn();
       const second = await renderWithProvider(<Example onChange={off} addOnBlur={false} />);
       await userEvent.click(second.getByRole('textbox'));
-      await userEvent.keyboard('linen');
+      await userEvent.keyboard('notebook');
       await userEvent.click(second.getByRole('button', { name: 'After' }));
       expect(off).not.toHaveBeenCalled();
-      await expect.element(second.getByRole('textbox')).toHaveValue('linen');
+      await expect.element(second.getByRole('textbox')).toHaveValue('notebook');
     });
 
     it('focuses the input when the empty part of the box is clicked', async () => {
-      const screen = await renderWithProvider(<Example defaultValue={['linen']} />);
+      const screen = await renderWithProvider(<Example defaultValue={['notebook']} />);
       const box = screen.getByRole('textbox').element().closest('[role="presentation"]');
       expect(box).not.toBeNull();
       await userEvent.click(screen.getByRole('button', { name: 'After' }));
@@ -287,26 +297,26 @@ describe('TagInput', () => {
     it('ignores a duplicate (ignoring case), clears the text and says so politely', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['Linen']} onChange={onChange} />,
+        <Example defaultValue={['Notebook']} onChange={onChange} />,
       );
-      const input = screen.getByRole('textbox', { name: 'Fabrics' });
+      const input = screen.getByRole('textbox', { name: 'Products' });
       await userEvent.click(input);
-      await userEvent.keyboard('linen{Enter}');
+      await userEvent.keyboard('notebook{Enter}');
       expect(onChange).not.toHaveBeenCalled();
       expect(screen.getByRole('row').elements()).toHaveLength(1);
       await expect.element(input).toHaveValue('');
-      await expect.element(screen.getByText('“linen” is already added.')).toBeVisible();
-      expect(status(screen.container)).toBe('“linen” is already added.');
+      await expect.element(screen.getByText('“notebook” is already added.')).toBeVisible();
+      expect(status(screen.container)).toBe('“notebook” is already added.');
       // A polite status, not an alert, and the field is not marked invalid.
       expect(screen.container.querySelector('[role="alert"]')).toBeNull();
       await expect.element(input).not.toHaveAttribute('aria-invalid', 'true');
     });
 
     it('clears the message when the user types again', async () => {
-      const screen = await renderWithProvider(<Example defaultValue={['linen']} />);
+      const screen = await renderWithProvider(<Example defaultValue={['notebook']} />);
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linen{Enter}');
-      await expect.element(screen.getByText('“linen” is already added.')).toBeVisible();
+      await userEvent.keyboard('notebook{Enter}');
+      await expect.element(screen.getByText('“notebook” is already added.')).toBeVisible();
       await userEvent.keyboard('s');
       expect(screen.container.querySelector('[role="status"]')?.hasAttribute('data-visible')).toBe(
         false,
@@ -317,21 +327,21 @@ describe('TagInput', () => {
     it('counts duplicates in a paste and still adds the new tags', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['linen', 'silk']} onChange={onChange} />,
+        <Example defaultValue={['notebook', 'headphones']} onChange={onChange} />,
       );
-      paste(screen.getByRole('textbox').element(), 'linen, silk, wool');
-      expect(onChange).toHaveBeenLastCalledWith(['linen', 'silk', 'wool']);
+      paste(screen.getByRole('textbox').element(), 'notebook, headphones, lamp');
+      expect(onChange).toHaveBeenLastCalledWith(['notebook', 'headphones', 'lamp']);
       await expect.element(screen.getByText('2 duplicate tags were skipped.')).toBeVisible();
     });
 
     it('treats different case as different with caseSensitive', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['Linen']} onChange={onChange} caseSensitive />,
+        <Example defaultValue={['Notebook']} onChange={onChange} caseSensitive />,
       );
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linen{Enter}');
-      expect(onChange).toHaveBeenLastCalledWith(['Linen', 'linen']);
+      await userEvent.keyboard('notebook{Enter}');
+      expect(onChange).toHaveBeenLastCalledWith(['Notebook', 'notebook']);
     });
   });
 
@@ -341,7 +351,7 @@ describe('TagInput', () => {
       const screen = await renderWithProvider(
         <Example defaultValue={['a', 'b']} maxTags={2} onChange={onChange} />,
       );
-      const input = screen.getByRole('textbox', { name: 'Fabrics' });
+      const input = screen.getByRole('textbox', { name: 'Products' });
       await userEvent.click(input);
       await userEvent.keyboard('c{Enter}');
       expect(onChange).not.toHaveBeenCalled();
@@ -384,7 +394,7 @@ describe('TagInput', () => {
           validateTag={(tag) => (/\s/.test(tag) ? 'Use a single word.' : undefined)}
         />,
       );
-      const input = screen.getByRole('textbox', { name: 'Fabrics' });
+      const input = screen.getByRole('textbox', { name: 'Products' });
       await userEvent.click(input);
       await userEvent.keyboard('two words{Enter}');
       expect(onChange).not.toHaveBeenCalled();
@@ -400,11 +410,13 @@ describe('TagInput', () => {
 
     it('shows the error text of the consumer while isInvalid', async () => {
       const screen = await renderWithProvider(
-        <Example isInvalid errorMessage="Add at least one fabric." />,
+        <Example isInvalid errorMessage="Add at least one product." />,
       );
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('Add at least one fabric.');
       await expect
-        .element(screen.getByRole('textbox', { name: 'Fabrics' }))
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('Add at least one product.');
+      await expect
+        .element(screen.getByRole('textbox', { name: 'Products' }))
         .toHaveAttribute('aria-invalid', 'true');
     });
   });
@@ -413,21 +425,21 @@ describe('TagInput', () => {
     it('removes the last tag with Backspace on the empty input and announces it', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['linen', 'silk']} onChange={onChange} />,
+        <Example defaultValue={['notebook', 'headphones']} onChange={onChange} />,
       );
       await userEvent.click(screen.getByRole('textbox'));
       await userEvent.keyboard('{Backspace}');
-      expect(onChange).toHaveBeenLastCalledWith(['linen']);
+      expect(onChange).toHaveBeenLastCalledWith(['notebook']);
       expect(screen.getByRole('row').elements()).toHaveLength(1);
       await vi.waitFor(() => {
-        expect(status(screen.container)).toBe('Removed “silk”.');
+        expect(status(screen.container)).toBe('Removed “headphones”.');
       });
     });
 
     it('edits text normally with Backspace when the input is not empty', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['linen']} onChange={onChange} />,
+        <Example defaultValue={['notebook']} onChange={onChange} />,
       );
       await userEvent.click(screen.getByRole('textbox'));
       await userEvent.keyboard('ab{Backspace}');
@@ -438,9 +450,9 @@ describe('TagInput', () => {
     it('removes a tag with its button and keeps focus in the field when it was the last', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['linen']} onChange={onChange} />,
+        <Example defaultValue={['notebook']} onChange={onChange} />,
       );
-      await userEvent.click(screen.getByRole('button', { name: 'Remove linen' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Remove notebook' }));
       expect(onChange).toHaveBeenLastCalledWith([]);
       await expect.element(screen.getByRole('textbox')).toHaveFocus();
     });
@@ -448,7 +460,7 @@ describe('TagInput', () => {
     it('removes the focused tag with Delete and Backspace', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example defaultValue={['linen', 'silk', 'wool']} onChange={onChange} />,
+        <Example defaultValue={['notebook', 'headphones', 'lamp']} onChange={onChange} />,
       );
       await userEvent.click(screen.getByRole('textbox'));
       // Backwards from the input: the remove button of the last tag, then its row.
@@ -457,19 +469,21 @@ describe('TagInput', () => {
       await userEvent.keyboard('{ArrowLeft}');
       await expect.element(screen.getByRole('row').nth(1)).toHaveFocus();
       await userEvent.keyboard('{Delete}');
-      expect(onChange).toHaveBeenLastCalledWith(['linen', 'wool']);
+      expect(onChange).toHaveBeenLastCalledWith(['notebook', 'lamp']);
     });
   });
 
   describe('keyboard contract', () => {
     it('puts the tags (a row, then its remove button) and the input in the tab order', async () => {
-      const screen = await renderWithProvider(<Example defaultValue={['linen', 'silk']} />);
+      const screen = await renderWithProvider(
+        <Example defaultValue={['notebook', 'headphones']} />,
+      );
       await userEvent.keyboard('{Tab}');
       await expect.element(screen.getByRole('button', { name: 'Before' })).toHaveFocus();
       await userEvent.keyboard('{Tab}');
       await expect.element(screen.getByRole('row').first()).toHaveFocus();
       await userEvent.keyboard('{Tab}');
-      await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toHaveFocus();
+      await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toHaveFocus();
       await userEvent.keyboard('{Tab}');
       await expect.element(screen.getByRole('textbox')).toHaveFocus();
       await userEvent.keyboard('{Tab}');
@@ -545,7 +559,7 @@ describe('TagInput', () => {
             data = new FormData(event.currentTarget);
           }}
         >
-          <TagInput label="Fabrics" name="fabrics" defaultValue={['linen', 'silk']} />
+          <TagInput label="Products" name="products" defaultValue={['notebook', 'headphones']} />
           <button type="submit">Save</button>
         </form>,
       );
@@ -553,8 +567,8 @@ describe('TagInput', () => {
       await userEvent.keyboard('draft');
       await userEvent.click(screen.getByRole('button', { name: 'Save' }));
       // The blur turned the draft into a tag before the submit.
-      expect(data?.getAll('fabrics')).toEqual(['linen', 'silk', 'draft']);
-      expect([...(data?.keys() ?? [])].every((key) => key === 'fabrics')).toBe(true);
+      expect(data?.getAll('products')).toEqual(['notebook', 'headphones', 'draft']);
+      expect([...(data?.keys() ?? [])].every((key) => key === 'products')).toBe(true);
     });
 
     it('adds no fields without a name, and none when disabled', async () => {
@@ -573,14 +587,14 @@ describe('TagInput', () => {
     it('is satisfied by one tag when required, and invalid with none', async () => {
       const empty = await renderWithProvider(
         <form data-testid="f">
-          <TagInput label="Fabrics" name="fabrics" isRequired />
+          <TagInput label="Products" name="products" isRequired />
         </form>,
       );
       expect(empty.container.querySelector('form')?.checkValidity()).toBe(false);
       await empty.unmount();
       const filled = await renderWithProvider(
         <form>
-          <TagInput label="Fabrics" name="fabrics" isRequired defaultValue={['linen']} />
+          <TagInput label="Products" name="products" isRequired defaultValue={['notebook']} />
         </form>,
       );
       expect(filled.container.querySelector('form')?.checkValidity()).toBe(true);
@@ -589,7 +603,7 @@ describe('TagInput', () => {
 
   describe('disabled and read-only', () => {
     it('disables the input and the tags and offers no remove buttons', async () => {
-      const screen = await renderWithProvider(<Example isDisabled defaultValue={['linen']} />);
+      const screen = await renderWithProvider(<Example isDisabled defaultValue={['notebook']} />);
       await expect.element(screen.getByRole('textbox')).toBeDisabled();
       expect(screen.getByRole('button', { name: /Remove/ }).elements()).toHaveLength(0);
     });
@@ -597,7 +611,7 @@ describe('TagInput', () => {
     it('is read-only: no changes by keyboard and no remove buttons', async () => {
       const onChange = vi.fn();
       const screen = await renderWithProvider(
-        <Example isReadOnly defaultValue={['linen']} onChange={onChange} />,
+        <Example isReadOnly defaultValue={['notebook']} onChange={onChange} />,
       );
       expect(screen.getByRole('button', { name: /Remove/ }).elements()).toHaveLength(0);
       await userEvent.click(screen.getByRole('textbox'));
@@ -610,19 +624,19 @@ describe('TagInput', () => {
   describe('messages (i18n)', () => {
     it('uses pt-BR texts', async () => {
       const screen = await renderWithProvider(
-        <Example defaultValue={['linho']} label="Tecidos" />,
+        <Example defaultValue={['caderno']} label="Produtos" />,
         { locale: 'pt-BR' },
       );
       await expect
-        .element(screen.getByRole('grid', { name: 'Tecidos, tags adicionadas' }))
+        .element(screen.getByRole('grid', { name: 'Produtos, tags adicionadas' }))
         .toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Remover linho' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remover caderno' })).toBeVisible();
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linho{Enter}');
-      await expect.element(screen.getByText('“linho” já foi adicionada.')).toBeVisible();
+      await userEvent.keyboard('caderno{Enter}');
+      await expect.element(screen.getByText('“caderno” já foi adicionada.')).toBeVisible();
       await userEvent.keyboard('{Backspace}');
       await vi.waitFor(() => {
-        expect(status(screen.container)).toBe('“linho” removida.');
+        expect(status(screen.container)).toBe('“caderno” removida.');
       });
     });
 
@@ -666,7 +680,7 @@ describe('TagInput', () => {
           <TagInput label="Empty" />
           <TagInput
             label="Filled"
-            defaultValue={['linen', 'silk', 'cotton']}
+            defaultValue={['notebook', 'headphones', 'backpack']}
             description="Separate with commas."
           />
           <TagInput aria-label="Keywords" defaultValue={['a']} size="sm" />
@@ -679,13 +693,13 @@ describe('TagInput', () => {
     it('has no axe violations with a duplicate notice and a validation error (axe)', async () => {
       const screen = await renderWithProvider(
         <main>
-          <Example defaultValue={['linen']} maxTags={1} />
+          <Example defaultValue={['notebook']} maxTags={1} />
         </main>,
       );
       await userEvent.click(screen.getByRole('textbox'));
-      await userEvent.keyboard('linen{Enter}');
+      await userEvent.keyboard('notebook{Enter}');
       await expectNoA11yViolations(screen.container);
-      await userEvent.keyboard('wool{Enter}');
+      await userEvent.keyboard('lamp{Enter}');
       await expect.element(screen.getByRole('alert')).toBeVisible();
       await expectNoA11yViolations(screen.container);
     });
@@ -693,7 +707,7 @@ describe('TagInput', () => {
     it('has no axe violations when focused, disabled or read-only (axe)', async () => {
       const screen = await renderWithProvider(
         <main>
-          <Example defaultValue={['linen']} />
+          <Example defaultValue={['notebook']} />
           <TagInput label="Off" isDisabled defaultValue={['a']} />
           <TagInput label="Locked" isReadOnly defaultValue={['a']} />
           <TagInput label="Required" isRequired />

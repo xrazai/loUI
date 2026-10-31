@@ -281,7 +281,7 @@ const CASES: Record<string, () => ReactElement> = {
       <Radio value="s" label="Small" />
     </RadioGroup>
   ),
-  RankList: () => <RankList items={[{ label: 'Linen', value: 10, swatch: '#c9b79c' }]} />,
+  RankList: () => <RankList items={[{ label: 'Notebook', value: 10, swatch: '#c9b79c' }]} />,
   Rating: () => <Rating value={3.5} />,
   SearchInput: () => <SearchInput aria-label="Search orders" />,
   SegmentedControl: () => (

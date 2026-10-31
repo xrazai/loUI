@@ -71,7 +71,7 @@ interface TagInputBaseProps extends Omit<
    * aloud. It receives the trimmed text.
    */
   validateTag?: ((tag: string) => string | null | undefined) | undefined;
-  /** Treat "Linen" and "linen" as different tags. Default: they are the same, and the second is ignored. */
+  /** Treat "Notebook" and "notebook" as different tags. Default: they are the same, and the second is ignored. */
   caseSensitive?: boolean | undefined;
   /** Turns the text left in the input into a tag when the input loses focus. Default `true`. */
   addOnBlur?: boolean | undefined;

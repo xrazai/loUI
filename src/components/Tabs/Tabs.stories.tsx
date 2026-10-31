@@ -21,7 +21,7 @@ const meta = {
         <Tab id="history">History</Tab>
       </TabList>
       <TabPanel id="details">Customer, address and payment terms.</TabPanel>
-      <TabPanel id="items">Fabrics and quantities on this order.</TabPanel>
+      <TabPanel id="items">Items and quantities on this order.</TabPanel>
       <TabPanel id="history">Every change made to the order.</TabPanel>
     </Tabs>
   ),
@@ -49,7 +49,7 @@ export const ArrowKeys: Story = {
     await expect(canvas.getByRole('tab', { name: 'Details' })).toHaveFocus();
     await userEvent.keyboard('{ArrowRight}');
     await expect(canvas.getByRole('tab', { name: 'Items' })).toHaveFocus();
-    await expect(canvas.getByRole('tabpanel')).toHaveTextContent('Fabrics and quantities');
+    await expect(canvas.getByRole('tabpanel')).toHaveTextContent('Items and quantities');
     await userEvent.keyboard('{End}');
     await expect(canvas.getByRole('tab', { name: 'History' })).toHaveFocus();
     await userEvent.keyboard('{Home}');
@@ -157,7 +157,7 @@ export const DisabledTab: Story = {
         <Tab id="history">History</Tab>
       </TabList>
       <TabPanel id="details">Customer, address and payment terms.</TabPanel>
-      <TabPanel id="items">Fabrics and quantities on this order.</TabPanel>
+      <TabPanel id="items">Items and quantities on this order.</TabPanel>
       <TabPanel id="history">Every change made to the order.</TabPanel>
     </Tabs>
   ),
@@ -184,7 +184,7 @@ function ControlledTabs() {
           <Tab id="items">Items</Tab>
         </TabList>
         <TabPanel id="details">Customer and payment terms.</TabPanel>
-        <TabPanel id="items">Fabrics and quantities.</TabPanel>
+        <TabPanel id="items">Items and quantities.</TabPanel>
       </Tabs>
       <p style={{ margin: 0 }}>Selected: {key}</p>
     </>

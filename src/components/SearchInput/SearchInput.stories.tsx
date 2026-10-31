@@ -7,10 +7,10 @@ import { StoryFrame } from '../../test/StoryFrame';
 type NamedByAriaLabel = Extract<SearchInputProps, { 'aria-label': string }>;
 
 const products = [
-  { label: 'Linho natural', meta: 'SKU-204' },
-  { label: 'Algodão cru', meta: 'SKU-118' },
-  'Seda pura',
-  'Linho tingido',
+  { label: 'Caderno liso', meta: 'SKU-204' },
+  { label: 'Lâmpada de mesa', meta: 'SKU-118' },
+  'Fone sem fio',
+  'Caderno pautado',
 ];
 
 const meta = {
@@ -38,15 +38,15 @@ export const Default: Story = {
   play: async ({ canvasElement, args }) => {
     const field = within(canvasElement).getByRole('searchbox', { name: 'Search products' });
     await userEvent.click(field);
-    await userEvent.keyboard('seda{Enter}');
-    await expect(args.onSubmit).toHaveBeenCalledWith('seda');
+    await userEvent.keyboard('fone{Enter}');
+    await expect(args.onSubmit).toHaveBeenCalledWith('fone');
     await userEvent.keyboard('{Escape}');
     await expect(field).toHaveValue('');
   },
 };
 
 export const ClearButton: Story = {
-  args: { defaultValue: 'linho' },
+  args: { defaultValue: 'caderno' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: 'Clear search' }));
@@ -71,11 +71,11 @@ export const WithSuggestions: Story = {
   play: async ({ canvasElement, args }) => {
     const field = within(canvasElement).getByRole('combobox');
     await userEvent.click(field);
-    await userEvent.keyboard('LINHO');
+    await userEvent.keyboard('CADERNO');
     const listbox = await screen.findByRole('listbox');
     await expect(within(listbox).getAllByRole('option')).toHaveLength(2);
     await userEvent.keyboard('{ArrowDown}{Enter}');
-    await waitFor(() => expect(field).toHaveValue('Linho natural'));
+    await waitFor(() => expect(field).toHaveValue('Caderno liso'));
     await expect(args.onSelect).toHaveBeenCalled();
   },
 };
@@ -84,9 +84,9 @@ export const AccentInsensitiveHighlight: Story = {
   args: { suggestions: products },
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('combobox'));
-    await userEvent.keyboard('algodao');
+    await userEvent.keyboard('lampada');
     await screen.findByRole('listbox');
-    await expect(document.querySelector('mark')).toHaveTextContent('Algodão');
+    await expect(document.querySelector('mark')).toHaveTextContent('Lâmpada');
   },
 };
 

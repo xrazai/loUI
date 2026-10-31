@@ -11,7 +11,7 @@ const meta = {
   title: 'Components/CurrencyInput',
   component: CurrencyInput,
   tags: ['autodocs'],
-  args: { label: 'Price per meter', currency: 'USD' },
+  args: { label: 'Price per unit', currency: 'USD' },
   argTypes: {
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
   },
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: { onChange: fn() },
   play: async ({ canvasElement, args }) => {
-    const field = within(canvasElement).getByRole('textbox', { name: 'Price per meter' });
+    const field = within(canvasElement).getByRole('textbox', { name: 'Price per unit' });
     await userEvent.click(field);
     await userEvent.keyboard('124000');
     await expect(field).toHaveValue('$1,240.00');

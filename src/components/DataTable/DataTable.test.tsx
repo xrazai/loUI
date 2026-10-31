@@ -33,8 +33,8 @@ describe('DataTable', () => {
       await expect.element(screen.getByRole('grid', { name: 'Orders' })).toBeVisible();
       expect(screen.getByRole('columnheader').elements()).toHaveLength(4);
       expect(columnTexts(screen.container, 1)).toEqual([
-        'Zeta Textiles',
-        'Émile Tecidos',
+        'Zeta Supplies',
+        'Émile Studio',
         'Alfa Confecções',
         'Eva Moda',
         'Bruno Costa',
@@ -88,9 +88,9 @@ describe('DataTable', () => {
         'ana lima',
         'Bruno Costa',
         'Casa Norte',
-        'Émile Tecidos',
+        'Émile Studio',
         'Eva Moda',
-        'Zeta Textiles',
+        'Zeta Supplies',
       ]);
       const headers = screen.getByRole('columnheader').elements();
       expect(headers.map((header) => header.getAttribute('aria-sort'))).toEqual([
@@ -113,12 +113,12 @@ describe('DataTable', () => {
       await userEvent.click(header);
       expect(onSortChange).toHaveBeenLastCalledWith({ key: 'customer', direction: 'desc' });
       expect(header.element().getAttribute('aria-sort')).toBe('descending');
-      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Textiles');
+      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Supplies');
       await userEvent.click(header);
       expect(onSortChange).toHaveBeenLastCalledWith(null);
       expect(header.element().getAttribute('aria-sort')).toBe('none');
-      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Textiles');
-      expect(columnTexts(screen.container, 1)[1]).toBe('Émile Tecidos');
+      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Supplies');
+      expect(columnTexts(screen.container, 1)[1]).toBe('Émile Studio');
     });
 
     it('sorts from the keyboard with Enter and Space on the focused header', async () => {
@@ -186,7 +186,7 @@ describe('DataTable', () => {
       const screen = await renderWithProvider(
         <DataTable<Order> {...baseProps} sort={sort} onSortChange={onSortChange} />,
       );
-      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Textiles');
+      expect(columnTexts(screen.container, 1)[0]).toBe('Zeta Supplies');
       await userEvent.click(screen.getByRole('columnheader', { name: /Customer/ }));
       expect(onSortChange).toHaveBeenLastCalledWith(null);
       // The parent did not update: the table keeps the controlled sort.
@@ -236,7 +236,7 @@ describe('DataTable', () => {
         <DataTable<Order> {...baseProps} columns={columns} selectionMode="multiple" pageSize={2} />,
       );
       await expect
-        .element(screen.getByRole('checkbox', { name: 'Select row Zeta Textiles' }))
+        .element(screen.getByRole('checkbox', { name: 'Select row Zeta Supplies' }))
         .toBeVisible();
     });
 
@@ -468,7 +468,7 @@ describe('DataTable', () => {
       );
       const active = screen.container.querySelectorAll('tbody tr[data-active]');
       expect(active).toHaveLength(1);
-      expect(active[0]?.textContent).toContain('Émile Tecidos');
+      expect(active[0]?.textContent).toContain('Émile Studio');
     });
 
     it('allows arrow key navigation between rows', async () => {
@@ -477,7 +477,7 @@ describe('DataTable', () => {
       );
       (screen.container.querySelector('tbody tr') as HTMLElement).focus();
       await userEvent.keyboard('{ArrowDown}');
-      expect(document.activeElement?.textContent).toContain('Émile Tecidos');
+      expect(document.activeElement?.textContent).toContain('Émile Studio');
     });
   });
 
@@ -490,7 +490,7 @@ describe('DataTable', () => {
       expect(screen.container.querySelector('[aria-busy="true"]')).not.toBeNull();
       expect(screen.getByRole('status').first().element().textContent).toBe('Loading rows');
       expect(screen.getByRole('checkbox', { name: /Select row/ }).elements()).toHaveLength(0);
-      expect(screen.container.textContent).not.toContain('Zeta Textiles');
+      expect(screen.container.textContent).not.toContain('Zeta Supplies');
     });
 
     it('shows the default empty state', async () => {

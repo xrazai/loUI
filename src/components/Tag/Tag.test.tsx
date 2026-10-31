@@ -6,7 +6,7 @@ import { renderWithProvider } from '../../test/render';
 import { Tag, TagGroup } from './Tag';
 import type { TagGroupProps } from './Tag';
 
-const INITIAL = ['linen', 'cotton', 'silk'];
+const INITIAL = ['notebook', 'backpack', 'headphones'];
 
 function Filters({
   onRemove,
@@ -15,7 +15,7 @@ function Filters({
   const [tags, setTags] = useState(INITIAL);
   return (
     <TagGroup
-      label="Fabric"
+      label="Product"
       onRemove={(keys) => {
         onRemove?.(keys);
         setTags((current) => current.filter((tag) => !keys.has(tag)));
@@ -40,34 +40,34 @@ describe('Tag (standalone)', () => {
 
   it('shows a remove button named with the tag text and calls onRemove', async () => {
     const onRemove = vi.fn();
-    const screen = await renderWithProvider(<Tag onRemove={onRemove}>linen</Tag>);
-    const button = screen.getByRole('button', { name: 'Remove linen' });
+    const screen = await renderWithProvider(<Tag onRemove={onRemove}>notebook</Tag>);
+    const button = screen.getByRole('button', { name: 'Remove notebook' });
     await button.click();
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
   it('removes with the keyboard through the button', async () => {
     const onRemove = vi.fn();
-    const screen = await renderWithProvider(<Tag onRemove={onRemove}>linen</Tag>);
+    const screen = await renderWithProvider(<Tag onRemove={onRemove}>notebook</Tag>);
     await userEvent.tab();
-    await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toHaveFocus();
+    await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toHaveFocus();
     await userEvent.keyboard('{Enter}');
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
   it('uses textValue to name the button when the content is not text', async () => {
     const screen = await renderWithProvider(
-      <Tag textValue="linen" onRemove={() => undefined}>
-        <strong>linen</strong>
+      <Tag textValue="notebook" onRemove={() => undefined}>
+        <strong>notebook</strong>
       </Tag>,
     );
-    await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toBeVisible();
+    await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toBeVisible();
   });
 
   it('makes the remove button a target of at least 24 by 24 pixels', async () => {
-    const screen = await renderWithProvider(<Tag onRemove={() => undefined}>linen</Tag>);
+    const screen = await renderWithProvider(<Tag onRemove={() => undefined}>notebook</Tag>);
     const rect = screen
-      .getByRole('button', { name: 'Remove linen' })
+      .getByRole('button', { name: 'Remove notebook' })
       .element()
       .getBoundingClientRect();
     expect(rect.width).toBeGreaterThanOrEqual(24);
@@ -77,32 +77,32 @@ describe('Tag (standalone)', () => {
   it('disables the remove button when the tag is disabled', async () => {
     const screen = await renderWithProvider(
       <Tag isDisabled onRemove={() => undefined}>
-        linen
+        notebook
       </Tag>,
     );
-    await expect.element(screen.getByRole('button', { name: 'Remove linen' })).toBeDisabled();
+    await expect.element(screen.getByRole('button', { name: 'Remove notebook' })).toBeDisabled();
   });
 
   it('uses the pt-BR message, the provider override and the instance override', async () => {
-    const pt = await renderWithProvider(<Tag onRemove={() => undefined}>linho</Tag>, {
+    const pt = await renderWithProvider(<Tag onRemove={() => undefined}>caderno</Tag>, {
       locale: 'pt-BR',
     });
-    await expect.element(pt.getByRole('button', { name: 'Remover linho' })).toBeVisible();
+    await expect.element(pt.getByRole('button', { name: 'Remover caderno' })).toBeVisible();
     await pt.unmount();
 
-    const provider = await renderWithProvider(<Tag onRemove={() => undefined}>linho</Tag>, {
+    const provider = await renderWithProvider(<Tag onRemove={() => undefined}>caderno</Tag>, {
       messages: { Tag: { remove: (label: string) => `Excluir ${label}` } },
     });
-    await expect.element(provider.getByRole('button', { name: 'Excluir linho' })).toBeVisible();
+    await expect.element(provider.getByRole('button', { name: 'Excluir caderno' })).toBeVisible();
     await provider.unmount();
 
     const instance = await renderWithProvider(
       <Tag onRemove={() => undefined} messages={{ remove: (label: string) => `Tirar ${label}` }}>
-        linho
+        caderno
       </Tag>,
       { messages: { Tag: { remove: (label: string) => `Excluir ${label}` } } },
     );
-    await expect.element(instance.getByRole('button', { name: 'Tirar linho' })).toBeVisible();
+    await expect.element(instance.getByRole('button', { name: 'Tirar caderno' })).toBeVisible();
   });
 
   it('merges className, spreads rest props and takes the ref as a prop', async () => {
@@ -121,9 +121,9 @@ describe('Tag (standalone)', () => {
     const screen = await renderWithProvider(
       <main>
         <Tag>v2.4.0</Tag>
-        <Tag onRemove={() => undefined}>linen</Tag>
+        <Tag onRemove={() => undefined}>notebook</Tag>
         <Tag isDisabled onRemove={() => undefined}>
-          cotton
+          backpack
         </Tag>
       </main>,
     );
@@ -134,7 +134,7 @@ describe('Tag (standalone)', () => {
 describe('TagGroup', () => {
   it('renders a labelled grid with one row per tag', async () => {
     const screen = await renderWithProvider(<Filters />);
-    await expect.element(screen.getByRole('grid', { name: 'Fabric' })).toBeVisible();
+    await expect.element(screen.getByRole('grid', { name: 'Product' })).toBeVisible();
     expect(screen.getByRole('row').elements()).toHaveLength(3);
   });
 
@@ -164,9 +164,9 @@ describe('TagGroup', () => {
     await userEvent.keyboard('{ArrowRight}');
     await userEvent.keyboard(`{${key}}`);
     expect(onRemove).toHaveBeenCalledTimes(1);
-    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['cotton']);
+    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['backpack']);
     expect(screen.getByRole('row').elements()).toHaveLength(2);
-    await expect.element(screen.getByText('cotton')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('backpack')).not.toBeInTheDocument();
   });
 
   it('gives each remove button a name that includes the tag text', async () => {
@@ -179,13 +179,13 @@ describe('TagGroup', () => {
   it('removes a tag with its remove button', async () => {
     const onRemove = vi.fn();
     const screen = await renderWithProvider(<Filters onRemove={onRemove} />);
-    await screen.getByRole('button', { name: 'Remove silk' }).click();
-    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['silk']);
+    await screen.getByRole('button', { name: 'Remove headphones' }).click();
+    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['headphones']);
   });
 
   it('names the remove buttons in pt-BR', async () => {
     const screen = await renderWithProvider(<Filters />, { locale: 'pt-BR' });
-    await expect.element(screen.getByRole('button', { name: 'Remover linen' })).toBeVisible();
+    await expect.element(screen.getByRole('button', { name: 'Remover notebook' })).toBeVisible();
   });
 
   it('shows no remove buttons without onRemove', async () => {
@@ -201,23 +201,23 @@ describe('TagGroup', () => {
   it('does not remove a disabled tag with the keyboard', async () => {
     const onRemove = vi.fn();
     await renderWithProvider(
-      <TagGroup label="Fabric" onRemove={onRemove} disabledKeys={['linen']}>
-        <Tag id="linen">linen</Tag>
-        <Tag id="cotton">cotton</Tag>
+      <TagGroup label="Product" onRemove={onRemove} disabledKeys={['notebook']}>
+        <Tag id="notebook">notebook</Tag>
+        <Tag id="backpack">backpack</Tag>
       </TagGroup>,
     );
     await userEvent.tab();
     await userEvent.keyboard('{Backspace}');
-    expect(document.activeElement?.textContent).toContain('cotton');
+    expect(document.activeElement?.textContent).toContain('backpack');
     expect(onRemove).toHaveBeenCalledTimes(1);
-    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['cotton']);
+    expect(Array.from(onRemove.mock.calls[0]?.[0] as Set<string>)).toEqual(['backpack']);
   });
 
   it('marks selected tags when selection is enabled', async () => {
     const screen = await renderWithProvider(
-      <TagGroup label="Fabric" selectionMode="multiple" defaultSelectedKeys={['linen']}>
-        <Tag id="linen">linen</Tag>
-        <Tag id="cotton">cotton</Tag>
+      <TagGroup label="Product" selectionMode="multiple" defaultSelectedKeys={['notebook']}>
+        <Tag id="notebook">notebook</Tag>
+        <Tag id="backpack">backpack</Tag>
       </TagGroup>,
     );
     const rows = screen.getByRole('row').elements();
@@ -227,7 +227,7 @@ describe('TagGroup', () => {
 
   it('shows the empty state', async () => {
     const screen = await renderWithProvider(
-      <TagGroup label="Fabric" renderEmptyState={() => 'No filters applied'}>
+      <TagGroup label="Product" renderEmptyState={() => 'No filters applied'}>
         {[]}
       </TagGroup>,
     );

@@ -21,8 +21,8 @@ const TONES: Record<Order['status'], BadgeTone> = {
 
 /** Deliberately not alphabetical: the table shows rows as given until the user sorts. */
 export const orders: Order[] = [
-  { id: 'ORD-1001', customer: 'Zeta Textiles', status: 'Paid', total: 124000, date: '2026-10-28' },
-  { id: 'ORD-1002', customer: 'Émile Tecidos', status: 'Pending', total: 8900, date: '2026-10-27' },
+  { id: 'ORD-1001', customer: 'Zeta Supplies', status: 'Paid', total: 124000, date: '2026-10-28' },
+  { id: 'ORD-1002', customer: 'Émile Studio', status: 'Pending', total: 8900, date: '2026-10-27' },
   {
     id: 'ORD-1003',
     customer: 'Alfa Confecções',

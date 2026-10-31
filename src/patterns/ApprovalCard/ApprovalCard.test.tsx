@@ -14,7 +14,7 @@ const review: ApprovalCardProps = {
   itemColor: '#1b1b1d',
   when: 'today, 10:40',
   whenDateTime: '2026-10-31T10:40:00',
-  message: 'The fabric came with a small defect at the edge.',
+  message: 'The backpack came with a small defect at the zipper.',
   defaultDraft: 'Sorry about that. We will check the batch.',
   flag: '2-star review: read it carefully before sending.',
 };
@@ -65,7 +65,7 @@ describe('ApprovalCard', () => {
     it('labels the customer message for screen readers', async () => {
       const screen = await renderWithProvider(<ApprovalCard {...review} />);
       expect(screen.getByRole('article').element().textContent).toContain(
-        'Customer message: The fabric came',
+        'Customer message: The backpack came',
       );
     });
 

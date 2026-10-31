@@ -120,7 +120,7 @@ export const InAGroup: Story = {
       <Checkbox
         value="stock"
         label="Low stock"
-        description="When a fabric drops below its minimum."
+        description="When a product drops below its minimum."
       />
       <Checkbox value="payments" label="Failed payments" />
     </CheckboxGroup>
