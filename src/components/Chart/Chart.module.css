@@ -1,0 +1,199 @@
+@layer components {
+  .root {
+    --ds-chart-color: var(--ds-accent);
+
+    position: relative;
+    min-inline-size: 0;
+    inline-size: 100%;
+  }
+
+  .root[data-tone='neutral'] {
+    --ds-chart-color: var(--ds-text-2);
+  }
+
+  .root[data-tone='success'] {
+    --ds-chart-color: var(--ds-success);
+  }
+
+  .root[data-tone='warning'] {
+    --ds-chart-color: var(--ds-warning);
+  }
+
+  .root[data-tone='danger'] {
+    --ds-chart-color: var(--ds-danger);
+  }
+
+  .plot {
+    position: relative;
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: var(--ds-chart-height);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+  }
+
+  .plot:focus-visible {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: var(--ds-space-1);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .svg {
+    display: block;
+    overflow: visible;
+  }
+
+  .grid {
+    stroke: var(--ds-line-subtle);
+    stroke-dasharray: var(--ds-chart-grid-dash) var(--ds-chart-grid-gap);
+  }
+
+  .grid[data-zero] {
+    stroke: var(--ds-line-strong);
+    stroke-dasharray: none;
+  }
+
+  .tick,
+  .category {
+    fill: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+  }
+
+  .category[data-active] {
+    fill: var(--ds-text);
+  }
+
+  .note {
+    fill: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+  }
+
+  /* Bars: gray at rest (3:1 against the surface), strong ink when highlighted, tone when active. */
+  .bar {
+    fill: var(--ds-line-control);
+    rx: var(--ds-chart-bar-radius);
+  }
+
+  .bar[data-highlight] {
+    fill: var(--ds-text);
+    stroke: var(--ds-text);
+    stroke-width: var(--ds-chart-outline-w);
+  }
+
+  .bar[data-active] {
+    fill: var(--ds-chart-color);
+    stroke: var(--ds-chart-color);
+    stroke-width: var(--ds-chart-outline-w);
+  }
+
+  .line {
+    fill: none;
+    stroke: var(--ds-chart-color);
+    stroke-width: var(--ds-chart-stroke-w);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .area {
+    fill: var(--ds-chart-color);
+    opacity: var(--ds-chart-area-opacity);
+  }
+
+  .cursor {
+    stroke: var(--ds-line-strong);
+  }
+
+  .point {
+    r: var(--ds-chart-point-r);
+    fill: var(--ds-bg);
+    stroke: var(--ds-chart-color);
+    stroke-width: var(--ds-chart-stroke-w);
+  }
+
+  .point[data-highlight] {
+    fill: var(--ds-text);
+    stroke: var(--ds-text);
+  }
+
+  .tooltip {
+    position: absolute;
+
+    /* SVG coordinates are physical, so the label is positioned with `left` (the chart is not mirrored in RTL). */
+    inset-block-start: var(--ds-chart-tooltip-y);
+    left: var(--ds-chart-tooltip-x);
+    padding-block: var(--ds-chart-tooltip-padding-block);
+    padding-inline: var(--ds-chart-tooltip-padding-inline);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-primary-bg);
+    color: var(--ds-primary-fg);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .empty {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-small);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar,
+    .category {
+      transition-property: fill, stroke;
+      transition-duration: var(--ds-duration);
+      transition-timing-function: var(--ds-ease);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .bar {
+      fill: graytext;
+    }
+
+    .bar[data-highlight],
+    .point[data-highlight] {
+      fill: canvastext;
+      stroke: canvastext;
+    }
+
+    .bar[data-active] {
+      fill: highlight;
+      stroke: highlight;
+    }
+
+    .line,
+    .point {
+      stroke: canvastext;
+    }
+
+    .point[data-active] {
+      stroke: highlight;
+    }
+
+    .tick,
+    .category,
+    .note {
+      fill: canvastext;
+    }
+
+    .tooltip {
+      border: 1px solid canvastext;
+      background-color: canvas;
+      color: canvastext;
+    }
+
+    .plot:focus-visible {
+      outline-color: highlight;
+    }
+  }
+}

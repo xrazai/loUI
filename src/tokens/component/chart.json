@@ -1,0 +1,55 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "chart": {
+    "height": {
+      "$type": "dimension",
+      "$value": { "value": 200, "unit": "px" },
+      "$description": "Default height of a Chart (200px). The height prop overrides it per instance."
+    },
+    "stroke-w": {
+      "$type": "dimension",
+      "$value": { "value": 1.5, "unit": "px" },
+      "$description": "Stroke width of the line series and of point rings (1.5px, same as icons)."
+    },
+    "point-r": {
+      "$type": "dimension",
+      "$value": { "value": 3.5, "unit": "px" },
+      "$description": "Radius of the active point marker of a line Chart (3.5px)."
+    },
+    "bar-radius": {
+      "$type": "dimension",
+      "$value": "{radius.sm}",
+      "$description": "Corner radius of a bar (4px)."
+    },
+    "grid-dash": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Dash length of the grid lines of a Chart (2px)."
+    },
+    "grid-gap": {
+      "$type": "dimension",
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Gap between dashes of the grid lines of a Chart (3px)."
+    },
+    "area-opacity": {
+      "$type": "number",
+      "$value": 0.08,
+      "$description": "Opacity of the area under the line of a line Chart (0.08)."
+    },
+    "outline-w": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Outline width of a highlighted bar (2px). Together with the label it is the non-color cue of a highlight."
+    },
+    "tooltip-padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Horizontal padding of the value label of the active Chart point (8px)."
+    },
+    "tooltip-padding-block": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Vertical padding of the value label of the active Chart point (4px)."
+    }
+  }
+}
