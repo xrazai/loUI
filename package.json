@@ -94,6 +94,7 @@
     "axe-core": "4.14.0",
     "eslint": "~10.14.0",
     "eslint-plugin-jsx-a11y-x": "0.2.0",
+    "eslint-plugin-loui": "workspace:*",
     "eslint-plugin-react-hooks": "~7.1.1",
     "geist": "1.9.0",
     "globals": "^17.13.0",
