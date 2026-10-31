@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from './Card';
+import { Alert } from '../Alert';
+import { Badge } from '../Badge';
+import { Button } from '../Button';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -78,4 +81,44 @@ export const RightToLeft: Story = {
       </div>
     ),
   ],
+};
+
+/**
+ * The paper scope (`data-theme="paper"`): the only light surface, for receipt and PDF previews.
+ * Success, warning and danger use their darker paper twins (TOK-012), so badges, alerts and
+ * tinted buttons keep 4.5:1 on the paper.
+ */
+export const PaperReceipt: Story = {
+  args: { title: 'Receipt #1051', variant: 'raised' },
+  render: (args) => (
+    <StoryFrame theme="paper" padding={4}>
+      <Card {...args}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ds-space-3)' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--ds-space-2)' }}>
+            <Badge tone="success">Paid</Badge>
+            <Badge tone="warning">Awaiting stamp</Badge>
+            <Badge tone="danger">Refused</Badge>
+            <Badge tone="accent">Copy</Badge>
+          </div>
+          <Alert tone="success" title="Payment received">
+            R$ 1.240,00 on 29 Oct 2026.
+          </Alert>
+          <Alert tone="warning" title="Delivery date unconfirmed">
+            The carrier has not confirmed the pickup.
+          </Alert>
+          <Alert tone="danger" title="Invoice rejected">
+            The tax authority refused the invoice.
+          </Alert>
+          <div style={{ display: 'flex', gap: 'var(--ds-space-2)' }}>
+            <Button variant="secondary" size="sm">
+              Print
+            </Button>
+            <Button variant="danger" size="sm">
+              Cancel receipt
+            </Button>
+          </div>
+        </div>
+      </Card>
+    </StoryFrame>
+  ),
 };

@@ -12,6 +12,16 @@ Decided by the project manager. Ratios are WCAG 2.2 relative-luminance contrast,
 | `--ds-line-control`             | (did not exist) | `#64646B` | Form control boundaries (input, select, checkbox, radio, combobox trigger) need 3:1 (WCAG 1.4.11); `line-strong` is about 1.5:1. Now 3.35:1 on `bg`, 3.21:1 on `surface`, 3.02:1 on `surface-raised`. `line-strong` stays for overlays, menus and cards. |
 | `--ds-paper-accent`             | `#B8603E`       | `#A95839` | 4.53:1 on `paper` (was below 4.5:1 for text).                                                                                                                                                                                                            |
 
+## Paper signals (TOK-012)
+
+Inside `[data-theme="paper"]` the dark-theme signal colors are light and fail on the paper (1.6 to 2.5:1), so the scope remaps them. Verified by the `paper-*` pairs in `src/tokens/contrast-pairs.json`.
+
+| Token                                                                               | New                             | Why                                                                                                                      |
+| ----------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `--ds-paper-success`, `--ds-paper-warning`, `--ds-paper-danger` (new)               | `#17683D`, `#7F5200`, `#A8231B` | Remap `--ds-success`, `--ds-warning`, `--ds-danger` on paper: 6.1, 6.0 and 6.4:1 on paper, 4.8:1 or more on their tints. |
+| `--ds-paper-*-soft`, `--ds-paper-danger-soft-hover`, `--ds-paper-danger-line` (new) | color-mix of the paper twin     | Tints and borders that follow the remapped signal.                                                                       |
+| `--ds-paper-accent`                                                                 | `#A95839` to `#944A2D`          | 5.7:1 on paper and 4.7:1 on `--ds-paper-accent-soft` (new); `#A95839` was 3.8:1 on its own tint.                         |
+
 ## Renamed
 
 | Handoff                           | Now                                                                                          |

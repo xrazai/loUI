@@ -274,10 +274,136 @@
     "paper-accent": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.662745, 0.345098, 0.223529],
-        "hex": "#A95839"
+        "components": [0.580392, 0.290196, 0.176471],
+        "hex": "#944A2D"
       },
-      "$description": "Accent on paper: links and highlighted figures (4.53:1 on paper). Darkened from #B8603E in TOK-004. Paper theme only."
+      "$description": "Accent on paper: links and highlighted figures (5.7:1 on paper, 4.7:1 on paper-accent-soft). Darkened from #B8603E in TOK-004 and again from #A95839 in TOK-012 so accent text passes on its own tint. Paper theme only."
+    },
+    "paper-success": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.090196, 0.407843, 0.239216],
+        "hex": "#17683D"
+      },
+      "$description": "Success signal on paper: text, icons and borders (6.1:1 on paper, 4.9:1 on paper-success-soft). Remaps success inside [data-theme=\"paper\"] only (TOK-012)."
+    },
+    "paper-warning": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.498039, 0.321569, 0.0],
+        "hex": "#7F5200"
+      },
+      "$description": "Warning signal on paper: text, icons and borders (6.0:1 on paper, 4.9:1 on paper-warning-soft). Remaps warning inside [data-theme=\"paper\"] only (TOK-012)."
+    },
+    "paper-danger": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.658824, 0.137255, 0.105882],
+        "hex": "#A8231B"
+      },
+      "$description": "Error and destructive signal on paper (6.4:1 on paper, 4.8:1 on paper-danger-soft-hover). Remaps danger inside [data-theme=\"paper\"] only (TOK-012)."
+    },
+    "paper-success-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.090196, 0.407843, 0.239216],
+        "alpha": 0.14,
+        "hex": "#17683D"
+      },
+      "$description": "Tinted background for success states on paper. 14% paper-success over the paper. Not for text. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-success",
+            "percent": 14
+          }
+        }
+      }
+    },
+    "paper-warning-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.498039, 0.321569, 0.0],
+        "alpha": 0.14,
+        "hex": "#7F5200"
+      },
+      "$description": "Tinted background for warning states on paper. 14% paper-warning over the paper. Not for text. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-warning",
+            "percent": 14
+          }
+        }
+      }
+    },
+    "paper-danger-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.658824, 0.137255, 0.105882],
+        "alpha": 0.1,
+        "hex": "#A8231B"
+      },
+      "$description": "Tinted background for error states on paper. 10% paper-danger over the paper. Not for text. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-danger",
+            "percent": 10
+          }
+        }
+      }
+    },
+    "paper-danger-soft-hover": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.658824, 0.137255, 0.105882],
+        "alpha": 0.18,
+        "hex": "#A8231B"
+      },
+      "$description": "Hover state of paper-danger-soft surfaces. 18% paper-danger over the paper. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-danger",
+            "percent": 18
+          }
+        }
+      }
+    },
+    "paper-danger-line": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.658824, 0.137255, 0.105882],
+        "alpha": 0.35,
+        "hex": "#A8231B"
+      },
+      "$description": "Border of danger-tinted surfaces on paper. 35% paper-danger over the paper. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-danger",
+            "percent": 35
+          }
+        }
+      }
+    },
+    "paper-accent-soft": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.580392, 0.290196, 0.176471],
+        "alpha": 0.14,
+        "hex": "#944A2D"
+      },
+      "$description": "Tinted background for accent states on paper (selected item, info badge). 14% paper-accent over the paper. Not for text. Paper theme only.",
+      "$extensions": {
+        "com.loui-ds": {
+          "mix": {
+            "color": "color.paper-accent",
+            "percent": 14
+          }
+        }
+      }
     }
   }
 }

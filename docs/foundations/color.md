@@ -84,6 +84,8 @@ Soft tokens are the signal color at low opacity (14%, danger 10%), composited ov
 
 Receipt and PDF previews are the only light surface in the system. Scope them with `[data-theme="paper"]` and use `--ds-paper-*` tokens. `--ds-paper-rule` is decorative (below 3:1) and must never be a control boundary.
 
+Inside the scope, `--ds-success`, `--ds-warning`, `--ds-danger` and `--ds-accent` are remapped to darker twins (`--ds-paper-success`, `--ds-paper-warning`, `--ds-paper-danger`, `--ds-paper-accent`), and their tints (`--ds-success-soft` and the others) are remapped with them, so badges, alerts and tinted buttons keep 4.5:1 on the paper. The `Components/Card` story `PaperReceipt` shows the scope.
+
 <!-- demo:paper -->
 
 ## Contrast changes from the handoff
@@ -94,7 +96,7 @@ Three tokens were changed from the original design handoff so that every text an
 | --------------------------------- | ------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--ds-text-3` (and `--ds-gray-7`) | `#7A7A82`     | `#86868E` | Was 3.86:1 on `surface-hover` and below 4.5:1 on `surface-raised`. Now 4.55:1 on `surface-hover`, so it passes on every surface up to there. |
 | `--ds-line-control`               | did not exist | `#64646B` | Control boundaries need 3:1. `line-strong` is about 1.5:1. Now 3.35:1 on `bg`, 3.21:1 on `surface`, 3.02:1 on `surface-raised`.              |
-| `--ds-paper-accent`               | `#B8603E`     | `#A95839` | 4.53:1 on `paper`; the old value was below 4.5:1 for text.                                                                                   |
+| `--ds-paper-accent`               | `#B8603E`     | `#944A2D` | 5.7:1 on `paper`, 4.7:1 on its 14% tint (TOK-012); the original was below 4.5:1 for text.                                                    |
 
 ## Rules of thumb
 

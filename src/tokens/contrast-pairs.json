@@ -455,6 +455,118 @@
       "background": ["color.paper"],
       "min": 3,
       "usage": "Control boundary on paper, WCAG 1.4.11"
+    },
+    {
+      "id": "paper-success-on-paper",
+      "foreground": "color.paper-success",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "success text, icons and links on paper"
+    },
+    {
+      "id": "paper-success-on-paper-success-soft",
+      "foreground": "color.paper-success",
+      "background": ["color.paper", "color.paper-success-soft"],
+      "min": 4.5,
+      "usage": "success text on its soft tint over paper (badge, banner)"
+    },
+    {
+      "id": "paper-ink-on-paper-success-soft",
+      "foreground": "color.paper-ink",
+      "background": ["color.paper", "color.paper-success-soft"],
+      "min": 4.5,
+      "usage": "Primary text on paper-success-soft over paper"
+    },
+    {
+      "id": "paper-on-paper-success",
+      "foreground": "color.paper",
+      "background": ["color.paper-success"],
+      "min": 4.5,
+      "usage": "Paper-colored text on a solid success fill (text-inverse in the paper scope)"
+    },
+    {
+      "id": "paper-warning-on-paper",
+      "foreground": "color.paper-warning",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "warning text, icons and links on paper"
+    },
+    {
+      "id": "paper-warning-on-paper-warning-soft",
+      "foreground": "color.paper-warning",
+      "background": ["color.paper", "color.paper-warning-soft"],
+      "min": 4.5,
+      "usage": "warning text on its soft tint over paper (badge, banner)"
+    },
+    {
+      "id": "paper-ink-on-paper-warning-soft",
+      "foreground": "color.paper-ink",
+      "background": ["color.paper", "color.paper-warning-soft"],
+      "min": 4.5,
+      "usage": "Primary text on paper-warning-soft over paper"
+    },
+    {
+      "id": "paper-on-paper-warning",
+      "foreground": "color.paper",
+      "background": ["color.paper-warning"],
+      "min": 4.5,
+      "usage": "Paper-colored text on a solid warning fill (text-inverse in the paper scope)"
+    },
+    {
+      "id": "paper-danger-on-paper",
+      "foreground": "color.paper-danger",
+      "background": ["color.paper"],
+      "min": 4.5,
+      "usage": "danger text, icons and links on paper"
+    },
+    {
+      "id": "paper-danger-on-paper-danger-soft",
+      "foreground": "color.paper-danger",
+      "background": ["color.paper", "color.paper-danger-soft"],
+      "min": 4.5,
+      "usage": "danger text on its soft tint over paper (badge, banner)"
+    },
+    {
+      "id": "paper-ink-on-paper-danger-soft",
+      "foreground": "color.paper-ink",
+      "background": ["color.paper", "color.paper-danger-soft"],
+      "min": 4.5,
+      "usage": "Primary text on paper-danger-soft over paper"
+    },
+    {
+      "id": "paper-on-paper-danger",
+      "foreground": "color.paper",
+      "background": ["color.paper-danger"],
+      "min": 4.5,
+      "usage": "Paper-colored text on a solid danger fill (text-inverse in the paper scope)"
+    },
+    {
+      "id": "paper-danger-on-paper-danger-soft-hover",
+      "foreground": "color.paper-danger",
+      "background": ["color.paper", "color.paper-danger-soft-hover"],
+      "min": 4.5,
+      "usage": "danger text on the hover tint of a ghost-danger control on paper"
+    },
+    {
+      "id": "paper-danger-focus-on-paper",
+      "foreground": "color.paper-danger",
+      "background": ["color.paper"],
+      "min": 3,
+      "usage": "Invalid-field border and danger focus ring on paper, WCAG 1.4.11"
+    },
+    {
+      "id": "paper-accent-on-paper-accent-soft",
+      "foreground": "color.paper-accent",
+      "background": ["color.paper", "color.paper-accent-soft"],
+      "min": 4.5,
+      "usage": "accent text on its soft tint over paper (info badge, selected item)"
+    },
+    {
+      "id": "paper-ink-on-paper-accent-soft",
+      "foreground": "color.paper-ink",
+      "background": ["color.paper", "color.paper-accent-soft"],
+      "min": 4.5,
+      "usage": "Primary text on paper-accent-soft over paper"
     }
   ]
 }
