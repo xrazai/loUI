@@ -61,9 +61,9 @@ DialogTrigger
 - Reduced motion: the 150 ms fade and 8 px rise are removed. Forced colors: border in `CanvasText`.
 - 320 px reflow: the dialog shrinks to the viewport less the 24 px gutter and the body scrolls.
 
-### Layers (open issue)
+### Layers
 
-`--ds-z-dropdown` (40) and `--ds-z-popover` (45) are **below** `--ds-z-sheet` (50) and `--ds-z-dialog` (55). A `Select`, `Menu`, `Popover` or `Combobox` opened from inside a Dialog or Sheet is portaled to `body` with its own layer, so it is drawn **behind** the open dialog. Because a modal makes page-level popovers impossible while it is open, raising dropdown and popover above sheet and dialog is safe (sheet 50 < dialog 55 < dropdown 60 < popover 65 < toast < tooltip). This is a change to `src/tokens/z-index.json` and its order test, reported to the PM; the Dialog tests record the current order.
+Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (45) < dropdown (50) < popover (55) < toast (58) < tooltip (60). A `Select`, `Menu`, `Popover` or `Combobox` opened from inside a Dialog or Sheet therefore renders **above** it. This is safe because a modal blocks page-level popovers while it is open. Tests assert the order.
 
 ## Content rules
 

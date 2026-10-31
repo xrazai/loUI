@@ -88,7 +88,7 @@ describe('Sheet', () => {
   it('uses the sheet layer and the scrim color', async () => {
     await renderWithProvider(<OrderSheet defaultOpen />);
     const overlay = document.querySelector<HTMLElement>('[class*="overlay"]') as HTMLElement;
-    expect(getComputedStyle(overlay).zIndex).toBe('50');
+    expect(getComputedStyle(overlay).zIndex).toBe('40');
     expect(getComputedStyle(overlay).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
   });
 

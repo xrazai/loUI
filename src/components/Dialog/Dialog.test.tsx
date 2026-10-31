@@ -177,7 +177,7 @@ describe('Dialog', () => {
   it('uses the dialog layer, the raised surface, the dialog shadow and the overlay color', async () => {
     await renderWithProvider(<EditCustomer defaultOpen />);
     const overlay = document.querySelector<HTMLElement>('[class*="overlay"]') as HTMLElement;
-    expect(getComputedStyle(overlay).zIndex).toBe('55');
+    expect(getComputedStyle(overlay).zIndex).toBe('45');
     const modal = document.querySelector<HTMLElement>('[class*="modal"]') as HTMLElement;
     expect(getComputedStyle(modal).boxShadow).not.toBe('none');
     expect(getComputedStyle(modal).borderRadius).toBe('10px');
@@ -288,8 +288,8 @@ describe('Dialog', () => {
         .toBeVisible();
       const overlays = [...document.querySelectorAll<HTMLElement>('[class*="overlay"]')];
       const zs = overlays.map((el) => Number(getComputedStyle(el).zIndex));
-      expect(Math.max(...zs)).toBe(55);
-      expect(Math.min(...zs)).toBe(50);
+      expect(Math.max(...zs)).toBe(45);
+      expect(Math.min(...zs)).toBe(40);
     });
 
     it('has no axe violations with a Dialog open over a Sheet', async () => {
@@ -304,7 +304,7 @@ describe('Dialog', () => {
   });
 
   describe('layers', () => {
-    it('documents that a menu opened inside a dialog uses the popover layer', async () => {
+    it('renders a menu opened inside a dialog above the dialog', async () => {
       const screen = await renderWithProvider(
         <Dialog title="Order" defaultOpen>
           <Menu trigger={<Button>Actions</Button>} defaultOpen>
@@ -317,8 +317,8 @@ describe('Dialog', () => {
         '[data-trigger="MenuTrigger"]',
       ) as HTMLElement;
       const overlay = document.querySelector<HTMLElement>('[class*="overlay"]') as HTMLElement;
-      // Recorded here so a change of the z-index scale is a deliberate decision (see Dialog.md, "Layers").
-      expect(Number(getComputedStyle(popover).zIndex)).toBeLessThan(
+      // Popover layers sit above the dialog layer (z-index scale, see Dialog.md "Layers").
+      expect(Number(getComputedStyle(popover).zIndex)).toBeGreaterThan(
         Number(getComputedStyle(overlay).zIndex),
       );
     });

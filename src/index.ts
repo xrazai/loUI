@@ -15,6 +15,57 @@ export type { LinkProps, LinkVariant } from './components/Link';
 export { Spinner } from './components/Spinner';
 export type { SpinnerProps, SpinnerSize } from './components/Spinner';
 
+// Overlays and feedback
+export { ConfirmDialog, Dialog } from './components/Dialog';
+export type {
+  ConfirmDialogProps,
+  DialogProps,
+  DialogRenderOptions,
+  DialogSize,
+} from './components/Dialog';
+export { InlineConfirm } from './components/InlineConfirm';
+export type { InlineConfirmProps } from './components/InlineConfirm';
+export {
+  Menu,
+  MenuItem,
+  MenuSection,
+  MenuSeparator,
+  MoreActionsMenu,
+  SubMenu,
+} from './components/Menu';
+export type {
+  MenuItemProps,
+  MenuItemTone,
+  MenuPlacement,
+  MenuProps,
+  MenuSectionProps,
+  MoreActionsMenuProps,
+  SubMenuProps,
+} from './components/Menu';
+export { Popover } from './components/Popover';
+export type { PopoverPlacement, PopoverProps } from './components/Popover';
+export { Sheet } from './components/Sheet';
+export type { SheetProps, SheetRenderOptions, SheetSize } from './components/Sheet';
+export {
+  DEFAULT_TOAST_TIMEOUT,
+  ToastRegion,
+  createToastApi,
+  createToastQueue,
+  toast,
+  useToast,
+} from './components/Toast';
+export type {
+  ToastAction,
+  ToastApi,
+  ToastOptions,
+  ToastQueue,
+  ToastRegionProps,
+  ToastTone,
+} from './components/Toast';
+export { TOOLTIP_DELAY, Tooltip } from './components/Tooltip';
+export type { TooltipPlacement, TooltipProps } from './components/Tooltip';
+export type { IconButtonTooltipOptions } from './components/IconButton';
+
 // Form fields
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
 export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';

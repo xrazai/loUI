@@ -148,7 +148,7 @@ describe('Menu', () => {
   it('uses the popover layer', async () => {
     await renderWithProvider(<RowMenu defaultOpen />);
     const popover = document.querySelector<HTMLElement>('[data-trigger="MenuTrigger"]');
-    expect(popover && getComputedStyle(popover).zIndex).toBe('45');
+    expect(popover && getComputedStyle(popover).zIndex).toBe('55');
   });
 
   it('is controlled through isOpen and reports changes', async () => {

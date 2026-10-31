@@ -2,25 +2,25 @@
   "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
   "z": {
     "$type": "number",
-    "dropdown": {
-      "$value": 40,
-      "$description": "Layer of dropdowns, selects, comboboxes and date pickers. Above page content, below popovers."
-    },
-    "popover": {
-      "$value": 45,
-      "$description": "Layer of popovers and action menus. Above dropdowns."
-    },
     "sheet": {
-      "$value": 50,
-      "$description": "Layer of side sheets. The scrim uses this value and the panel uses this value + 1 (calc)."
+      "$value": 40,
+      "$description": "Layer of side sheets. The scrim uses this value and the panel uses this value + 1 (calc). Below dialogs, because a dialog can open from a sheet."
     },
     "dialog": {
+      "$value": 45,
+      "$description": "Layer of dialogs and their overlay. Above sheets; below dropdowns and popovers so a select or menu opened inside a dialog renders on top of it."
+    },
+    "dropdown": {
+      "$value": 50,
+      "$description": "Layer of dropdowns, selects, comboboxes and date pickers. Above dialogs and sheets (they can open from inside one); below popovers."
+    },
+    "popover": {
       "$value": 55,
-      "$description": "Layer of dialogs and their overlay. Above sheets, because a dialog can open from a sheet."
+      "$description": "Layer of popovers and action menus. Above dropdowns, dialogs and sheets."
     },
     "toast": {
       "$value": 58,
-      "$description": "Layer of toasts. Above dialogs so confirmations stay visible; below tooltips."
+      "$description": "Layer of toasts. Above every overlay so confirmations and Undo stay visible; below tooltips."
     },
     "tooltip": {
       "$value": 60,

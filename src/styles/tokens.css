@@ -146,15 +146,18 @@
     --ds-ease: cubic-bezier(0.2, 0, 0, 1);
 
     /* z */
-    --ds-z-dropdown: 40;
-    --ds-z-popover: 45;
-    --ds-z-sheet: 50;
-    --ds-z-dialog: 55;
+    --ds-z-sheet: 40;
+    --ds-z-dialog: 45;
+    --ds-z-dropdown: 50;
+    --ds-z-popover: 55;
     --ds-z-toast: 58;
     --ds-z-tooltip: 60;
 
     /* opacity */
     --ds-opacity-disabled: 0.35;
+
+    /* accordion */
+    --ds-accordion-padding-inline: var(--ds-space-3);
 
     /* alert */
     --ds-alert-success-bg: color-mix(in oklab, var(--ds-success) 6%, transparent);
@@ -180,13 +183,59 @@
     --ds-button-hover-brightness: 0.88;
     --ds-button-danger-solid-hover-brightness: 0.9;
 
+    /* calendar */
+    --ds-calendar-cell-size: var(--ds-item-h);
+    --ds-calendar-weekday-height: var(--ds-target-min);
+    --ds-calendar-today-ring-width: 1px;
+
     /* card */
     --ds-card-padding: var(--ds-space-5);
     --ds-card-gap: var(--ds-space-4);
 
+    /* chart */
+    --ds-chart-height: 200px;
+    --ds-chart-stroke-w: 1.5px;
+    --ds-chart-point-r: 3.5px;
+    --ds-chart-bar-radius: var(--ds-radius-sm);
+    --ds-chart-grid-dash: 2px;
+    --ds-chart-grid-gap: 3px;
+    --ds-chart-area-opacity: 0.08;
+    --ds-chart-outline-w: 2px;
+    --ds-chart-tooltip-padding-inline: var(--ds-space-2);
+    --ds-chart-tooltip-padding-block: var(--ds-space-1);
+
     /* checkbox */
     --ds-checkbox-box-size: 18px;
     --ds-checkbox-radius: 5px;
+
+    /* choice-tiles */
+    --ds-choice-tiles-min-width: 120px;
+    --ds-choice-tiles-gap: var(--ds-space-2);
+    --ds-choice-tiles-height-md: var(--ds-control-h-md);
+    --ds-choice-tiles-height-lg: var(--ds-control-h-lg);
+
+    /* combobox */
+    --ds-combobox-popover-max-height: var(--ds-select-popover-max-height);
+
+    /* data-table */
+    --ds-data-table-selection-col-w: 40px;
+    --ds-data-table-cell-padding-inline: var(--ds-space-3);
+    --ds-data-table-header-padding-block: var(--ds-space-2);
+    --ds-data-table-active-bar-w: 2px;
+    --ds-data-table-bulk-bar-h: var(--ds-item-h);
+    --ds-data-table-gap: var(--ds-space-3);
+    --ds-data-table-sticky-z-index: 1;
+
+    /* dialog */
+    --ds-dialog-width-sm: 420px;
+    --ds-dialog-width-md: 540px;
+    --ds-dialog-width-lg: 680px;
+    --ds-dialog-gutter: var(--ds-space-6);
+    --ds-dialog-padding: var(--ds-space-5);
+
+    /* due-indicator */
+    --ds-due-indicator-dot-size: 8px;
+    --ds-due-indicator-gap: var(--ds-space-2);
 
     /* empty-state */
     --ds-empty-state-padding-block: var(--ds-space-12);
@@ -200,6 +249,12 @@
     --ds-field-control-padding-inline: 10px;
     --ds-field-choice-gap: 10px;
 
+    /* file-upload */
+    --ds-file-upload-dropzone-padding-block: var(--ds-space-5);
+    --ds-file-upload-dropzone-padding-inline: var(--ds-space-4);
+    --ds-file-upload-item-padding-block: var(--ds-space-3);
+    --ds-file-upload-item-padding-inline: var(--ds-space-3);
+
     /* icon */
     --ds-icon-stroke-width: 1.5px;
 
@@ -207,32 +262,125 @@
     --ds-kbd-height: 18px;
     --ds-kbd-padding-inline: var(--ds-space-1);
 
+    /* ledger-list */
+    --ds-ledger-list-date-width: 64px;
+    --ds-ledger-list-gap: var(--ds-space-3);
+    --ds-ledger-list-padding-inline: var(--ds-space-6);
+
+    /* matrix-grid */
+    --ds-matrix-grid-cell-size: 40px;
+    --ds-matrix-grid-column-width: 64px;
+    --ds-matrix-grid-label-width: 220px;
+    --ds-matrix-grid-count-width: 64px;
+    --ds-matrix-grid-row-min-height: 60px;
+    --ds-matrix-grid-padding-inline: var(--ds-space-5);
+
+    /* menu */
+    --ds-menu-min-width: 200px;
+    --ds-menu-indicator-size: var(--ds-icon-md);
+
+    /* nav-item */
+    --ds-nav-item-padding-inline: 10px;
+    --ds-nav-item-indicator-width: 2px;
+    --ds-nav-item-icon-opacity: 0.7;
+    --ds-nav-item-count-size: 20px;
+    --ds-nav-item-count-padding-inline: 6px;
+
+    /* number-field */
+    --ds-number-field-value-min-width: 56px;
+
+    /* popover */
+    --ds-popover-min-width: 180px;
+    --ds-popover-arrow-size: 8px;
+    --ds-popover-padding: var(--ds-space-3);
+
     /* progress */
     --ds-progress-height: 4px;
     --ds-progress-indeterminate-width: 40;
     --ds-progress-indeterminate-duration: 1400ms;
 
+    /* proportion-bar */
+    --ds-proportion-bar-height: 10px;
+    --ds-proportion-bar-segment-gap: 2px;
+    --ds-proportion-bar-swatch-size: 10px;
+    --ds-proportion-bar-percent-col-w: 48px;
+    --ds-proportion-bar-hatch-size: 3px;
+
     /* radio */
     --ds-radio-size: 18px;
     --ds-radio-dot-size: 9px;
 
+    /* rank-list */
+    --ds-rank-list-bar-h: 4px;
+    --ds-rank-list-position-w: 24px;
+    --ds-rank-list-swatch-size: 14px;
+    --ds-rank-list-padding-block: var(--ds-space-2);
+    --ds-rank-list-padding-inline: var(--ds-space-5);
+
+    /* segmented-control */
+    --ds-segmented-control-padding: 2px;
+    --ds-segmented-control-height-sm: var(--ds-target-min);
+    --ds-segmented-control-height-md: var(--ds-control-h-sm);
+
     /* select */
     --ds-select-popover-max-height: 320px;
+
+    /* sheet */
+    --ds-sheet-width-sm: 440px;
+    --ds-sheet-width-md: 460px;
+    --ds-sheet-width-lg: 480px;
+    --ds-sheet-padding: var(--ds-space-6);
+
+    /* sidebar */
+    --ds-sidebar-padding-block: var(--ds-space-4);
+    --ds-sidebar-padding-inline: var(--ds-space-3);
+    --ds-sidebar-gap: var(--ds-space-5);
+    --ds-sidebar-workspace-mark-size: 28px;
+    --ds-sidebar-status-dot-size: 8px;
 
     /* skeleton */
     --ds-skeleton-height: 12px;
     --ds-skeleton-pulse-duration: 1400ms;
     --ds-skeleton-pulse-opacity: 0.45;
 
+    /* skip-link */
+    --ds-skip-link-z-index: var(--ds-z-tooltip);
+
+    /* slider */
+    --ds-slider-track-height: 4px;
+    --ds-slider-thumb-size: var(--ds-target-min);
+    --ds-slider-thumb-dot-size: 16px;
+
     /* spinner */
     --ds-spinner-stroke-width: 2px;
     --ds-spinner-duration: 700ms;
+
+    /* stat-card */
+    --ds-stat-card-padding: var(--ds-space-5);
+    --ds-stat-card-gap: var(--ds-space-2);
+
+    /* status-steps */
+    --ds-status-steps-marker-size: 20px;
+    --ds-status-steps-connector-thickness: 2px;
+    --ds-status-steps-padding-block: var(--ds-space-1);
+    --ds-status-steps-gap: var(--ds-space-2);
+
+    /* swatch */
+    --ds-swatch-size-sm: 16px;
+    --ds-swatch-size-md: 20px;
+    --ds-swatch-size-lg: 32px;
 
     /* switch */
     --ds-switch-track-width: 36px;
     --ds-switch-track-height: 20px;
     --ds-switch-knob-size: 16px;
     --ds-switch-knob-offset: 2px;
+
+    /* tabs */
+    --ds-tabs-gap: var(--ds-space-5);
+    --ds-tabs-indicator-height: 2px;
+    --ds-tabs-count-size: 20px;
+    --ds-tabs-count-padding-inline: 6px;
 
     /* tag */
     --ds-tag-height: var(--ds-target-min);
@@ -242,5 +390,17 @@
     /* textarea */
     --ds-textarea-padding-block: 10px;
     --ds-textarea-padding-inline: 12px;
+
+    /* toast */
+    --ds-toast-max-width: 420px;
+    --ds-toast-min-height: var(--ds-control-h-md);
+    --ds-toast-dot-size: 6px;
+    --ds-toast-offset: var(--ds-space-6);
+
+    /* tooltip */
+    --ds-tooltip-max-width: 240px;
+
+    /* top-bar */
+    --ds-top-bar-padding-inline: var(--ds-space-6);
   }
 }

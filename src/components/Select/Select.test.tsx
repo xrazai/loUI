@@ -258,7 +258,7 @@ describe('Select', () => {
     expect(cssColorToHex(style.backgroundColor)).toBe(tokenColor('--ds-surface-raised'));
     expect(style.borderTopLeftRadius).toBe('10px');
     expect(style.boxShadow).not.toBe('none');
-    expect(style.zIndex).toBe('40');
+    expect(style.zIndex).toBe('50');
     expect(
       screen.getByRole('option', { name: 'Frankfurt' }).element().getBoundingClientRect().height,
     ).toBe(36);

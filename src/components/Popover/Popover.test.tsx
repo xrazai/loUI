@@ -132,7 +132,7 @@ describe('Popover', () => {
     const surface = document.querySelector<HTMLElement>('[data-trigger="DialogTrigger"]');
     expect(surface).not.toBeNull();
     const style = getComputedStyle(surface as HTMLElement);
-    expect(style.zIndex).toBe('45');
+    expect(style.zIndex).toBe('55');
     expect(style.boxShadow).not.toBe('none');
   });
 

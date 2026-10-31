@@ -47,7 +47,7 @@ describe('scale rules', () => {
   });
 
   it('keeps z-index layers strictly increasing', () => {
-    const order = ['dropdown', 'popover', 'sheet', 'dialog', 'toast', 'tooltip'].map((n) =>
+    const order = ['sheet', 'dialog', 'dropdown', 'popover', 'toast', 'tooltip'].map((n) =>
       Number(num(`z.${n}`)),
     );
     expect(order).toEqual([...order].sort((a, b) => a - b));
