@@ -320,6 +320,7 @@ export type TokenName =
   | 'status-steps.connector-thickness'
   | 'status-steps.padding-block'
   | 'status-steps.gap'
+  | 'status-steps.marker-hover-border'
   | 'status-steps.content-z-index'
   | 'swatch.size-sm'
   | 'swatch.size-md'
@@ -655,6 +656,7 @@ export type TokenCssVar =
   | '--ds-status-steps-connector-thickness'
   | '--ds-status-steps-padding-block'
   | '--ds-status-steps-gap'
+  | '--ds-status-steps-marker-hover-border'
   | '--ds-status-steps-content-z-index'
   | '--ds-swatch-size-sm'
   | '--ds-swatch-size-md'
@@ -1008,6 +1010,7 @@ export const tokenValues = {
   'status-steps.connector-thickness': { cssVar: '--ds-status-steps-connector-thickness', type: 'dimension', value: '2px' },
   'status-steps.padding-block': { cssVar: '--ds-status-steps-padding-block', type: 'dimension', value: '4px' },
   'status-steps.gap': { cssVar: '--ds-status-steps-gap', type: 'dimension', value: '8px' },
+  'status-steps.marker-hover-border': { cssVar: '--ds-status-steps-marker-hover-border', type: 'color', value: '#86868E' },
   'status-steps.content-z-index': { cssVar: '--ds-status-steps-content-z-index', type: 'number', value: 1 },
   'swatch.size-sm': { cssVar: '--ds-swatch-size-sm', type: 'dimension', value: '16px' },
   'swatch.size-md': { cssVar: '--ds-swatch-size-md', type: 'dimension', value: '20px' },

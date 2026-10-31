@@ -50,6 +50,12 @@ describe('TOK-004 decisions', () => {
     }
   });
 
+  it('shows why controls brighten their border on the hover fill (TOK-014)', () => {
+    // line-control is the 3:1 boundary on bg, surface and surface-raised, not on surface-hover.
+    expect(pairRatio('color.line-control', ['color.surface-hover'], values)).toBeLessThan(3);
+    expect(pairRatio('color.text-3', ['color.surface-hover'], values)).toBeGreaterThanOrEqual(3);
+  });
+
   it('keeps paper-accent at 4.5:1 on paper', () => {
     expect(pairRatio('color.paper-accent', ['color.paper'], values)).toBeGreaterThanOrEqual(4.5);
   });

@@ -380,6 +380,20 @@
       "usage": "Form control boundary (input, select, checkbox, radio, combobox trigger) on surface-raised, WCAG 1.4.11"
     },
     {
+      "id": "hover-border-on-surface-hover",
+      "foreground": "color.text-3",
+      "background": ["color.surface-hover"],
+      "min": 3,
+      "usage": "Brightened control border (text-3) where a control sits on the hover fill, because line-control is below 3:1 there (TOK-014), WCAG 1.4.11"
+    },
+    {
+      "id": "hover-border-on-surface-raised",
+      "foreground": "color.text-3",
+      "background": ["color.surface-raised"],
+      "min": 3,
+      "usage": "Brightened control border (text-3) on hover for controls inside menus, popovers and sheets (surface-raised), WCAG 1.4.11"
+    },
+    {
       "id": "accent-focus-on-surface-raised",
       "foreground": "color.accent",
       "background": ["color.surface-raised"],

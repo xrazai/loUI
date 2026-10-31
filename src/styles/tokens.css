@@ -449,6 +449,7 @@
     --ds-status-steps-connector-thickness: 2px;
     --ds-status-steps-padding-block: var(--ds-space-1);
     --ds-status-steps-gap: var(--ds-space-2);
+    --ds-status-steps-marker-hover-border: var(--ds-text-3);
     --ds-status-steps-content-z-index: 1;
 
     /* swatch */

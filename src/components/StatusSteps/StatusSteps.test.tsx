@@ -2,7 +2,10 @@ import { createRef } from 'react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
+import { contrastRatio } from '../../utils/color';
+import { cssColorToHex, tokenColor } from '../Field/field.testing';
 import { StatusSteps } from './StatusSteps';
 import type { StatusStepsProps } from './StatusSteps';
 
@@ -108,6 +111,29 @@ describe('StatusSteps', () => {
         .element(screen.getByRole('button', { name: 'Packed Current' }))
         .toHaveAttribute('aria-current', 'step');
       await expect.element(screen.getByRole('button', { name: 'Draft Completed' })).toBeVisible();
+    });
+
+    it('keeps the marker border at 3:1 on the hovered step surface (TOK-014)', async () => {
+      const screen = await renderWithProvider(<Example onSelect={vi.fn()} />);
+      const button = screen.getByRole('button', { name: /Shipped/ });
+      const content = button.element();
+      const marker = content.querySelector<HTMLElement>('[class*="marker"]');
+      if (!marker) throw new Error('Marker not found.');
+      const ratioOnStep = () =>
+        contrastRatio(
+          cssColorToHex(getComputedStyle(marker).borderTopColor),
+          cssColorToHex(getComputedStyle(content).backgroundColor),
+        );
+      await userEvent.hover(button);
+      await expectHovered(screen.container);
+      // The step fill fades in, then the border must hold 3:1 against it.
+      await expect
+        .poll(() => cssColorToHex(getComputedStyle(content).backgroundColor))
+        .toBe(tokenColor('--ds-surface-hover'));
+      expect(ratioOnStep()).toBeGreaterThanOrEqual(3);
+      expect(cssColorToHex(getComputedStyle(marker).borderTopColor)).toBe(
+        tokenColor('--ds-status-steps-marker-hover-border'),
+      );
     });
 
     it('calls onSelect with the index and the step on click', async () => {

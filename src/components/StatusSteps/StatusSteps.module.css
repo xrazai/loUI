@@ -105,6 +105,14 @@
     color: var(--ds-text-inverse);
   }
 
+  /*
+   * TOK-014: line-control is 2.8:1 on surface-hover, the fill of a hovered step button, so the
+   * marker border brightens (completed and current markers draw their own border).
+   */
+  .step:not([data-state='complete'], [data-state='current']) button.content[data-hovered] .marker {
+    border-color: var(--ds-status-steps-marker-hover-border);
+  }
+
   /* text-2: text-3 fails 4.5:1 on the hovered step of an interactive list. */
   .label {
     color: var(--ds-text-2);

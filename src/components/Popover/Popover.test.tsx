@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
+import { contrastRatio } from '../../utils/color';
+import { cssColorToHex, tokenColor } from '../Field/field.testing';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Popover } from './Popover';
@@ -106,6 +109,26 @@ describe('Popover', () => {
   it('supports defaultOpen for uncontrolled use', async () => {
     const screen = await renderWithProvider(<Filters defaultOpen />);
     await expect.element(screen.getByRole('dialog')).toBeVisible();
+  });
+
+  it('keeps a field boundary at 3:1 on the raised popover surface, at rest and hovered (TOK-014)', async () => {
+    const screen = await renderWithProvider(<Filters defaultOpen />);
+    const dialog = screen.getByRole('dialog').element();
+    const input = screen.getByRole('textbox', { name: 'Customer' });
+    const box = input.element().parentElement as HTMLElement;
+    // The nearest ancestor that paints a background is the popover surface.
+    const painted = (element: HTMLElement): HTMLElement =>
+      getComputedStyle(element).backgroundColor === 'rgba(0, 0, 0, 0)' && element.parentElement
+        ? painted(element.parentElement)
+        : element;
+    const surface = () => cssColorToHex(getComputedStyle(painted(dialog)).backgroundColor);
+    const boundary = () =>
+      contrastRatio(cssColorToHex(getComputedStyle(box).borderTopColor), surface());
+    expect(surface()).toBe(tokenColor('--ds-surface-raised'));
+    expect(boundary()).toBeGreaterThanOrEqual(3);
+    await userEvent.hover(input);
+    await expectHovered(screen.container.ownerDocument.body);
+    await expect.poll(boundary).toBeGreaterThanOrEqual(3);
   });
 
   it('places the popover below the trigger by default and above it with placement top', async () => {

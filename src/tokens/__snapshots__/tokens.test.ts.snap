@@ -3243,6 +3243,16 @@ exports[`generated token list (TEST-006) > matches the snapshot 1`] = `
     "value": "8px",
   },
   {
+    "aliasOf": "color.gray.7",
+    "cssValue": "var(--ds-text-3)",
+    "cssVar": "--ds-status-steps-marker-hover-border",
+    "description": "Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014).",
+    "name": "status-steps.marker-hover-border",
+    "tier": "core",
+    "type": "color",
+    "value": "#86868E",
+  },
+  {
     "aliasOf": null,
     "cssValue": "1",
     "cssVar": "--ds-status-steps-content-z-index",
