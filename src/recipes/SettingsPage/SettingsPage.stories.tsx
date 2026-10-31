@@ -14,11 +14,6 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
     docs: { story: { inline: false, iframeHeight: 680 } },
-    a11y: {
-      // Scoped exception: a Kbd inside a primary Button keeps its light text color on the light
-      // button fill (2.13:1). Component bug reported to the PM; remove when it is fixed.
-      context: { exclude: ['button[data-variant="primary"] kbd'] },
-    },
   },
 } satisfies Meta<typeof SettingsPage>;
 

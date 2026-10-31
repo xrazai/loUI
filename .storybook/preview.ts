@@ -20,6 +20,7 @@ const preview: Preview = {
           ],
           'Components',
           'Patterns',
+          'Recipes',
         ],
       },
     },
@@ -31,6 +32,9 @@ const preview: Preview = {
     a11y: {
       // Violations fail the Vitest story tests (AGENTS.md section 10).
       test: 'error',
+      // React Aria's live announcer keeps an unnamed `role="img"` node after a message is cleared
+      // (axe role-img-alt). Library-owned and visually hidden; same skip as `src/test/axe.ts`.
+      context: { exclude: ['[data-live-announcer]'] },
     },
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },

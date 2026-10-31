@@ -48,13 +48,6 @@ export const Saved: Story = {
 
 /** The server rejects the email: its message appears on the field and in the summary. */
 export const ServerError: Story = {
-  parameters: {
-    a11y: {
-      // Scoped exception: React Aria's live announcer (library-owned, visually hidden) keeps a
-      // label-less role=img node after announcing the error (axe role-img-alt). Reported to the PM.
-      context: { exclude: ['[data-live-announcer]'] },
-    },
-  },
   args: {
     saveCustomer: fn(() =>
       Promise.resolve<ServerErrors>({

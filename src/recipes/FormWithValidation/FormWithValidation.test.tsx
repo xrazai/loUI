@@ -33,10 +33,12 @@ describe('FormWithValidation', () => {
     await userEvent.click(save(screen));
     await expect
       .poll(() => summary(screen).element().textContent)
-      .toMatch(/Fix 2 fields before saving/);
+      .toMatch(/Fix 3 fields before saving/);
     await expect.element(summary(screen)).toHaveFocus();
     await expect.element(screen.getByText("Enter the customer's full name.").first()).toBeVisible();
     await expect.element(screen.getByText('Enter a complete email address.').first()).toBeVisible();
+    // The required Select is listed under its label, not under its options.
+    await expect.element(summary(screen).getByRole('link', { name: 'Country' })).toBeVisible();
     expect(saveCustomer).not.toHaveBeenCalled();
     // Save stays enabled so the user can always learn what is wrong.
     await expect.element(save(screen)).toBeEnabled();

@@ -1,6 +1,6 @@
 import axe from 'axe-core';
 import { expect } from 'vitest';
-import { expectNoA11yViolations } from '../test/axe';
+import { LIVE_ANNOUNCER_SELECTOR, expectNoA11yViolations } from '../test/axe';
 
 export interface SettledOptions {
   /**
@@ -15,17 +15,14 @@ export interface SettledOptions {
  * (blended colors fail contrast). Wait for the animations to finish, then check every top-level
  * node of the page (the recipe, its portals and the toast region).
  *
- * Skipped: React Aria's global live announcer (`data-live-announcer`). It is owned by the
- * library, visually hidden, and after a message is cleared it keeps a `role="img"` node whose
- * `aria-labelledby` target is gone, which axe reports as `role-img-alt`. It is not part of any
- * recipe; the finding is in the report to the PM.
+ * Skipped: React Aria's global live announcer, see `LIVE_ANNOUNCER_SELECTOR` for the reason.
  */
 export async function expectNoViolationsOnceSettled({
   exclude = [],
 }: SettledOptions = {}): Promise<void> {
   await expect.poll(() => document.getAnimations().length).toBe(0);
   for (const node of document.body.children) {
-    if (node.hasAttribute('data-live-announcer')) continue;
+    if (node.matches(LIVE_ANNOUNCER_SELECTOR)) continue;
     if (exclude.length === 0) {
       await expectNoA11yViolations(node);
       continue;

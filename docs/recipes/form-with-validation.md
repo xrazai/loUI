@@ -18,7 +18,7 @@ Components: `Form`, `Input`, `Select`, `FieldSet`, `Button`, `Text`.
 
 ## What it does
 
-1. **Submit empty.** The browser blocks the submit, each invalid field shows its message ("Enter the customer's full name."), and focus moves to the error summary, "Fix 2 fields before saving". Each entry links to its field.
+1. **Submit empty.** The browser blocks the submit, each invalid field shows its message ("Enter the customer's full name."), and focus moves to the error summary, "Fix 3 fields before saving". Each entry links to its field.
 2. **Messages say how to fix it.** Email uses a function for `errorMessage` so a server message is not replaced by a static one: missing or malformed gives "Enter a complete email address."; anything else shows what the server said.
 3. **Server errors.** `saveCustomer` resolves with `{ field: message }`. They are passed to `validationErrors`, appear on the fields and in the summary, and are cleared at the start of the next submit.
 4. **Save stays enabled** and shows a spinner while the request runs (`isPending`). A disabled button would hide what is wrong.
@@ -139,7 +139,13 @@ export function FormWithValidation({ saveCustomer = fakeSave }: FormWithValidati
         />
         <FieldSet legend="Billing address" description="Shown on every invoice.">
           <Input label="Street" name="street" autoComplete="street-address" />
-          <Select label="Country" name="country" options={COUNTRIES} />
+          <Select
+            label="Country"
+            name="country"
+            options={COUNTRIES}
+            isRequired
+            errorMessage="Select a country."
+          />
         </FieldSet>
         <Inline gap={3}>
           <Button type="submit" variant="primary" isPending={isSaving}>
@@ -160,7 +166,3 @@ export function FormWithValidation({ saveCustomer = fakeSave }: FormWithValidati
 ## Verified by
 
 `src/recipes/FormWithValidation/FormWithValidation.test.tsx` (empty submit and focus on the summary, malformed email, server error cycle, Enter to submit, tab order, axe in the empty, error and saved states) and the `Recipes/FormWithValidation` stories.
-
-## Known issue
-
-`FormErrorSummary` builds the label of a required `Select` from the hidden native select and reads out every option ("BrazilGermanyUnited States: Select a country."). The recipe keeps `Select` optional until that is fixed; see the report for the component issue.

@@ -3,6 +3,16 @@ import type { AxeResults, RunOptions } from 'axe-core';
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
+/**
+ * React Aria's global live announcer (`<div data-live-announcer>` appended to `document.body`).
+ * The library owns it and it is visually hidden. After a message is cleared it keeps a
+ * `role="img"` node whose `aria-labelledby` target is gone, which axe reports as `role-img-alt`.
+ * That node is not part of any component of this design system, so every axe run in this repo
+ * skips it (the Storybook a11y addon does too, see `.storybook/preview.ts`). Revisit when React
+ * Aria stops leaving the unnamed node behind.
+ */
+export const LIVE_ANNOUNCER_SELECTOR = '[data-live-announcer]';
+
 function formatViolations(violations: AxeResults['violations']): string {
   return violations
     .map((violation) => {
@@ -26,7 +36,10 @@ export async function expectNoA11yViolations(
   container: Element,
   options: RunOptions = {},
 ): Promise<void> {
-  const results = await axe.run(container, {
+  const context = container.querySelector(LIVE_ANNOUNCER_SELECTOR)
+    ? { include: [container], exclude: [[LIVE_ANNOUNCER_SELECTOR]] }
+    : container;
+  const results = await axe.run(context, {
     runOnly: { type: 'tag', values: WCAG_TAGS },
     ...options,
   });

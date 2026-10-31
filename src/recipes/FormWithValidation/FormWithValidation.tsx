@@ -101,7 +101,13 @@ export function FormWithValidation({ saveCustomer = fakeSave }: FormWithValidati
         />
         <FieldSet legend="Billing address" description="Shown on every invoice.">
           <Input label="Street" name="street" autoComplete="street-address" />
-          <Select label="Country" name="country" options={COUNTRIES} />
+          <Select
+            label="Country"
+            name="country"
+            options={COUNTRIES}
+            isRequired
+            errorMessage="Select a country."
+          />
         </FieldSet>
         <Inline gap={3}>
           <Button type="submit" variant="primary" isPending={isSaving}>

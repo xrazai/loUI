@@ -28,12 +28,6 @@ async function setup(props: SettingsPageProps = {}) {
   );
 }
 
-/**
- * Known component bug, reported to the PM: a Kbd inside a primary Button keeps its own light
- * text color on the light button fill (2.13:1). The TopBar story has the same markup.
- */
-const KBD_IN_PRIMARY_BUTTON = { exclude: ['button[data-variant="primary"] kbd'] };
-
 afterEach(() => {
   act(() => {
     toast.clear();
@@ -103,9 +97,9 @@ describe('SettingsPage', () => {
 
   it('has no axe violations', async () => {
     const screen = await setup();
-    await expectNoViolationsOnceSettled(KBD_IN_PRIMARY_BUTTON);
+    await expectNoViolationsOnceSettled();
     await userEvent.click(screen.getByRole('button', { name: /Save settings/ }));
     await expect.element(screen.getByText(/Settings saved/)).toBeVisible();
-    await expectNoViolationsOnceSettled(KBD_IN_PRIMARY_BUTTON);
+    await expectNoViolationsOnceSettled();
   });
 });
