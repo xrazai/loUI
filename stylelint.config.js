@@ -30,6 +30,9 @@ export default {
         ignoreValues: [
           'transparent',
           'currentColor',
+          'currentcolor',
+          // CSS system colors, for @media (forced-colors: active) blocks only (ADR-0002 amendment).
+          '/^(canvas|canvastext|linktext|visitedtext|activetext|buttonface|buttontext|buttonborder|field|fieldtext|highlight|highlighttext|selecteditem|selecteditemtext|mark|marktext|graytext|accentcolor|accentcolortext)$/i',
           'inherit',
           '0',
           '1',

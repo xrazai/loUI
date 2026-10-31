@@ -15,6 +15,38 @@ export type { LinkProps, LinkVariant } from './components/Link';
 export { Spinner } from './components/Spinner';
 export type { SpinnerProps, SpinnerSize } from './components/Spinner';
 
+// Form fields
+export { Checkbox, CheckboxGroup } from './components/Checkbox';
+export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
+export { Description, FieldError, FieldMessages, Label, RequiredMark } from './components/Field';
+export type {
+  DescriptionProps,
+  FieldErrorMessage,
+  FieldErrorProps,
+  FieldLabelingProps,
+  FieldMessagesProps,
+  FieldValidation,
+  LabelProps,
+  RequiredMarkProps,
+  WithLabel,
+} from './components/Field';
+export { Input } from './components/Input';
+export type { InputProps, InputSize } from './components/Input';
+export { Radio, RadioGroup } from './components/RadioGroup';
+export type { RadioGroupProps, RadioProps } from './components/RadioGroup';
+export { Select } from './components/Select';
+export type {
+  SelectGroup,
+  SelectMessages,
+  SelectOption,
+  SelectProps,
+  SelectSize,
+} from './components/Select';
+export { Switch } from './components/Switch';
+export type { SwitchLabelPlacement, SwitchProps } from './components/Switch';
+export { Textarea } from './components/Textarea';
+export type { TextareaMessages, TextareaProps, TextareaResize } from './components/Textarea';
+
 // Display
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertTone } from './components/Alert';
