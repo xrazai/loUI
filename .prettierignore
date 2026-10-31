@@ -1,0 +1,12 @@
+node_modules
+dist
+storybook-static
+coverage
+raw_files
+pnpm-lock.yaml
+.changeset/*.md
+*.tsbuildinfo
+__screenshots__
+AGENTS.md
+TODO.md
+CHANGELOG.md

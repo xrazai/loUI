@@ -1,0 +1,7 @@
+# pnpm 12 settings live here. Lifecycle scripts of dependencies are opt-in.
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - eslint@10.14.0
+  - geist@1.9.0
+  - lucide-react@1.66.0

@@ -1,0 +1,5 @@
+/*
+ * Cascade layer order for the whole design system (ADR-0002).
+ * Tokens, reset and base styles are filled in by the tokens and base tasks.
+ */
+@layer reset, tokens, base, components, utilities;

@@ -1,0 +1,107 @@
+{
+  "name": "@loui/ds",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Loui DS: a dark, minimal, functional React design system.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./patterns": {
+      "types": "./dist/patterns/index.d.ts",
+      "default": "./dist/patterns/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:browser": "vitest run --project browser",
+    "test:a11y": "vitest run --project storybook && vitest run --project browser -t axe",
+    "test:visual": "vitest run --project visual",
+    "test:visual:update": "vitest run --project visual --update",
+    "tokens:build": "echo \"tokens:build is a placeholder; the tokens task (TOK-*) will replace it\"",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "changeset": "changeset",
+    "size": "size-limit",
+    "publint": "publint",
+    "attw": "attw --pack . --profile esm-only --exclude-entrypoints styles.css",
+    "prepare": "husky"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "geist": "1.9.0",
+    "lucide-react": "~1.66.0",
+    "react-aria-components": "1.22.1"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@changesets/cli": "^3.0.3",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@eslint/js": "^10.0.1",
+    "@size-limit/preset-small-lib": "^14.3.0",
+    "@storybook/addon-a11y": "~10.6.5",
+    "@storybook/addon-docs": "~10.6.5",
+    "@storybook/addon-vitest": "~10.6.5",
+    "@storybook/react-vite": "~10.6.5",
+    "@terrazzo/cli": "~2.10.0",
+    "@terrazzo/plugin-css": "~2.10.0",
+    "@tsdown/css": "^0.23.4",
+    "@types/node": "^24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/browser-playwright": "~5.0.5",
+    "axe-core": "4.14.0",
+    "eslint": "~10.14.0",
+    "eslint-plugin-jsx-a11y-x": "0.2.0",
+    "eslint-plugin-react-hooks": "~7.1.1",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "playwright": "1.64.1",
+    "prettier": "^3.9.10",
+    "publint": "^0.3.25",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "size-limit": "^14.3.0",
+    "storybook": "~10.6.5",
+    "stylelint": "~17.16.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-declaration-strict-value": "~1.12.1",
+    "tsdown": "~0.23.4",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "~8.72.1",
+    "vite": "~8.3.5",
+    "vitest": "~5.0.5",
+    "vitest-browser-react": "^2.3.0"
+  }
+}
