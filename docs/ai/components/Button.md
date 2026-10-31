@@ -52,7 +52,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
+`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-primary-fg-muted`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
 
 ## One primary per screen
 

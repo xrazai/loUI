@@ -246,6 +246,8 @@ export type TokenName =
   | 'inline.gap'
   | 'kbd.height'
   | 'kbd.padding-inline'
+  | 'kbd.fg'
+  | 'kbd.border'
   | 'ledger-list.date-width'
   | 'ledger-list.gap'
   | 'ledger-list.padding-inline'
@@ -582,6 +584,8 @@ export type TokenCssVar =
   | '--ds-inline-gap'
   | '--ds-kbd-height'
   | '--ds-kbd-padding-inline'
+  | '--ds-kbd-fg'
+  | '--ds-kbd-border'
   | '--ds-ledger-list-date-width'
   | '--ds-ledger-list-gap'
   | '--ds-ledger-list-padding-inline'
@@ -936,6 +940,8 @@ export const tokenValues = {
   'inline.gap': { cssVar: '--ds-inline-gap', type: 'dimension', value: '8px' },
   'kbd.height': { cssVar: '--ds-kbd-height', type: 'dimension', value: '18px' },
   'kbd.padding-inline': { cssVar: '--ds-kbd-padding-inline', type: 'dimension', value: '4px' },
+  'kbd.fg': { cssVar: '--ds-kbd-fg', type: 'color', value: '#A3A3A9' },
+  'kbd.border': { cssVar: '--ds-kbd-border', type: 'color', value: '#33333A' },
   'ledger-list.date-width': { cssVar: '--ds-ledger-list-date-width', type: 'dimension', value: '64px' },
   'ledger-list.gap': { cssVar: '--ds-ledger-list-gap', type: 'dimension', value: '12px' },
   'ledger-list.padding-inline': { cssVar: '--ds-ledger-list-padding-inline', type: 'dimension', value: '24px' },

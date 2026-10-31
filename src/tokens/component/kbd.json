@@ -13,6 +13,16 @@
       "$type": "dimension",
       "$value": "{space.1}",
       "$description": "Horizontal padding of a Kbd keycap (4px)."
+    },
+    "fg": {
+      "$type": "color",
+      "$value": "{color.text-2}",
+      "$description": "Text color of a Kbd keycap. Filled buttons (primary, danger-solid) override it for the Kbd inside, so the hint stays readable on their fill."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.line-strong}",
+      "$description": "Border color of a Kbd keycap. Overridden together with kbd-fg by filled buttons."
     }
   }
 }

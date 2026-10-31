@@ -34,7 +34,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-font-mono`, `--ds-fs-caption`, `--ds-kbd-height`, `--ds-kbd-padding-inline`, `--ds-lh-caption`, `--ds-line-strong`, `--ds-radius-sm`, `--ds-space-1`, `--ds-text-2`, `--ds-weight-medium`
+`--ds-font-mono`, `--ds-fs-caption`, `--ds-kbd-border`, `--ds-kbd-fg`, `--ds-kbd-height`, `--ds-kbd-padding-inline`, `--ds-lh-caption`, `--ds-radius-sm`, `--ds-space-1`, `--ds-weight-medium`
 
 ## When to use
 

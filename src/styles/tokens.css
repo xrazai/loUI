@@ -331,6 +331,8 @@
     /* kbd */
     --ds-kbd-height: 18px;
     --ds-kbd-padding-inline: var(--ds-space-1);
+    --ds-kbd-fg: var(--ds-text-2);
+    --ds-kbd-border: var(--ds-line-strong);
 
     /* ledger-list */
     --ds-ledger-list-date-width: 64px;
