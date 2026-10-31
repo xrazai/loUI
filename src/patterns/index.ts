@@ -2,6 +2,12 @@
  * Domain patterns entry point (`@loui/ds/patterns`, ADR-0008).
  * Compositions with a narrower purpose than core components; names stay generic.
  */
+export { AgentCard } from './AgentCard';
+export type { AgentCardProps, AgentCardStatus } from './AgentCard';
+export { ApprovalCard } from './ApprovalCard';
+export type { ApprovalCardKind, ApprovalCardProps } from './ApprovalCard';
+export { ChatPanel } from './ChatPanel';
+export type { ChatMessage, ChatMessageRole, ChatMessageStatus, ChatPanelProps } from './ChatPanel';
 export { ColorOption } from './ColorOption';
 export type { ColorOptionProps } from './ColorOption';
 export { LedgerList } from './LedgerList';

@@ -86,7 +86,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Display
 
-- [ ] **CMP-DSP-06** (P2 · S) `Rating` — Fix: half-star display support (value is rounded today), read-only vs. interactive decision, `aria-label` from messages (pluralized).
 
 ### Navigation
 
@@ -118,9 +117,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Patterns — `agents/` group
 
-- [ ] **CMP-AGT-01** (P2 · M) `AgentCard` — Fix: clickable `div role="button"` containing status badge → real button/link card with a single accessible name; "soon" state not interactive; icon via `Icon`; status label from messages; no `unpkg` icon fetch.
-- [ ] **CMP-AGT-02** (P2 · M) `ApprovalCard` — Fix: `section` needs an accessible name; kind badge, rating and flag are text-first (keep); Send/Discard are secondary buttons by design (many cards per screen) — keep and document; undo handled by Toast pattern.
-- [ ] **CMP-AGT-03** (P2 · L) `ChatPanel` — Fix: Enter-to-send must ignore IME composition (`isComposing`); `role="log"` + polite live region is good — verify no double announcements; messages keyed by index → stable ids; streaming message support, stop/retry, scroll-anchoring, `prefers-reduced-motion`; strings from messages; markdown rendering policy (sanitized).
 
 ---
 

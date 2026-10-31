@@ -171,6 +171,8 @@ export { Kbd } from './components/Kbd';
 export type { KbdPlatform, KbdProps } from './components/Kbd';
 export { Meter, Progress } from './components/Progress';
 export type { MeterProps, ProgressProps, ProgressTone } from './components/Progress';
+export { Rating } from './components/Rating';
+export type { RatingProps, RatingSize } from './components/Rating';
 export { Skeleton } from './components/Skeleton';
 export type { SkeletonProps } from './components/Skeleton';
 export { Tag, TagGroup } from './components/Tag';

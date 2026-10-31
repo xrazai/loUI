@@ -8,6 +8,10 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **CMP-DSP-06** (2026-10-31) `Rating` (read-only): half stars, pluralized localized label ("3.5 out of 5 stars"); the filled star is the documented exception to the outline-icon rule.
+- **CMP-AGT-01** (2026-10-31) `AgentCard` (pattern): stretched-link card with a single accessible name, statuses `testing | active | paused | soon` from messages, pending-approval count.
+- **CMP-AGT-02** (2026-10-31) `ApprovalCard` (pattern): named `article`, editable draft, rating for reviews, warning flag, Discard (ghost) + Send (secondary); undo recipe with Toast.
+- **CMP-AGT-03 / AI-013** (partial, 2026-10-31) `ChatPanel` (pattern): `role="log"` list, streaming messages with Stop/Retry, IME-safe Enter-to-send, scroll anchoring with "Jump to latest", plain-text content with a `renderContent` hook (no `dangerouslySetInnerHTML`); a separate status region announces "Thinking…", the start of a reply once, and the full reply on completion.
 - **CMP-PAT-03** (2026-10-31) `Swatch`: `label` or `decorative` required by the types, inset ring token, dev-time hex validation; color passed as a custom property (ADR-0002).
 - **CMP-PAT-08** (2026-10-31) `ChoiceTiles` on React Aria `RadioGroup`: one tab stop with arrow-key roving, responsive columns, 3:1 boundaries in every state (tested).
 - **CMP-PAT-05** (2026-10-31) `StatusSteps`: ordered list, step state as visually hidden text (not color or ✓ only), `aria-current="step"`, real buttons when interactive.
