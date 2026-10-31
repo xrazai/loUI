@@ -104,5 +104,6 @@ div[role=status | alert | none]  (tinted surface, 1px tinted border, radius lg)
 
 ## Related components
 
+- Instead, see Dialog: A confirmation that needs a decision: use `Dialog`.
 - Instead, see Badge: A status of a record (Shipped, Failed): use `Badge`.
 - Renders: Icon, IconButton, VisuallyHidden

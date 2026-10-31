@@ -80,3 +80,4 @@ Stacked avatars: wrap them in a flex container with `role="group"` and an `aria-
 ## Related components
 
 - Instead, see Badge: For a status: use `Badge`.
+- Used by: Sidebar

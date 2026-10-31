@@ -83,3 +83,4 @@ div[role=progressbar|meter]
 
 - Instead, see Spinner: Waiting with no known structure and no label: use `Spinner`.
 - Instead, see Skeleton: Content that is loading: use `Skeleton`.
+- Used by: FileUpload

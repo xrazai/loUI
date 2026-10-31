@@ -76,3 +76,4 @@ A pill with a short status label. The text always states the status; the tone an
 - Instead, see Tag: For a count or a filter value: use `Tag`.
 - Instead, see Alert: For a message the user must read or act on: use `Alert`.
 - Instead, see Button: For an action: use `Button`. A Badge is never interactive.
+- Used by: AgentCard, ApprovalCard

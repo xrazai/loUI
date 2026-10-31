@@ -73,6 +73,15 @@ True when the user asks the OS for reduced motion (`prefers-reduced-motion: redu
 usePrefersReducedMotion(): boolean
 ```
 
+### useToast
+
+Hook form of `toast`, for components that prefer a hook. It returns the same stable object,
+so it is safe in dependency arrays.
+
+```ts
+useToast(): ToastApi
+```
+
 ## Utilities and constants
 
 ### compareText
@@ -102,6 +111,22 @@ and cached per locale; do not mutate it.
 createTextCollator(locale: string): Intl.Collator
 ```
 
+### createToastApi
+
+Builds the `toast()` function for a queue.
+
+```ts
+createToastApi(queue: ToastQueue): ToastApi
+```
+
+### createToastQueue
+
+Creates an independent queue, for tests or for a second region. Most apps use `toast`.
+
+```ts
+createToastQueue(): ToastQueue
+```
+
 ### daysBetween
 
 Whole days from `isoA` to `isoB` (positive when `isoB` is later). Uses UTC
@@ -118,6 +143,16 @@ Default locale.
 
 ```ts
 'en-US' | 'pt-BR';
+```
+
+### DEFAULT_TOAST_TIMEOUT
+
+Default time a toast stays on screen, in milliseconds. The handoff used 3.6 s, which is too
+short to read a sentence and press Undo (WCAG 2.2.1 Timing Adjustable); 5 s plus pause on
+hover and focus lets keyboard and slow readers finish.
+
+```ts
+5000;
 ```
 
 ### defineMessages
@@ -210,6 +245,41 @@ so combined characters stay whole, and upper-cases with the locale rules (`i` in
 getInitials(name: string, locale: string): string
 ```
 
+### getItemRange
+
+The 1-based range of items on `page`, or `null` when there are no items.
+
+```ts
+getItemRange(page: number, pageSize: number, total: number): { from: number; to: number; } | null
+```
+
+### getPageCount
+
+Number of pages for `total` items shown `pageSize` at a time (at least 1).
+
+```ts
+getPageCount(total: number, pageSize: number): number
+```
+
+### getPageItems
+
+Which page buttons to show, with ellipses for the pages that are left out.
+
+Up to 7 pages all of them are listed. Beyond that the first page, the last page, the current
+page and its two neighbours are listed, and a gap between two of them becomes an ellipsis.
+A gap that hides exactly one page shows that page instead (an ellipsis for a single page
+would be wider than the page it hides). `current` is clamped into `1..pageCount`; a
+`pageCount` below 1 is treated as 1.
+
+```
+getPageItems(1, 10)  // 1 2 3 4 5 6 7 8 9 10 collapses to: 1 2 … 10
+getPageItems(5, 10)  // 1 … 4 5 6 … 10
+```
+
+```ts
+getPageItems(current: number, pageCount: number): PageItem[]
+```
+
 ### highlightMatch
 
 Splits `text` into matched and unmatched segments for highlighting, ignoring case
@@ -253,6 +323,25 @@ True when `text` contains `query`, ignoring case and accents. An empty query mat
 
 ```ts
 matchesSearch(text: string, query: string): boolean
+```
+
+### niceScale
+
+Computes a "nice" value axis for data between `minValue` and `maxValue`.
+
+The axis always includes zero (bars grow from it), so an all-positive data set starts at 0,
+an all-negative one ends at 0, and mixed data spans both sides. The step is a round number
+(1, 2, 2.5, 5 or 10 times a power of ten) and the ends are multiples of it, aiming for about
+`tickCount` ticks. It handles zero data (axis 0 to 1), tiny values (`0.00003`), huge values
+and non-finite input (treated as 0).
+
+```ts
+niceScale(0, 42).ticks; // [0, 10, 20, 30, 40, 50]
+niceScale(-3, 8).ticks; // [-5, -2.5, 0, 2.5, 5, 7.5, 10]
+```
+
+```ts
+niceScale(minValue: number, maxValue: number, tickCount?: number): NiceScale
 ```
 
 ### normalizeSearch
@@ -328,6 +417,14 @@ Locales that ship with built-in message catalogs (ADR-0005).
 readonly[('en-US', 'pt-BR')];
 ```
 
+### toast
+
+Shows a toast in the default queue. Mount one `ToastRegion` near the app root.
+
+```ts
+toast(message: ReactNode, options?: ToastOptions): string
+```
+
 ### toISODate
 
 Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the
@@ -336,6 +433,14 @@ Invalid dates and years outside 0000-9999 throw in development and give `''` in 
 
 ```ts
 toISODate(date: Date, options?: { utc?: boolean; }): ISODate
+```
+
+### TOOLTIP_DELAY
+
+Default time in milliseconds the pointer must rest on the trigger before the tooltip opens.
+
+```ts
+500;
 ```
 
 ### warnDeprecated

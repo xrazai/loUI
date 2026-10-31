@@ -87,3 +87,4 @@ Avoid "Oops", "Sorry", blame ("You have no orders") and filler ("There is nothin
 
 - Instead, see Skeleton: While data is loading: use `Skeleton`.
 - Instead, see Alert: When loading failed: use `Alert` with a retry action.
+- Used by: ActionList, DataTable

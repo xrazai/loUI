@@ -3,8 +3,7 @@
 > A square button with a single icon and a required accessible name.
 
 The `label` becomes `aria-label`; there is no `title` (it would duplicate the name and is
-not keyboard accessible). A tooltip that shows the label on hover and focus is a separate,
-later addition.
+not keyboard accessible). Set `tooltip` to show the label in a `Tooltip` on hover and focus.
 
 A square button that holds one icon and has a required accessible name. Built on React Aria's `Button`.
 
@@ -17,14 +16,15 @@ A square button that holds one icon and has a required accessible name. Built on
 
 ## Props
 
-| Prop        | Type                     | Required | Default       | Description                                                                                                                                                  |
-| ----------- | ------------------------ | -------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `label`     | `string`                 | yes      |               | Accessible name, required. Say what the button does, as a verb plus object when there is one ("Add order", "Close dialog"), not what it looks like ("Plus"). |
-| `icon`      | `LucideIcon`             | yes      |               | The icon to draw: one of the curated set (for example `PlusIcon`). Decorative inside the button.                                                             |
-| `variant`   | `'secondary' \| 'ghost'` |          | `'secondary'` | Visual style: `secondary` (default, bordered) or `ghost` (no border at rest).                                                                                |
-| `size`      | `'sm' \| 'md' \| 'lg'`   |          | `'md'`        | Square size token: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                |
-| `className` | `string`                 |          |               |                                                                                                                                                              |
-| `ref`       | `Ref<HTMLButtonElement>` |          |               | Ref to the underlying `<button>` element.                                                                                                                    |
+| Prop        | Type                                  | Required | Default       | Description                                                                                                                                                                                                                                    |
+| ----------- | ------------------------------------- | -------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`                              | yes      |               | Accessible name, required. Say what the button does, as a verb plus object when there is one ("Add order", "Close dialog"), not what it looks like ("Plus").                                                                                   |
+| `icon`      | `LucideIcon`                          | yes      |               | The icon to draw: one of the curated set (for example `PlusIcon`). Decorative inside the button.                                                                                                                                               |
+| `variant`   | `'secondary' \| 'ghost'`              |          | `'secondary'` | Visual style: `secondary` (default, bordered) or `ghost` (no border at rest).                                                                                                                                                                  |
+| `size`      | `'sm' \| 'md' \| 'lg'`                |          | `'md'`        | Square size token: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                                                                                                  |
+| `tooltip`   | `boolean \| IconButtonTooltipOptions` |          |               | Shows `label` in a `Tooltip` on hover and keyboard focus. Pass `true`, or an object to add a shortcut or change the side. Off by default. The `label` stays the accessible name; the tooltip only repeats it visually for sighted mouse users. |
+| `className` | `string`                              |          |               |                                                                                                                                                                                                                                                |
+| `ref`       | `Ref<HTMLButtonElement>`              |          |               | Ref to the underlying `<button>` element.                                                                                                                                                                                                      |
 
 ### Inherited props
 
@@ -69,7 +69,7 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 ## Accessibility
 
 - `label` is required by the type (`label: string`), which enforces AGENTS.md section 8.
-- The name is `aria-label` only. The handoff set `title` too, which duplicated the name and was not available to keyboard or touch users. A tooltip (shown on hover **and** focus, dismissible with `Esc`) will be added with the `Tooltip` component; until then use a clear `label`.
+- The name is `aria-label` only. The handoff set `title` too, which duplicated the name and was not available to keyboard or touch users. Set `tooltip` to show the label (and an optional shortcut) in a `Tooltip` on hover **and** focus, dismissible with `Esc`.
 - The icon is `aria-hidden` and `focusable="false"`; the button is never named by its glyph.
 - Target size: 32 / 40 / 48 px, above the 24px minimum of WCAG 2.5.8 (`--ds-target-min` is also enforced as `min-inline-size` and `min-block-size`).
 - Keys: `Tab` focuses, `Enter` and `Space` press.
@@ -99,5 +99,5 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 
 - Instead, see Button: When there is room for a text label: use `Button` with a `leading` icon. A visible word is clearer than any icon.
 - Instead, see Link: For navigation: use `Link`.
-- Renders: Icon
-- Used by: Alert
+- Renders: Icon, Tooltip
+- Used by: Alert, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion

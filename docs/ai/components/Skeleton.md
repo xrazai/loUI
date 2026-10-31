@@ -82,3 +82,4 @@ span[aria-hidden="true"]  lines → n × span (last one is 60% wide)
 - Instead, see Button: For an action in progress (saving, sending): use `Spinner` or a loading `Button`.
 - Instead, see Progress: For a measurable task: use `Progress`.
 - Instead, see EmptyState: When there is nothing to show after loading: use `EmptyState`.
+- Used by: DataTable

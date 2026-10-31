@@ -24,9 +24,7 @@ function validate(schemaFile: string, data: unknown): string[] {
  * Exported components that are known to miss part of the required documentation. Every entry is
  * a debt: remove it when the gap is closed (the test fails if an entry becomes obsolete).
  */
-const KNOWN_GAPS: Record<string, ('description' | 'story' | 'doc')[]> = {
-  VisuallyHidden: ['doc'],
-};
+const KNOWN_GAPS: Record<string, ('description' | 'story' | 'doc')[]> = {};
 
 /** Props without TSDoc, same rules as KNOWN_GAPS. */
 const KNOWN_PROP_GAPS = new Set(['FieldMessages.description', 'FieldMessages.errorMessage']);

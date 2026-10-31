@@ -113,3 +113,4 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 - Instead, see Input: One line of text: `Input`.
 - Renders: FieldMessages, Label, VisuallyHidden
+- Used by: ApprovalCard, ChatPanel

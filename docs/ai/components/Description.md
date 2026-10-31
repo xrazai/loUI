@@ -95,4 +95,4 @@ Rules for authors:
 
 ## Related components
 
-- Used by: Radio, RadioGroup
+- Used by: FileUpload, Radio, RadioGroup

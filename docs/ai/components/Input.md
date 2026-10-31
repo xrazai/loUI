@@ -128,4 +128,6 @@ All other props of React Aria `TextField` are accepted (`onFocus`, `onBlur`, `on
 - Instead, see Select: A choice from a list: `Select`, `RadioGroup`, `Checkbox`.
 - Instead, see RadioGroup: A choice from a list: `Select`, `RadioGroup`, `Checkbox`.
 - Instead, see Checkbox: A choice from a list: `Select`, `RadioGroup`, `Checkbox`.
+- Instead, see CurrencyInput: Currency or quantity entry that needs masking: a dedicated field (`CurrencyInput`, planned).
 - Renders: FieldMessages, Label
+- Used by: CurrencyInput

@@ -81,4 +81,5 @@ Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `rais
 
 ## Related components
 
+- Instead, see Dialog: For content that interrupts the user: use `Dialog` or `Alert`.
 - Instead, see Alert: For content that interrupts the user: use `Dialog` or `Alert`.

@@ -84,3 +84,4 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 ## Related components
 
 - Renders: VisuallyHidden
+- Used by: SearchInput, Tab, TabList, TabPanel, Tabs
