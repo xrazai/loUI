@@ -42,6 +42,7 @@ For component `<Name>` in handoff group `<group>`:
 
 - Kill processes by image name (`taskkill /IM node.exe`, `python.exe`…): other agents and tools run on this machine. Stop only processes you started, by PID.
 - `git add -A`, `git commit -a`, `--no-verify`, `git push`, history rewrites.
+- Hand-made links/junctions inside `node_modules` to reach a transitive dependency. Report the missing dependency to the PM (who runs `pnpm add`).
 
 ## Report to the PM
 
