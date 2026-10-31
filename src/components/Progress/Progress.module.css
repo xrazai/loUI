@@ -1,0 +1,100 @@
+@layer components {
+  @keyframes sweep {
+    from {
+      inset-inline-start: calc(var(--ds-progress-indeterminate-width) * -1%);
+    }
+
+    to {
+      inset-inline-start: 100%;
+    }
+  }
+
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+  }
+
+  .header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .label {
+    color: var(--ds-text-2);
+  }
+
+  .meta {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .track {
+    position: relative;
+    overflow: hidden;
+    block-size: var(--ds-progress-height);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-surface-hover);
+  }
+
+  .fill {
+    inline-size: var(--progress-value, 0%);
+    block-size: 100%;
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-accent);
+    transition-property: inline-size;
+    transition-duration: var(--ds-duration-progress);
+    transition-timing-function: var(--ds-ease);
+  }
+
+  .root[data-tone='success'] .fill {
+    background-color: var(--ds-success);
+  }
+
+  .root[data-tone='warning'] .fill {
+    background-color: var(--ds-warning);
+  }
+
+  .root[data-tone='danger'] .fill {
+    background-color: var(--ds-danger);
+  }
+
+  .fill[data-indeterminate] {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--ds-progress-indeterminate-width) * 1%);
+    transition: none;
+    animation-name: sweep;
+    animation-duration: var(--ds-progress-indeterminate-duration);
+    animation-timing-function: var(--ds-ease);
+    animation-iteration-count: infinite;
+  }
+
+  /* Without motion the unknown amount is a static segment in the middle of the track. */
+  @media (prefers-reduced-motion: reduce) {
+    .fill[data-indeterminate] {
+      inset-inline-start: calc((100 - var(--ds-progress-indeterminate-width)) / 2 * 1%);
+      animation: none;
+    }
+  }
+
+  /* Forced colors drop background colors: draw the track and the fill with system colors. */
+  @media (forced-colors: active) {
+    .track {
+      border: 1px solid;
+    }
+
+    .fill {
+      forced-color-adjust: none;
+      background: currentcolor;
+    }
+  }
+}

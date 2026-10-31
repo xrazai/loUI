@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "progress": {
+    "height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Height of the Progress and Meter bar (4px)."
+    },
+    "indeterminate-width": {
+      "$type": "number",
+      "$value": 40,
+      "$description": "Width of the moving segment of an indeterminate Progress, in percent of the track (40)."
+    },
+    "indeterminate-duration": {
+      "$type": "duration",
+      "$value": {
+        "value": 1400,
+        "unit": "ms"
+      },
+      "$description": "Duration of one sweep of an indeterminate Progress (1400ms). Static under prefers-reduced-motion."
+    }
+  }
+}
