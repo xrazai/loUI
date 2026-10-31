@@ -59,7 +59,29 @@ export const Ticking: Story = {
 
 ## Platform baselines
 
-Fonts and anti-aliasing differ between operating systems, so baselines carry the platform in their name (`-win32`, `-darwin`, `-linux`). There is no Docker here: the committed set is for the machine that produced it, and other platforms generate their own on first run. A pinned CI container (Linux) is still needed before baselines can gate pull requests (TEST-005 remainder); until then these are a local safety net and a review aid.
+Fonts and anti-aliasing differ between operating systems, so baselines carry the platform in their name (`-win32`, `-darwin`, `-linux`). Windows baselines are the local safety net. **Linux baselines are the ones CI compares against**, and they are generated only inside the pinned Playwright container (`mcr.microsoft.com/playwright:v1.64.1-noble`; the tag must match the `playwright` version in `package.json`). Never commit Linux PNGs rendered anywhere else.
+
+## Linux baselines in CI (TEST-019)
+
+| Piece                                      | Role                                                                                                                                                                                                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.github/workflows/visual-baselines.yml`   | Manual (`workflow_dispatch`). In the container: install, delete existing `*-linux.png`, `pnpm test:visual:update`, re-run `pnpm test:visual` to prove stability, upload the artifact `visual-baselines-linux`. win32 and darwin files are never touched. |
+| `scripts/visual/pull-linux-baselines.mjs`  | `pnpm visual:pull-linux [run-id] [--no-prune]`: `gh run download` of that artifact (latest successful run by default) into `tests/visual/__screenshots__/stories.visual.test.tsx/`. Stale `-linux.png` files are removed unless `--no-prune`.            |
+| `visual` job in `.github/workflows/ci.yml` | Runs `pnpm test:visual` in the same container on push and PR. It checks for `*-chromium-linux.png` first and does nothing while there are none. On failure it uploads the artifact `visual-diffs` (actual and diff images).                              |
+
+### Regenerate and commit Linux baselines
+
+1. Land the component changes first; baselines must be generated from the final code on `main` (or the branch you will merge).
+2. Trigger and wait: `gh workflow run visual-baselines.yml --ref <branch>` then `gh run watch <run-id> --exit-status` (find the id with `gh run list --workflow visual-baselines.yml --limit 1`).
+3. Pull: `pnpm visual:pull-linux` (or `pnpm visual:pull-linux <run-id>`).
+4. Review: `git status --short tests/visual`, open the changed PNGs. Same rule as any baseline: look at the diff and say why it changed.
+5. Commit the PNGs: `git add tests/visual && git commit -m "test(visual): regenerate linux baselines"`.
+
+Regenerate from scratch (the workflow does) after component changes: the comparison tolerance is 0.2% of pixels, so partial updates drift.
+
+### When the CI `visual` job fails
+
+Download the `visual-diffs` artifact and compare. If the change is intended, regenerate the Linux baselines as above and commit them with the code. If not, fix the code. Do not update baselines on Windows to fix a Linux failure: they are separate files.
 
 ## Scope and gaps
 

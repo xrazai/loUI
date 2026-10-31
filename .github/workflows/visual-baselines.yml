@@ -1,0 +1,54 @@
+# Generates the Linux visual baselines (TEST-019) inside the pinned Playwright container, so
+# fonts and anti-aliasing match what the `visual` job in ci.yml renders. Manual only.
+# The image tag must match the `playwright` version in package.json (currently 1.64.1).
+# Pull the result with `pnpm visual:pull-linux` (see tests/visual/README.md).
+name: Visual baselines (linux)
+on:
+  workflow_dispatch:
+concurrency:
+  group: visual-baselines
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  baselines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Remove existing linux baselines (win32/darwin files are untouched)
+        run: find tests/visual/__screenshots__ -name '*-linux.png' -delete
+      - name: Generate baselines
+        run: pnpm test:visual:update
+      - name: Verify the new baselines are stable (second run, no update)
+        run: pnpm test:visual
+      - name: Count baselines
+        run: |
+          count=$(find tests/visual/__screenshots__ -name '*-chromium-linux.png' | wc -l)
+          echo "Generated $count linux baselines"
+          test "$count" -gt 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines-linux
+          path: tests/visual/__screenshots__/stories.visual.test.tsx/*-linux.png
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines-failures
+          path: |
+            .vitest/attachments
+            tests/visual/__screenshots__/**/*-actual.png
+            tests/visual/__screenshots__/**/*-diff.png
+          if-no-files-found: ignore

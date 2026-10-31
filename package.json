@@ -49,6 +49,7 @@
     "test:a11y": "vitest run --project storybook && vitest run --project browser -t axe",
     "test:visual": "vitest run --project visual",
     "test:visual:update": "vitest run --project visual --update",
+    "visual:pull-linux": "node scripts/visual/pull-linux-baselines.mjs",
     "tokens:build": "tz build",
     "tokens:check": "node scripts/tokens/check.mjs",
     "manifest:build": "tsx scripts/manifest/build.ts",

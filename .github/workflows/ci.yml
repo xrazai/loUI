@@ -1,6 +1,5 @@
-# CI gate: everything in `pnpm check` except visual regression, whose baselines are
-# Windows-only for now (ADR-0010). Linux baselines from the pinned Playwright
-# container are tracked as TEST-019.
+# CI gate: everything in `pnpm check` except visual regression (the `check` job), plus a
+# `visual` job that runs only once Linux baselines are committed (ADR-0010, TEST-019).
 name: CI
 on:
   pull_request:
@@ -25,10 +24,49 @@ jobs:
       - run: pnpm check:ci
       - run: pnpm publint
       - run: pnpm size
+      - run: pnpm attw
+      - run: pnpm build-storybook
       - name: Upload failure screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: vitest-failures
           path: .vitest/attachments
+          if-no-files-found: ignore
+  # Visual regression in the same pinned container that generated the Linux baselines
+  # (.github/workflows/visual-baselines.yml). Skipped while no `*-chromium-linux.png` exists.
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for linux baselines
+        id: baselines
+        run: |
+          count=$(find tests/visual/__screenshots__ -name '*-chromium-linux.png' | wc -l)
+          echo "Found $count linux baselines"
+          if [ "$count" -gt 0 ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: pnpm/action-setup@v4
+        if: steps.baselines.outputs.present == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.baselines.outputs.present == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: steps.baselines.outputs.present == 'true'
+      - run: pnpm test:visual
+        if: steps.baselines.outputs.present == 'true'
+      - name: Upload visual diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: |
+            .vitest/attachments
+            tests/visual/__screenshots__/**/*-actual.png
+            tests/visual/__screenshots__/**/*-diff.png
           if-no-files-found: ignore
