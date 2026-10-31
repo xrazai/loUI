@@ -142,6 +142,20 @@ export type {
 export { TopBar } from './components/TopBar';
 export type { TopBarHeadingLevel, TopBarProps } from './components/TopBar';
 
+// Status and selection
+export { ChoiceTiles } from './components/ChoiceTiles';
+export type {
+  ChoiceTilesOption,
+  ChoiceTilesProps,
+  ChoiceTilesSize,
+} from './components/ChoiceTiles';
+export { DueIndicator } from './components/DueIndicator';
+export type { DueIndicatorProps } from './components/DueIndicator';
+export { StatusSteps } from './components/StatusSteps';
+export type { StatusStep, StatusStepState, StatusStepsProps } from './components/StatusSteps';
+export { Swatch } from './components/Swatch';
+export type { SwatchProps, SwatchSize } from './components/Swatch';
+
 // Display
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertTone } from './components/Alert';
