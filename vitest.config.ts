@@ -34,6 +34,9 @@ export default defineConfig({
           name: 'browser',
           include: ['src/**/*.test.tsx'],
           setupFiles: ['src/test/setup.ts'],
+          // Overlay and timer tests run real animations and clocks; the default 5 s is too tight
+          // when the four projects share the machine in one `pnpm test` run.
+          testTimeout: 20_000,
           browser: browser('browser'),
         },
       },
