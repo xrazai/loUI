@@ -32,10 +32,26 @@ function formatViolations(violations: AxeResults['violations']): string {
  * violation. Never disable a rule globally; scoped exceptions need a comment
  * with the reason and a TODO ID (AGENTS.md section 10).
  */
+/**
+ * Waits for finite animations (overlay fade/slide-in) to finish, so axe never measures
+ * mid-transition colors. Infinite animations (spinners, skeleton pulse) are ignored.
+ */
+async function settleAnimations(timeoutMs = 2000): Promise<void> {
+  const finite = document
+    .getAnimations()
+    .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity);
+  if (finite.length === 0) return;
+  await Promise.race([
+    Promise.allSettled(finite.map((animation) => animation.finished)),
+    new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+  ]);
+}
+
 export async function expectNoA11yViolations(
   container: Element,
   options: RunOptions = {},
 ): Promise<void> {
+  await settleAnimations();
   const context = container.querySelector(LIVE_ANNOUNCER_SELECTOR)
     ? { include: [container], exclude: [[LIVE_ANNOUNCER_SELECTOR]] }
     : container;

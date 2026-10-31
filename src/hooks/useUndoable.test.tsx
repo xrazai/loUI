@@ -111,6 +111,8 @@ describe('useUndoable', () => {
     );
     await archive(screen);
     await expect.element(screen.getByRole('button', { name: 'Undo' })).toBeVisible();
+    // Wait for the toast entry animation: mid-fade colors give axe a false contrast failure.
+    await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
   });
 
