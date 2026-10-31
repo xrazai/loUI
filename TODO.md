@@ -49,9 +49,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Icons
 
-- [ ] **ICON-001** (P1 · M) Replace runtime Lucide loading (`unpkg.com/lucide-static@0.400.0` via CSS `mask`, used by `NavItem`, `AgentCard`) with a bundled, tree-shakeable `Icon` component (inline SVG, `currentColor`, 1.5 px stroke). A CDN dependency breaks offline use, strict CSP, privacy and first paint.
-- [ ] **ICON-002** (P1 · S) Replace text glyphs used as icons (`×`, `›`, `‹`, `✓`, `★`, `+`, `−`, `···`) with SVG icons or `aria-hidden` glyphs plus accessible names.
-- [ ] **ICON-003** (P2 · S) Icon rules: decorative by default (`aria-hidden`), `label` prop makes it meaningful; size tokens; allow-list of the icon set exposed to AI via the manifest.
 
 ### Base styles
 
@@ -88,8 +85,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Forms
 
-- [ ] **CMP-FRM-01** (P1 · M) `Button` — Fix: hover via CSS not JS state; add `loading` (Spinner + `aria-busy`, width-stable); `trailing`/`leading` slots; docs say sizes 28/32/40 but code is 32/40/48 (code wins, fix docs); `type="button"` default stays.
-- [ ] **CMP-FRM-02** (P1 · S) `IconButton` — Fix: required `label` enforced by types; remove duplicate `title` + `aria-label` or make tooltip opt-in; 24 px minimum target (WCAG 2.5.8); replace text-glyph children with `Icon`.
 - [ ] **CMP-FRM-03** (P1 · M) `Input` — Fix: id via `useId`; `aria-invalid`, `aria-describedby` for hint/error; error announced (`role="alert"` only after validation); prop-spread bug (ARCH-003); border contrast (TOK-004); `readOnly`; `required` marker.
 - [ ] **CMP-FRM-04** (P1 · S) `Textarea` — Fix: same as Input; `aside` text needs association; auto-grow option; character count with live region (debounced).
 - [ ] **CMP-FRM-05** (P1 · M) `Select` — Fix: label/id association, `hint`/`error`, `aria-invalid`, placeholder option, groups; prop-spread bug; decide native `<select>` vs. custom listbox (ADR-001).
@@ -101,21 +96,13 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 ### Feedback
 
-- [ ] **CMP-FBK-01** (P1 · M) `Alert` — Fix: icon glyphs "i" / "✓" / "!" are read by screen readers (`aria-hidden`); `role` mapping (`alert` only for urgent danger, `status` otherwise); dismiss option; token for 6% tint.
 - [ ] **CMP-FBK-02** (P1 · L) `Toast` — Fix: needs a `Toaster` provider/queue and live region; auto-dismiss with **pause on hover/focus**, keyboard-reachable "Undo" (the ERP's 3.6 s undo window fails WCAG 2.2.1 unless pausable/extendable); position that avoids side panels; `onClose` label from messages. Tone dot is color-only — text carries the meaning.
 - [ ] **CMP-FBK-03** (P1 · L) `Dialog` — Fix: focus trap, initial focus API (the principle says **Cancel gets focus** on destructive confirms), focus restore, scroll lock, `inert` background, `aria-labelledby` + `aria-describedby` (description is not linked today), stack-aware Esc, `contained` mode for docs only. _Depends: ARCH-005_
 - [ ] **CMP-FBK-04** (P1 · M) `Tooltip` — Fix: `aria-describedby`, dismiss with Esc (WCAG 1.4.13), hoverable content, delay tokens, collision-aware placement, no tooltip-only essential info; `side` supports all four.
-- [ ] **CMP-FBK-05** (P1 · S) `Progress` — Fix: accessible name (`label` → `aria-labelledby`), `aria-valuetext`, indeterminate mode, reduced-motion transition; keep 4 px height token.
-- [ ] **CMP-FBK-06** (P1 · S) `Spinner` — Fix: remove pt-BR default label; one live region strategy (don't announce every spinner); reduced-motion alternative.
 - [ ] **CMP-FBK-07** (P1 · S) `InlineConfirm` — Fix: confirm button is auto-focused, contradicting the "focus on Cancel" principle — make initial focus configurable with Cancel as default; window-level Esc → scoped; restore focus to trigger.
 
 ### Display
 
-- [ ] **CMP-DSP-01** (P1 · S) `Badge` — Fix: tone colors via tokens (danger uses a different `color-mix` than other tones); dot is decorative; ensure text contrast on soft backgrounds ≥ 4.5:1.
-- [ ] **CMP-DSP-02** (P1 · S) `Tag` — Fix: remove button label must include the tag text ("Remove {label}"); 24 px target; keyboard removal (Backspace/Delete in a group).
-- [ ] **CMP-DSP-03** (P1 · S) `Card` — Fix: title is a `span` — support heading level (`as`) and `aria-labelledby`; `raised` variant naming; padding token.
-- [ ] **CMP-DSP-04** (P1 · S) `Avatar` — Fix: `alt` is set to the initials — use the person's name (or empty alt when decorative); image error fallback to initials; group/stack variant.
-- [ ] **CMP-DSP-05** (P1 · S) `Kbd` — Fix: platform-aware modifier rendering (⌘ vs Ctrl), `aria-label` expansion for symbols (e.g. "Command K"); sequence support.
 - [ ] **CMP-DSP-06** (P2 · S) `Rating` — Fix: half-star display support (value is rounded today), read-only vs. interactive decision, `aria-label` from messages (pluralized).
 
 ### Navigation
@@ -147,8 +134,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 - [ ] **CMP-DAT-02** (P1 · S) `Pagination` — Fix: `aria-label` from messages; `aria-current="page"`; announce range changes politely; page size selector (P2); disabled buttons keep focus order sensible.
 - [ ] **CMP-DAT-03** (P1 · M) `ActionList` — Fix: `role="list"` rows are not `listitem`; clickable rows are `div`s with no keyboard support/role — make them buttons/links; actions menu (`···`) label from messages and uses Menu keyboard model; drag handle (P3).
 - [ ] **CMP-DAT-04** (P1 · L) `Chart` — Fix: SVG has no accessible name/description; tooltip is mouse-only — add focusable data points / keyboard traversal; provide a visually-hidden data table alternative; no negative-value support; `Math.log10` axis breaks for tiny max values; color-only highlight needs a non-color cue; multi-series, legends, responsive label skipping tests.
-- [ ] **CMP-DAT-05** (P1 · S) `EmptyState` — Fix: heading level configurable; illustration slot (optional); pt-BR default text removed; guidance on copy ("what happened + what to do").
-- [ ] **CMP-DAT-06** (P1 · S) `Skeleton` — Fix: container-level `aria-busy`, hidden from AT; `prefers-reduced-motion`; presets (text, avatar, row, card).
 
 ### Patterns — `erp/` group (see ADR-008 for placement and renaming)
 
@@ -180,7 +165,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-002** (P0 · M) **Automated accessibility harness (unit level):** `vitest-axe` run against every story in every state (rest, hover/focus where applicable, disabled, invalid, loading, open overlays). A component cannot be marked done with an axe violation.
 - [ ] **TEST-003** (P0 · M) **Real-browser accessibility harness:** Playwright + `@axe-core/playwright` against built Storybook (jsdom cannot compute color contrast). Tags: `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`, `best-practice`. Run in dark theme, `forced-colors: active`, `prefers-reduced-motion: reduce` and 200% zoom.
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
-- [ ] **TEST-005** (P1 · M) **Visual regression:** Playwright `toHaveScreenshot` over all stories × states × themes × viewport widths (320, 768, 1280). Baselines produced only in the pinned CI container (font-rendering determinism). Update flow: explicit `pnpm test:visual:update` + review in PR.
 - [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
 - [ ] **TEST-008** (P1 · S) **SSR/hydration smoke test:** render every exported component with `renderToString` and hydrate with no warnings; no `window`/`document` access at import time.
 - [ ] **TEST-009** (P1 · S) **Bundle-size budgets** with `size-limit` per entry point; tree-shaking test (importing `Button` must not pull `Chart`).

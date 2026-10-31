@@ -173,7 +173,8 @@ Target: **WCAG 2.2 Level AA**, using the WAI-ARIA Authoring Practices patterns. 
 - Accept `className`; avoid a `style` escape hatch except where documented.
 - State is exposed to CSS via data attributes (`data-variant`, `data-size`, `data-state="open"`, `data-invalid`), not via JS style objects.
 - Controlled/uncontrolled pairs: `value`/`defaultValue`/`onValueChange` (or `checked`/`defaultChecked`/`onCheckedChange`). Native fields keep native `onChange`.
-- Vocabulary: `variant` (visual style), `size` (`sm | md | lg`), `tone` (`neutral | accent | success | warning | danger`). Do not invent synonyms (`kind`, `status`, `type`) for these.
+- Vocabulary: `variant` (visual style), `size` (`sm | md | lg`), `tone` (`neutral | accent | success | warning | danger`). Feedback components (Alert, Toast) use `info` instead of `accent`/`neutral` because the meaning is "informational". Do not invent synonyms (`kind`, `status`, `type`) for these.
+- Dynamic values: only as CSS custom properties on `style` (`--ds-<component>-<name>`), never direct visual properties (ADR-0002 amendment).
 - IDs come from `useId()`, never from labels.
 - No `window`/`document` access during render or import (SSR-safe). Overlays render through a shared `Portal` and layer stack.
 - Hover/focus/active/disabled styling is CSS (`:hover`, `:focus-visible`, `:disabled`, `[data-*]`), never React state.

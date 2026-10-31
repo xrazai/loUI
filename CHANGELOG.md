@@ -8,6 +8,21 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **ICON-001 / ICON-002 / ICON-003** (2026-10-31) `Icon` wrapping bundled `lucide-react` (no CDN): decorative by default, `label` → `role="img"`, sizes `xs…lg` from tokens, 1.5px non-scaling stroke, `directional` RTL mirroring; curated allow-list of 24 icons (`iconSet`, `iconNames`) exported for the manifest.
+- **CMP-FRM-01** (2026-10-31) `Button` on React Aria: variants `primary | secondary | ghost | danger | danger-solid`, sizes 32/40/48 (handoff docs said 28/32/40), `leading`/`trailing`, `fullWidth`, width-stable `isPending`; CSS-only hover via component tokens.
+- **CMP-FRM-02** (2026-10-31) `IconButton`: `label` required by the type system, no duplicate `title`, ≥ 24px target, no text-glyph children.
+- **CMP-FBK-06** (2026-10-31) `Spinner`: English default label with `pt-BR` catalog, decorative mode, static ring under reduced motion.
+- **GAP-002** (partial, 2026-10-31) `Link` on React Aria with `DSProvider` routing: underlined inline links (WCAG 1.4.1), `standalone` variant, safe `target="_blank"` with icon and hidden "opens in a new tab" note.
+- **TEST-005** (2026-10-31) Visual-regression harness `tests/visual/stories.visual.test.tsx`: discovers every story, renders inside `DSProvider` after `document.fonts.ready`, freezes animations, `toMatchScreenshot`; per-story `parameters.visual` options; win32 baselines (Docker baselines pending CI).
+- **CMP-DSP-01** (2026-10-31) `Badge`: token tones, decorative dot; canvas test asserts ≥ 4.5:1 text contrast on every tone.
+- **CMP-DSP-02** (2026-10-31) `Tag` + `TagGroup` on React Aria: Backspace/Delete removal, 24px remove button named "Remove {label}" from messages.
+- **CMP-DSP-03** (2026-10-31) `Card`: title is a real heading (`headingLevel`) wired with `aria-labelledby`; `raised` variant; actions slot.
+- **CMP-DSP-04** (2026-10-31) `Avatar`: `name` drives locale-aware initials and alt text, image error fallback, `decorative` mode; `getInitials` utility.
+- **CMP-DSP-05** (2026-10-31) `Kbd`: platform-aware `Mod` (SSR-safe), symbols spoken via messages (`en`, `pt-BR`).
+- **CMP-DAT-05** (2026-10-31) `EmptyState`: configurable heading level, icon, primary/secondary actions, compact/bordered variants.
+- **CMP-DAT-06** (2026-10-31) `Skeleton`: always hidden from assistive technology, `lines`/`circle`, pulse disabled under reduced motion.
+- **CMP-FBK-05** (2026-10-31) `Progress` (determinate + indeterminate) and `Meter` on React Aria, locale-aware percentages, tones.
+- **CMP-FBK-01** (2026-10-31) `Alert`: decorative icon plus visually hidden tone prefix, `urgent` → `role="alert"`, default `status`, `announce={false}` for static alerts, dismiss via `IconButton`.
 - **TOK-001 / TOK-002** (2026-10-31) DTCG 2025.10 token source in `src/tokens/*.json` (primitive → semantic, every token has a `$description` for humans and AI), built with Terrazzo + a custom plugin into `src/styles/tokens.css` (`@layer tokens`, 120 `--ds-*` variables), `src/tokens/generated/tokens.ts` (`TokenName` union) and a flat `tokens.json`. `pnpm tokens:build` / `pnpm tokens:check` (stale output fails `pnpm check`). Component-scoped tokens load from `src/tokens/component/*.json`.
 - **TOK-004** (2026-10-31) Contrast fixes (decided by the PM, logged in `docs/tokens/changes.md`): `--ds-text-3` `#7A7A82` → `#86868E` (now ≥ 4.55:1 on every surface); new `--ds-line-control` `#64646B` for form-control boundaries (≥ 3.02:1 on bg/surface/raised); `--ds-paper-accent` `#B8603E` → `#A95839` (4.53:1). 63 pairs in `src/tokens/contrast-pairs.json` enforced by `contrast.test.ts`.
 - **TOK-003** (partial, 2026-10-31) New tokens closing handoff gaps: z-index scale (`--ds-z-dropdown…tooltip`), single `--ds-opacity-disabled` (.35), `--ds-swatch-ring`, icon sizes `--ds-icon-xs…lg`, `--ds-target-min` (24px), `--ds-row-h-dense`, `--ds-duration-progress`.
