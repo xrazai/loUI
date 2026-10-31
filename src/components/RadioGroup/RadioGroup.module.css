@@ -1,0 +1,112 @@
+@layer components {
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-3);
+  }
+
+  .items[data-orientation='horizontal'] {
+    flex-flow: row wrap;
+    gap: var(--ds-space-3) var(--ds-space-5);
+  }
+
+  .radio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+  }
+
+  .button {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-field-choice-gap);
+
+    /* Keeps the whole row at the 24px minimum target size (WCAG 2.5.8). */
+    padding-block: calc((var(--ds-target-min) - var(--ds-lh-small)) / 2);
+    cursor: pointer;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    color: var(--ds-text);
+  }
+
+  .radio[data-disabled] .button {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .radio[data-readonly] .button {
+    cursor: default;
+  }
+
+  .text {
+    min-inline-size: 0;
+  }
+
+  /* Centers the circle on the first line of text. */
+  .circle {
+    display: grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    inline-size: var(--ds-radio-size);
+    block-size: var(--ds-radio-size);
+    margin-block: calc((var(--ds-lh-small) - var(--ds-radio-size)) / 2);
+    background: var(--ds-bg);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-pill);
+    transition:
+      border-color var(--ds-duration) var(--ds-ease),
+      box-shadow var(--ds-duration) var(--ds-ease);
+  }
+
+  .dot {
+    inline-size: var(--ds-radio-dot-size);
+    block-size: var(--ds-radio-dot-size);
+    background: var(--ds-accent);
+    border-radius: var(--ds-radius-pill);
+    opacity: 0;
+    transition: opacity var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Hover brightens the border; the fill never changes (the border must stay at 3:1 or better). */
+  .button[data-hovered] .circle {
+    border-color: var(--ds-text-3);
+  }
+
+  .button[data-selected] .circle {
+    border-color: var(--ds-accent);
+  }
+
+  .button[data-selected] .dot {
+    opacity: 1;
+  }
+
+  .button[data-invalid] .circle {
+    border-color: var(--ds-danger);
+  }
+
+  .button[data-invalid] .dot {
+    background: var(--ds-danger);
+  }
+
+  .button[data-focus-visible] .circle {
+    border-color: var(--ds-accent);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .button[data-invalid][data-focus-visible] .circle {
+    border-color: var(--ds-danger);
+    box-shadow: var(--ds-focus-ring-danger);
+  }
+
+  /* The description lines up with the label text, not with the circle. */
+  .messages {
+    padding-inline-start: calc(var(--ds-radio-size) + var(--ds-field-choice-gap));
+  }
+
+  @media (forced-colors: active) {
+    .dot {
+      background: CanvasText;
+    }
+  }
+}
