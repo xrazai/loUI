@@ -2,6 +2,19 @@ import './styles/index.css';
 export { VisuallyHidden } from './components/VisuallyHidden';
 export type { VisuallyHiddenProps } from './components/VisuallyHidden';
 
+// Actions and icons
+export { Button } from './components/Button';
+export type { ButtonProps, ButtonSize, ButtonVariant } from './components/Button';
+export { Icon } from './components/Icon';
+export * from './components/Icon/icons';
+export type { IconProps, IconSize } from './components/Icon';
+export { IconButton } from './components/IconButton';
+export type { IconButtonProps, IconButtonSize, IconButtonVariant } from './components/IconButton';
+export { Link } from './components/Link';
+export type { LinkProps, LinkVariant } from './components/Link';
+export { Spinner } from './components/Spinner';
+export type { SpinnerProps, SpinnerSize } from './components/Spinner';
+
 // Display
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertTone } from './components/Alert';

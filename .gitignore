@@ -14,3 +14,4 @@ playwright-report/
 .vitest-attachments/
 __screenshots__/*-actual.png
 __screenshots__/*-diff.png
+.vitest/
