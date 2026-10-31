@@ -1,1 +1,15 @@
-[{ "name": "core (ESM)", "path": "dist/index.js", "limit": "10 kB" }]
+[
+  {
+    "name": "core (ESM)",
+    "path": "dist/index.js",
+    "limit": "216 kB",
+    "ignore": ["react", "react-dom"]
+  },
+  {
+    "name": "patterns (ESM)",
+    "path": "dist/patterns/index.js",
+    "limit": "37 kB",
+    "ignore": ["react", "react-dom"]
+  },
+  { "name": "styles.css", "path": "dist/styles.css", "limit": "20 kB", "rolldown": false }
+]
