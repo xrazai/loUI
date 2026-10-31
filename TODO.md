@@ -156,6 +156,7 @@ The handoff inventory is missing common building blocks. Confirm which belong in
 
 - [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
 - [ ] **GAP-009** (P2 · S) Field: a static `errorMessage` string hides server errors from `Form validationErrors` — let `FieldError` prefer server errors (or document the function form). Add a `menu` icon to the curated set and use it in `AppShellNavToggle` (text "Menu" today).
+- [ ] **GAP-010** (P2 · S) AppShell polish from visual review: the narrow-mode "Close menu" button wraps to two lines and overlaps the top-bar primary action — use an `IconButton` (x icon, label "Close menu") and `white-space: nowrap`; give the `Default` AppShell story a desktop `parameters.visual.width` (≥ 1024) so the in-flow sidebar layout has a baseline. CommandPalette visual baselines show only the trigger (open state not captured — see TEST-020).
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
 - [ ] **GAP-008** (P3 · S) Undo pattern as a hook (`useUndoable`) on top of Toast; the recipe already exists in `Toast.md`.
