@@ -1,0 +1,46 @@
+@layer components {
+  .root {
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-accent);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
+  .root[data-hovered] {
+    text-decoration-thickness: 2px;
+  }
+
+  /*
+   * Standalone links (navigation, "View all") have no underline at rest. Use them only where
+   * the context makes them identifiable. The underline returns on hover and keyboard focus.
+   */
+  .root[data-variant='standalone'] {
+    text-decoration-line: none;
+  }
+
+  .root[data-variant='standalone'][data-hovered],
+  .root[data-variant='standalone'][data-focus-visible] {
+    text-decoration-line: underline;
+  }
+
+  /* Focus: ring around the text; the transparent outline survives forced colors. */
+  .root[data-focus-visible] {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .external {
+    display: inline-block;
+    margin-inline-start: var(--ds-space-1);
+    vertical-align: -0.125em;
+  }
+}

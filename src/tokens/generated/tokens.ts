@@ -131,7 +131,58 @@ export type TokenName =
   | 'z.dialog'
   | 'z.toast'
   | 'z.tooltip'
-  | 'opacity.disabled';
+  | 'opacity.disabled'
+  | 'alert.success-bg'
+  | 'alert.success-border'
+  | 'alert.warning-bg'
+  | 'alert.warning-border'
+  | 'alert.danger-bg'
+  | 'alert.danger-border'
+  | 'avatar.size-sm'
+  | 'avatar.size-md'
+  | 'avatar.size-lg'
+  | 'avatar.ring-width'
+  | 'avatar.initials-ratio'
+  | 'badge.height'
+  | 'badge.dot-size'
+  | 'badge.padding-inline'
+  | 'button.hover-brightness'
+  | 'button.danger-solid-hover-brightness'
+  | 'card.padding'
+  | 'card.gap'
+  | 'checkbox.box-size'
+  | 'checkbox.radius'
+  | 'empty-state.padding-block'
+  | 'empty-state.padding-inline'
+  | 'empty-state.compact-padding-block'
+  | 'empty-state.compact-padding-inline'
+  | 'empty-state.description-max-w'
+  | 'field.gap'
+  | 'field.control-padding-inline'
+  | 'field.choice-gap'
+  | 'icon.stroke-width'
+  | 'kbd.height'
+  | 'kbd.padding-inline'
+  | 'progress.height'
+  | 'progress.indeterminate-width'
+  | 'progress.indeterminate-duration'
+  | 'radio.size'
+  | 'radio.dot-size'
+  | 'select.popover-max-height'
+  | 'skeleton.height'
+  | 'skeleton.pulse-duration'
+  | 'skeleton.pulse-opacity'
+  | 'spinner.stroke-width'
+  | 'spinner.duration'
+  | 'switch.track-width'
+  | 'switch.track-height'
+  | 'switch.knob-size'
+  | 'switch.knob-offset'
+  | 'tag.height'
+  | 'tag.remove-size'
+  | 'tag.padding-inline'
+  | 'textarea.padding-block'
+  | 'textarea.padding-inline';
 
 /** Every emitted CSS custom property. */
 export type TokenCssVar =
@@ -254,7 +305,58 @@ export type TokenCssVar =
   | '--ds-z-dialog'
   | '--ds-z-toast'
   | '--ds-z-tooltip'
-  | '--ds-opacity-disabled';
+  | '--ds-opacity-disabled'
+  | '--ds-alert-success-bg'
+  | '--ds-alert-success-border'
+  | '--ds-alert-warning-bg'
+  | '--ds-alert-warning-border'
+  | '--ds-alert-danger-bg'
+  | '--ds-alert-danger-border'
+  | '--ds-avatar-size-sm'
+  | '--ds-avatar-size-md'
+  | '--ds-avatar-size-lg'
+  | '--ds-avatar-ring-width'
+  | '--ds-avatar-initials-ratio'
+  | '--ds-badge-height'
+  | '--ds-badge-dot-size'
+  | '--ds-badge-padding-inline'
+  | '--ds-button-hover-brightness'
+  | '--ds-button-danger-solid-hover-brightness'
+  | '--ds-card-padding'
+  | '--ds-card-gap'
+  | '--ds-checkbox-box-size'
+  | '--ds-checkbox-radius'
+  | '--ds-empty-state-padding-block'
+  | '--ds-empty-state-padding-inline'
+  | '--ds-empty-state-compact-padding-block'
+  | '--ds-empty-state-compact-padding-inline'
+  | '--ds-empty-state-description-max-w'
+  | '--ds-field-gap'
+  | '--ds-field-control-padding-inline'
+  | '--ds-field-choice-gap'
+  | '--ds-icon-stroke-width'
+  | '--ds-kbd-height'
+  | '--ds-kbd-padding-inline'
+  | '--ds-progress-height'
+  | '--ds-progress-indeterminate-width'
+  | '--ds-progress-indeterminate-duration'
+  | '--ds-radio-size'
+  | '--ds-radio-dot-size'
+  | '--ds-select-popover-max-height'
+  | '--ds-skeleton-height'
+  | '--ds-skeleton-pulse-duration'
+  | '--ds-skeleton-pulse-opacity'
+  | '--ds-spinner-stroke-width'
+  | '--ds-spinner-duration'
+  | '--ds-switch-track-width'
+  | '--ds-switch-track-height'
+  | '--ds-switch-knob-size'
+  | '--ds-switch-knob-offset'
+  | '--ds-tag-height'
+  | '--ds-tag-remove-size'
+  | '--ds-tag-padding-inline'
+  | '--ds-textarea-padding-block'
+  | '--ds-textarea-padding-inline';
 
 export interface TokenEntry {
   /** CSS custom property, or null when the token is not emitted to CSS. */
@@ -396,6 +498,57 @@ export const tokenValues = {
   'z.toast': { cssVar: '--ds-z-toast', type: 'number', value: 58 },
   'z.tooltip': { cssVar: '--ds-z-tooltip', type: 'number', value: 60 },
   'opacity.disabled': { cssVar: '--ds-opacity-disabled', type: 'number', value: 0.35 },
+  'alert.success-bg': { cssVar: '--ds-alert-success-bg', type: 'color', value: 'rgba(95, 212, 154, 0.06)' },
+  'alert.success-border': { cssVar: '--ds-alert-success-border', type: 'color', value: 'rgba(95, 212, 154, 0.3)' },
+  'alert.warning-bg': { cssVar: '--ds-alert-warning-bg', type: 'color', value: 'rgba(233, 182, 92, 0.06)' },
+  'alert.warning-border': { cssVar: '--ds-alert-warning-border', type: 'color', value: 'rgba(233, 182, 92, 0.3)' },
+  'alert.danger-bg': { cssVar: '--ds-alert-danger-bg', type: 'color', value: 'rgba(240, 122, 110, 0.06)' },
+  'alert.danger-border': { cssVar: '--ds-alert-danger-border', type: 'color', value: 'rgba(240, 122, 110, 0.3)' },
+  'avatar.size-sm': { cssVar: '--ds-avatar-size-sm', type: 'dimension', value: '24px' },
+  'avatar.size-md': { cssVar: '--ds-avatar-size-md', type: 'dimension', value: '28px' },
+  'avatar.size-lg': { cssVar: '--ds-avatar-size-lg', type: 'dimension', value: '40px' },
+  'avatar.ring-width': { cssVar: '--ds-avatar-ring-width', type: 'dimension', value: '2px' },
+  'avatar.initials-ratio': { cssVar: '--ds-avatar-initials-ratio', type: 'number', value: 0.4 },
+  'badge.height': { cssVar: '--ds-badge-height', type: 'dimension', value: '24px' },
+  'badge.dot-size': { cssVar: '--ds-badge-dot-size', type: 'dimension', value: '6px' },
+  'badge.padding-inline': { cssVar: '--ds-badge-padding-inline', type: 'dimension', value: '8px' },
+  'button.hover-brightness': { cssVar: '--ds-button-hover-brightness', type: 'number', value: 0.88 },
+  'button.danger-solid-hover-brightness': { cssVar: '--ds-button-danger-solid-hover-brightness', type: 'number', value: 0.9 },
+  'card.padding': { cssVar: '--ds-card-padding', type: 'dimension', value: '20px' },
+  'card.gap': { cssVar: '--ds-card-gap', type: 'dimension', value: '16px' },
+  'checkbox.box-size': { cssVar: '--ds-checkbox-box-size', type: 'dimension', value: '18px' },
+  'checkbox.radius': { cssVar: '--ds-checkbox-radius', type: 'dimension', value: '5px' },
+  'empty-state.padding-block': { cssVar: '--ds-empty-state-padding-block', type: 'dimension', value: '48px' },
+  'empty-state.padding-inline': { cssVar: '--ds-empty-state-padding-inline', type: 'dimension', value: '24px' },
+  'empty-state.compact-padding-block': { cssVar: '--ds-empty-state-compact-padding-block', type: 'dimension', value: '24px' },
+  'empty-state.compact-padding-inline': { cssVar: '--ds-empty-state-compact-padding-inline', type: 'dimension', value: '20px' },
+  'empty-state.description-max-w': { cssVar: '--ds-empty-state-description-max-w', type: 'dimension', value: '360px' },
+  'field.gap': { cssVar: '--ds-field-gap', type: 'dimension', value: '6px' },
+  'field.control-padding-inline': { cssVar: '--ds-field-control-padding-inline', type: 'dimension', value: '10px' },
+  'field.choice-gap': { cssVar: '--ds-field-choice-gap', type: 'dimension', value: '10px' },
+  'icon.stroke-width': { cssVar: '--ds-icon-stroke-width', type: 'dimension', value: '1.5px' },
+  'kbd.height': { cssVar: '--ds-kbd-height', type: 'dimension', value: '18px' },
+  'kbd.padding-inline': { cssVar: '--ds-kbd-padding-inline', type: 'dimension', value: '4px' },
+  'progress.height': { cssVar: '--ds-progress-height', type: 'dimension', value: '4px' },
+  'progress.indeterminate-width': { cssVar: '--ds-progress-indeterminate-width', type: 'number', value: 40 },
+  'progress.indeterminate-duration': { cssVar: '--ds-progress-indeterminate-duration', type: 'duration', value: '1400ms' },
+  'radio.size': { cssVar: '--ds-radio-size', type: 'dimension', value: '18px' },
+  'radio.dot-size': { cssVar: '--ds-radio-dot-size', type: 'dimension', value: '9px' },
+  'select.popover-max-height': { cssVar: '--ds-select-popover-max-height', type: 'dimension', value: '320px' },
+  'skeleton.height': { cssVar: '--ds-skeleton-height', type: 'dimension', value: '12px' },
+  'skeleton.pulse-duration': { cssVar: '--ds-skeleton-pulse-duration', type: 'duration', value: '1400ms' },
+  'skeleton.pulse-opacity': { cssVar: '--ds-skeleton-pulse-opacity', type: 'number', value: 0.45 },
+  'spinner.stroke-width': { cssVar: '--ds-spinner-stroke-width', type: 'dimension', value: '2px' },
+  'spinner.duration': { cssVar: '--ds-spinner-duration', type: 'duration', value: '700ms' },
+  'switch.track-width': { cssVar: '--ds-switch-track-width', type: 'dimension', value: '36px' },
+  'switch.track-height': { cssVar: '--ds-switch-track-height', type: 'dimension', value: '20px' },
+  'switch.knob-size': { cssVar: '--ds-switch-knob-size', type: 'dimension', value: '16px' },
+  'switch.knob-offset': { cssVar: '--ds-switch-knob-offset', type: 'dimension', value: '2px' },
+  'tag.height': { cssVar: '--ds-tag-height', type: 'dimension', value: '24px' },
+  'tag.remove-size': { cssVar: '--ds-tag-remove-size', type: 'dimension', value: '24px' },
+  'tag.padding-inline': { cssVar: '--ds-tag-padding-inline', type: 'dimension', value: '8px' },
+  'textarea.padding-block': { cssVar: '--ds-textarea-padding-block', type: 'dimension', value: '10px' },
+  'textarea.padding-inline': { cssVar: '--ds-textarea-padding-inline', type: 'dimension', value: '12px' },
 } as const satisfies Record<TokenName, TokenEntry>;
 
 /** `var(--ds-*)` reference for a token that is emitted to CSS. */

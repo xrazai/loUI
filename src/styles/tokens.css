@@ -155,5 +155,92 @@
 
     /* opacity */
     --ds-opacity-disabled: 0.35;
+
+    /* alert */
+    --ds-alert-success-bg: color-mix(in oklab, var(--ds-success) 6%, transparent);
+    --ds-alert-success-border: color-mix(in oklab, var(--ds-success) 30%, transparent);
+    --ds-alert-warning-bg: color-mix(in oklab, var(--ds-warning) 6%, transparent);
+    --ds-alert-warning-border: color-mix(in oklab, var(--ds-warning) 30%, transparent);
+    --ds-alert-danger-bg: color-mix(in oklab, var(--ds-danger) 6%, transparent);
+    --ds-alert-danger-border: color-mix(in oklab, var(--ds-danger) 30%, transparent);
+
+    /* avatar */
+    --ds-avatar-size-sm: 24px;
+    --ds-avatar-size-md: 28px;
+    --ds-avatar-size-lg: 40px;
+    --ds-avatar-ring-width: 2px;
+    --ds-avatar-initials-ratio: 0.4;
+
+    /* badge */
+    --ds-badge-height: 24px;
+    --ds-badge-dot-size: 6px;
+    --ds-badge-padding-inline: var(--ds-space-2);
+
+    /* button */
+    --ds-button-hover-brightness: 0.88;
+    --ds-button-danger-solid-hover-brightness: 0.9;
+
+    /* card */
+    --ds-card-padding: var(--ds-space-5);
+    --ds-card-gap: var(--ds-space-4);
+
+    /* checkbox */
+    --ds-checkbox-box-size: 18px;
+    --ds-checkbox-radius: 5px;
+
+    /* empty-state */
+    --ds-empty-state-padding-block: var(--ds-space-12);
+    --ds-empty-state-padding-inline: var(--ds-space-6);
+    --ds-empty-state-compact-padding-block: var(--ds-space-6);
+    --ds-empty-state-compact-padding-inline: var(--ds-space-5);
+    --ds-empty-state-description-max-w: 360px;
+
+    /* field */
+    --ds-field-gap: 6px;
+    --ds-field-control-padding-inline: 10px;
+    --ds-field-choice-gap: 10px;
+
+    /* icon */
+    --ds-icon-stroke-width: 1.5px;
+
+    /* kbd */
+    --ds-kbd-height: 18px;
+    --ds-kbd-padding-inline: var(--ds-space-1);
+
+    /* progress */
+    --ds-progress-height: 4px;
+    --ds-progress-indeterminate-width: 40;
+    --ds-progress-indeterminate-duration: 1400ms;
+
+    /* radio */
+    --ds-radio-size: 18px;
+    --ds-radio-dot-size: 9px;
+
+    /* select */
+    --ds-select-popover-max-height: 320px;
+
+    /* skeleton */
+    --ds-skeleton-height: 12px;
+    --ds-skeleton-pulse-duration: 1400ms;
+    --ds-skeleton-pulse-opacity: 0.45;
+
+    /* spinner */
+    --ds-spinner-stroke-width: 2px;
+    --ds-spinner-duration: 700ms;
+
+    /* switch */
+    --ds-switch-track-width: 36px;
+    --ds-switch-track-height: 20px;
+    --ds-switch-knob-size: 16px;
+    --ds-switch-knob-offset: 2px;
+
+    /* tag */
+    --ds-tag-height: var(--ds-target-min);
+    --ds-tag-remove-size: var(--ds-target-min);
+    --ds-tag-padding-inline: var(--ds-space-2);
+
+    /* textarea */
+    --ds-textarea-padding-block: 10px;
+    --ds-textarea-padding-inline: 12px;
   }
 }
