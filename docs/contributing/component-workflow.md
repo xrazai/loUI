@@ -29,6 +29,11 @@ For component `<Name>` in handoff group `<group>`:
 10. **Verify**: `pnpm lint`, `pnpm typecheck`, `pnpm vitest run --project browser --project storybook <your paths>`, then `pnpm check` if no parallel agent is mid-change.
 11. **Commit** only your paths: `feat(<name>): …`, ending with the co-author line given in your brief.
 
+## Never
+
+- Kill processes by image name (`taskkill /IM node.exe`, `python.exe`…): other agents and tools run on this machine. Stop only processes you started, by PID.
+- `git add -A`, `git commit -a`, `--no-verify`, `git push`, history rewrites.
+
 ## Report to the PM
 
 Per component: done / partial, defects fixed from the TODO list, anything deferred (with reason), missing tokens, exports to add, test counts. Keep it short and honest.
