@@ -9,7 +9,10 @@ const meta = {
   tags: ['autodocs'],
   decorators: [recipeDecorator({ maxWidth: 880, minHeight: 520 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 560 } } },
+  parameters: {
+    visual: { width: 912 },
+    docs: { story: { inline: false, iframeHeight: 560 } },
+  },
 } satisfies Meta<typeof FilterableTable>;
 
 export default meta;
@@ -26,6 +29,7 @@ export const Default: Story = {
 };
 
 export const FilteredByStatus: Story = {
+  parameters: { visual: { play: true } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('radio', { name: /^Open/ }));
@@ -37,6 +41,7 @@ export const FilteredByStatus: Story = {
 
 /** No match: what happened and what to do, with a way out. */
 export const NoResults: Story = {
+  parameters: { visual: { play: true } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole('searchbox', { name: 'Search orders' }), 'zzz');
@@ -49,6 +54,7 @@ export const NoResults: Story = {
 
 /** Select rows, archive them in one action, undo. */
 export const BulkArchive: Story = {
+  parameters: { visual: { play: true } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const label = canvas.getByRole('checkbox', { name: 'Select row Contoso' }).closest('label');

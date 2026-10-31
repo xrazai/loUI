@@ -9,7 +9,10 @@ const meta = {
   tags: ['autodocs'],
   decorators: [recipeDecorator({ maxWidth: 720, minHeight: 760 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 800 } } },
+  parameters: {
+    visual: { width: 752 },
+    docs: { story: { inline: false, iframeHeight: 800 } },
+  },
 } satisfies Meta<typeof ApprovalQueue>;
 
 export default meta;
@@ -31,6 +34,7 @@ export const SendAndUndo: Story = {
 };
 
 export const EmptyQueue: Story = {
+  parameters: { visual: { play: true } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     for (const author of ['buyer_sp', 'mara_k']) {

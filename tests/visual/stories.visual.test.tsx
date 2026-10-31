@@ -9,9 +9,10 @@
 import { composeStories, setProjectAnnotations } from '@storybook/react-vite';
 import type { ReactElement } from 'react';
 import { render } from 'vitest-browser-react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import * as previewAnnotations from '../../.storybook/preview';
+import { toast } from '../../src/components/Toast';
 import { DSProvider } from '../../src/providers/DSProvider';
 
 setProjectAnnotations([previewAnnotations]);
@@ -31,6 +32,15 @@ interface VisualParameters {
 }
 
 const DEFAULT_WIDTH = 384;
+
+// The toast queue is a module-level singleton and composed stories do not run `beforeEach`:
+// without this a toast raised by one story is captured in the next one.
+beforeEach(() => {
+  toast.clear();
+});
+afterEach(() => {
+  toast.clear();
+});
 
 /** Freezes animation and transitions and hides carets so captures are deterministic. */
 const STABILITY_CSS = `

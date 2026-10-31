@@ -9,7 +9,10 @@ const meta = {
   tags: ['autodocs'],
   decorators: [recipeDecorator({ maxWidth: 720, minHeight: 420 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 480 } } },
+  parameters: {
+    visual: { width: 752 },
+    docs: { story: { inline: false, iframeHeight: 480 } },
+  },
 } satisfies Meta<typeof DestructiveConfirm>;
 
 export default meta;
@@ -51,6 +54,7 @@ export const DeleteAndUndo: Story = {
 
 /** The confirmation open, for the visual review. */
 export const ConfirmationOpen: Story = {
+  parameters: { visual: { play: true, selector: '[role="alertdialog"]' } },
   play: async ({ canvasElement }) => {
     await openConfirm(canvasElement);
   },

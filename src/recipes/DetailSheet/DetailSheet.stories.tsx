@@ -9,7 +9,10 @@ const meta = {
   tags: ['autodocs'],
   decorators: [recipeDecorator({ maxWidth: 720, minHeight: 480 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 520 } } },
+  parameters: {
+    visual: { width: 752 },
+    docs: { story: { inline: false, iframeHeight: 520 } },
+  },
 } satisfies Meta<typeof DetailSheet>;
 
 export default meta;
@@ -24,6 +27,15 @@ export const OpenAndEscape: Story = {
     await whenVisible(screen.findByRole('dialog', { name: 'Order' }));
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+  },
+};
+
+/** The sheet open on a row, for the visual review. */
+export const SheetOpen: Story = {
+  parameters: { visual: { play: true, selector: '[role="dialog"]' } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole('rowheader', { name: 'Contoso' }));
+    await whenVisible(screen.findByRole('dialog', { name: 'Order' }));
   },
 };
 

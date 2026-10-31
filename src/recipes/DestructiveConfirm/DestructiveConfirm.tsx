@@ -83,7 +83,7 @@ export function DestructiveConfirm({
           {
             key: 'actions',
             label: 'Actions',
-            width: '72px',
+            width: '96px',
             align: 'end',
             sortable: false,
             render: (order) => (

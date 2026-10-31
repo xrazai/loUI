@@ -10,7 +10,10 @@ const meta = {
   args: { platform: 'other' },
   decorators: [recipeDecorator({ maxWidth: 640, minHeight: 420 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 460 } } },
+  parameters: {
+    visual: { width: 672 },
+    docs: { story: { inline: false, iframeHeight: 460 } },
+  },
 } satisfies Meta<typeof CommandPaletteSetup>;
 
 export default meta;
@@ -34,6 +37,7 @@ export const RunACommand: Story = {
 };
 
 export const ShortcutsList: Story = {
+  parameters: { visual: { play: true, selector: '[role="dialog"]' } },
   play: async () => {
     await userEvent.keyboard('?');
     await whenVisible(screen.findByRole('dialog', { name: 'Keyboard shortcuts' }));

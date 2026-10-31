@@ -9,7 +9,10 @@ const meta = {
   tags: ['autodocs'],
   decorators: [recipeDecorator({ maxWidth: 560, minHeight: 320 })],
   beforeEach: clearToastsAfterStory,
-  parameters: { docs: { story: { inline: false, iframeHeight: 360 } } },
+  parameters: {
+    visual: { width: 592 },
+    docs: { story: { inline: false, iframeHeight: 360 } },
+  },
 } satisfies Meta<typeof UndoableAction>;
 
 export default meta;

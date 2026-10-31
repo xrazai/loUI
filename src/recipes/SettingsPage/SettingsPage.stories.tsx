@@ -12,6 +12,7 @@ const meta = {
   decorators: [recipeDecorator({ height: 640 })],
   beforeEach: clearToastsAfterStory,
   parameters: {
+    visual: { width: 1000 },
     layout: 'fullscreen',
     docs: { story: { inline: false, iframeHeight: 680 } },
   },
@@ -24,6 +25,9 @@ export const Default: Story = {};
 
 /** Change a setting and save with the button; the toast confirms. */
 export const SaveWithButton: Story = {
+  parameters: {
+    visual: { play: true, selector: '[role="region"][aria-label="Toast notifications"]' },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const label = canvas.getByRole('switch', { name: /Weekly summary/ }).closest('label');

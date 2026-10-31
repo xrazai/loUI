@@ -7,9 +7,10 @@ One test file, `stories.visual.test.tsx`, screenshots **every story** and compar
 1. `import.meta.glob('../../src/**/*.stories.tsx')` finds every story file. Stories added later by anyone are picked up automatically; nothing here needs editing.
 2. `composeStories` (from `@storybook/react-vite`) turns each story into a component, with the project annotations of `.storybook/preview.ts` applied.
 3. Each story renders inside `DSProvider`, in a fixed-width frame (default 384 px) on the `--ds-bg` surface.
-4. The test waits for `document.fonts.ready`, plus one animation frame, so Geist is loaded before capture.
-5. A stylesheet disables animations and transitions and hides the caret, so spinners and transitions are static and deterministic.
-6. The frame is captured with `toMatchScreenshot(storyId)` (pixelmatch, threshold 0.2, at most 0.2% of pixels may differ) and the pointer is moved away so hover never leaks into the next story.
+4. The toast queue is cleared before and after every test (composed stories do not run `beforeEach`, and the queue is a singleton), so a toast never leaks into the next capture.
+5. The test waits for `document.fonts.ready`, plus one animation frame, so Geist is loaded before capture.
+6. A stylesheet disables animations and transitions and hides the caret, so spinners and transitions are static and deterministic.
+7. The frame is captured with `toMatchScreenshot(storyId)` (pixelmatch, threshold 0.2, at most 0.2% of pixels may differ) and the pointer is moved away so hover never leaks into the next story.
 
 Baselines live next to the test: `tests/visual/__screenshots__/stories.visual.test.tsx/<story-id>-chromium-<platform>.png`.
 

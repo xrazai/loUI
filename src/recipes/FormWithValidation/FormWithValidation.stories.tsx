@@ -13,6 +13,7 @@ const meta = {
   args: { saveCustomer: fn(saved) },
   decorators: [recipeDecorator({ maxWidth: 560 })],
   beforeEach: clearToastsAfterStory,
+  parameters: { visual: { width: 592 } },
 } satisfies Meta<typeof FormWithValidation>;
 
 export default meta;
@@ -41,8 +42,19 @@ export const SubmitEmpty: Story = {
   },
 };
 
+/** The errors on screen: one message per field and the summary above them. */
+export const ErrorsShown: Story = {
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Save customer' }));
+    await canvas.findByText('Fix 3 fields before saving');
+  },
+};
+
 /** A valid form saves and says "Saved". */
 export const Saved: Story = {
+  parameters: { visual: { play: true } },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole('textbox', { name: /Full name/ }), 'Ana Souza');
@@ -56,6 +68,7 @@ export const Saved: Story = {
 
 /** The server rejects the email: its message appears on the field and in the summary. */
 export const ServerError: Story = {
+  parameters: { visual: { play: true } },
   args: {
     saveCustomer: fn(() =>
       Promise.resolve<ServerErrors>({
