@@ -38,7 +38,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 - [ ] **TOK-003** (P1 · S) **Remaining token gaps** (z-index, opacity, swatch ring, icon sizes and progress duration are done): decide `color-mix` percentages for hover/tint states (6/12/18/30/35%), extra compact heights (22/24/26/28 px), 5px checkbox and 8px matrix-cell radii, `brightness(.88/.9)` hover filters. Component agents add component-scoped tokens in `src/tokens/component/`; promote repeated ones to semantic tokens.
 - [ ] **TOK-008** (P2 · M) Theme architecture: `color-scheme: dark`, `[data-theme]` scoping, `paper` scope, `prefers-contrast: more` overrides, `forced-colors` mapping to system colors. _Depends: ADR-007_
-- [ ] **TOK-010** (P2 · S) Breakpoint and container tokens (the handoff app assumes min-width 1180 px; define what the DS itself guarantees: components must work from 320 px wide).
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
 - [ ] **TOK-012** (P2 · S) Paper theme: remap signal colors (success, warning, danger) inside `[data-theme="paper"]` so they pass contrast on `--ds-paper` (only neutrals and accent are remapped today).
 - [ ] **TOK-013** (P2 · S) Verify `forced-colors: active` rendering in a real browser (Playwright `forcedColors` emulation) for base focus styles and every component; the CSS exists but is unexercised.
@@ -161,10 +160,8 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
-- [ ] **GAP-001** (P2 · M) Layout primitives: `Stack`, `Inline`, `Grid`, `Container`, `Divider/Separator`, `ScrollArea`, `AppShell` (Sidebar + TopBar + content landmarks + skip link).
-- [ ] **GAP-002** (P2 · M) Typography components: `Text`, `Heading` (semantic level separate from visual size), `Code`. (`Link` is done.)
-- [ ] **GAP-003** (P2 · M) `Form` wrapper (form-level `validationBehavior`, server errors via RAC `Form` `validationErrors`), `FieldSet`, form-level error summary. (`Field` parts are done.)
 - [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
+- [ ] **GAP-009** (P2 · S) Field: a static `errorMessage` string hides server errors from `Form validationErrors` — let `FieldError` prefer server errors (or document the function form). Add a `menu` icon to the curated set and use it in `AppShellNavToggle` (text "Menu" today).
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
 - [ ] **GAP-008** (P3 · S) Undo pattern as a hook (`useUndoable`) on top of Toast; the recipe already exists in `Toast.md`.

@@ -15,6 +15,32 @@ export type { LinkProps, LinkVariant } from './components/Link';
 export { Spinner } from './components/Spinner';
 export type { SpinnerProps, SpinnerSize } from './components/Spinner';
 
+// Layout and typography
+export { AppShell, AppShellNavToggle } from './components/AppShell';
+export type { AppShellNavToggleProps, AppShellProps } from './components/AppShell';
+export { Code } from './components/Code';
+export type { CodeProps, CodeVariant } from './components/Code';
+export { Container } from './components/Container';
+export type { ContainerProps, ContainerSize } from './components/Container';
+export { Divider } from './components/Divider';
+export type { DividerProps, DividerVariant } from './components/Divider';
+export { Grid } from './components/Grid';
+export type { GridColumns, GridMinItemWidth, GridProps } from './components/Grid';
+export { Heading } from './components/Heading';
+export type { HeadingLevel, HeadingProps, HeadingSize } from './components/Heading';
+export { Inline } from './components/Inline';
+export type { InlineAlign, InlineJustify, InlineProps } from './components/Inline';
+export { ScrollArea } from './components/ScrollArea';
+export type {
+  ScrollAreaLabelProps,
+  ScrollAreaOrientation,
+  ScrollAreaProps,
+} from './components/ScrollArea';
+export { Stack } from './components/Stack';
+export type { LayoutElement, SpaceKey, StackAlign, StackProps } from './components/Stack';
+export { Text } from './components/Text';
+export type { TextElement, TextProps, TextSize, TextTone } from './components/Text';
+
 // Command palette and shortcuts
 export { CommandPalette } from './components/CommandPalette';
 export type {
@@ -77,6 +103,10 @@ export type { TooltipPlacement, TooltipProps } from './components/Tooltip';
 export type { IconButtonTooltipOptions } from './components/IconButton';
 
 // Form fields
+export { FieldSet } from './components/FieldSet';
+export type { FieldSetProps } from './components/FieldSet';
+export { Form, FormErrorSummary } from './components/Form';
+export type { FormErrorSummaryProps, FormProps } from './components/Form';
 export { Calendar, DatePicker } from './components/DatePicker';
 export type {
   CalendarMessages,

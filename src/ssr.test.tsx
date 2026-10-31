@@ -100,6 +100,20 @@ const {
   TopBar,
   VisuallyHidden,
   HotkeyProvider,
+  AppShell,
+  AppShellNavToggle,
+  Code,
+  Container,
+  Divider,
+  FieldSet,
+  Form,
+  FormErrorSummary,
+  Grid,
+  Heading,
+  Inline,
+  ScrollArea,
+  Stack,
+  Text,
 } = core;
 const { AgentCard, ApprovalCard, ChatPanel, ColorOption, LedgerList, MatrixGrid } = patterns;
 
@@ -107,6 +121,40 @@ const trigger = <Button>Open</Button>;
 
 /** Minimal valid instances. Open overlays render their content in a portal, so closed is the SSR case. */
 const CASES: Record<string, () => ReactElement> = {
+  AppShell: () => (
+    <AppShell
+      topBar={
+        <header>
+          <AppShellNavToggle />
+        </header>
+      }
+      sidebar={<aside>nav</aside>}
+      detail="d"
+    >
+      x
+    </AppShell>
+  ),
+  Code: () => (
+    <>
+      <Code>x</Code>
+      <Code variant="block">x</Code>
+    </>
+  ),
+  Container: () => <Container>x</Container>,
+  Divider: () => <Divider />,
+  FieldSet: () => <FieldSet legend="L">x</FieldSet>,
+  Form: () => (
+    <Form errorSummary>
+      <FieldSet legend="L">x</FieldSet>
+      <FormErrorSummary />
+    </Form>
+  ),
+  Grid: () => <Grid columns={2}>x</Grid>,
+  Heading: () => <Heading>x</Heading>,
+  Inline: () => <Inline>x</Inline>,
+  ScrollArea: () => <ScrollArea aria-label="Area">x</ScrollArea>,
+  Stack: () => <Stack gap={2}>x</Stack>,
+  Text: () => <Text>x</Text>,
   CommandPalette: () => (
     <CommandPalette commands={[{ id: 'a', label: 'Alpha', onAction: () => undefined }]} />
   ),
@@ -320,6 +368,8 @@ const PARTS: Record<string, string> = {
   Label: 'Input',
   RequiredMark: 'Input',
   DSProvider: 'every case (the wrapper)',
+  AppShellNavToggle: 'AppShell',
+  FormErrorSummary: 'Form',
   HotkeyRegistry: 'HotkeyProvider (store class, not a component)',
 };
 
