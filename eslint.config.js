@@ -9,6 +9,7 @@ export default tseslint.config(
   {
     ignores: [
       'dist/**',
+      'tools/*/dist/**',
       'storybook-static/**',
       'raw_files/**',
       'coverage/**',

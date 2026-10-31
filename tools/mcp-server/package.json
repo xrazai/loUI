@@ -1,0 +1,46 @@
+{
+  "name": "@loui/ds-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "MCP server that exposes the Loui DS manifest, tokens, guides and a snippet validator to AI agents.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "bin": {
+    "loui-ds-mcp": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "start": "node src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "eslint": "~10.14.0",
+    "eslint-plugin-loui": "workspace:*",
+    "typescript-eslint": "~8.72.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "tsdown": "~0.23.4",
+    "typescript": "~6.0.3",
+    "vitest": "~5.0.5"
+  }
+}
