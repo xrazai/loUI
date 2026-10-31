@@ -1,0 +1,37 @@
+@layer components {
+  .root {
+    flex: none;
+    inline-size: var(--ds-icon-md);
+    block-size: var(--ds-icon-md);
+    stroke-width: var(--ds-icon-stroke-width);
+  }
+
+  /* Keep the stroke at its token width whatever the icon size. */
+  .root * {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .root[data-size='xs'] {
+    inline-size: var(--ds-icon-xs);
+    block-size: var(--ds-icon-xs);
+  }
+
+  .root[data-size='sm'] {
+    inline-size: var(--ds-icon-sm);
+    block-size: var(--ds-icon-sm);
+  }
+
+  .root[data-size='md'] {
+    inline-size: var(--ds-icon-md);
+    block-size: var(--ds-icon-md);
+  }
+
+  .root[data-size='lg'] {
+    inline-size: var(--ds-icon-lg);
+    block-size: var(--ds-icon-lg);
+  }
+
+  .root[data-directional]:dir(rtl) {
+    transform: scaleX(-1);
+  }
+}

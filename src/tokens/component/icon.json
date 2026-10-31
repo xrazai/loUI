@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "icon": {
+    "stroke-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "px"
+      },
+      "$description": "Rendered stroke width of every Icon (1.5px). Applied with non-scaling strokes, so it stays 1.5px at every icon size. Not for filled or colored icons."
+    }
+  }
+}
