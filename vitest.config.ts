@@ -24,7 +24,8 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'node',
-          include: ['src/**/*.test.ts', 'scripts/**/*.test.ts'],
+          // `src/ssr.test.tsx` is the SSR smoke test: it renders to strings in Node (TEST-008).
+          include: ['src/**/*.test.ts', 'src/ssr.test.tsx', 'scripts/**/*.test.ts'],
         },
       },
       {
@@ -33,6 +34,7 @@ export default defineConfig({
         test: {
           name: 'browser',
           include: ['src/**/*.test.tsx'],
+          exclude: ['src/ssr.test.tsx'],
           setupFiles: ['src/test/setup.ts'],
           // Overlay and timer tests run real animations and clocks; the default 5 s is too tight
           // when the four projects share the machine in one `pnpm test` run.
