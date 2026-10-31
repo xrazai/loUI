@@ -2623,6 +2623,16 @@ exports[`generated token list (TEST-006) > matches the snapshot 1`] = `
     "value": "200px",
   },
   {
+    "aliasOf": null,
+    "cssValue": "360px",
+    "cssVar": "--ds-menu-max-width",
+    "description": "Maximum width of a Menu popover (360px). A longer label wraps instead of stretching the popover across the screen; it never goes below the trigger width.",
+    "name": "menu.max-width",
+    "tier": "core",
+    "type": "dimension",
+    "value": "360px",
+  },
+  {
     "aliasOf": "size.icon-md",
     "cssValue": "var(--ds-icon-md)",
     "cssVar": "--ds-menu-indicator-size",

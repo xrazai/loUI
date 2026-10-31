@@ -56,6 +56,16 @@ export const CalendarKeyboard: Story = {
   },
 };
 
+/** The calendar open under the field, for the visual review (TEST-020). */
+export const Open: Story = {
+  args: { defaultValue: '2026-10-15' },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole('button', { name: /Open calendar/ }));
+    await screen.findByRole('grid');
+  },
+};
+
 export const EscapeRestoresFocus: Story = {
   play: async ({ canvasElement }) => {
     const trigger = within(canvasElement).getByRole('button', { name: /Open calendar/ });

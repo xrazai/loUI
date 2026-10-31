@@ -72,6 +72,16 @@ export const EscapeClosesAndRestoresFocus: Story = {
   },
 };
 
+/** The listbox open under the trigger, for the visual review (TEST-020). */
+export const Open: Story = {
+  args: { defaultValue: 'us' },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole('button', { name: /Region/ }));
+    await screen.findByRole('listbox');
+  },
+};
+
 export const WithSelection: Story = {
   args: { defaultValue: 'sa' },
   play: async ({ canvasElement }) => {

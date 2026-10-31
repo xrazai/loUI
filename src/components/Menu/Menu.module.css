@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     min-inline-size: max(var(--ds-menu-min-width), var(--trigger-width, 0px));
+    max-inline-size: min(var(--ds-menu-max-width), calc(100vw - var(--ds-space-4)));
     max-block-size: var(--ds-select-popover-max-height);
     margin: var(--ds-space-1);
     padding: var(--ds-space-1);

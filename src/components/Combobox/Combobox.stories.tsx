@@ -48,6 +48,16 @@ export const Default: Story = {
   },
 };
 
+/** The suggestions open under the field, for the visual review (TEST-020). */
+export const Open: Story = {
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole('combobox', { name: 'Customer' }));
+    await userEvent.keyboard('{ArrowDown}');
+    await screen.findByRole('listbox');
+  },
+};
+
 export const KeyboardContract: Story = {
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole('combobox', { name: 'Customer' });

@@ -36,6 +36,35 @@ function RowMenu(props: { onAction?: (key: string) => void; defaultOpen?: boolea
 }
 
 describe('Menu', () => {
+  it('caps the popover width and wraps a long label (TEST-020)', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <Menu trigger={<Button>Actions</Button>} defaultOpen>
+          <MenuItem id="export">
+            Export the selected orders with all of their line items, notes and attachments as one
+            spreadsheet for the accountant
+          </MenuItem>
+          <MenuItem id="edit">Edit order</MenuItem>
+        </Menu>
+      </main>,
+    );
+    const popover = screen
+      .getByRole('menu')
+      .element()
+      .closest<HTMLElement>('[data-trigger="MenuTrigger"]');
+    if (!popover) throw new Error('Menu popover not found.');
+    const max = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--ds-menu-max-width'),
+    );
+    expect(max).toBeGreaterThan(0);
+    await expect.poll(() => popover.getBoundingClientRect().width).toBeLessThanOrEqual(max);
+    const item = screen.getByRole('menuitem', { name: /Export the selected orders/ }).element();
+    // The long label wraps to several lines instead of stretching the popover.
+    expect(item.getBoundingClientRect().height).toBeGreaterThan(
+      screen.getByRole('menuitem', { name: 'Edit order' }).element().getBoundingClientRect().height,
+    );
+  });
+
   it('opens from the trigger with menu semantics and names the menu after the trigger', async () => {
     const screen = await renderWithProvider(<RowMenu />);
     const trigger = screen.getByRole('button', { name: 'Actions' });

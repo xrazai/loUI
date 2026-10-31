@@ -258,6 +258,7 @@ export type TokenName =
   | 'matrix-grid.columns'
   | 'matrix-grid.color'
   | 'menu.min-width'
+  | 'menu.max-width'
   | 'menu.indicator-size'
   | 'nav-item.padding-inline'
   | 'nav-item.indicator-width'
@@ -592,6 +593,7 @@ export type TokenCssVar =
   | '--ds-matrix-grid-columns'
   | '--ds-matrix-grid-color'
   | '--ds-menu-min-width'
+  | '--ds-menu-max-width'
   | '--ds-menu-indicator-size'
   | '--ds-nav-item-padding-inline'
   | '--ds-nav-item-indicator-width'
@@ -944,6 +946,7 @@ export const tokenValues = {
   'matrix-grid.columns': { cssVar: '--ds-matrix-grid-columns', type: 'number', value: 0 },
   'matrix-grid.color': { cssVar: '--ds-matrix-grid-color', type: 'color', value: '#A3A3A9' },
   'menu.min-width': { cssVar: '--ds-menu-min-width', type: 'dimension', value: '200px' },
+  'menu.max-width': { cssVar: '--ds-menu-max-width', type: 'dimension', value: '360px' },
   'menu.indicator-size': { cssVar: '--ds-menu-indicator-size', type: 'dimension', value: '18px' },
   'nav-item.padding-inline': { cssVar: '--ds-nav-item-padding-inline', type: 'dimension', value: '10px' },
   'nav-item.indicator-width': { cssVar: '--ds-nav-item-indicator-width', type: 'dimension', value: '2px' },

@@ -102,4 +102,4 @@ Keyboard contract (AGENTS.md section 8):
 - React Aria provides roving focus, typeahead, activation, selection and focus restore; the handoff menu was a list of divs with click handlers.
 - The trigger is part of the component (`trigger` prop); the handoff `Menu` was a bare list placed by the caller.
 - New: selection modes, sections, submenus, disabled items, `MoreActionsMenu`.
-- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width).
+- The handoff `width` prop is replaced by `--ds-menu-min-width` (grows with content, at least the trigger width) and `--ds-menu-max-width` (360px; a longer label wraps instead of stretching the popover, TEST-020).

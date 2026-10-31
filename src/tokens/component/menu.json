@@ -6,6 +6,10 @@
       "$value": { "value": 200, "unit": "px" },
       "$description": "Minimum width of a Menu (200px, the handoff default)."
     },
+    "max-width": {
+      "$value": { "value": 360, "unit": "px" },
+      "$description": "Maximum width of a Menu popover (360px). A longer label wraps instead of stretching the popover across the screen; it never goes below the trigger width."
+    },
     "indicator-size": {
       "$value": "{size.icon-md}",
       "$description": "Width reserved for the check or radio indicator of selectable Menu items (18px)."

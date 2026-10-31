@@ -349,6 +349,7 @@
 
     /* menu */
     --ds-menu-min-width: 200px;
+    --ds-menu-max-width: 360px;
     --ds-menu-indicator-size: var(--ds-icon-md);
 
     /* nav-item */
