@@ -27,7 +27,6 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 
 - [ ] **SETUP-005** (P1 · M) CI on GitHub Actions (`.github/workflows/ci.yml` runs `check:ci`, `publint`, `size` on push/PR to `main`, repo github.com/xrazai/loUI): keep it green, add branch protection with required checks, and add the visual job once Linux baselines exist (TEST-019).
 - [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, issue templates (bug, component request, token change), `CODEOWNERS`. (PR template with the Definition of Done already exists.)
-- [ ] **SETUP-009** (P2 · S) Add `build-storybook` and `attw` to CI (budgets and `check:ci` exist).
 
 All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
 
@@ -121,7 +120,7 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
-- [ ] **TEST-019** (P1 · M) Linux visual baselines generated in the pinned Playwright container (`mcr.microsoft.com/playwright:v1.64.1-noble`) via a manual `workflow_dispatch` job, committed, then a CI visual job; harness tolerance is 0.2% so regenerate from scratch after component changes.
+- [ ] **TEST-019** (P1 · S) Commit Linux visual baselines: after each component batch lands, `gh workflow run visual-baselines.yml`, `pnpm visual:pull-linux`, review, commit (the CI `visual` job then runs for real). Workflow and pull script exist.
 - [ ] **TEST-020** (P2 · S) Visual baselines for open popovers (Select, Combobox, DatePicker open only in `play`): add open-state stories or a `play`-before-screenshot harness option. Also cap Menu popover width for long labels.
 - [ ] **TEST-021** (P2 · S) Remaining read-once-after-hover style assertions (Checkbox, ChoiceTiles, Combobox, Input, RadioGroup, Select, Switch) → poll like Button/Link to remove flakiness under load.
 
