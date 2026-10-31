@@ -29,6 +29,15 @@ For component `<Name>` in handoff group `<group>`:
 10. **Verify**: `pnpm lint`, `pnpm typecheck`, `pnpm vitest run --project browser --project storybook <your paths>`, then `pnpm check` if no parallel agent is mid-change.
 11. **Commit** only your paths: `feat(<name>): …`, ending with the co-author line given in your brief.
 
+## Lessons from earlier batches
+
+- RAC 1.22 deprecates some classic exports (e.g. `Checkbox`, `Switch`, `Radio` → `CheckboxField`/`CheckboxButton`, `SwitchField`/`SwitchButton`, `RadioField`/`RadioButton`). Check the `.d.ts` for `@deprecated` before choosing an API.
+- RAC overlays write an inline `z-index`; pass `--ds-z-*` through the overlay's `style` prop (documented exception).
+- Controlled props follow RAC names (`isSelected`, `onChange(value)`, `isDisabled`, `isInvalid`).
+- Do not generate visual baselines (`pnpm test:visual:update`) — the harness snapshots every story in the repo; the PM regenerates baselines after each batch.
+- Parallel agents share the machine: run tests filtered by project and path; a full `pnpm test` run concurrently with other agents can be flaky.
+- Reuse existing components (`Button`, `IconButton`, `Icon`, `Spinner`, `Field` parts, `Badge`, `Kbd`) instead of re-styling equivalents.
+
 ## Never
 
 - Kill processes by image name (`taskkill /IM node.exe`, `python.exe`…): other agents and tools run on this machine. Stop only processes you started, by PID.
