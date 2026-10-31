@@ -13,9 +13,9 @@ import {
   matchesSearch,
   plural,
   useDSLocale,
+  useUndoable,
 } from '../../index';
 import type { BadgeTone } from '../../index';
-import { useUndoable } from '../../hooks/useUndoable';
 
 type Status = 'open' | 'shipped' | 'archived';
 

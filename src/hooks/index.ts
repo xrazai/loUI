@@ -11,3 +11,10 @@ export type { UseHotkeyScopeOptions, UseRegisteredHotkeysOptions } from './useHo
 export { HotkeyRegistry } from './hotkeyRegistry';
 export type { HotkeyDefinition, RegisteredHotkey } from './hotkeyRegistry';
 export { hotkeyKeys } from './hotkey';
+export { useUndoable } from './useUndoable';
+export type {
+  UndoableAction,
+  UndoableHandle,
+  UseUndoableOptions,
+  UseUndoableResult,
+} from './useUndoable';

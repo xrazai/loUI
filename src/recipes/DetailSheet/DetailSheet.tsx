@@ -11,8 +11,8 @@ import {
   Stack,
   Textarea,
   toast,
+  useUndoable,
 } from '../../index';
-import { useUndoable } from '../../hooks/useUndoable';
 
 type Status = 'open' | 'shipped';
 

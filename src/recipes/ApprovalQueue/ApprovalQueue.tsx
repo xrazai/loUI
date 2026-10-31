@@ -10,9 +10,9 @@ import {
   TabPanel,
   Tabs,
   Text,
+  useUndoable,
 } from '../../index';
 import { ApprovalCard } from '../../patterns';
-import { useUndoable } from '../../hooks/useUndoable';
 
 type State = 'pending' | 'sent' | 'discarded';
 

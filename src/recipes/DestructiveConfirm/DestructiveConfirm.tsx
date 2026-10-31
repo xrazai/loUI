@@ -8,8 +8,8 @@ import {
   Stack,
   formatCurrency,
   useDSLocale,
+  useUndoable,
 } from '../../index';
-import { useUndoable } from '../../hooks/useUndoable';
 
 export interface Order {
   id: string;

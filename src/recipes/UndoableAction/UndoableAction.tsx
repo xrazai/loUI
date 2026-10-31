@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
-import { Badge, Button, Heading, Inline, Stack, Text } from '../../index';
-import { useUndoable } from '../../hooks/useUndoable';
+import { Badge, Button, Heading, Inline, Stack, Text, useUndoable } from '../../index';
 
 export interface Order {
   id: string;
