@@ -139,7 +139,9 @@ describe('Button', () => {
     it('dims the primary button on hover through the brightness token', async () => {
       const screen = await renderWithProvider(<Button variant="primary">Label</Button>);
       const button = screen.getByRole('button');
-      expect(getComputedStyle(button.element()).filter).toBe('none');
+      // The pointer may still rest where a previous test left it (over this button): move it off first.
+      await userEvent.unhover(button);
+      await expect.poll(() => getComputedStyle(button.element()).filter).toBe('none');
       await userEvent.hover(button);
       // RAC sets `data-hovered` after the pointer event is handled, so poll instead of reading once.
       await expect.poll(() => getComputedStyle(button.element()).filter).toBe('brightness(0.88)');
