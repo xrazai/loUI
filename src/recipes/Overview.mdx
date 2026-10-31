@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Recipes/Overview" />
+
+# Recipes
+
+Recipes are small, complete compositions of the design system's components for situations that come up in every product. Each one is tested (behavior, keyboard flow and axe), has stories you can try, and has a doc whose code block is the recipe's source file. Copy a recipe, replace the sample data and the server calls, and keep the structure: the order of controls, the focus handling and the wording are the point.
+
+Agents: start from a recipe when one fits (`get_recipe` in the MCP server returns the same docs from `docs/recipes/`), then run `validate_snippet` on what you produce.
+
+Every recipe assumes one `ToastRegion` near the root of the app, inside `DSProvider`.
+
+| Recipe                                                               | Use it for                                                                                       | Doc                                     |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| [DestructiveConfirm](?path=/docs/recipes-destructiveconfirm--docs)   | Delete from a row action: ask, delete, offer Undo.                                               | `docs/recipes/destructive-confirm.md`   |
+| [UndoableAction](?path=/docs/recipes-undoableaction--docs)           | A reversible action with no confirmation and an Undo toast (`useUndoable`).                      | `docs/recipes/undoable-action.md`       |
+| [FormWithValidation](?path=/docs/recipes-formwithvalidation--docs)   | Native validation, error summary, server errors, Save and "Saved".                               | `docs/recipes/form-with-validation.md`  |
+| [FilterableTable](?path=/docs/recipes-filterabletable--docs)         | Search, status filters with counts, sortable table, bulk action, empty state.                    | `docs/recipes/filterable-table.md`      |
+| [SettingsPage](?path=/docs/recipes-settingspage--docs)               | App shell, one primary action with its shortcut, cards of switches, selects and radios.          | `docs/recipes/settings-page.md`         |
+| [DetailSheet](?path=/docs/recipes-detailsheet--docs)                 | A list row opens a side sheet to view and edit; footer with the destructive action at the start. | `docs/recipes/detail-sheet.md`          |
+| [ApprovalQueue](?path=/docs/recipes-approvalqueue--docs)             | Replies that wait for approval; Send and Discard act at once and offer Undo.                     | `docs/recipes/approval-queue.md`        |
+| [CommandPaletteSetup](?path=/docs/recipes-commandpalettesetup--docs) | `Mod+K` palette, shortcuts help and bare-key shortcuts from one list.                            | `docs/recipes/command-palette-setup.md` |
+
+## How they stay true
+
+- Each recipe imports only what the package exports (`@loui/ds`, `@loui/ds/patterns`); the doc shows those imports.
+- `docs/recipes/*.md` embeds the recipe's `.tsx` file between two markers. `pnpm exec tsx src/recipes/sync.ts` rewrites the block and `src/recipes/docs.test.ts` fails when it is stale.
+- The tests run the keyboard flow and axe on every state, with fake timers where the Undo window matters.
+
+## Principles you will see repeated
+
+- Deleting always asks, in a dialog that names the object and the consequence, with focus on Cancel. An Undo toast follows.
+- Reversible actions never ask; they offer Undo.
+- One primary action per screen, at the top right, with a shortcut.
+- Lists are alphabetical by default; empty states say what happened and what to do.
+- Anything that reaches a customer waits for approval.
