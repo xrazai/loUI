@@ -114,6 +114,11 @@ const {
   ScrollArea,
   Stack,
   Text,
+  DonutMeter,
+  Sparkline,
+  TagInput,
+  Toggle,
+  ToggleGroup,
 } = core;
 const { AgentCard, ApprovalCard, ChatPanel, ColorOption, LedgerList, MatrixGrid } = patterns;
 
@@ -121,6 +126,15 @@ const trigger = <Button>Open</Button>;
 
 /** Minimal valid instances. Open overlays render their content in a portal, so closed is the SSR case. */
 const CASES: Record<string, () => ReactElement> = {
+  DonutMeter: () => <DonutMeter label="Used" value={40} />,
+  Sparkline: () => <Sparkline data={[1, 2, 3]} aria-label="Trend" />,
+  TagInput: () => <TagInput label="Tags" defaultValue={['a']} name="t" />,
+  Toggle: () => <Toggle>Bold</Toggle>,
+  ToggleGroup: () => (
+    <ToggleGroup aria-label="Formatting">
+      <Toggle id="b">Bold</Toggle>
+    </ToggleGroup>
+  ),
   AppShell: () => (
     <AppShell
       topBar={

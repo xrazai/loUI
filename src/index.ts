@@ -103,6 +103,23 @@ export type { TooltipPlacement, TooltipProps } from './components/Tooltip';
 export type { IconButtonTooltipOptions } from './components/IconButton';
 
 // Form fields
+export { TagInput } from './components/TagInput';
+export type { TagInputMessages, TagInputProps, TagInputSize } from './components/TagInput';
+export { Toggle } from './components/Toggle';
+export type {
+  IconToggleProps,
+  TextToggleProps,
+  ToggleProps,
+  ToggleSize,
+  ToggleTooltipOptions,
+  ToggleVariant,
+} from './components/Toggle';
+export { ToggleGroup } from './components/ToggleGroup';
+export type {
+  ToggleGroupOrientation,
+  ToggleGroupProps,
+  ToggleGroupSelectionMode,
+} from './components/ToggleGroup';
 export { FieldSet } from './components/FieldSet';
 export type { FieldSetProps } from './components/FieldSet';
 export { Form, FormErrorSummary } from './components/Form';
@@ -223,6 +240,10 @@ export { TopBar } from './components/TopBar';
 export type { TopBarHeadingLevel, TopBarProps } from './components/TopBar';
 
 // Data
+export { DonutMeter } from './components/DonutMeter';
+export type { DonutMeterProps, DonutMeterSize, DonutMeterTone } from './components/DonutMeter';
+export { Sparkline } from './components/Sparkline';
+export type { SparklineProps, SparklineTone, SparklineVariant } from './components/Sparkline';
 export { ActionList } from './components/ActionList';
 export type { ActionListItem, ActionListProps } from './components/ActionList';
 export { Chart, niceScale } from './components/Chart';
