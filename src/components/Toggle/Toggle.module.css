@@ -1,0 +1,119 @@
+@layer components {
+  .root {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-block-size: var(--ds-control-h-md);
+    max-inline-size: 100%;
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-4);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background: transparent;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      border-color var(--ds-duration) var(--ds-ease),
+      color var(--ds-duration) var(--ds-ease);
+  }
+
+  .root[data-size='sm'] {
+    min-block-size: var(--ds-control-h-sm);
+    padding-inline: var(--ds-space-3);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .root[data-size='md'] {
+    min-block-size: var(--ds-control-h-md);
+  }
+
+  .root[data-size='lg'] {
+    min-block-size: var(--ds-control-h-lg);
+    padding-inline: var(--ds-space-5);
+    font-size: var(--ds-fs-body);
+    line-height: var(--ds-lh-body);
+  }
+
+  /* Icon-only: a square of the control height. */
+  .root[data-icon-only] {
+    inline-size: var(--ds-control-h-md);
+    padding: 0;
+  }
+
+  .root[data-icon-only][data-size='sm'] {
+    inline-size: var(--ds-control-h-sm);
+  }
+
+  .root[data-icon-only][data-size='lg'] {
+    inline-size: var(--ds-control-h-lg);
+  }
+
+  .root[data-variant='secondary'] {
+    border-color: var(--ds-line-strong);
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .root[data-variant='secondary'][data-hovered] {
+    background: var(--ds-surface-hover);
+  }
+
+  .root[data-variant='ghost'][data-hovered] {
+    background: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  /*
+   * Pressed: a raised background, a bright border and ink text. The border and the fill change
+   * together, so the state does not rely on color alone.
+   */
+  .root[data-selected] {
+    border-color: var(--ds-text-2);
+    background: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  /* Focus: accent border plus ring; the transparent outline survives forced colors. */
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+  }
+
+  .slot {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+  }
+
+  @media (forced-colors: active) {
+    .root[data-selected] {
+      border-color: Highlight;
+      text-decoration: underline;
+    }
+  }
+}
