@@ -54,11 +54,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Foundation documentation (port from `guidelines/*.html`, translate to English)
 
-- [ ] **FDN-001** (P1 · S) Colors page prose (usage, do and don't) on top of the generated `Foundations/Tokens` page (swatches and ratios already exist).
-- [ ] **FDN-002** (P1 · S) Typography: display, body, mono.
-- [ ] **FDN-003** (P1 · S) Spacing scale, control sizes, radius, elevation.
-- [ ] **FDN-004** (P1 · S) States (rest, hover, focus, disabled), keyboard model, principles, wordmark.
-- [ ] **FDN-005** (P2 · S) Motion, layering, iconography, content (microcopy) rules.
 
 ---
 
@@ -140,7 +135,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 ## Phase 6 — Documentation site (Storybook)
 
-- [ ] **DOCS-003** (P1 · M) Foundations section generated from tokens (FDN-001…005).
 - [ ] **DOCS-007** (P2 · S) Publish docs (static hosting) with search; link from README.
 
 ---
