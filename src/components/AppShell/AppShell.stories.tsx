@@ -11,6 +11,7 @@ import { Sidebar } from '../Sidebar';
 import { Text } from '../Text';
 import { TopBar } from '../TopBar';
 import { AppShell, AppShellNavToggle } from './AppShell';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const sidebar = (
   <Sidebar
@@ -76,9 +77,9 @@ const meta = {
   args: { sidebar, topBar, children: <Page /> },
   decorators: [
     (Story) => (
-      <div style={{ blockSize: 560 }}>
+      <StoryFrame height={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof AppShell>;
@@ -88,6 +89,8 @@ type Story = StoryObj<typeof meta>;
 
 /** Sidebar on the left, top bar and scrolling content on the right. The sidebar and the content scroll apart. */
 export const Default: Story = {
+  // A desktop width, so the in-flow sidebar layout (md and up) has a baseline.
+  parameters: { visual: { width: 1024 } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole('main')).toHaveAttribute('id', 'main');
@@ -134,9 +137,9 @@ export const LongContent: Story = {
 export const NarrowClosed: Story = {
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 375, blockSize: 560 }}>
+      <StoryFrame width={375} height={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   play: async ({ canvasElement }) => {
@@ -173,9 +176,9 @@ export const Narrow320: Story = {
   args: { detail: <Text as="p">Detail pane under the content</Text> },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 320, blockSize: 560 }}>
+      <StoryFrame width={320} height={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };
@@ -183,9 +186,9 @@ export const Narrow320: Story = {
 export const RightToLeft: Story = {
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ blockSize: 560 }}>
+      <StoryFrame dir="rtl" height={560}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

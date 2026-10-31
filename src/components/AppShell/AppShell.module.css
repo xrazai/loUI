@@ -139,6 +139,7 @@
     /* The nav is stacked above the scrim by DOM order; its close button sits on the scrim. */
     .navClose {
       position: absolute;
+      white-space: nowrap;
       inset-block-start: var(--ds-space-3);
       inset-inline-start: calc(100% + var(--ds-space-2));
       display: block;

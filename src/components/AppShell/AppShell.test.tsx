@@ -247,6 +247,30 @@ describe('AppShell off-canvas navigation (below md)', () => {
     await expect.element(screen.getByRole('button', { name: 'Menu' })).toHaveFocus();
   });
 
+  it('draws the close control as one-line icon button that does not cover the top bar action (GAP-010)', async () => {
+    const screen = await renderShell(375);
+    await screen.getByRole('button', { name: 'Menu' }).click();
+    await expectSidebar(screen, 'visible');
+    const close = screen.getByRole('button', { name: 'Close menu' }).element();
+    expect(close.textContent).toBe('');
+    expect(close.querySelector('svg')).not.toBeNull();
+    const closeBox = close.getBoundingClientRect();
+    // A 32px square: it cannot wrap onto two lines.
+    expect(closeBox.width).toBe(closeBox.height);
+    const nav = close.parentElement?.parentElement as HTMLElement;
+    expect(nav.getBoundingClientRect().right).toBeLessThanOrEqual(closeBox.left);
+    const action = [...screen.container.querySelectorAll('button')].find(
+      (button) => button.textContent === 'New order',
+    ) as HTMLElement;
+    const actionBox = action.getBoundingClientRect();
+    const overlaps =
+      closeBox.left < actionBox.right &&
+      closeBox.right > actionBox.left &&
+      closeBox.top < actionBox.bottom &&
+      closeBox.bottom > actionBox.top;
+    expect(overlaps).toBe(false);
+  });
+
   it('closes when the scrim is pressed', async () => {
     const onNavOpenChange = vi.fn();
     const screen = await renderShell(600, { onNavOpenChange });

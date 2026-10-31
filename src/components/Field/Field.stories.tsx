@@ -6,15 +6,16 @@ import { Input } from '../Input';
 import { Select } from '../Select';
 import { Textarea } from '../Textarea';
 import { Description, FieldError, Label } from './Field';
+import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
   title: 'Components/Field',
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxInlineSize: 360 }}>
+      <StoryFrame maxWidth={360}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta;

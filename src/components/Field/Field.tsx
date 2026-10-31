@@ -79,8 +79,10 @@ export function Description({ className, ...rest }: DescriptionProps) {
 
 export interface FieldErrorProps {
   /**
-   * The message. A function receives the validation result. Without children, RAC shows the
-   * validation errors (the browser's message for native constraints).
+   * The message. A function receives the validation result and decides everything. A static
+   * message replaces only the browser's own constraint text; an error the app supplied (a
+   * `validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without
+   * children, the validation errors are shown (the browser's message for native constraints).
    */
   children?: FieldErrorMessage;
   className?: string | undefined;
@@ -97,10 +99,16 @@ export function FieldError({ className, children, ...rest }: FieldErrorProps) {
   return (
     <RACFieldError {...rest} className={classNames(styles.error, className)}>
       {(validation) => {
+        // A static message stands in for the browser's own constraint text ("Please fill out this
+        // field"). Messages the app supplied (a `validate` rule, or `validationErrors` on a
+        // `Form`) are flagged `customError` and always win over it (GAP-009).
+        const appMessage = validation.validationDetails.customError
+          ? validation.validationErrors.join(' ')
+          : '';
         const content =
           typeof children === 'function'
             ? children(validation)
-            : (children ?? validation.validationErrors.join(' '));
+            : appMessage || (children ?? validation.validationErrors.join(' '));
         // No empty live region: RAC renders nothing when the render function returns null.
         if (content === null || content === undefined || content === false || content === '') {
           return null;

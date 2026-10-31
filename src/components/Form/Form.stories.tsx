@@ -7,6 +7,7 @@ import { Input } from '../Input';
 import { Select } from '../Select';
 import { Form } from './Form';
 import type { FormProps } from './Form';
+import { StoryFrame } from '../../test/StoryFrame';
 
 function emptyMessage(text: string) {
   return (validation: { validationDetails: ValidityState; validationErrors: string[] }) =>
@@ -48,9 +49,9 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 400 }}>
+      <StoryFrame width={400}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 } satisfies Meta<typeof Form>;
@@ -165,9 +166,9 @@ export const AriaValidation: Story = {
 export const LongText: Story = {
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 260 }}>
+      <StoryFrame width={260}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
   args: {
@@ -185,9 +186,9 @@ export const LongText: Story = {
 export const RightToLeft: Story = {
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ inlineSize: 400 }}>
+      <StoryFrame dir="rtl" width={400}>
         <Story />
-      </div>
+      </StoryFrame>
     ),
   ],
 };

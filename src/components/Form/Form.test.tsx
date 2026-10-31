@@ -93,6 +93,28 @@ describe('Form', () => {
     await expect.element(screen.getByRole('textbox', { name: /Email/ })).toBeInvalid();
   });
 
+  it('shows a server error even when the field has a static errorMessage (GAP-009)', async () => {
+    const screen = await renderWithProvider(
+      <Form aria-label="Profile" validationErrors={{ email: 'That email is already taken.' }}>
+        <Input label="Email" name="email" type="email" isRequired errorMessage="Enter an email." />
+        <Button type="submit">Save changes</Button>
+      </Form>,
+    );
+    await expect.element(screen.getByText('That email is already taken.')).toBeVisible();
+    expect(screen.container.textContent).not.toContain('Enter an email.');
+  });
+
+  it('keeps the static errorMessage for the browser constraint text of an empty field (GAP-009)', async () => {
+    const screen = await renderWithProvider(
+      <Form aria-label="Profile">
+        <Input label="Email" name="email" type="email" isRequired errorMessage="Enter an email." />
+        <Button type="submit">Save changes</Button>
+      </Form>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await expect.element(screen.getByText('Enter an email.')).toBeVisible();
+  });
+
   it('lets aria validation behavior submit without blocking', async () => {
     const onSubmit = vi.fn((event: { preventDefault: () => void }) => {
       event.preventDefault();

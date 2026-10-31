@@ -11,7 +11,8 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { useControllableState } from '../../hooks/useControllableState';
 import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
-import { Button } from '../Button';
+import { IconButton } from '../IconButton';
+import { MenuIcon, XIcon } from '../Icon';
 import { useScrollable } from '../ScrollArea/useScrollable';
 import { SkipLink } from '../SkipLink';
 import { messages } from './AppShell.messages';
@@ -201,14 +202,14 @@ export function AppShell({
             >
               {sidebar}
               <div className={styles.navClose}>
-                <Button
+                <IconButton
                   size="sm"
+                  icon={XIcon}
+                  label={t.navClose}
                   onPress={() => {
                     setNavOpen(false);
                   }}
-                >
-                  {t.navClose}
-                </Button>
+                />
               </div>
             </div>
           </>
@@ -243,14 +244,14 @@ export function AppShell({
 }
 
 export interface AppShellNavToggleProps {
-  /** Button text. Default "Menu" from the message catalog. */
-  children?: ReactNode;
+  /** Accessible name of the icon button. Default "Menu" from the message catalog. */
+  children?: string;
   /** Class name for the wrapper. */
   className?: string;
 }
 
 /**
- * The button that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
+ * The icon button (menu icon) that opens the off-canvas sidebar. Put it in the `TopBar` (as its `children`).
  * It is only visible below the md breakpoint, and reports `aria-expanded`. It must be rendered
  * inside `AppShell`.
  */
@@ -261,17 +262,17 @@ export function AppShellNavToggle({ children, className }: AppShellNavToggleProp
   }
   return (
     <span className={classNames(styles.navToggle, className)}>
-      <Button
+      <IconButton
         variant="ghost"
         size="sm"
+        icon={MenuIcon}
+        label={children ?? context.messages.navToggle}
         aria-expanded={context.isNavOpen}
         aria-controls={context.navId}
         onPress={() => {
           context.setNavOpen(!context.isNavOpen);
         }}
-      >
-        {children ?? context.messages.navToggle}
-      </Button>
+      />
     </span>
   );
 }
