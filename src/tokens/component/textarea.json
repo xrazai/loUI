@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "textarea": {
+    "$type": "dimension",
+    "padding-block": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "Block padding inside a Textarea (10px, the handoff value). Not for single-line controls."
+    },
+    "padding-inline": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Inline padding inside a Textarea (12px, the handoff value). Not for single-line controls."
+    }
+  }
+}

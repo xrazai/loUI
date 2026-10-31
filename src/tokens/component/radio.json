@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "radio": {
+    "$type": "dimension",
+    "size": {
+      "$value": {
+        "value": 18,
+        "unit": "px"
+      },
+      "$description": "Width and height of the Radio circle (18px)."
+    },
+    "dot-size": {
+      "$value": {
+        "value": 9,
+        "unit": "px"
+      },
+      "$description": "Diameter of the selected dot inside the Radio circle (9px)."
+    }
+  }
+}

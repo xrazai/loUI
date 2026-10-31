@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "select": {
+    "$type": "dimension",
+    "popover-max-height": {
+      "$value": {
+        "value": 320,
+        "unit": "px"
+      },
+      "$description": "Maximum height of the Select list before it scrolls (320px, about 8 options at item-h)."
+    }
+  }
+}

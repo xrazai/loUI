@@ -1,0 +1,34 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "switch": {
+    "$type": "dimension",
+    "track-width": {
+      "$value": {
+        "value": 36,
+        "unit": "px"
+      },
+      "$description": "Width of the Switch track (36px)."
+    },
+    "track-height": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Height of the Switch track (20px)."
+    },
+    "knob-size": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "Diameter of the Switch knob (16px)."
+    },
+    "knob-offset": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Gap between the knob and the track edge (2px). The knob travels track-width minus knob-size minus twice this value."
+    }
+  }
+}

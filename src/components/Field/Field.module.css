@@ -1,0 +1,134 @@
+/*
+ * Shared building blocks of every form field (ARCH-008, ARCH-009).
+ * Components import this module for `.root` and `.control`; the public pieces
+ * (Label, Description, FieldError) live in Field.tsx.
+ *
+ * State comes from RAC data attributes on the field root: data-disabled, data-readonly,
+ * data-invalid, data-required, plus data-size set by the component.
+ */
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-field-gap);
+    min-inline-size: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /*
+   * One disabled treatment for every field: a single opacity token on the label and the control
+   * (ARCH-009). The description and error stay at full strength, so the reason a field is locked
+   * ("Managed by your administrator.") remains readable.
+   */
+  .root[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  .label {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    font-weight: var(--ds-weight-medium);
+    color: var(--ds-text);
+  }
+
+  .root[data-disabled] .label {
+    opacity: var(--ds-opacity-disabled);
+  }
+
+  .requiredMark {
+    margin-inline-start: var(--ds-space-1);
+    color: var(--ds-text-2);
+  }
+
+  .description {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    color: var(--ds-text-3);
+  }
+
+  .error {
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    color: var(--ds-danger);
+  }
+
+  /*
+   * The visible box of text-like controls (Input wrapper, Textarea, Select trigger). Padding and gap belong to each component.
+   * The boundary is --ds-line-control (3:1 or better) in every state; hover brightens the
+   * border and never changes the background (that would drop the border under 3:1).
+   */
+  .control {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    background: var(--ds-bg);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-md);
+    color: var(--ds-text);
+    font-family: inherit;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    transition:
+      border-color var(--ds-duration) var(--ds-ease),
+      box-shadow var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Single-line controls (Input wrapper, Select trigger): a fixed-height row. */
+  .row {
+    display: flex;
+    align-items: center;
+    block-size: var(--ds-control-h-md);
+  }
+
+  .root[data-size='sm'] .row {
+    block-size: var(--ds-control-h-sm);
+  }
+
+  .root[data-size='lg'] .row {
+    block-size: var(--ds-control-h-lg);
+  }
+
+  .root[data-readonly] .control {
+    background: var(--ds-surface);
+  }
+
+  .root[data-disabled] .control {
+    opacity: var(--ds-opacity-disabled);
+    background: var(--ds-surface);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  .root:where(:not([data-disabled], [data-readonly])) .control:hover {
+    border-color: var(--ds-text-3);
+  }
+
+  .root .control:focus-within,
+  .root[data-open] .control {
+    border-color: var(--ds-accent);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-invalid] .control {
+    border-color: var(--ds-danger);
+  }
+
+  .root[data-invalid] .control:hover {
+    border-color: var(--ds-danger);
+  }
+
+  .root[data-invalid] .control:focus-within,
+  .root[data-invalid][data-open] .control {
+    border-color: var(--ds-danger);
+    box-shadow: var(--ds-focus-ring-danger);
+  }
+
+  @media (forced-colors: active) {
+    .root .control:focus-within,
+    .root[data-open] .control {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+  }
+}

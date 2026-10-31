@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "checkbox": {
+    "$type": "dimension",
+    "box-size": {
+      "$value": {
+        "value": 18,
+        "unit": "px"
+      },
+      "$description": "Width and height of the Checkbox box (18px). The 24px minimum target (WCAG 2.5.8) is met by the clickable label row, not the box."
+    },
+    "radius": {
+      "$value": {
+        "value": 5,
+        "unit": "px"
+      },
+      "$description": "Corner radius of the Checkbox box (5px, the handoff value; between radius.sm and radius.md). Not for other controls."
+    }
+  }
+}

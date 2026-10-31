@@ -1,0 +1,27 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "field": {
+    "$type": "dimension",
+    "gap": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Vertical gap between label, control, description and error in every form field (6px, the handoff value; no 6px step exists in the space scale). Not for spacing between fields."
+    },
+    "control-padding-inline": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "Inline padding inside text-like control boxes (Input, Select trigger, Select option): 10px, the handoff value. Not for buttons."
+    },
+    "choice-gap": {
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "Gap between a Checkbox or Radio box and its label text (10px, the handoff value). Not for form layout."
+    }
+  }
+}
