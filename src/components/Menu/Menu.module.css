@@ -42,6 +42,11 @@
   .menu {
     flex: 1 1 auto;
     min-block-size: 0;
+
+    /* GAP-011: room inside the scrollport for the 3px focus ring of an edge item (see Select). */
+    margin: calc(-1 * var(--ds-space-1));
+    padding: var(--ds-space-1);
+    scroll-padding-block: var(--ds-space-1);
     overflow: auto;
     outline: none;
   }

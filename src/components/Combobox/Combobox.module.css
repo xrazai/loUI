@@ -91,7 +91,12 @@
   .listbox {
     flex: 1 1 auto;
     min-block-size: 0;
-    max-block-size: var(--ds-combobox-popover-max-height);
+    max-block-size: calc(var(--ds-combobox-popover-max-height) + 2 * var(--ds-space-1));
+
+    /* GAP-011: room inside the scrollport for the 3px focus ring of an edge option (see Select). */
+    margin: calc(-1 * var(--ds-space-1));
+    padding: var(--ds-space-1);
+    scroll-padding-block: var(--ds-space-1);
     overflow: auto;
     outline: none;
   }
