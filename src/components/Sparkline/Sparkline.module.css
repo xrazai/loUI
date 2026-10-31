@@ -1,0 +1,74 @@
+@layer components {
+  .root {
+    --ds-sparkline-color: var(--ds-text-2);
+
+    display: inline-block;
+    flex: none;
+    max-inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+    vertical-align: middle;
+  }
+
+  .root[data-tone='accent'] {
+    --ds-sparkline-color: var(--ds-accent);
+  }
+
+  .root[data-tone='success'] {
+    --ds-sparkline-color: var(--ds-success);
+  }
+
+  .root[data-tone='warning'] {
+    --ds-sparkline-color: var(--ds-warning);
+  }
+
+  .root[data-tone='danger'] {
+    --ds-sparkline-color: var(--ds-danger);
+  }
+
+  .line {
+    fill: none;
+    stroke: var(--ds-sparkline-color);
+    stroke-width: var(--ds-sparkline-stroke-w);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .area {
+    fill: var(--ds-sparkline-color);
+    stroke: none;
+    opacity: var(--ds-sparkline-area-opacity);
+  }
+
+  /* The current value: solid. Minimum and maximum: hollow rings, so they never read as the current value. */
+  .last {
+    r: var(--ds-sparkline-dot-r);
+    fill: var(--ds-sparkline-color);
+  }
+
+  .marker {
+    r: var(--ds-sparkline-marker-r);
+    fill: var(--ds-bg);
+    stroke: var(--ds-sparkline-color);
+    stroke-width: var(--ds-sparkline-stroke-w);
+  }
+
+  @media (forced-colors: active) {
+    .line,
+    .marker {
+      stroke: canvastext;
+    }
+
+    .area {
+      fill: canvastext;
+    }
+
+    .last {
+      fill: canvastext;
+    }
+
+    .marker {
+      fill: canvas;
+    }
+  }
+}

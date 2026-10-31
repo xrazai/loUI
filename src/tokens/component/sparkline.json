@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "sparkline": {
+    "stroke-w": {
+      "$type": "dimension",
+      "$value": { "value": 1.5, "unit": "px" },
+      "$description": "Stroke width of the Sparkline line and of its marker rings (1.5px, same as icons and Chart)."
+    },
+    "dot-r": {
+      "$type": "dimension",
+      "$value": { "value": 2.5, "unit": "px" },
+      "$description": "Radius of the solid last-value dot of a Sparkline (2.5px)."
+    },
+    "marker-r": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Radius of the hollow minimum and maximum markers of a Sparkline (2px)."
+    },
+    "area-opacity": {
+      "$type": "number",
+      "$value": 0.12,
+      "$description": "Opacity of the area under the line of an area Sparkline (0.12)."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.text-2}",
+      "$description": "Series color of a Sparkline. Each tone sets it (neutral by default)."
+    }
+  }
+}
