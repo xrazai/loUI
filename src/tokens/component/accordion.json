@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "accordion": {
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Horizontal padding of an Accordion header and panel (12px)."
+    }
+  }
+}

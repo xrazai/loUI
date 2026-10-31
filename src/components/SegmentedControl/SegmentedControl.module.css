@@ -1,0 +1,100 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: inline-flex;
+    gap: var(--ds-segmented-control-padding);
+    max-inline-size: 100%;
+    padding: var(--ds-segmented-control-padding);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-bg);
+  }
+
+  .root[data-full-width] {
+    display: flex;
+  }
+
+  .segment {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+    block-size: var(--ds-segmented-control-height-md);
+    padding-inline: var(--ds-space-3);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-sm);
+    background-color: transparent;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      color var(--ds-duration) var(--ds-ease);
+  }
+
+  .root[data-size='sm'] .segment {
+    block-size: var(--ds-segmented-control-height-sm);
+    padding-inline: var(--ds-space-2);
+  }
+
+  .root[data-full-width] .segment {
+    flex: 1;
+  }
+
+  .segment[data-hovered] {
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+  }
+
+  /* Selected: raised background, a line and ink text, so it is not distinguished by color alone. */
+  .segment[data-selected] {
+    border-color: var(--ds-line-strong);
+    background-color: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  .segment[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .segment[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* text-2: text-3 would fail 4.5:1 on the selected (hover) surface. */
+  .count {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-lh-caption);
+  }
+
+  @media (forced-colors: active) {
+    .segment[data-selected] {
+      border-color: Highlight;
+    }
+
+    .root {
+      border-color: ButtonText;
+    }
+  }
+}

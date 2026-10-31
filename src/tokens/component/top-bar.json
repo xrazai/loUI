@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "top-bar": {
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Horizontal padding of the TopBar (24px). Its height is size.topbar-h (64px; the handoff code used 56px)."
+    }
+  }
+}

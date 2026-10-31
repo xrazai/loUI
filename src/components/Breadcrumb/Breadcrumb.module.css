@@ -1,0 +1,68 @@
+@layer components {
+  .root {
+    min-inline-size: 0;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: flex;
+    flex: 0 3 auto;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+    margin-inline-end: var(--ds-space-2);
+  }
+
+  /* Ancestors shrink three times faster than the current page, which keeps the most room. */
+  .item:last-child {
+    flex-shrink: 1;
+    margin-inline-end: 0;
+  }
+
+  .link {
+    overflow: hidden;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-2);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    transition: color var(--ds-duration) var(--ds-ease);
+  }
+
+  .link[data-hovered] {
+    color: var(--ds-text);
+    text-decoration: underline;
+  }
+
+  .link[data-focus-visible] {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .current {
+    overflow: hidden;
+    color: var(--ds-text);
+    font-weight: var(--ds-weight-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .separator {
+    flex: none;
+    color: var(--ds-text-3);
+  }
+}

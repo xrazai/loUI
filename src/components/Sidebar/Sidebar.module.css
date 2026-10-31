@@ -1,0 +1,189 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: var(--ds-sidebar-gap);
+    inline-size: var(--ds-sidebar-w);
+    max-block-size: 100%;
+    padding-block: var(--ds-sidebar-padding-block);
+    padding-inline: var(--ds-sidebar-padding-inline);
+    overflow-y: auto;
+    border-inline-end: 1px solid var(--ds-line-subtle);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .workspace {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-2);
+  }
+
+  .mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--ds-sidebar-workspace-mark-size);
+    block-size: var(--ds-sidebar-workspace-mark-size);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-primary-bg);
+    color: var(--ds-primary-fg);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-semibold);
+    line-height: 1;
+  }
+
+  .workspaceText {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .workspaceName {
+    overflow: hidden;
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-label);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .workspaceSubtitle {
+    overflow: hidden;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+  }
+
+  .caption {
+    padding-block-end: var(--ds-space-1);
+    padding-inline: var(--ds-nav-item-padding-inline);
+    color: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+    letter-spacing: var(--ds-tracking-caption);
+    line-height: var(--ds-lh-caption);
+    text-transform: uppercase;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    margin-block-start: auto;
+  }
+
+  .status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    padding: var(--ds-space-3);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+  }
+
+  .statusTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+  }
+
+  .dot {
+    flex: none;
+    inline-size: var(--ds-sidebar-status-dot-size);
+    block-size: var(--ds-sidebar-status-dot-size);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-success);
+  }
+
+  .dot[data-tone='warning'] {
+    background-color: var(--ds-warning);
+  }
+
+  .dot[data-tone='danger'] {
+    background-color: var(--ds-danger);
+  }
+
+  .statusDetail {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ds-space-2);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .statusValue {
+    font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    padding: var(--ds-space-2);
+    border-block-start: 1px solid var(--ds-line-subtle);
+  }
+
+  .userText {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .userName {
+    overflow: hidden;
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .userRole {
+    overflow: hidden;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      border-inline-end-color: CanvasText;
+    }
+
+    .dot {
+      background-color: CanvasText;
+    }
+  }
+}

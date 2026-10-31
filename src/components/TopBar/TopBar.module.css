@@ -1,0 +1,63 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-4);
+    min-block-size: var(--ds-topbar-h);
+    padding-inline: var(--ds-top-bar-padding-inline);
+    border-block-end: 1px solid var(--ds-line-subtle);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .start {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--ds-space-4);
+    min-inline-size: 0;
+  }
+
+  .heading {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .title {
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--ds-fs-heading);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-heading);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .subtitle {
+    margin: 0;
+    overflow: hidden;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      border-block-end-color: CanvasText;
+    }
+  }
+}

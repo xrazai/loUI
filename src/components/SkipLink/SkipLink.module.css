@@ -1,0 +1,44 @@
+@layer components {
+  /* Hidden like VisuallyHidden: out of sight but still focusable. */
+  .root {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* On focus it becomes a visible, high contrast button at the top start corner. */
+  .root:focus {
+    position: fixed;
+    inset-block-start: var(--ds-space-2);
+    inset-inline-start: var(--ds-space-2);
+    z-index: var(--ds-skip-link-z-index);
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    padding: var(--ds-space-2) var(--ds-space-4);
+    overflow: visible;
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-primary-bg);
+    clip-path: none;
+    color: var(--ds-primary-fg);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  @media (forced-colors: active) {
+    .root:focus {
+      outline-color: Highlight;
+    }
+  }
+}

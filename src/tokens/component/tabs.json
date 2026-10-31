@@ -1,0 +1,34 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tabs": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Gap between tabs in a horizontal tab list (20px)."
+    },
+    "indicator-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Thickness of the active-tab underline (2px, ink colored)."
+    },
+    "count-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Minimum width and height of the count pill inside a Tab (20px). A label, not a target."
+    },
+    "count-padding-inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Horizontal padding of the count pill inside a Tab (6px)."
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "sidebar": {
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Vertical padding of the Sidebar (16px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Horizontal padding of the Sidebar (12px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Gap between the blocks of the Sidebar: workspace, sections, footer (20px)."
+    },
+    "workspace-mark-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$description": "Width and height of the initial tile of the workspace block (28px)."
+    },
+    "status-dot-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "Diameter of the decorative dot of the Sidebar status card (8px). The text carries the meaning."
+    }
+  }
+}

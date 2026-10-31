@@ -1,0 +1,116 @@
+@layer components {
+  .root {
+    overflow: hidden;
+    border-radius: var(--ds-radius-lg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .root[data-variant='bordered'] {
+    border: 1px solid var(--ds-line);
+    background-color: var(--ds-surface);
+  }
+
+  .item {
+    border-block-end: 1px solid var(--ds-line-subtle);
+  }
+
+  .item:last-child {
+    border-block-end: 0;
+  }
+
+  .heading {
+    margin: 0;
+    font: inherit;
+  }
+
+  .trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-3);
+    inline-size: 100%;
+    min-block-size: var(--ds-row-h);
+    padding-block: 0;
+    padding-inline: var(--ds-accordion-padding-inline);
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .trigger[data-hovered] {
+    background-color: var(--ds-surface-row-hover);
+  }
+
+  /* Inset outline: the root clips overflow, so an outer ring would be cut off. */
+  .trigger[data-focus-visible] {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: -2px;
+  }
+
+  .trigger[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .chevron {
+    flex: none;
+    color: var(--ds-text-3);
+    transition: transform var(--ds-duration) var(--ds-ease);
+  }
+
+  .trigger[aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .title {
+    flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .meta {
+    flex: none;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-lh-caption);
+  }
+
+  /* The padding lives on an inner box: a collapsed panel must take no space. */
+  .content {
+    padding-block: 0 var(--ds-space-4);
+    padding-inline: calc(var(--ds-accordion-padding-inline) + var(--ds-icon-sm) + var(--ds-space-3))
+      var(--ds-accordion-padding-inline);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chevron {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .root[data-variant='bordered'] {
+      border-color: CanvasText;
+    }
+
+    .trigger[data-focus-visible] {
+      outline-color: Highlight;
+    }
+  }
+}

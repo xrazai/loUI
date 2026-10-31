@@ -1,0 +1,79 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+    font-family: var(--ds-font-sans);
+  }
+
+  .summary {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds-lh-label);
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .page {
+    box-sizing: border-box;
+    min-inline-size: var(--ds-control-h-sm);
+    block-size: var(--ds-control-h-sm);
+    padding-inline: var(--ds-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background-color: transparent;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds-lh-label);
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      color var(--ds-duration) var(--ds-ease);
+  }
+
+  .page[data-hovered] {
+    background-color: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  /* The current page: raised, bordered and ink colored (not color alone). */
+  .page[data-current] {
+    border-color: var(--ds-line-strong);
+    background-color: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .page[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .ellipsis {
+    min-inline-size: var(--ds-space-5);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    text-align: center;
+    user-select: none;
+  }
+
+  @media (forced-colors: active) {
+    .page[data-current] {
+      border-color: Highlight;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "nav-item": {
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$description": "Horizontal padding of a NavItem (10px)."
+    },
+    "indicator-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Width of the inset ink bar on the active NavItem (2px)."
+    },
+    "icon-opacity": {
+      "$type": "number",
+      "$value": 0.7,
+      "$description": "Opacity of the icon of an inactive NavItem (0.7). The active icon is fully opaque."
+    },
+    "count-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Minimum width and height of the count pill of a NavItem (20px)."
+    },
+    "count-padding-inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Horizontal padding of the count pill of a NavItem (6px)."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "segmented-control": {
+    "padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Inner padding and gap of the SegmentedControl track (2px)."
+    },
+    "height-sm": {
+      "$type": "dimension",
+      "$value": "{size.target-min}",
+      "$description": "Height of a small segment (24px, the minimum target size). The handoff used 26px."
+    },
+    "height-md": {
+      "$type": "dimension",
+      "$value": "{size.control-h-sm}",
+      "$description": "Height of a medium segment (32px)."
+    }
+  }
+}

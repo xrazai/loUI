@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "skip-link": {
+    "z-index": {
+      "$type": "number",
+      "$value": "{z.tooltip}",
+      "$description": "Layer of a focused SkipLink: above everything, because it is the first stop for keyboard users."
+    }
+  }
+}

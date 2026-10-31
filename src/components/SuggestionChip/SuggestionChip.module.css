@@ -1,0 +1,52 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    max-inline-size: 100%;
+    min-block-size: var(--ds-control-h-sm);
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-3);
+    border: 1px dashed var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    background-color: transparent;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+    text-align: start;
+    cursor: pointer;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      color var(--ds-duration) var(--ds-ease);
+  }
+
+  .root[data-hovered] {
+    background-color: var(--ds-surface-raised);
+    color: var(--ds-text);
+  }
+
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  /* One disabled opacity for every component; the dashed border already says "inactive". */
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .icon {
+    flex: none;
+  }
+
+  .label {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+}
