@@ -1,0 +1,58 @@
+@layer components {
+  .header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ds-space-2);
+  }
+
+  .label {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .aside,
+  .count {
+    flex: none;
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    color: var(--ds-text-3);
+  }
+
+  .count {
+    font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .count[data-over] {
+    color: var(--ds-danger);
+  }
+
+  .textarea {
+    display: block;
+    padding-block: var(--ds-textarea-padding-block);
+    padding-inline: var(--ds-textarea-padding-inline);
+    resize: vertical;
+  }
+
+  .textarea[data-resize='none'] {
+    resize: none;
+  }
+
+  .textarea[data-resize='horizontal'] {
+    resize: horizontal;
+  }
+
+  .textarea[data-resize='both'] {
+    resize: both;
+  }
+
+  .textarea[data-autogrow] {
+    block-size: var(--textarea-height, auto);
+    overflow-y: hidden;
+  }
+
+  .textarea:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+}
