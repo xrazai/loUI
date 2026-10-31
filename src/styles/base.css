@@ -9,6 +9,12 @@
 
   html {
     background: var(--ds-bg-canvas);
+
+    /*
+     * WCAG 2.4.11: the toast region (fixed to the bottom of the viewport) publishes its height
+     * here while it is mounted, so keyboard focus never scrolls a control under it.
+     */
+    scroll-padding-block-end: var(--ds-toast-clearance);
   }
 
   body {
@@ -74,9 +80,65 @@
     --ds-accent: var(--ds-paper-accent);
     --ds-focus-ring: 0 0 0 3px color-mix(in oklab, var(--ds-paper-accent) 25%, transparent);
 
+    /*
+     * Signals (TOK-012): the dark-theme success, warning and danger are light colors that fail
+     * on paper (1.6 to 2.5:1), so each has a darker paper twin. Tokens that mix or alias a
+     * remapped value are resolved at :root, so they are redeclared here; the guard test in
+     * src/styles/paperScope.test.ts fails when a new derived token is missing from this block.
+     */
+    --ds-accent-soft: var(--ds-paper-accent-soft);
+    --ds-success: var(--ds-paper-success);
+    --ds-warning: var(--ds-paper-warning);
+    --ds-danger: var(--ds-paper-danger);
+    --ds-success-soft: var(--ds-paper-success-soft);
+    --ds-warning-soft: var(--ds-paper-warning-soft);
+    --ds-danger-soft: var(--ds-paper-danger-soft);
+    --ds-danger-soft-hover: var(--ds-paper-danger-soft-hover);
+    --ds-danger-line: var(--ds-paper-danger-line);
+    --ds-focus-ring-danger: 0 0 0 3px color-mix(in oklab, var(--ds-paper-danger) 25%, transparent);
+    --ds-alert-success-bg: color-mix(in oklab, var(--ds-paper-success) 6%, transparent);
+    --ds-alert-success-border: color-mix(in oklab, var(--ds-paper-success) 30%, transparent);
+    --ds-alert-warning-bg: color-mix(in oklab, var(--ds-paper-warning) 6%, transparent);
+    --ds-alert-warning-border: color-mix(in oklab, var(--ds-paper-warning) 30%, transparent);
+    --ds-alert-danger-bg: color-mix(in oklab, var(--ds-paper-danger) 6%, transparent);
+    --ds-alert-danger-border: color-mix(in oklab, var(--ds-paper-danger) 30%, transparent);
+    --ds-chart-color: var(--ds-paper-accent);
+    --ds-donut-meter-color: var(--ds-paper-accent);
+    --ds-kbd-fg: var(--ds-paper-ink-2);
+    --ds-kbd-border: var(--ds-paper-rule);
+    --ds-matrix-grid-color: var(--ds-paper-ink-2);
+    --ds-proportion-bar-color: var(--ds-paper-ink);
+    --ds-sparkline-color: var(--ds-paper-ink-2);
+    --ds-status-steps-marker-hover-border: var(--ds-paper-muted);
+
     color-scheme: light;
     background: var(--ds-paper);
     color: var(--ds-paper-ink);
+  }
+
+  /*
+   * TOK-008: prefers-contrast. Lines and tertiary text carry the least contrast in the system, so
+   * a user who asks for more gets them at the strength of control boundaries and secondary text:
+   * every line at 5:1 or more and text-3 at the text-2 level. Fills, signals and the focus ring are
+   * already above AA and stay. The paper scope sets its own lines, so it is overridden here, after
+   * its block, with the same specificity.
+   */
+  @media (prefers-contrast: more) {
+    :root {
+      --ds-line-subtle: var(--ds-gray-7);
+      --ds-line: var(--ds-gray-7);
+      --ds-line-strong: var(--ds-gray-7);
+      --ds-line-control: var(--ds-gray-7);
+      --ds-text-3: var(--ds-gray-8);
+    }
+
+    [data-theme='paper'] {
+      --ds-line-subtle: var(--ds-paper-muted);
+      --ds-line: var(--ds-paper-muted);
+      --ds-line-strong: var(--ds-paper-muted);
+      --ds-line-control: var(--ds-paper-ink-2);
+      --ds-text-3: var(--ds-paper-ink-2);
+    }
   }
 
   @keyframes ds-spin {
@@ -113,6 +175,17 @@
       outline: 2px solid Highlight;
       outline-offset: 2px;
       box-shadow: none;
+    }
+
+    /*
+     * TOK-013: forced colors drops box-shadow, so the outline is the only focus indicator that
+     * survives. Many components reset `outline` for their normal ring (or draw focus on a React
+     * Aria host through [data-focus-visible]); this guarantees a real outline for both, from the
+     * base layer with !important so component rules cannot remove it. The offset is left to the
+     * component (inset rings in grids and tables keep their negative offset).
+     */
+    :is(:focus-visible, [data-focus-visible]) {
+      outline: 2px solid Highlight !important;
     }
 
     a {

@@ -21,6 +21,8 @@ export interface StoryFrameProps {
   clip?: boolean;
   /** Text direction, for right-to-left stories. */
   dir?: 'ltr' | 'rtl';
+  /** Theme scope of the frame: `paper` shows printed-document previews (ADR-0007). */
+  theme?: 'paper';
   children?: ReactNode;
 }
 
@@ -39,6 +41,7 @@ export function StoryFrame({
   box,
   clip,
   dir,
+  theme,
   children,
 }: StoryFrameProps) {
   const style: CSSProperties = {
@@ -59,7 +62,12 @@ export function StoryFrame({
     ...(clip ? { overflow: 'hidden' } : {}),
   };
   return (
-    <div dir={dir} style={style}>
+    <div
+      dir={dir}
+      data-theme={theme}
+      style={style}
+      data-story-width={width === undefined ? undefined : ''}
+    >
       {children}
     </div>
   );
