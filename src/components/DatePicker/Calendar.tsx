@@ -26,7 +26,9 @@ export interface CalendarViewProps {
   min?: ISODate | undefined;
   /** Latest selectable date (`YYYY-MM-DD`). Later days are disabled. */
   max?: ISODate | undefined;
+  /** Disables the whole calendar: days cannot be focused or selected. */
   isDisabled?: boolean | undefined;
+  /** The calendar can be navigated and focused but the value cannot change. */
   isReadOnly?: boolean | undefined;
   /** Moves focus into the grid on mount. */
   autoFocus?: boolean | undefined;
@@ -37,7 +39,9 @@ export interface CalendarViewProps {
 }
 
 interface NamedProps {
+  /** Accessible name of the calendar grid. Required unless `aria-labelledby` is given. */
   'aria-label'?: string | undefined;
+  /** Id of the element that names the calendar. Required unless `aria-label` is given. */
   'aria-labelledby'?: string | undefined;
 }
 
@@ -50,8 +54,18 @@ export type CalendarProps = CalendarViewProps &
     /** Called with the picked date as `YYYY-MM-DD`. */
     onChange?: ((value: ISODate) => void) | undefined;
   } & (
-    | { 'aria-label': string; 'aria-labelledby'?: string }
-    | { 'aria-label'?: string; 'aria-labelledby': string }
+    | {
+        /** Accessible name of the calendar grid. Required unless `aria-labelledby` is given. */
+        'aria-label': string;
+        /** Id of the element that names the calendar. */
+        'aria-labelledby'?: string;
+      }
+    | {
+        /** Accessible name of the calendar grid. */
+        'aria-label'?: string;
+        /** Id of the element that names the calendar. Required unless `aria-label` is given. */
+        'aria-labelledby': string;
+      }
   );
 
 /**

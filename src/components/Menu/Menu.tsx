@@ -206,6 +206,7 @@ export interface SubMenuProps {
   children: ReactNode;
   /** Used for typeahead and as the item's name when `label` is not a string. */
   textValue?: string;
+  /** Disables the item: it cannot be opened or focused by typeahead. */
   isDisabled?: boolean;
   /** Milliseconds the pointer must rest on the item before the submenu opens. Default 200. */
   delay?: number;
