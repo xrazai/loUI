@@ -1,0 +1,114 @@
+@layer components {
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+  }
+
+  .label {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-label);
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-space-2);
+  }
+
+  .tag {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    max-inline-size: 100%;
+    block-size: var(--ds-tag-height);
+    padding-inline: var(--ds-tag-padding-inline);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-sm);
+    background-color: transparent;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-caption);
+    white-space: nowrap;
+    cursor: default;
+    outline: none;
+  }
+
+  /* The remove button is flush with the end of the tag, so the tag keeps its padding on the text side only. */
+  .tag[data-allows-removing] {
+    padding-inline-end: 0;
+  }
+
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tag[data-hovered]:not([data-disabled]) {
+    background-color: var(--ds-surface-hover);
+  }
+
+  /* Selection is one of the three uses of the accent (AGENTS.md section 5). */
+  .tag[data-selected] {
+    border-color: var(--ds-accent);
+    background-color: var(--ds-accent-soft);
+    color: var(--ds-text);
+  }
+
+  .tag[data-focus-visible] {
+    border-color: var(--ds-accent);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .tag[data-disabled] {
+    border-style: dashed;
+    opacity: var(--ds-opacity-disabled);
+  }
+
+  /* 24x24 target (WCAG 2.5.8) that overlaps the 1px border of the tag. */
+  .remove {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--ds-tag-remove-size);
+    block-size: var(--ds-tag-remove-size);
+    margin-block: -1px;
+    margin-inline-end: -1px;
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-text-3);
+    cursor: pointer;
+  }
+
+  .remove:disabled,
+  .remove[data-disabled] {
+    cursor: default;
+  }
+
+  .remove[data-focus-visible],
+  .remove:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 0;
+    box-shadow: var(--ds-focus-ring);
+    color: var(--ds-text);
+  }
+
+  .remove[data-hovered],
+  .remove:hover:not(:disabled) {
+    background-color: var(--ds-surface-hover);
+    color: var(--ds-text);
+  }
+
+  @media (forced-colors: active) {
+    .tag[data-selected] {
+      text-decoration: underline;
+    }
+  }
+}

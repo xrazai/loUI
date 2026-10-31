@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tag": {
+    "height": {
+      "$type": "dimension",
+      "$value": "{size.target-min}",
+      "$description": "Height of a Tag (24px): meets the minimum target size of its remove button."
+    },
+    "remove-size": {
+      "$type": "dimension",
+      "$value": "{size.target-min}",
+      "$description": "Width and height of the remove button inside a Tag (24px, WCAG 2.5.8)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Horizontal padding of a Tag (8px)."
+    }
+  }
+}
