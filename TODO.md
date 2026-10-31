@@ -1,0 +1,340 @@
+# TODO — Loui DS (working name)
+
+Roadmap to complete the design system: **foundation, tokens and components**. ERP screens (`ERP.dc.html`) are **out of scope** for now.
+
+Source material: `raw_files/design_handoff_erp_tecidos/` (read-only reference, see [AGENTS.md](AGENTS.md)).
+Snapshot of the handoff: 58 React components (`.jsx` + `.d.ts` + `.prompt.md`), 5 token CSS files + `tokens.json`, 16 foundation cards, 9 component showcase cards.
+
+## How this file works
+
+1. Pick the highest-priority open task whose dependencies are done.
+2. Complete it, meeting the **Definition of Done** in [AGENTS.md](AGENTS.md#definition-of-done).
+3. **Move the finished task out of this file and into [CHANGELOG.md](CHANGELOG.md)** (under `[Unreleased]`, keeping its ID). Never leave a finished task here.
+4. New work discovered along the way gets a new ID in the right section.
+
+Task format: `- [ ] **ID** (priority · size) Title — details. _Depends: …_`
+
+- Priority: **P0** blocks everything · **P1** core to a usable v0.1 · **P2** needed for v1.0 · **P3** future / nice to have
+- Size: **S** < 1 day · **M** 1–3 days · **L** > 3 days
+
+Everything in this project is written in **English** (code, comments, docs, UI strings, tests, commits). Only the conversation with the owner is in Portuguese.
+
+---
+
+## Phase 0 — Project setup and decisions
+
+### Setup
+
+- [ ] **SETUP-001** (P0 · S) Initialize git repository, `.gitignore`, `.editorconfig`, `.nvmrc`, `.gitattributes` (LF). Commit the handoff untouched as the first commit so migration diffs stay traceable.
+- [ ] **SETUP-002** (P0 · S) Scaffold the workspace: `pnpm`, TypeScript `strict` (+ `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`), Vite library mode, directory layout from AGENTS.md. _Depends: ADR-001, ADR-002, ADR-004_
+- [ ] **SETUP-003** (P0 · S) Lint and format: ESLint (typescript-eslint, `react-hooks`, `jsx-a11y` strict), Prettier, Stylelint. Stylelint must **forbid raw hex colors, raw `px` for spacing/radius/font-size and magic z-indexes** in component CSS (tokens only).
+- [ ] **SETUP-004** (P1 · S) Git hooks (Husky + lint-staged), Conventional Commits (commitlint), Changesets for versioning.
+- [ ] **SETUP-005** (P1 · M) CI (GitHub Actions): install → lint → typecheck → unit → a11y → build → Storybook build → visual regression → size budget. Required checks on PRs.
+- [ ] **SETUP-006** (P1 · S) Add `CLAUDE.md` containing only `@AGENTS.md` so Claude Code loads the same rules; keep AGENTS.md the single source of truth.
+- [ ] **SETUP-007** (P2 · S) `CONTRIBUTING.md`, PR template with the Definition of Done checklist, issue templates (bug, component request, token change), `CODEOWNERS`.
+- [ ] **SETUP-008** (P2 · S) `docs/adr/` folder with an ADR template (context, decision, consequences, status).
+
+### Architecture decision records
+
+Each ADR is a short document in `docs/adr/`. Recommendations are starting points, not decisions.
+
+- [ ] **ADR-001** (P0 · M) **Headless behavior layer.** Options: React Aria Components, Radix Primitives, fully custom. _Recommendation:_ React Aria Components — it covers most of our inventory (Dialog/Modal, Popover, Tooltip, Tabs, Menu, Combobox, Select, DatePicker/Calendar, Slider, Checkbox, Radio, Switch, Table, Toast queue, Breadcrumbs, Disclosure, ProgressBar, NumberField, DropZone) with tested ARIA, focus management, i18n and RTL. Radix is the fallback. Custom only for domain patterns.
+- [ ] **ADR-002** (P0 · S) **Styling.** The handoff uses inline styles plus JS hover state, which cannot express `:hover`, `:focus-visible`, `:disabled`, `@media`, `forced-colors` or `prefers-reduced-motion`, and breaks strict CSP. _Recommendation:_ CSS Modules + `@layer` + data-attribute state (`data-variant`, `data-size`, `data-state`), consuming CSS variables only.
+- [ ] **ADR-003** (P0 · S) **Token source and naming.** Source of truth in W3C DTCG JSON, built with Style Dictionary v4. Decide whether CSS variables get a namespace prefix (handoff uses unprefixed `--bg`, `--text`, `--line`, which collide in host apps; only keyframes are prefixed `ds-`). Align `--radius` (CSS) with `radius.md` (tokens.json).
+- [ ] **ADR-004** (P0 · S) **Name, package scope, license.** The handoff calls the system "Dark System"; the repository is `loui-ds`. Confirm the public name, npm scope, CSS prefix and license (MIT vs. proprietary).
+- [ ] **ADR-005** (P0 · M) **Internationalization.** English is the default language of every built-in string. Strings come from a `messages` object on a `DSProvider` (with per-component overrides); dates, numbers, plurals and sorting use `Intl`. `pt-BR` ships as a first-class locale because the first consumer is Brazilian.
+- [ ] **ADR-006** (P1 · S) **Value APIs for money and quantities.** The handoff `CurrencyInput` returns a float in reais, while the ERP spec stores integer cents. Decide: integer minor units + ISO currency code, locale-aware formatting. Same for `Stepper`, `Slider`, `DatePicker` (ISO strings).
+- [ ] **ADR-007** (P1 · S) **Theming scope.** Dark is the default and only shipped theme in v0.x. Decide whether the semantic layer must already support a light theme and how the `paper` document palette is exposed (separate `[data-theme="paper"]` scope).
+- [ ] **ADR-008** (P1 · S) **Domain components.** `components/erp/` and `components/agents/` mix generic primitives (Sheet, StatCard, Stepper, Swatch, ChoiceTiles, ProportionBar, RankList, StatusSteps) with domain patterns (ColorOption, MatrixGrid, LedgerList, DueIndicator, AgentCard, ApprovalCard, ChatPanel). Decide the split: `core` vs. `patterns` entry point, and rename anything that leaks the ERP domain.
+- [ ] **ADR-009** (P1 · S) **Support matrix.** React 18 and 19 (peer deps), SSR and React Server Components compatibility, evergreen browsers (last 2 versions), Node LTS for tooling.
+- [ ] **ADR-010** (P1 · S) **Test and visual-regression tooling.** Confirm Vitest + Testing Library + user-event, Playwright, `@axe-core/playwright`, `vitest-axe`, Storybook test runner. Choose visual regression provider: Playwright screenshots in a pinned Docker image vs. a hosted service. _Depends: ADR-002_
+
+---
+
+## Phase 1 — Foundation (tokens, type, icons, themes)
+
+### Tokens
+
+- [ ] **TOK-001** (P0 · M) Convert tokens to a DTCG JSON source of truth in three tiers: **primitive** (`gray.0–9`, `blue/green/amber/red.5`) → **semantic** (`bg`, `surface`, `text`, `line`, `primary`, `accent`…) → **component** (only where needed). Audit `tokens/tokens.json` (8 KB, Tokens Studio format) against the CSS files for parity — it is a partial export. _Depends: ADR-003_
+- [ ] **TOK-002** (P0 · M) Token build pipeline: DTCG → CSS custom properties (`@layer tokens`), TypeScript constants + types (`TokenName` unions), flat JSON for docs/AI, Tokens Studio JSON for Figma. Output is deterministic and snapshot-tested. _Depends: TOK-001_
+- [ ] **TOK-003** (P1 · M) **Close the token gaps.** Components hard-code values that must become tokens: z-index scale (40/45/50/51/60 used ad hoc), disabled opacity (.35 / .4 / .45 inconsistently), `rgba(255,255,255,.12)` inset ring on swatches, `color-mix` percentages (6/10/12/14/18/30/35%), extra control heights (26/28/22/24), icon sizes (12/14/16/18/20), 5px checkbox radius, 8px matrix-cell radius, 300 ms progress transition, 10/10.5/11/11.5/12 px font sizes, `brightness(.88/.9)` hover filters.
+- [ ] **TOK-004** (P1 · M) **Contrast audit and fixes.** Automated check of every semantic foreground/background pair against WCAG 2.2 AA (4.5:1 text, 3:1 UI/graphics). Measured findings to resolve (see Appendix A): `--text-3` fails 4.5:1 on `surface` (4.43), `surface-raised` (4.16) and `surface-hover` (3.86); `--line-strong` used as form-control border is 1.57:1 on `--bg` (needs 3:1, WCAG 1.4.11); `--paper-accent` on `--paper` is 3.92 and `--paper-rule` 2.64. Decide fixes (adjust values vs. restrict usage) with the owner. _Depends: TOK-002_
+- [ ] **TOK-005** (P1 · S) Define a **minimum font-size policy** (handoff uses 10–12 px for captions, meta and glyphs) and a single text-role scale (display, title, heading, body, small, label, meta, caption, num, num-lg, icon) exposed as composite typography tokens.
+- [ ] **TOK-006** (P1 · S) Motion tokens: `--duration` 150 ms, `--duration-done` 320 ms, `--ease`; add `prefers-reduced-motion` handling (disable `ds-pulse`/`ds-spin` loops except the spinner's reduced alternative, transitions to ≤ 1 ms).
+- [ ] **TOK-007** (P1 · S) Focus tokens and rules: keep `--focus-ring` / `--focus-ring-danger`; fix the global `:focus-visible` rule (`box-shadow`-based rings disappear in Windows forced-colors mode) — add `outline` fallback and `forced-colors: active` styles.
+- [ ] **TOK-008** (P2 · M) Theme architecture: `color-scheme: dark`, `[data-theme]` scoping, `paper` scope, `prefers-contrast: more` overrides, `forced-colors` mapping to system colors. _Depends: ADR-007_
+- [ ] **TOK-009** (P2 · S) Z-index and layering tokens + documented overlay stack (menu < popover < dialog/sheet < toast < tooltip).
+- [ ] **TOK-010** (P2 · S) Breakpoint and container tokens (the handoff app assumes min-width 1180 px; define what the DS itself guarantees: components must work from 320 px wide).
+- [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
+
+### Typography and fonts
+
+- [ ] **FONT-001** (P1 · S) Self-host Geist and Geist Mono (`woff2`, variable, Latin + Latin-Extended subsets) instead of the render-blocking Google Fonts `@import`. Confirm license (SIL OFL) and ship it in the package or document the consumer setup.
+- [ ] **FONT-002** (P1 · S) `font-display: swap` + metric-matched fallback (`size-adjust`, `ascent-override`) to avoid layout shift; preload guidance in docs.
+- [ ] **FONT-003** (P2 · S) Enable tabular numerals (`font-variant-numeric: tabular-nums`) for numeric roles and verify Geist Mono numeric glyphs for currency, dates and percentages.
+
+### Icons
+
+- [ ] **ICON-001** (P1 · M) Replace runtime Lucide loading (`unpkg.com/lucide-static@0.400.0` via CSS `mask`, used by `NavItem`, `AgentCard`) with a bundled, tree-shakeable `Icon` component (inline SVG, `currentColor`, 1.5 px stroke). A CDN dependency breaks offline use, strict CSP, privacy and first paint.
+- [ ] **ICON-002** (P1 · S) Replace text glyphs used as icons (`×`, `›`, `‹`, `✓`, `★`, `+`, `−`, `···`) with SVG icons or `aria-hidden` glyphs plus accessible names.
+- [ ] **ICON-003** (P2 · S) Icon rules: decorative by default (`aria-hidden`), `label` prop makes it meaningful; size tokens; allow-list of the icon set exposed to AI via the manifest.
+
+### Base styles
+
+- [ ] **BASE-001** (P1 · S) Rebuild `base.css` as layered styles (`@layer reset, tokens, base, components, utilities`); fix `a` styling (accent color needs a non-color affordance for in-text links, WCAG 1.4.1); document the required root setup (`<html lang>`, `color-scheme`).
+- [ ] **BASE-002** (P2 · S) Add `VisuallyHidden`, `.ds-sr-only` and skip-link primitives.
+
+### Foundation documentation (port from `guidelines/*.html`, translate to English)
+
+- [ ] **FDN-001** (P1 · M) Colors: neutrals, surfaces, text, lines, signal colors → generated from token data, with contrast ratios shown per pair.
+- [ ] **FDN-002** (P1 · S) Typography: display, body, mono.
+- [ ] **FDN-003** (P1 · S) Spacing scale, control sizes, radius, elevation.
+- [ ] **FDN-004** (P1 · S) States (rest, hover, focus, disabled), keyboard model, principles, wordmark.
+- [ ] **FDN-005** (P2 · S) Motion, layering, iconography, content (microcopy) rules.
+
+---
+
+## Phase 2 — Architecture and shared primitives
+
+- [ ] **ARCH-001** (P0 · M) Component conventions (see AGENTS.md): `forwardRef`/ref as prop (React 19), `className`, `...rest` spread **before** internal handlers' merge point, `data-*` state attributes, `asChild`/`render` pattern if needed, `displayName`. _Depends: ADR-001, ADR-002_
+- [ ] **ARCH-002** (P0 · M) **Event/prop API normalization.** The handoff mixes `onChange(event)` (Input, Textarea), `onChange(value, event)` (Select), `onChange(boolean)` (Checkbox, Switch) and `onChange(value)` (Tabs, Combobox). Standardize: native elements keep native `onChange`; custom controls use `value` / `defaultValue` / `onValueChange` (or `checked` / `onCheckedChange`). Standardize `variant` vs. `tone` vs. `kind` vs. `status` naming across Button, Badge, Alert, Toast, Progress, StatCard, DueIndicator, AgentCard, ApprovalCard.
+- [ ] **ARCH-003** (P0 · S) Fix the **prop-spread ordering bug** in `Input`, `Textarea` and `Select`: `{...rest}` is spread last, so a consumer-supplied `onFocus`/`onBlur`/`style` overrides the internal handler and breaks the focus ring.
+- [ ] **ARCH-004** (P0 · M) Shared hooks and utilities: `useId`, `useControllableState`, `useEscapeKey` (scoped, stack-aware), `useOutsideClick`, `useRovingFocus`, `useMergedRef`, `useMediaQuery`, `useReducedMotion`, `useLocale`. Replace label-derived ids (`"in-" + label…`) which collide and break for non-ASCII labels.
+- [ ] **ARCH-005** (P0 · M) **Overlay management.** `Dialog`, `Sheet`, `Popover`, `Combobox`, `DatePicker`, `InlineConfirm` each attach a window-level `Escape` listener, so one key press closes every open layer. Build a layer stack (top layer handles Esc/outside click), `Portal`, focus trap, focus restore, scroll lock and `inert` background. _Depends: ADR-001_
+- [ ] **ARCH-006** (P0 · M) `DSProvider`: locale, `messages` (all built-in strings, ARIA labels included), direction, portal container, reduced-motion override. Remove all hard-coded Portuguese from components (see Appendix B). _Depends: ADR-005_
+- [ ] **ARCH-007** (P1 · M) Locale-aware utilities with unit tests: `formatCurrency`, `formatNumber`, `formatDate`, `formatRelativeDays` (replaces `dueInfo` text + `MES` table), `compareText` (`Intl.Collator`, accent-insensitive, numeric — the handoff requires accent-insensitive alphabetical ordering but `DataTable` sorts with `>`/`<`), `normalizeSearch` (diacritics-insensitive filtering for Combobox/SearchInput).
+- [ ] **ARCH-008** (P1 · S) Form integration contract: every field supports `name`, `form`, `required`, `disabled`, `readOnly`, `aria-invalid`, `aria-describedby` wiring for hint/error, and participates in native `<form>` submission. Introduce a shared `Field` (label + control + hint + error) so Input, Textarea, Select, Combobox, DatePicker, CurrencyInput, Slider, Checkbox, RadioGroup, Switch behave identically.
+- [ ] **ARCH-009** (P1 · S) Disabled/read-only/loading/invalid state model shared across controls (single opacity token, dashed border for disabled inputs, `aria-busy` + Spinner for `loading`).
+- [ ] **ARCH-010** (P1 · M) Build and exports: ESM with per-component entry points, `exports` map, `sideEffects` for CSS, generated `.d.ts` (the handoff `.d.ts` files rely on the global `JSX` namespace, removed in React 19), `"use client"` banners, `publint` + `are-the-types-wrong` in CI.
+- [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
+- [ ] **ARCH-012** (P2 · S) Deprecation mechanism: `@deprecated` JSDoc + dev-only `console.warn` helper, `status` metadata (`experimental` | `stable` | `deprecated`) per component.
+
+---
+
+## Phase 3 — Component migration
+
+Each task = port the handoff component to TypeScript in English **and** meet the full Definition of Done (tokens-only CSS module, stories for every state, unit tests, axe tests, keyboard contract tests, visual baseline, docs, manifest entry). The notes after "Fix:" are defects/gaps found in the handoff code that the migration must resolve. Handoff path: `raw_files/design_handoff_erp_tecidos/components/<group>/<Name>.jsx`.
+
+Suggested order: **forms → feedback → display → navigation → inputs → layout → data → patterns (erp, agents)**.
+
+### Forms
+
+- [ ] **CMP-FRM-01** (P1 · M) `Button` — Fix: hover via CSS not JS state; add `loading` (Spinner + `aria-busy`, width-stable); `trailing`/`leading` slots; docs say sizes 28/32/40 but code is 32/40/48 (code wins, fix docs); `type="button"` default stays.
+- [ ] **CMP-FRM-02** (P1 · S) `IconButton` — Fix: required `label` enforced by types; remove duplicate `title` + `aria-label` or make tooltip opt-in; 24 px minimum target (WCAG 2.5.8); replace text-glyph children with `Icon`.
+- [ ] **CMP-FRM-03** (P1 · M) `Input` — Fix: id via `useId`; `aria-invalid`, `aria-describedby` for hint/error; error announced (`role="alert"` only after validation); prop-spread bug (ARCH-003); border contrast (TOK-004); `readOnly`; `required` marker.
+- [ ] **CMP-FRM-04** (P1 · S) `Textarea` — Fix: same as Input; `aside` text needs association; auto-grow option; character count with live region (debounced).
+- [ ] **CMP-FRM-05** (P1 · M) `Select` — Fix: label/id association, `hint`/`error`, `aria-invalid`, placeholder option, groups; prop-spread bug; decide native `<select>` vs. custom listbox (ADR-001).
+- [ ] **CMP-FRM-06** (P1 · M) `Checkbox` — Fix: currently a `div role="checkbox"`; use native input (visually styled) for form participation, `name`/`value`, `indeterminate`, accessible name when no label (type error), click target includes label.
+- [ ] **CMP-FRM-07** (P1 · M) `RadioGroup` — Fix: roving tabindex + arrow-key navigation (every radio is tabbable today); `aria-labelledby` for the group, `required`/`invalid`; native radios.
+- [ ] **CMP-FRM-08** (P1 · M) `Switch` — Fix: `role="switch"` sits on an inner span while the row is also clickable (double toggle risk, no accessible name); use a native checkbox with `role="switch"`; `aria-labelledby`/`aria-describedby`.
+- [ ] **CMP-FRM-09** (P1 · M) `SegmentedControl` — Fix: uses `role="tablist"` but controls a value, not panels; use `radiogroup` (single) with arrow keys, or `ToggleGroup`; roving tabindex; counts announced.
+- [ ] **CMP-FRM-10** (P2 · S) `SuggestionChip` — Fix: the "+" glyph is `aria-hidden` but the dashed affordance is the only cue of "adds text"; document behavior; `disabled` opacity .45 vs. .35 inconsistency.
+
+### Feedback
+
+- [ ] **CMP-FBK-01** (P1 · M) `Alert` — Fix: icon glyphs "i" / "✓" / "!" are read by screen readers (`aria-hidden`); `role` mapping (`alert` only for urgent danger, `status` otherwise); dismiss option; token for 6% tint.
+- [ ] **CMP-FBK-02** (P1 · L) `Toast` — Fix: needs a `Toaster` provider/queue and live region; auto-dismiss with **pause on hover/focus**, keyboard-reachable "Undo" (the ERP's 3.6 s undo window fails WCAG 2.2.1 unless pausable/extendable); position that avoids side panels; `onClose` label from messages. Tone dot is color-only — text carries the meaning.
+- [ ] **CMP-FBK-03** (P1 · L) `Dialog` — Fix: focus trap, initial focus API (the principle says **Cancel gets focus** on destructive confirms), focus restore, scroll lock, `inert` background, `aria-labelledby` + `aria-describedby` (description is not linked today), stack-aware Esc, `contained` mode for docs only. _Depends: ARCH-005_
+- [ ] **CMP-FBK-04** (P1 · M) `Tooltip` — Fix: `aria-describedby`, dismiss with Esc (WCAG 1.4.13), hoverable content, delay tokens, collision-aware placement, no tooltip-only essential info; `side` supports all four.
+- [ ] **CMP-FBK-05** (P1 · S) `Progress` — Fix: accessible name (`label` → `aria-labelledby`), `aria-valuetext`, indeterminate mode, reduced-motion transition; keep 4 px height token.
+- [ ] **CMP-FBK-06** (P1 · S) `Spinner` — Fix: remove pt-BR default label; one live region strategy (don't announce every spinner); reduced-motion alternative.
+- [ ] **CMP-FBK-07** (P1 · S) `InlineConfirm` — Fix: confirm button is auto-focused, contradicting the "focus on Cancel" principle — make initial focus configurable with Cancel as default; window-level Esc → scoped; restore focus to trigger.
+
+### Display
+
+- [ ] **CMP-DSP-01** (P1 · S) `Badge` — Fix: tone colors via tokens (danger uses a different `color-mix` than other tones); dot is decorative; ensure text contrast on soft backgrounds ≥ 4.5:1.
+- [ ] **CMP-DSP-02** (P1 · S) `Tag` — Fix: remove button label must include the tag text ("Remove {label}"); 24 px target; keyboard removal (Backspace/Delete in a group).
+- [ ] **CMP-DSP-03** (P1 · S) `Card` — Fix: title is a `span` — support heading level (`as`) and `aria-labelledby`; `raised` variant naming; padding token.
+- [ ] **CMP-DSP-04** (P1 · S) `Avatar` — Fix: `alt` is set to the initials — use the person's name (or empty alt when decorative); image error fallback to initials; group/stack variant.
+- [ ] **CMP-DSP-05** (P1 · S) `Kbd` — Fix: platform-aware modifier rendering (⌘ vs Ctrl), `aria-label` expansion for symbols (e.g. "Command K"); sequence support.
+- [ ] **CMP-DSP-06** (P2 · S) `Rating` — Fix: half-star display support (value is rounded today), read-only vs. interactive decision, `aria-label` from messages (pluralized).
+
+### Navigation
+
+- [ ] **CMP-NAV-01** (P1 · M) `Tabs` — Fix: roving tabindex + Left/Right/Home/End, `tabpanel` with `aria-controls`/`aria-labelledby`, activation mode (auto vs. manual), count badge announced, shortcut hint decorative.
+- [ ] **CMP-NAV-02** (P1 · L) `Menu` — Fix: items are `tabIndex=0` divs with **no keyboard activation** (no Enter/Space handler); arrow-key navigation, typeahead, `menuitemcheckbox`/`radio`, submenus (P3), disabled items, danger tone, `aria-haspopup`.
+- [ ] **CMP-NAV-03** (P1 · M) `NavItem` — Fix: `role="link"` on a `div` without `href` — render a real `<a>`/router link (polymorphic) with `aria-current="page"`; count badge text alternative ("3 pending"); icons via `Icon` (ICON-001).
+- [ ] **CMP-NAV-04** (P1 · L) `Popover` — Fix: trigger wrapper `span` with `onClick`; add `aria-expanded`, `aria-controls`, `aria-haspopup`; focus move in and return; correct `role` (a menu is not a `dialog`); collision-aware positioning; outside press via `pointerdown`.
+
+### Inputs
+
+- [ ] **CMP-INP-01** (P1 · L) `Combobox` — Fix: implement the ARIA combobox pattern (`role="combobox"`, `aria-controls`, `aria-activedescendant`, `aria-expanded`, `aria-autocomplete`); the search field has no label; Home/End/PageUp/Down; accent-insensitive filtering; async/virtualized options (P2); empty-state text from messages; multiple selection (P3).
+- [ ] **CMP-INP-02** (P1 · L) `DatePicker` — Fix: replace hard-coded pt-BR months/weekdays/placeholder with `Intl`; calendar as an ARIA grid with full arrow/PageUp/PageDown/Home/End navigation; day buttons need full-date accessible names; typed input with mask; `min`/`max`; range mode (P2); timezone-safe ISO handling.
+- [ ] **CMP-INP-03** (P2 · M) `FileUpload` — Fix: remove the simulated random progress from production code (keep as a story mock); real validation (type, size, count) with error messages; announce add/remove/progress via live region; remove button name includes file name (already done — keep); drag-and-drop keyboard alternative.
+- [ ] **CMP-INP-04** (P1 · M) `Slider` — Fix: no accessible name; add Home/End/PageUp/PageDown; step/large-step; native-input based or APG-compliant thumb; value text; range (two thumbs) as P2; touch target ≥ 24 px.
+- [ ] **CMP-INP-05** (P1 · M) `CurrencyInput` — Fix: ADR-006 value contract (integer minor units); `Intl.NumberFormat` driven symbol/separators instead of hard-coded `R$` + pt-BR; caret position stability; negative values; paste handling; max digits as prop.
+- [ ] **CMP-INP-06** (P1 · M) `SearchInput` — Fix: combobox ARIA for suggestions; clear button; accent-insensitive highlight (`Mark` matches by lowercase index only); global shortcut registration is the consumer's job — expose `shortcut` as display + optional hotkey hook; `role="search"` wrapper.
+
+### Layout
+
+- [ ] **CMP-LAY-01** (P1 · M) `Sidebar` — Fix: width default 248 vs. token `--sidebar-w` 240 (pick one); landmark roles (`aside` + labelled `nav` per section); collapsible/responsive behavior; status block semantic; user block.
+- [ ] **CMP-LAY-02** (P1 · S) `TopBar` — Fix: height is 56 px in code vs. `--topbar-h` 64 px in tokens and ERP spec (pick one, use the token); `header` landmark; primary-action slot with shortcut hint.
+- [ ] **CMP-LAY-03** (P1 · S) `Breadcrumb` — Fix: render an ordered list; separators `aria-hidden`; truncation/collapse for long trails; use real links via polymorphic prop; hover color via CSS.
+- [ ] **CMP-LAY-04** (P1 · M) `Accordion` — Fix: heading-wrapped trigger button, `aria-controls` + `region` role/labelling, `type="single|multiple"` + `collapsible`, controlled/uncontrolled, height animation with reduced-motion.
+
+### Data
+
+- [ ] **CMP-DAT-01** (P1 · L) `DataTable` — Fix: ARIA table structure (`rowgroup`, proper `columnheader` instead of `role` override on a button, `aria-sort`, `aria-rowcount`/`aria-rowindex` when paginated, `aria-selected` for rows); labelled selection checkboxes ("Select row {key}", "Select all rows on this page"); selection live-region summary; locale-aware sort (ARCH-007) and stable sort; reset page on data/sort change; `useMemo` missing `columns` dependency; sticky header; loading/empty/error states; column visibility (P3).
+- [ ] **CMP-DAT-02** (P1 · S) `Pagination` — Fix: `aria-label` from messages; `aria-current="page"`; announce range changes politely; page size selector (P2); disabled buttons keep focus order sensible.
+- [ ] **CMP-DAT-03** (P1 · M) `ActionList` — Fix: `role="list"` rows are not `listitem`; clickable rows are `div`s with no keyboard support/role — make them buttons/links; actions menu (`···`) label from messages and uses Menu keyboard model; drag handle (P3).
+- [ ] **CMP-DAT-04** (P1 · L) `Chart` — Fix: SVG has no accessible name/description; tooltip is mouse-only — add focusable data points / keyboard traversal; provide a visually-hidden data table alternative; no negative-value support; `Math.log10` axis breaks for tiny max values; color-only highlight needs a non-color cue; multi-series, legends, responsive label skipping tests.
+- [ ] **CMP-DAT-05** (P1 · S) `EmptyState` — Fix: heading level configurable; illustration slot (optional); pt-BR default text removed; guidance on copy ("what happened + what to do").
+- [ ] **CMP-DAT-06** (P1 · S) `Skeleton` — Fix: container-level `aria-busy`, hidden from AT; `prefers-reduced-motion`; presets (text, avatar, row, card).
+
+### Patterns — `erp/` group (see ADR-008 for placement and renaming)
+
+- [ ] **CMP-PAT-01** (P1 · L) `Sheet` — Fix: same overlay requirements as Dialog (focus trap/restore, inert, scroll lock, stack-aware Esc); `aria-labelledby` (label only works when `title` is a string today); width tokens (440/460/480 are ERP-specific sizes → `sm/md/lg`); header height uses `--topbar-h`.
+- [ ] **CMP-PAT-02** (P1 · S) `StatCard` — Fix: label/value association (`dl` or `aria-labelledby`); tone is color-only → require text note or icon for negative/positive; `size` tokens for `num` / `num-lg`.
+- [ ] **CMP-PAT-03** (P1 · S) `Swatch` — Fix: color-only meaning — require `label` when it is the only identifier; token for inset ring; hex validation.
+- [ ] **CMP-PAT-04** (P2 · S) `ColorOption` — Fix: `aria-pressed` + visible mark ✓ (keep); disabled opacity token; swatch decorative when label present.
+- [ ] **CMP-PAT-05** (P1 · M) `StatusSteps` — Fix: ordered list semantics, steps as buttons when interactive (currently `div role="button"`), `aria-current="step"` (keep), completed/pending state announced as text (not only color/✓), hard-coded pt-BR tooltip.
+- [ ] **CMP-PAT-06** (P1 · M) `Stepper` — Fix: this is a spinbutton — use an input with `role="spinbutton"` semantics (value, min, max, `aria-valuetext`), press-and-hold repeat, direct typing, labels from messages; `aria-live` on the value is noisy.
+- [ ] **CMP-PAT-07** (P1 · M) `DueIndicator` — Fix: move `dueInfo` out of the component into a tested utility; `T12:00:00` day-diff trick → DST-safe date math with fake-timer tests; pluralization/month names via `Intl`; status is text + color (keep); `today` injectable for tests.
+- [ ] **CMP-PAT-08** (P1 · M) `ChoiceTiles` — Fix: radiogroup of buttons has no roving tabindex or arrow keys; `aria-labelledby` for group; columns responsive.
+- [ ] **CMP-PAT-09** (P2 · M) `ProportionBar` — Fix: provide a text alternative (`role="img"` + summary, or hidden table); the 4-color ramp repeats beyond 4 segments (indistinguishable) and uses `--line-strong` (low contrast); legend is the real accessible content — keep it available.
+- [ ] **CMP-PAT-10** (P2 · S) `RankList` — Fix: render an ordered list; the component silently re-sorts and truncates input (`limit`) — document or make it opt-in; clickable rows → buttons; empty text from messages.
+- [ ] **CMP-PAT-11** (P2 · L) `MatrixGrid` — Fix: ARIA grid (or table of toggle buttons) with arrow-key navigation; cell tooltip text is pt-BR and mouse-only; luminance helper for ✓ contrast on arbitrary hex → tested utility (WCAG relative luminance, not the 0.299/0.587/0.114 shortcut); horizontal scroll region labelled and focusable.
+- [ ] **CMP-PAT-12** (P2 · M) `LedgerList` — Fix: list semantics; delete button label from messages; `+`/`−` sign plus color (already text) — keep; signed-amount formatting through `Intl`; running balance label from messages.
+
+### Patterns — `agents/` group
+
+- [ ] **CMP-AGT-01** (P2 · M) `AgentCard` — Fix: clickable `div role="button"` containing status badge → real button/link card with a single accessible name; "soon" state not interactive; icon via `Icon`; status label from messages; no `unpkg` icon fetch.
+- [ ] **CMP-AGT-02** (P2 · M) `ApprovalCard` — Fix: `section` needs an accessible name; kind badge, rating and flag are text-first (keep); Send/Discard are secondary buttons by design (many cards per screen) — keep and document; undo handled by Toast pattern.
+- [ ] **CMP-AGT-03** (P2 · L) `ChatPanel` — Fix: Enter-to-send must ignore IME composition (`isComposing`); `role="log"` + polite live region is good — verify no double announcements; messages keyed by index → stable ids; streaming message support, stop/retry, scroll-anchoring, `prefers-reduced-motion`; strings from messages; markdown rendering policy (sanitized).
+
+---
+
+## Phase 4 — Testing infrastructure
+
+Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
+
+- [ ] **TEST-001** (P0 · M) Vitest + Testing Library + user-event setup (jsdom for logic, Playwright browser mode for focus/layout-dependent tests); shared test utilities (`renderWithProvider`, `axe` helper, locale/theme matrix). _Depends: SETUP-002, ADR-010_
+- [ ] **TEST-002** (P0 · M) **Automated accessibility harness (unit level):** `vitest-axe` run against every story in every state (rest, hover/focus where applicable, disabled, invalid, loading, open overlays). A component cannot be marked done with an axe violation.
+- [ ] **TEST-003** (P0 · M) **Real-browser accessibility harness:** Playwright + `@axe-core/playwright` against built Storybook (jsdom cannot compute color contrast). Tags: `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`, `best-practice`. Run in dark theme, `forced-colors: active`, `prefers-reduced-motion: reduce` and 200% zoom.
+- [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
+- [ ] **TEST-005** (P1 · M) **Visual regression:** Playwright `toHaveScreenshot` over all stories × states × themes × viewport widths (320, 768, 1280). Baselines produced only in the pinned CI container (font-rendering determinism). Update flow: explicit `pnpm test:visual:update` + review in PR.
+- [ ] **TEST-006** (P1 · S) **Token regression:** snapshot of built tokens (CSS + JSON); any change must be intentional and accompanied by a changeset. Contrast test over all semantic pairs (TOK-004) runs in unit CI.
+- [ ] **TEST-007** (P1 · S) **Public API regression:** `api-extractor` (or `.d.ts` snapshot) report committed to the repo; PR fails on unreviewed export/prop changes. Add `publint` and `are-the-types-wrong` checks.
+- [ ] **TEST-008** (P1 · S) **SSR/hydration smoke test:** render every exported component with `renderToString` and hydrate with no warnings; no `window`/`document` access at import time.
+- [ ] **TEST-009** (P1 · S) **Bundle-size budgets** with `size-limit` per entry point; tree-shaking test (importing `Button` must not pull `Chart`).
+- [ ] **TEST-010** (P1 · M) **i18n tests:** every built-in string is in the `messages` catalog (a test fails if a JSX string literal or `aria-label` literal appears in `src/` outside the catalog); `en` and `pt-BR` catalogs have identical keys; long-string (German-like +40%) and RTL pseudo-locale smoke renders.
+- [ ] **TEST-011** (P1 · S) **Style-rule tests:** Stylelint rejects raw colors/px; script verifies every `var(--…)` used in CSS exists in the token build (no dangling variables).
+- [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
+- [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
+- [ ] **TEST-014** (P2 · S) WCAG 2.2 specifics as explicit tests: target size ≥ 24 px (2.5.8), focus not obscured by sticky bars/toasts (2.4.11), dragging alternatives (2.5.7), consistent help, reflow at 320 px (1.4.10), text spacing override (1.4.12).
+- [ ] **TEST-015** (P2 · S) Flaky-test policy: retries only in visual CI, quarantine label, weekly review; coverage reported but not the quality gate (a11y + contract tests are).
+- [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
+
+---
+
+## Phase 5 — AI-ready foundation
+
+Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
+
+- [ ] **AI-001** (P0 · S) Keep `AGENTS.md` accurate (it is the entry point for agents) and add `CLAUDE.md` pointer (SETUP-006). Review it whenever conventions change.
+- [ ] **AI-002** (P1 · L) **Component manifest** (`dist/manifest.json`, JSON Schema in `schemas/`): per component → name, group, status, description, import path, props (generated from TypeScript with `react-docgen-typescript`), variants/sizes/tones, slots, default values, accessibility notes, keyboard contract, related tokens, do/don't rules, minimal + advanced examples, related components. A test fails when an exported component lacks a manifest entry or an example does not compile.
+- [ ] **AI-003** (P1 · M) Convert the 58 `*.prompt.md` files into English `docs/components/<Name>.md` usage notes with a fixed template (when to use, when not, anatomy, props table, accessibility, content rules, examples). Correct the spec drift found in the originals (Appendix B).
+- [ ] **AI-004** (P1 · M) **Token manifest for AI:** flat `tokens.json` with names, resolved values, descriptions, usage guidance ("use for…", "never use for…") and WCAG pairing hints (which text token is allowed on which surface).
+- [ ] **AI-005** (P1 · M) Generate `llms.txt` and `llms-full.txt` from the manifest + docs on every build; publish with the docs site.
+- [ ] **AI-006** (P1 · M) **Golden examples / recipes:** small, fully tested compositions (destructive confirm, form with validation, filterable table, empty state, settings page, undo toast, approval queue). Each passes axe, keyboard-contract and visual tests, and is referenced from the manifest so agents imitate verified patterns instead of inventing markup.
+- [ ] **AI-007** (P1 · M) **Design rules as executable checks.** ESLint plugin `eslint-plugin-<name>`: no raw colors/px in app code, no inline `style` colors, no deprecated props, one `variant="primary"` Button per JSX scope (heuristic warning), icon-only buttons require `label`, microcopy lint (sentence case, no exclamation marks, no emoji, verb+object button text) where statically checkable.
+- [ ] **AI-008** (P2 · L) **MCP server** exposing the DS to agents: `list_components`, `get_component` (props + examples + a11y), `search_tokens`, `get_recipe`, `validate_snippet` (type/lint/axe on a snippet). Backed by the manifest.
+- [ ] **AI-009** (P2 · M) Claude Code skill (`.claude/skills/<name>/SKILL.md`) — the handoff references a `SKILL.md` that was not delivered; create it from AGENTS.md essentials + manifest pointers.
+- [ ] **AI-010** (P2 · S) Machine-readable **content guidelines** (`content-rules.json`): casing, tone, button-label patterns, error-message pattern, empty-state pattern, forbidden characters/words — consumed by the ESLint rule and the MCP server.
+- [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
+- [ ] **AI-012** (P2 · M) Storybook metadata for agents: `tags` (`stable`, `experimental`), `parameters.docs.description`, and `play` functions documented as behavior specs; connect Storybook's MCP/addon if available.
+- [ ] **AI-013** (P3 · L) **AI-native components** (streaming message, thinking/progress state, tool-call/step display, citations/sources, feedback controls, approval gate, stop/retry). Seed from `ChatPanel`, `ApprovalCard`, `AgentCard`; follow the "approve before sending, autonomy per task, undo not confirm" agent principles.
+- [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
+
+---
+
+## Phase 6 — Documentation site (Storybook)
+
+- [ ] **DOCS-001** (P1 · M) Storybook with Vite builder, MDX docs, addons: a11y, interactions, viewport, themes (dark/forced-colors), controls, docs. Theme Storybook itself with the DS tokens.
+- [ ] **DOCS-002** (P1 · M) Story conventions: CSF3, one `Default` + one story per variant/size/state, `play` functions for interactions, `argTypes` generated from types. Replace the 9 handoff `*.card.html` showcase files (Babel-in-browser, unpinned `_ds_bundle.js`, missing from the delivery).
+- [ ] **DOCS-003** (P1 · M) Foundations section generated from tokens (FDN-001…005).
+- [ ] **DOCS-004** (P2 · M) Principles and content guidelines pages (translated from `design-system-readme.md`: "Three rules", "Clarity and focus", "Agents", "Content fundamentals", "Visual foundations", "Iconography").
+- [ ] **DOCS-005** (P2 · S) Accessibility page: conformance target (WCAG 2.2 AA), keyboard model, tested assistive tech, known limitations, how to report issues.
+- [ ] **DOCS-006** (P2 · S) Getting started: install, fonts, provider, theming, SSR notes, framework recipes (Vite, Next.js).
+- [ ] **DOCS-007** (P2 · S) Publish docs (static hosting) with search; link from README.
+- [ ] **DOCS-008** (P2 · S) Root `README.md` (what it is, install, quick start, links, contributing).
+
+---
+
+## Phase 7 — Packaging, release and governance
+
+- [ ] **REL-001** (P1 · M) Package build output verified in a clean consumer app (Vite + Next.js fixtures in `examples/`), including CSS delivery and tree-shaking.
+- [ ] **REL-002** (P1 · S) Changesets release flow, provenance-enabled npm publish (or private registry), pre-release channel (`0.x`).
+- [ ] **REL-003** (P2 · S) Versioning policy: semver, what counts as breaking (token value change? visual change?), deprecation window, support policy.
+- [ ] **REL-004** (P2 · S) Component lifecycle process (proposal → experimental → stable → deprecated) with checklist and owner.
+- [ ] **REL-005** (P2 · S) Figma workflow: Tokens Studio sync, component naming parity, Code Connect mapping (optional).
+- [ ] **REL-006** (P3 · S) Telemetry-free usage guidance: how consumers report issues; security policy (`SECURITY.md`).
+
+---
+
+## Backlog — gaps not in the handoff (needs decision before work)
+
+The handoff inventory is missing common building blocks. Confirm which belong in the DS:
+
+- [ ] **GAP-001** (P2 · M) Layout primitives: `Stack`, `Inline`, `Grid`, `Container`, `Divider/Separator`, `ScrollArea`, `AppShell` (Sidebar + TopBar + content landmarks + skip link).
+- [ ] **GAP-002** (P2 · M) Typography components: `Text`, `Heading` (semantic level separate from visual size), `Link`, `Code`.
+- [ ] **GAP-003** (P2 · M) `Field` / `FormGroup` / `FieldSet`, form-level error summary, inline validation timing guidance ("only after first submit attempt").
+- [ ] **GAP-004** (P2 · L) Command palette (⌘K "search or run"), plus a `useHotkeys` hook with a shortcut registry and conflict detection (the keyboard model F2/F9/N/Enter/Esc/1–4 comes from the ERP spec — extract only the generic mechanism).
+- [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup`, `NumberField` (successor of Stepper), `TagInput`, `Table` primitives for static tables.
+- [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
+- [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
+- [ ] **GAP-008** (P3 · S) Undo pattern as a documented recipe/hook (`useUndoable`) built on Toast — "undo instead of confirm" is a core product principle.
+
+---
+
+## Out of scope (for now)
+
+- ERP screens and flows (`ERP.dc.html`, `support.js` DC runtime, all module logic, data model, prototype HTML) — will be revisited after the DS reaches v0.1; DS-worthy patterns extracted from it are tracked in GAP-004 and GAP-008.
+- Backend, persistence, integrations (OpenRouter, Shopee, WhatsApp, printers).
+- ERP-specific vocabulary rules (e.g. "always say Quantity, never pieces/meters") — belong in the ERP product docs, not in the DS core.
+
+---
+
+## Appendix A — Measured token contrast (WCAG 2.2, computed 2026-10-31)
+
+| Pair | Ratio | Requirement | Result |
+|---|---|---|---|
+| `--text-3` on `--bg` | 4.62 | 4.5 (text) | pass (barely) |
+| `--text-3` on `--surface` | 4.43 | 4.5 | **fail** |
+| `--text-3` on `--surface-raised` | 4.16 | 4.5 | **fail** |
+| `--text-3` on `--surface-hover` | 3.86 | 4.5 | **fail** |
+| `--text-2` on `--surface-hover` | 6.55 | 4.5 | pass |
+| `--line-strong` on `--bg` (input border) | 1.57 | 3.0 (UI, 1.4.11) | **fail** |
+| `--line-strong` on `--surface` | 1.50 | 3.0 | **fail** |
+| `--line` on `--surface` (card border) | 1.25 | decorative | n/a |
+| `--primary-fg-muted` on `--primary-bg` | 5.84 | 4.5 | pass |
+| `--text-inverse` on accent / success / warning / danger | 9.42 / 10.65 / 10.60 / 7.23 | 4.5 | pass |
+| `--paper-muted` on `--paper` | 4.76 | 4.5 | pass |
+| `--paper-accent` on `--paper` | 3.92 | 4.5 (small text) | **fail** for small text |
+| `--paper-rule` on `--paper` | 2.64 | 3.0 if informative | review |
+
+`--text-3` is used for placeholders, metadata, captions and tertiary labels (11.5–13 px), so the failures matter. Disabled controls (opacity .35) are exempt from WCAG contrast but should remain recognizable.
+
+## Appendix B — Handoff findings to fix during migration
+
+**Spec ↔ code drift**
+- `Button.prompt.md` says sizes 28/32/40; code and tokens are 32/40/48. `Input.prompt.md` says 32 px; code is 40 px.
+- `TopBar` is 56 px high; `--topbar-h` and the ERP spec say 64 px. `Sidebar` defaults to 248 px; `--sidebar-w` is 240 px.
+- `CurrencyInput` emits float reais; the ERP data model stores integer cents.
+- `InlineConfirm` focuses the confirm action; the principles require focus on Cancel.
+- `tokens.json` uses `radius.md`; CSS uses `--radius`.
+
+**Hard-coded Portuguese to move into the message catalog (and default to English)**
+`Selecione…`, `Buscar…`, `Nada encontrado`, `Carregando`, `Fechar`, `Remover`, `Limpar`, `Hoje`, `Mês anterior`, `Próximo mês`, `Anterior`, `Próxima`, `Paginação`, `Ações`, `Diminuir`, `Aumentar`, `Excluir lançamento`, `Mudar para este status`, `Nenhum registro.`, `Sem dados no período.`, `Arraste arquivos ou escolha no computador`, `PNG, JPG ou PDF até 10 MB`, `Concluído`, `Pensando…`, `Enviar`, `Pergunte ou peça algo…`, `Conversar com o agente`, `Em teste / Ativo / Pausado / Em breve`, `Avaliação / Pergunta`, `Descartar`, `Enviar resposta`, `Resposta do agente`, `Pode editar antes de enviar`, `Pago`, `vencido há N dias`, `vence hoje`, `em N dias`, month/weekday names, `R$`, `pt-BR` date and number formats, `${v} de ${max} estrelas`, `N selecionado(s)`, `Ainda não configurado`, `para aprovar`, `saldo`.
+
+**Files referenced by the handoff but not delivered**
+`SKILL.md`, `Dark System.dc.html`, `ui_kits/orders/`, `ui_kits/erp/index.html`, `assets/fonts/`, `_ds_bundle.js` (loaded by every `*.card.html`).
+
+**Cross-cutting implementation issues**
+- Inline styles and JS hover state in all 58 components (no CSS pseudo-classes, no media queries, CSP-hostile).
+- No `ref` forwarding; `style` is the only escape hatch; no `className`.
+- Window/document-level `keydown` Escape listeners in Dialog, Sheet, Popover, Combobox, DatePicker, InlineConfirm (no layer stack).
+- Custom `div role="…"` widgets (Checkbox, Switch, RadioGroup, NavItem, AgentCard, StatusSteps, ActionList rows) instead of native elements.
+- Missing roving tabindex/arrow keys: RadioGroup, Tabs, SegmentedControl, ChoiceTiles, Menu, MatrixGrid.
+- Runtime icon fetch from `unpkg.com`; Google Fonts `@import`.
+- `React` hooks imported but unused in several files; `.d.ts` files rely on global `JSX`.

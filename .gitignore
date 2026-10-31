@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+storybook-static/
+.vite/
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+.vitest-attachments/
+__screenshots__/*-actual.png
+__screenshots__/*-diff.png
