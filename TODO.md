@@ -137,6 +137,7 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
 - [ ] **GAP-012** (P3 · S) AppShell at 320px: the TopBar title truncates to "Ord…" while badges keep full width — define shrink priorities (title wins, actions collapse into a Menu).
+- [ ] **GAP-013** (P3 · S) `RankList` `Default` story shows positions 1–4 with values not in descending order (renders as given) — use descending data or `sort` so the example reads as a ranking.
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: stacked bars, standalone legend component, shared chart a11y layer. (`Sparkline` and `DonutMeter` are done.)
 
