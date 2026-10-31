@@ -1,0 +1,23 @@
+# ADR-0006: Money and quantity representation
+
+- Status: Accepted 2026-10-31
+- Date: 2026-10-31
+
+## Context
+
+Floating-point amounts cause rounding errors, and the handoff is inconsistent about money units (TODO Appendix B).
+
+## Decision
+
+Money is an integer in minor units plus an ISO 4217 currency code. Quantities follow the same integer-based rule where applicable. Display formatting uses `Intl.NumberFormat`.
+
+## Consequences
+
+- No rounding drift; correct for currencies with different minor-unit exponents.
+- Consumers convert at the boundary.
+- Components never build currency strings by hand.
+
+## Alternatives considered
+
+- Decimal strings: need parsing everywhere.
+- Floats: unsafe for money.

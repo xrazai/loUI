@@ -1,0 +1,25 @@
+# ADR-0002: Styling: CSS Modules with cascade layers
+
+- Status: Accepted 2026-10-31
+- Date: 2026-10-31
+
+## Context
+
+The handoff uses inline styles and JS hover state, which cannot express pseudo-classes, forced-colors or media queries and are hard to override.
+
+## Decision
+
+Use CSS Modules, one per component, inside `@layer reset, tokens, base, components, utilities;`. State is styled through RAC `data-*` attributes and native pseudo-classes. No inline styles and no JS hover state.
+
+## Consequences
+
+- Consumers can override styles predictably through layer order.
+- No runtime styling cost; SSR-safe.
+- The build must extract CSS Modules into plain CSS files.
+- Stylelint enforces tokens-only values.
+
+## Alternatives considered
+
+- CSS-in-JS: runtime cost and SSR complexity.
+- Tailwind: utility classes conflict with a token-first, component-scoped approach.
+- Vanilla Extract: extra build coupling.
