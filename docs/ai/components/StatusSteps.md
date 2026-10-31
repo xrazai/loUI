@@ -44,7 +44,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-gap`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
 
 ## When to use
 

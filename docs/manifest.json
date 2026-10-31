@@ -22984,6 +22984,7 @@
         "--ds-radius-pill",
         "--ds-space-2",
         "--ds-status-steps-connector-thickness",
+        "--ds-status-steps-content-z-index",
         "--ds-status-steps-gap",
         "--ds-status-steps-marker-size",
         "--ds-status-steps-padding-block",

@@ -116,7 +116,7 @@ Rules for generated UI:
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (81 components).
-- [tokens.json](./tokens.json): 314 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 315 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

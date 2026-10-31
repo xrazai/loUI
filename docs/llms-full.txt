@@ -339,7 +339,7 @@ Open an issue with the component, the browser and assistive technology, the step
 
 ## Design tokens
 
-314 tokens; the table lists the 300 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+315 tokens; the table lists the 301 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -620,6 +620,7 @@ Open an issue with the component, the browser and assistive technology, the step
 | `--ds-status-steps-connector-thickness` | `2px` | Thickness of the decorative line between two steps (2px). |
 | `--ds-status-steps-padding-block` | `4px` | Vertical padding of a step (4px). |
 | `--ds-status-steps-gap` | `8px` | Gap between the marker and the label (8px). |
+| `--ds-status-steps-content-z-index` | `1` | Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer. |
 | `--ds-swatch-size-sm` | `16px` | Diameter of a small Swatch (16px), used inside options and headers. |
 | `--ds-swatch-size-md` | `20px` | Diameter of a medium Swatch (20px, default). |
 | `--ds-swatch-size-lg` | `32px` | Diameter of a large Swatch (32px). |
@@ -8149,7 +8150,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-gap`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
 
 #### When to use
 
