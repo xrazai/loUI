@@ -1,0 +1,35 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "donut-meter": {
+    "size-sm": {
+      "$type": "dimension",
+      "$value": { "value": 48, "unit": "px" },
+      "$description": "Diameter of a small DonutMeter (48px)."
+    },
+    "size-md": {
+      "$type": "dimension",
+      "$value": { "value": 72, "unit": "px" },
+      "$description": "Diameter of a medium DonutMeter (72px)."
+    },
+    "size-lg": {
+      "$type": "dimension",
+      "$value": { "value": 96, "unit": "px" },
+      "$description": "Diameter of a large DonutMeter (96px)."
+    },
+    "stroke-w": {
+      "$type": "dimension",
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Thickness of the ring in units of the 100-unit drawing box (10), so it scales with the diameter: 4.8px at 48px, 9.6px at 96px."
+    },
+    "value": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "Filled share of the ring, 0 to 100. Set at runtime via style (ADR-0002 amendment); the ring is drawn with a dash of this length on a path of length 100."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.accent}",
+      "$description": "Color of the filled part of the ring. Each tone sets it."
+    }
+  }
+}
