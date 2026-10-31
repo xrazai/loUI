@@ -4,6 +4,7 @@ import type { SubmitEvent } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
@@ -290,11 +291,12 @@ describe('Input', () => {
 
       const restBackground = getComputedStyle(rest).backgroundColor;
       await userEvent.hover(screen.getByRole('textbox', { name: 'Rest' }));
-      expect(borderContrast(rest)).toBeGreaterThanOrEqual(3);
-      expect(getComputedStyle(rest).backgroundColor).toBe(restBackground);
+      await expectHovered(screen.container);
+      await expect.poll(() => borderContrast(rest)).toBeGreaterThanOrEqual(3);
+      await expect.poll(() => getComputedStyle(rest).backgroundColor).toBe(restBackground);
 
       await userEvent.click(screen.getByRole('textbox', { name: 'Rest' }));
-      expect(borderContrast(rest)).toBeGreaterThanOrEqual(3);
+      await expect.poll(() => borderContrast(rest)).toBeGreaterThanOrEqual(3);
 
       const invalid = controlOf(screen.getByRole('textbox', { name: 'Invalid' }).element());
       expect(borderContrast(invalid)).toBeGreaterThanOrEqual(3);

@@ -2,6 +2,7 @@ import { createRef, useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast, cssColorToHex, tokenColor } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
@@ -216,10 +217,11 @@ describe('RadioGroup', () => {
     expect(borderContrast(other)).toBeGreaterThanOrEqual(3);
     const background = getComputedStyle(other).backgroundColor;
     await userEvent.hover(screen.getByText('Virginia'));
-    expect(borderContrast(other)).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(other).backgroundColor).toBe(background);
+    await expectHovered(screen.container);
+    await expect.poll(() => borderContrast(other)).toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(other).backgroundColor).toBe(background);
     await userEvent.tab();
-    expect(getComputedStyle(selected).boxShadow).not.toBe('none');
+    await expect.poll(() => getComputedStyle(selected).boxShadow).not.toBe('none');
   });
 
   it('keeps each option row at the 24px minimum target', async () => {

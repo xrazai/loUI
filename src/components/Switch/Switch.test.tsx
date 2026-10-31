@@ -2,6 +2,7 @@ import { createRef, useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { colorContrastOnPage, cssColorToHex, tokenColor } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
@@ -113,10 +114,15 @@ describe('Switch', () => {
     const { track } = parts(toggle.element());
     expect(colorContrastOnPage(getComputedStyle(track).backgroundColor)).toBeGreaterThanOrEqual(3);
     await userEvent.hover(screen.getByText('Alerts'));
-    expect(colorContrastOnPage(getComputedStyle(track).backgroundColor)).toBeGreaterThanOrEqual(3);
+    await expectHovered(screen.container);
+    await expect
+      .poll(() => colorContrastOnPage(getComputedStyle(track).backgroundColor))
+      .toBeGreaterThanOrEqual(3);
     await userEvent.tab();
-    expect(colorContrastOnPage(getComputedStyle(track).backgroundColor)).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(track).boxShadow).not.toBe('none');
+    await expect
+      .poll(() => colorContrastOnPage(getComputedStyle(track).backgroundColor))
+      .toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(track).boxShadow).not.toBe('none');
     await userEvent.keyboard(' ');
     await expect
       .poll(() => cssColorToHex(getComputedStyle(track).backgroundColor))

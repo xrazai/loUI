@@ -2,6 +2,7 @@ import { createRef, useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { ChoiceTiles } from './ChoiceTiles';
 import type { ChoiceTilesProps } from './ChoiceTiles';
@@ -151,7 +152,10 @@ describe('ChoiceTiles', () => {
       const background = getComputedStyle(tile).backgroundColor;
       expect(ratio(getComputedStyle(tile).borderTopColor, background)).toBeGreaterThanOrEqual(3);
       await userEvent.hover(tile);
-      expect(ratio(getComputedStyle(tile).borderTopColor, background)).toBeGreaterThanOrEqual(3);
+      await expectHovered(screen.container);
+      await expect
+        .poll(() => ratio(getComputedStyle(tile).borderTopColor, background))
+        .toBeGreaterThanOrEqual(3);
     });
   });
 

@@ -2,6 +2,7 @@ import { createRef, useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast, cssColorToHex, tokenColor } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
@@ -391,11 +392,12 @@ describe('Combobox', () => {
     expect(borderContrast(box)).toBeGreaterThanOrEqual(3);
     const background = getComputedStyle(box).backgroundColor;
     await userEvent.hover(input);
-    expect(borderContrast(box)).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(box).backgroundColor).toBe(background);
+    await expectHovered(screen.container);
+    await expect.poll(() => borderContrast(box)).toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(box).backgroundColor).toBe(background);
     await userEvent.tab();
-    expect(borderContrast(box)).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(box).boxShadow).not.toBe('none');
+    await expect.poll(() => borderContrast(box)).toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(box).boxShadow).not.toBe('none');
     expect(
       borderContrast(
         screen.getByRole('combobox', { name: 'Bad' }).element().parentElement as HTMLElement,

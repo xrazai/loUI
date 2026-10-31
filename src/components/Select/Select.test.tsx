@@ -2,6 +2,7 @@ import { createRef, useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast, cssColorToHex, tokenColor } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
@@ -281,11 +282,12 @@ describe('Select', () => {
     expect(borderContrast(trigger.element())).toBeGreaterThanOrEqual(3);
     const background = getComputedStyle(trigger.element()).backgroundColor;
     await userEvent.hover(trigger);
-    expect(borderContrast(trigger.element())).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(trigger.element()).backgroundColor).toBe(background);
+    await expectHovered(screen.container);
+    await expect.poll(() => borderContrast(trigger.element())).toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(trigger.element()).backgroundColor).toBe(background);
     await userEvent.tab();
-    expect(borderContrast(trigger.element())).toBeGreaterThanOrEqual(3);
-    expect(getComputedStyle(trigger.element()).boxShadow).not.toBe('none');
+    await expect.poll(() => borderContrast(trigger.element())).toBeGreaterThanOrEqual(3);
+    await expect.poll(() => getComputedStyle(trigger.element()).boxShadow).not.toBe('none');
     expect(
       borderContrast(screen.getByRole('button', { name: /Bad/ }).element()),
     ).toBeGreaterThanOrEqual(3);
