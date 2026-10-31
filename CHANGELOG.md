@@ -8,6 +8,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **GAP-004** (2026-10-31) Keyboard-first infrastructure: `useHotkeys` registry (scopes via `useHotkeyScope`, `'*'` global scope, page shortcuts ignored inside dialogs/menus, IME- and editable-field-safe, dev warning on conflicts, platform-aware `Mod`), optional `HotkeyProvider`, `useRegisteredHotkeys`; `CommandPalette` (⌘K by default, grouped commands with shortcuts, accent-insensitive filtering and highlighting, recent commands, auto-lists registered hotkeys) and `ShortcutsHelp` (`?` dialog listing shortcuts by group). Docs: `docs/architecture/hotkeys.md`.
 - **AI-008** (2026-10-31) `@loui/ds-mcp` stdio MCP server (`tools/mcp-server/`, `@modelcontextprotocol/sdk` 1.32): tools `list_components`, `get_component`, `search_tokens`, `get_guidelines`, `get_recipe`, `validate_snippet` (in-memory ESLint with `eslint-plugin-loui` + manifest checks: unknown exports with did-you-mean, missing imports, missing required props, invalid literal prop values); resources `loui://guides/*`, `loui://components/*`, `loui://llms.txt`, `loui://content-rules`. Registered in the repo's `.mcp.json`; 35 tests incl. a real stdio spawn.
 - **AI-009** (2026-10-31) Claude Code skill `.claude/skills/loui-ds/SKILL.md`: operating instructions for building UI with the DS, pointing to the MCP tools and generated docs.
 - **DX** (2026-10-31) `start.cmd` (Windows, double-click) and `pnpm start`: install what is missing, start Storybook and open http://localhost:6006.

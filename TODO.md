@@ -165,7 +165,6 @@ The handoff inventory is missing common building blocks. Confirm which belong in
 - [ ] **GAP-001** (P2 · M) Layout primitives: `Stack`, `Inline`, `Grid`, `Container`, `Divider/Separator`, `ScrollArea`, `AppShell` (Sidebar + TopBar + content landmarks + skip link).
 - [ ] **GAP-002** (P2 · M) Typography components: `Text`, `Heading` (semantic level separate from visual size), `Code`. (`Link` is done.)
 - [ ] **GAP-003** (P2 · M) `Form` wrapper (form-level `validationBehavior`, server errors via RAC `Form` `validationErrors`), `FieldSet`, form-level error summary. (`Field` parts are done.)
-- [ ] **GAP-004** (P2 · L) Command palette (⌘K "search or run"), plus a `useHotkeys` hook with a shortcut registry and conflict detection (the keyboard model F2/F9/N/Enter/Esc/1–4 comes from the ERP spec — extract only the generic mechanism).
 - [ ] **GAP-005** (P2 · M) `Toggle` / `ToggleGroup` (multi-select), `TagInput`, static `Table` primitives. (`NumberField` is done.)
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: sparkline, donut/meter, stacked bars, legend component, shared chart a11y layer.
