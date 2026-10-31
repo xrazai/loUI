@@ -3,6 +3,18 @@ import '../src/styles/index.css';
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          'Introduction',
+          'Guides',
+          ['Getting started', 'Principles', 'Content guidelines', 'Accessibility', 'Using with AI'],
+          'Foundations',
+          'Components',
+          'Patterns',
+        ],
+      },
+    },
     backgrounds: {
       options: {
         dark: { name: 'dark', value: '#0b0b0c' },

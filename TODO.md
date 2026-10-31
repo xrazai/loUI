@@ -173,17 +173,12 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
 - [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
-- [ ] **AI-002** (P1 · L) **Component manifest** (`dist/manifest.json`, JSON Schema in `schemas/`): per component → name, group, status, description, import path, props (generated from TypeScript with `react-docgen-typescript`), variants/sizes/tones, slots, default values, accessibility notes, keyboard contract, related tokens, do/don't rules, minimal + advanced examples, related components. A test fails when an exported component lacks a manifest entry or an example does not compile.
 - [ ] **AI-003** (P1 · M) Convert the 58 `*.prompt.md` files into English `docs/components/<Name>.md` usage notes with a fixed template (when to use, when not, anatomy, props table, accessibility, content rules, examples). Correct the spec drift found in the originals (Appendix B).
-- [ ] **AI-004** (P1 · M) **Token manifest for AI:** flat `tokens.json` with names, resolved values, descriptions, usage guidance ("use for…", "never use for…") and WCAG pairing hints (which text token is allowed on which surface).
-- [ ] **AI-005** (P1 · M) Generate `llms.txt` and `llms-full.txt` from the manifest + docs on every build; publish with the docs site.
 - [ ] **AI-006** (P1 · M) **Golden examples / recipes:** small, fully tested compositions (destructive confirm, form with validation, filterable table, empty state, settings page, undo toast, approval queue). Each passes axe, keyboard-contract and visual tests, and is referenced from the manifest so agents imitate verified patterns instead of inventing markup.
 - [ ] **AI-007** (P1 · M) **Design rules as executable checks.** ESLint plugin `eslint-plugin-<name>`: no raw colors/px in app code, no inline `style` colors, no deprecated props, one `variant="primary"` Button per JSX scope (heuristic warning), icon-only buttons require `label`, microcopy lint (sentence case, no exclamation marks, no emoji, verb+object button text) where statically checkable.
 - [ ] **AI-008** (P2 · L) **MCP server** exposing the DS to agents: `list_components`, `get_component` (props + examples + a11y), `search_tokens`, `get_recipe`, `validate_snippet` (type/lint/axe on a snippet). Backed by the manifest.
 - [ ] **AI-009** (P2 · M) Claude Code skill (`.claude/skills/<name>/SKILL.md`) — the handoff references a `SKILL.md` that was not delivered; create it from AGENTS.md essentials + manifest pointers.
-- [ ] **AI-010** (P2 · S) Machine-readable **content guidelines** (`content-rules.json`): casing, tone, button-label patterns, error-message pattern, empty-state pattern, forbidden characters/words — consumed by the ESLint rule and the MCP server.
 - [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
-- [ ] **AI-012** (P2 · M) Storybook metadata for agents: `tags` (`stable`, `experimental`), `parameters.docs.description`, and `play` functions documented as behavior specs; connect Storybook's MCP/addon if available.
 - [ ] **AI-013** (P3 · L) **AI-native components** (streaming message, thinking/progress state, tool-call/step display, citations/sources, feedback controls, approval gate, stop/retry). Seed from `ChatPanel`, `ApprovalCard`, `AgentCard`; follow the "approve before sending, autonomy per task, undo not confirm" agent principles.
 - [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
 
@@ -194,11 +189,7 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 - [ ] **DOCS-001** (P1 · M) Storybook with Vite builder, MDX docs, addons: a11y, interactions, viewport, themes (dark/forced-colors), controls, docs. Theme Storybook itself with the DS tokens.
 - [ ] **DOCS-002** (P1 · M) Story conventions: CSF3, one `Default` + one story per variant/size/state, `play` functions for interactions, `argTypes` generated from types. Replace the 9 handoff `*.card.html` showcase files (Babel-in-browser, unpinned `_ds_bundle.js`, missing from the delivery).
 - [ ] **DOCS-003** (P1 · M) Foundations section generated from tokens (FDN-001…005).
-- [ ] **DOCS-004** (P2 · M) Principles and content guidelines pages (translated from `design-system-readme.md`: "Three rules", "Clarity and focus", "Agents", "Content fundamentals", "Visual foundations", "Iconography").
-- [ ] **DOCS-005** (P2 · S) Accessibility page: conformance target (WCAG 2.2 AA), keyboard model, tested assistive tech, known limitations, how to report issues.
-- [ ] **DOCS-006** (P2 · S) Getting started: install, fonts, provider, theming, SSR notes, framework recipes (Vite, Next.js).
 - [ ] **DOCS-007** (P2 · S) Publish docs (static hosting) with search; link from README.
-- [ ] **DOCS-008** (P2 · S) Root `README.md` (what it is, install, quick start, links, contributing).
 
 ---
 

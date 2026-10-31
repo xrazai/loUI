@@ -8,6 +8,12 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ### Added
 
+- **AI-002** (2026-10-31) Component manifest generator `scripts/manifest/` (`pnpm manifest:build`, runs after `tsdown` in `pnpm build`; `pnpm manifest:check` detects stale committed copies): props from TypeScript, TSDoc, message keys and English defaults, CSS variables used, stories, doc sections, status; hooks, utilities and icons. JSON Schema `schemas/manifest.schema.json`; tests validate schema and coverage.
+- **AI-004** (2026-10-31) Token manifest `docs/tokens.json` with descriptions and allowed contrast pairings (schema `schemas/tokens.schema.json`).
+- **AI-005** (2026-10-31) Generated `llms.txt`, `llms-full.txt` and per-component `docs/ai/components/<Name>.md`; packaged as `@loui/ds/manifest.json`, `tokens.json`, `llms.txt`, `llms-full.txt`.
+- **AI-010** (2026-10-31) Machine-readable microcopy rules `docs/ai/content-rules.json` with schema and self-checking examples.
+- **AI-012** (2026-10-31) Storybook MCP enabled (`@storybook/addon-mcp` 10.6.5): `pnpm storybook` serves `/mcp` and the components manifest; connection guide in `docs/ai/storybook-mcp.md`.
+- **DOCS-004 / DOCS-005 / DOCS-006 / DOCS-008** (2026-10-31) Guides in `docs/guides/` rendered in Storybook (Introduction, Getting started, Principles, Content guidelines, Accessibility, Using with AI) — principles and content rules translated from the handoff; root `README.md`; Storybook sidebar ordered Introduction → Guides → Foundations → Components → Patterns.
 - **ARCH-008 / ARCH-009** (2026-10-31) Shared `Field` building blocks (`Label`, `Description`, `FieldError`, `FieldMessages`, `RequiredMark`) used by every field; one disabled/invalid/required model. Validation defaults to `native` (errors appear after the first submit attempt, focus moves to the first invalid field); `aria` opt-in for live feedback.
 - **ARCH-003** (2026-10-31) Handoff prop-spread bug fixed by design (consumer `onFocus`/`onBlur` composed with internal handlers); regression tests in Input, Textarea and Select.
 - **CMP-FRM-03** (2026-10-31) `Input` on React Aria `TextField`: label/description/error wiring, `mono`, adornments, sizes, read-only, dashed disabled border.
