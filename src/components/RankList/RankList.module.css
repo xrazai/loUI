@@ -9,7 +9,7 @@
    */
   .list {
     display: grid;
-    grid-template-columns: var(--ds-rank-list-position-w) minmax(0, 1fr) auto;
+    grid-template-columns: var(--ds-rank-list-position-w) minmax(0, 1fr) fit-content(40%);
     column-gap: var(--ds-space-3);
     margin: 0;
     padding: var(--ds-space-2) 0;
@@ -17,7 +17,7 @@
   }
 
   .list:not([data-positions]) {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) fit-content(40%);
   }
 
   .item {
@@ -126,7 +126,9 @@
     font-size: var(--ds-fs-meta);
     line-height: var(--ds-lh-meta);
     text-align: end;
-    white-space: nowrap;
+
+    /* A long meta wraps inside its column instead of squeezing the label to nothing. */
+    overflow-wrap: anywhere;
   }
 
   .empty {

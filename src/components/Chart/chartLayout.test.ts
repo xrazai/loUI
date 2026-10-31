@@ -4,6 +4,15 @@ import { computeLayout, tooltipPosition } from './chartLayout';
 const format = (value: number) => String(value);
 
 describe('computeLayout', () => {
+  it('uses fewer value ticks in a short chart so the labels never touch', () => {
+    const spacing = (height: number) => {
+      const layout = computeLayout({ values: [10, 90], width: 400, height, formatTick: format });
+      return (layout.bottom - layout.top) / (layout.scale.ticks.length - 1);
+    };
+    expect(spacing(96)).toBeGreaterThanOrEqual(24);
+    expect(spacing(200)).toBeGreaterThanOrEqual(24);
+  });
+
   it('maps values to y inside the plot, with 0 on the baseline', () => {
     const layout = computeLayout({
       values: [0, 50, 100],

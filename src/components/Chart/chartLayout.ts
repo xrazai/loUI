@@ -19,6 +19,9 @@ const AXIS_MIN_WIDTH = 28;
 /** Bars take this share of their band, up to a maximum width. */
 const BAR_BAND_RATIO = 0.6;
 const BAR_MAX_WIDTH = 28;
+/** Minimum vertical room per value-axis tick; short charts get fewer ticks so labels never touch. */
+const TICK_MIN_SPACING = 24;
+const MAX_TICKS = 5;
 /** Minimum horizontal room per category label before labels are skipped. */
 const LABEL_MIN_SPACING = 44;
 /** Tooltip estimate: padding on both sides, and distance above the anchor. */
@@ -66,7 +69,13 @@ export function computeLayout({
   formatTick,
 }: ChartLayoutInput): ChartLayout {
   const count = values.length;
-  const scale = niceScale(count ? Math.min(...values) : 0, count ? Math.max(...values) : 0);
+  const plotHeight = Math.max(1, height - PLOT_PADDING_BOTTOM - PLOT_PADDING_TOP);
+  const tickCount = Math.min(MAX_TICKS, Math.max(2, Math.floor(plotHeight / TICK_MIN_SPACING) + 1));
+  const scale = niceScale(
+    count ? Math.min(...values) : 0,
+    count ? Math.max(...values) : 0,
+    tickCount,
+  );
   const widest = Math.max(1, ...scale.ticks.map((tick) => formatTick(tick).length));
   const left = Math.max(AXIS_MIN_WIDTH, widest * CHAR_WIDTH + AXIS_GAP);
   const right = Math.max(left + 1, width - PLOT_PADDING_END);

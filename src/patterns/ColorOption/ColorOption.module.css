@@ -5,6 +5,9 @@
     align-items: center;
     gap: var(--ds-space-3);
     min-inline-size: 0;
+
+    /* A button is as wide as its content; cap it so a long label truncates instead of overflowing. */
+    max-inline-size: 100%;
     min-block-size: var(--ds-control-h-md);
     padding-inline: var(--ds-space-3);
     border: 1px solid var(--ds-line-control);
