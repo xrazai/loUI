@@ -1,3 +1,8 @@
+# Workspace: the root package is @loui/ds; tools/* hold companion packages
+# (ESLint plugin, MCP server).
+packages:
+  - tools/*
+
 # pnpm 12 settings live here. Lifecycle scripts of dependencies are opt-in.
 allowBuilds:
   esbuild: true
