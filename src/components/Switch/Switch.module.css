@@ -1,0 +1,118 @@
+@layer components {
+  .root {
+    gap: var(--ds-space-1);
+  }
+
+  .root[data-has-label] {
+    inline-size: 100%;
+  }
+
+  .root:not([data-has-label]) {
+    display: inline-flex;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-4);
+    cursor: pointer;
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    color: var(--ds-text);
+  }
+
+  .root[data-label-placement='start'] .button {
+    justify-content: space-between;
+  }
+
+  .root[data-disabled] .button {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .root[data-readonly] .button {
+    cursor: default;
+  }
+
+  .text {
+    min-inline-size: 0;
+  }
+
+  /* Off: the track is --ds-line-control (3:1 or better against the page). On: accent. */
+  .track {
+    position: relative;
+    flex: none;
+    box-sizing: border-box;
+    inline-size: var(--ds-switch-track-width);
+    block-size: var(--ds-switch-track-height);
+    background: var(--ds-line-control);
+    border-radius: var(--ds-radius-pill);
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .knob {
+    position: absolute;
+    inset-block-start: var(--ds-switch-knob-offset);
+    inset-inline-start: var(--ds-switch-knob-offset);
+    inline-size: var(--ds-switch-knob-size);
+    block-size: var(--ds-switch-knob-size);
+    background: var(--ds-text);
+    border-radius: var(--ds-radius-pill);
+    transition: inset-inline-start var(--ds-duration) var(--ds-ease);
+  }
+
+  .button[data-hovered] .track {
+    background: var(--ds-text-3);
+  }
+
+  .button[data-selected] .track {
+    background: var(--ds-accent);
+  }
+
+  .button[data-selected] .knob {
+    inset-inline-start: calc(
+      var(--ds-switch-track-width) - var(--ds-switch-knob-size) - var(--ds-switch-knob-offset)
+    );
+  }
+
+  .button[data-focus-visible] .track {
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .button[data-invalid][data-focus-visible] .track {
+    box-shadow: var(--ds-focus-ring-danger);
+  }
+
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+  }
+
+  .messages:empty {
+    display: none;
+  }
+
+  /* Description and error line up with the label text, away from the track. */
+  .root[data-label-placement='start'] .messages {
+    padding-inline-end: calc(var(--ds-switch-track-width) + var(--ds-space-4));
+  }
+
+  .root[data-label-placement='end'] .messages {
+    padding-inline-start: calc(var(--ds-switch-track-width) + var(--ds-space-4));
+  }
+
+  @media (forced-colors: active) {
+    .track {
+      border: 1px solid CanvasText;
+    }
+
+    .knob {
+      background: CanvasText;
+    }
+
+    .button[data-selected] .track {
+      background: Highlight;
+    }
+  }
+}
