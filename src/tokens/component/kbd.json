@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "kbd": {
+    "height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 18,
+        "unit": "px"
+      },
+      "$description": "Height of a Kbd keycap (18px). Inline hint, not a target."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Horizontal padding of a Kbd keycap (4px)."
+    }
+  }
+}
