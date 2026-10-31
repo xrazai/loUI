@@ -1,0 +1,54 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-card-gap);
+    min-inline-size: 0;
+    padding: var(--ds-card-padding);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+  }
+
+  .root[data-padding='none'] {
+    padding: 0;
+  }
+
+  /* Only a floating card is raised and shadowed (AGENTS.md section 5, rule 3). */
+  .root[data-variant='raised'] {
+    border-color: var(--ds-line-strong);
+    background-color: var(--ds-surface-raised);
+    box-shadow: var(--ds-shadow-overlay);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+  }
+
+  .root[data-padding='none'] > .header {
+    padding: var(--ds-card-padding) var(--ds-card-padding) 0;
+  }
+
+  .title {
+    margin: 0;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    text-transform: uppercase;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    margin-inline-start: auto;
+  }
+}

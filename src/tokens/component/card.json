@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "card": {
+    "padding": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Inner padding of a Card (20px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Vertical gap between the header and the content of a Card (16px)."
+    }
+  }
+}
