@@ -35,7 +35,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Tokens
 
-- [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
 
 ### Typography and fonts
 
@@ -98,7 +97,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
 - [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
 - [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
-- [ ] **TEST-015** (P2 · S) Flaky-test policy: retries only in visual CI, quarantine label, weekly review; coverage reported but not the quality gate (a11y + contract tests are).
 - [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
@@ -112,9 +110,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
 - [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
-- [ ] **AI-011** (P2 · M) Codemod infrastructure (`jscodeshift`) shipped with every breaking change; deprecations carry migration hints agents can apply automatically.
-- [ ] **AI-016** (P2 · S) Manifest field for deprecated props (consumed by `eslint-plugin-loui/no-deprecated` and the MCP server); RTL pseudo-locale smoke render.
-- [ ] **AI-013** (P3 · L) More AI-native components: tool-call/step display, citations/sources, feedback controls (thumbs), regenerate action, markdown renderer recipe for `ChatPanel.renderContent`. (Streaming, Stop/Retry, approval cards are done.)
 - [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
 
 ---
@@ -126,8 +121,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 ## Phase 7 — Packaging, release and governance
 
-- [ ] **REL-005** (P2 · S) Figma workflow: Tokens Studio sync, component naming parity, Code Connect mapping (optional).
-- [ ] **REL-007** (P2 · S) Investigate the 531 kB JS bundle of `examples/vite-app` (which dependencies dominate; code-splitting guidance for consumers; check lucide and React Aria tree-shaking in a real app).
 
 ---
 
@@ -135,8 +128,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
-- [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
-- [ ] **GAP-007** (P3 · M) Data visualization expansion: stacked bars, standalone legend component, shared chart a11y layer. (`Sparkline` and `DonutMeter` are done.)
 
 ---
 
