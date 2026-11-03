@@ -8,7 +8,7 @@
   .list {
     display: flex;
     gap: var(--ds-tabs-gap);
-    border-block-end: 1px solid var(--ds-line);
+    border-block-end: var(--ds-tabs-divider-width) solid var(--ds-line);
     overflow-x: auto;
   }
 
@@ -20,8 +20,10 @@
     gap: var(--ds-space-2);
     box-sizing: border-box;
     min-block-size: var(--ds-target-min);
-    margin-block-end: -1px;
-    padding-block: var(--ds-space-1) var(--ds-space-3);
+
+    /* The tab is one divider-width shorter than the old -1px margin made it overlap, so the
+       scroll container has no vertical overflow (GAP-037). */
+    padding-block: var(--ds-space-1) calc(var(--ds-space-3) - var(--ds-tabs-divider-width));
     border-block-end: var(--ds-tabs-indicator-height) solid transparent;
     border-radius: var(--ds-radius-sm) var(--ds-radius-sm) 0 0;
     color: var(--ds-text-3);

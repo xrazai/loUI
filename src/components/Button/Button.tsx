@@ -1,7 +1,10 @@
+import { useCallback } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
 import type { ButtonProps as AriaButtonProps } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
+import { Kbd, KbdInsideControlContext, useIsApplePlatform } from '../Kbd/Kbd';
+import { ariaKeyShortcut } from '../Kbd/keys';
 import { Spinner } from '../Spinner';
 import styles from './Button.module.css';
 
@@ -26,6 +29,13 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
   leading?: ReactNode;
   /** Node after the label, for example a `Kbd` shortcut hint. */
   trailing?: ReactNode;
+  /**
+   * Keyboard shortcut of the action, as `Kbd` keys (`['Mod', 'K']`). Renders the hint after the
+   * label (before `trailing`), hidden from assistive technology, and sets `aria-keyshortcuts` so
+   * the shortcut is announced once and is not part of the accessible name. Bind the key itself
+   * with `useHotkeys`.
+   */
+  shortcut?: readonly string[];
   /** Label: a short verb plus object in sentence case ("Create order"). */
   children?: ReactNode;
   className?: string;
@@ -48,13 +58,31 @@ export function Button({
   fullWidth = false,
   leading,
   trailing,
+  shortcut,
   children,
   className,
+  ref,
   ...rest
 }: ButtonProps) {
+  const apple = useIsApplePlatform(undefined);
+  const hasShortcut = shortcut !== undefined && shortcut.length > 0;
+  const keyShortcuts = hasShortcut ? ariaKeyShortcut(shortcut, apple) : undefined;
+  // React Aria's Button does not forward `aria-keyshortcuts`, so it is set on the element.
+  const setRef = useCallback(
+    (element: HTMLButtonElement | null) => {
+      if (element) {
+        if (keyShortcuts) element.setAttribute('aria-keyshortcuts', keyShortcuts);
+        else element.removeAttribute('aria-keyshortcuts');
+      }
+      if (typeof ref === 'function') ref(element);
+      else if (ref) ref.current = element;
+    },
+    [keyShortcuts, ref],
+  );
   return (
     <AriaButton
       {...rest}
+      ref={setRef}
       data-variant={variant}
       data-size={size}
       data-full-width={fullWidth || undefined}
@@ -76,7 +104,16 @@ export function Button({
               spinner
             )}
             <span className={styles.label}>{children}</span>
-            {trailing ? <span className={styles.slot}>{trailing}</span> : null}
+            {hasShortcut || trailing ? (
+              <KbdInsideControlContext value>
+                {hasShortcut ? (
+                  <span className={styles.slot}>
+                    <Kbd keys={shortcut} />
+                  </span>
+                ) : null}
+                {trailing ? <span className={styles.slot}>{trailing}</span> : null}
+              </KbdInsideControlContext>
+            ) : null}
           </span>
         );
       }}

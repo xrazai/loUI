@@ -7,7 +7,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { Button } from '../../components/Button';
 import { Combobox } from '../../components/Combobox';
+import { ConfirmDialog } from '../../components/Dialog';
 import { CurrencyInput } from '../../components/CurrencyInput';
 import { Input } from '../../components/Input';
 import { NumberField } from '../../components/NumberField';
@@ -79,5 +81,38 @@ describe.each(fields)('$name with a consumer onKeyDown', ({ ui }) => {
     });
     await userEvent.keyboard('{F9}');
     expect(onF9).not.toHaveBeenCalled();
+  });
+});
+
+describe('Escape hotkey after a ConfirmDialog closes (GAP-046)', () => {
+  it('fires again while focus is back on the closed trigger', async () => {
+    const onEscape = vi.fn();
+    function Page() {
+      useHotkeys([{ keys: 'Escape', handler: onEscape }]);
+      return (
+        <ConfirmDialog
+          trigger={<Button>Delete order</Button>}
+          title="Delete order #1048?"
+          description="The order will be removed. This can't be undone."
+          confirmLabel="Delete order"
+          onConfirm={() => undefined}
+        />
+      );
+    }
+    const screen = await renderWithProvider(
+      <HotkeyProvider platform="other">
+        <Page />
+      </HotkeyProvider>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Delete order' });
+    await trigger.click();
+    await expect.element(screen.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+    // Escape closes the dialog and must not reach the page hotkey while it is open.
+    await userEvent.keyboard('{Escape}');
+    expect(onEscape).not.toHaveBeenCalled();
+    await expect.poll(() => document.querySelector('[role="alertdialog"]')).toBeNull();
+    await expect.element(trigger).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    expect(onEscape).toHaveBeenCalledTimes(1);
   });
 });

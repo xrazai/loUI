@@ -216,6 +216,44 @@ describe('Tabs', () => {
     });
   });
 
+  describe('layout', () => {
+    it('shows no vertical scrollbar when the tabs fit (GAP-037)', async () => {
+      const screen = await renderWithProvider(
+        <main>
+          <Example />
+        </main>,
+      );
+      const list = screen.getByRole('tablist').element();
+      await expect.poll(() => list.scrollHeight - list.clientHeight).toBeLessThanOrEqual(0);
+      expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+    });
+
+    it('still scrolls horizontally when there are many tabs', async () => {
+      const ids = Array.from({ length: 30 }, (_, i) => `tab-${i}`);
+      const screen = await renderWithProvider(
+        <main style={{ inlineSize: 320 }}>
+          <Tabs>
+            <TabList aria-label="Many">
+              {ids.map((id) => (
+                <Tab key={id} id={id}>
+                  {id}
+                </Tab>
+              ))}
+            </TabList>
+            {ids.map((id) => (
+              <TabPanel key={id} id={id}>
+                {id}
+              </TabPanel>
+            ))}
+          </Tabs>
+        </main>,
+      );
+      const list = screen.getByRole('tablist').element();
+      expect(list.scrollWidth).toBeGreaterThan(list.clientWidth);
+      expect(getComputedStyle(list).overflowX).not.toBe('visible');
+    });
+  });
+
   describe('accessibility', () => {
     it('has no axe violations (axe)', async () => {
       const screen = await renderWithProvider(

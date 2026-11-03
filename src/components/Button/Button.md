@@ -34,6 +34,7 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 | `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                                    |
 | `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size="sm" />`. Decorative.                                                               |
 | `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                                    |
+| `shortcut`   | `readonly string[]`                                                 | none          | Shortcut keys (`['Mod', 'K']`): renders a `Kbd` hint, sets `aria-keyshortcuts`; not part of the name.   |
 | `isPending`  | `boolean`                                                           | `false`       | Busy: dimmed label plus spinner, `aria-disabled`, presses and form submission ignored, stays focusable. |
 | `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                                          |
 | `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`.               |
@@ -43,6 +44,8 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 Other React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted.
 
 ## Accessibility
+
+- A `Kbd` inside a button (through `shortcut` or `trailing`) is hidden from assistive technology, so the accessible name is only the label ("Settings", not "Settings Escape"). `shortcut` also sets `aria-keyshortcuts` (`Control+K`, `Meta+K` on Apple).
 
 - A real `<button>`; the name is its visible label.
 - Keys: `Tab` focuses, `Enter` and `Space` press (RAC). One tab stop.

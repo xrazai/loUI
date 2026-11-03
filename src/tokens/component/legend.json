@@ -11,6 +11,11 @@
       "$value": "{space.4}",
       "$description": "Gap between the items of a horizontal Legend (16px)."
     },
+    "share-col-w": {
+      "$type": "dimension",
+      "$value": { "value": 48, "unit": "px" },
+      "$description": "Minimum width of the share column in a Legend with `showShare` (48px), so shares line up."
+    },
     "color": {
       "$type": "color",
       "$value": "{color.text}",

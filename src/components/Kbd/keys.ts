@@ -85,3 +85,34 @@ export function resolveKey(raw: string, apple: boolean): ResolvedKey {
   const id: KbdKeyId = alias === 'mod' ? (apple ? 'command' : 'control') : alias;
   return { kind: 'named', id, glyph: GLYPHS[id] ?? (apple ? APPLE_GLYPHS[id] : undefined) };
 }
+
+const ARIA_KEYS: Readonly<Record<KbdKeyId, string>> = {
+  command: 'Meta',
+  control: 'Control',
+  shift: 'Shift',
+  alt: 'Alt',
+  enter: 'Enter',
+  escape: 'Escape',
+  tab: 'Tab',
+  backspace: 'Backspace',
+  delete: 'Delete',
+  space: 'Space',
+  up: 'ArrowUp',
+  down: 'ArrowDown',
+  left: 'ArrowLeft',
+  right: 'ArrowRight',
+  home: 'Home',
+  end: 'End',
+  pageUp: 'PageUp',
+  pageDown: 'PageDown',
+};
+
+/** The `aria-keyshortcuts` value for one shortcut: `['Mod', 'K']` gives `Control+K` (`Meta+K` on Apple). */
+export function ariaKeyShortcut(keys: readonly string[], apple: boolean): string {
+  return keys
+    .map((raw) => {
+      const key = resolveKey(raw, apple);
+      return key.kind === 'named' ? ARIA_KEYS[key.id] : key.text.toUpperCase();
+    })
+    .join('+');
+}

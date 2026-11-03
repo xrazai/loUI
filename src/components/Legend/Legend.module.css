@@ -48,6 +48,32 @@
     box-shadow: var(--ds-focus-ring);
   }
 
+  /* Vertical legends with a value or share column share one grid, so the columns line up row to row. */
+  .root[data-orientation='vertical'][data-columns] {
+    display: grid;
+    gap: var(--ds-space-1) var(--ds-space-2);
+  }
+
+  .root[data-orientation='vertical'][data-columns='1'] {
+    grid-template-columns: var(--ds-legend-swatch-size) minmax(0, 1fr) auto;
+  }
+
+  .root[data-orientation='vertical'][data-columns='2'] {
+    grid-template-columns: var(--ds-legend-swatch-size) minmax(0, 1fr) auto auto;
+  }
+
+  .root[data-orientation='vertical'][data-columns] .item,
+  .root[data-orientation='vertical'][data-columns] .toggle {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .root[data-orientation='vertical'][data-columns] .value,
+  .root[data-orientation='vertical'][data-columns] .share {
+    text-align: end;
+  }
+
   .name {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -61,9 +87,19 @@
     white-space: nowrap;
   }
 
+  .share {
+    min-inline-size: var(--ds-legend-share-col-w);
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    text-align: end;
+    white-space: nowrap;
+  }
+
   /* Hidden series: struck label and hollow swatch, so the state never relies on color. */
   .item[data-off] .name,
-  .item[data-off] .value {
+  .item[data-off] .value,
+  .item[data-off] .share {
     color: var(--ds-text-3);
     text-decoration: line-through;
   }

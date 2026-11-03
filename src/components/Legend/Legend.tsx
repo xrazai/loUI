@@ -2,9 +2,10 @@ import { useId } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 import { ToggleButton } from 'react-aria-components';
 import { useControllableState } from '../../hooks/useControllableState';
-import { useMessages } from '../../i18n';
+import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
-import { seriesEncoding } from '../Chart/a11y';
+import { formatPercent } from '../../utils/number';
+import { safeValue, seriesEncoding } from '../Chart/a11y';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { messages } from './Legend.messages';
 import styles from './Legend.module.css';
@@ -18,6 +19,11 @@ export interface LegendItem {
   label: string;
   /** Optional value printed after the label (a formatted number, a percentage). */
   value?: ReactNode;
+  /**
+   * Numeric size of the series. With `showShare` the legend prints its share of the whole next
+   * to the label. Negative and non-finite amounts count as 0. Items without an `amount` print no share.
+   */
+  amount?: number;
   /**
    * Explicit CSS color of the swatch (for example `var(--ds-success)`). Without it the swatch
    * follows the neutral series ramp by position, with a hatch from the fifth item on, exactly
@@ -45,6 +51,21 @@ export interface LegendProps extends Omit<
   defaultHiddenIds?: readonly string[];
   /** Called with the new list of hidden ids whenever the user toggles an item. */
   onHiddenIdsChange?: (hiddenIds: string[]) => void;
+  /**
+   * Prints the share of each item (its `amount` over the denominator) in a column of its own,
+   * formatted with `Intl` for the active locale. When an item also has a `value`, both show, in
+   * two aligned columns (value, then share). Hidden series print no share and leave the
+   * denominator. Percentages are rounded one by one, so the printed shares may sum to 99% or
+   * 101%; raise `shareDigits` when that matters, the legend never adjusts them.
+   */
+  showShare?: boolean;
+  /**
+   * Denominator of the shares, in the unit of `amount`. Default: the sum of the amounts of the
+   * visible (not hidden) items. Pass the real total when the items are only part of a whole.
+   */
+  shareOf?: number;
+  /** Decimals of the printed shares. Default `0`. */
+  shareDigits?: number;
   /** Per-instance overrides of the built-in messages. */
   messages?: Partial<typeof messages.en>;
 }
@@ -72,6 +93,9 @@ export function Legend({
   hiddenIds,
   defaultHiddenIds = NO_IDS,
   onHiddenIdsChange,
+  showShare = false,
+  shareOf,
+  shareDigits = 0,
   messages: overrides,
   className,
   'aria-label': ariaLabel,
@@ -80,6 +104,7 @@ export function Legend({
   ...rest
 }: LegendProps) {
   const t = useMessages('Legend', messages, overrides);
+  const locale = useDSLocale();
   const hintId = useId();
   const [hidden, setHidden] = useControllableState<readonly string[]>({
     value: hiddenIds,
@@ -97,6 +122,16 @@ export function Legend({
       ? { 'aria-label': ariaLabel ?? t.label }
       : { 'aria-labelledby': ariaLabelledBy };
 
+  const denominator =
+    shareOf === undefined
+      ? items.reduce(
+          (sum, item) => (hidden.includes(item.id) ? sum : sum + safeValue(item.amount ?? 0)),
+          0,
+        )
+      : safeValue(shareOf);
+  const hasValue = items.some((item) => item.value !== undefined);
+  const columns = (hasValue ? 1 : 0) + (showShare ? 1 : 0);
+
   return (
     <>
       <ul
@@ -106,10 +141,18 @@ export function Legend({
         className={classNames(styles.root, className)}
         data-orientation={orientation}
         data-interactive={interactive || undefined}
+        data-columns={columns > 0 ? columns : undefined}
       >
         {items.map((item, index) => {
           const off = hidden.includes(item.id);
           const encoding = seriesEncoding(index, item.color !== undefined);
+          const share =
+            showShare && !off && item.amount !== undefined
+              ? formatPercent(denominator > 0 ? safeValue(item.amount) / denominator : 0, locale, {
+                  minimumFractionDigits: shareDigits,
+                  maximumFractionDigits: shareDigits,
+                })
+              : undefined;
           const content = (
             <>
               <span
@@ -121,7 +164,14 @@ export function Legend({
                 style={swatchStyle(item.color)}
               />
               <span className={styles.name}>{item.label}</span>
-              {item.value === undefined ? null : <span className={styles.value}>{item.value}</span>}
+              {item.value === undefined ? (
+                hasValue ? (
+                  <span className={styles.value} />
+                ) : null
+              ) : (
+                <span className={styles.value}>{item.value}</span>
+              )}
+              {showShare ? <span className={styles.share}>{share}</span> : null}
             </>
           );
           return (

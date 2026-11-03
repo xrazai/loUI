@@ -6,6 +6,14 @@
       "$value": "{space.5}",
       "$description": "Gap between tabs in a horizontal tab list (20px)."
     },
+    "divider-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$description": "Thickness of the line under the tab list (1px). The tabs are one divider shorter so the list never overflows vertically."
+    },
     "indicator-height": {
       "$type": "dimension",
       "$value": {

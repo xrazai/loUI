@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { createContext, useContext, useSyncExternalStore } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { isMacPlatform } from '../../hooks/hotkey';
 import { useDSLocale, useMessages } from '../../i18n';
@@ -42,10 +42,17 @@ interface KbdChildrenProps extends KbdBaseProps {
 
 export type KbdProps = KbdKeysProps | KbdChildrenProps;
 
+/**
+ * Provided by controls that name themselves from their content (Button). A `Kbd` inside one is
+ * hidden from assistive technology so the shortcut is not read as part of the name; the control
+ * exposes it through `aria-keyshortcuts` instead.
+ */
+export const KbdInsideControlContext = createContext(false);
+
 const subscribe = () => () => undefined;
 
 /** Apple platforms after hydration; `false` on the server and for the first client render. */
-function useIsApplePlatform(override: KbdPlatform | undefined): boolean {
+export function useIsApplePlatform(override: KbdPlatform | undefined): boolean {
   const detected = useSyncExternalStore(subscribe, isMacPlatform, () => false);
   return override === undefined ? detected : override === 'apple';
 }
@@ -65,11 +72,13 @@ export function Kbd({
   const locale = useDSLocale();
   const t = useMessages('Kbd', messages, overrides);
   const apple = useIsApplePlatform(platform);
+  const insideControl = useContext(KbdInsideControlContext);
   const classes = classNames(styles.root, className);
+  const hidden = insideControl ? { 'aria-hidden': true as const } : undefined;
 
   if (keys === undefined) {
     return (
-      <kbd {...rest} className={classes}>
+      <kbd {...hidden} {...rest} className={classes}>
         {children}
       </kbd>
     );
@@ -95,7 +104,7 @@ export function Kbd({
   });
 
   return (
-    <kbd {...rest} className={classes}>
+    <kbd {...hidden} {...rest} className={classes}>
       {parts}
     </kbd>
   );
