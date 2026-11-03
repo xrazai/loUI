@@ -58,6 +58,8 @@ DialogTrigger
 - See the Dialog doc ("Layers") for popovers opened from inside the sheet.
 - **Exit animation.** The sheet stays mounted for the 150 ms slide-out. It keeps rendering the props of its last open render during that time, so you can clear the state that feeds it (`setRecord(null)`) in the same update that closes it and the panel will not animate out empty (no blank fields or title). Reopening shows the new content at once. Under `prefers-reduced-motion` there is no animation, so it leaves the DOM immediately (tested). If the tab is hidden the browser does not run animations and React Aria unmounts the sheet only once the tab is visible again.
 
+Controlled use without a `trigger` renders the overlay directly, without a `DialogTrigger`, so opening the sheet logs nothing to the console (GAP-022). Focus still returns to the element focused before it opened.
+
 ## Content rules
 
 - Title: the record type or name, sentence case. Meta: its code, as data.

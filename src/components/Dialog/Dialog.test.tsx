@@ -129,6 +129,47 @@ describe('Dialog', () => {
     await expect.element(fixed.getByRole('dialog')).toBeVisible();
   });
 
+  it('opens controlled without a trigger and logs nothing to the console (GAP-022)', async () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      function Controlled() {
+        const [open, setOpen] = useState(false);
+        return (
+          <main>
+            <Button
+              onPress={() => {
+                setOpen(true);
+              }}
+            >
+              Open it
+            </Button>
+            <Dialog
+              isOpen={open}
+              onOpenChange={(value) => {
+                setOpen(value);
+              }}
+              title="Controlled"
+            >
+              <p>Body</p>
+            </Dialog>
+          </main>
+        );
+      }
+      const screen = await renderWithProvider(<Controlled />);
+      await userEvent.click(screen.getByRole('button', { name: 'Open it' }));
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await userEvent.keyboard('{Escape}');
+      await expect.poll(() => none()).toBe(true);
+      await expect.element(screen.getByRole('button', { name: 'Open it' })).toHaveFocus();
+      expect(error).not.toHaveBeenCalled();
+      expect(warn).not.toHaveBeenCalled();
+    } finally {
+      error.mockRestore();
+      warn.mockRestore();
+    }
+  });
+
   it('is controlled through isOpen and reports changes', async () => {
     const onOpenChange = vi.fn();
     function Controlled() {

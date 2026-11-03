@@ -97,33 +97,41 @@ export function Dialog({
   className,
   ref,
 }: DialogProps) {
-  return (
-    <DialogTrigger
-      {...(isOpen === undefined ? {} : { isOpen })}
-      {...(defaultOpen === undefined ? {} : { defaultOpen })}
-      {...(onOpenChange ? { onOpenChange } : {})}
+  const stateProps = {
+    ...(isOpen === undefined ? {} : { isOpen }),
+    ...(defaultOpen === undefined ? {} : { defaultOpen }),
+    ...(onOpenChange ? { onOpenChange } : {}),
+  };
+  // Without a trigger the overlay manages its own state: a DialogTrigger with no pressable child logs a PressResponder warning on every open (GAP-022).
+  // RAC writes an inline z-index; the style prop is the only way to use the dialog layer.
+  const overlay = (
+    <ModalOverlay
+      {...(trigger ? {} : stateProps)}
+      isDismissable={isDismissable}
+      {...(isKeyboardDismissDisabled === undefined ? {} : { isKeyboardDismissDisabled })}
+      className={classNames(styles.overlay)}
+      style={{ zIndex: 'var(--ds-z-dialog)' }}
     >
-      {trigger}
-      {/* RAC writes an inline z-index; the style prop is the only way to use the dialog layer. */}
-      <ModalOverlay
-        isDismissable={isDismissable}
-        {...(isKeyboardDismissDisabled === undefined ? {} : { isKeyboardDismissDisabled })}
-        className={classNames(styles.overlay)}
-        style={{ zIndex: 'var(--ds-z-dialog)' }}
+      <DialogPanel
+        title={title}
+        description={description}
+        footer={footer}
+        size={size}
+        role={role}
+        className={className}
+        panelRef={ref}
       >
-        <DialogPanel
-          title={title}
-          description={description}
-          footer={footer}
-          size={size}
-          role={role}
-          className={className}
-          panelRef={ref}
-        >
-          {children}
-        </DialogPanel>
-      </ModalOverlay>
+        {children}
+      </DialogPanel>
+    </ModalOverlay>
+  );
+  return trigger ? (
+    <DialogTrigger {...stateProps}>
+      {trigger}
+      {overlay}
     </DialogTrigger>
+  ) : (
+    overlay
   );
 }
 

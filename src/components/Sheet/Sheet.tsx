@@ -102,37 +102,45 @@ export function Sheet({
   ref,
 }: SheetProps) {
   const t = useMessages('Sheet', messages, overrides);
-  return (
-    <DialogTrigger
-      {...(isOpen === undefined ? {} : { isOpen })}
-      {...(defaultOpen === undefined ? {} : { defaultOpen })}
-      {...(onOpenChange ? { onOpenChange } : {})}
+  const stateProps = {
+    ...(isOpen === undefined ? {} : { isOpen }),
+    ...(defaultOpen === undefined ? {} : { defaultOpen }),
+    ...(onOpenChange ? { onOpenChange } : {}),
+  };
+  // Without a trigger the overlay manages its own state: a DialogTrigger with no pressable child logs a PressResponder warning on every open (GAP-022).
+  // RAC writes an inline z-index; the style prop is the only way to use the sheet layer.
+  const overlay = (
+    <ModalOverlay
+      {...(trigger ? {} : stateProps)}
+      isDismissable={isDismissable}
+      {...(isKeyboardDismissDisabled === undefined ? {} : { isKeyboardDismissDisabled })}
+      className={classNames(styles.overlay)}
+      style={{ zIndex: 'var(--ds-z-sheet)' }}
     >
-      {trigger}
-      {/* RAC writes an inline z-index; the style prop is the only way to use the sheet layer. The panel is inside the overlay, so it stacks above the scrim. */}
-      <ModalOverlay
-        isDismissable={isDismissable}
-        {...(isKeyboardDismissDisabled === undefined ? {} : { isKeyboardDismissDisabled })}
-        className={classNames(styles.overlay)}
-        style={{ zIndex: 'var(--ds-z-sheet)' }}
+      <SheetPanel
+        title={title}
+        meta={meta}
+        headerExtra={headerExtra}
+        description={description}
+        footer={footer}
+        footerStart={footerStart}
+        size={size}
+        padded={padded}
+        closeLabel={t.close}
+        className={className}
+        panelRef={ref}
       >
-        <SheetPanel
-          title={title}
-          meta={meta}
-          headerExtra={headerExtra}
-          description={description}
-          footer={footer}
-          footerStart={footerStart}
-          size={size}
-          padded={padded}
-          closeLabel={t.close}
-          className={className}
-          panelRef={ref}
-        >
-          {children}
-        </SheetPanel>
-      </ModalOverlay>
+        {children}
+      </SheetPanel>
+    </ModalOverlay>
+  );
+  return trigger ? (
+    <DialogTrigger {...stateProps}>
+      {trigger}
+      {overlay}
     </DialogTrigger>
+  ) : (
+    overlay
   );
 }
 
