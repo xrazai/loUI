@@ -22,7 +22,7 @@ describe('InlinePriceEdit', () => {
     const screen = await setup();
     await userEvent.click(trigger(screen));
     const field = screen.getByRole('textbox', { name: 'Price of Linen, white' });
-    await expect.element(field).toHaveValue('$12.50');
+    await expect.element(field).toHaveValue('12.50');
     await expect.element(field).toHaveFocus();
   });
 
@@ -37,7 +37,7 @@ describe('InlinePriceEdit', () => {
     const onSave = vi.fn();
     const screen = await setup({ onSave });
     await userEvent.click(trigger(screen));
-    await userEvent.keyboard('{Control>}a{/Control}{Delete}1800{Enter}');
+    await userEvent.keyboard('{Control>}a{/Control}{Delete}18{Enter}');
     expect(onSave).toHaveBeenCalledExactlyOnceWith(1800);
     await expect.element(trigger(screen, '$18.00')).toHaveFocus();
     await expect.element(screen.getByRole('status')).toHaveTextContent('Price saved: $18.00');
@@ -61,7 +61,7 @@ describe('InlinePriceEdit', () => {
       </RecipeHost>,
     );
     await userEvent.click(trigger(screen));
-    await userEvent.keyboard('{Control>}a{/Control}{Delete}700');
+    await userEvent.keyboard('{Control>}a{/Control}{Delete}7');
     await userEvent.click(screen.getByRole('button', { name: 'Elsewhere' }));
     expect(onSave).toHaveBeenCalledExactlyOnceWith(700);
     await expect.element(screen.getByRole('button', { name: 'Elsewhere' })).toHaveFocus();

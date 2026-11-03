@@ -18,7 +18,7 @@ Components: `Button`, `CurrencyInput`, `Text`, `Inline`, `Stack`.
 
 ## What it does
 
-1. **Press** the price (or `Enter` / `Space` on it) to open the field. It takes focus with the current value; the digits-only typing model of `CurrencyInput` applies ("1800" gives $18.00).
+1. **Press** the price (or `Enter` / `Space` on it) to open the field. It takes focus with the current value selected as plain text. The field uses `entryMode="amount"`: digits are whole units and the decimal mark starts the cents ("18" gives $18.00, "12.5" gives $12.50), which matches how people say a price.
 2. **Enter** confirms. **Esc** cancels: the old value stays, nothing is saved, and the key does not close a surrounding dialog or sheet (`stopPropagation`).
 3. **Blur** confirms (clicking or tabbing elsewhere). Focus stays where the user moved it. After Enter or Esc, focus returns to the price button.
 4. **Empty** (select all, then `Delete`) means "no price of its own". The placeholder shows the inherited price while the field is empty, even focused, until the first digit is typed.
@@ -116,6 +116,7 @@ export function InlinePriceEdit({
         {editing ? (
           <CurrencyInput
             size="sm"
+            entryMode="amount"
             aria-label={`Price of ${name}`}
             currency={currency}
             inputRef={field}

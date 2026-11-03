@@ -38,7 +38,7 @@ export const EnterConfirms: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: /Edit price of/ }));
-    await userEvent.keyboard('{Control>}a{/Control}{Delete}1800{Enter}');
+    await userEvent.keyboard('{Control>}a{/Control}{Delete}18{Enter}');
     await expect(args.onSave).toHaveBeenCalledWith(1800);
     await expect(canvas.getByRole('status')).toHaveTextContent('Price saved: $18.00');
   },

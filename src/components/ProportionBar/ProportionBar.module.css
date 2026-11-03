@@ -33,6 +33,19 @@
     --ds-proportion-bar-color: var(--ds-text);
   }
 
+  /* The unfilled part of a bar with `total`: nothing is drawn, the track shows through. */
+  .rest {
+    flex: var(--ds-proportion-bar-share) 1 0;
+    min-inline-size: 0;
+  }
+
+  /* Legend swatch of the remaining part: hollow and dashed, like the other "not filled" states. */
+  .swatch[data-remaining] {
+    box-sizing: border-box;
+    border: 1px dashed var(--ds-line-control);
+    background-color: transparent;
+  }
+
   .segment[data-ramp='1'],
   .swatch[data-ramp='1'] {
     --ds-proportion-bar-color: var(--ds-text-2);
@@ -58,9 +71,12 @@
     );
   }
 
+  /* One grid for the whole legend, so every column lines up from row to row. */
   .legend {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns:
+      var(--ds-proportion-bar-swatch-size) minmax(0, 1fr)
+      repeat(var(--ds-proportion-bar-columns), auto);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -68,9 +84,8 @@
 
   .item {
     display: grid;
-    grid-template-columns:
-      var(--ds-proportion-bar-swatch-size) minmax(0, 1fr) var(--ds-proportion-bar-percent-col-w)
-      auto;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
     gap: var(--ds-space-3);
     align-items: center;
     padding-block: var(--ds-space-3);
@@ -96,19 +111,27 @@
     white-space: nowrap;
   }
 
-  .percent,
-  .amount {
+  .share,
+  .value,
+  .count {
     font-family: var(--ds-font-mono);
+    font-variant-numeric: tabular-nums;
     text-align: end;
     white-space: nowrap;
   }
 
-  .percent {
+  .share {
+    min-inline-size: var(--ds-proportion-bar-percent-col-w);
     color: var(--ds-text-2);
     font-size: var(--ds-fs-label);
   }
 
-  .amount {
+  .count {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+  }
+
+  .value {
     font-weight: var(--ds-weight-medium);
   }
 
@@ -121,6 +144,11 @@
     .swatch {
       forced-color-adjust: none;
       background-color: canvastext;
+    }
+
+    .swatch[data-remaining] {
+      border-color: canvastext;
+      background-color: transparent;
     }
 
     .segment[data-ramp='1'],

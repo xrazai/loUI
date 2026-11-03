@@ -142,6 +142,8 @@ export type TokenName =
   | 'z.tooltip'
   | 'opacity.disabled'
   | 'accordion.padding-inline'
+  | 'add-card.min-block-size'
+  | 'add-card.gap'
   | 'agent-card.min-height'
   | 'agent-card.padding'
   | 'agent-card.gap'
@@ -185,6 +187,8 @@ export type TokenName =
   | 'calendar.cell-size'
   | 'calendar.weekday-height'
   | 'calendar.today-ring-width'
+  | 'card-link.gap'
+  | 'card-link.text-gap'
   | 'card.padding'
   | 'card.gap'
   | 'chart-series.1'
@@ -202,6 +206,13 @@ export type TokenName =
   | 'chart.outline-w'
   | 'chart.tooltip-padding-inline'
   | 'chart.tooltip-padding-block'
+  | 'chart.ref-w'
+  | 'chart.ref-average-dash'
+  | 'chart.ref-average-gap'
+  | 'chart.ref-target-dash'
+  | 'chart.ref-target-dot'
+  | 'chart.ref-target-gap'
+  | 'chart.tooltip-max-w'
   | 'chart.color'
   | 'chart.tooltip-x'
   | 'chart.tooltip-y'
@@ -297,6 +308,7 @@ export type TokenName =
   | 'ledger-list.text-gap'
   | 'legend.swatch-size'
   | 'legend.gap'
+  | 'legend.share-col-w'
   | 'legend.color'
   | 'matrix-grid.cell-size'
   | 'matrix-grid.color'
@@ -329,6 +341,7 @@ export type TokenName =
   | 'proportion-bar.percent-col-w'
   | 'proportion-bar.hatch-size'
   | 'proportion-bar.color'
+  | 'proportion-bar.columns'
   | 'proportion-bar.share'
   | 'radio.size'
   | 'radio.dot-size'
@@ -414,6 +427,7 @@ export type TokenName =
   | 'switch.knob-size'
   | 'switch.knob-offset'
   | 'tabs.gap'
+  | 'tabs.divider-width'
   | 'tabs.indicator-height'
   | 'tabs.count-size'
   | 'tabs.count-padding-inline'
@@ -578,6 +592,8 @@ export type TokenCssVar =
   | '--ds-z-tooltip'
   | '--ds-opacity-disabled'
   | '--ds-accordion-padding-inline'
+  | '--ds-add-card-min-block-size'
+  | '--ds-add-card-gap'
   | '--ds-agent-card-min-height'
   | '--ds-agent-card-padding'
   | '--ds-agent-card-gap'
@@ -621,6 +637,8 @@ export type TokenCssVar =
   | '--ds-calendar-cell-size'
   | '--ds-calendar-weekday-height'
   | '--ds-calendar-today-ring-width'
+  | '--ds-card-link-gap'
+  | '--ds-card-link-text-gap'
   | '--ds-card-padding'
   | '--ds-card-gap'
   | '--ds-chart-series-1'
@@ -638,6 +656,13 @@ export type TokenCssVar =
   | '--ds-chart-outline-w'
   | '--ds-chart-tooltip-padding-inline'
   | '--ds-chart-tooltip-padding-block'
+  | '--ds-chart-ref-w'
+  | '--ds-chart-ref-average-dash'
+  | '--ds-chart-ref-average-gap'
+  | '--ds-chart-ref-target-dash'
+  | '--ds-chart-ref-target-dot'
+  | '--ds-chart-ref-target-gap'
+  | '--ds-chart-tooltip-max-w'
   | '--ds-chart-color'
   | '--ds-chart-tooltip-x'
   | '--ds-chart-tooltip-y'
@@ -733,6 +758,7 @@ export type TokenCssVar =
   | '--ds-ledger-list-text-gap'
   | '--ds-legend-swatch-size'
   | '--ds-legend-gap'
+  | '--ds-legend-share-col-w'
   | '--ds-legend-color'
   | '--ds-matrix-grid-cell-size'
   | '--ds-matrix-grid-color'
@@ -765,6 +791,7 @@ export type TokenCssVar =
   | '--ds-proportion-bar-percent-col-w'
   | '--ds-proportion-bar-hatch-size'
   | '--ds-proportion-bar-color'
+  | '--ds-proportion-bar-columns'
   | '--ds-proportion-bar-share'
   | '--ds-radio-size'
   | '--ds-radio-dot-size'
@@ -850,6 +877,7 @@ export type TokenCssVar =
   | '--ds-switch-knob-size'
   | '--ds-switch-knob-offset'
   | '--ds-tabs-gap'
+  | '--ds-tabs-divider-width'
   | '--ds-tabs-indicator-height'
   | '--ds-tabs-count-size'
   | '--ds-tabs-count-padding-inline'
@@ -1032,6 +1060,8 @@ export const tokenValues = {
   'z.tooltip': { cssVar: '--ds-z-tooltip', type: 'number', value: 60 },
   'opacity.disabled': { cssVar: '--ds-opacity-disabled', type: 'number', value: 0.35 },
   'accordion.padding-inline': { cssVar: '--ds-accordion-padding-inline', type: 'dimension', value: '12px' },
+  'add-card.min-block-size': { cssVar: '--ds-add-card-min-block-size', type: 'dimension', value: '64px' },
+  'add-card.gap': { cssVar: '--ds-add-card-gap', type: 'dimension', value: '8px' },
   'agent-card.min-height': { cssVar: '--ds-agent-card-min-height', type: 'dimension', value: '196px' },
   'agent-card.padding': { cssVar: '--ds-agent-card-padding', type: 'dimension', value: '20px' },
   'agent-card.gap': { cssVar: '--ds-agent-card-gap', type: 'dimension', value: '12px' },
@@ -1075,6 +1105,8 @@ export const tokenValues = {
   'calendar.cell-size': { cssVar: '--ds-calendar-cell-size', type: 'dimension', value: '36px' },
   'calendar.weekday-height': { cssVar: '--ds-calendar-weekday-height', type: 'dimension', value: '24px' },
   'calendar.today-ring-width': { cssVar: '--ds-calendar-today-ring-width', type: 'dimension', value: '1px' },
+  'card-link.gap': { cssVar: '--ds-card-link-gap', type: 'dimension', value: '12px' },
+  'card-link.text-gap': { cssVar: '--ds-card-link-text-gap', type: 'dimension', value: '4px' },
   'card.padding': { cssVar: '--ds-card-padding', type: 'dimension', value: '20px' },
   'card.gap': { cssVar: '--ds-card-gap', type: 'dimension', value: '16px' },
   'chart-series.1': { cssVar: '--ds-chart-series-1', type: 'color', value: '#EDEDEA' },
@@ -1092,6 +1124,13 @@ export const tokenValues = {
   'chart.outline-w': { cssVar: '--ds-chart-outline-w', type: 'dimension', value: '2px' },
   'chart.tooltip-padding-inline': { cssVar: '--ds-chart-tooltip-padding-inline', type: 'dimension', value: '8px' },
   'chart.tooltip-padding-block': { cssVar: '--ds-chart-tooltip-padding-block', type: 'dimension', value: '4px' },
+  'chart.ref-w': { cssVar: '--ds-chart-ref-w', type: 'dimension', value: '1px' },
+  'chart.ref-average-dash': { cssVar: '--ds-chart-ref-average-dash', type: 'dimension', value: '6px' },
+  'chart.ref-average-gap': { cssVar: '--ds-chart-ref-average-gap', type: 'dimension', value: '4px' },
+  'chart.ref-target-dash': { cssVar: '--ds-chart-ref-target-dash', type: 'dimension', value: '10px' },
+  'chart.ref-target-dot': { cssVar: '--ds-chart-ref-target-dot', type: 'dimension', value: '2px' },
+  'chart.ref-target-gap': { cssVar: '--ds-chart-ref-target-gap', type: 'dimension', value: '3px' },
+  'chart.tooltip-max-w': { cssVar: '--ds-chart-tooltip-max-w', type: 'dimension', value: '240px' },
   'chart.color': { cssVar: '--ds-chart-color', type: 'color', value: '#8AB4FF' },
   'chart.tooltip-x': { cssVar: '--ds-chart-tooltip-x', type: 'dimension', value: '0px' },
   'chart.tooltip-y': { cssVar: '--ds-chart-tooltip-y', type: 'dimension', value: '0px' },
@@ -1187,6 +1226,7 @@ export const tokenValues = {
   'ledger-list.text-gap': { cssVar: '--ds-ledger-list-text-gap', type: 'dimension', value: '2px' },
   'legend.swatch-size': { cssVar: '--ds-legend-swatch-size', type: 'dimension', value: '10px' },
   'legend.gap': { cssVar: '--ds-legend-gap', type: 'dimension', value: '16px' },
+  'legend.share-col-w': { cssVar: '--ds-legend-share-col-w', type: 'dimension', value: '48px' },
   'legend.color': { cssVar: '--ds-legend-color', type: 'color', value: '#EDEDEA' },
   'matrix-grid.cell-size': { cssVar: '--ds-matrix-grid-cell-size', type: 'dimension', value: '40px' },
   'matrix-grid.color': { cssVar: '--ds-matrix-grid-color', type: 'color', value: '#A3A3A9' },
@@ -1219,6 +1259,7 @@ export const tokenValues = {
   'proportion-bar.percent-col-w': { cssVar: '--ds-proportion-bar-percent-col-w', type: 'dimension', value: '48px' },
   'proportion-bar.hatch-size': { cssVar: '--ds-proportion-bar-hatch-size', type: 'dimension', value: '3px' },
   'proportion-bar.color': { cssVar: '--ds-proportion-bar-color', type: 'color', value: '#EDEDEA' },
+  'proportion-bar.columns': { cssVar: '--ds-proportion-bar-columns', type: 'number', value: 2 },
   'proportion-bar.share': { cssVar: '--ds-proportion-bar-share', type: 'number', value: 1 },
   'radio.size': { cssVar: '--ds-radio-size', type: 'dimension', value: '18px' },
   'radio.dot-size': { cssVar: '--ds-radio-dot-size', type: 'dimension', value: '9px' },
@@ -1304,6 +1345,7 @@ export const tokenValues = {
   'switch.knob-size': { cssVar: '--ds-switch-knob-size', type: 'dimension', value: '16px' },
   'switch.knob-offset': { cssVar: '--ds-switch-knob-offset', type: 'dimension', value: '2px' },
   'tabs.gap': { cssVar: '--ds-tabs-gap', type: 'dimension', value: '20px' },
+  'tabs.divider-width': { cssVar: '--ds-tabs-divider-width', type: 'dimension', value: '1px' },
   'tabs.indicator-height': { cssVar: '--ds-tabs-indicator-height', type: 'dimension', value: '2px' },
   'tabs.count-size': { cssVar: '--ds-tabs-count-size', type: 'dimension', value: '20px' },
   'tabs.count-padding-inline': { cssVar: '--ds-tabs-count-padding-inline', type: 'dimension', value: '6px' },

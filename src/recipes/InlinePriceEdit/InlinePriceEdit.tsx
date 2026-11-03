@@ -86,6 +86,7 @@ export function InlinePriceEdit({
         {editing ? (
           <CurrencyInput
             size="sm"
+            entryMode="amount"
             aria-label={`Price of ${name}`}
             currency={currency}
             inputRef={field}

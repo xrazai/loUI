@@ -168,6 +168,10 @@
     /* accordion */
     --ds-accordion-padding-inline: var(--ds-space-3);
 
+    /* add-card */
+    --ds-add-card-min-block-size: var(--ds-space-16);
+    --ds-add-card-gap: var(--ds-space-2);
+
     /* agent-card */
     --ds-agent-card-min-height: 196px;
     --ds-agent-card-padding: var(--ds-space-5);
@@ -231,6 +235,10 @@
     --ds-calendar-weekday-height: var(--ds-target-min);
     --ds-calendar-today-ring-width: 1px;
 
+    /* card-link */
+    --ds-card-link-gap: var(--ds-space-3);
+    --ds-card-link-text-gap: var(--ds-space-1);
+
     /* card */
     --ds-card-padding: var(--ds-space-5);
     --ds-card-gap: var(--ds-space-4);
@@ -253,6 +261,13 @@
     --ds-chart-outline-w: 2px;
     --ds-chart-tooltip-padding-inline: var(--ds-space-2);
     --ds-chart-tooltip-padding-block: var(--ds-space-1);
+    --ds-chart-ref-w: 1px;
+    --ds-chart-ref-average-dash: 6px;
+    --ds-chart-ref-average-gap: 4px;
+    --ds-chart-ref-target-dash: 10px;
+    --ds-chart-ref-target-dot: 2px;
+    --ds-chart-ref-target-gap: 3px;
+    --ds-chart-tooltip-max-w: 240px;
     --ds-chart-color: var(--ds-accent);
     --ds-chart-tooltip-x: 0px;
     --ds-chart-tooltip-y: 0px;
@@ -400,6 +415,7 @@
     /* legend */
     --ds-legend-swatch-size: 10px;
     --ds-legend-gap: var(--ds-space-4);
+    --ds-legend-share-col-w: 48px;
     --ds-legend-color: var(--ds-text);
 
     /* matrix-grid */
@@ -446,6 +462,7 @@
     --ds-proportion-bar-percent-col-w: 48px;
     --ds-proportion-bar-hatch-size: 3px;
     --ds-proportion-bar-color: var(--ds-text);
+    --ds-proportion-bar-columns: 2;
     --ds-proportion-bar-share: 1;
 
     /* radio */
@@ -577,6 +594,7 @@
 
     /* tabs */
     --ds-tabs-gap: var(--ds-space-5);
+    --ds-tabs-divider-width: 1px;
     --ds-tabs-indicator-height: 2px;
     --ds-tabs-count-size: 20px;
     --ds-tabs-count-padding-inline: 6px;
