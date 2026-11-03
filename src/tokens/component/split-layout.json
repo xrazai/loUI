@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "split-layout": {
+    "aside-w-sm": {
+      "$type": "dimension",
+      "$value": { "value": 280, "unit": "px" },
+      "$description": "Width of the SplitLayout aside at asideWidth sm (280px): a short filter or summary panel."
+    },
+    "aside-w-md": {
+      "$type": "dimension",
+      "$value": "{app-shell.detail-w}",
+      "$description": "Width of the SplitLayout aside at asideWidth md (360px). Same value as the AppShell detail pane, so a side panel looks the same in both."
+    },
+    "aside-w-lg": {
+      "$type": "dimension",
+      "$value": { "value": 480, "unit": "px" },
+      "$description": "Width of the SplitLayout aside at asideWidth lg (480px): a chat or an editor beside a list."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Default gap between the main content and the aside (24px); set at runtime via style from the `gap` prop (a space token key)."
+    },
+    "sticky-offset": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Distance (16px) between the top of the scrolling area and a sticky aside, and the room kept below it."
+    }
+  }
+}

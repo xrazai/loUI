@@ -88,6 +88,11 @@ interface SearchInputBaseProps extends Omit<
   landmark?: boolean | undefined;
   /** Control height: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: SearchInputSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the popover that holds the suggestions. */
@@ -178,6 +183,7 @@ function PlainSearch({
   shortcut,
   placeholder,
   size = 'md',
+  fullWidth = false,
   className,
   inputRef,
   messages: overrides,
@@ -192,6 +198,7 @@ function PlainSearch({
       ref={ref}
       {...(onKeyDown ? { onKeyDown: continueUnhandledKeys(onKeyDown) } : {})}
       data-size={size}
+      data-full-width={fullWidth || undefined}
       className={classNames(fieldStyles.root, styles.root, className)}
       {...(value === undefined ? {} : { value })}
       {...(defaultValue === undefined ? {} : { defaultValue })}
@@ -227,6 +234,7 @@ function SuggestionsSearch({
   shortcut,
   placeholder,
   size = 'md',
+  fullWidth = false,
   className,
   popoverClassName,
   inputRef,
@@ -262,6 +270,7 @@ function SuggestionsSearch({
       {...(rest['aria-labelledby'] ? { 'aria-labelledby': rest['aria-labelledby'] } : {})}
       data-size={size}
       data-empty={text === '' || undefined}
+      data-full-width={fullWidth || undefined}
       className={classNames(fieldStyles.root, styles.root, className)}
       items={items}
       allowsCustomValue

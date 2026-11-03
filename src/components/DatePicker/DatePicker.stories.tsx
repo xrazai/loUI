@@ -182,7 +182,7 @@ export const StandaloneCalendar: Story = {
 export const FullWidthInRow: Story = {
   args: { fullWidth: true },
   render: (args) => (
-    <Inline gap={2} align="end" wrap="nowrap">
+    <Inline gap={2} align="end" wrap={false}>
       <DatePicker {...args} />
       <Button variant="primary">Apply</Button>
     </Inline>

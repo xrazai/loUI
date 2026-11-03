@@ -21,6 +21,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 | `value` / `defaultValue` / `onChange(value)`              | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
 | `placeholder`                                             | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
 | `size`                                                    | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
+| `fullWidth`                                               | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.  |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`           | Standard. `name` is submitted through the hidden `<select>`.                                        |
 | `popoverClassName`, `className`, `ref`                    | Styling hooks; `ref` is the field root.                                                             |
 | `messages`                                                | `placeholder`, `requiredMark`.                                                                      |

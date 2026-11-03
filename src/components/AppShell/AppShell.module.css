@@ -87,6 +87,11 @@
     scroll-padding-block-end: var(--ds-toast-clearance);
   }
 
+  /* A detail that renders nothing (a component returning null) leaves no empty landmark or column. */
+  .detail:empty {
+    display: none;
+  }
+
   /* Keyboard scrolling ring, drawn inside so the clipping shell cannot hide it. */
   .main:focus-visible,
   .detail:focus-visible {

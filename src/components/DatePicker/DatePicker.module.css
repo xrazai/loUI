@@ -1,4 +1,9 @@
 @layer components {
+  .field[data-full-width] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
   /* The group is the visible box (Field.module.css draws border, focus ring and states). */
   .group {
     gap: var(--ds-space-1);

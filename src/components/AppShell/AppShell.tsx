@@ -72,7 +72,9 @@ export interface AppShellProps extends Omit<ComponentPropsWithRef<'div'>, 'child
   /**
    * Optional detail pane at the inline end, `--ds-app-shell-detail-w` (360px) wide, for the
    * record selected in the main content. It is an `aside` landmark with its own scroll. Below
-   * the md breakpoint it moves under the main content.
+   * the md breakpoint it moves under the main content. `null`, `undefined` and `false` render
+   * nothing; a component that renders `null` leaves no empty aside and no reserved column either
+   * (the empty aside is hidden with `:empty`).
    */
   detail?: ReactNode;
   /** Accessible name of the detail aside. Default "Details" from the message catalog. */
@@ -226,7 +228,7 @@ export function AppShell({
             >
               {children}
             </main>
-            {detail === undefined ? null : (
+            {detail === undefined || detail === null || detail === false ? null : (
               <aside
                 ref={detailRef}
                 aria-label={detailLabel ?? t.detail}

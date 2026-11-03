@@ -29,6 +29,7 @@ A search box: leading search icon, clear button, optional decorative shortcut hi
 | `shortcut`                                                                                            | Decorative hint such as `['Mod', 'K']`, drawn with `Kbd` while the box is empty. It registers nothing: use `useHotkey` and focus `inputRef`. Hidden from assistive technology. |
 | `landmark`                                                                                            | Wraps the field in `role="search"` named by the label. Once per page.                                                                                                          |
 | `size`, `placeholder`, `name`, `isDisabled`, `isReadOnly`, `autoFocus`, `inputRef`, `ref`, `messages` | `messages`: `clear`, `placeholder`, `noResults`.                                                                                                                               |
+| `fullWidth`                                                                                           | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                                                                             |
 
 ## Accessibility and keyboard
 

@@ -179,6 +179,21 @@ describe('AppShell layout', () => {
     expect(getComputedStyle(toggle.parentElement as Element).display).toBe('none');
   });
 
+  it('leaves no aside or reserved column when detail is null or renders null', async () => {
+    const Nothing = () => null;
+    const baseline = await renderShell(1000);
+    const mainWidth = baseline.getByRole('main').element().getBoundingClientRect().width;
+    await baseline.unmount();
+    for (const detail of [null, <Nothing key="n" />, false]) {
+      const screen = await renderShell(1000, { detail });
+      const aside = screen.container.querySelector('aside[aria-label="Details"]');
+      if (aside) expect(getComputedStyle(aside).display).toBe('none');
+      expect(screen.getByRole('main').element().getBoundingClientRect().width).toBe(mainWidth);
+      expect(screen.getByRole('complementary', { name: 'Details' }).elements()).toHaveLength(0);
+      await screen.unmount();
+    }
+  });
+
   it('moves the detail pane under main below the md breakpoint', async () => {
     const screen = await renderShell(600, { detail: <p>Order 1048</p> });
     const mainBox = screen.getByRole('main').element().getBoundingClientRect();

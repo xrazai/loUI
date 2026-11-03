@@ -43,6 +43,11 @@ interface NumberFieldBaseProps extends Omit<
   suffix?: ReactNode;
   /** Height of the box and of both stepper buttons: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: NumberFieldSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the `<input>` element. */
@@ -77,6 +82,7 @@ export function NumberField({
   placeholder,
   suffix,
   size = 'md',
+  fullWidth = false,
   className,
   inputClassName,
   inputRef,
@@ -95,7 +101,8 @@ export function NumberField({
       {...rest}
       ref={ref}
       data-size={size}
-      className={classNames(fieldStyles.root, className)}
+      data-full-width={fullWidth || undefined}
+      className={classNames(fieldStyles.root, styles.field, className)}
     >
       {label ? (
         <Label isRequired={rest.isRequired} messages={messageOverrides}>

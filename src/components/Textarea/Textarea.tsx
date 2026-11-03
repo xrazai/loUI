@@ -52,6 +52,11 @@ interface TextareaBaseProps extends Omit<
    * typing pauses. Needs `maxLength`.
    */
   showCount?: boolean | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the `<textarea>` element. */
@@ -83,6 +88,7 @@ export function Textarea({
   resize = 'vertical',
   autoGrow = false,
   showCount = false,
+  fullWidth = false,
   className,
   textareaClassName,
   textareaRef,
@@ -174,7 +180,8 @@ export function Textarea({
         setUncontrolledLength(next.length);
         onChange?.(next);
       }}
-      className={classNames(fieldStyles.root, className)}
+      data-full-width={fullWidth || undefined}
+      className={classNames(fieldStyles.root, styles.field, className)}
     >
       {hasHeader ? (
         <div className={styles.header}>

@@ -25,6 +25,7 @@
 | `value` / `defaultValue` / `onChange`                                                                | ISO string or `null`.                                                                                                           |
 | `min`, `max`                                                                                         | ISO strings. Outside days are disabled in the grid; typed dates outside are invalid. "Today" is disabled when today is outside. |
 | `description`, `errorMessage`, `size`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                 |
+| `fullWidth`                                                                                          | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                              |
 | `messages`                                                                                           | `today`, `clear`, `openCalendar`, `previousMonth`, `nextMonth`, `requiredMark`.                                                 |
 
 `Calendar` takes `value`, `defaultValue`, `onChange(iso)`, `min`, `max`, `isDisabled`, `isReadOnly`, `autoFocus`, `messages`, and requires `aria-label` or `aria-labelledby`.

@@ -20,6 +20,7 @@ Multi-line text field. Same contract as [Input](../Input/Input.md) (label, descr
 | `rows`                                                    | Visible lines. Default 3.                                                                                                |
 | `resize`                                                  | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
 | `autoGrow`                                                | Grows with its content; the manual resize handle is off.                                                                 |
+| `fullWidth`                                               | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                       |
 | `maxLength` + `showCount`                                 | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
 | `value` / `defaultValue` / `onChange(value)`              | React Aria naming; `onChange` receives the string.                                                                       |
 | `textareaRef` / `ref`                                     | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |

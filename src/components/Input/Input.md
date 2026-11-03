@@ -32,6 +32,7 @@ Error
 | `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.                                 |
 | `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                                                            |
 | `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                       |
+| `fullWidth`                                                         | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                               |
 | `mono`                                                              | Geist Mono with tabular figures.                                                                                                 |
 | `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                                                     |
 | `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).                                  |

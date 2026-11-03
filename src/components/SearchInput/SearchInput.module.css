@@ -1,4 +1,9 @@
 @layer components {
+  .root[data-full-width] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
   .root {
     inline-size: 100%;
   }

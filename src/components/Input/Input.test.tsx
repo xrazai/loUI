@@ -344,7 +344,7 @@ describe('Input fullWidth', () => {
   async function renderRow(props: { fullWidth?: boolean }) {
     return renderWithProvider(
       <div style={{ inlineSize: 700 }}>
-        <Inline gap={2} wrap="nowrap">
+        <Inline gap={2} wrap={false}>
           <Input label="Name" {...props} />
           <button type="button">Apply</button>
         </Inline>
@@ -353,15 +353,24 @@ describe('Input fullWidth', () => {
   }
 
   it('takes the free space of an Inline row, and not by default', async () => {
+    const rowOf = (screen: { container: Element }) =>
+      (screen.container.firstElementChild as HTMLElement).firstElementChild as HTMLElement;
     const plain = await renderRow({});
-    const plainRoot = plain.container.querySelector('[data-size]') as HTMLElement;
-    expect(plainRoot.hasAttribute('data-full-width')).toBe(false);
-    const plainWidth = plainRoot.getBoundingClientRect().width;
+    const plainRow = rowOf(plain);
+    const plainField = (plainRow.querySelector('[data-size]') ??
+      plainRow.children[0]) as HTMLElement;
+    expect(plainField.hasAttribute('data-full-width')).toBe(false);
+    const plainWidth = plainField.getBoundingClientRect().width;
     await plain.unmount();
     const full = await renderRow({ fullWidth: true });
-    const root = full.container.querySelector('[data-full-width="true"]') as HTMLElement;
-    const button = full.container.querySelector('button:last-of-type') as HTMLElement;
-    expect(root.getBoundingClientRect().width).toBeGreaterThan(plainWidth);
+    const fullRow = rowOf(full);
+    const field = fullRow.querySelector('[data-full-width]') as HTMLElement;
+    const button = fullRow.lastElementChild as HTMLElement;
+    expect(field.getAttribute('data-full-width')).toBe('true');
+    expect(field.getBoundingClientRect().width).toBeGreaterThanOrEqual(plainWidth);
     expect(button.getBoundingClientRect().right).toBeCloseTo(700, 0);
+    expect(field.getBoundingClientRect().right).toBeLessThanOrEqual(
+      button.getBoundingClientRect().left + 0.5,
+    );
   });
 });

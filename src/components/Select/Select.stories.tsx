@@ -189,7 +189,7 @@ export const LongLabels: Story = {
 export const FullWidthInRow: Story = {
   args: { fullWidth: true },
   render: (args) => (
-    <Inline gap={2} align="end" wrap="nowrap">
+    <Inline gap={2} align="end" wrap={false}>
       <Select {...args} />
       <Button variant="primary">Apply</Button>
     </Inline>

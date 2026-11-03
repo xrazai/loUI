@@ -38,6 +38,11 @@ interface InputBaseProps extends Omit<
   trailing?: ReactNode;
   /** Control height: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: InputSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root (label, control and messages). */
   className?: string | undefined;
   /** Class name for the `<input>` element. */
@@ -69,6 +74,7 @@ export function Input({
   leading,
   trailing,
   size = 'md',
+  fullWidth = false,
   className,
   inputClassName,
   inputRef,
@@ -88,7 +94,8 @@ export function Input({
       ref={ref}
       {...(onKeyDown ? { onKeyDown: continueUnhandledKeys(onKeyDown) } : {})}
       data-size={size}
-      className={classNames(fieldStyles.root, className)}
+      data-full-width={fullWidth || undefined}
+      className={classNames(fieldStyles.root, styles.field, className)}
     >
       {label ? (
         <Label isRequired={rest.isRequired} messages={messageOverrides}>

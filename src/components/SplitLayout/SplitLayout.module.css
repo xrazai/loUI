@@ -1,0 +1,110 @@
+@layer components {
+  /*
+   * The root measures its own width (container query), so the aside collapses by the layout's
+   * width, not the window's. The pixel values in the queries below are --ds-breakpoint-sm, -md
+   * and -lg: custom properties cannot be read inside a container condition, so the values are
+   * repeated and SplitLayout.test.tsx asserts that they agree.
+   */
+  .root {
+    container-type: inline-size;
+    container-name: ds-split-layout;
+    min-inline-size: 0;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ds-split-layout-gap);
+    align-items: start;
+  }
+
+  .layout[data-aside-width='sm'] {
+    --ds-split-layout-aside-w: var(--ds-split-layout-aside-w-sm);
+  }
+
+  .layout[data-aside-width='md'] {
+    --ds-split-layout-aside-w: var(--ds-split-layout-aside-w-md);
+  }
+
+  .layout[data-aside-width='lg'] {
+    --ds-split-layout-aside-w: var(--ds-split-layout-aside-w-lg);
+  }
+
+  .main {
+    min-inline-size: 0;
+  }
+
+  .aside {
+    box-sizing: border-box;
+    min-inline-size: 0;
+  }
+
+  .layout[data-aside-position='start'] .aside {
+    order: -1;
+  }
+
+  .layout[data-sticky='true'] .aside {
+    position: sticky;
+    inset-block-start: var(--ds-split-layout-sticky-offset);
+    max-block-size: calc(100dvh - 2 * var(--ds-split-layout-sticky-offset));
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-line-control) transparent;
+    scroll-padding-block-end: var(--ds-toast-clearance);
+  }
+
+  .layout[data-sticky='true'] .aside:focus-visible {
+    outline-color: var(--ds-accent);
+    outline-offset: calc(-1 * var(--ds-space-1));
+    box-shadow: none;
+  }
+
+  /* Beside the main content: two columns. The aside is last in the DOM; start flips it with order. */
+  .layout[data-has-aside='true'][data-aside-position='end'] {
+    grid-template-columns: minmax(0, 1fr) var(--ds-split-layout-aside-w);
+  }
+
+  .layout[data-has-aside='true'][data-aside-position='start'] {
+    grid-template-columns: var(--ds-split-layout-aside-w) minmax(0, 1fr);
+  }
+
+  /* Collapsed: one column, main first, no sticky. */
+  @container ds-split-layout (max-width: 479.98px) {
+    .layout[data-has-aside][data-aside-position][data-collapse='sm'] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .layout[data-aside-position][data-collapse='sm'] .aside {
+      position: static;
+      max-block-size: none;
+      overflow: visible;
+      order: 0;
+    }
+  }
+
+  @container ds-split-layout (max-width: 767.98px) {
+    .layout[data-has-aside][data-aside-position][data-collapse='md'] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .layout[data-aside-position][data-collapse='md'] .aside {
+      position: static;
+      max-block-size: none;
+      overflow: visible;
+      order: 0;
+    }
+  }
+
+  @container ds-split-layout (max-width: 1023.98px) {
+    .layout[data-has-aside][data-aside-position][data-collapse='lg'] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .layout[data-aside-position][data-collapse='lg'] .aside {
+      position: static;
+      max-block-size: none;
+      overflow: visible;
+      order: 0;
+    }
+  }
+}
