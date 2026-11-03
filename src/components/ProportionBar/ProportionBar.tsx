@@ -1,8 +1,8 @@
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
 import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
-import { isDev } from '../../utils/env';
 import { formatNumber, formatPercent } from '../../utils/number';
+import { joinList, safeValue, seriesEncoding, warnTooManySeries } from '../Chart/a11y';
 import { messages } from './ProportionBar.messages';
 import styles from './ProportionBar.module.css';
 
@@ -39,13 +39,6 @@ export interface ProportionBarProps extends Omit<ComponentPropsWithRef<'div'>, '
   messages?: Partial<typeof messages.en>;
 }
 
-const RAMP_SIZE = 4;
-const MAX_DISTINCT = RAMP_SIZE * 2;
-
-function safe(value: number): number {
-  return Number.isFinite(value) && value > 0 ? value : 0;
-}
-
 function segmentStyle(share: number, color: string | undefined): CSSProperties {
   return {
     '--ds-proportion-bar-share': share,
@@ -74,9 +67,9 @@ export function ProportionBar({
   const locale = useDSLocale();
   const t = useMessages('ProportionBar', messages, overrides);
 
-  const total = segments.reduce((sum, segment) => sum + safe(segment.value), 0);
+  const total = segments.reduce((sum, segment) => sum + safeValue(segment.value), 0);
   const parts = segments.map((segment, index) => {
-    const value = safe(segment.value);
+    const value = safeValue(segment.value);
     const ratio = total > 0 ? value / total : 0;
     return {
       ...segment,
@@ -86,20 +79,21 @@ export function ProportionBar({
         minimumFractionDigits: percentDigits,
         maximumFractionDigits: percentDigits,
       }),
-      ramp: index % RAMP_SIZE,
-      hatched: segment.color === undefined && Math.floor(index / RAMP_SIZE) % 2 === 1,
+      ...seriesEncoding(index, segment.color !== undefined),
     };
   });
 
-  if (isDev() && segments.length > MAX_DISTINCT && segments.some((s) => s.color === undefined)) {
-    console.warn(
-      `[loui-ds] ProportionBar: ${String(segments.length)} parts without explicit colors cannot all look different (limit ${String(MAX_DISTINCT)}). Group the smallest parts into "Other" or pass \`color\`.`,
-    );
-  }
+  warnTooManySeries(
+    'ProportionBar',
+    segments.length,
+    segments.some((s) => s.color === undefined),
+  );
 
-  const list = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' });
   const summary = t.summary(
-    list.format(parts.map((part) => t.segment(part.label, part.percent))),
+    joinList(
+      locale,
+      parts.map((part) => t.segment(part.label, part.percent)),
+    ),
     label,
   );
   const renderValue = format ?? ((value: number) => formatNumber(value, locale));

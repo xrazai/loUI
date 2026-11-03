@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "chart-series": {
+    "1": {
+      "$type": "color",
+      "$value": "{color.text}",
+      "$description": "Series 1 of a multi-series chart (StackedBar) and its Legend swatch: the neutral ramp's first step. Series never use the accent or signal colors by default; pass an explicit color instead."
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{color.text-2}",
+      "$description": "Series 2 of a multi-series chart and its Legend swatch."
+    },
+    "3": {
+      "$type": "color",
+      "$value": "{color.text-3}",
+      "$description": "Series 3 of a multi-series chart and its Legend swatch."
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{color.line-control}",
+      "$description": "Series 4 of a multi-series chart and its Legend swatch. Every step keeps 3:1 against the track background."
+    },
+    "hatch-size": {
+      "$type": "dimension",
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Stripe width of the hatch pattern that tells apart series beyond the fourth (3px). The pattern is the non-color cue."
+    }
+  }
+}

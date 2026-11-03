@@ -4,6 +4,8 @@ import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { createValueFormatters } from './a11y';
+import { ChartDataTable } from './ChartDataTable';
 import { messages } from './Chart.messages';
 import styles from './Chart.module.css';
 import { computeLayout, tooltipPosition } from './chartLayout';
@@ -131,12 +133,8 @@ export function Chart({
   }, []);
 
   const count = data.length;
-  const formatTick = useMemo(
-    () => format ?? ((value: number) => formatNumber(value, locale, { notation: 'compact' })),
-    [format, locale],
-  );
-  const formatValue = useMemo(
-    () => format ?? ((value: number) => formatNumber(value, locale, { maximumFractionDigits: 2 })),
+  const { tick: formatTick, value: formatValue } = useMemo(
+    () => createValueFormatters(locale, format),
     [format, locale],
   );
 
@@ -401,28 +399,18 @@ export function Chart({
       <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
         {announcement}
       </VisuallyHidden>
-      {/* The wrapper clips the table: a table ignores `overflow` and would stretch the page. */}
-      <VisuallyHidden as="div">
-        <table>
-          <caption>{tableCaption}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{categoryLabel ?? t.category}</th>
-              <th scope="col">{valueLabel ?? t.value}</th>
-              {hasNotes ? <th scope="col">{t.note}</th> : null}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((datum, index) => (
-              <tr key={index}>
-                <th scope="row">{datum.label}</th>
-                <td>{formatValue(datum.value)}</td>
-                {hasNotes ? <td>{highlight[index] ?? ''}</td> : null}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </VisuallyHidden>
+      <ChartDataTable
+        caption={tableCaption}
+        columns={[
+          categoryLabel ?? t.category,
+          valueLabel ?? t.value,
+          ...(hasNotes ? [t.note] : []),
+        ]}
+        rows={data.map((datum, index) => ({
+          header: datum.label,
+          cells: [formatValue(datum.value), ...(hasNotes ? [highlight[index] ?? ''] : [])],
+        }))}
+      />
     </div>
   );
 }

@@ -1,0 +1,197 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-3);
+    min-inline-size: 0;
+    inline-size: 100%;
+  }
+
+  .plot {
+    min-inline-size: 0;
+  }
+
+  .bars {
+    display: grid;
+    grid-template-columns: var(--ds-stacked-bar-category-w) minmax(0, 1fr) auto;
+    gap: var(--ds-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .root[data-orientation='vertical'] .bars {
+    display: flex;
+    flex-direction: row;
+    block-size: var(--ds-stacked-bar-height);
+  }
+
+  /* Horizontal row: category, bar, total. Rows share the columns of the list so every bar uses one scale. */
+  .row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    min-inline-size: 0;
+  }
+
+  /* Vertical column: bar on top, category and total under it. */
+  .root[data-orientation='vertical'] .row {
+    flex: 1 1 0;
+    grid-column: auto;
+    grid-template:
+      'slot' minmax(0, 1fr)
+      'category' auto
+      'total' auto / minmax(0, 1fr);
+    gap: var(--ds-space-1);
+    justify-items: center;
+  }
+
+  .category {
+    overflow: hidden;
+    max-inline-size: 100%;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .row[data-active] .category {
+    color: var(--ds-text);
+  }
+
+  .total {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    line-height: var(--ds-lh-caption);
+    white-space: nowrap;
+  }
+
+  .slot {
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    min-block-size: 0;
+    min-inline-size: 0;
+  }
+
+  .root[data-orientation='vertical'] .category {
+    grid-area: category;
+  }
+
+  .root[data-orientation='vertical'] .total {
+    grid-area: total;
+  }
+
+  .root[data-orientation='vertical'] .slot {
+    grid-area: slot;
+    align-items: flex-end;
+    justify-content: center;
+    block-size: 100%;
+  }
+
+  /* The track shows through the gaps, so neighbouring series are always separated. */
+  .track {
+    display: flex;
+    gap: var(--ds-stacked-bar-segment-gap);
+    overflow: hidden;
+    box-sizing: border-box;
+    inline-size: calc(var(--ds-stacked-bar-extent) * 1%);
+    block-size: var(--ds-stacked-bar-bar-thickness);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-bg);
+    outline: none;
+  }
+
+  .track:focus-visible {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: var(--ds-space-1);
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-orientation='vertical'] .track {
+    flex-direction: column-reverse;
+    inline-size: min(100%, var(--ds-stacked-bar-column-max-w));
+    block-size: calc(var(--ds-stacked-bar-extent) * 1%);
+  }
+
+  /* An empty bar shows a visible track instead. */
+  .track[data-empty] {
+    background-color: var(--ds-line);
+  }
+
+  .segment {
+    --ds-stacked-bar-color: var(--ds-chart-series-1);
+
+    flex: var(--ds-stacked-bar-share) 1 0;
+    min-inline-size: 0;
+    min-block-size: 0;
+    background-color: var(--ds-stacked-bar-color);
+  }
+
+  /* The ramp sets the color on the element; an explicit series color wins through the inline custom property. */
+  .segment[data-ramp='1'] {
+    --ds-stacked-bar-color: var(--ds-chart-series-2);
+  }
+
+  .segment[data-ramp='2'] {
+    --ds-stacked-bar-color: var(--ds-chart-series-3);
+  }
+
+  .segment[data-ramp='3'] {
+    --ds-stacked-bar-color: var(--ds-chart-series-4);
+  }
+
+  /* From the fifth series on the ramp repeats; stripes of the track color keep the series apart. */
+  .segment[data-hatched] {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 var(--ds-chart-series-hatch-size),
+      var(--ds-bg) var(--ds-chart-series-hatch-size) calc(var(--ds-chart-series-hatch-size) * 2)
+    );
+  }
+
+  .readout {
+    margin: 0;
+    min-block-size: var(--ds-stacked-bar-readout-min-h);
+    color: var(--ds-text);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--ds-text-3);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  @media (forced-colors: active) {
+    .track {
+      border: 1px solid canvastext;
+    }
+
+    .track:focus-visible {
+      outline-color: highlight;
+    }
+
+    .segment {
+      forced-color-adjust: none;
+      background-color: canvastext;
+    }
+
+    .segment[data-ramp='1'] {
+      background-color: graytext;
+    }
+
+    .segment[data-ramp='2'] {
+      background-color: linktext;
+    }
+
+    .segment[data-ramp='3'] {
+      background-color: highlight;
+    }
+  }
+}

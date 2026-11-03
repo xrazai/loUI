@@ -1,0 +1,139 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--ds-space-2) var(--ds-legend-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    min-inline-size: 0;
+  }
+
+  .root[data-orientation='vertical'] {
+    flex-flow: column nowrap;
+    gap: var(--ds-space-1);
+  }
+
+  .item {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: var(--ds-space-2);
+    color: var(--ds-text);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  /* The toggle is a bare button around the same content as a plain item. */
+  .toggle {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    min-inline-size: 0;
+    min-block-size: var(--ds-target-min);
+    align-items: center;
+    gap: var(--ds-space-2);
+    padding-inline: var(--ds-space-2);
+    border-radius: var(--ds-radius-sm);
+    cursor: pointer;
+  }
+
+  .toggle[data-hovered] {
+    background-color: var(--ds-surface-hover);
+  }
+
+  .toggle[data-focus-visible] {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: 0;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .value {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    white-space: nowrap;
+  }
+
+  /* Hidden series: struck label and hollow swatch, so the state never relies on color. */
+  .item[data-off] .name,
+  .item[data-off] .value {
+    color: var(--ds-text-3);
+    text-decoration: line-through;
+  }
+
+  .swatch {
+    --ds-legend-color: var(--ds-chart-series-1);
+
+    flex: none;
+    box-sizing: border-box;
+    inline-size: var(--ds-legend-swatch-size);
+    block-size: var(--ds-legend-swatch-size);
+    border: 1px solid var(--ds-legend-color);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-legend-color);
+  }
+
+  .swatch[data-ramp='1'] {
+    --ds-legend-color: var(--ds-chart-series-2);
+  }
+
+  .swatch[data-ramp='2'] {
+    --ds-legend-color: var(--ds-chart-series-3);
+  }
+
+  .swatch[data-ramp='3'] {
+    --ds-legend-color: var(--ds-chart-series-4);
+  }
+
+  /* From the fifth series on the ramp repeats; stripes of the page background keep the series apart. */
+  .swatch[data-hatched] {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 var(--ds-chart-series-hatch-size),
+      var(--ds-bg) var(--ds-chart-series-hatch-size) calc(var(--ds-chart-series-hatch-size) * 2)
+    );
+  }
+
+  .swatch[data-off] {
+    background-color: transparent;
+    background-image: none;
+  }
+
+  @media (forced-colors: active) {
+    .swatch {
+      forced-color-adjust: none;
+      border-color: canvastext;
+      background-color: canvastext;
+    }
+
+    .swatch[data-ramp='1'] {
+      border-color: graytext;
+      background-color: graytext;
+    }
+
+    .swatch[data-ramp='2'] {
+      border-color: linktext;
+      background-color: linktext;
+    }
+
+    .swatch[data-ramp='3'] {
+      border-color: highlight;
+      background-color: highlight;
+    }
+
+    .swatch[data-off] {
+      background-color: transparent;
+    }
+
+    .toggle[data-focus-visible] {
+      outline-color: highlight;
+    }
+  }
+}

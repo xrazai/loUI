@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "legend": {
+    "swatch-size": {
+      "$type": "dimension",
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Size of the series swatch in a Legend (10px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.4}",
+      "$description": "Gap between the items of a horizontal Legend (16px)."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.text}",
+      "$description": "Fill of a Legend swatch. The series ramp classes set it per step; an item `color` overrides it at runtime via style (ADR-0002 amendment)."
+    }
+  }
+}

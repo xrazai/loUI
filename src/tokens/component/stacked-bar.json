@@ -1,0 +1,50 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "stacked-bar": {
+    "bar-thickness": {
+      "$type": "dimension",
+      "$value": { "value": 20, "unit": "px" },
+      "$description": "Thickness of a horizontal StackedBar bar (20px)."
+    },
+    "column-max-w": {
+      "$type": "dimension",
+      "$value": { "value": 56, "unit": "px" },
+      "$description": "Maximum width of a vertical StackedBar column (56px)."
+    },
+    "height": {
+      "$type": "dimension",
+      "$value": { "value": 200, "unit": "px" },
+      "$description": "Height of the plot area of a vertical StackedBar (200px)."
+    },
+    "category-w": {
+      "$type": "dimension",
+      "$value": { "value": 96, "unit": "px" },
+      "$description": "Width of the category label column of a horizontal StackedBar (96px). Longer labels are truncated; the readout and the data table carry the full text."
+    },
+    "segment-gap": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Gap between the segments of a StackedBar bar (2px). The track shows through, so neighbouring series are always separated without relying on color."
+    },
+    "readout-min-h": {
+      "$type": "dimension",
+      "$value": { "value": 24, "unit": "px" },
+      "$description": "Reserved height of the readout line under a StackedBar (24px), so showing it never shifts the layout."
+    },
+    "extent": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "Length of a StackedBar bar as a percentage of the plot (the largest total is 100). Set at runtime via style."
+    },
+    "share": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Relative size (flex-grow) of a StackedBar segment. Set at runtime via style from the series value."
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.text}",
+      "$description": "Fill of a StackedBar segment. The series ramp classes set it per step; a series `color` overrides it at runtime via style."
+    }
+  }
+}
