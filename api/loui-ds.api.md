@@ -25,6 +25,7 @@ import { CircleX as CircleXIcon } from 'lucide-react';
 import { ComboBoxProps } from 'react-aria-components';
 import { ComponentProps } from 'react';
 import { ComponentPropsWithRef } from 'react';
+import { Copy as CopyIcon } from 'lucide-react';
 import { DatePickerProps as DatePickerProps_2 } from 'react-aria-components';
 import { DisclosureGroupProps } from 'react-aria-components';
 import { ElementType } from 'react';
@@ -57,6 +58,7 @@ import { ReactElement } from 'react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
 import { RefObject } from 'react';
+import { RefreshCw as RefreshIcon } from 'lucide-react';
 import { RouterProvider } from 'react-aria-components';
 import { SearchFieldProps } from 'react-aria-components';
 import { Search as SearchIcon } from 'lucide-react';
@@ -71,6 +73,8 @@ import { TabProps as TabProps_2 } from 'react-aria-components';
 import { TabsProps as TabsProps_2 } from 'react-aria-components';
 import { TagGroupProps as TagGroupProps_2 } from 'react-aria-components';
 import { TextFieldProps } from 'react-aria-components';
+import { ThumbsDown as ThumbsDownIcon } from 'lucide-react';
+import { ThumbsUp as ThumbsUpIcon } from 'lucide-react';
 import { ToggleButtonGroupProps } from 'react-aria-components';
 import { ToggleButtonProps } from 'react-aria-components';
 import { TriangleAlert as TriangleAlertIcon } from 'lucide-react';
@@ -206,6 +210,24 @@ export interface BadgeProps extends Omit<ComponentPropsWithRef<'span'>, 'childre
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
 // @public
+export function Banner(input: BannerProps): JSX.Element;
+
+// @public (undocumented)
+export interface BannerProps extends Omit<ComponentPropsWithRef<'div'>, 'title' | 'role'> {
+    action?: ReactNode;
+    announce?: boolean;
+    children?: ReactNode;
+    messages?: Partial<typeof messages_4.en>;
+    onDismiss?: () => void;
+    title?: ReactNode;
+    tone?: BannerTone;
+    urgent?: boolean;
+}
+
+// @public (undocumented)
+export type BannerTone = 'info' | 'success' | 'warning' | 'danger';
+
+// @public
 export function Breadcrumb(input: BreadcrumbProps): JSX.Element;
 
 // @public (undocumented)
@@ -217,7 +239,7 @@ export interface BreadcrumbItem {
 // @public (undocumented)
 export interface BreadcrumbProps extends Omit<ComponentPropsWithRef<'nav'>, 'children'> {
     items: readonly BreadcrumbItem[];
-    messages?: Partial<typeof messages_4.en>;
+    messages?: Partial<typeof messages_5.en>;
 }
 
 // @public
@@ -248,7 +270,7 @@ export function Calendar(input: CalendarProps): JSX.Element;
 export { CalendarIcon }
 
 // @public (undocumented)
-export type CalendarMessages = Partial<typeof messages_5.en>;
+export type CalendarMessages = Partial<typeof messages_6.en>;
 
 // @public (undocumented)
 export type CalendarProps = CalendarViewProps & NamedProps & {
@@ -352,7 +374,7 @@ export function Code(input: CodeProps): JSX.Element;
 // @public (undocumented)
 export interface CodeProps extends ComponentPropsWithRef<'code'> {
     'aria-label'?: string;
-    messages?: Partial<typeof messages_8.en>;
+    messages?: Partial<typeof messages_9.en>;
     variant?: CodeVariant;
 }
 
@@ -371,7 +393,7 @@ export interface ComboboxGroup {
 }
 
 // @public (undocumented)
-export type ComboboxMessages = Partial<typeof messages_9.en & typeof messages_7.en>;
+export type ComboboxMessages = Partial<typeof messages_10.en & typeof messages_8.en>;
 
 // @public (undocumented)
 export interface ComboboxOption {
@@ -404,7 +426,7 @@ export interface Command {
 export function CommandPalette(input: CommandPaletteProps): JSX.Element;
 
 // @public (undocumented)
-export type CommandPaletteMessages = Partial<typeof messages_10.en>;
+export type CommandPaletteMessages = Partial<typeof messages_11.en>;
 
 // @public (undocumented)
 export interface CommandPaletteProps {
@@ -441,7 +463,7 @@ export interface ConfirmDialogProps extends Omit<DialogProps, 'footer' | 'role' 
     description: ReactNode;
     initialFocus?: 'cancel' | 'confirm';
     isPending?: boolean;
-    messages?: Partial<typeof messages_11.en>;
+    messages?: Partial<typeof messages_12.en>;
     onConfirm: () => void;
     title: ReactNode;
     tone?: 'danger' | 'neutral';
@@ -462,6 +484,8 @@ export type ContainerSize = 'sm' | 'md' | 'lg' | 'full';
 
 // @public
 export function contrastRatio(a: string, b: string): number;
+
+export { CopyIcon }
 
 // @public
 export function createTextCollator(locale: string): Intl.Collator;
@@ -514,7 +538,7 @@ export interface DataTableSort {
 export function DatePicker(input: DatePickerProps): JSX.Element;
 
 // @public (undocumented)
-export type DatePickerMessages = Partial<typeof messages_13.en & typeof messages_7.en & CalendarMessages>;
+export type DatePickerMessages = Partial<typeof messages_14.en & typeof messages_8.en & CalendarMessages>;
 
 // @public (undocumented)
 export type DatePickerProps = DatePickerBaseProps & FieldLabelingProps;
@@ -611,6 +635,37 @@ export type DonutMeterSize = 'sm' | 'md' | 'lg';
 export type DonutMeterTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
 // @public
+export function Drawer(input: DrawerProps): JSX.Element | null;
+
+// @public (undocumented)
+export type DrawerPlacement = 'start' | 'end';
+
+// @public (undocumented)
+export interface DrawerProps {
+    autoFocus?: boolean;
+    children?: ReactNode | ((options: DrawerRenderOptions) => ReactNode);
+    className?: string;
+    defaultOpen?: boolean;
+    footer?: ReactNode | ((options: DrawerRenderOptions) => ReactNode);
+    headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+    isOpen?: boolean;
+    messages?: Partial<typeof messages_15.en>;
+    onOpenChange?: (isOpen: boolean) => void;
+    padded?: boolean;
+    placement?: DrawerPlacement;
+    ref?: Ref<HTMLElement>;
+    role?: DrawerRole;
+    size?: DrawerSize;
+    title: ReactNode;
+}
+
+// @public (undocumented)
+export type DrawerRole = 'complementary' | 'region';
+
+// @public (undocumented)
+export type DrawerSize = 'sm' | 'md' | 'lg';
+
+// @public
 export type DSMessages = Readonly<Record<string, MessageOverrides | undefined>>;
 
 // @public
@@ -633,7 +688,7 @@ export function DueIndicator(input: DueIndicatorProps): JSX.Element;
 export interface DueIndicatorProps extends Omit<ComponentPropsWithRef<'span'>, 'children'> {
     date: ISODate;
     dateStyle?: DateStyle;
-    messages?: Partial<typeof messages_14.en>;
+    messages?: Partial<typeof messages_16.en>;
     paid?: boolean;
     showDate?: boolean;
     today?: ISODate;
@@ -750,7 +805,7 @@ export type FileRejectionReason = 'type' | 'size' | 'count';
 export function FileUpload(input: FileUploadProps): JSX.Element;
 
 // @public (undocumented)
-export type FileUploadMessages = Partial<typeof messages_15.en>;
+export type FileUploadMessages = Partial<typeof messages_17.en>;
 
 // @public (undocumented)
 export type FileUploadProps = FileUploadBaseProps & FieldLabelingProps;
@@ -797,7 +852,7 @@ export interface FormProps extends Omit<FormProps_2, 'className' | 'style' | 're
     // (undocumented)
     className?: string;
     errorSummary?: boolean;
-    messages?: Partial<typeof messages_16.en>;
+    messages?: Partial<typeof messages_18.en>;
     ref?: Ref<HTMLFormElement>;
     validationBehavior?: 'native' | 'aria';
     validationErrors?: FormProps_2['validationErrors'] | undefined;
@@ -957,6 +1012,10 @@ export const iconNames: {
     readonly search: "Search fields";
     readonly star: "Rating, favorite";
     readonly 'triangle-alert': "Warning status";
+    readonly copy: "Copy to the clipboard";
+    readonly refresh: "Regenerate, reload, sync again";
+    readonly 'thumbs-down': "Negative feedback on a response";
+    readonly 'thumbs-up': "Positive feedback on a response";
     readonly x: "Close, dismiss, remove";
 };
 
@@ -995,6 +1054,10 @@ export const iconSet: {
     readonly search: IconComponent;
     readonly star: IconComponent;
     readonly 'triangle-alert': IconComponent;
+    readonly copy: IconComponent;
+    readonly refresh: IconComponent;
+    readonly 'thumbs-down': IconComponent;
+    readonly 'thumbs-up': IconComponent;
     readonly x: IconComponent;
 };
 
@@ -1033,7 +1096,7 @@ export interface InlineConfirmProps {
     isDisabled?: boolean;
     isOpen?: boolean;
     label: string;
-    messages?: Partial<typeof messages_17.en>;
+    messages?: Partial<typeof messages_19.en>;
     onConfirm: () => void;
     onOpenChange?: (isOpen: boolean) => void;
     prompt?: string | undefined;
@@ -1088,13 +1151,38 @@ export interface LabelProps extends Omit<LabelProps_2, 'className'> {
     // (undocumented)
     className?: string | undefined;
     isRequired?: boolean | undefined;
-    messages?: Partial<typeof messages_7.en> | undefined;
+    messages?: Partial<typeof messages_8.en> | undefined;
     // (undocumented)
     ref?: Ref<HTMLLabelElement> | undefined;
 }
 
 // @public
 export type LayoutElement = 'div' | 'section' | 'article' | 'header' | 'footer' | 'nav' | 'aside' | 'main' | 'ul' | 'ol' | 'li' | 'form';
+
+// @public
+export function Legend(input: LegendProps): JSX.Element;
+
+// @public (undocumented)
+export interface LegendItem {
+    color?: string;
+    id: string;
+    label: string;
+    value?: ReactNode;
+}
+
+// @public (undocumented)
+export type LegendOrientation = 'horizontal' | 'vertical';
+
+// @public (undocumented)
+export interface LegendProps extends Omit<ComponentPropsWithRef<'ul'>, 'children' | 'onChange' | 'role'> {
+    defaultHiddenIds?: readonly string[];
+    hiddenIds?: readonly string[];
+    interactive?: boolean;
+    items: readonly LegendItem[];
+    messages?: Partial<typeof messages_21.en>;
+    onHiddenIdsChange?: (hiddenIds: string[]) => void;
+    orientation?: LegendOrientation;
+}
 
 // @public
 export function Link(input: LinkProps): JSX.Element;
@@ -1104,7 +1192,7 @@ export interface LinkProps extends Omit<LinkProps_2, 'className' | 'style' | 'ch
     children?: ReactNode;
     // (undocumented)
     className?: string;
-    messages?: Partial<typeof messages_19.en>;
+    messages?: Partial<typeof messages_22.en>;
     ref?: Ref<HTMLAnchorElement>;
     variant?: LinkVariant;
 }
@@ -1200,7 +1288,7 @@ export function MoreActionsMenu(input: MoreActionsMenuProps): JSX.Element;
 
 // @public (undocumented)
 export interface MoreActionsMenuProps extends Omit<MenuProps, 'trigger'> {
-    messages?: Partial<typeof messages_20.en>;
+    messages?: Partial<typeof messages_23.en>;
     size?: 'sm' | 'md' | 'lg';
 }
 
@@ -1218,7 +1306,7 @@ export interface NavItemProps extends Omit<LinkProps_2, 'className' | 'style' | 
     href?: string;
     icon?: IconComponent;
     isActive?: boolean;
-    messages?: Partial<typeof messages_21.en>;
+    messages?: Partial<typeof messages_24.en>;
     ref?: Ref<HTMLElement>;
 }
 
@@ -1243,7 +1331,7 @@ export function normalizeSearch(text: string): string;
 export function NumberField(input: NumberFieldProps): JSX.Element;
 
 // @public (undocumented)
-export type NumberFieldMessages = Partial<typeof messages_22.en & typeof messages_7.en>;
+export type NumberFieldMessages = Partial<typeof messages_25.en & typeof messages_8.en>;
 
 // @public (undocumented)
 export type NumberFieldProps = NumberFieldBaseProps & FieldLabelingProps;
@@ -1266,7 +1354,7 @@ export function Pagination(input: PaginationProps): JSX.Element;
 // @public (undocumented)
 export interface PaginationProps extends Omit<ComponentPropsWithRef<'div'>, 'children' | 'onChange' | 'defaultValue'> {
     defaultPage?: number;
-    messages?: Partial<typeof messages_23.en>;
+    messages?: Partial<typeof messages_26.en>;
     onChange?: (page: number) => void;
     page?: number;
     pageCount?: number;
@@ -1336,7 +1424,7 @@ export interface ProportionBarProps extends Omit<ComponentPropsWithRef<'div'>, '
     format?: (value: number) => ReactNode;
     label?: string;
     legend?: boolean;
-    messages?: Partial<typeof messages_24.en>;
+    messages?: Partial<typeof messages_27.en>;
     percentDigits?: number;
     segments: readonly ProportionSegment[];
 }
@@ -1381,7 +1469,7 @@ export interface RankListProps extends Omit<ComponentPropsWithRef<'div'>, 'child
     format?: (value: number) => ReactNode;
     items: readonly RankItem[];
     limit?: number;
-    messages?: Partial<typeof messages_25.en>;
+    messages?: Partial<typeof messages_28.en>;
     showPosition?: boolean;
     sort?: RankListSort;
 }
@@ -1395,7 +1483,7 @@ export function Rating(input: RatingProps): JSX.Element;
 // @public (undocumented)
 export interface RatingProps extends Omit<ComponentPropsWithRef<'span'>, 'children' | 'role' | 'aria-label' | 'aria-labelledby' | 'aria-hidden'> {
     max?: number;
-    messages?: Partial<typeof messages_26.en>;
+    messages?: Partial<typeof messages_29.en>;
     showValue?: boolean;
     size?: RatingSize;
     value: number;
@@ -1406,6 +1494,8 @@ export type RatingSize = 'sm' | 'md' | 'lg';
 
 // @public
 export function readableTextOn(backgroundHex: string): 'light' | 'dark';
+
+export { RefreshIcon }
 
 // @public
 export interface RegisteredHotkey {
@@ -1427,7 +1517,7 @@ export function RequiredMark(input: RequiredMarkProps): JSX.Element;
 
 // @public (undocumented)
 export interface RequiredMarkProps {
-    messages?: Partial<typeof messages_7.en> | undefined;
+    messages?: Partial<typeof messages_8.en> | undefined;
 }
 
 // @public
@@ -1454,7 +1544,7 @@ export { SearchIcon }
 export function SearchInput(props: SearchInputProps): JSX.Element;
 
 // @public (undocumented)
-export type SearchInputMessages = Partial<typeof messages_27.en & typeof messages_7.en>;
+export type SearchInputMessages = Partial<typeof messages_30.en & typeof messages_8.en>;
 
 // @public
 export type SearchInputProps = SearchInputBaseProps & FieldLabelingProps;
@@ -1499,7 +1589,7 @@ export interface SelectGroup {
 }
 
 // @public (undocumented)
-export type SelectMessages = Partial<typeof messages_28.en & typeof messages_7.en>;
+export type SelectMessages = Partial<typeof messages_31.en & typeof messages_8.en>;
 
 // @public (undocumented)
 export interface SelectOption {
@@ -1529,7 +1619,7 @@ export interface SheetProps {
     isDismissable?: boolean;
     isKeyboardDismissDisabled?: boolean;
     isOpen?: boolean;
-    messages?: Partial<typeof messages_29.en>;
+    messages?: Partial<typeof messages_32.en>;
     meta?: ReactNode;
     onOpenChange?: (isOpen: boolean) => void;
     padded?: boolean;
@@ -1551,7 +1641,7 @@ export type SheetSize = 'sm' | 'md' | 'lg';
 export function ShortcutsHelp(input: ShortcutsHelpProps): JSX.Element;
 
 // @public (undocumented)
-export type ShortcutsHelpMessages = Partial<typeof messages_30.en>;
+export type ShortcutsHelpMessages = Partial<typeof messages_33.en>;
 
 // @public (undocumented)
 export interface ShortcutsHelpProps {
@@ -1583,7 +1673,7 @@ export interface SidebarItem {
 export interface SidebarProps extends Omit<ComponentPropsWithRef<'aside'>, 'children' | 'onChange' | 'aria-label'> {
     'aria-label'?: string;
     footer?: ReactNode;
-    messages?: Partial<typeof messages_31.en>;
+    messages?: Partial<typeof messages_34.en>;
     onChange?: (value: string) => void;
     sections: readonly SidebarSection[];
     status?: SidebarStatus;
@@ -1634,7 +1724,7 @@ export function SkipLink(input: SkipLinkProps): JSX.Element;
 // @public (undocumented)
 export interface SkipLinkProps extends Omit<ComponentPropsWithRef<'a'>, 'href' | 'children'> {
     children?: ReactNode;
-    messages?: Partial<typeof messages_32.en>;
+    messages?: Partial<typeof messages_35.en>;
     targetId?: string;
 }
 
@@ -1675,7 +1765,7 @@ export function Spinner(input: SpinnerProps): JSX.Element;
 export interface SpinnerProps extends Omit<ComponentPropsWithRef<'span'>, 'children' | 'role' | 'aria-label' | 'aria-hidden' | 'aria-labelledby'> {
     decorative?: boolean;
     label?: string;
-    messages?: Partial<typeof messages_33.en>;
+    messages?: Partial<typeof messages_36.en>;
     size?: SpinnerSize;
 }
 
@@ -1687,6 +1777,28 @@ export function Stack(input: StackProps): JSX.Element;
 
 // @public (undocumented)
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch';
+
+// @public
+export function StackedBar(input: StackedBarProps): JSX.Element;
+
+// @public (undocumented)
+export interface StackedBarDatum {
+    label: string;
+    values: Readonly<Record<string, number>>;
+}
+
+// @public (undocumented)
+export type StackedBarOrientation = 'horizontal' | 'vertical';
+
+// @public (undocumented)
+export type StackedBarProps = StackedBarBaseProps & StackedBarNaming;
+
+// @public (undocumented)
+export interface StackedBarSeries {
+    color?: string;
+    id: string;
+    label: string;
+}
 
 // @public (undocumented)
 export interface StackProps extends ComponentPropsWithRef<'div'> {
@@ -1734,6 +1846,25 @@ export type StatusStepsProps = LabelledByText_2 | LabelledByElement_2;
 
 // @public (undocumented)
 export type StatusStepState = 'complete' | 'current' | 'upcoming';
+
+// @public
+export function Stepper(input: StepperProps): JSX.Element;
+
+// @public (undocumented)
+export type StepperOrientation = 'horizontal' | 'vertical';
+
+// @public (undocumented)
+export type StepperProps = LabelledByText_3 | LabelledByElement_3;
+
+// @public (undocumented)
+export interface StepperStep {
+    description?: ReactNode;
+    id: string;
+    label: string;
+}
+
+// @public (undocumented)
+export type StepperStepState = 'complete' | 'current' | 'upcoming';
 
 // @public
 export function SubMenu(input: SubMenuProps): JSX.Element;
@@ -1855,7 +1986,7 @@ export interface TagGroupProps<T extends object = object> extends Omit<TagGroupP
 export function TagInput(input: TagInputProps): JSX.Element;
 
 // @public (undocumented)
-export type TagInputMessages = Partial<typeof messages_37.en & typeof messages_7.en>;
+export type TagInputMessages = Partial<typeof messages_42.en & typeof messages_8.en>;
 
 // @public (undocumented)
 export type TagInputProps = TagInputBaseProps & FieldLabelingProps;
@@ -1881,7 +2012,7 @@ export { Text_2 as Text }
 export function Textarea(input: TextareaProps): JSX.Element;
 
 // @public (undocumented)
-export type TextareaMessages = Partial<typeof messages_38.en & typeof messages_7.en>;
+export type TextareaMessages = Partial<typeof messages_43.en & typeof messages_8.en>;
 
 // @public (undocumented)
 export type TextareaProps = TextareaBaseProps & FieldLabelingProps;
@@ -1920,6 +2051,38 @@ export interface TextToggleProps extends ToggleBaseProps {
 
 // @public (undocumented)
 export type TextTone = 'default' | 'secondary' | 'tertiary';
+
+export { ThumbsDownIcon }
+
+export { ThumbsUpIcon }
+
+// @public
+export function Timeline(input: TimelineProps): JSX.Element;
+
+// @public (undocumented)
+export interface TimelineItem {
+    actor?: string;
+    description?: ReactNode;
+    id: string;
+    time: Date | string;
+    title: ReactNode;
+    tone?: TimelineTone;
+}
+
+// @public (undocumented)
+export type TimelineOrder = 'newest-first' | 'oldest-first' | 'as-given';
+
+// @public (undocumented)
+export interface TimelineProps extends Omit<ComponentPropsWithRef<'ol'>, 'children'> {
+    empty?: ReactNode;
+    items: readonly TimelineItem[];
+    messages?: Partial<typeof messages_44.en>;
+    order?: TimelineOrder;
+    timeZone?: string;
+}
+
+// @public (undocumented)
+export type TimelineTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
 // @public
 export const toast: ToastApi;
@@ -1963,7 +2126,7 @@ export function ToastRegion(input: ToastRegionProps): JSX.Element | null;
 // @public (undocumented)
 export interface ToastRegionProps {
     className?: string;
-    messages?: Partial<typeof messages_39.en>;
+    messages?: Partial<typeof messages_45.en>;
     queue?: ToastQueue;
     ref?: Ref<HTMLDivElement>;
 }
@@ -1981,7 +2144,7 @@ export function ToggleGroup(input: ToggleGroupProps): JSX.Element;
 export type ToggleGroupOrientation = 'horizontal' | 'vertical';
 
 // @public (undocumented)
-export type ToggleGroupProps = LabelledByText_3 | LabelledByElement_3;
+export type ToggleGroupProps = LabelledByText_4 | LabelledByElement_4;
 
 // @public (undocumented)
 export type ToggleGroupSelectionMode = 'single' | 'multiple';
@@ -2045,6 +2208,37 @@ export interface TopBarProps extends Omit<ComponentPropsWithRef<'header'>, 'titl
     headingLevel?: TopBarHeadingLevel;
     subtitle?: ReactNode;
     title?: ReactNode;
+}
+
+// @public
+export function Tour(input: TourProps): JSX.Element | null;
+
+// @public (undocumented)
+export type TourPlacement = NonNullable<PopoverProps_2['placement']>;
+
+// @public (undocumented)
+export interface TourProps {
+    className?: string;
+    defaultOpen?: boolean;
+    defaultStep?: number;
+    isOpen?: boolean;
+    messages?: Partial<typeof messages_46.en>;
+    onComplete?: () => void;
+    onOpenChange?: (isOpen: boolean) => void;
+    onSkip?: () => void;
+    onStepChange?: (step: number) => void;
+    placement?: TourPlacement;
+    ref?: Ref<HTMLElement>;
+    step?: number;
+    steps: readonly TourStep[];
+}
+
+// @public (undocumented)
+export interface TourStep {
+    content: ReactNode;
+    placement?: TourPlacement;
+    target: RefObject<Element | null>;
+    title: ReactNode;
 }
 
 export { TriangleAlertIcon }
@@ -2131,7 +2325,7 @@ export function useUndoable(input?: UseUndoableOptions): UseUndoableResult;
 
 // @public (undocumented)
 export interface UseUndoableOptions {
-    messages?: Partial<typeof messages_40.en>;
+    messages?: Partial<typeof messages_47.en>;
     toast?: ToastApi;
 }
 

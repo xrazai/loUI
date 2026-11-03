@@ -348,6 +348,14 @@ getPageItems(5, 10)  // 1 … 4 5 6 … 10
 getPageItems(current: number, pageCount: number): PageItem[]
 ```
 
+### getSourceElementId
+
+The DOM id of one source of a list. `Citation` builds the same id from `listId` and `sourceId`.
+
+```ts
+getSourceElementId(listId: string, sourceId: string): string
+```
+
 ### highlightMatch
 
 Splits `text` into matched and unmatched segments for highlighting, ignoring case
@@ -397,7 +405,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly x: "Close, dismiss, remove"; }
 ```
 
 ### iconSet
@@ -405,7 +413,7 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }
 ```
 
 ### isISODate
@@ -558,4 +566,4 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`
+`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `RefreshIcon`, `SearchIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TriangleAlertIcon`, `XIcon`

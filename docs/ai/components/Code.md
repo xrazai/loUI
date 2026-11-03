@@ -79,3 +79,4 @@ pre > code           block (scrolls sideways, keeps whitespace)
 ## Related components
 
 - Instead, see Kbd: For data values in the UI (IDs, amounts, shortcuts): use `Text mono`, or `Kbd` for a key.
+- Used by: ToolCallStep

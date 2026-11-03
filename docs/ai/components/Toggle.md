@@ -108,3 +108,4 @@ button[aria-pressed]
 - Instead, see SegmentedControl: One value out of a few options (View: List, Board): use `SegmentedControl`.
 - Instead, see Button: An action that does something once: use `Button`.
 - Renders: Icon, Tooltip
+- Used by: ResponseFeedback

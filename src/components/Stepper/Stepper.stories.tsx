@@ -27,6 +27,8 @@ const meta = {
     steps: SETUP_STEPS,
     current: 1,
   },
+  // Captured at 640px so the labelled horizontal layout is covered; narrow stories set their own frame.
+  parameters: { visual: { width: 640 } },
   argTypes: {
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
   },

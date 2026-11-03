@@ -119,8 +119,27 @@ const {
   TagInput,
   Toggle,
   ToggleGroup,
+  Banner,
+  Timeline,
+  Drawer,
+  Tour,
+  Stepper,
+  StackedBar,
+  Legend,
 } = core;
-const { AgentCard, ApprovalCard, ChatPanel, ColorOption, LedgerList, MatrixGrid } = patterns;
+const {
+  AgentCard,
+  ApprovalCard,
+  ChatPanel,
+  ColorOption,
+  LedgerList,
+  MatrixGrid,
+  ResponseFeedback,
+  SourceList,
+  Citation,
+  ToolCallStep,
+  ToolCallList,
+} = patterns;
 
 const trigger = <Button>Open</Button>;
 
@@ -185,6 +204,53 @@ const CASES: Record<string, () => ReactElement> = {
     <ActionList aria-label="Orders" items={[{ id: '1', title: 'Order ORD-1001' }]} />
   ),
   Alert: () => <Alert title="Saved">The order was saved.</Alert>,
+  Banner: () => (
+    <Banner tone="warning" title="Trial ends in 3 days" onDismiss={() => undefined}>
+      Choose a plan to keep your data.
+    </Banner>
+  ),
+  Stepper: () => (
+    <Stepper
+      aria-label="Setup progress"
+      steps={[
+        { id: 'a', label: 'Basics' },
+        { id: 'b', label: 'Source' },
+        { id: 'c', label: 'Review' },
+      ]}
+      current={1}
+      onStepPress={() => undefined}
+    />
+  ),
+  Timeline: () => (
+    <Timeline
+      aria-label="History"
+      timeZone="UTC"
+      items={[
+        { id: 'a', time: '2026-10-28T09:15:00Z', title: 'Request created', actor: 'Ana Costa' },
+        { id: 'b', time: '2026-10-31T16:05:00Z', title: 'Request approved', tone: 'success' },
+      ]}
+    />
+  ),
+  Drawer: () => <Drawer title="Filters" />,
+  Tour: () => <Tour steps={[]} />,
+  StackedBar: () => (
+    <StackedBar
+      aria-label="Orders"
+      series={[
+        { id: 'a', label: 'Online' },
+        { id: 'b', label: 'Store' },
+      ]}
+      data={[{ label: 'Q1', values: { a: 4, b: 3 } }]}
+    />
+  ),
+  Legend: () => <Legend items={[{ id: 'a', label: 'Online' }]} />,
+  ResponseFeedback: () => <ResponseFeedback />,
+  SourceList: () => <SourceList id="s" sources={[{ id: 'a', title: 'Order lifecycle' }]} />,
+  Citation: () => <Citation number={1} title="Order lifecycle" listId="s" sourceId="a" />,
+  ToolCallStep: () => <ToolCallStep name="search_orders" status="succeeded" />,
+  ToolCallList: () => (
+    <ToolCallList steps={[{ stepId: 'a', name: 'search_orders', status: 'running' }]} />
+  ),
   Avatar: () => <Avatar name="Ana Lima" />,
   Badge: () => <Badge>Paid</Badge>,
   Breadcrumb: () => (
@@ -393,6 +459,8 @@ const RENDERS_NOTHING_WHEN_CLOSED = new Set([
   'CommandPalette',
   'ShortcutsHelp',
   'HotkeyProvider',
+  'Drawer',
+  'Tour',
 ]);
 
 function exportedComponents(module: Record<string, unknown>): string[] {

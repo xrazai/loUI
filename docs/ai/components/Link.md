@@ -110,3 +110,4 @@ Wrap the app once: `<DSProvider navigate={router.push} useHref={router.resolve}>
 
 - Instead, see Button: To run an action in place (save, delete, open a dialog): use `Button`.
 - Renders: Icon, VisuallyHidden
+- Used by: Citation, SourceList

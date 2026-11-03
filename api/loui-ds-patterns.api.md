@@ -94,6 +94,18 @@ export interface ChatPanelProps extends Omit<ComponentPropsWithRef<'section'>, '
 }
 
 // @public
+export function Citation(input: CitationProps): JSX.Element;
+
+// @public (undocumented)
+export interface CitationProps extends Omit<ComponentPropsWithRef<'a'>, 'children' | 'href' | 'aria-label' | 'title'> {
+    listId: string;
+    messages?: Partial<typeof messages_4.en>;
+    number: number;
+    sourceId: string;
+    title: string;
+}
+
+// @public
 export function ColorOption(input: ColorOptionProps): JSX.Element;
 
 // @public (undocumented)
@@ -104,6 +116,9 @@ export interface ColorOptionProps extends Omit<ToggleButtonProps, 'className' | 
     mark?: ReactNode;
     ref?: Ref<HTMLButtonElement> | undefined;
 }
+
+// @public
+export function getSourceElementId(listId: string, sourceId: string): string;
 
 // @public (undocumented)
 export interface LedgerEntry {
@@ -124,7 +139,7 @@ export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'chil
     dateStyle?: DateStyle;
     entries: readonly LedgerEntry[];
     format?: (value: number) => string;
-    messages?: Partial<typeof messages_4.en>;
+    messages?: Partial<typeof messages_5.en>;
     negativeTone?: LedgerNegativeTone;
     onDelete?: (entry: LedgerEntry) => void;
 }
@@ -150,7 +165,7 @@ export interface MatrixGridProps extends Omit<ComponentPropsWithRef<'div'>, 'chi
     countLabel?: string;
     hint?: ReactNode;
     isLinked: (rowId: string, columnId: string) => boolean;
-    messages?: Partial<typeof messages_5.en>;
+    messages?: Partial<typeof messages_6.en>;
     onToggle: (rowId: string, columnId: string) => void;
     rows: readonly MatrixGridRow[];
 }
@@ -160,6 +175,80 @@ export interface MatrixGridRow {
     id: string;
     label: string;
     meta?: string;
+}
+
+// @public
+export function ResponseFeedback(input: ResponseFeedbackProps): JSX.Element;
+
+// @public (undocumented)
+export interface ResponseFeedbackProps extends Omit<ComponentPropsWithRef<'div'>, 'children' | 'defaultValue' | 'onChange' | 'role' | 'aria-label'> {
+    defaultValue?: ResponseRating | null;
+    isDisabled?: boolean;
+    isRegenerating?: boolean;
+    messages?: Partial<typeof messages_7.en>;
+    onChange?: (value: ResponseRating | null) => void;
+    onCopy?: () => void;
+    onRegenerate?: () => void;
+    value?: ResponseRating | null;
+}
+
+// @public (undocumented)
+export type ResponseRating = 'positive' | 'negative';
+
+// @public (undocumented)
+export interface Source {
+    domain?: string;
+    id: string;
+    snippet?: string;
+    title: string;
+    url?: string;
+}
+
+// @public
+export function SourceList(input: SourceListProps): JSX.Element;
+
+// @public (undocumented)
+export interface SourceListProps extends Omit<ComponentPropsWithRef<'section'>, 'children' | 'title' | 'id'> {
+    headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+    id: string;
+    messages?: Partial<typeof messages_4.en>;
+    sources: readonly Source[];
+    title?: string;
+}
+
+// @public
+export function ToolCallList(input: ToolCallListProps): JSX.Element;
+
+// @public (undocumented)
+export interface ToolCallListProps extends Omit<ComponentPropsWithRef<'ol'>, 'children' | 'aria-label'> {
+    'aria-label'?: string;
+    messages?: Partial<typeof messages_8.en>;
+    steps: readonly ToolCallListStep[];
+}
+
+// @public (undocumented)
+export interface ToolCallListStep extends ToolCallStepProps {
+    stepId: string;
+}
+
+// @public (undocumented)
+export type ToolCallStatus = 'running' | 'succeeded' | 'failed';
+
+// @public
+export function ToolCallStep(input: ToolCallStepProps): JSX.Element;
+
+// @public (undocumented)
+export interface ToolCallStepProps extends Omit<ComponentPropsWithRef<'div'>, 'children' | 'title' | 'onChange'> {
+    defaultExpanded?: boolean;
+    durationMs?: number;
+    headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+    input?: ReactNode;
+    isExpanded?: boolean;
+    messages?: Partial<typeof messages_8.en>;
+    name: string;
+    onExpandedChange?: (isExpanded: boolean) => void;
+    output?: ReactNode;
+    status: ToolCallStatus;
 }
 
 // (No @packageDocumentation comment for this package)

@@ -44,6 +44,10 @@ export const GUIDE_META: { slug: string; description: string }[] = [
     slug: 'using-with-ai',
     description: 'The manifest, llms.txt, content rules and Storybook MCP.',
   },
+  {
+    slug: 'bundle-size',
+    description: 'What an app ships, stripping unused React Aria locales, code splitting.',
+  },
 ];
 
 export const FOUNDATION_META: { slug: string; description: string }[] = [

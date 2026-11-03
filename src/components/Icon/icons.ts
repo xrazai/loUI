@@ -24,6 +24,10 @@ import {
   Search as SearchIcon,
   Star as StarIcon,
   TriangleAlert as TriangleAlertIcon,
+  Copy as CopyIcon,
+  RefreshCw as RefreshIcon,
+  ThumbsDown as ThumbsDownIcon,
+  ThumbsUp as ThumbsUpIcon,
   X as XIcon,
 } from 'lucide-react';
 
@@ -59,6 +63,10 @@ export {
   SearchIcon,
   StarIcon,
   TriangleAlertIcon,
+  CopyIcon,
+  RefreshIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
   XIcon,
 };
 
@@ -95,6 +103,10 @@ export const iconNames = {
   search: 'Search fields',
   star: 'Rating, favorite',
   'triangle-alert': 'Warning status',
+  copy: 'Copy to the clipboard',
+  refresh: 'Regenerate, reload, sync again',
+  'thumbs-down': 'Negative feedback on a response',
+  'thumbs-up': 'Positive feedback on a response',
   x: 'Close, dismiss, remove',
 } as const;
 
@@ -125,6 +137,10 @@ export const iconSet = {
   search: SearchIcon,
   star: StarIcon,
   'triangle-alert': TriangleAlertIcon,
+  copy: CopyIcon,
+  refresh: RefreshIcon,
+  'thumbs-down': ThumbsDownIcon,
+  'thumbs-up': ThumbsUpIcon,
   x: XIcon,
 } as const;
 

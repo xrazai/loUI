@@ -89,4 +89,4 @@ One element: a ring with an open top edge. Size comes from `--ds-icon-sm|md|lg`,
 
 - Instead, see Skeleton: For large areas or page loads: use `Skeleton` so the layout does not jump.
 - Instead, see Progress: When you know the progress: use `Progress` with a value.
-- Used by: Button, ChatPanel, Combobox
+- Used by: Button, ChatPanel, Combobox, ToolCallStep

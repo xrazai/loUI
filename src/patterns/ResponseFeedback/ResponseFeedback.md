@@ -40,7 +40,7 @@ div
 - The rating buttons are toggle buttons (`aria-pressed`) in a labelled group. Each is a tab stop; `Space` and `Enter` press.
 - Rating is reversible, so nothing asks to confirm: pressing the active button again removes the rating.
 - A polite live region says "Feedback sent" or "Feedback removed" after a change. It is silent on first render.
-- Labels are text only for now. Thumbs, copy and refresh icons are not in the curated icon set; when they are added, pass them as `leading` of the buttons and keep the text.
+- Each control shows a decorative icon (`ThumbsUpIcon`, `ThumbsDownIcon`, `CopyIcon`, `RefreshIcon`) next to its visible text label; the text is the accessible name.
 
 ## Content rules
 

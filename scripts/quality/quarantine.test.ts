@@ -29,8 +29,8 @@ function files(dir: string): string[] {
 export interface Quarantined {
   file: string;
   line: number;
-  id?: string;
-  since?: string;
+  id?: string | undefined;
+  since?: string | undefined;
 }
 
 export function findSkipped(source: string, file: string): Quarantined[] {

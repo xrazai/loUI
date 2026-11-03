@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import { Button } from '../../components/Button';
+import { Icon } from '../../components/Icon';
+import { CopyIcon, RefreshIcon, ThumbsDownIcon, ThumbsUpIcon } from '../../components/Icon/icons';
 import { Toggle } from '../../components/Toggle';
 import { VisuallyHidden } from '../../components/VisuallyHidden';
 import { useControllableState } from '../../hooks/useControllableState';
@@ -76,6 +78,7 @@ export function ResponseFeedback({
           variant="ghost"
           isDisabled={isDisabled}
           isSelected={rating === 'positive'}
+          leading={<Icon icon={ThumbsUpIcon} size="sm" />}
           onChange={(selected) => {
             choose('positive', selected);
           }}
@@ -87,6 +90,7 @@ export function ResponseFeedback({
           variant="ghost"
           isDisabled={isDisabled}
           isSelected={rating === 'negative'}
+          leading={<Icon icon={ThumbsDownIcon} size="sm" />}
           onChange={(selected) => {
             choose('negative', selected);
           }}
@@ -95,7 +99,13 @@ export function ResponseFeedback({
         </Toggle>
       </div>
       {onCopy ? (
-        <Button size="sm" variant="ghost" isDisabled={isDisabled} onPress={onCopy}>
+        <Button
+          size="sm"
+          variant="ghost"
+          isDisabled={isDisabled}
+          onPress={onCopy}
+          leading={<Icon icon={CopyIcon} size="sm" />}
+        >
           {t.copy}
         </Button>
       ) : null}
@@ -105,6 +115,7 @@ export function ResponseFeedback({
           variant="ghost"
           isDisabled={isDisabled || isRegenerating}
           onPress={onRegenerate}
+          leading={<Icon icon={RefreshIcon} size="sm" />}
         >
           {t.regenerate}
         </Button>

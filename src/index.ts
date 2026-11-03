@@ -82,6 +82,17 @@ export { Popover } from './components/Popover';
 export type { PopoverPlacement, PopoverProps } from './components/Popover';
 export { Sheet } from './components/Sheet';
 export type { SheetProps, SheetRenderOptions, SheetSize } from './components/Sheet';
+export { Drawer } from './components/Drawer';
+export type { DrawerPlacement, DrawerProps, DrawerRole, DrawerSize } from './components/Drawer';
+export { Tour } from './components/Tour';
+export type { TourPlacement, TourProps, TourStep } from './components/Tour';
+export { Stepper } from './components/Stepper';
+export type {
+  StepperOrientation,
+  StepperProps,
+  StepperStep,
+  StepperStepState,
+} from './components/Stepper';
 export {
   DEFAULT_TOAST_TIMEOUT,
   ToastRegion,
@@ -248,6 +259,15 @@ export { ActionList } from './components/ActionList';
 export type { ActionListItem, ActionListProps } from './components/ActionList';
 export { Chart, niceScale } from './components/Chart';
 export type { ChartDatum, ChartProps, ChartTone, ChartType, NiceScale } from './components/Chart';
+export { StackedBar } from './components/StackedBar';
+export type {
+  StackedBarDatum,
+  StackedBarOrientation,
+  StackedBarProps,
+  StackedBarSeries,
+} from './components/StackedBar';
+export { Legend } from './components/Legend';
+export type { LegendItem, LegendOrientation, LegendProps } from './components/Legend';
 export { DataTable } from './components/DataTable';
 export type {
   DataTableAlign,
@@ -288,6 +308,15 @@ export type { SwatchProps, SwatchSize } from './components/Swatch';
 // Display
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertTone } from './components/Alert';
+export { Banner } from './components/Banner';
+export type { BannerProps, BannerTone } from './components/Banner';
+export { Timeline } from './components/Timeline';
+export type {
+  TimelineItem,
+  TimelineOrder,
+  TimelineProps,
+  TimelineTone,
+} from './components/Timeline';
 export { Avatar, getInitials } from './components/Avatar';
 export type { AvatarProps, AvatarSize } from './components/Avatar';
 export { Badge } from './components/Badge';

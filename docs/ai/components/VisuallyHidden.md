@@ -65,4 +65,4 @@ span.root   (or as="h2", "div", ...)
 ## Related components
 
 - Instead, see SkipLink: For a skip link that appears on focus: use `SkipLink`.
-- Used by: Alert, ApprovalCard, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Link, MatrixGrid, NavItem, SegmentedControl, ShortcutsHelp, StatusSteps, Tab, TabList, TabPanel, Tabs, Textarea, ToastRegion
+- Used by: Alert, ApprovalCard, Banner, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep

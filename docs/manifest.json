@@ -24,11 +24,11 @@
     }
   ],
   "counts": {
-    "components": 102,
+    "components": 114,
     "hooks": 11,
-    "utilities": 40,
-    "icons": 26,
-    "recipes": 8
+    "utilities": 41,
+    "icons": 30,
+    "recipes": 9
   },
   "components": [
     {
@@ -2554,6 +2554,305 @@
       }
     },
     {
+      "name": "Banner",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Banner } from '@loui/ds';",
+      "folder": "src/components/Banner",
+      "sourceFile": "src/components/Banner/Banner.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A persistent, full-width message for a whole page or section: maintenance, a limited account,\nan offline mode. It stays until the condition ends or the user dismisses it.\nThe icon is decorative and a visually hidden prefix names the tone for screen readers.",
+      "props": [
+        {
+          "name": "tone",
+          "type": "'info' | 'success' | 'warning' | 'danger'",
+          "required": false,
+          "default": "'info'",
+          "description": "Kind of message: `info` (neutral, default), `success`, `warning` or `danger`.",
+          "values": ["info", "success", "warning", "danger"]
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Short heading in one line: what is going on. Plain text, not a document heading."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "The detail: why, and what to do. Keep it to one or two sentences."
+        },
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "description": "A single action next to the text, usually a link or a small `Button` (\"Update card\")."
+        },
+        {
+          "name": "onDismiss",
+          "type": "() => void",
+          "required": false,
+          "description": "Shows a dismiss button that calls this. The banner is removed by the parent."
+        },
+        {
+          "name": "urgent",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "The banner appears while the user is working and interrupts the task, so it must be announced\nimmediately (`role=\"alert\"`, assertive). Only for a failure the user must know about right\nnow. A banner that is on the page from the start never needs it."
+        },
+        {
+          "name": "announce",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Whether the banner is a live region (`role=\"status\"`, polite). Default `false`, because a\nbanner is usually part of the page when it loads and a live region that never changes is\nnoise. Set `true` when the banner is added to the page after load (a lost connection that\nis restored, a session that is about to expire). Ignored when `urgent`."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ dismiss: string; info: string; success: string; warning: string; danger: string; }>",
+          "required": false,
+          "description": "Per-instance overrides of the built-in messages."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {
+        "tone": ["info", "success", "warning", "danger"]
+      },
+      "messages": {
+        "providerKey": "Banner",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "dismiss",
+            "kind": "string",
+            "default": "Dismiss banner",
+            "description": "Name of the dismiss button."
+          },
+          {
+            "key": "info",
+            "kind": "string",
+            "default": "Information",
+            "description": "Visually hidden prefix that tells screen reader users the kind of banner; color and icon alone cannot."
+          },
+          {
+            "key": "success",
+            "kind": "string",
+            "default": "Success"
+          },
+          {
+            "key": "warning",
+            "kind": "string",
+            "default": "Warning"
+          },
+          {
+            "key": "danger",
+            "kind": "string",
+            "default": "Error"
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-banner-content-basis",
+        "--ds-banner-danger-bg",
+        "--ds-banner-danger-border",
+        "--ds-banner-success-bg",
+        "--ds-banner-success-border",
+        "--ds-banner-warning-bg",
+        "--ds-banner-warning-border",
+        "--ds-bg",
+        "--ds-danger",
+        "--ds-fs-small",
+        "--ds-lh-small",
+        "--ds-line",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-4",
+        "--ds-success",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-warning",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/Banner",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-banner--default",
+            "hasPlay": false
+          },
+          {
+            "name": "Success",
+            "id": "components-banner--success",
+            "hasPlay": false
+          },
+          {
+            "name": "Warning",
+            "id": "components-banner--warning",
+            "hasPlay": false
+          },
+          {
+            "name": "Danger",
+            "id": "components-banner--danger",
+            "hasPlay": false
+          },
+          {
+            "name": "Urgent",
+            "id": "components-banner--urgent",
+            "description": "Urgent banners use `role=\"alert\"` and interrupt screen readers. Use them only when they appear while the user is working.",
+            "hasPlay": false
+          },
+          {
+            "name": "Announced",
+            "id": "components-banner--announced",
+            "description": "A banner added after the page loaded is a polite live region.",
+            "hasPlay": false
+          },
+          {
+            "name": "TitleOnly",
+            "id": "components-banner--title-only",
+            "hasPlay": false
+          },
+          {
+            "name": "TextOnly",
+            "id": "components-banner--text-only",
+            "hasPlay": false
+          },
+          {
+            "name": "Dismissible",
+            "id": "components-banner--dismissible",
+            "description": "Tab to the dismiss button, press Enter.",
+            "hasPlay": true
+          },
+          {
+            "name": "LongText",
+            "id": "components-banner--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "AllTones",
+            "id": "components-banner--all-tones",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-banner--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Banner/Banner.md",
+        "summary": "A persistent, full-width message for a whole page or section: maintenance, a limited account, an offline mode. It has a tone, an icon, an optional title, one action and an optional dismiss button.",
+        "whenToUse": [
+          "A condition that affects the whole page or area and lasts until it is resolved or dismissed: scheduled maintenance, a trial ending, a read-only mode.",
+          "Place it at the top of the page or section it applies to, above the content."
+        ],
+        "whenNotToUse": [
+          "Feedback about something that just happened and goes away by itself (\"Order #1051 created\"): use `Toast`.",
+          "A message about one piece of content, inside it (a form, a card): use `Alert`.",
+          "A field error: use the field's error message.",
+          "A confirmation that needs a decision: use `Dialog`.",
+          "The status of a record: use `Badge`."
+        ],
+        "keyboard": [],
+        "examples": [
+          "<Banner title=\"Scheduled maintenance\">Sunday, 02:00 to 03:00 UTC.</Banner>\n\n<Banner\n  tone=\"warning\"\n  title=\"Trial ends in 3 days\"\n  action={<Button size=\"sm\">Choose plan</Button>}\n  onDismiss={() => setHidden(true)}\n>\n  Choose a plan to keep your data.\n</Banner>\n\n<Banner tone=\"danger\" urgent title=\"Connection lost\">\n  Changes are not being saved.\n</Banner>"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- A condition that affects the whole page or area and lasts until it is resolved or dismissed: scheduled maintenance, a trial ending, a read-only mode.\n- Place it at the top of the page or section it applies to, above the content."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Feedback about something that just happened and goes away by itself (\"Order #1051 created\"): use `Toast`.\n- A message about one piece of content, inside it (a form, a card): use `Alert`.\n- A field error: use the field's error message.\n- A confirmation that needs a decision: use `Dialog`.\n- The status of a record: use `Badge`.\n\n### Banner, Alert and Toast\n\n|             | Banner                                             | Alert                                   | Toast                                |\n| ----------- | -------------------------------------------------- | --------------------------------------- | ------------------------------------ |\n| Scope       | Page or section                                    | Inline, next to the content it explains | The app, in a corner                 |\n| Lifetime    | Persistent, until resolved or dismissed            | Persistent while relevant               | Transient, auto-dismisses (pausable) |\n| Shape       | Full width, flat, top and bottom border only       | Rounded card                            | Elevated overlay                     |\n| Live region | None by default (it is on the page from the start) | Polite status by default                | Always announced                     |"
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv[role=alert | status | none]  (tinted surface, 1px tinted top and bottom border, full width)\n  Icon (decorative)  info | success | warning (triangle) | danger\n  content\n    VisuallyHidden   \"Information\" | \"Success\" | \"Warning\" | \"Error\"\n    title            optional, 14/22, weight 500\n    children         text-2, on the same line as the title when it fits\n  actions            action slot · dismiss IconButton\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop        | Type                                           | Default  | Notes                                                                 |\n| ----------- | ---------------------------------------------- | -------- | --------------------------------------------------------------------- |\n| `tone`      | `'info' \\| 'success' \\| 'warning' \\| 'danger'` | `'info'` | `info` is neutral; the others tint border and background              |\n| `title`     | `ReactNode`                                    |          | What is going on, one line                                            |\n| `children`  | `ReactNode`                                    |          | Why, and what to do                                                   |\n| `action`    | `ReactNode`                                    |          | One link or small `Button`                                            |\n| `onDismiss` | `() => void`                                   |          | Shows the dismiss button; the parent removes the banner               |\n| `urgent`    | `boolean`                                      | `false`  | `role=\"alert\"` (assertive). Only when it appears while the user works |\n| `announce`  | `boolean`                                      | `false`  | `role=\"status\"` (polite), for a banner added after the page loaded    |\n| `messages`  | `{ dismiss, info, success, warning, danger }`  |          | Per-instance overrides                                                |\n\nOther `div` attributes and `ref` go to the root."
+          },
+          {
+            "id": "accessibility-role-decisions",
+            "heading": "Accessibility: role decisions",
+            "content": "- **No role by default.** A banner is normally part of the page when it loads; screen readers read it in page order. A live region that never changes is noise.\n- **`announce` gives `role=\"status\"` (polite).** Use it when the banner is inserted after load (connection restored, session about to expire). Render the banner when the event happens and keep it mounted; do not render it hidden and unhide it.\n- **`urgent` gives `role=\"alert\"` (assertive).** Use it only for a `danger` or `warning` banner that appears dynamically and needs attention now (connection lost, session expired). A `danger` or `warning` banner that is on the page from the start must not be `urgent`: the tone does not imply urgency.\n- **The tone is not only color and icon.** The icon is `aria-hidden`; a visually hidden prefix (\"Error\", \"Warning\", \"Success\", \"Information\", from messages) names the kind of banner.\n- The **dismiss button** is an `IconButton` named \"Dismiss banner\" (messages), reachable by Tab and operated with Enter or Space. After dismissing, move focus somewhere sensible if the banner held it.\n- Text contrast on the tinted backgrounds is at least 4.5:1 (checked in the browser test with the real computed colors). The tints are component tokens (`--ds-banner-*`).\n- Reflow: the text and the actions wrap; at 320 px the action moves below the text."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Title: what is going on, sentence case, no exclamation marks (\"Trial ends in 3 days\").\n- Text: why and what to do, one or two sentences.\n- The action is a verb plus object (\"Choose plan\"), not \"Click here\".\n- Do not stack more than one banner per page area."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Banner title=\"Scheduled maintenance\">Sunday, 02:00 to 03:00 UTC.</Banner>\n\n<Banner\n  tone=\"warning\"\n  title=\"Trial ends in 3 days\"\n  action={<Button size=\"sm\">Choose plan</Button>}\n  onDismiss={() => setHidden(true)}\n>\n  Choose a plan to keep your data.\n</Banner>\n\n<Banner tone=\"danger\" urgent title=\"Connection lost\">\n  Changes are not being saved.\n</Banner>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Alert",
+            "reason": "A message about one piece of content, inside it (a form, a card): use `Alert`."
+          },
+          {
+            "name": "Dialog",
+            "reason": "A confirmation that needs a decision: use `Dialog`."
+          },
+          {
+            "name": "Badge",
+            "reason": "The status of a record: use `Badge`."
+          }
+        ],
+        "uses": ["Icon", "IconButton", "VisuallyHidden"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "Breadcrumb",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -3385,8 +3684,10 @@
           "DatePicker",
           "FileUpload",
           "InlineConfirm",
+          "ResponseFeedback",
           "ShortcutsHelp",
-          "ToastRegion"
+          "ToastRegion",
+          "Tour"
         ]
       }
     },
@@ -6224,6 +6525,220 @@
       }
     },
     {
+      "name": "Citation",
+      "kind": "component",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { Citation } from '@loui/ds/patterns';",
+      "folder": "src/patterns/SourceList",
+      "sourceFile": "src/patterns/SourceList/SourceList.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "An inline marker for a claim in an answer. It is a real link (`href=\"#...\"`) that moves\nfocus to the matching source in the `SourceList`, so it works with a keyboard and a screen\nreader: the name is \"Source 2: Title\", the visible text is the number.",
+      "props": [
+        {
+          "name": "number",
+          "type": "number",
+          "required": true,
+          "description": "Position of the source in the list, starting at 1. Shown as the marker text."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Title of the source. Part of the accessible name (\"Source 2: Title\")."
+        },
+        {
+          "name": "listId",
+          "type": "string",
+          "required": true,
+          "description": "Id of the `SourceList` the source belongs to."
+        },
+        {
+          "name": "sourceId",
+          "type": "string",
+          "required": true,
+          "description": "Id of the source (`Source.id`)."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ title: string; citation: (number: number, title: string) => string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AnchorHTMLAttributes",
+          "domGeneric": true,
+          "count": 7
+        },
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 52
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 54
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "SourceList",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "title",
+            "kind": "string",
+            "default": "Sources",
+            "description": "Default heading of the source list."
+          },
+          {
+            "key": "citation",
+            "kind": "function",
+            "default": "Source 2: {title}",
+            "signature": "(number: number, title: string)",
+            "description": "Accessible name of a citation marker: \"Source 2: Title\"."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-citation-size",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-lh-label",
+        "--ds-lh-meta",
+        "--ds-line-control",
+        "--ds-radius-sm",
+        "--ds-source-list-gap",
+        "--ds-source-list-indent",
+        "--ds-source-list-padding",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-weight-medium",
+        "--ds-weight-semibold"
+      ],
+      "stories": {
+        "title": "Patterns/SourceList",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "patterns-source-list--default",
+            "hasPlay": false
+          },
+          {
+            "name": "LongText",
+            "id": "patterns-source-list--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "patterns-source-list--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "WithCitations",
+            "id": "patterns-source-list--with-citations",
+            "description": "Markers in a sentence jump to the matching source; focus lands on it.",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/patterns/SourceList/SourceList.md",
+        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.",
+        "whenToUse": [
+          "An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
+        ],
+        "whenNotToUse": [
+          "Footnotes in long-form documents: use plain links.",
+          "A list of results the user searched for: use a table or a list of cards."
+        ],
+        "keyboard": [],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Footnotes in long-form documents: use plain links.\n- A list of results the user searched for: use a table or a list of cards."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\np            ... a claim [2] ...        Citation: <a href=\"#s-source-b\" aria-label=\"Source 2: Title\">2</a>\nsection      named by its heading (\"Sources\")\n  ol\n    li       tabIndex=-1 (focus target)    title (link when it has a url) · domain (mono) · snippet\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "`SourceList`\n\n| Prop           | Type            | Default   | Notes                                                                        |\n| -------------- | --------------- | --------- | ---------------------------------------------------------------------------- |\n| `id`           | `string`        | -         | Required. Citations find their source through it.                            |\n| `sources`      | `Source[]`      | -         | `{ id, title, url?, domain?, snippet? }`. The position is the source number. |\n| `title`        | `string`        | \"Sources\" | Heading text.                                                                |\n| `headingLevel` | `1`-`6`         | `3`       |                                                                              |\n| `messages`     | partial catalog |           | `title`, `citation(number, title)`.                                          |\n\n`Citation`: `number` (1-based, the visible text), `title`, `listId`, `sourceId`, plus anchor props. `getSourceElementId(listId, sourceId)` returns the DOM id when you need it."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A citation is a real link (`href=\"#...\"`) named \"Source 2: Title\"; the visible text is the number, which the name contains.\n- Activating it moves focus to the matching list item and scrolls it into view. It does not change the URL hash, so it does not fight your router. Without JavaScript the hash link still works.\n- Source titles with a `url` are links that open in a new tab (with the external-link icon and a screen-reader note).\n- The marker is 24 px square (WCAG 2.5.8)."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Keep source order stable while the answer streams; append new sources at the end, so numbers already shown never change.\n- Titles say what the page is, not \"Click here\". Snippets are short, plain text."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<p>\n  Orders move through four statuses\n  <Citation number={1} title=\"Order lifecycle\" listId=\"answer-1\" sourceId=\"lifecycle\" />.\n</p>\n<SourceList\n  id=\"answer-1\"\n  sources={[{ id: 'lifecycle', title: 'Order lifecycle', url: 'https://example.com/orders' }]}\n/>\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "No handoff source: new pattern (TODO `AI-013`)."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [],
+        "uses": ["Link"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "Code",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -6417,7 +6932,7 @@
           }
         ],
         "uses": [],
-        "usedBy": []
+        "usedBy": ["ToolCallStep"]
       }
     },
     {
@@ -11123,6 +11638,288 @@
       }
     },
     {
+      "name": "Drawer",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Drawer } from '@loui/ds';",
+      "folder": "src/components/Drawer",
+      "sourceFile": "src/components/Drawer/Drawer.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A non-modal side panel for filters, inspectors and secondary navigation. It sits next to the\ncontent in the page flow: there is no scrim, the page stays interactive, focus is not trapped\nand the page is not made inert. Place it as a sibling of the main content inside a flex or grid\ncontainer; it renders nothing while closed.\n\nUse `Sheet` instead when the panel is a task that must be finished or dismissed first\n(editing one record): that one is modal.\n\n`Escape` closes the drawer while focus is inside it and returns focus to the trigger.",
+      "props": [
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Heading of the drawer and its accessible name."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode | ((options: DrawerRenderOptions) => ReactNode)",
+          "required": false,
+          "description": "Body of the drawer; it scrolls when it is taller than the drawer. A function receives `close`."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode | ((options: DrawerRenderOptions) => ReactNode)",
+          "required": false,
+          "description": "Footer actions, aligned to the end. A function receives `close`."
+        },
+        {
+          "name": "placement",
+          "type": "'start' | 'end'",
+          "required": false,
+          "default": "'end'",
+          "description": "Edge the drawer sits against: `end` (default) or `start`. Both follow the writing direction.",
+          "values": ["start", "end"]
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'",
+          "description": "Width: `sm` 280px, `md` 320px (default), `lg` 400px. It never exceeds its container.",
+          "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "padded",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Pads the body. Turn it off for a table or a full-bleed list. Default `true`."
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled open state. Pair with `onOpenChange`."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Initial open state when uncontrolled."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "required": false,
+          "description": "Called when the drawer opens or closes through the user (close button or `Escape`)."
+        },
+        {
+          "name": "autoFocus",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Moves focus into the drawer when it opens after the first render. A drawer that is open on\nfirst render never takes focus. Default `true`; turn it off for a panel that should stay\nbeside the page without interrupting what the user is doing."
+        },
+        {
+          "name": "role",
+          "type": "'complementary' | 'region'",
+          "required": false,
+          "default": "'complementary'",
+          "description": "Landmark role. `complementary` (default) for content that supports the page (filters,\ninspectors); `region` for a section the user may want to find in the landmark list.",
+          "values": ["complementary", "region"]
+        },
+        {
+          "name": "headingLevel",
+          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "required": false,
+          "default": "'2'",
+          "description": "Level of the title heading. Default `2`.",
+          "values": ["1", "2", "3", "4", "5", "6"]
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ close: string; }>",
+          "required": false,
+          "description": "Per-instance overrides of the built-in messages."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Class name for the drawer panel."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLElement>",
+          "required": false,
+          "description": "Ref to the drawer panel."
+        }
+      ],
+      "inheritedProps": [],
+      "variants": {
+        "size": ["sm", "md", "lg"]
+      },
+      "messages": {
+        "providerKey": "Drawer",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "close",
+            "kind": "string",
+            "default": "Close panel",
+            "description": "Name of the close button in the Drawer header."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-drawer-from",
+        "--ds-drawer-padding",
+        "--ds-drawer-shift",
+        "--ds-drawer-width",
+        "--ds-drawer-width-lg",
+        "--ds-drawer-width-md",
+        "--ds-drawer-width-sm",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-font-sans",
+        "--ds-fs-heading",
+        "--ds-fs-small",
+        "--ds-lh-heading",
+        "--ds-lh-small",
+        "--ds-line",
+        "--ds-line-subtle",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-4",
+        "--ds-surface",
+        "--ds-text",
+        "--ds-topbar-h",
+        "--ds-weight-semibold"
+      ],
+      "stories": {
+        "title": "Components/Drawer",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-drawer--default",
+            "hasPlay": false
+          },
+          {
+            "name": "AtStart",
+            "id": "components-drawer--at-start",
+            "hasPlay": false
+          },
+          {
+            "name": "Small",
+            "id": "components-drawer--small",
+            "hasPlay": false
+          },
+          {
+            "name": "Large",
+            "id": "components-drawer--large",
+            "hasPlay": false
+          },
+          {
+            "name": "Region",
+            "id": "components-drawer--region",
+            "hasPlay": false
+          },
+          {
+            "name": "Unpadded",
+            "id": "components-drawer--unpadded",
+            "hasPlay": false
+          },
+          {
+            "name": "LongContent",
+            "id": "components-drawer--long-content",
+            "hasPlay": false
+          },
+          {
+            "name": "Rtl",
+            "id": "components-drawer--rtl",
+            "hasPlay": false
+          },
+          {
+            "name": "OpenAndCloseWithKeyboard",
+            "id": "components-drawer--open-and-close-with-keyboard",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Drawer/Drawer.md",
+        "summary": "A non-modal side panel that sits next to the content, for filters, inspectors and secondary navigation. There is no scrim, the page stays interactive and focus is not trapped. Generic: it lives in the core entry point.",
+        "whenToUse": [],
+        "whenNotToUse": [
+          "A short confirmation or form: `Dialog`.",
+          "A few controls anchored to a button: `Popover`.",
+          "Top-level navigation: `Sidebar`."
+        ],
+        "keyboard": [
+          "`Escape` closes the drawer when focus is inside it (and when no inner overlay handled it) and focus returns to the element that had it before the drawer opened, normally the trigger. Closing from the close button does the same."
+        ],
+        "examples": [
+          "const [open, setOpen] = useState(false);\n\n<div style={{ display: 'flex' }}>\n  <main>\n    <Button onPress={() => setOpen(true)}>Open filters</Button>\n  </main>\n  <Drawer\n    title=\"Filters\"\n    isOpen={open}\n    onOpenChange={setOpen}\n    footer={({ close }) => (\n      <Button variant=\"primary\" onPress={close}>\n        Apply filters\n      </Button>\n    )}\n  >\n    <Input label=\"Customer\" />\n  </Drawer>\n</div>;"
+        ],
+        "sections": [
+          {
+            "id": "drawer-or-sheet",
+            "heading": "Drawer or Sheet",
+            "content": "|          | Drawer                                                                   | Sheet                                                      |\n| -------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- |\n| Modality | Non-modal: page stays usable                                             | Modal: page is `inert`, scroll locked                      |\n| Layout   | In the page flow, beside the content                                     | Overlay above the page, with a scrim                       |\n| Focus    | Not trapped; Tab leaves the drawer                                       | Trapped and restored                                       |\n| Use for  | Filters, inspector for the current selection, secondary navigation, help | Viewing or editing one record, a task to finish or dismiss |\n\nRule of thumb: if the user should keep working in the page while the panel is open, use a `Drawer`. If the panel is a task that needs a decision before going back, use a `Sheet`."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A short confirmation or form: `Dialog`.\n- A few controls anchored to a button: `Popover`.\n- Top-level navigation: `Sidebar`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\naside (role complementary | region, aria-labelledby = title)\n  header     --ds-topbar-h tall: heading + close IconButton\n  body       scrolls; padded or not\n  footer     optional, end-aligned actions\n```\n\nPlace the drawer as a sibling of the main content in a flex or grid container. It renders nothing while closed and does not animate out."
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                                      | Type                                    | Default         | Notes                                                                               |\n| ----------------------------------------- | --------------------------------------- | --------------- | ----------------------------------------------------------------------------------- |\n| `title`                                   | `ReactNode` (required)                  | none            | Heading and accessible name.                                                        |\n| `children` / `footer`                     | `ReactNode \\| ({ close }) => ReactNode` |                 | Body and end-aligned actions.                                                       |\n| `placement`                               | `'start' \\| 'end'`                      | `end`           | Edge it sits against; follows the writing direction.                                |\n| `size`                                    | `'sm' \\| 'md' \\| 'lg'`                  | `md`            | 280 / 320 / 400 px (`--ds-drawer-width-*`).                                         |\n| `padded`                                  | `boolean`                               | `true`          | Off for a table or list.                                                            |\n| `isOpen` / `defaultOpen` / `onOpenChange` |                                         | closed          | Controlled / uncontrolled. `onOpenChange` fires for user closes (button, `Escape`). |\n| `autoFocus`                               | `boolean`                               | `true`          | Moves focus to the panel when it opens after first render.                          |\n| `role`                                    | `'complementary' \\| 'region'`           | `complementary` | Landmark role.                                                                      |\n| `headingLevel`                            | `1`-`6`                                 | `2`             | Level of the title.                                                                 |\n| `messages`                                | `{ close }`                             |                 | \"Close panel\" (pt-BR \"Fechar painel\").                                              |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A named landmark (`complementary` by default, `region` on request) labelled by its title.\n- Not modal: nothing is hidden from assistive technology and Tab moves freely between the drawer and the page.\n- When the drawer opens after first render, focus moves to the panel (it is programmatically focusable, `tabIndex=-1`), so the next Tab reaches its first control. A drawer that is open on first render never takes focus; set `autoFocus={false}` to keep focus where it is.\n- `Escape` closes the drawer when focus is inside it (and when no inner overlay handled it) and focus returns to the element that had it before the drawer opened, normally the trigger. Closing from the close button does the same.\n- If the consumer closes a controlled drawer from outside (for example a toolbar toggle), focus is left where the user put it.\n- Slide-in is a short fade plus 16 px move (`--ds-drawer-shift`); it is removed under `prefers-reduced-motion` and mirrors in right-to-left layouts (`:dir(rtl)`). Borders and padding use logical properties.\n- The width is capped by its container (`max-inline-size: 100%`), so on narrow containers it fills the width instead of overflowing."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Title: the purpose in sentence case (\"Filters\", \"Order details\").\n- Footer buttons are verb plus object (\"Apply filters\", \"Clear filters\"). Use one primary action."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\nconst [open, setOpen] = useState(false);\n\n<div style={{ display: 'flex' }}>\n  <main>\n    <Button onPress={() => setOpen(true)}>Open filters</Button>\n  </main>\n  <Drawer\n    title=\"Filters\"\n    isOpen={open}\n    onOpenChange={setOpen}\n    footer={({ close }) => (\n      <Button variant=\"primary\" onPress={close}>\n        Apply filters\n      </Button>\n    )}\n  >\n    <Input label=\"Customer\" />\n  </Drawer>\n</div>;\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "New component (GAP-006): the handoff only has the modal `Sheet`."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Dialog",
+            "reason": "A short confirmation or form: `Dialog`."
+          },
+          {
+            "name": "Popover",
+            "reason": "A few controls anchored to a button: `Popover`."
+          },
+          {
+            "name": "Sidebar",
+            "reason": "Top-level navigation: `Sidebar`."
+          }
+        ],
+        "uses": ["IconButton"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "DueIndicator",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -13543,6 +14340,7 @@
           "AgentCard",
           "Alert",
           "ApprovalCard",
+          "Banner",
           "Breadcrumb",
           "Checkbox",
           "ColorOption",
@@ -13560,15 +14358,19 @@
           "MoreActionsMenu",
           "NavItem",
           "Rating",
+          "ResponseFeedback",
           "SearchInput",
           "Select",
           "StatCard",
           "StatusSteps",
+          "Stepper",
           "SubMenu",
           "SuggestionChip",
           "Tag",
           "TagGroup",
-          "Toggle"
+          "Timeline",
+          "Toggle",
+          "ToolCallStep"
         ]
       }
     },
@@ -14088,7 +14890,9 @@
           "Alert",
           "AppShell",
           "AppShellNavToggle",
+          "Banner",
           "Calendar",
+          "Drawer",
           "FileUpload",
           "LedgerList",
           "Menu",
@@ -15969,6 +16773,289 @@
       }
     },
     {
+      "name": "Legend",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Legend } from '@loui/ds';",
+      "folder": "src/components/Legend",
+      "sourceFile": "src/components/Legend/Legend.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A list of the series of a chart: swatch, name and, optionally, a value. With `interactive`\neach item is a toggle button that hides or shows its series, and the legend reports the\nhidden ids so the chart can leave those series out (`StackedBar` does this itself; with\n`Chart` keep `hiddenIds` in state and filter your data).\n\nThe swatch is never the only identification: every item has its text label, a hatch pattern\ntells apart series beyond the fourth, and a hidden series shows a hollow swatch and a struck\nlabel in addition to the pressed state read by screen readers.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly LegendItem[]",
+          "required": true,
+          "description": "The series, in the same order as in the chart (the order sets the swatch of items without `color`)."
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "required": false,
+          "default": "'horizontal'",
+          "description": "`horizontal` (default) wraps items in a row; `vertical` stacks them, one per line.",
+          "values": ["horizontal", "vertical"]
+        },
+        {
+          "name": "interactive",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Turns each item into a toggle button (`aria-pressed`: pressed means the series is shown),\nso readers can hide series in the chart that consumes the legend. Off by default: a plain list."
+        },
+        {
+          "name": "hiddenIds",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled list of hidden series ids (interactive legends)."
+        },
+        {
+          "name": "defaultHiddenIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]",
+          "description": "Initial hidden series ids when uncontrolled."
+        },
+        {
+          "name": "onHiddenIdsChange",
+          "type": "(hiddenIds: string[]) => void",
+          "required": false,
+          "description": "Called with the new list of hidden ids whenever the user toggles an item."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ label: string; toggleHint: string; }>",
+          "required": false,
+          "description": "Per-instance overrides of the built-in messages."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 168
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 54
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "Legend",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "label",
+            "kind": "string",
+            "default": "Legend",
+            "description": "Accessible name of the legend list, unless the consumer passes `aria-label` or `aria-labelledby`."
+          },
+          {
+            "key": "toggleHint",
+            "kind": "string",
+            "default": "Press a series to show or hide it.",
+            "description": "Accessible description of an interactive legend: what pressing an item does. Read after the name of the list."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-chart-series-1",
+        "--ds-chart-series-2",
+        "--ds-chart-series-3",
+        "--ds-chart-series-4",
+        "--ds-chart-series-hatch-size",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-fs-label",
+        "--ds-fs-small",
+        "--ds-legend-color",
+        "--ds-legend-gap",
+        "--ds-legend-swatch-size",
+        "--ds-lh-small",
+        "--ds-radius-sm",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-surface-hover",
+        "--ds-target-min",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3"
+      ],
+      "stories": {
+        "title": "Components/Legend",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-legend--default",
+            "description": "A plain list: swatch, name and an optional value.",
+            "hasPlay": true
+          },
+          {
+            "name": "Vertical",
+            "id": "components-legend--vertical",
+            "hasPlay": false
+          },
+          {
+            "name": "NamesOnly",
+            "id": "components-legend--names-only",
+            "hasPlay": false
+          },
+          {
+            "name": "EightSeries",
+            "id": "components-legend--eight-series",
+            "description": "Beyond four series the ramp repeats with a hatch, so no two swatches look alike.",
+            "hasPlay": false
+          },
+          {
+            "name": "ExplicitColors",
+            "id": "components-legend--explicit-colors",
+            "description": "Explicit colors are for when the neutral ramp is not enough; the label still names every series.",
+            "hasPlay": false
+          },
+          {
+            "name": "Interactive",
+            "id": "components-legend--interactive",
+            "description": "Interactive items are toggle buttons (`aria-pressed`: pressed means shown). A hidden series\nshows a hollow swatch and a struck label, not only a color change.",
+            "hasPlay": true
+          },
+          {
+            "name": "InteractiveWithHiddenSeries",
+            "id": "components-legend--interactive-with-hidden-series",
+            "hasPlay": false
+          },
+          {
+            "name": "LongLabels",
+            "id": "components-legend--long-labels",
+            "hasPlay": false
+          },
+          {
+            "name": "WithChart",
+            "id": "components-legend--with-chart",
+            "description": "The legend is not tied to a chart: keep the hidden ids in state and filter your data.",
+            "hasPlay": false
+          },
+          {
+            "name": "PortugueseBrazil",
+            "id": "components-legend--portuguese-brazil",
+            "hasPlay": true
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-legend--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Legend/Legend.md",
+        "summary": "A list of the series of a chart: swatch, name and, optionally, a value. With `interactive` each item is a toggle button that hides or shows its series, and the legend reports which ones are hidden so the chart can leave them out.",
+        "whenToUse": [
+          "Naming the series of a multi-series chart (`StackedBar` renders one itself).",
+          "Letting readers hide series to compare the rest.",
+          "Next to a `Chart` when you plot one series at a time and let the reader pick which."
+        ],
+        "whenNotToUse": [
+          "One series: name the chart instead.",
+          "Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.",
+          "Showing the parts of a single bar with percentages: `ProportionBar` has its own legend."
+        ],
+        "keyboard": [
+          "Interactive items are native buttons (React Aria `ToggleButton`): `Tab` moves between them, `Space` and `Enter` toggle. `aria-pressed=\"true\"` means the series is **shown**. The list is described by a hint (\"Press a series to show or hide it.\")."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Naming the series of a multi-series chart (`StackedBar` renders one itself).\n- Letting readers hide series to compare the rest.\n- Next to a `Chart` when you plot one series at a time and let the reader pick which."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- One series: name the chart instead.\n- Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.\n- Showing the parts of a single bar with percentages: `ProportionBar` has its own legend."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\nul[aria-label=\"Legend\"]\n  li  swatch (aria-hidden) · name · value (optional)\n  li  button[aria-pressed] (interactive)  swatch · name · value\nVisuallyHidden  hint, linked with aria-describedby (interactive only)\n```"
+          },
+          {
+            "id": "props-key-ones",
+            "heading": "Props (key ones)",
+            "content": "| Prop                | Type                              | Default        | Notes                                                 |\n| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |\n| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |\n| `orientation`       | `'horizontal' \\| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |\n| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |\n| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |\n| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |\n| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |\n| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |"
+          },
+          {
+            "id": "telling-series-apart-without-color",
+            "heading": "Telling series apart without color",
+            "content": "The swatch follows the same neutral ramp as `StackedBar` and `ProportionBar` (`--ds-chart-series-1` to `-4`, which are `text`, `text-2`, `text-3` and `line-control`). From the fifth series on the ramp repeats with a hatch pattern, so up to eight series look different. Beyond that, pass `color` or group the tail into \"Other\". The text label always identifies the series; the swatch only helps sighted users.\n\nA hidden series is shown with a hollow swatch and a struck-through label, in addition to `aria-pressed=\"false\"`."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A real list named \"Legend\" (override with `aria-label` or `aria-labelledby`).\n- Interactive items are native buttons (React Aria `ToggleButton`): `Tab` moves between them, `Space` and `Enter` toggle. `aria-pressed=\"true\"` means the series is **shown**. The list is described by a hint (\"Press a series to show or hide it.\").\n- Toggle buttons are at least 24 px tall (target size 2.5.8) and have a visible focus ring; forced colors use system colors for swatches and focus.\n- The chart that consumes the legend must update visibly when a series is toggled. If it can end up with nothing to show, say so in text (`StackedBar` does)."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Series names are short nouns in sentence case (\"Online\", \"Store\").\n- Values are formatted text; use `Intl` helpers for the locale."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\nconst [hidden, setHidden] = useState<string[]>([]);\n\n<Legend\n  interactive\n  items={[\n    { id: 'online', label: 'Online' },\n    { id: 'store', label: 'Store' },\n  ]}\n  hiddenIds={hidden}\n  onHiddenIdsChange={setHidden}\n/>;\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "SegmentedControl",
+            "reason": "Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`."
+          },
+          {
+            "name": "ToggleGroup",
+            "reason": "Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`."
+          },
+          {
+            "name": "Tabs",
+            "reason": "Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`."
+          },
+          {
+            "name": "ProportionBar",
+            "reason": "Showing the parts of a single bar with percentages: `ProportionBar` has its own legend."
+          }
+        ],
+        "uses": ["VisuallyHidden"],
+        "usedBy": ["StackedBar"]
+      }
+    },
+    {
       "name": "Link",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -16421,7 +17508,7 @@
           }
         ],
         "uses": ["Icon", "VisuallyHidden"],
-        "usedBy": []
+        "usedBy": ["Citation", "SourceList"]
       }
     },
     {
@@ -22674,6 +23761,257 @@
       }
     },
     {
+      "name": "ResponseFeedback",
+      "kind": "component",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { ResponseFeedback } from '@loui/ds/patterns';",
+      "folder": "src/patterns/ResponseFeedback",
+      "sourceFile": "src/patterns/ResponseFeedback/ResponseFeedback.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "Feedback and follow-up actions under an assistant response: two toggle buttons (good and bad\nresponse, `aria-pressed`), then optional Copy and Regenerate.\n\nChoosing a rating is reversible, so nothing asks to confirm: pressing the active rating again\nremoves it. A polite live region says \"Feedback sent\" or \"Feedback removed\" after the change.\nThe first render never announces anything. The buttons show text only for now: thumbs, copy\nand refresh icons are not part of the curated icon set yet.",
+      "props": [
+        {
+          "name": "value",
+          "type": "ResponseRating | null",
+          "required": false,
+          "description": "Controlled rating. `null` means no rating."
+        },
+        {
+          "name": "defaultValue",
+          "type": "ResponseRating | null",
+          "required": false,
+          "default": "null",
+          "description": "Initial rating when uncontrolled."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: ResponseRating | null) => void",
+          "required": false,
+          "description": "Called with the new rating, or `null` when the person takes their rating back."
+        },
+        {
+          "name": "onCopy",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when Copy is pressed. Without it there is no Copy button. Confirm with a toast (\"Copied\")."
+        },
+        {
+          "name": "onRegenerate",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when Regenerate is pressed. Without it there is no Regenerate button."
+        },
+        {
+          "name": "isRegenerating",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Disables Regenerate while a new response is being generated."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Disables every button."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ groupLabel: string; positive: string; negative: string; copy: string; regenerate: string; sent: string; removed: string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 52
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 167
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "ResponseFeedback",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "groupLabel",
+            "kind": "string",
+            "default": "Rate this response",
+            "description": "Accessible name of the group of rating buttons."
+          },
+          {
+            "key": "positive",
+            "kind": "string",
+            "default": "Good response",
+            "description": "Toggle buttons; pressed means the rating is set."
+          },
+          {
+            "key": "negative",
+            "kind": "string",
+            "default": "Bad response"
+          },
+          {
+            "key": "copy",
+            "kind": "string",
+            "default": "Copy response",
+            "description": "Action buttons (verb plus object)."
+          },
+          {
+            "key": "regenerate",
+            "kind": "string",
+            "default": "Regenerate response"
+          },
+          {
+            "key": "sent",
+            "kind": "string",
+            "default": "Feedback sent",
+            "description": "Polite announcements after a rating changes."
+          },
+          {
+            "key": "removed",
+            "kind": "string",
+            "default": "Feedback removed"
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-font-sans",
+        "--ds-line-subtle",
+        "--ds-response-feedback-divider-gap",
+        "--ds-response-feedback-gap"
+      ],
+      "stories": {
+        "title": "Patterns/ResponseFeedback",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "patterns-response-feedback--default",
+            "hasPlay": true
+          },
+          {
+            "name": "RatedBad",
+            "id": "patterns-response-feedback--rated-bad",
+            "hasPlay": false
+          },
+          {
+            "name": "RatingOnly",
+            "id": "patterns-response-feedback--rating-only",
+            "hasPlay": false
+          },
+          {
+            "name": "Regenerating",
+            "id": "patterns-response-feedback--regenerating",
+            "hasPlay": false
+          },
+          {
+            "name": "Disabled",
+            "id": "patterns-response-feedback--disabled",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "patterns-response-feedback--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/patterns/ResponseFeedback/ResponseFeedback.md",
+        "summary": "Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.",
+        "whenToUse": [
+          "Under each assistant response in a `ChatPanel`, to learn which answers help."
+        ],
+        "whenNotToUse": [
+          "Collecting a written review or a star rating: use `Rating` in a form.",
+          "Anything that sends the rating somewhere the owner cannot see: say where it goes in your product."
+        ],
+        "keyboard": [
+          "The rating buttons are toggle buttons (`aria-pressed`) in a labelled group. Each is a tab stop; `Space` and `Enter` press."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Under each assistant response in a `ChatPanel`, to learn which answers help."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Collecting a written review or a star rating: use `Rating` in a form.\n- Anything that sends the rating somewhere the owner cannot see: say where it goes in your product."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv\n  group \"Rate this response\"   toggle \"Good response\" · toggle \"Bad response\"   (aria-pressed)\n  button \"Copy response\"       only with onCopy\n  button \"Regenerate response\" only with onRegenerate\n  status                       visually hidden live region\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                     | Type                               | Default | Notes                                                                          |\n| ------------------------ | ---------------------------------- | ------- | ------------------------------------------------------------------------------ |\n| `value` / `defaultValue` | `'positive' \\| 'negative' \\| null` | `null`  | Controlled or uncontrolled rating.                                             |\n| `onChange`               | `(value \\| null) => void`          |         | `null` when the person takes the rating back.                                  |\n| `onCopy`                 | `() => void`                       |         | Shows Copy. Copy the text yourself, then confirm with a toast.                 |\n| `onRegenerate`           | `() => void`                       |         | Shows Regenerate.                                                              |\n| `isRegenerating`         | `boolean`                          | `false` | Disables Regenerate while the new response is generated.                       |\n| `isDisabled`             | `boolean`                          | `false` | Disables every button.                                                         |\n| `messages`               | partial catalog                    |         | `groupLabel`, `positive`, `negative`, `copy`, `regenerate`, `sent`, `removed`. |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- The rating buttons are toggle buttons (`aria-pressed`) in a labelled group. Each is a tab stop; `Space` and `Enter` press.\n- Rating is reversible, so nothing asks to confirm: pressing the active button again removes the rating.\n- A polite live region says \"Feedback sent\" or \"Feedback removed\" after a change. It is silent on first render.\n- Each control shows a decorative icon (`ThumbsUpIcon`, `ThumbsDownIcon`, `CopyIcon`, `RefreshIcon`) next to its visible text label; the text is the accessible name."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Buttons are verb plus object (\"Copy response\", \"Regenerate response\").\n- Confirm Copy with a short past-tense toast (\"Copied\"), outside this pattern.\n- Regenerate replaces content: offer Undo, as for any reversible action."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<ResponseFeedback\n  onChange={(rating) => saveRating(message.id, rating)}\n  onCopy={() => copyToClipboard(message.content)}\n  onRegenerate={() => regenerate(message.id)}\n  isRegenerating={busy}\n/>\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "No handoff source: new pattern (TODO `AI-013`)."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Rating",
+            "reason": "Collecting a written review or a star rating: use `Rating` in a form."
+          }
+        ],
+        "uses": ["Button", "Icon", "Toggle", "VisuallyHidden"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "ScrollArea",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -25933,6 +27271,216 @@
       }
     },
     {
+      "name": "SourceList",
+      "kind": "component",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { SourceList } from '@loui/ds/patterns';",
+      "folder": "src/patterns/SourceList",
+      "sourceFile": "src/patterns/SourceList/SourceList.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "The numbered list of sources an answer is based on. Each source is a list item that\n`Citation` markers jump to; the title is a link when the source has a `url`.\n\nSource numbers are the position in `sources`: keep the order stable while the answer streams,\nand append new sources at the end.",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Id of the list. Required: citations use it to find their source."
+        },
+        {
+          "name": "sources",
+          "type": "readonly Source[]",
+          "required": true,
+          "description": "The sources, in citation order. The first is source 1."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "Heading text. Defaults to \"Sources\"."
+        },
+        {
+          "name": "headingLevel",
+          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "required": false,
+          "default": "'3'",
+          "description": "Heading level of the title (`h1` to `h6`). Default `3`.",
+          "values": ["1", "2", "3", "4", "5", "6"]
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ title: string; citation: (number: number, title: string) => string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "SourceList",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "title",
+            "kind": "string",
+            "default": "Sources",
+            "description": "Default heading of the source list."
+          },
+          {
+            "key": "citation",
+            "kind": "function",
+            "default": "Source 2: {title}",
+            "signature": "(number: number, title: string)",
+            "description": "Accessible name of a citation marker: \"Source 2: Title\"."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-citation-size",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-lh-label",
+        "--ds-lh-meta",
+        "--ds-line-control",
+        "--ds-radius-sm",
+        "--ds-source-list-gap",
+        "--ds-source-list-indent",
+        "--ds-source-list-padding",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-weight-medium",
+        "--ds-weight-semibold"
+      ],
+      "stories": {
+        "title": "Patterns/SourceList",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "patterns-source-list--default",
+            "hasPlay": false
+          },
+          {
+            "name": "LongText",
+            "id": "patterns-source-list--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "patterns-source-list--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "WithCitations",
+            "id": "patterns-source-list--with-citations",
+            "description": "Markers in a sentence jump to the matching source; focus lands on it.",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/patterns/SourceList/SourceList.md",
+        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.",
+        "whenToUse": [
+          "An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
+        ],
+        "whenNotToUse": [
+          "Footnotes in long-form documents: use plain links.",
+          "A list of results the user searched for: use a table or a list of cards."
+        ],
+        "keyboard": [],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Footnotes in long-form documents: use plain links.\n- A list of results the user searched for: use a table or a list of cards."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\np            ... a claim [2] ...        Citation: <a href=\"#s-source-b\" aria-label=\"Source 2: Title\">2</a>\nsection      named by its heading (\"Sources\")\n  ol\n    li       tabIndex=-1 (focus target)    title (link when it has a url) · domain (mono) · snippet\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "`SourceList`\n\n| Prop           | Type            | Default   | Notes                                                                        |\n| -------------- | --------------- | --------- | ---------------------------------------------------------------------------- |\n| `id`           | `string`        | -         | Required. Citations find their source through it.                            |\n| `sources`      | `Source[]`      | -         | `{ id, title, url?, domain?, snippet? }`. The position is the source number. |\n| `title`        | `string`        | \"Sources\" | Heading text.                                                                |\n| `headingLevel` | `1`-`6`         | `3`       |                                                                              |\n| `messages`     | partial catalog |           | `title`, `citation(number, title)`.                                          |\n\n`Citation`: `number` (1-based, the visible text), `title`, `listId`, `sourceId`, plus anchor props. `getSourceElementId(listId, sourceId)` returns the DOM id when you need it."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A citation is a real link (`href=\"#...\"`) named \"Source 2: Title\"; the visible text is the number, which the name contains.\n- Activating it moves focus to the matching list item and scrolls it into view. It does not change the URL hash, so it does not fight your router. Without JavaScript the hash link still works.\n- Source titles with a `url` are links that open in a new tab (with the external-link icon and a screen-reader note).\n- The marker is 24 px square (WCAG 2.5.8)."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Keep source order stable while the answer streams; append new sources at the end, so numbers already shown never change.\n- Titles say what the page is, not \"Click here\". Snippets are short, plain text."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<p>\n  Orders move through four statuses\n  <Citation number={1} title=\"Order lifecycle\" listId=\"answer-1\" sourceId=\"lifecycle\" />.\n</p>\n<SourceList\n  id=\"answer-1\"\n  sources={[{ id: 'lifecycle', title: 'Order lifecycle', url: 'https://example.com/orders' }]}\n/>\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "No handoff source: new pattern (TODO `AI-013`)."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [],
+        "uses": ["Link"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "Sparkline",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -26443,7 +27991,7 @@
           }
         ],
         "uses": [],
-        "usedBy": ["Button", "ChatPanel", "Combobox"]
+        "usedBy": ["Button", "ChatPanel", "Combobox", "ToolCallStep"]
       }
     },
     {
@@ -26654,6 +28202,430 @@
           }
         ],
         "uses": [],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "StackedBar",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { StackedBar } from '@loui/ds';",
+      "folder": "src/components/StackedBar",
+      "sourceFile": "src/components/StackedBar/StackedBar.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "Stacked bars: how each category divides into the same set of parts, horizontal (a row per\ncategory) or vertical (a column per category). Drawn in HTML and CSS, no axis: the total of\neach bar is printed with it and the bars share one scale.\n\nSeries are told apart without color: a gap separates neighbouring parts, the neutral ramp\ndiffers in lightness, and beyond four series a hatch pattern repeats the ramp. The legend\nnames every series (and can hide them), and a visually hidden table carries all the numbers.\n\nEach bar is an image with a text summary (\"Q1: Online 40 and Store 30. Total 70.\"). The bars\nare one tab stop; the arrow keys move between them, and the active bar's summary is also\nprinted in a readout line under the chart (hover works the same). A single readout per bar,\nnot per segment, keeps the keyboard path short and the focus target large.",
+      "props": [
+        {
+          "name": "data",
+          "type": "readonly StackedBarDatum[]",
+          "required": true,
+          "description": "One bar per datum, in display order. The chart does not sort."
+        },
+        {
+          "name": "series",
+          "type": "readonly StackedBarSeries[]",
+          "required": true,
+          "description": "The parts of each bar, bottom to top (vertical) or start to end (horizontal). Without\n`color` they follow a neutral ramp of four steps; from the fifth series on the ramp\nrepeats with a hatch (up to eight; beyond that pass `color` or group the tail into \"Other\")."
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "required": false,
+          "default": "'horizontal'",
+          "description": "`horizontal` (default): one row per datum. `vertical`: one column per datum.",
+          "values": ["horizontal", "vertical"]
+        },
+        {
+          "name": "normalize",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Draws every bar at full length so each shows the share of its parts (100% stacked). By\ndefault bars are scaled to the largest total, so lengths also compare the totals."
+        },
+        {
+          "name": "format",
+          "type": "(value: number) => string",
+          "required": false,
+          "description": "Formats values in the totals, the legend, the readout and the data table. Default: `Intl` for the active locale. Use `formatCurrency` for money."
+        },
+        {
+          "name": "legend",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Shows the legend under the bars. On by default: the legend is what names the series."
+        },
+        {
+          "name": "interactiveLegend",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table."
+        },
+        {
+          "name": "hiddenSeries",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled list of hidden series ids."
+        },
+        {
+          "name": "defaultHiddenSeries",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]",
+          "description": "Initial hidden series ids when uncontrolled."
+        },
+        {
+          "name": "onHiddenSeriesChange",
+          "type": "(hiddenSeries: string[]) => void",
+          "required": false,
+          "description": "Called with the new list of hidden series ids when the user toggles a legend item."
+        },
+        {
+          "name": "height",
+          "type": "string | number",
+          "required": false,
+          "description": "Height of the plot area of a vertical chart (a number is px, or any CSS length). Default `--ds-stacked-bar-height` (200px). Ignored when horizontal."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Longer description of what the chart shows. Read after the name, together with the keyboard instructions."
+        },
+        {
+          "name": "categoryLabel",
+          "type": "string",
+          "required": false,
+          "description": "Header of the category column in the hidden data table. Default: the \"Category\" message."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ instructions: (count: number, formatted: string) => string; series: (label: string, value: string) => string; bar: (label: string, items: string, total: string) => string; tableCaption: (name?: string) => string; category: string; total: string; empty: string; allHidden: string; }>",
+          "required": false,
+          "description": "Per-instance overrides of the built-in messages."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name of the chart: what it shows (\"Orders by channel, per quarter\"). Required unless `aria-labelledby` is set."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the chart (a visible heading)."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 51
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 168
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 55
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "StackedBar",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "instructions",
+            "kind": "function",
+            "default": "{formatted} bars. Use the arrow keys to move between bars, Home and End for the first and last.",
+            "signature": "(count: number, formatted: string)",
+            "description": "Instructions linked to the chart with `aria-describedby`. `count` is the number of bars;\n`formatted` is the same number formatted for the locale."
+          },
+          {
+            "key": "series",
+            "kind": "function",
+            "default": "{label} {value}",
+            "signature": "(label: string, value: string)",
+            "description": "One series inside the summary of a bar: \"Online 40\". Both arguments are already formatted."
+          },
+          {
+            "key": "bar",
+            "kind": "function",
+            "default": "{label}: {items}. Total {total}.",
+            "signature": "(label: string, items: string, total: string)",
+            "description": "Accessible name of a bar, also shown in the readout. `items` is the list of series joined\nfor the locale (\"Online 40 and Store 30\"); `total` is the formatted sum of the visible series."
+          },
+          {
+            "key": "tableCaption",
+            "kind": "function",
+            "default": "Data for {name?}",
+            "signature": "(name?: string)",
+            "description": "Caption of the visually hidden data table. `name` is the accessible name of the chart, if it has a text one."
+          },
+          {
+            "key": "category",
+            "kind": "string",
+            "default": "Category",
+            "description": "Header of the category column of the data table, unless `categoryLabel` is given."
+          },
+          {
+            "key": "total",
+            "kind": "string",
+            "default": "Total",
+            "description": "Header of the total column of the data table."
+          },
+          {
+            "key": "empty",
+            "kind": "string",
+            "default": "No data to show",
+            "description": "Text shown in place of the bars when there is no data."
+          },
+          {
+            "key": "allHidden",
+            "kind": "string",
+            "default": "All series are hidden. Show one in the legend.",
+            "description": "Text shown in place of the bars when every series is hidden through the legend."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-chart-series-1",
+        "--ds-chart-series-2",
+        "--ds-chart-series-3",
+        "--ds-chart-series-4",
+        "--ds-chart-series-hatch-size",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-fs-caption",
+        "--ds-fs-label",
+        "--ds-fs-small",
+        "--ds-lh-caption",
+        "--ds-lh-label",
+        "--ds-lh-small",
+        "--ds-line",
+        "--ds-radius-sm",
+        "--ds-space-1",
+        "--ds-space-3",
+        "--ds-stacked-bar-bar-thickness",
+        "--ds-stacked-bar-category-w",
+        "--ds-stacked-bar-color",
+        "--ds-stacked-bar-column-max-w",
+        "--ds-stacked-bar-extent",
+        "--ds-stacked-bar-height",
+        "--ds-stacked-bar-readout-min-h",
+        "--ds-stacked-bar-segment-gap",
+        "--ds-stacked-bar-share",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3"
+      ],
+      "stories": {
+        "title": "Components/StackedBar",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-stacked-bar--default",
+            "description": "Each bar is an image named by a text summary; the legend names the series and a hidden table holds the numbers.",
+            "hasPlay": true
+          },
+          {
+            "name": "Vertical",
+            "id": "components-stacked-bar--vertical",
+            "hasPlay": false
+          },
+          {
+            "name": "VerticalTall",
+            "id": "components-stacked-bar--vertical-tall",
+            "hasPlay": false
+          },
+          {
+            "name": "Normalized",
+            "id": "components-stacked-bar--normalized",
+            "description": "Every bar at full length: the share of each part, not the size of the total.",
+            "hasPlay": false
+          },
+          {
+            "name": "NormalizedVertical",
+            "id": "components-stacked-bar--normalized-vertical",
+            "hasPlay": false
+          },
+          {
+            "name": "WithCurrency",
+            "id": "components-stacked-bar--with-currency",
+            "hasPlay": false
+          },
+          {
+            "name": "EightSeries",
+            "id": "components-stacked-bar--eight-series",
+            "description": "Beyond four series the ramp repeats with a hatch pattern, up to eight series.",
+            "hasPlay": false
+          },
+          {
+            "name": "ExplicitColors",
+            "id": "components-stacked-bar--explicit-colors",
+            "description": "Explicit colors are for when the neutral ramp is not enough; the legend still names every series.",
+            "hasPlay": false
+          },
+          {
+            "name": "InteractiveLegend",
+            "id": "components-stacked-bar--interactive-legend",
+            "description": "The legend toggles series. Hidden series leave the bars, the totals and the data table.",
+            "hasPlay": true
+          },
+          {
+            "name": "InteractiveLegendControlled",
+            "id": "components-stacked-bar--interactive-legend-controlled",
+            "hasPlay": false
+          },
+          {
+            "name": "AllSeriesHidden",
+            "id": "components-stacked-bar--all-series-hidden",
+            "hasPlay": false
+          },
+          {
+            "name": "KeyboardReadout",
+            "id": "components-stacked-bar--keyboard-readout",
+            "description": "Arrow keys move between bars; the focused (or hovered) bar is also printed under the chart.",
+            "hasPlay": true
+          },
+          {
+            "name": "WithoutLegend",
+            "id": "components-stacked-bar--without-legend",
+            "hasPlay": false
+          },
+          {
+            "name": "ZeroBar",
+            "id": "components-stacked-bar--zero-bar",
+            "hasPlay": false
+          },
+          {
+            "name": "Empty",
+            "id": "components-stacked-bar--empty",
+            "hasPlay": false
+          },
+          {
+            "name": "LongLabels",
+            "id": "components-stacked-bar--long-labels",
+            "hasPlay": false
+          },
+          {
+            "name": "PortugueseBrazil",
+            "id": "components-stacked-bar--portuguese-brazil",
+            "hasPlay": true
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-stacked-bar--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/StackedBar/StackedBar.md",
+        "summary": "Stacked bars for parts of a whole per category, horizontal (a row per category) or vertical (a column per category). Each bar has a text summary, a total, and the chart comes with a legend and a hidden data table.",
+        "whenToUse": [
+          "Showing how each of a few categories (2 to about 12) divides into the same 2 to 8 parts: orders per channel per quarter, tasks per status per team.",
+          "Comparing totals and composition together (default), or composition only (`normalize`)."
+        ],
+        "whenNotToUse": [
+          "One whole divided into parts: `ProportionBar`.",
+          "One series over time or categories: `Chart`. Ranked values: `RankList`.",
+          "Exact figures the reader must look up: give them a table; the hidden table is for assistive technology.",
+          "More than eight series: group the tail into \"Other\"."
+        ],
+        "keyboard": [
+          "Keyboard: one tab stop for all bars (roving). Arrow keys (and `Home`/`End`) move between bars, `Escape` dismisses the readout. The focused bar has a visible focus ring (system colors in forced colors)."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Showing how each of a few categories (2 to about 12) divides into the same 2 to 8 parts: orders per channel per quarter, tasks per status per team.\n- Comparing totals and composition together (default), or composition only (`normalize`)."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- One whole divided into parts: `ProportionBar`.\n- One series over time or categories: `Chart`. Ranked values: `RankList`.\n- Exact figures the reader must look up: give them a table; the hidden table is for assistive technology.\n- More than eight series: group the tail into \"Other\"."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv.root\n  div[role=group][aria-label][aria-describedby]\n    ul\n      li  category (aria-hidden) · div.slot > div[role=img][tabindex][aria-label=\"Q1: Online 40…\"] · total (aria-hidden)\n  p[aria-hidden]  readout of the focused or hovered bar\n  Legend           names the series (optionally toggles them)\n  VisuallyHidden   instructions (aria-describedby) and a <table> with all values\n```\n\nDrawn with HTML and CSS: bars use one scale (the largest total is full length), parts are `flex` shares of their bar. There is no value axis; the total is printed with each bar and the legend shows the total of each series."
+          },
+          {
+            "id": "props-key-ones",
+            "heading": "Props (key ones)",
+            "content": "| Prop                   | Type                         | Default        | Notes                                                                 |\n| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------- |\n| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0     |\n| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)       |\n| `orientation`          | `'horizontal' \\| 'vertical'` | `'horizontal'` |                                                                       |\n| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                               |\n| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money      |\n| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby |\n| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                     |\n| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                              |\n| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                               |\n| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                       |\n| `height`               | `number \\| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                             |\n| `description`          | `string`                     |                | Read after the name                                                   |\n| `categoryLabel`        | `string`                     | \"Category\"     | Header of the first table column                                      |\n| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                  |\n\n`aria-label` or `aria-labelledby` is required."
+          },
+          {
+            "id": "telling-series-apart-without-color",
+            "heading": "Telling series apart without color",
+            "content": "- A 2px gap (the track shows through) separates neighbouring parts.\n- Series follow a neutral ramp of four steps that differ in lightness (`--ds-chart-series-1` to `-4`), so they also differ for readers with color vision deficiencies. From the fifth series the ramp repeats with a hatch pattern (up to eight). The series `color` prop is for when that is not enough; it is never hatched.\n- The legend names every series and its swatch uses the same fill. A series keeps its fill when another is hidden.\n- Each bar's summary and the data table list every series by name with its value.\n\nThe single-accent rule holds: the accent appears only in the focus ring. Signal colors appear only if you pass them as explicit series colors."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A group named by `aria-label`/`aria-labelledby`, described by the instructions and your `description`. Each bar is an image whose name is its summary: \"Q1: Online 40, Store 30, and Phone 10. Total 80.\"\n- Keyboard: one tab stop for all bars (roving). Arrow keys (and `Home`/`End`) move between bars, `Escape` dismisses the readout. The focused bar has a visible focus ring (system colors in forced colors).\n- Why per-bar and not per-segment: a bar is a large target, the path through a chart stays short (one stop), and its single summary gives screen reader users the whole composition at once. The same text is printed in the readout line under the chart for keyboard and pointer users; the readout is `aria-hidden` because the focused bar is already announced.\n- Hover shows the same readout. The line has reserved height, so nothing shifts.\n- A visually hidden `<table>` (caption, category and one column per visible series, total) carries all values.\n- Hidden series leave the bars, totals, summaries and table. If all are hidden, a message says so. An empty `data` shows \"No data to show\".\n- Contrast: every ramp step keeps 3:1 against the track (`--ds-bg`); labels use `text-2`.\n- Forced colors: segments use system colors; the track gets a border.\n- Category labels are truncated in horizontal bars (96px column, `--ds-stacked-bar-category-w`); the summary and the table carry the full text. Keep labels short."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Bar labels: short (\"Q1\", \"North\"). Series labels: short nouns in sentence case.\n- Name the chart for what it shows (\"Orders per quarter, by channel\").\n- Formatted values come from `Intl`; pass `format` for currency."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<StackedBar\n  aria-label=\"Orders per quarter, by channel\"\n  interactiveLegend\n  series={[\n    { id: 'online', label: 'Online' },\n    { id: 'store', label: 'Store' },\n    { id: 'phone', label: 'Phone' },\n  ]}\n  data={[\n    { label: 'Q1', values: { online: 40, store: 30, phone: 10 } },\n    { label: 'Q2', values: { online: 50, store: 20, phone: 30 } },\n  ]}\n/>\n```"
+          },
+          {
+            "id": "not-included",
+            "heading": "Not included",
+            "content": "- Value axis and grid lines, negative values, grouped (side by side) bars, per-segment focus, zoom. Use `Chart` for a single series with an axis.\n- Series order in vertical bars is fixed (first series at the bottom); the chart never sorts."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "ProportionBar",
+            "reason": "One whole divided into parts: `ProportionBar`."
+          },
+          {
+            "name": "Chart",
+            "reason": "One series over time or categories: `Chart`. Ranked values: `RankList`."
+          },
+          {
+            "name": "RankList",
+            "reason": "One series over time or categories: `Chart`. Ranked values: `RankList`."
+          }
+        ],
+        "uses": ["Legend", "VisuallyHidden"],
         "usedBy": []
       }
     },
@@ -27257,6 +29229,295 @@
           {
             "name": "Progress",
             "reason": "A percentage of something: use `Progress`."
+          }
+        ],
+        "uses": ["Icon", "VisuallyHidden"],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "Stepper",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Stepper } from '@loui/ds';",
+      "folder": "src/components/Stepper",
+      "sourceFile": "src/components/Stepper/Stepper.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "Progress through a multi-step flow such as a setup assistant. It is an ordered list; every\nstep states its progress as text for assistive technology (\"Completed\", \"Current\", \"Not\nstarted\") and the current step has `aria-current=\"step\"`. Markers and connectors are\ndecorative. Completed steps can be buttons with `onStepPress`.\n\nIn narrow containers the horizontal orientation shows only the markers and a visible summary\n(\"Step 3 of 9\"), so nine steps fit in 320 px.",
+      "props": [
+        {
+          "name": "steps",
+          "type": "readonly StepperStep[]",
+          "required": true,
+          "description": "The steps, in order."
+        },
+        {
+          "name": "current",
+          "type": "number",
+          "required": true,
+          "description": "Index of the current step (0-based). Steps before it are completed."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name of the list (\"New agent steps\"). Required: name this or use `aria-labelledby`."
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false,
+          "description": "Id of the element that names the list."
+        },
+        {
+          "name": "complete",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "When `true`, the current step is completed too (the whole flow is done)."
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "required": false,
+          "default": "'horizontal'",
+          "description": "`horizontal` (default) or `vertical`. Horizontal collapses to markers and \"Step 3 of 9\" in narrow containers.",
+          "values": ["horizontal", "vertical"]
+        },
+        {
+          "name": "onStepPress",
+          "type": "(index: number, step: StepperStep) => void",
+          "required": false,
+          "description": "Makes every completed step a button that calls this with its index and the step, so people\ncan go back. The current and upcoming steps are never buttons: the flow itself (Next)\nmoves forward."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ complete: string; current: string; upcoming: string; summary: (current: string, total: string) => string; }>",
+          "required": false,
+          "description": "Message overrides for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 51
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 55
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "Stepper",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "complete",
+            "kind": "string",
+            "default": "Completed",
+            "description": "Read after the label of a step that is done."
+          },
+          {
+            "key": "current",
+            "kind": "string",
+            "default": "Current",
+            "description": "Read after the label of the step in progress."
+          },
+          {
+            "key": "upcoming",
+            "kind": "string",
+            "default": "Not started",
+            "description": "Read after the label of a step that has not started."
+          },
+          {
+            "key": "summary",
+            "kind": "function",
+            "default": "Step {current} of {total}",
+            "signature": "(current: string, total: string)",
+            "description": "Visible summary of the progress when the labels do not fit; `current` and `total` are formatted numbers."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-caption",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-lh-label",
+        "--ds-lh-meta",
+        "--ds-line-control",
+        "--ds-line-strong",
+        "--ds-primary-bg",
+        "--ds-radius-md",
+        "--ds-radius-pill",
+        "--ds-space-2",
+        "--ds-stepper-connector-thickness",
+        "--ds-stepper-content-z-index",
+        "--ds-stepper-gap",
+        "--ds-stepper-marker-border-width",
+        "--ds-stepper-marker-size",
+        "--ds-stepper-padding-block",
+        "--ds-stepper-step-gap",
+        "--ds-success",
+        "--ds-surface",
+        "--ds-surface-hover",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-inverse",
+        "--ds-weight-medium",
+        "--ds-weight-semibold"
+      ],
+      "stories": {
+        "title": "Components/Stepper",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-stepper--default",
+            "hasPlay": false
+          },
+          {
+            "name": "FirstStep",
+            "id": "components-stepper--first-step",
+            "hasPlay": false
+          },
+          {
+            "name": "AllComplete",
+            "id": "components-stepper--all-complete",
+            "hasPlay": false
+          },
+          {
+            "name": "Vertical",
+            "id": "components-stepper--vertical",
+            "hasPlay": false
+          },
+          {
+            "name": "NineStepsNarrow",
+            "id": "components-stepper--nine-steps-narrow",
+            "description": "Nine steps in 320 px: the labels collapse into the summary \"Step 3 of 9\".",
+            "hasPlay": false
+          },
+          {
+            "name": "NineStepsWide",
+            "id": "components-stepper--nine-steps-wide",
+            "hasPlay": false
+          },
+          {
+            "name": "LongLabels",
+            "id": "components-stepper--long-labels",
+            "hasPlay": false
+          },
+          {
+            "name": "GoBackToCompletedSteps",
+            "id": "components-stepper--go-back-to-completed-steps",
+            "description": "Completed steps are buttons. Tab to \"Basics\" and press Enter to go back.",
+            "hasPlay": true
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-stepper--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Stepper/Stepper.md",
+        "summary": "Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.",
+        "whenToUse": [
+          "A guided flow with several steps shown one at a time (assistant, onboarding, checkout), where people need to know where they are and how much is left.",
+          "Flows of 3 to 10 steps. In narrow containers it collapses to markers plus \"Step 3 of 9\"."
+        ],
+        "whenNotToUse": [
+          "The status of a record in a fixed flow (Draft, Packed, Shipped): use `StatusSteps`.",
+          "A percentage of something: use `Progress`.",
+          "Switching between views of the same content: use `Tabs`."
+        ],
+        "keyboard": [
+          "Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button."
+        ],
+        "examples": [
+          "<Stepper aria-label=\"Setup progress\" steps={steps} current={step} />\n\n<Stepper\n  aria-label=\"Setup progress\"\n  orientation=\"vertical\"\n  steps={steps}\n  current={step}\n  onStepPress={(index) => setStep(index)}\n/>"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- A guided flow with several steps shown one at a time (assistant, onboarding, checkout), where people need to know where they are and how much is left.\n- Flows of 3 to 10 steps. In narrow containers it collapses to markers plus \"Step 3 of 9\"."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- The status of a record in a fixed flow (Draft, Packed, Shipped): use `StatusSteps`.\n- A percentage of something: use `Progress`.\n- Switching between views of the same content: use `Tabs`.\n\n### Stepper and StatusSteps\n\n|                    | Stepper                                        | StatusSteps                              |\n| ------------------ | ---------------------------------------------- | ---------------------------------------- |\n| Describes          | Your progress through a flow you are doing now | The state a record is in                 |\n| Typical length     | 3 to 10 steps                                  | 3 to 6 steps                             |\n| Interaction        | Only completed steps can be pressed (go back)  | Every step can be pressed (change state) |\n| Orientation        | Horizontal or vertical                         | Horizontal                               |\n| Narrow containers  | Markers plus \"Step 3 of 9\"                     | Same layout                              |\n| Per-step help text | `description` (vertical)                       | None                                     |"
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv[data-orientation]\n  p (aria-hidden)           \"Step 3 of 9: Label\", visible only in narrow containers\n  ol aria-label=\"Setup progress\"\n    li[data-state=complete|current|upcoming]\n      span | button         (button only for completed steps with onStepPress; aria-current=\"step\" on the current one)\n        marker              (number or check, aria-hidden)\n        label + visually hidden state (\"Completed\", \"Current\", \"Not started\")\n        description         (vertical only)\n  connector lines           (CSS pseudo-elements, decorative)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop          | Type                                       | Default        | Notes                                                               |\n| ------------- | ------------------------------------------ | -------------- | ------------------------------------------------------------------- |\n| `aria-label`  | `string`                                   |                | Required unless `aria-labelledby` is given: names the list          |\n| `steps`       | `{ id, label, description? }[]`            |                | In order                                                            |\n| `current`     | `number`                                   |                | 0-based index of the current step; earlier steps are completed      |\n| `complete`    | `boolean`                                  | `false`        | The current step is completed too (flow finished)                   |\n| `orientation` | `'horizontal' \\| 'vertical'`               | `'horizontal'` |                                                                     |\n| `onStepPress` | `(index, step) => void`                    |                | Makes completed steps buttons. Current and upcoming steps never are |\n| `messages`    | `{ complete, current, upcoming, summary }` |                | Per-instance overrides                                              |\n\nOther `div` attributes and `ref` go to the root."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A real ordered list named by `aria-label` or `aria-labelledby`. The current step has `aria-current=\"step\"` (on the button when it is one).\n- Progress is text, not only color or a check: every step ends with a visually hidden \"Completed\", \"Current\" or \"Not started\" (messages).\n- Markers, connectors and the \"Step 3 of 9\" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.\n- Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.\n- Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.\n- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible \"Step N of M: label\" line appears. The vertical orientation needs no collapse.\n- Forced colors: markers and connectors use system colors; the state text still names every step."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Labels: a few words, sentence case, nouns (\"Source\", \"Review\"), not sentences.\n- The description says what the step is for, in one line (\"Name and purpose\").\n- Name the list for what it is: \"New agent steps\", not \"Steps\"."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Stepper aria-label=\"Setup progress\" steps={steps} current={step} />\n\n<Stepper\n  aria-label=\"Setup progress\"\n  orientation=\"vertical\"\n  steps={steps}\n  current={step}\n  onStepPress={(index) => setStep(index)}\n/>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "StatusSteps",
+            "reason": "The status of a record in a fixed flow (Draft, Packed, Shipped): use `StatusSteps`."
+          },
+          {
+            "name": "Progress",
+            "reason": "A percentage of something: use `Progress`."
+          },
+          {
+            "name": "Tabs",
+            "reason": "Switching between views of the same content: use `Tabs`."
           }
         ],
         "uses": ["Icon", "VisuallyHidden"],
@@ -32373,6 +34634,278 @@
       }
     },
     {
+      "name": "Timeline",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Timeline } from '@loui/ds';",
+      "folder": "src/components/Timeline",
+      "sourceFile": "src/components/Timeline/Timeline.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A chronological list of events. It is an ordered list; each event has a `<time>`, a title, an\noptional description, an optional actor and an optional tone marker. The marker and the line\nare decorative: a tone is also stated as hidden text before the title.\nNewest events come first by default, the order for dated records.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly TimelineItem[]",
+          "required": true,
+          "description": "The events."
+        },
+        {
+          "name": "order",
+          "type": "'newest-first' | 'oldest-first' | 'as-given'",
+          "required": false,
+          "default": "'newest-first'",
+          "description": "Order of the list: `newest-first` (default, for dated records), `oldest-first`, or\n`as-given` to keep the order of `items`.",
+          "values": ["newest-first", "oldest-first", "as-given"]
+        },
+        {
+          "name": "timeZone",
+          "type": "string",
+          "required": false,
+          "description": "IANA time zone used to show date-times (\"America/Sao_Paulo\"). Defaults to the viewer's zone."
+        },
+        {
+          "name": "empty",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Rendered instead of the list when `items` is empty (for example an `EmptyState`)."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ accent: string; success: string; warning: string; danger: string; actor: (actor: string) => string; }>",
+          "required": false,
+          "description": "Message overrides for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 55
+        },
+        {
+          "source": "@types/react",
+          "interface": "OlHTMLAttributes",
+          "domGeneric": true,
+          "count": 3
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "Timeline",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "accent",
+            "kind": "string",
+            "default": "Highlighted",
+            "description": "Visually hidden prefix read before the title of an event with a tone; color and icon alone cannot carry it."
+          },
+          {
+            "key": "success",
+            "kind": "string",
+            "default": "Success"
+          },
+          {
+            "key": "warning",
+            "kind": "string",
+            "default": "Warning"
+          },
+          {
+            "key": "danger",
+            "kind": "string",
+            "default": "Error"
+          },
+          {
+            "key": "actor",
+            "kind": "function",
+            "default": "By {actor}",
+            "signature": "(actor: string)",
+            "description": "Visible label before the person or system that caused the event."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-bg",
+        "--ds-danger",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-fs-small",
+        "--ds-lh-label",
+        "--ds-lh-meta",
+        "--ds-lh-small",
+        "--ds-line-control",
+        "--ds-line-strong",
+        "--ds-radius-pill",
+        "--ds-space-1",
+        "--ds-space-3",
+        "--ds-success",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-timeline-connector-thickness",
+        "--ds-timeline-dot-size",
+        "--ds-timeline-item-gap",
+        "--ds-timeline-marker-gap",
+        "--ds-timeline-marker-size",
+        "--ds-warning",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/Timeline",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-timeline--default",
+            "description": "Newest first, the default order for dated records.",
+            "hasPlay": false
+          },
+          {
+            "name": "OldestFirst",
+            "id": "components-timeline--oldest-first",
+            "hasPlay": false
+          },
+          {
+            "name": "Tones",
+            "id": "components-timeline--tones",
+            "hasPlay": false
+          },
+          {
+            "name": "DateOnly",
+            "id": "components-timeline--date-only",
+            "description": "A date without a time is shown as a date.",
+            "hasPlay": false
+          },
+          {
+            "name": "LongText",
+            "id": "components-timeline--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "SingleEvent",
+            "id": "components-timeline--single-event",
+            "hasPlay": false
+          },
+          {
+            "name": "Empty",
+            "id": "components-timeline--empty",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-timeline--right-to-left",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Timeline/Timeline.md",
+        "summary": "A chronological list of events: when it happened, what happened, who did it, and an optional detail and tone marker. It is a semantic ordered list, newest event first by default.",
+        "whenToUse": [
+          "The history of a record or a process: status changes, comments, deliveries, audit entries.",
+          "Events that have a time and read as a story, a few lines each."
+        ],
+        "whenNotToUse": [
+          "Tabular data that people sort and compare: use `DataTable`.",
+          "The steps of a flow someone is going through now: use `Stepper`.",
+          "The state of a record in a fixed flow: use `StatusSteps`.",
+          "Totals and amounts per line: use `LedgerList`."
+        ],
+        "keyboard": [],
+        "examples": [
+          "<Timeline\n  aria-label=\"Request history\"\n  items={[\n    { id: 'a', time: '2026-10-28T09:15:00Z', title: 'Request created', actor: 'Ana Costa' },\n    { id: 'b', time: '2026-10-31T16:05:00Z', title: 'Request approved', tone: 'success' },\n  ]}\n/>\n\n<Timeline aria-label=\"Audit log\" items={events} order=\"oldest-first\" timeZone=\"UTC\" />"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- The history of a record or a process: status changes, comments, deliveries, audit entries.\n- Events that have a time and read as a story, a few lines each."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Tabular data that people sort and compare: use `DataTable`.\n- The steps of a flow someone is going through now: use `Stepper`.\n- The state of a record in a fixed flow: use `StatusSteps`.\n- Totals and amounts per line: use `LedgerList`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\nol[aria-label]\n  li[data-tone]\n    marker (aria-hidden)         dot (neutral) | icon: accent info, success check, warning triangle, danger circle\n    div\n      title                      VisuallyHidden tone text (\"Success\") + title\n      meta                       \"By <actor>\" · <time dateTime>\n      description                optional\n  connector line                 (CSS pseudo-element, decorative)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop       | Type                                             | Default          | Notes                                                                                  |\n| ---------- | ------------------------------------------------ | ---------------- | -------------------------------------------------------------------------------------- |\n| `items`    | `TimelineItem[]`                                 |                  | `{ id, time, title, description?, tone?, actor? }`                                     |\n| `order`    | `'newest-first' \\| 'oldest-first' \\| 'as-given'` | `'newest-first'` | Dated records are newest first (AGENTS.md section 5, rule 5b). Does not mutate `items` |\n| `timeZone` | `string`                                         | viewer's zone    | IANA zone for date-times                                                               |\n| `empty`    | `ReactNode`                                      |                  | Rendered instead of the list when `items` is empty                                     |\n| `messages` | `{ accent, success, warning, danger, actor }`    |                  | Per-instance overrides                                                                 |\n\n`time` is an ISO 8601 date-time, a `Date`, or a date-only `YYYY-MM-DD` (shown as a date without a time, in UTC so the day never shifts). Other `ol` attributes (`aria-label`, `id`) and `ref` go to the list; name it with `aria-label` or `aria-labelledby` when the heading does not."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- A real ordered list; each time is a `<time dateTime>` with a machine-readable value, and its text comes from `Intl` for the active locale (never hand-built).\n- The tone is not only color and icon: a visually hidden prefix (\"Success\", \"Warning\", \"Error\", \"Highlighted\", from messages) comes before the title. The marker and the line are `aria-hidden`.\n- The list is not interactive, so it has no keyboard behavior of its own; put links or buttons in the `title` or `description` when an event needs an action.\n- Text uses `text` and `text-2` (4.5:1 on the page surface). Forced colors: markers and line use system colors.\n- Reflow: text wraps (long words break) and the layout is a single column, so it works at 320 px."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Title: what happened, past tense, sentence case, no exclamation marks (\"Order shipped\", \"Request approved\").\n- Description: one short sentence of detail, only when it adds something.\n- Actor: a person or system name. The component adds \"By\".\n- Do not repeat the time in the title."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Timeline\n  aria-label=\"Request history\"\n  items={[\n    { id: 'a', time: '2026-10-28T09:15:00Z', title: 'Request created', actor: 'Ana Costa' },\n    { id: 'b', time: '2026-10-31T16:05:00Z', title: 'Request approved', tone: 'success' },\n  ]}\n/>\n\n<Timeline aria-label=\"Audit log\" items={events} order=\"oldest-first\" timeZone=\"UTC\" />\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "DataTable",
+            "reason": "Tabular data that people sort and compare: use `DataTable`."
+          },
+          {
+            "name": "Stepper",
+            "reason": "The steps of a flow someone is going through now: use `Stepper`."
+          },
+          {
+            "name": "StatusSteps",
+            "reason": "The state of a record in a fixed flow: use `StatusSteps`."
+          },
+          {
+            "name": "LedgerList",
+            "reason": "Totals and amounts per line: use `LedgerList`."
+          }
+        ],
+        "uses": ["Icon", "VisuallyHidden"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "ToastRegion",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -33128,7 +35661,7 @@
           }
         ],
         "uses": ["Icon", "Tooltip"],
-        "usedBy": []
+        "usedBy": ["ResponseFeedback"]
       }
     },
     {
@@ -33443,6 +35976,606 @@
           }
         ],
         "uses": [],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "ToolCallList",
+      "kind": "component",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { ToolCallList } from '@loui/ds/patterns';",
+      "folder": "src/patterns/ToolCallStep",
+      "sourceFile": "src/patterns/ToolCallStep/ToolCallList.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "The steps of a multi-step agent run as an ordered list of `ToolCallStep`. Use it under the\nmessage the run belongs to; each step opens its own details.",
+      "props": [
+        {
+          "name": "steps",
+          "type": "readonly ToolCallListStep[]",
+          "required": true,
+          "description": "The steps of the run, in the order they happened."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name of the list. Defaults to \"Steps\"; say which run it is (\"Steps of the order check\")."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ running: string; succeeded: string; failed: string; input: string; output: string; error: string; finishedSucceeded: (name: string) => string; finishedFailed: (name: string) => string; listLabel: string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance (also applied to every step)."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 52
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 169
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 55
+        },
+        {
+          "source": "@types/react",
+          "interface": "OlHTMLAttributes",
+          "domGeneric": true,
+          "count": 3
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "ToolCallStep",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "running",
+            "kind": "string",
+            "default": "Running",
+            "description": "Visible status text of a step."
+          },
+          {
+            "key": "succeeded",
+            "kind": "string",
+            "default": "Succeeded"
+          },
+          {
+            "key": "failed",
+            "kind": "string",
+            "default": "Failed"
+          },
+          {
+            "key": "input",
+            "kind": "string",
+            "default": "Input",
+            "description": "Labels of the detail blocks, and the accessible names of their code blocks."
+          },
+          {
+            "key": "output",
+            "kind": "string",
+            "default": "Output"
+          },
+          {
+            "key": "error",
+            "kind": "string",
+            "default": "Error",
+            "description": "Label of the output block when the step failed."
+          },
+          {
+            "key": "finishedSucceeded",
+            "kind": "function",
+            "default": "{name} succeeded",
+            "signature": "(name: string)",
+            "description": "Polite announcement when a running step finishes."
+          },
+          {
+            "key": "finishedFailed",
+            "kind": "function",
+            "default": "{name} failed",
+            "signature": "(name: string)"
+          },
+          {
+            "key": "listLabel",
+            "kind": "string",
+            "default": "Steps",
+            "description": "Accessible name of a ToolCallList."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-danger",
+        "--ds-danger-line",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-caption",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-lh-caption",
+        "--ds-lh-label",
+        "--ds-line",
+        "--ds-radius-lg",
+        "--ds-space-1",
+        "--ds-success",
+        "--ds-surface",
+        "--ds-surface-row-hover",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-tool-call-step-gap",
+        "--ds-tool-call-step-list-gap",
+        "--ds-tool-call-step-padding-block",
+        "--ds-tool-call-step-padding-inline",
+        "--ds-tracking-caption"
+      ],
+      "stories": {
+        "title": "Patterns/ToolCallStep",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "patterns-tool-call-step--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Running",
+            "id": "patterns-tool-call-step--running",
+            "hasPlay": false
+          },
+          {
+            "name": "Failed",
+            "id": "patterns-tool-call-step--failed",
+            "hasPlay": false
+          },
+          {
+            "name": "Expanded",
+            "id": "patterns-tool-call-step--expanded",
+            "hasPlay": false
+          },
+          {
+            "name": "WithoutDetails",
+            "id": "patterns-tool-call-step--without-details",
+            "description": "Without input or output there is nothing to open: the header is plain text.",
+            "hasPlay": false
+          },
+          {
+            "name": "LongName",
+            "id": "patterns-tool-call-step--long-name",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "patterns-tool-call-step--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "MultiStepRun",
+            "id": "patterns-tool-call-step--multi-step-run",
+            "description": "A run in progress: the last step finishes and a polite announcement says so.",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/patterns/ToolCallStep/ToolCallStep.md",
+        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.",
+        "whenToUse": [
+          "Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").",
+          "A run log where the owner wants to check why the agent answered as it did."
+        ],
+        "whenNotToUse": [
+          "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.",
+          "Something the owner has to approve: use `ApprovalCard`."
+        ],
+        "keyboard": [
+          "The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").\n- A run log where the owner wants to check why the agent answered as it did."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.\n- Something the owner has to approve: use `ApprovalCard`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv (ToolCallStep)\n  h{headingLevel} > button   chevron · status icon + text · name (mono) · duration (mono)\n  details (when open)        \"Input\" label + code block · \"Output\" or \"Error\" label + code block\n  status                     visually hidden live region\nol (ToolCallList)            one li per step\n```\n\nWithout `input` and `output` the header is plain text and there is nothing to open."
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                                                  | Type                                   | Default | Notes                                                                        |\n| ----------------------------------------------------- | -------------------------------------- | ------- | ---------------------------------------------------------------------------- |\n| `name`                                                | `string`                               | -       | Required. Mono; part of the button name.                                     |\n| `status`                                              | `'running' \\| 'succeeded' \\| 'failed'` | -       | Required. Always shown as text plus an icon (Spinner while running).         |\n| `durationMs`                                          | `number`                               |         | Milliseconds. Shown as `85 ms` or `1.2 s`, formatted with the active locale. |\n| `input` / `output`                                    | `ReactNode`                            |         | A string goes in a `Code` block; nodes are rendered as given.                |\n| `isExpanded` / `defaultExpanded` / `onExpandedChange` | `boolean` / `boolean` / `(b) => void`  | closed  | Controlled or uncontrolled details.                                          |\n| `headingLevel`                                        | `1`-`6`                                | `4`     |                                                                              |\n| `messages`                                            | partial catalog                        |         | `running`, `succeeded`, `failed`, `input`, `output`, `error`, announcements. |\n\n`ToolCallList` takes `steps` (each a `ToolCallStep` prop set plus a stable `stepId`), an `aria-label` (default \"Steps\") and `messages`, which it shares with every step."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it.\n- Color never carries the status: the text \"Running\", \"Succeeded\" or \"Failed\" is always visible, with an icon.\n- When a running step finishes, a polite live region says \"search_orders succeeded\" or \"search_orders failed\" once. A step that is already finished on first render is silent.\n- Code blocks that overflow become labelled, keyboard-scrollable regions (\"Input\", \"Output\", \"Error\").\n- Reduced motion and forced colors are handled."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Tool names are identifiers: show them as the agent calls them, in mono.\n- Put the error text in `output` when a step fails, and say how to fix it when you can.\n- Do not put secrets, tokens or customer data in `input` or `output`."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<ToolCallList\n  aria-label=\"Steps of the order check\"\n  steps={[\n    {\n      stepId: 's1',\n      name: 'search_orders',\n      status: 'succeeded',\n      durationMs: 1240,\n      input: '{ \"customer\": \"C-204\" }',\n      output: '{ \"count\": 3 }',\n    },\n    { stepId: 's2', name: 'draft_reply', status: 'running' },\n  ]}\n/>\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "No handoff source: new pattern (TODO `AI-013`)."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "StatusSteps",
+            "reason": "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`."
+          },
+          {
+            "name": "Progress",
+            "reason": "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`."
+          },
+          {
+            "name": "ApprovalCard",
+            "reason": "Something the owner has to approve: use `ApprovalCard`."
+          }
+        ],
+        "uses": [],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "ToolCallStep",
+      "kind": "component",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { ToolCallStep } from '@loui/ds/patterns';",
+      "folder": "src/patterns/ToolCallStep",
+      "sourceFile": "src/patterns/ToolCallStep/ToolCallStep.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how\nlong it took and, on request, what went in and out.\n\nWith `input` or `output` the header is a button that opens the details (`aria-expanded`,\n`aria-controls`), inside a heading so the steps appear in the outline. Without them it is\nplain text. The status is text plus an icon, never color alone. When a running step finishes,\na polite live region says so once; a step that is already finished on first render is silent.",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Name of the tool or step (\"search_orders\"). Shown in mono; it is the name of the details button."
+        },
+        {
+          "name": "status",
+          "type": "'running' | 'succeeded' | 'failed'",
+          "required": true,
+          "description": "`running` (spinner), `succeeded` or `failed`. The status is always shown as text next to its icon.",
+          "values": ["running", "succeeded", "failed"]
+        },
+        {
+          "name": "durationMs",
+          "type": "number",
+          "required": false,
+          "description": "How long the step took, in milliseconds. Omit while it is running."
+        },
+        {
+          "name": "input",
+          "type": "ReactNode",
+          "required": false,
+          "description": "What the tool was called with. A string is shown in a code block; pass nodes for anything\nricher. With `input` or `output` the step gets a details button."
+        },
+        {
+          "name": "output",
+          "type": "ReactNode",
+          "required": false,
+          "description": "What the tool returned, or the error text when `status` is `failed`. Same rules as `input`."
+        },
+        {
+          "name": "isExpanded",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled state of the details."
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Initial state of the details when uncontrolled. Default closed."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(isExpanded: boolean) => void",
+          "required": false,
+          "description": "Called when the details open or close."
+        },
+        {
+          "name": "headingLevel",
+          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "required": false,
+          "default": "'4'",
+          "description": "Heading level of the step header (`h1` to `h6`). Default `4`.",
+          "values": ["1", "2", "3", "4", "5", "6"]
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ running: string; succeeded: string; failed: string; input: string; output: string; error: string; finishedSucceeded: (name: string) => string; finishedFailed: (name: string) => string; listLabel: string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 168
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 54
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "ToolCallStep",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "running",
+            "kind": "string",
+            "default": "Running",
+            "description": "Visible status text of a step."
+          },
+          {
+            "key": "succeeded",
+            "kind": "string",
+            "default": "Succeeded"
+          },
+          {
+            "key": "failed",
+            "kind": "string",
+            "default": "Failed"
+          },
+          {
+            "key": "input",
+            "kind": "string",
+            "default": "Input",
+            "description": "Labels of the detail blocks, and the accessible names of their code blocks."
+          },
+          {
+            "key": "output",
+            "kind": "string",
+            "default": "Output"
+          },
+          {
+            "key": "error",
+            "kind": "string",
+            "default": "Error",
+            "description": "Label of the output block when the step failed."
+          },
+          {
+            "key": "finishedSucceeded",
+            "kind": "function",
+            "default": "{name} succeeded",
+            "signature": "(name: string)",
+            "description": "Polite announcement when a running step finishes."
+          },
+          {
+            "key": "finishedFailed",
+            "kind": "function",
+            "default": "{name} failed",
+            "signature": "(name: string)"
+          },
+          {
+            "key": "listLabel",
+            "kind": "string",
+            "default": "Steps",
+            "description": "Accessible name of a ToolCallList."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-danger",
+        "--ds-danger-line",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-caption",
+        "--ds-fs-label",
+        "--ds-fs-meta",
+        "--ds-lh-caption",
+        "--ds-lh-label",
+        "--ds-line",
+        "--ds-radius-lg",
+        "--ds-space-1",
+        "--ds-success",
+        "--ds-surface",
+        "--ds-surface-row-hover",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-tool-call-step-gap",
+        "--ds-tool-call-step-list-gap",
+        "--ds-tool-call-step-padding-block",
+        "--ds-tool-call-step-padding-inline",
+        "--ds-tracking-caption"
+      ],
+      "stories": {
+        "title": "Patterns/ToolCallStep",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "patterns-tool-call-step--default",
+            "hasPlay": true
+          },
+          {
+            "name": "Running",
+            "id": "patterns-tool-call-step--running",
+            "hasPlay": false
+          },
+          {
+            "name": "Failed",
+            "id": "patterns-tool-call-step--failed",
+            "hasPlay": false
+          },
+          {
+            "name": "Expanded",
+            "id": "patterns-tool-call-step--expanded",
+            "hasPlay": false
+          },
+          {
+            "name": "WithoutDetails",
+            "id": "patterns-tool-call-step--without-details",
+            "description": "Without input or output there is nothing to open: the header is plain text.",
+            "hasPlay": false
+          },
+          {
+            "name": "LongName",
+            "id": "patterns-tool-call-step--long-name",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "patterns-tool-call-step--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "MultiStepRun",
+            "id": "patterns-tool-call-step--multi-step-run",
+            "description": "A run in progress: the last step finishes and a polite announcement says so.",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/patterns/ToolCallStep/ToolCallStep.md",
+        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.",
+        "whenToUse": [
+          "Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").",
+          "A run log where the owner wants to check why the agent answered as it did."
+        ],
+        "whenNotToUse": [
+          "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.",
+          "Something the owner has to approve: use `ApprovalCard`."
+        ],
+        "keyboard": [
+          "The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").\n- A run log where the owner wants to check why the agent answered as it did."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.\n- Something the owner has to approve: use `ApprovalCard`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv (ToolCallStep)\n  h{headingLevel} > button   chevron · status icon + text · name (mono) · duration (mono)\n  details (when open)        \"Input\" label + code block · \"Output\" or \"Error\" label + code block\n  status                     visually hidden live region\nol (ToolCallList)            one li per step\n```\n\nWithout `input` and `output` the header is plain text and there is nothing to open."
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                                                  | Type                                   | Default | Notes                                                                        |\n| ----------------------------------------------------- | -------------------------------------- | ------- | ---------------------------------------------------------------------------- |\n| `name`                                                | `string`                               | -       | Required. Mono; part of the button name.                                     |\n| `status`                                              | `'running' \\| 'succeeded' \\| 'failed'` | -       | Required. Always shown as text plus an icon (Spinner while running).         |\n| `durationMs`                                          | `number`                               |         | Milliseconds. Shown as `85 ms` or `1.2 s`, formatted with the active locale. |\n| `input` / `output`                                    | `ReactNode`                            |         | A string goes in a `Code` block; nodes are rendered as given.                |\n| `isExpanded` / `defaultExpanded` / `onExpandedChange` | `boolean` / `boolean` / `(b) => void`  | closed  | Controlled or uncontrolled details.                                          |\n| `headingLevel`                                        | `1`-`6`                                | `4`     |                                                                              |\n| `messages`                                            | partial catalog                        |         | `running`, `succeeded`, `failed`, `input`, `output`, `error`, announcements. |\n\n`ToolCallList` takes `steps` (each a `ToolCallStep` prop set plus a stable `stepId`), an `aria-label` (default \"Steps\") and `messages`, which it shares with every step."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it.\n- Color never carries the status: the text \"Running\", \"Succeeded\" or \"Failed\" is always visible, with an icon.\n- When a running step finishes, a polite live region says \"search_orders succeeded\" or \"search_orders failed\" once. A step that is already finished on first render is silent.\n- Code blocks that overflow become labelled, keyboard-scrollable regions (\"Input\", \"Output\", \"Error\").\n- Reduced motion and forced colors are handled."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Tool names are identifiers: show them as the agent calls them, in mono.\n- Put the error text in `output` when a step fails, and say how to fix it when you can.\n- Do not put secrets, tokens or customer data in `input` or `output`."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<ToolCallList\n  aria-label=\"Steps of the order check\"\n  steps={[\n    {\n      stepId: 's1',\n      name: 'search_orders',\n      status: 'succeeded',\n      durationMs: 1240,\n      input: '{ \"customer\": \"C-204\" }',\n      output: '{ \"count\": 3 }',\n    },\n    { stepId: 's2', name: 'draft_reply', status: 'running' },\n  ]}\n/>\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "No handoff source: new pattern (TODO `AI-013`)."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "StatusSteps",
+            "reason": "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`."
+          },
+          {
+            "name": "Progress",
+            "reason": "Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`."
+          },
+          {
+            "name": "ApprovalCard",
+            "reason": "Something the owner has to approve: use `ApprovalCard`."
+          }
+        ],
+        "uses": ["Code", "Icon", "Spinner", "VisuallyHidden"],
         "usedBy": []
       }
     },
@@ -33893,6 +37026,312 @@
       }
     },
     {
+      "name": "Tour",
+      "kind": "component",
+      "entryPoint": "@loui/ds",
+      "importStatement": "import { Tour } from '@loui/ds';",
+      "folder": "src/components/Tour",
+      "sourceFile": "src/components/Tour/Tour.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A step-by-step onboarding tour. Each step is a non-modal popover (React Aria `Popover` with\n`isNonModal`) anchored to an element, with a title, a short text, a \"Step 2 of 5\" counter and\nSkip, Back and Next or Done buttons. The page stays interactive; there is no scrim.\n\nFocus moves into each step as it appears (the step is a named dialog, so a screen reader\nannounces its title). `Escape` skips the tour. When the tour ends, focus returns to the element\nthat had it before the tour opened, normally the button that started it.\n\nUse a `Tooltip` for a hint on one control, and a `Popover` for interactive content. A tour is\nfor a few steps shown once; do not use it to hold documentation.",
+      "props": [
+        {
+          "name": "steps",
+          "type": "readonly TourStep[]",
+          "required": true,
+          "description": "The steps, in order. Each points at one element through `target`."
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "description": "Zero-based index of the current step (controlled). Pair with `onStepChange`."
+        },
+        {
+          "name": "defaultStep",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Initial step when uncontrolled. Default `0`."
+        },
+        {
+          "name": "onStepChange",
+          "type": "(step: number) => void",
+          "required": false,
+          "description": "Called when the user moves to another step."
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled open state. Pair with `onOpenChange`."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Initial open state when uncontrolled."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "required": false,
+          "description": "Called with `false` when the tour is finished or skipped."
+        },
+        {
+          "name": "onComplete",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when the user presses Done on the last step. `onOpenChange(false)` follows."
+        },
+        {
+          "name": "onSkip",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when the user skips the tour, with `Skip tour` or `Escape`. `onOpenChange(false)` follows."
+        },
+        {
+          "name": "placement",
+          "type": "'bottom' | 'bottom left' | 'bottom right' | 'bottom start' | 'bottom end' | 'top' | 'top left' | 'top right' | 'top start' | 'top end' | 'left' | 'left top' | 'left bottom' | 'start' | 'start top' | 'start bottom' | 'right' | 'right top' | 'right bottom' | 'end' | 'end top' | 'end bottom'",
+          "required": false,
+          "default": "'bottom start'",
+          "description": "Side and alignment relative to the target. Default `bottom start`. Flips on collision.",
+          "values": [
+            "bottom",
+            "bottom left",
+            "bottom right",
+            "bottom start",
+            "bottom end",
+            "top",
+            "top left",
+            "top right",
+            "top start",
+            "top end",
+            "left",
+            "left top",
+            "left bottom",
+            "start",
+            "start top",
+            "start bottom",
+            "right",
+            "right top",
+            "right bottom",
+            "end",
+            "end top",
+            "end bottom"
+          ]
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ progress: (current: number, total: number) => string; back: string; next: string; done: string; skip: string; }>",
+          "required": false,
+          "description": "Per-instance overrides of the built-in messages."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Class name for the step surface."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLElement>",
+          "required": false,
+          "description": "Ref to the step surface."
+        }
+      ],
+      "inheritedProps": [],
+      "variants": {},
+      "messages": {
+        "providerKey": "Tour",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "progress",
+            "kind": "function",
+            "default": "Step 2 of 2",
+            "signature": "(current: number, total: number)",
+            "description": "Progress text of a step, such as \"Step 2 of 5\"."
+          },
+          {
+            "key": "back",
+            "kind": "string",
+            "default": "Back",
+            "description": "Goes to the previous step."
+          },
+          {
+            "key": "next",
+            "kind": "string",
+            "default": "Next",
+            "description": "Goes to the next step."
+          },
+          {
+            "key": "done",
+            "kind": "string",
+            "default": "Done",
+            "description": "Finishes the tour on the last step."
+          },
+          {
+            "key": "skip",
+            "kind": "string",
+            "default": "Skip tour",
+            "description": "Ends the tour before the last step."
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-font-mono",
+        "--ds-font-sans",
+        "--ds-fs-heading",
+        "--ds-fs-label",
+        "--ds-fs-small",
+        "--ds-lh-heading",
+        "--ds-lh-label",
+        "--ds-lh-small",
+        "--ds-line-strong",
+        "--ds-radius-lg",
+        "--ds-shadow-overlay",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-4",
+        "--ds-surface-raised",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-tour-arrow-size",
+        "--ds-tour-padding",
+        "--ds-tour-width",
+        "--ds-weight-semibold"
+      ],
+      "stories": {
+        "title": "Components/Tour",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-tour--default",
+            "hasPlay": true
+          },
+          {
+            "name": "FirstStep",
+            "id": "components-tour--first-step",
+            "description": "Open on the first step for the visual review.",
+            "hasPlay": false
+          },
+          {
+            "name": "MiddleStep",
+            "id": "components-tour--middle-step",
+            "hasPlay": false
+          },
+          {
+            "name": "LastStep",
+            "id": "components-tour--last-step",
+            "hasPlay": false
+          },
+          {
+            "name": "AboveTarget",
+            "id": "components-tour--above-target",
+            "hasPlay": false
+          },
+          {
+            "name": "KeyboardOnly",
+            "id": "components-tour--keyboard-only",
+            "hasPlay": true
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/Tour/Tour.md",
+        "summary": "Step-by-step onboarding hints anchored to elements of the page. Each step is a non-modal popover (React Aria `Popover` with `isNonModal`) with a title, a short text, a \"Step 2 of 5\" counter and Skip, Back and Next or Done buttons. Generic: it lives in the core entry point.",
+        "whenToUse": [
+          "Introducing a screen to a first-time user in a few steps (three to six).",
+          "Pointing at controls that are not obvious from their label."
+        ],
+        "whenNotToUse": [
+          "A hint on one control: `Tooltip`.",
+          "Interactive content anchored to a button (filters, a small form): `Popover`.",
+          "Documentation or long explanations: link to help instead.",
+          "A task the user must finish before going on: `Dialog` or `Sheet`."
+        ],
+        "keyboard": [
+          "Focus moves into each step as it appears (the dialog itself, so a screen reader reads its title; the next `Tab` reaches Skip, Back and Next). Pressing Next or Back mounts the next step and moves focus to it, so focus never lands on a removed button.",
+          "`Escape` skips the tour. Pressing or tabbing elsewhere on the page does not end it."
+        ],
+        "examples": [
+          "const search = useRef<HTMLButtonElement>(null);\nconst filters = useRef<HTMLButtonElement>(null);\nconst [open, setOpen] = useState(false);\n\n<>\n  <Button onPress={() => setOpen(true)}>Start tour</Button>\n  <Button ref={search}>Search</Button>\n  <Button ref={filters}>Filters</Button>\n  <Tour\n    isOpen={open}\n    onOpenChange={setOpen}\n    steps={[\n      { target: search, title: 'Search', content: 'Find any item by name or code.' },\n      { target: filters, title: 'Filters', content: 'Narrow the list by status or date.' },\n    ]}\n  />\n</>;"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- Introducing a screen to a first-time user in a few steps (three to six).\n- Pointing at controls that are not obvious from their label."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A hint on one control: `Tooltip`.\n- Interactive content anchored to a button (filters, a small form): `Popover`.\n- Documentation or long explanations: link to help instead.\n- A task the user must finish before going on: `Dialog` or `Sheet`."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\nPopover (non-modal, anchored to step.target, z popover, overlay shadow)\n  OverlayArrow\n  Dialog (role=dialog, named by the title)\n    Heading        step title\n    content        step text (--ds-text-2)\n    footer         \"Step 2 of 5\" (mono) ... Skip tour (ghost) · Back · Next | Done (primary)\n```\n\nThe primary button is Next, or Done on the last step. Skip is hidden on the last step, Back on the first."
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop                                      | Type                                                                   | Default        | Notes                                                                                        |\n| ----------------------------------------- | ---------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------- |\n| `steps`                                   | `{ target: RefObject<Element \\| null>, title, content, placement? }[]` | required       | A step whose target is not mounted renders nothing.                                          |\n| `step` / `defaultStep` / `onStepChange`   | `number`                                                               | `0`            | Zero-based index; controlled / uncontrolled.                                                 |\n| `isOpen` / `defaultOpen` / `onOpenChange` |                                                                        | closed         | Controlled / uncontrolled. `onOpenChange(false)` fires when the tour is finished or skipped. |\n| `onComplete`                              | `() => void`                                                           |                | Done on the last step.                                                                       |\n| `onSkip`                                  | `() => void`                                                           |                | Skip tour or `Escape`.                                                                       |\n| `placement`                               | popover placement                                                      | `bottom start` | Flips on collision; each step may override it.                                               |\n| `messages`                                | `{ progress, back, next, done, skip }`                                 |                | pt-BR included.                                                                              |\n\nWhen the tour ends (finished or skipped) an uncontrolled step index returns to the first step."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- Each step is a `dialog` named by its title. It is non-modal: the page is not inert, there is no scrim, nothing is hidden from assistive technology.\n- Focus moves into each step as it appears (the dialog itself, so a screen reader reads its title; the next `Tab` reaches Skip, Back and Next). Pressing Next or Back mounts the next step and moves focus to it, so focus never lands on a removed button.\n- `Escape` skips the tour. Pressing or tabbing elsewhere on the page does not end it.\n- When the tour ends, focus returns to the element that had focus when the tour opened (normally the button that started it); for a tour that is open on first render, to the target of the current step if it is focusable. If the consumer closes a controlled tour from outside, focus is left where the user put it.\n- The target is scrolled into view (`block: nearest`) when its step appears. The step is positioned against the target and flips when it does not fit; the arrow points at the target.\n- The fade-in is removed under `prefers-reduced-motion`. Visuals are calm: raised surface, strong line and the overlay shadow only; accent is used only for focus rings.\n- Because the step is rendered in a portal, it comes last in the Tab order of the page: the user reaches it by the focus that moves into it, not by tabbing from the target."
+          },
+          {
+            "id": "content-rules",
+            "heading": "Content rules",
+            "content": "- Title: the name of the thing, in sentence case (\"Filters\"). Text: one or two sentences saying what it does, with no exclamation marks or emoji.\n- Button labels come from the message catalog: Back, Next, Done, Skip tour."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\nconst search = useRef<HTMLButtonElement>(null);\nconst filters = useRef<HTMLButtonElement>(null);\nconst [open, setOpen] = useState(false);\n\n<>\n  <Button onPress={() => setOpen(true)}>Start tour</Button>\n  <Button ref={search}>Search</Button>\n  <Button ref={filters}>Filters</Button>\n  <Tour\n    isOpen={open}\n    onOpenChange={setOpen}\n    steps={[\n      { target: search, title: 'Search', content: 'Find any item by name or code.' },\n      { target: filters, title: 'Filters', content: 'Narrow the list by status or date.' },\n    ]}\n  />\n</>;\n```"
+          },
+          {
+            "id": "differences-from-the-handoff",
+            "heading": "Differences from the handoff",
+            "content": "New component (GAP-006): the handoff has no onboarding component."
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Tooltip",
+            "reason": "A hint on one control: `Tooltip`."
+          },
+          {
+            "name": "Popover",
+            "reason": "Interactive content anchored to a button (filters, a small form): `Popover`."
+          },
+          {
+            "name": "Dialog",
+            "reason": "A task the user must finish before going on: `Dialog` or `Sheet`."
+          },
+          {
+            "name": "Sheet",
+            "reason": "A task the user must finish before going on: `Dialog` or `Sheet`."
+          }
+        ],
+        "uses": ["Button"],
+        "usedBy": []
+      }
+    },
+    {
       "name": "VisuallyHidden",
       "kind": "component",
       "entryPoint": "@loui/ds",
@@ -34033,24 +37472,31 @@
         "usedBy": [
           "Alert",
           "ApprovalCard",
+          "Banner",
           "Chart",
           "ChatPanel",
           "CommandPalette",
           "DataTable",
           "FileUpload",
           "Kbd",
+          "Legend",
           "Link",
           "MatrixGrid",
           "NavItem",
+          "ResponseFeedback",
           "SegmentedControl",
           "ShortcutsHelp",
+          "StackedBar",
           "StatusSteps",
+          "Stepper",
           "Tab",
           "TabList",
           "TabPanel",
           "Tabs",
           "Textarea",
-          "ToastRegion"
+          "Timeline",
+          "ToastRegion",
+          "ToolCallStep"
         ]
       }
     }
@@ -34091,6 +37537,12 @@
       "description": "A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and \"Saved\" next to it.",
       "status": "experimental",
       "doc": "recipes/form-with-validation.md"
+    },
+    {
+      "name": "MarkdownMessage",
+      "description": "Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. A small subset is parsed into React elements: no markdown library, no `dangerouslySetInnerHTML`, no HTML string anywhere.",
+      "status": "experimental",
+      "doc": "recipes/markdown-message.md"
     },
     {
       "name": "SettingsPage",
@@ -34811,6 +38263,29 @@
       "docs": "docs/architecture/utilities.md"
     },
     {
+      "name": "getSourceElementId",
+      "kind": "utility",
+      "entryPoint": "@loui/ds/patterns",
+      "importStatement": "import { getSourceElementId } from '@loui/ds/patterns';",
+      "sourceFile": "src/patterns/SourceList/SourceList.tsx",
+      "description": "The DOM id of one source of a list. `Citation` builds the same id from `listId` and `sourceId`.",
+      "signature": "getSourceElementId(listId: string, sourceId: string): string",
+      "params": [
+        {
+          "name": "listId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sourceId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "returns": "string",
+      "docs": "docs/architecture/utilities.md"
+    },
+    {
       "name": "highlightMatch",
       "kind": "utility",
       "entryPoint": "@loui/ds",
@@ -34888,9 +38363,9 @@
       "importStatement": "import { iconNames } from '@loui/ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "Kebab-case names of the curated set with the use each icon is meant for. Source of the\nallow-list in the component manifest; keep it in sync with the exports above (tested).",
-      "signature": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
+      "signature": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly copy: \"Copy to the clipboard\"; readonly refresh: \"Regenerate, reload, sync again\"; readonly 'thumbs-down': \"Negative feedback on a response\"; readonly 'thumbs-up': \"Positive feedback on a response\"; readonly x: \"Close, dismiss, remove\"; }",
       "params": [],
-      "returns": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly x: \"Close, dismiss, remove\"; }",
+      "returns": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly copy: \"Copy to the clipboard\"; readonly refresh: \"Regenerate, reload, sync again\"; readonly 'thumbs-down': \"Negative feedback on a response\"; readonly 'thumbs-up': \"Positive feedback on a response\"; readonly x: \"Close, dismiss, remove\"; }",
       "docs": "docs/architecture/utilities.md"
     },
     {
@@ -34900,9 +38375,9 @@
       "importStatement": "import { iconSet } from '@loui/ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "The curated set by kebab-case name, for tooling and name-driven rendering.",
-      "signature": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
+      "signature": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }",
       "params": [],
-      "returns": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }",
+      "returns": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }",
       "docs": "docs/architecture/utilities.md"
     },
     {
@@ -35225,6 +38700,7 @@
       "CircleAlertIcon",
       "CircleCheckIcon",
       "CircleXIcon",
+      "CopyIcon",
       "EllipsisIcon",
       "ExternalLinkIcon",
       "InfoIcon",
@@ -35233,8 +38709,11 @@
       "MessageIcon",
       "MinusIcon",
       "PlusIcon",
+      "RefreshIcon",
       "SearchIcon",
       "StarIcon",
+      "ThumbsDownIcon",
+      "ThumbsUpIcon",
       "TriangleAlertIcon",
       "XIcon"
     ]

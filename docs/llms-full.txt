@@ -376,6 +376,80 @@ Open an issue with the component, the browser and assistive technology, the step
 
 ---
 
+## Bundle size
+
+How much JavaScript Loui DS adds to an app, where the rest comes from, and what to do about it.
+
+### What a typical app ships
+
+Measured on `examples/vite-app` (Vite 8, production build): an `AppShell` with `Sidebar`, `TopBar`, a `DataTable` with pagination, a `Dialog` with an `Input`, and toasts.
+
+| Share of the bundle                                      | Before minification | Notes                                                                                                    |
+| -------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------- |
+| `react-dom` + `react` + `scheduler`                      | ~550 kB             | Fixed cost of React 19.                                                                                  |
+| `react-aria` + `react-aria-components` + `react-stately` | ~620 kB             | Behavior layer (ADR-0001): focus, keyboard, overlays, i18n. Includes translated strings for 30+ locales. |
+| `@loui/ds` (components, i18n, utilities)                 | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
+| `lucide-react`                                           | ~10 kB              | Only the curated icons that are used.                                                                    |
+
+Minified output: **531 kB (163 kB gzip)** without optimization, **489 kB (150 kB gzip)** with the locale plugin below. The design system's own code is under a tenth of the total; the rest is React and React Aria, which every app built on this system needs anyway.
+
+### 1. Strip unused React Aria locales (recommended)
+
+React Aria bundles its built-in strings (for example "Next month", "Dismiss") for every locale it supports. `@react-aria/optimize-locales-plugin` keeps only the locales your app serves. Use the same list you pass to `DSProvider`.
+
+Vite:
+
+```ts
+// vite.config.ts
+import optimizeLocales from '@react-aria/optimize-locales-plugin';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [{ ...optimizeLocales.vite({ locales: ['en-US', 'pt-BR'] }), enforce: 'pre' }, react()],
+});
+```
+
+Next.js (webpack):
+
+```ts
+// next.config.ts
+import optimizeLocales from '@react-aria/optimize-locales-plugin';
+import type { NextConfig } from 'next';
+
+const config: NextConfig = {
+  webpack(webpackConfig) {
+    webpackConfig.plugins.push(optimizeLocales.webpack({ locales: ['en-US', 'pt-BR'] }));
+    return webpackConfig;
+  },
+};
+
+export default config;
+```
+
+Saving in the example: 42 kB minified (14 kB gzip). A locale that is stripped falls back to English strings inside React Aria; Loui DS's own messages are unaffected (they come from its catalogs).
+
+### 2. Import from the package root
+
+Always `import { Button } from '@loui/ds'`. Bundlers drop what you do not use. Do not import from `@loui/ds/dist/...` paths: they are not part of the public API and can duplicate modules.
+
+### 3. Split heavy screens, not components
+
+Lazy-load whole routes or rarely opened surfaces with `React.lazy` and `Suspense`, for example a settings page, a report with charts, or the command palette's command list. Splitting individual small components costs more in requests than it saves.
+
+```tsx
+const Reports = lazy(() => import('./routes/Reports'));
+```
+
+Keep `DSProvider`, `AppShell` and the toast region in the main chunk: they are on every screen.
+
+### 4. Check before you ship
+
+- `vite build` prints the size of each chunk; add `rollup-plugin-visualizer` (or Next's `@next/bundle-analyzer`) when a chunk grows unexpectedly.
+- The design system itself is guarded by `size-limit` in its CI (`pnpm size`), so its own growth is reviewed per change.
+
+---
+
 ## Color
 
 Color in Loui DS is dark, flat and quiet. Hierarchy comes from five surface layers and three line weights; color itself is reserved for meaning. Use semantic tokens only (`--ds-surface`, `--ds-text-2`, `--ds-danger`); the primitive palette exists to define them. Every value, description and contrast ratio is listed on the Tokens page.
@@ -724,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-375 tokens; the table lists the 361 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+431 tokens; the table lists the 417 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -880,6 +954,13 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-badge-height` | `24px` | Height of a Badge (24px). Badges are static labels, not targets. |
 | `--ds-badge-dot-size` | `6px` | Diameter of the decorative status dot inside a Badge (6px). Never the only carrier of meaning. |
 | `--ds-badge-padding-inline` | `8px` | Horizontal padding of a Badge (8px). |
+| `--ds-banner-success-bg` | `rgba(95, 212, 154, 0.06)` | Background of a success Banner: 6% success over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-success-border` | `rgba(95, 212, 154, 0.3)` | Border of a success Banner: 30% success over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-warning-bg` | `rgba(233, 182, 92, 0.06)` | Background of a warning Banner: 6% warning over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-warning-border` | `rgba(233, 182, 92, 0.3)` | Border of a warning Banner: 30% warning over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-danger-bg` | `rgba(240, 122, 110, 0.06)` | Background of a danger Banner: 6% danger over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-danger-border` | `rgba(240, 122, 110, 0.3)` | Border of a danger Banner: 30% danger over the surface beneath, resolved with color-mix. Not for text. |
+| `--ds-banner-content-basis` | `240px` | Preferred inline size of the text of a Banner (240px). When the text and the action do not fit on one line, the action wraps below the text. |
 | `--ds-breakpoint-sm` | `480px` | Small breakpoint (480px). Large phones. Components work from 320px; nothing in the DS changes layout at this width, it is a reference for consumer apps. |
 | `--ds-breakpoint-md` | `768px` | Medium breakpoint (768px). AppShell shows the sidebar in the flow from this width up (measured on the shell's own width, with a container query) and turns it into an off-canvas panel below. CSS cannot read custom properties inside @media or @container conditions, so the CSS Module repeats this value; AppShell.test.tsx asserts they agree. |
 | `--ds-breakpoint-lg` | `1024px` | Large breakpoint (1024px). Tablets in landscape and small laptops. A reference for consumer apps (for example to show a detail pane beside a list). |
@@ -891,6 +972,11 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-calendar-today-ring-width` | `1px` | Border width of the ring that marks today in a Calendar (1px). |
 | `--ds-card-padding` | `20px` | Inner padding of a Card (20px). |
 | `--ds-card-gap` | `16px` | Vertical gap between the header and the content of a Card (16px). |
+| `--ds-chart-series-1` | `#EDEDEA` | Series 1 of a multi-series chart (StackedBar) and its Legend swatch: the neutral ramp's first step. Series never use the accent or signal colors by default; pass an explicit color instead. |
+| `--ds-chart-series-2` | `#A3A3A9` | Series 2 of a multi-series chart and its Legend swatch. |
+| `--ds-chart-series-3` | `#86868E` | Series 3 of a multi-series chart and its Legend swatch. |
+| `--ds-chart-series-4` | `#64646B` | Series 4 of a multi-series chart and its Legend swatch. Every step keeps 3:1 against the track background. |
+| `--ds-chart-series-hatch-size` | `3px` | Stripe width of the hatch pattern that tells apart series beyond the fourth (3px). The pattern is the non-color cue. |
 | `--ds-chart-height` | `200px` | Default height of a Chart (200px). The height prop overrides it per instance. |
 | `--ds-chart-stroke-w` | `1.5px` | Stroke width of the line series and of point rings (1.5px, same as icons). |
 | `--ds-chart-point-r` | `3.5px` | Radius of the active point marker of a line Chart (3.5px). |
@@ -917,6 +1003,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-choice-tiles-height-md` | `40px` | Minimum height of a medium tile (40px). |
 | `--ds-choice-tiles-height-lg` | `48px` | Minimum height of a large tile (48px, default). |
 | `--ds-choice-tiles-columns` | `2` | Maximum number of columns of ChoiceTiles. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers. |
+| `--ds-citation-size` | `24px` | Minimum side of an inline citation marker (24px, the WCAG 2.5.8 target size). |
 | `--ds-code-inline-padding-block` | `1px` | Vertical padding of inline Code (1px) so the box fits the line height of the surrounding text. |
 | `--ds-combobox-popover-max-height` | `320px` | Maximum height of the Combobox list before it scrolls (same as the Select list). |
 | `--ds-command-palette-width` | `640px` | Maximum width of the CommandPalette panel (640px). Narrower on small screens. |
@@ -947,6 +1034,13 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-donut-meter-stroke-w` | `10px` | Thickness of the ring in units of the 100-unit drawing box (10), so it scales with the diameter: 4.8px at 48px, 9.6px at 96px. |
 | `--ds-donut-meter-value` | `0` | Filled share of the ring, 0 to 100. Set at runtime via style (ADR-0002 amendment); the ring is drawn with a dash of this length on a path of length 100. |
 | `--ds-donut-meter-color` | `#8AB4FF` | Color of the filled part of the ring. Each tone sets it. |
+| `--ds-drawer-width-sm` | `280px` | Width of a small Drawer (280px): a narrow filter or navigation panel. |
+| `--ds-drawer-width-md` | `320px` | Width of a medium Drawer (320px), the default. |
+| `--ds-drawer-width-lg` | `400px` | Width of a large Drawer (400px): an inspector with forms. |
+| `--ds-drawer-padding` | `16px` | Inner padding of the Drawer header, body and footer (16px). |
+| `--ds-drawer-shift` | `16px` | Distance the Drawer slides while it fades in (16px). |
+| `--ds-drawer-width` | `320px` | Resolved width of the Drawer. The size attribute sets it from `--ds-drawer-width-sm\|md\|lg`; not meant to be set by consumers. |
+| `--ds-drawer-from` | `16px` | Start offset of the Drawer fade-in. The placement and writing direction set its sign; not meant to be set by consumers. |
 | `--ds-due-indicator-dot-size` | `8px` | Diameter of the tone dot before the date (8px). Decorative: the status is always text. |
 | `--ds-due-indicator-gap` | `8px` | Gap between the dot, the date and the status text (8px). |
 | `--ds-empty-state-padding-block` | `48px` | Vertical padding of an EmptyState (48px). |
@@ -980,6 +1074,9 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-ledger-list-gap` | `12px` | Gap between the columns of an entry (12px). |
 | `--ds-ledger-list-padding-inline` | `24px` | Horizontal padding of an entry (24px). |
 | `--ds-ledger-list-text-gap` | `2px` | Gap between the stacked lines of an entry (title and subtitle, amount and balance) (2px). |
+| `--ds-legend-swatch-size` | `10px` | Size of the series swatch in a Legend (10px). |
+| `--ds-legend-gap` | `16px` | Gap between the items of a horizontal Legend (16px). |
+| `--ds-legend-color` | `#EDEDEA` | Fill of a Legend swatch. The series ramp classes set it per step; an item `color` overrides it at runtime via style (ADR-0002 amendment). |
 | `--ds-matrix-grid-cell-size` | `40px` | Width and height of a toggle cell (40px, above the 24px minimum target). |
 | `--ds-matrix-grid-color` | `#A3A3A9` | Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`. |
 | `--ds-matrix-grid-column-header-padding-inline` | `2px` | Horizontal padding of a column header so neighboring labels do not touch (2px). |
@@ -1022,6 +1119,8 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-rating-gap` | `8px` | Gap between the stars and the optional numeric value (8px). |
 | `--ds-rating-star-gap` | `2px` | Gap between two stars (2px). |
 | `--ds-rating-fill` | `0px` | Width of the filled part of a partially filled Rating star. Set at runtime via style as a percentage of the star (0 by default: an empty star). |
+| `--ds-response-feedback-gap` | `4px` | Gap between the feedback, copy and regenerate buttons (4px). |
+| `--ds-response-feedback-divider-gap` | `8px` | Space on each side of the divider between the rating and the other actions (8px). |
 | `--ds-segmented-control-padding` | `2px` | Inner padding and gap of the SegmentedControl track (2px). |
 | `--ds-segmented-control-height-sm` | `24px` | Height of a small segment (24px, the minimum target size). The handoff used 26px. |
 | `--ds-segmented-control-height-md` | `32px` | Height of a medium segment (32px). |
@@ -1044,6 +1143,9 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-slider-track-height` | `4px` | Thickness of the Slider track and fill (4px, the handoff value). |
 | `--ds-slider-thumb-size` | `24px` | Width and height of the Slider thumb hit area (24px, WCAG 2.5.8). The visible knob is thumb-dot-size; the ring on focus follows this box. |
 | `--ds-slider-thumb-dot-size` | `16px` | Diameter of the visible Slider knob (16px), centered in the thumb hit area. |
+| `--ds-source-list-gap` | `12px` | Gap between the sources of a SourceList (12px). |
+| `--ds-source-list-indent` | `24px` | Inline start padding of the numbered list, where the numbers sit (24px). |
+| `--ds-source-list-padding` | `8px` | Padding of one source, so its focus outline does not touch the text (8px). |
 | `--ds-sparkline-stroke-w` | `1.5px` | Stroke width of the Sparkline line and of its marker rings (1.5px, same as icons and Chart). |
 | `--ds-sparkline-dot-r` | `2.5px` | Radius of the solid last-value dot of a Sparkline (2.5px). |
 | `--ds-sparkline-marker-r` | `2px` | Radius of the hollow minimum and maximum markers of a Sparkline (2px). |
@@ -1052,6 +1154,15 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-spinner-stroke-width` | `2px` | Ring thickness of the Spinner (2px) at every size. Not for progress bars or icon strokes. |
 | `--ds-spinner-duration` | `700ms` | Time of one full Spinner rotation (700ms). Replaced by a static ring under prefers-reduced-motion. Not for transitions. |
 | `--ds-stack-gap` | `16px` | Default Stack gap; set at runtime via style from the `gap` prop (a space token key). |
+| `--ds-stacked-bar-bar-thickness` | `20px` | Thickness of a horizontal StackedBar bar (20px). |
+| `--ds-stacked-bar-column-max-w` | `56px` | Maximum width of a vertical StackedBar column (56px). |
+| `--ds-stacked-bar-height` | `200px` | Height of the plot area of a vertical StackedBar (200px). |
+| `--ds-stacked-bar-category-w` | `96px` | Width of the category label column of a horizontal StackedBar (96px). Longer labels are truncated; the readout and the data table carry the full text. |
+| `--ds-stacked-bar-segment-gap` | `2px` | Gap between the segments of a StackedBar bar (2px). The track shows through, so neighbouring series are always separated without relying on color. |
+| `--ds-stacked-bar-readout-min-h` | `24px` | Reserved height of the readout line under a StackedBar (24px), so showing it never shifts the layout. |
+| `--ds-stacked-bar-extent` | `100` | Length of a StackedBar bar as a percentage of the plot (the largest total is 100). Set at runtime via style. |
+| `--ds-stacked-bar-share` | `1` | Relative size (flex-grow) of a StackedBar segment. Set at runtime via style from the series value. |
+| `--ds-stacked-bar-color` | `#EDEDEA` | Fill of a StackedBar segment. The series ramp classes set it per step; a series `color` overrides it at runtime via style. |
 | `--ds-stat-card-padding` | `20px` | Padding of a StatCard (20px, same as Card). |
 | `--ds-stat-card-gap` | `8px` | Vertical gap between the label, value, content and note of a StatCard (8px). |
 | `--ds-status-steps-connector-thickness` | `2px` | Thickness of the decorative line between two steps (2px). |
@@ -1061,6 +1172,13 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-status-steps-marker-hover-border` | `#86868E` | Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014). |
 | `--ds-status-steps-marker-size` | `20px` | Diameter of the numbered or checked marker of a step (20px). |
 | `--ds-status-steps-padding-block` | `4px` | Vertical padding of a step (4px). |
+| `--ds-stepper-connector-thickness` | `2px` | Thickness of the decorative line between two steps (2px). |
+| `--ds-stepper-content-z-index` | `1` | Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer. |
+| `--ds-stepper-gap` | `8px` | Gap between the marker and the label, or between the label and the description (8px). |
+| `--ds-stepper-marker-border-width` | `1.5px` | Border width of an upcoming step marker (1.5px), matching the 1.5px icon stroke. |
+| `--ds-stepper-marker-size` | `24px` | Diameter of the numbered or checked marker of a step (24px). Also the minimum target size of a step button (WCAG 2.5.8). |
+| `--ds-stepper-padding-block` | `4px` | Vertical padding of a step (4px). |
+| `--ds-stepper-step-gap` | `16px` | Space below a step in the vertical orientation, where the connector line runs (16px). |
 | `--ds-swatch-size-sm` | `16px` | Diameter of a small Swatch (16px), used inside options and headers. |
 | `--ds-swatch-size-md` | `20px` | Diameter of a medium Swatch (20px, default). |
 | `--ds-swatch-size-lg` | `32px` | Diameter of a large Swatch (32px). |
@@ -1082,13 +1200,25 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-tag-padding-inline` | `8px` | Horizontal padding of a Tag (8px). |
 | `--ds-textarea-padding-block` | `10px` | Block padding inside a Textarea (10px, the handoff value). Not for single-line controls. |
 | `--ds-textarea-padding-inline` | `12px` | Inline padding inside a Textarea (12px, the handoff value). Not for single-line controls. |
+| `--ds-timeline-connector-thickness` | `2px` | Thickness of the decorative line that joins the markers of two events (2px). |
+| `--ds-timeline-dot-size` | `8px` | Diameter of the dot that marks a neutral event (8px). |
+| `--ds-timeline-item-gap` | `20px` | Space between two events, where the connector line runs (20px). |
+| `--ds-timeline-marker-gap` | `12px` | Gap between the marker column and the text of an event (12px). |
+| `--ds-timeline-marker-size` | `20px` | Width and height of the marker slot that holds the dot or the tone icon (20px). |
 | `--ds-toast-max-width` | `420px` | Maximum width of a Toast (420px). It shrinks to the viewport on narrow screens. |
 | `--ds-toast-min-height` | `40px` | Minimum height of a Toast (40px). |
 | `--ds-toast-dot-size` | `6px` | Diameter of the tone dot of a Toast (6px). Decorative: the tone is also spoken. |
 | `--ds-toast-offset` | `24px` | Distance between the Toast region and the bottom edge of the viewport (24px). |
 | `--ds-toast-clearance` | `0px` | Height of viewport the Toast region covers at the bottom (0 when no toast is shown). ToastRegion sets it on the root element while mounted; scroll containers use it as scroll-padding-block-end so focus never scrolls under a toast (WCAG 2.4.11). Do not set it by hand. |
+| `--ds-tool-call-step-padding-inline` | `12px` | Horizontal padding of the ToolCallStep header and details (12px). |
+| `--ds-tool-call-step-padding-block` | `8px` | Vertical padding of the ToolCallStep header (8px). |
+| `--ds-tool-call-step-gap` | `8px` | Gap between the status, name and duration, and between detail blocks (8px). |
+| `--ds-tool-call-step-list-gap` | `8px` | Gap between the steps of a ToolCallList (8px). |
 | `--ds-tooltip-max-width` | `240px` | Maximum width of a Tooltip (240px) before the text wraps. Tooltips stay short. |
 | `--ds-top-bar-padding-inline` | `24px` | Horizontal padding of the TopBar (24px). Its height is size.topbar-h (64px; the handoff code used 56px). |
+| `--ds-tour-width` | `320px` | Width of a Tour step (320px); it shrinks to fit narrow viewports. |
+| `--ds-tour-padding` | `16px` | Inner padding of a Tour step (16px). |
+| `--ds-tour-arrow-size` | `8px` | Width of the Tour arrow (8px); its height is half of this. |
 
 ### Pairings that fail contrast
 
@@ -2085,6 +2215,133 @@ A pill with a short status label. The text always states the status; the tone an
 - Instead, see Button: For an action: use `Button`. A Badge is never interactive.
 - Used by: AgentCard, ApprovalCard
 
+### Banner
+
+> A persistent, full-width message for a whole page or section: maintenance, a limited account,
+an offline mode. It stays until the condition ends or the user dismisses it.
+The icon is decorative and a visually hidden prefix names the tone for screen readers.
+
+A persistent, full-width message for a whole page or section: maintenance, a limited account, an offline mode. It has a tone, an icon, an optional title, one action and an optional dismiss button.
+
+- Import: `import { Banner } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Banner/Banner.tsx`
+- Stories (Storybook title `Components/Banner`): Default, Success, Warning, Danger, Urgent, Announced, TitleOnly, TextOnly, Dismissible, LongText, AllTones, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `tone` | `'info' \| 'success' \| 'warning' \| 'danger'` |  | `'info'` | Kind of message: `info` (neutral, default), `success`, `warning` or `danger`. |
+| `title` | `ReactNode` |  |  | Short heading in one line: what is going on. Plain text, not a document heading. |
+| `children` | `ReactNode` |  |  | The detail: why, and what to do. Keep it to one or two sentences. |
+| `action` | `ReactNode` |  |  | A single action next to the text, usually a link or a small `Button` ("Update card"). |
+| `onDismiss` | `() => void` |  |  | Shows a dismiss button that calls this. The banner is removed by the parent. |
+| `urgent` | `boolean` |  | `false` | The banner appears while the user is working and interrupts the task, so it must be announced immediately (`role="alert"`, assertive). Only for a failure the user must know about right now. A banner that is on the page from the start never needs it. |
+| `announce` | `boolean` |  | `false` | Whether the banner is a live region (`role="status"`, polite). Default `false`, because a banner is usually part of the page when it loads and a live region that never changes is noise. Set `true` when the banner is added to the page after load (a lost connection that is restored, a session that is about to expire). Ignored when `urgent`. |
+| `messages` | `Partial<{ dismiss: string; info: string; success: string; warning: string; danger: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `tone`: `info`, `success`, `warning`, `danger`
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Banner: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `dismiss` | `Dismiss banner` | Name of the dismiss button. |
+| `info` | `Information` | Visually hidden prefix that tells screen reader users the kind of banner; color and icon alone cannot. |
+| `success` | `Success` |  |
+| `warning` | `Warning` |  |
+| `danger` | `Error` |  |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-banner-content-basis`, `--ds-banner-danger-bg`, `--ds-banner-danger-border`, `--ds-banner-success-bg`, `--ds-banner-success-border`, `--ds-banner-warning-bg`, `--ds-banner-warning-border`, `--ds-bg`, `--ds-danger`, `--ds-fs-small`, `--ds-lh-small`, `--ds-line`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+
+#### When to use
+
+- A condition that affects the whole page or area and lasts until it is resolved or dismissed: scheduled maintenance, a trial ending, a read-only mode.
+- Place it at the top of the page or section it applies to, above the content.
+
+#### When not to use
+
+- Feedback about something that just happened and goes away by itself ("Order #1051 created"): use `Toast`.
+- A message about one piece of content, inside it (a form, a card): use `Alert`.
+- A field error: use the field's error message.
+- A confirmation that needs a decision: use `Dialog`.
+- The status of a record: use `Badge`.
+
+##### Banner, Alert and Toast
+
+|             | Banner                                             | Alert                                   | Toast                                |
+| ----------- | -------------------------------------------------- | --------------------------------------- | ------------------------------------ |
+| Scope       | Page or section                                    | Inline, next to the content it explains | The app, in a corner                 |
+| Lifetime    | Persistent, until resolved or dismissed            | Persistent while relevant               | Transient, auto-dismisses (pausable) |
+| Shape       | Full width, flat, top and bottom border only       | Rounded card                            | Elevated overlay                     |
+| Live region | None by default (it is on the page from the start) | Polite status by default                | Always announced                     |
+
+#### Anatomy
+
+```
+div[role=alert | status | none]  (tinted surface, 1px tinted top and bottom border, full width)
+  Icon (decorative)  info | success | warning (triangle) | danger
+  content
+    VisuallyHidden   "Information" | "Success" | "Warning" | "Error"
+    title            optional, 14/22, weight 500
+    children         text-2, on the same line as the title when it fits
+  actions            action slot · dismiss IconButton
+```
+
+#### Accessibility: role decisions
+
+- **No role by default.** A banner is normally part of the page when it loads; screen readers read it in page order. A live region that never changes is noise.
+- **`announce` gives `role="status"` (polite).** Use it when the banner is inserted after load (connection restored, session about to expire). Render the banner when the event happens and keep it mounted; do not render it hidden and unhide it.
+- **`urgent` gives `role="alert"` (assertive).** Use it only for a `danger` or `warning` banner that appears dynamically and needs attention now (connection lost, session expired). A `danger` or `warning` banner that is on the page from the start must not be `urgent`: the tone does not imply urgency.
+- **The tone is not only color and icon.** The icon is `aria-hidden`; a visually hidden prefix ("Error", "Warning", "Success", "Information", from messages) names the kind of banner.
+- The **dismiss button** is an `IconButton` named "Dismiss banner" (messages), reachable by Tab and operated with Enter or Space. After dismissing, move focus somewhere sensible if the banner held it.
+- Text contrast on the tinted backgrounds is at least 4.5:1 (checked in the browser test with the real computed colors). The tints are component tokens (`--ds-banner-*`).
+- Reflow: the text and the actions wrap; at 320 px the action moves below the text.
+
+#### Content rules
+
+- Title: what is going on, sentence case, no exclamation marks ("Trial ends in 3 days").
+- Text: why and what to do, one or two sentences.
+- The action is a verb plus object ("Choose plan"), not "Click here".
+- Do not stack more than one banner per page area.
+
+#### Examples
+
+```tsx
+<Banner title="Scheduled maintenance">Sunday, 02:00 to 03:00 UTC.</Banner>
+
+<Banner
+  tone="warning"
+  title="Trial ends in 3 days"
+  action={<Button size="sm">Choose plan</Button>}
+  onDismiss={() => setHidden(true)}
+>
+  Choose a plan to keep your data.
+</Banner>
+
+<Banner tone="danger" urgent title="Connection lost">
+  Changes are not being saved.
+</Banner>
+```
+
+#### Related components
+
+- Instead, see Alert: A message about one piece of content, inside it (a form, a card): use `Alert`.
+- Instead, see Dialog: A confirmation that needs a decision: use `Dialog`.
+- Instead, see Badge: The status of a record: use `Badge`.
+- Renders: Icon, IconButton, VisuallyHidden
+
 ### Breadcrumb
 
 > The path to the current page as an ordered list of links inside a `nav` landmark. The
@@ -2285,7 +2542,7 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
 - Renders: Spinner
-- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ShortcutsHelp, ToastRegion
+- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ResponseFeedback, ShortcutsHelp, ToastRegion, Tour
 
 ### Calendar
 
@@ -3139,6 +3396,93 @@ div[role=radiogroup] aria-labelledby=label
 - Instead, see TagGroup: For several selections at once: use `CheckboxGroup` or `TagGroup`.
 - Renders: FieldMessages, Label
 
+### Citation
+
+> An inline marker for a claim in an answer. It is a real link (`href="#..."`) that moves
+focus to the matching source in the `SourceList`, so it works with a keyboard and a screen
+reader: the name is "Source 2: Title", the visible text is the number.
+
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+
+- Import: `import { Citation } from '@loui/ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/SourceList/SourceList.tsx`
+- Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `number` | `number` | yes |  | Position of the source in the list, starting at 1. Shown as the marker text. |
+| `title` | `string` | yes |  | Title of the source. Part of the accessible name ("Source 2: Title"). |
+| `listId` | `string` | yes |  | Id of the `SourceList` the source belongs to. |
+| `sourceId` | `string` | yes |  | Id of the source (`Source.id`). |
+| `messages` | `Partial<{ title: string; citation: (number: number, title: string) => string; }>` |  |  | Override the built-in messages for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ SourceList: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `title` | `Sources` | Default heading of the source list. |
+| `citation(number: number, title: string)` | `Source 2: {title}` | Accessible name of a citation marker: "Source 2: Title". |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-citation-size`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-control`, `--ds-radius-sm`, `--ds-source-list-gap`, `--ds-source-list-indent`, `--ds-source-list-padding`, `--ds-space-1`, `--ds-space-2`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-semibold`
+
+#### When to use
+
+- An assistant answer that rests on documents, pages or records, and the owner should be able to check them.
+
+#### When not to use
+
+- Footnotes in long-form documents: use plain links.
+- A list of results the user searched for: use a table or a list of cards.
+
+#### Anatomy
+
+```
+p            ... a claim [2] ...        Citation: <a href="#s-source-b" aria-label="Source 2: Title">2</a>
+section      named by its heading ("Sources")
+  ol
+    li       tabIndex=-1 (focus target)    title (link when it has a url) · domain (mono) · snippet
+```
+
+#### Accessibility
+
+- A citation is a real link (`href="#..."`) named "Source 2: Title"; the visible text is the number, which the name contains.
+- Activating it moves focus to the matching list item and scrolls it into view. It does not change the URL hash, so it does not fight your router. Without JavaScript the hash link still works.
+- Source titles with a `url` are links that open in a new tab (with the external-link icon and a screen-reader note).
+- The marker is 24 px square (WCAG 2.5.8).
+
+#### Content rules
+
+- Keep source order stable while the answer streams; append new sources at the end, so numbers already shown never change.
+- Titles say what the page is, not "Click here". Snippets are short, plain text.
+
+#### Example
+
+```tsx
+<p>
+  Orders move through four statuses
+  <Citation number={1} title="Order lifecycle" listId="answer-1" sourceId="lifecycle" />.
+</p>
+<SourceList
+  id="answer-1"
+  sources={[{ id: 'lifecycle', title: 'Order lifecycle', url: 'https://example.com/orders' }]}
+/>
+```
+
+#### Related components
+
+- Renders: Link
+
 ### Code
 
 > Monospace code: inline in a sentence, or as a block (`pre` + `code`). A block that overflows
@@ -3220,6 +3564,7 @@ pre > code           block (scrolls sideways, keeps whitespace)
 #### Related components
 
 - Instead, see Kbd: For data values in the UI (IDs, amounts, shortcuts): use `Text mono`, or `Kbd` for a key.
+- Used by: ToolCallStep
 
 ### ColorOption
 
@@ -4732,6 +5077,135 @@ div[role=meter] aria-valuenow/min/max/valuetext
 - Instead, see Sparkline: A trend over time: use `Sparkline` or `Chart`.
 - Instead, see Chart: A trend over time: use `Sparkline` or `Chart`.
 
+### Drawer
+
+> A non-modal side panel for filters, inspectors and secondary navigation. It sits next to the
+content in the page flow: there is no scrim, the page stays interactive, focus is not trapped
+and the page is not made inert. Place it as a sibling of the main content inside a flex or grid
+container; it renders nothing while closed.
+
+Use `Sheet` instead when the panel is a task that must be finished or dismissed first
+(editing one record): that one is modal.
+
+`Escape` closes the drawer while focus is inside it and returns focus to the trigger.
+
+A non-modal side panel that sits next to the content, for filters, inspectors and secondary navigation. There is no scrim, the page stays interactive and focus is not trapped. Generic: it lives in the core entry point.
+
+- Import: `import { Drawer } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Drawer/Drawer.tsx`
+- Stories (Storybook title `Components/Drawer`): Default, AtStart, Small, Large, Region, Unpadded, LongContent, Rtl, OpenAndCloseWithKeyboard
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `title` | `ReactNode` | yes |  | Heading of the drawer and its accessible name. |
+| `children` | `ReactNode \| ((options: DrawerRenderOptions) => ReactNode)` |  |  | Body of the drawer; it scrolls when it is taller than the drawer. A function receives `close`. |
+| `footer` | `ReactNode \| ((options: DrawerRenderOptions) => ReactNode)` |  |  | Footer actions, aligned to the end. A function receives `close`. |
+| `placement` | `'start' \| 'end'` |  | `'end'` | Edge the drawer sits against: `end` (default) or `start`. Both follow the writing direction. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Width: `sm` 280px, `md` 320px (default), `lg` 400px. It never exceeds its container. |
+| `padded` | `boolean` |  | `true` | Pads the body. Turn it off for a table or a full-bleed list. Default `true`. |
+| `isOpen` | `boolean` |  |  | Controlled open state. Pair with `onOpenChange`. |
+| `defaultOpen` | `boolean` |  | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(isOpen: boolean) => void` |  |  | Called when the drawer opens or closes through the user (close button or `Escape`). |
+| `autoFocus` | `boolean` |  | `true` | Moves focus into the drawer when it opens after the first render. A drawer that is open on first render never takes focus. Default `true`; turn it off for a panel that should stay beside the page without interrupting what the user is doing. |
+| `role` | `'complementary' \| 'region'` |  | `'complementary'` | Landmark role. `complementary` (default) for content that supports the page (filters, inspectors); `region` for a section the user may want to find in the landmark list. |
+| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Level of the title heading. Default `2`. |
+| `messages` | `Partial<{ close: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `className` | `string` |  |  | Class name for the drawer panel. |
+| `ref` | `Ref<HTMLElement>` |  |  | Ref to the drawer panel. |
+
+#### Variants, sizes and tones
+
+- `size`: `sm`, `md`, `lg`
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Drawer: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `close` | `Close panel` | Name of the close button in the Drawer header. |
+
+#### Design tokens used
+
+`--ds-drawer-from`, `--ds-drawer-padding`, `--ds-drawer-shift`, `--ds-drawer-width`, `--ds-drawer-width-lg`, `--ds-drawer-width-md`, `--ds-drawer-width-sm`, `--ds-duration`, `--ds-ease`, `--ds-font-sans`, `--ds-fs-heading`, `--ds-fs-small`, `--ds-lh-heading`, `--ds-lh-small`, `--ds-line`, `--ds-line-subtle`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`, `--ds-topbar-h`, `--ds-weight-semibold`
+
+#### Drawer or Sheet
+
+|          | Drawer                                                                   | Sheet                                                      |
+| -------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| Modality | Non-modal: page stays usable                                             | Modal: page is `inert`, scroll locked                      |
+| Layout   | In the page flow, beside the content                                     | Overlay above the page, with a scrim                       |
+| Focus    | Not trapped; Tab leaves the drawer                                       | Trapped and restored                                       |
+| Use for  | Filters, inspector for the current selection, secondary navigation, help | Viewing or editing one record, a task to finish or dismiss |
+
+Rule of thumb: if the user should keep working in the page while the panel is open, use a `Drawer`. If the panel is a task that needs a decision before going back, use a `Sheet`.
+
+#### When not to use
+
+- A short confirmation or form: `Dialog`.
+- A few controls anchored to a button: `Popover`.
+- Top-level navigation: `Sidebar`.
+
+#### Anatomy
+
+```
+aside (role complementary | region, aria-labelledby = title)
+  header     --ds-topbar-h tall: heading + close IconButton
+  body       scrolls; padded or not
+  footer     optional, end-aligned actions
+```
+
+Place the drawer as a sibling of the main content in a flex or grid container. It renders nothing while closed and does not animate out.
+
+#### Accessibility
+
+- A named landmark (`complementary` by default, `region` on request) labelled by its title.
+- Not modal: nothing is hidden from assistive technology and Tab moves freely between the drawer and the page.
+- When the drawer opens after first render, focus moves to the panel (it is programmatically focusable, `tabIndex=-1`), so the next Tab reaches its first control. A drawer that is open on first render never takes focus; set `autoFocus={false}` to keep focus where it is.
+- `Escape` closes the drawer when focus is inside it (and when no inner overlay handled it) and focus returns to the element that had it before the drawer opened, normally the trigger. Closing from the close button does the same.
+- If the consumer closes a controlled drawer from outside (for example a toolbar toggle), focus is left where the user put it.
+- Slide-in is a short fade plus 16 px move (`--ds-drawer-shift`); it is removed under `prefers-reduced-motion` and mirrors in right-to-left layouts (`:dir(rtl)`). Borders and padding use logical properties.
+- The width is capped by its container (`max-inline-size: 100%`), so on narrow containers it fills the width instead of overflowing.
+
+#### Content rules
+
+- Title: the purpose in sentence case ("Filters", "Order details").
+- Footer buttons are verb plus object ("Apply filters", "Clear filters"). Use one primary action.
+
+#### Examples
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<div style={{ display: 'flex' }}>
+  <main>
+    <Button onPress={() => setOpen(true)}>Open filters</Button>
+  </main>
+  <Drawer
+    title="Filters"
+    isOpen={open}
+    onOpenChange={setOpen}
+    footer={({ close }) => (
+      <Button variant="primary" onPress={close}>
+        Apply filters
+      </Button>
+    )}
+  >
+    <Input label="Customer" />
+  </Drawer>
+</div>;
+```
+
+#### Related components
+
+- Instead, see Dialog: A short confirmation or form: `Dialog`.
+- Instead, see Popover: A few controls anchored to a button: `Popover`.
+- Instead, see Sidebar: Top-level navigation: `Sidebar`.
+- Renders: IconButton
+
 ### DueIndicator
 
 > A due date with a status in words: "Mar 9  Overdue by 3 days", "Due today", "Due in 5 days",
@@ -5729,7 +6203,7 @@ import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui
 #### Related components
 
 - Instead, see Spinner: For a loading indicator that moves: use `Spinner`.
-- Used by: Accordion, AgentCard, Alert, ApprovalCard, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, SearchInput, Select, StatCard, StatusSteps, SubMenu, SuggestionChip, Tag, TagGroup, Toggle
+- Used by: Accordion, AgentCard, Alert, ApprovalCard, Banner, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, ResponseFeedback, SearchInput, Select, StatCard, StatusSteps, Stepper, SubMenu, SuggestionChip, Tag, TagGroup, Timeline, Toggle, ToolCallStep
 
 ### IconButton
 
@@ -5833,7 +6307,7 @@ One native `<button>` containing a decorative `Icon`. No visible text, no `title
 - Instead, see Button: When there is room for a text label: use `Button` with a `leading` icon. A visible word is clearer than any icon.
 - Instead, see Link: For navigation: use `Link`.
 - Renders: Icon, Tooltip
-- Used by: Alert, AppShell, AppShellNavToggle, Calendar, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
+- Used by: Alert, AppShell, AppShellNavToggle, Banner, Calendar, Drawer, FileUpload, LedgerList, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NumberField, Pagination, Sheet, SubMenu, ToastRegion
 
 ### Inline
 
@@ -6466,6 +6940,129 @@ import { LedgerList } from '@loui/ds/patterns';
 - Instead, see DataTable: Large, sortable or filterable data: use `DataTable`.
 - Renders: IconButton
 
+### Legend
+
+> A list of the series of a chart: swatch, name and, optionally, a value. With `interactive`
+each item is a toggle button that hides or shows its series, and the legend reports the
+hidden ids so the chart can leave those series out (`StackedBar` does this itself; with
+`Chart` keep `hiddenIds` in state and filter your data).
+
+The swatch is never the only identification: every item has its text label, a hatch pattern
+tells apart series beyond the fourth, and a hidden series shows a hollow swatch and a struck
+label in addition to the pressed state read by screen readers.
+
+A list of the series of a chart: swatch, name and, optionally, a value. With `interactive` each item is a toggle button that hides or shows its series, and the legend reports which ones are hidden so the chart can leave them out.
+
+- Import: `import { Legend } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Legend/Legend.tsx`
+- Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `items` | `readonly LegendItem[]` | yes |  | The series, in the same order as in the chart (the order sets the swatch of items without `color`). |
+| `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | `horizontal` (default) wraps items in a row; `vertical` stacks them, one per line. |
+| `interactive` | `boolean` |  | `false` | Turns each item into a toggle button (`aria-pressed`: pressed means the series is shown), so readers can hide series in the chart that consumes the legend. Off by default: a plain list. |
+| `hiddenIds` | `readonly string[]` |  |  | Controlled list of hidden series ids (interactive legends). |
+| `defaultHiddenIds` | `readonly string[]` |  | `[]` | Initial hidden series ids when uncontrolled. |
+| `onHiddenIdsChange` | `(hiddenIds: string[]) => void` |  |  | Called with the new list of hidden ids whenever the user toggles an item. |
+| `messages` | `Partial<{ label: string; toggleHint: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Legend: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `label` | `Legend` | Accessible name of the legend list, unless the consumer passes `aria-label` or `aria-labelledby`. |
+| `toggleHint` | `Press a series to show or hide it.` | Accessible description of an interactive legend: what pressing an item does. Read after the name of the list. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-legend-color`, `--ds-legend-gap`, `--ds-legend-swatch-size`, `--ds-lh-small`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-surface-hover`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+
+#### When to use
+
+- Naming the series of a multi-series chart (`StackedBar` renders one itself).
+- Letting readers hide series to compare the rest.
+- Next to a `Chart` when you plot one series at a time and let the reader pick which.
+
+#### When not to use
+
+- One series: name the chart instead.
+- Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.
+- Showing the parts of a single bar with percentages: `ProportionBar` has its own legend.
+
+#### Anatomy
+
+```
+ul[aria-label="Legend"]
+  li  swatch (aria-hidden) · name · value (optional)
+  li  button[aria-pressed] (interactive)  swatch · name · value
+VisuallyHidden  hint, linked with aria-describedby (interactive only)
+```
+
+#### Props (key ones)
+
+| Prop                | Type                              | Default        | Notes                                                 |
+| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |
+| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |
+| `orientation`       | `'horizontal' \| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |
+| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |
+| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |
+| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |
+| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |
+| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |
+
+#### Telling series apart without color
+
+The swatch follows the same neutral ramp as `StackedBar` and `ProportionBar` (`--ds-chart-series-1` to `-4`, which are `text`, `text-2`, `text-3` and `line-control`). From the fifth series on the ramp repeats with a hatch pattern, so up to eight series look different. Beyond that, pass `color` or group the tail into "Other". The text label always identifies the series; the swatch only helps sighted users.
+
+A hidden series is shown with a hollow swatch and a struck-through label, in addition to `aria-pressed="false"`.
+
+#### Accessibility
+
+- A real list named "Legend" (override with `aria-label` or `aria-labelledby`).
+- Interactive items are native buttons (React Aria `ToggleButton`): `Tab` moves between them, `Space` and `Enter` toggle. `aria-pressed="true"` means the series is **shown**. The list is described by a hint ("Press a series to show or hide it.").
+- Toggle buttons are at least 24 px tall (target size 2.5.8) and have a visible focus ring; forced colors use system colors for swatches and focus.
+- The chart that consumes the legend must update visibly when a series is toggled. If it can end up with nothing to show, say so in text (`StackedBar` does).
+
+#### Content rules
+
+- Series names are short nouns in sentence case ("Online", "Store").
+- Values are formatted text; use `Intl` helpers for the locale.
+
+#### Example
+
+```tsx
+const [hidden, setHidden] = useState<string[]>([]);
+
+<Legend
+  interactive
+  items={[
+    { id: 'online', label: 'Online' },
+    { id: 'store', label: 'Store' },
+  ]}
+  hiddenIds={hidden}
+  onHiddenIdsChange={setHidden}
+/>;
+```
+
+#### Related components
+
+- Instead, see SegmentedControl: Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.
+- Instead, see ToggleGroup: Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.
+- Instead, see Tabs: Choosing between views or filters unrelated to a chart: use `SegmentedControl`, `ToggleGroup` or `Tabs`.
+- Instead, see ProportionBar: Showing the parts of a single bar with percentages: `ProportionBar` has its own legend.
+- Renders: VisuallyHidden
+- Used by: StackedBar
+
 ### Link
 
 > A link built on React Aria's `Link`. With `href` it renders a real `<a>` and uses the router
@@ -6578,6 +7175,7 @@ Wrap the app once: `<DSProvider navigate={router.push} useHref={router.resolve}>
 
 - Instead, see Button: To run an action in place (save, delete, open a dialog): use `Button`.
 - Renders: Icon, VisuallyHidden
+- Used by: Citation, SourceList
 
 ### MatrixGrid
 
@@ -8615,6 +9213,106 @@ Rules for authors:
 
 - Used by: Checkbox, Switch
 
+### ResponseFeedback
+
+> Feedback and follow-up actions under an assistant response: two toggle buttons (good and bad
+response, `aria-pressed`), then optional Copy and Regenerate.
+
+Choosing a rating is reversible, so nothing asks to confirm: pressing the active rating again
+removes it. A polite live region says "Feedback sent" or "Feedback removed" after the change.
+The first render never announces anything. The buttons show text only for now: thumbs, copy
+and refresh icons are not part of the curated icon set yet.
+
+Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.
+
+- Import: `import { ResponseFeedback } from '@loui/ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/ResponseFeedback/ResponseFeedback.tsx`
+- Stories (Storybook title `Patterns/ResponseFeedback`): Default, RatedBad, RatingOnly, Regenerating, Disabled, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `ResponseRating \| null` |  |  | Controlled rating. `null` means no rating. |
+| `defaultValue` | `ResponseRating \| null` |  | `null` | Initial rating when uncontrolled. |
+| `onChange` | `(value: ResponseRating \| null) => void` |  |  | Called with the new rating, or `null` when the person takes their rating back. |
+| `onCopy` | `() => void` |  |  | Called when Copy is pressed. Without it there is no Copy button. Confirm with a toast ("Copied"). |
+| `onRegenerate` | `() => void` |  |  | Called when Regenerate is pressed. Without it there is no Regenerate button. |
+| `isRegenerating` | `boolean` |  | `false` | Disables Regenerate while a new response is being generated. |
+| `isDisabled` | `boolean` |  | `false` | Disables every button. |
+| `messages` | `Partial<{ groupLabel: string; positive: string; negative: string; copy: string; regenerate: string; sent: string; removed: string; }>` |  |  | Override the built-in messages for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ ResponseFeedback: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `groupLabel` | `Rate this response` | Accessible name of the group of rating buttons. |
+| `positive` | `Good response` | Toggle buttons; pressed means the rating is set. |
+| `negative` | `Bad response` |  |
+| `copy` | `Copy response` | Action buttons (verb plus object). |
+| `regenerate` | `Regenerate response` |  |
+| `sent` | `Feedback sent` | Polite announcements after a rating changes. |
+| `removed` | `Feedback removed` |  |
+
+#### Design tokens used
+
+`--ds-font-sans`, `--ds-line-subtle`, `--ds-response-feedback-divider-gap`, `--ds-response-feedback-gap`
+
+#### When to use
+
+- Under each assistant response in a `ChatPanel`, to learn which answers help.
+
+#### When not to use
+
+- Collecting a written review or a star rating: use `Rating` in a form.
+- Anything that sends the rating somewhere the owner cannot see: say where it goes in your product.
+
+#### Anatomy
+
+```
+div
+  group "Rate this response"   toggle "Good response" · toggle "Bad response"   (aria-pressed)
+  button "Copy response"       only with onCopy
+  button "Regenerate response" only with onRegenerate
+  status                       visually hidden live region
+```
+
+#### Accessibility
+
+- The rating buttons are toggle buttons (`aria-pressed`) in a labelled group. Each is a tab stop; `Space` and `Enter` press.
+- Rating is reversible, so nothing asks to confirm: pressing the active button again removes the rating.
+- A polite live region says "Feedback sent" or "Feedback removed" after a change. It is silent on first render.
+- Each control shows a decorative icon (`ThumbsUpIcon`, `ThumbsDownIcon`, `CopyIcon`, `RefreshIcon`) next to its visible text label; the text is the accessible name.
+
+#### Content rules
+
+- Buttons are verb plus object ("Copy response", "Regenerate response").
+- Confirm Copy with a short past-tense toast ("Copied"), outside this pattern.
+- Regenerate replaces content: offer Undo, as for any reversible action.
+
+#### Example
+
+```tsx
+<ResponseFeedback
+  onChange={(rating) => saveRating(message.id, rating)}
+  onCopy={() => copyToClipboard(message.content)}
+  onRegenerate={() => regenerate(message.id)}
+  isRegenerating={busy}
+/>
+```
+
+#### Related components
+
+- Instead, see Rating: Collecting a written review or a star rating: use `Rating` in a form.
+- Renders: Button, Icon, Toggle, VisuallyHidden
+
 ### ScrollArea
 
 > A scrolling container with thin, themed scrollbars. It scrolls inside the space its parent
@@ -9708,6 +10406,95 @@ Label with the thing being set ("Discount"), not an instruction. Put the unit in
 - Instead, see RadioGroup: Fewer than about five discrete choices: `RadioGroup` or a segmented control.
 - Renders: Label
 
+### SourceList
+
+> The numbered list of sources an answer is based on. Each source is a list item that
+`Citation` markers jump to; the title is a link when the source has a `url`.
+
+Source numbers are the position in `sources`: keep the order stable while the answer streams,
+and append new sources at the end.
+
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+
+- Import: `import { SourceList } from '@loui/ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/SourceList/SourceList.tsx`
+- Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `id` | `string` | yes |  | Id of the list. Required: citations use it to find their source. |
+| `sources` | `readonly Source[]` | yes |  | The sources, in citation order. The first is source 1. |
+| `title` | `string` |  |  | Heading text. Defaults to "Sources". |
+| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'3'` | Heading level of the title (`h1` to `h6`). Default `3`. |
+| `messages` | `Partial<{ title: string; citation: (number: number, title: string) => string; }>` |  |  | Override the built-in messages for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ SourceList: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `title` | `Sources` | Default heading of the source list. |
+| `citation(number: number, title: string)` | `Source 2: {title}` | Accessible name of a citation marker: "Source 2: Title". |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-citation-size`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-control`, `--ds-radius-sm`, `--ds-source-list-gap`, `--ds-source-list-indent`, `--ds-source-list-padding`, `--ds-space-1`, `--ds-space-2`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-semibold`
+
+#### When to use
+
+- An assistant answer that rests on documents, pages or records, and the owner should be able to check them.
+
+#### When not to use
+
+- Footnotes in long-form documents: use plain links.
+- A list of results the user searched for: use a table or a list of cards.
+
+#### Anatomy
+
+```
+p            ... a claim [2] ...        Citation: <a href="#s-source-b" aria-label="Source 2: Title">2</a>
+section      named by its heading ("Sources")
+  ol
+    li       tabIndex=-1 (focus target)    title (link when it has a url) · domain (mono) · snippet
+```
+
+#### Accessibility
+
+- A citation is a real link (`href="#..."`) named "Source 2: Title"; the visible text is the number, which the name contains.
+- Activating it moves focus to the matching list item and scrolls it into view. It does not change the URL hash, so it does not fight your router. Without JavaScript the hash link still works.
+- Source titles with a `url` are links that open in a new tab (with the external-link icon and a screen-reader note).
+- The marker is 24 px square (WCAG 2.5.8).
+
+#### Content rules
+
+- Keep source order stable while the answer streams; append new sources at the end, so numbers already shown never change.
+- Titles say what the page is, not "Click here". Snippets are short, plain text.
+
+#### Example
+
+```tsx
+<p>
+  Orders move through four statuses
+  <Citation number={1} title="Order lifecycle" listId="answer-1" sourceId="lifecycle" />.
+</p>
+<SourceList
+  id="answer-1"
+  sources={[{ id: 'lifecycle', title: 'Order lifecycle', url: 'https://example.com/orders' }]}
+/>
+```
+
+#### Related components
+
+- Renders: Link
+
 ### Sparkline
 
 > A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. It
@@ -9901,7 +10688,7 @@ One element: a ring with an open top edge. Size comes from `--ds-icon-sm|md|lg`,
 
 - Instead, see Skeleton: For large areas or page loads: use `Skeleton` so the layout does not jump.
 - Instead, see Progress: When you know the progress: use `Progress` with a value.
-- Used by: Button, ChatPanel, Combobox
+- Used by: Button, ChatPanel, Combobox, ToolCallStep
 
 ### Stack
 
@@ -9981,6 +10768,176 @@ div (flex column, gap)
 
 - Instead, see Inline: For a row of items: use `Inline`.
 - Instead, see Grid: For a grid of equal cells: use `Grid`.
+
+### StackedBar
+
+> Stacked bars: how each category divides into the same set of parts, horizontal (a row per
+category) or vertical (a column per category). Drawn in HTML and CSS, no axis: the total of
+each bar is printed with it and the bars share one scale.
+
+Series are told apart without color: a gap separates neighbouring parts, the neutral ramp
+differs in lightness, and beyond four series a hatch pattern repeats the ramp. The legend
+names every series (and can hide them), and a visually hidden table carries all the numbers.
+
+Each bar is an image with a text summary ("Q1: Online 40 and Store 30. Total 70."). The bars
+are one tab stop; the arrow keys move between them, and the active bar's summary is also
+printed in a readout line under the chart (hover works the same). A single readout per bar,
+not per segment, keeps the keyboard path short and the focus target large.
+
+Stacked bars for parts of a whole per category, horizontal (a row per category) or vertical (a column per category). Each bar has a text summary, a total, and the chart comes with a legend and a hidden data table.
+
+- Import: `import { StackedBar } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/StackedBar/StackedBar.tsx`
+- Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `data` | `readonly StackedBarDatum[]` | yes |  | One bar per datum, in display order. The chart does not sort. |
+| `series` | `readonly StackedBarSeries[]` | yes |  | The parts of each bar, bottom to top (vertical) or start to end (horizontal). Without `color` they follow a neutral ramp of four steps; from the fifth series on the ramp repeats with a hatch (up to eight; beyond that pass `color` or group the tail into "Other"). |
+| `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | `horizontal` (default): one row per datum. `vertical`: one column per datum. |
+| `normalize` | `boolean` |  | `false` | Draws every bar at full length so each shows the share of its parts (100% stacked). By default bars are scaled to the largest total, so lengths also compare the totals. |
+| `format` | `(value: number) => string` |  |  | Formats values in the totals, the legend, the readout and the data table. Default: `Intl` for the active locale. Use `formatCurrency` for money. |
+| `legend` | `boolean` |  | `true` | Shows the legend under the bars. On by default: the legend is what names the series. |
+| `interactiveLegend` | `boolean` |  | `false` | Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table. |
+| `hiddenSeries` | `readonly string[]` |  |  | Controlled list of hidden series ids. |
+| `defaultHiddenSeries` | `readonly string[]` |  | `[]` | Initial hidden series ids when uncontrolled. |
+| `onHiddenSeriesChange` | `(hiddenSeries: string[]) => void` |  |  | Called with the new list of hidden series ids when the user toggles a legend item. |
+| `height` | `string \| number` |  |  | Height of the plot area of a vertical chart (a number is px, or any CSS length). Default `--ds-stacked-bar-height` (200px). Ignored when horizontal. |
+| `description` | `string` |  |  | Longer description of what the chart shows. Read after the name, together with the keyboard instructions. |
+| `categoryLabel` | `string` |  |  | Header of the category column in the hidden data table. Default: the "Category" message. |
+| `messages` | `Partial<{ instructions: (count: number, formatted: string) => string; series: (label: string, value: string) => string; bar: (label: string, items: string, total: string) => string; tableCaption: (name?: string) => string; category: string; total: string; empty: string; allHidden: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `aria-label` | `string` |  |  | Accessible name of the chart: what it shows ("Orders by channel, per quarter"). Required unless `aria-labelledby` is set. |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the chart (a visible heading). |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ StackedBar: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `instructions(count: number, formatted: string)` | `{formatted} bars. Use the arrow keys to move between bars, Home and End for the first and last.` | Instructions linked to the chart with `aria-describedby`. `count` is the number of bars; `formatted` is the same number formatted for the locale. |
+| `series(label: string, value: string)` | `{label} {value}` | One series inside the summary of a bar: "Online 40". Both arguments are already formatted. |
+| `bar(label: string, items: string, total: string)` | `{label}: {items}. Total {total}.` | Accessible name of a bar, also shown in the readout. `items` is the list of series joined for the locale ("Online 40 and Store 30"); `total` is the formatted sum of the visible series. |
+| `tableCaption(name?: string)` | `Data for {name?}` | Caption of the visually hidden data table. `name` is the accessible name of the chart, if it has a text one. |
+| `category` | `Category` | Header of the category column of the data table, unless `categoryLabel` is given. |
+| `total` | `Total` | Header of the total column of the data table. |
+| `empty` | `No data to show` | Text shown in place of the bars when there is no data. |
+| `allHidden` | `All series are hidden. Show one in the legend.` | Text shown in place of the bars when every series is hidden through the legend. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-stacked-bar-bar-thickness`, `--ds-stacked-bar-category-w`, `--ds-stacked-bar-color`, `--ds-stacked-bar-column-max-w`, `--ds-stacked-bar-extent`, `--ds-stacked-bar-height`, `--ds-stacked-bar-readout-min-h`, `--ds-stacked-bar-segment-gap`, `--ds-stacked-bar-share`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+
+#### When to use
+
+- Showing how each of a few categories (2 to about 12) divides into the same 2 to 8 parts: orders per channel per quarter, tasks per status per team.
+- Comparing totals and composition together (default), or composition only (`normalize`).
+
+#### When not to use
+
+- One whole divided into parts: `ProportionBar`.
+- One series over time or categories: `Chart`. Ranked values: `RankList`.
+- Exact figures the reader must look up: give them a table; the hidden table is for assistive technology.
+- More than eight series: group the tail into "Other".
+
+#### Anatomy
+
+```
+div.root
+  div[role=group][aria-label][aria-describedby]
+    ul
+      li  category (aria-hidden) · div.slot > div[role=img][tabindex][aria-label="Q1: Online 40…"] · total (aria-hidden)
+  p[aria-hidden]  readout of the focused or hovered bar
+  Legend           names the series (optionally toggles them)
+  VisuallyHidden   instructions (aria-describedby) and a <table> with all values
+```
+
+Drawn with HTML and CSS: bars use one scale (the largest total is full length), parts are `flex` shares of their bar. There is no value axis; the total is printed with each bar and the legend shows the total of each series.
+
+#### Props (key ones)
+
+| Prop                   | Type                         | Default        | Notes                                                                 |
+| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------- |
+| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0     |
+| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)       |
+| `orientation`          | `'horizontal' \| 'vertical'` | `'horizontal'` |                                                                       |
+| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                               |
+| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money      |
+| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby |
+| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                     |
+| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                              |
+| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                               |
+| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                       |
+| `height`               | `number \| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                             |
+| `description`          | `string`                     |                | Read after the name                                                   |
+| `categoryLabel`        | `string`                     | "Category"     | Header of the first table column                                      |
+| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                  |
+
+`aria-label` or `aria-labelledby` is required.
+
+#### Telling series apart without color
+
+- A 2px gap (the track shows through) separates neighbouring parts.
+- Series follow a neutral ramp of four steps that differ in lightness (`--ds-chart-series-1` to `-4`), so they also differ for readers with color vision deficiencies. From the fifth series the ramp repeats with a hatch pattern (up to eight). The series `color` prop is for when that is not enough; it is never hatched.
+- The legend names every series and its swatch uses the same fill. A series keeps its fill when another is hidden.
+- Each bar's summary and the data table list every series by name with its value.
+
+The single-accent rule holds: the accent appears only in the focus ring. Signal colors appear only if you pass them as explicit series colors.
+
+#### Accessibility
+
+- A group named by `aria-label`/`aria-labelledby`, described by the instructions and your `description`. Each bar is an image whose name is its summary: "Q1: Online 40, Store 30, and Phone 10. Total 80."
+- Keyboard: one tab stop for all bars (roving). Arrow keys (and `Home`/`End`) move between bars, `Escape` dismisses the readout. The focused bar has a visible focus ring (system colors in forced colors).
+- Why per-bar and not per-segment: a bar is a large target, the path through a chart stays short (one stop), and its single summary gives screen reader users the whole composition at once. The same text is printed in the readout line under the chart for keyboard and pointer users; the readout is `aria-hidden` because the focused bar is already announced.
+- Hover shows the same readout. The line has reserved height, so nothing shifts.
+- A visually hidden `<table>` (caption, category and one column per visible series, total) carries all values.
+- Hidden series leave the bars, totals, summaries and table. If all are hidden, a message says so. An empty `data` shows "No data to show".
+- Contrast: every ramp step keeps 3:1 against the track (`--ds-bg`); labels use `text-2`.
+- Forced colors: segments use system colors; the track gets a border.
+- Category labels are truncated in horizontal bars (96px column, `--ds-stacked-bar-category-w`); the summary and the table carry the full text. Keep labels short.
+
+#### Content rules
+
+- Bar labels: short ("Q1", "North"). Series labels: short nouns in sentence case.
+- Name the chart for what it shows ("Orders per quarter, by channel").
+- Formatted values come from `Intl`; pass `format` for currency.
+
+#### Example
+
+```tsx
+<StackedBar
+  aria-label="Orders per quarter, by channel"
+  interactiveLegend
+  series={[
+    { id: 'online', label: 'Online' },
+    { id: 'store', label: 'Store' },
+    { id: 'phone', label: 'Phone' },
+  ]}
+  data={[
+    { label: 'Q1', values: { online: 40, store: 30, phone: 10 } },
+    { label: 'Q2', values: { online: 50, store: 20, phone: 30 } },
+  ]}
+/>
+```
+
+#### Not included
+
+- Value axis and grid lines, negative values, grouped (side by side) bars, per-segment focus, zoom. Use `Chart` for a single series with an axis.
+- Series order in vertical bars is fixed (first series at the bottom); the chart never sorts.
+
+#### Related components
+
+- Instead, see ProportionBar: One whole divided into parts: `ProportionBar`.
+- Instead, see Chart: One series over time or categories: `Chart`. Ranked values: `RankList`.
+- Instead, see RankList: One series over time or categories: `Chart`. Ranked values: `RankList`.
+- Renders: Legend, VisuallyHidden
 
 ### StatCard
 
@@ -10209,6 +11166,128 @@ ol aria-label="Order status"
 - Instead, see Tabs: A multi-page form with validation and Back/Next: build it with `Tabs` or your router.
 - Instead, see Badge: Non-linear or parallel states: use `Badge`.
 - Instead, see Progress: A percentage of something: use `Progress`.
+- Renders: Icon, VisuallyHidden
+
+### Stepper
+
+> Progress through a multi-step flow such as a setup assistant. It is an ordered list; every
+step states its progress as text for assistive technology ("Completed", "Current", "Not
+started") and the current step has `aria-current="step"`. Markers and connectors are
+decorative. Completed steps can be buttons with `onStepPress`.
+
+In narrow containers the horizontal orientation shows only the markers and a visible summary
+("Step 3 of 9"), so nine steps fit in 320 px.
+
+Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.
+
+- Import: `import { Stepper } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Stepper/Stepper.tsx`
+- Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, LongLabels, GoBackToCompletedSteps, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `steps` | `readonly StepperStep[]` | yes |  | The steps, in order. |
+| `current` | `number` | yes |  | Index of the current step (0-based). Steps before it are completed. |
+| `aria-label` | `string` |  |  | Accessible name of the list ("New agent steps"). Required: name this or use `aria-labelledby`. |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the list. |
+| `complete` | `boolean` |  | `false` | When `true`, the current step is completed too (the whole flow is done). |
+| `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | `horizontal` (default) or `vertical`. Horizontal collapses to markers and "Step 3 of 9" in narrow containers. |
+| `onStepPress` | `(index: number, step: StepperStep) => void` |  |  | Makes every completed step a button that calls this with its index and the step, so people can go back. The current and upcoming steps are never buttons: the flow itself (Next) moves forward. |
+| `messages` | `Partial<{ complete: string; current: string; upcoming: string; summary: (current: string, total: string) => string; }>` |  |  | Message overrides for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Stepper: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `complete` | `Completed` | Read after the label of a step that is done. |
+| `current` | `Current` | Read after the label of the step in progress. |
+| `upcoming` | `Not started` | Read after the label of a step that has not started. |
+| `summary(current: string, total: string)` | `Step {current} of {total}` | Visible summary of the progress when the labels do not fit; `current` and `total` are formatted numbers. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-stepper-connector-thickness`, `--ds-stepper-content-z-index`, `--ds-stepper-gap`, `--ds-stepper-marker-border-width`, `--ds-stepper-marker-size`, `--ds-stepper-padding-block`, `--ds-stepper-step-gap`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
+
+#### When to use
+
+- A guided flow with several steps shown one at a time (assistant, onboarding, checkout), where people need to know where they are and how much is left.
+- Flows of 3 to 10 steps. In narrow containers it collapses to markers plus "Step 3 of 9".
+
+#### When not to use
+
+- The status of a record in a fixed flow (Draft, Packed, Shipped): use `StatusSteps`.
+- A percentage of something: use `Progress`.
+- Switching between views of the same content: use `Tabs`.
+
+##### Stepper and StatusSteps
+
+|                    | Stepper                                        | StatusSteps                              |
+| ------------------ | ---------------------------------------------- | ---------------------------------------- |
+| Describes          | Your progress through a flow you are doing now | The state a record is in                 |
+| Typical length     | 3 to 10 steps                                  | 3 to 6 steps                             |
+| Interaction        | Only completed steps can be pressed (go back)  | Every step can be pressed (change state) |
+| Orientation        | Horizontal or vertical                         | Horizontal                               |
+| Narrow containers  | Markers plus "Step 3 of 9"                     | Same layout                              |
+| Per-step help text | `description` (vertical)                       | None                                     |
+
+#### Anatomy
+
+```
+div[data-orientation]
+  p (aria-hidden)           "Step 3 of 9: Label", visible only in narrow containers
+  ol aria-label="Setup progress"
+    li[data-state=complete|current|upcoming]
+      span | button         (button only for completed steps with onStepPress; aria-current="step" on the current one)
+        marker              (number or check, aria-hidden)
+        label + visually hidden state ("Completed", "Current", "Not started")
+        description         (vertical only)
+  connector lines           (CSS pseudo-elements, decorative)
+```
+
+#### Accessibility
+
+- A real ordered list named by `aria-label` or `aria-labelledby`. The current step has `aria-current="step"` (on the button when it is one).
+- Progress is text, not only color or a check: every step ends with a visually hidden "Completed", "Current" or "Not started" (messages).
+- Markers, connectors and the "Step 3 of 9" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.
+- Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.
+- Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.
+- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
+- Forced colors: markers and connectors use system colors; the state text still names every step.
+
+#### Content rules
+
+- Labels: a few words, sentence case, nouns ("Source", "Review"), not sentences.
+- The description says what the step is for, in one line ("Name and purpose").
+- Name the list for what it is: "New agent steps", not "Steps".
+
+#### Examples
+
+```tsx
+<Stepper aria-label="Setup progress" steps={steps} current={step} />
+
+<Stepper
+  aria-label="Setup progress"
+  orientation="vertical"
+  steps={steps}
+  current={step}
+  onStepPress={(index) => setStep(index)}
+/>
+```
+
+#### Related components
+
+- Instead, see StatusSteps: The status of a record in a fixed flow (Draft, Packed, Shipped): use `StatusSteps`.
+- Instead, see Progress: A percentage of something: use `Progress`.
+- Instead, see Tabs: Switching between views of the same content: use `Tabs`.
 - Renders: Icon, VisuallyHidden
 
 ### SubMenu
@@ -11580,6 +12659,112 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 - Renders: FieldMessages, Label, VisuallyHidden
 - Used by: ApprovalCard, ChatPanel
 
+### Timeline
+
+> A chronological list of events. It is an ordered list; each event has a `<time>`, a title, an
+optional description, an optional actor and an optional tone marker. The marker and the line
+are decorative: a tone is also stated as hidden text before the title.
+Newest events come first by default, the order for dated records.
+
+A chronological list of events: when it happened, what happened, who did it, and an optional detail and tone marker. It is a semantic ordered list, newest event first by default.
+
+- Import: `import { Timeline } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Timeline/Timeline.tsx`
+- Stories (Storybook title `Components/Timeline`): Default, OldestFirst, Tones, DateOnly, LongText, SingleEvent, Empty, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `items` | `readonly TimelineItem[]` | yes |  | The events. |
+| `order` | `'newest-first' \| 'oldest-first' \| 'as-given'` |  | `'newest-first'` | Order of the list: `newest-first` (default, for dated records), `oldest-first`, or `as-given` to keep the order of `items`. |
+| `timeZone` | `string` |  |  | IANA time zone used to show date-times ("America/Sao_Paulo"). Defaults to the viewer's zone. |
+| `empty` | `ReactNode` |  |  | Rendered instead of the list when `items` is empty (for example an `EmptyState`). |
+| `messages` | `Partial<{ accent: string; success: string; warning: string; danger: string; actor: (actor: string) => string; }>` |  |  | Message overrides for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Timeline: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `accent` | `Highlighted` | Visually hidden prefix read before the title of an event with a tone; color and icon alone cannot carry it. |
+| `success` | `Success` |  |
+| `warning` | `Warning` |  |
+| `danger` | `Error` |  |
+| `actor(actor: string)` | `By {actor}` | Visible label before the person or system that caused the event. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-line-strong`, `--ds-radius-pill`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-timeline-connector-thickness`, `--ds-timeline-dot-size`, `--ds-timeline-item-gap`, `--ds-timeline-marker-gap`, `--ds-timeline-marker-size`, `--ds-warning`, `--ds-weight-medium`
+
+#### When to use
+
+- The history of a record or a process: status changes, comments, deliveries, audit entries.
+- Events that have a time and read as a story, a few lines each.
+
+#### When not to use
+
+- Tabular data that people sort and compare: use `DataTable`.
+- The steps of a flow someone is going through now: use `Stepper`.
+- The state of a record in a fixed flow: use `StatusSteps`.
+- Totals and amounts per line: use `LedgerList`.
+
+#### Anatomy
+
+```
+ol[aria-label]
+  li[data-tone]
+    marker (aria-hidden)         dot (neutral) | icon: accent info, success check, warning triangle, danger circle
+    div
+      title                      VisuallyHidden tone text ("Success") + title
+      meta                       "By <actor>" · <time dateTime>
+      description                optional
+  connector line                 (CSS pseudo-element, decorative)
+```
+
+#### Accessibility
+
+- A real ordered list; each time is a `<time dateTime>` with a machine-readable value, and its text comes from `Intl` for the active locale (never hand-built).
+- The tone is not only color and icon: a visually hidden prefix ("Success", "Warning", "Error", "Highlighted", from messages) comes before the title. The marker and the line are `aria-hidden`.
+- The list is not interactive, so it has no keyboard behavior of its own; put links or buttons in the `title` or `description` when an event needs an action.
+- Text uses `text` and `text-2` (4.5:1 on the page surface). Forced colors: markers and line use system colors.
+- Reflow: text wraps (long words break) and the layout is a single column, so it works at 320 px.
+
+#### Content rules
+
+- Title: what happened, past tense, sentence case, no exclamation marks ("Order shipped", "Request approved").
+- Description: one short sentence of detail, only when it adds something.
+- Actor: a person or system name. The component adds "By".
+- Do not repeat the time in the title.
+
+#### Examples
+
+```tsx
+<Timeline
+  aria-label="Request history"
+  items={[
+    { id: 'a', time: '2026-10-28T09:15:00Z', title: 'Request created', actor: 'Ana Costa' },
+    { id: 'b', time: '2026-10-31T16:05:00Z', title: 'Request approved', tone: 'success' },
+  ]}
+/>
+
+<Timeline aria-label="Audit log" items={events} order="oldest-first" timeZone="UTC" />
+```
+
+#### Related components
+
+- Instead, see DataTable: Tabular data that people sort and compare: use `DataTable`.
+- Instead, see Stepper: The steps of a flow someone is going through now: use `Stepper`.
+- Instead, see StatusSteps: The state of a record in a fixed flow: use `StatusSteps`.
+- Instead, see LedgerList: Totals and amounts per line: use `LedgerList`.
+- Renders: Icon, VisuallyHidden
+
 ### ToastRegion
 
 > Renders the toasts of a queue. Mount **one** near the app root, inside `DSProvider`, and call
@@ -11833,6 +13018,7 @@ button[aria-pressed]
 - Instead, see SegmentedControl: One value out of a few options (View: List, Board): use `SegmentedControl`.
 - Instead, see Button: An action that does something once: use `Button`.
 - Renders: Icon, Tooltip
+- Used by: ResponseFeedback
 
 ### ToggleGroup
 
@@ -11952,6 +13138,229 @@ div[role=toolbar] aria-label       (or role=radiogroup when single)
 - Instead, see CheckboxGroup: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
 - Instead, see Select: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
 - Instead, see Combobox: A long list of filters: use `CheckboxGroup` or a `Select`/`Combobox` with multiple selection.
+
+### ToolCallList
+
+> The steps of a multi-step agent run as an ordered list of `ToolCallStep`. Use it under the
+message the run belongs to; each step opens its own details.
+
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+
+- Import: `import { ToolCallList } from '@loui/ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/ToolCallStep/ToolCallList.tsx`
+- Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `steps` | `readonly ToolCallListStep[]` | yes |  | The steps of the run, in the order they happened. |
+| `aria-label` | `string` |  |  | Accessible name of the list. Defaults to "Steps"; say which run it is ("Steps of the order check"). |
+| `messages` | `Partial<{ running: string; succeeded: string; failed: string; input: string; output: string; error: string; finishedSucceeded: (name: string) => string; finishedFailed: (name: string) => string; listLabel: string; }>` |  |  | Override the built-in messages for this instance (also applied to every step). |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ ToolCallStep: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `running` | `Running` | Visible status text of a step. |
+| `succeeded` | `Succeeded` |  |
+| `failed` | `Failed` |  |
+| `input` | `Input` | Labels of the detail blocks, and the accessible names of their code blocks. |
+| `output` | `Output` |  |
+| `error` | `Error` | Label of the output block when the step failed. |
+| `finishedSucceeded(name: string)` | `{name} succeeded` | Polite announcement when a running step finishes. |
+| `finishedFailed(name: string)` | `{name} failed` |  |
+| `listLabel` | `Steps` | Accessible name of a ToolCallList. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-danger`, `--ds-danger-line`, `--ds-duration`, `--ds-ease`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-line`, `--ds-radius-lg`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tool-call-step-gap`, `--ds-tool-call-step-list-gap`, `--ds-tool-call-step-padding-block`, `--ds-tool-call-step-padding-inline`, `--ds-tracking-caption`
+
+#### When to use
+
+- Under an assistant message, to show what the agent did before it answered ("search_orders", "draft_reply").
+- A run log where the owner wants to check why the agent answered as it did.
+
+#### When not to use
+
+- Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Something the owner has to approve: use `ApprovalCard`.
+
+#### Anatomy
+
+```
+div (ToolCallStep)
+  h{headingLevel} > button   chevron · status icon + text · name (mono) · duration (mono)
+  details (when open)        "Input" label + code block · "Output" or "Error" label + code block
+  status                     visually hidden live region
+ol (ToolCallList)            one li per step
+```
+
+Without `input` and `output` the header is plain text and there is nothing to open.
+
+#### Accessibility
+
+- The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it.
+- Color never carries the status: the text "Running", "Succeeded" or "Failed" is always visible, with an icon.
+- When a running step finishes, a polite live region says "search_orders succeeded" or "search_orders failed" once. A step that is already finished on first render is silent.
+- Code blocks that overflow become labelled, keyboard-scrollable regions ("Input", "Output", "Error").
+- Reduced motion and forced colors are handled.
+
+#### Content rules
+
+- Tool names are identifiers: show them as the agent calls them, in mono.
+- Put the error text in `output` when a step fails, and say how to fix it when you can.
+- Do not put secrets, tokens or customer data in `input` or `output`.
+
+#### Example
+
+```tsx
+<ToolCallList
+  aria-label="Steps of the order check"
+  steps={[
+    {
+      stepId: 's1',
+      name: 'search_orders',
+      status: 'succeeded',
+      durationMs: 1240,
+      input: '{ "customer": "C-204" }',
+      output: '{ "count": 3 }',
+    },
+    { stepId: 's2', name: 'draft_reply', status: 'running' },
+  ]}
+/>
+```
+
+#### Related components
+
+- Instead, see StatusSteps: Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Instead, see Progress: Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Instead, see ApprovalCard: Something the owner has to approve: use `ApprovalCard`.
+
+### ToolCallStep
+
+> One step of an agent run: the tool it called, whether it is running, succeeded or failed, how
+long it took and, on request, what went in and out.
+
+With `input` or `output` the header is a button that opens the details (`aria-expanded`,
+`aria-controls`), inside a heading so the steps appear in the outline. Without them it is
+plain text. The status is text plus an icon, never color alone. When a running step finishes,
+a polite live region says so once; a step that is already finished on first render is silent.
+
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+
+- Import: `import { ToolCallStep } from '@loui/ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/ToolCallStep/ToolCallStep.tsx`
+- Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `name` | `string` | yes |  | Name of the tool or step ("search_orders"). Shown in mono; it is the name of the details button. |
+| `status` | `'running' \| 'succeeded' \| 'failed'` | yes |  | `running` (spinner), `succeeded` or `failed`. The status is always shown as text next to its icon. |
+| `durationMs` | `number` |  |  | How long the step took, in milliseconds. Omit while it is running. |
+| `input` | `ReactNode` |  |  | What the tool was called with. A string is shown in a code block; pass nodes for anything richer. With `input` or `output` the step gets a details button. |
+| `output` | `ReactNode` |  |  | What the tool returned, or the error text when `status` is `failed`. Same rules as `input`. |
+| `isExpanded` | `boolean` |  |  | Controlled state of the details. |
+| `defaultExpanded` | `boolean` |  | `false` | Initial state of the details when uncontrolled. Default closed. |
+| `onExpandedChange` | `(isExpanded: boolean) => void` |  |  | Called when the details open or close. |
+| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'4'` | Heading level of the step header (`h1` to `h6`). Default `4`. |
+| `messages` | `Partial<{ running: string; succeeded: string; failed: string; input: string; output: string; error: string; finishedSucceeded: (name: string) => string; finishedFailed: (name: string) => string; listLabel: string; }>` |  |  | Override the built-in messages for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ ToolCallStep: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `running` | `Running` | Visible status text of a step. |
+| `succeeded` | `Succeeded` |  |
+| `failed` | `Failed` |  |
+| `input` | `Input` | Labels of the detail blocks, and the accessible names of their code blocks. |
+| `output` | `Output` |  |
+| `error` | `Error` | Label of the output block when the step failed. |
+| `finishedSucceeded(name: string)` | `{name} succeeded` | Polite announcement when a running step finishes. |
+| `finishedFailed(name: string)` | `{name} failed` |  |
+| `listLabel` | `Steps` | Accessible name of a ToolCallList. |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-danger`, `--ds-danger-line`, `--ds-duration`, `--ds-ease`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-line`, `--ds-radius-lg`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tool-call-step-gap`, `--ds-tool-call-step-list-gap`, `--ds-tool-call-step-padding-block`, `--ds-tool-call-step-padding-inline`, `--ds-tracking-caption`
+
+#### When to use
+
+- Under an assistant message, to show what the agent did before it answered ("search_orders", "draft_reply").
+- A run log where the owner wants to check why the agent answered as it did.
+
+#### When not to use
+
+- Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Something the owner has to approve: use `ApprovalCard`.
+
+#### Anatomy
+
+```
+div (ToolCallStep)
+  h{headingLevel} > button   chevron · status icon + text · name (mono) · duration (mono)
+  details (when open)        "Input" label + code block · "Output" or "Error" label + code block
+  status                     visually hidden live region
+ol (ToolCallList)            one li per step
+```
+
+Without `input` and `output` the header is plain text and there is nothing to open.
+
+#### Accessibility
+
+- The header is a button inside a heading (`aria-expanded`, `aria-controls`); `Enter` and `Space` toggle it.
+- Color never carries the status: the text "Running", "Succeeded" or "Failed" is always visible, with an icon.
+- When a running step finishes, a polite live region says "search_orders succeeded" or "search_orders failed" once. A step that is already finished on first render is silent.
+- Code blocks that overflow become labelled, keyboard-scrollable regions ("Input", "Output", "Error").
+- Reduced motion and forced colors are handled.
+
+#### Content rules
+
+- Tool names are identifiers: show them as the agent calls them, in mono.
+- Put the error text in `output` when a step fails, and say how to fix it when you can.
+- Do not put secrets, tokens or customer data in `input` or `output`.
+
+#### Example
+
+```tsx
+<ToolCallList
+  aria-label="Steps of the order check"
+  steps={[
+    {
+      stepId: 's1',
+      name: 'search_orders',
+      status: 'succeeded',
+      durationMs: 1240,
+      input: '{ "customer": "C-204" }',
+      output: '{ "count": 3 }',
+    },
+    { stepId: 's2', name: 'draft_reply', status: 'running' },
+  ]}
+/>
+```
+
+#### Related components
+
+- Instead, see StatusSteps: Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Instead, see Progress: Progress of a long job with a known number of steps: use `StatusSteps` or `Progress`.
+- Instead, see ApprovalCard: Something the owner has to approve: use `ApprovalCard`.
+- Renders: Code, Icon, Spinner, VisuallyHidden
 
 ### Tooltip
 
@@ -12119,6 +13528,130 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 - Instead, see Card: For the heading of a card or section: use `Card` or a heading.
 - Renders: Breadcrumb
 
+### Tour
+
+> A step-by-step onboarding tour. Each step is a non-modal popover (React Aria `Popover` with
+`isNonModal`) anchored to an element, with a title, a short text, a "Step 2 of 5" counter and
+Skip, Back and Next or Done buttons. The page stays interactive; there is no scrim.
+
+Focus moves into each step as it appears (the step is a named dialog, so a screen reader
+announces its title). `Escape` skips the tour. When the tour ends, focus returns to the element
+that had it before the tour opened, normally the button that started it.
+
+Use a `Tooltip` for a hint on one control, and a `Popover` for interactive content. A tour is
+for a few steps shown once; do not use it to hold documentation.
+
+Step-by-step onboarding hints anchored to elements of the page. Each step is a non-modal popover (React Aria `Popover` with `isNonModal`) with a title, a short text, a "Step 2 of 5" counter and Skip, Back and Next or Done buttons. Generic: it lives in the core entry point.
+
+- Import: `import { Tour } from '@loui/ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Tour/Tour.tsx`
+- Stories (Storybook title `Components/Tour`): Default, FirstStep, MiddleStep, LastStep, AboveTarget, KeyboardOnly
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `steps` | `readonly TourStep[]` | yes |  | The steps, in order. Each points at one element through `target`. |
+| `step` | `number` |  |  | Zero-based index of the current step (controlled). Pair with `onStepChange`. |
+| `defaultStep` | `number` |  | `0` | Initial step when uncontrolled. Default `0`. |
+| `onStepChange` | `(step: number) => void` |  |  | Called when the user moves to another step. |
+| `isOpen` | `boolean` |  |  | Controlled open state. Pair with `onOpenChange`. |
+| `defaultOpen` | `boolean` |  | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(isOpen: boolean) => void` |  |  | Called with `false` when the tour is finished or skipped. |
+| `onComplete` | `() => void` |  |  | Called when the user presses Done on the last step. `onOpenChange(false)` follows. |
+| `onSkip` | `() => void` |  |  | Called when the user skips the tour, with `Skip tour` or `Escape`. `onOpenChange(false)` follows. |
+| `placement` | `'bottom' \| 'bottom left' \| 'bottom right' \| 'bottom start' \| 'bottom end' \| 'top' \| 'top left' \| 'top right' \| 'top start' \| 'top end' \| 'left' \| 'left top' \| 'left bottom' \| 'start' \| 'start top' \| 'start bottom' \| 'right' \| 'right top' \| 'right bottom' \| 'end' \| 'end top' \| 'end bottom'` |  | `'bottom start'` | Side and alignment relative to the target. Default `bottom start`. Flips on collision. |
+| `messages` | `Partial<{ progress: (current: number, total: number) => string; back: string; next: string; done: string; skip: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `className` | `string` |  |  | Class name for the step surface. |
+| `ref` | `Ref<HTMLElement>` |  |  | Ref to the step surface. |
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ Tour: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `progress(current: number, total: number)` | `Step 2 of 2` | Progress text of a step, such as "Step 2 of 5". |
+| `back` | `Back` | Goes to the previous step. |
+| `next` | `Next` | Goes to the next step. |
+| `done` | `Done` | Finishes the tour on the last step. |
+| `skip` | `Skip tour` | Ends the tour before the last step. |
+
+#### Design tokens used
+
+`--ds-duration`, `--ds-ease`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-heading`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-heading`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-radius-lg`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tour-arrow-size`, `--ds-tour-padding`, `--ds-tour-width`, `--ds-weight-semibold`
+
+#### When to use
+
+- Introducing a screen to a first-time user in a few steps (three to six).
+- Pointing at controls that are not obvious from their label.
+
+#### When not to use
+
+- A hint on one control: `Tooltip`.
+- Interactive content anchored to a button (filters, a small form): `Popover`.
+- Documentation or long explanations: link to help instead.
+- A task the user must finish before going on: `Dialog` or `Sheet`.
+
+#### Anatomy
+
+```
+Popover (non-modal, anchored to step.target, z popover, overlay shadow)
+  OverlayArrow
+  Dialog (role=dialog, named by the title)
+    Heading        step title
+    content        step text (--ds-text-2)
+    footer         "Step 2 of 5" (mono) ... Skip tour (ghost) · Back · Next | Done (primary)
+```
+
+The primary button is Next, or Done on the last step. Skip is hidden on the last step, Back on the first.
+
+#### Accessibility
+
+- Each step is a `dialog` named by its title. It is non-modal: the page is not inert, there is no scrim, nothing is hidden from assistive technology.
+- Focus moves into each step as it appears (the dialog itself, so a screen reader reads its title; the next `Tab` reaches Skip, Back and Next). Pressing Next or Back mounts the next step and moves focus to it, so focus never lands on a removed button.
+- `Escape` skips the tour. Pressing or tabbing elsewhere on the page does not end it.
+- When the tour ends, focus returns to the element that had focus when the tour opened (normally the button that started it); for a tour that is open on first render, to the target of the current step if it is focusable. If the consumer closes a controlled tour from outside, focus is left where the user put it.
+- The target is scrolled into view (`block: nearest`) when its step appears. The step is positioned against the target and flips when it does not fit; the arrow points at the target.
+- The fade-in is removed under `prefers-reduced-motion`. Visuals are calm: raised surface, strong line and the overlay shadow only; accent is used only for focus rings.
+- Because the step is rendered in a portal, it comes last in the Tab order of the page: the user reaches it by the focus that moves into it, not by tabbing from the target.
+
+#### Content rules
+
+- Title: the name of the thing, in sentence case ("Filters"). Text: one or two sentences saying what it does, with no exclamation marks or emoji.
+- Button labels come from the message catalog: Back, Next, Done, Skip tour.
+
+#### Examples
+
+```tsx
+const search = useRef<HTMLButtonElement>(null);
+const filters = useRef<HTMLButtonElement>(null);
+const [open, setOpen] = useState(false);
+
+<>
+  <Button onPress={() => setOpen(true)}>Start tour</Button>
+  <Button ref={search}>Search</Button>
+  <Button ref={filters}>Filters</Button>
+  <Tour
+    isOpen={open}
+    onOpenChange={setOpen}
+    steps={[
+      { target: search, title: 'Search', content: 'Find any item by name or code.' },
+      { target: filters, title: 'Filters', content: 'Narrow the list by status or date.' },
+    ]}
+  />
+</>;
+```
+
+#### Related components
+
+- Instead, see Tooltip: A hint on one control: `Tooltip`.
+- Instead, see Popover: Interactive content anchored to a button (filters, a small form): `Popover`.
+- Instead, see Dialog: A task the user must finish before going on: `Dialog` or `Sheet`.
+- Instead, see Sheet: A task the user must finish before going on: `Dialog` or `Sheet`.
+- Renders: Button
+
 ### VisuallyHidden
 
 > Hides content visually while keeping it available to assistive technology.
@@ -12186,7 +13719,7 @@ span.root   (or as="h2", "div", ...)
 #### Related components
 
 - Instead, see SkipLink: For a skip link that appears on focus: use `SkipLink`.
-- Used by: Alert, ApprovalCard, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Link, MatrixGrid, NavItem, SegmentedControl, ShortcutsHelp, StatusSteps, Tab, TabList, TabPanel, Tabs, Textarea, ToastRegion
+- Used by: Alert, ApprovalCard, Banner, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep
 
 ---
 
@@ -12536,6 +14069,14 @@ getPageItems(5, 10)  // 1 … 4 5 6 … 10
 getPageItems(current: number, pageCount: number): PageItem[]
 ```
 
+#### getSourceElementId
+
+The DOM id of one source of a list. `Citation` builds the same id from `listId` and `sourceId`.
+
+```ts
+getSourceElementId(listId: string, sourceId: string): string
+```
+
 #### highlightMatch
 
 Splits `text` into matched and unmatched segments for highlighting, ignoring case
@@ -12585,7 +14126,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly x: "Close, dismiss, remove"; }
 ```
 
 #### iconSet
@@ -12593,7 +14134,7 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }
 ```
 
 #### isISODate
@@ -12746,7 +14287,7 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `SearchIcon`, `StarIcon`, `TriangleAlertIcon`, `XIcon`
+`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `RefreshIcon`, `SearchIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TriangleAlertIcon`, `XIcon`
 
 ---
 
@@ -13905,6 +15446,237 @@ export function FormWithValidation({ saveCustomer = fakeSave }: FormWithValidati
 #### Verified by
 
 `src/recipes/FormWithValidation/FormWithValidation.test.tsx` (empty submit and focus on the summary, malformed email, server error cycle, Enter to submit, tab order, axe in the empty, error and saved states) and the `Recipes/FormWithValidation` stories.
+
+### MarkdownMessage
+
+Status: experimental
+
+Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. A small subset is parsed into React elements: no markdown library, no `dangerouslySetInnerHTML`, no HTML string anywhere.
+
+Components: `ChatPanel` (from `@loui/ds/patterns`), `Code`, `Link`, `Stack`, `Inline`, `Text`.
+
+#### When to use
+
+- An agent answers in markdown and you want lists, emphasis, code and links to look right in the chat.
+- You need the output to be safe by construction: model output is untrusted text.
+
+#### When not to use
+
+- Full markdown (headings, tables, images, nested lists, raw HTML). Add a reviewed, sanitizing renderer of your choice behind the same `renderContent` function, or keep the text plain.
+- Your own messages and error texts: they stay plain, so what a person typed is what they see.
+
+#### What it does
+
+- **Paragraphs** separated by a blank line; a single line break inside a paragraph is kept.
+- **Inline:** `**bold**`, `*italic*` or `_italic_`, `` `code` `` and `[text](https://example.com)`.
+- **Code blocks** fenced with three backticks render with `Code variant="block"`, which scrolls sideways and becomes a keyboard stop when it overflows.
+- **Lists:** `-` or `*` bullets, and `1.` numbers (the first number is kept). Bullets are hidden from assistive technology; the list keeps its role.
+- **Links** open in a new tab, and only `http`, `https` and `mailto` addresses become links. Any other address (`javascript:`, `data:`) keeps the text and drops the link.
+- **Streaming:** a fence or emphasis that is not closed yet renders as it is typed and settles when the closing marker arrives.
+- Anything else (headings, tables, images, raw HTML such as `<script>`) is shown as plain text, escaped by React.
+
+#### Things to keep when you adapt it
+
+- Never build an HTML string and never use `dangerouslySetInnerHTML`. Keep building elements.
+- Keep the link protocol allow-list when you add features.
+- Do not render the user's own messages as markdown.
+
+#### Code
+
+<!-- recipe-source:start -->
+
+```tsx
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+import { Code, Inline, Link, Stack, Text } from '@loui/ds';
+import { ChatPanel } from '@loui/ds/patterns';
+import type { ChatMessage } from '@loui/ds/patterns';
+
+/**
+ * A small markdown subset, rendered as React elements. There is no HTML string anywhere, so
+ * nothing the model writes can inject markup: React escapes every piece of text, and links are
+ * kept only when their address is http, https or mailto.
+ *
+ * Supported: paragraphs, **bold**, *italic* (or _italic_), `inline code`, fenced code blocks,
+ * "-" and "1." lists, and [links](https://example.com). Everything else (headings, tables,
+ * images, raw HTML) stays visible as plain text. A fence or an emphasis that is not closed yet
+ * renders as it is, so a reply that is still streaming never flickers into broken markup.
+ */
+
+const SAFE_LINK = /^(https?:\/\/|mailto:)/i;
+const FENCE = /^`{3}(.*)$/;
+const FENCE_END = /^`{3}\s*$/;
+// Written this way so the source of this file can sit inside a fenced block of its own doc.
+const FENCE_MARK = '`'.repeat(3);
+const BULLET = /^\s*[-*]\s+(.*)$/;
+const NUMBERED = /^\s*(\d{1,9})\.\s+(.*)$/;
+// Order matters: code first (nothing inside it is markup), then strong before emphasis.
+const INLINE =
+  /`([^`\n]+)`|\*\*(\S(?:.*?\S)?)\*\*|\*(\S(?:[^*\n]*\S)?)\*|(?<![\w])_([^_\n]+)_(?![\w])|\[([^\]\n]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)/;
+
+export function renderInline(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  let rest = text;
+  while (rest !== '') {
+    const match = INLINE.exec(rest);
+    if (!match) {
+      nodes.push(rest);
+      break;
+    }
+    if (match.index > 0) nodes.push(rest.slice(0, match.index));
+    const key = nodes.length;
+    const [, code, strong, emphasis, underscore, label, href] = match;
+    if (code !== undefined) {
+      nodes.push(<Code key={key}>{code}</Code>);
+    } else if (strong !== undefined) {
+      nodes.push(<strong key={key}>{renderInline(strong)}</strong>);
+    } else if (emphasis !== undefined || underscore !== undefined) {
+      nodes.push(<em key={key}>{renderInline(emphasis ?? underscore ?? '')}</em>);
+    } else if (label !== undefined && href !== undefined) {
+      // Unsafe addresses (javascript:, data:) lose the link and keep the text.
+      nodes.push(
+        SAFE_LINK.test(href) ? (
+          <Link key={key} href={href} target="_blank">
+            {label}
+          </Link>
+        ) : (
+          label
+        ),
+      );
+    }
+    rest = rest.slice(match.index + match[0].length);
+  }
+  return nodes;
+}
+
+function renderLines(lines: string[]): ReactNode[] {
+  return lines.flatMap((line, index) => [
+    ...(index > 0 ? [<br key={`br-${String(index)}`} />] : []),
+    ...renderInline(line),
+  ]);
+}
+
+/** Turns the markdown subset into React elements. Pass it to `ChatPanel` as `renderContent`. */
+export function renderMarkdown(source: string): ReactNode {
+  const lines = source.replace(/\r\n?/g, '\n').split('\n');
+  const blocks: ReactNode[] = [];
+  let paragraph: string[] = [];
+
+  function flushParagraph() {
+    if (paragraph.length === 0) return;
+    blocks.push(
+      <Text as="p" size="label" key={blocks.length}>
+        {renderLines(paragraph)}
+      </Text>,
+    );
+    paragraph = [];
+  }
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i] ?? '';
+    if (FENCE.test(line)) {
+      flushParagraph();
+      const code: string[] = [];
+      i += 1;
+      while (i < lines.length && !FENCE_END.test(lines[i] ?? '')) {
+        code.push(lines[i] ?? '');
+        i += 1;
+      }
+      blocks.push(
+        <Code variant="block" key={blocks.length}>
+          {code.join('\n')}
+        </Code>,
+      );
+    } else if (BULLET.test(line) || NUMBERED.test(line)) {
+      flushParagraph();
+      const ordered = NUMBERED.test(line);
+      const pattern = ordered ? NUMBERED : BULLET;
+      const start = ordered ? Number(NUMBERED.exec(line)?.[1]) : 1;
+      const items: string[] = [];
+      while (i < lines.length && pattern.test(lines[i] ?? '')) {
+        const found = pattern.exec(lines[i] ?? '');
+        items.push(found?.[ordered ? 2 : 1] ?? '');
+        i += 1;
+      }
+      i -= 1;
+      blocks.push(
+        // The list reset comes from Stack. The marker is real text for numbers, and hidden for bullets.
+        <Stack as={ordered ? 'ol' : 'ul'} gap={1} key={blocks.length}>
+          {items.map((item, index) => (
+            <Inline as="li" gap={2} align="baseline" wrap={false} key={index}>
+              <Text size="label" tone="secondary" mono aria-hidden={ordered ? undefined : true}>
+                {ordered ? `${String(start + index)}.` : '•'}
+              </Text>
+              <Text size="label">{renderInline(item)}</Text>
+            </Inline>
+          ))}
+        </Stack>,
+      );
+    } else if (line.trim() === '') {
+      flushParagraph();
+    } else {
+      paragraph.push(line);
+    }
+  }
+  flushParagraph();
+  return <Stack gap={2}>{blocks}</Stack>;
+}
+
+const INITIAL: ChatMessage[] = [
+  { id: 'm-1', role: 'user', content: 'How do I check the status of an order?' },
+  {
+    id: 'm-2',
+    role: 'assistant',
+    content: [
+      'Open **Orders** and search by the order code, for example `ORD-1048`.',
+      '',
+      'Then:',
+      '',
+      '1. Select the order.',
+      '2. Read the *Status* field.',
+      '3. Use [the guide](https://example.com/orders) for the full list.',
+      '',
+      FENCE_MARK,
+      'GET /orders/ORD-1048',
+      FENCE_MARK,
+    ].join('\n'),
+  },
+];
+
+export interface MarkdownChatProps {
+  initialItems?: ChatMessage[];
+}
+
+/**
+ * A chat whose assistant replies are rendered as markdown. Your own messages and errors stay
+ * plain text: they are not formatted, so what a person typed is what they see.
+ */
+export function MarkdownChat({ initialItems = INITIAL }: MarkdownChatProps) {
+  const [items, setItems] = useState(initialItems);
+  return (
+    <ChatPanel
+      items={items}
+      onSend={(text) => {
+        setItems((current) => [
+          ...current,
+          { id: `m-${String(current.length + 1)}`, role: 'user', content: text },
+        ]);
+      }}
+      renderContent={(message) =>
+        message.role === 'assistant' && message.status !== 'error'
+          ? renderMarkdown(message.content)
+          : message.content
+      }
+    />
+  );
+}
+```
+
+<!-- recipe-source:end -->
+
+#### Verified by
+
+`src/recipes/MarkdownMessage/MarkdownMessage.test.tsx` (every supported construct, escaping of raw HTML, unsafe link addresses, unclosed markers while streaming, the chat integration and axe) and the `Recipes/MarkdownMessage` stories.
 
 ### SettingsPage
 

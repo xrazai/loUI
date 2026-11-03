@@ -114,4 +114,4 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
 - Renders: Spinner
-- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ShortcutsHelp, ToastRegion
+- Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ResponseFeedback, ShortcutsHelp, ToastRegion, Tour
