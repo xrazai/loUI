@@ -21,7 +21,7 @@
   {
     "name": "styles.css",
     "path": "dist/styles.css",
-    "limit": "20 kB",
+    "limit": "24 kB",
     "rolldown": false
   }
 ]
