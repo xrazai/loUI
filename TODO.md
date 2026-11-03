@@ -123,6 +123,7 @@ The handoff inventory is missing common building blocks. Confirm which belong in
 
 ## Out of scope (for now)
 
+- Cross-platform support beyond Windows: Linux/macOS visual baselines and the CI `visual` job (paused 2026-11-03 by the owner; Windows is the focus). Resume as its own plan.
 - ERP screens and flows (`ERP.dc.html`, `support.js` DC runtime, all module logic, data model, prototype HTML) — will be revisited after the DS reaches v0.1; DS-worthy patterns extracted from it are tracked in GAP-004 and GAP-008.
 - Backend, persistence, integrations (OpenRouter, Shopee, WhatsApp, printers).
 - ERP-specific vocabulary rules (e.g. "always say Quantity, never pieces/meters") — belong in the ERP product docs, not in the DS core.

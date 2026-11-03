@@ -63,7 +63,11 @@ export const Ticking: Story = {
 
 Fonts and anti-aliasing differ between operating systems, so baselines carry the platform in their name (`-win32`, `-darwin`, `-linux`). Windows baselines are the local safety net. **Linux baselines are the ones CI compares against**, and they are generated only inside the pinned Playwright container (`mcr.microsoft.com/playwright:v1.64.1-noble`; the tag must match the `playwright` version in `package.json`). Never commit Linux PNGs rendered anywhere else.
 
-## Linux baselines in CI (TEST-019)
+## Platform focus: Windows first
+
+For now visual regression is maintained on **Windows only**: `pnpm test:visual` (and `pnpm test:visual:update` after reviewing a change) on a Windows machine is the gate, run before every push. The `*-chromium-linux.png` files are **paused**: they are not regenerated and may be stale, and the CI `visual` job runs only when started by hand. Cross-platform baselines (Linux in CI, macOS) will be resumed as separate work; the procedure below stays documented for that moment.
+
+## Linux baselines in CI (TEST-019, paused)
 
 | Piece                                      | Role                                                                                                                                                                                                                                                     |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

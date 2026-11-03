@@ -1,10 +1,13 @@
-# CI gate: everything in `pnpm check` except visual regression (the `check` job), plus a
-# `visual` job that runs only once Linux baselines are committed (ADR-0010, TEST-019).
+# CI gate: everything in `pnpm check` except visual regression (the `check` job). Visual regression
+# is Windows-first for now: run `pnpm test:visual` locally on Windows before pushing. The Linux
+# `visual` job only runs when started by hand (Actions > CI > Run workflow); cross-platform
+# baselines are paused (see tests/visual/README.md).
 name: CI
 on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -52,6 +55,7 @@ jobs:
   # Visual regression in the same pinned container that generated the Linux baselines
   # (.github/workflows/visual-baselines.yml). Skipped while no `*-chromium-linux.png` exists.
   visual:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     container:

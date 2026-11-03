@@ -214,6 +214,7 @@ Rules:
 - Pure utilities get property-based tests with `fast-check` (`src/utils/*.property.test.ts`).
 - Flaky tests follow [docs/contributing/flaky-tests.md](docs/contributing/flaky-tests.md): no retries except visual in CI; quarantine only with `// quarantine: TEST-<id> since <date>` (enforced, 14 days max).
 - The visual harness freezes `Date` at 2026-10-15 12:00 so "today" markers are deterministic.
+- **Windows first.** Visual regression is maintained on Windows only for now: run `pnpm test:visual` locally before pushing. Linux/macOS baselines and the CI `visual` job are paused (manual only); do not regenerate `*-linux.png` unless the owner resumes cross-platform work.
 - Manual screen-reader passes use [docs/a11y/screen-reader-checklist.md](docs/a11y/screen-reader-checklist.md) and are recorded in `docs/a11y/screen-reader-results.md`.
 - `expectNoA11yViolations` runs only WCAG-tagged axe rules; best-practice rules such as `landmark-unique` must be run explicitly when relevant (e.g. multiple landmarks with names). React Aria's live announcer (`[data-live-announcer]`) is excluded by design (documented in `src/test/axe.ts`).
 - The visual harness composes stories and does **not** run `beforeEach`; stories that need setup must do it in `play` and opt in with `parameters.visual.play`. Shared global state (e.g. the toast queue) is reset by the harness.
