@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { DueIndicator } from './DueIndicator';
+import type { DueIndicatorDateProps } from './DueIndicator';
 
 const meta = {
   title: 'Components/DueIndicator',
@@ -15,7 +16,7 @@ const meta = {
       options: ['short', 'medium', 'long', 'full', 'monthDay', 'monthYear'],
     },
   },
-} satisfies Meta<typeof DueIndicator>;
+} satisfies Meta<DueIndicatorDateProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -46,6 +47,45 @@ export const Paid: Story = {
   },
 };
 
+export const PaidWithDate: Story = {
+  args: { date: '2026-03-01', paidDate: '2026-03-08' },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('Paid Mar 8')).toBeInTheDocument();
+  },
+};
+
+/** A `Date` is mapped to the viewer's local calendar day. */
+export const DateObject: Story = {
+  args: { date: new Date(2026, 2, 14, 23, 30) },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('Due in 4 days')).toBeInTheDocument();
+  },
+};
+
+/** An ISO date-time string maps to the local calendar day, here the 14th. */
+export const DateTimeString: Story = {
+  args: { date: '2026-03-14T23:30:00' },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('Due in 4 days')).toBeInTheDocument();
+  },
+};
+
+/** Free-text chips: the label carries the meaning, the tone only reinforces it. */
+export const LabelAndTone: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
+      <DueIndicator label="Due today" tone="warning" />
+      <DueIndicator label="Pickup at 2 pm" tone="neutral" />
+      <DueIndicator label="Waiting for you" tone="accent" />
+      <DueIndicator label="Delivered" tone="success" />
+      <DueIndicator label="Payment failed" tone="danger" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText('Pickup at 2 pm')).toBeInTheDocument();
+  },
+};
+
 export const WithoutDate: Story = { args: { showDate: false } };
 
 export const LongDate: Story = { args: { dateStyle: 'long' } };
@@ -59,27 +99,33 @@ export const AcrossDaylightSaving: Story = {
 };
 
 export const AllTones: Story = {
-  render: (args) => (
-    <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
-      <DueIndicator {...args} date="2026-03-07" />
-      <DueIndicator {...args} date="2026-03-10" />
-      <DueIndicator {...args} date="2026-04-20" />
-      <DueIndicator {...args} date="2026-03-07" paid />
-    </div>
-  ),
-};
-
-export const Portuguese: Story = {
-  render: (args) => (
-    <DSProvider locale="pt-BR">
+  render: (props) => {
+    const args = props as DueIndicatorDateProps;
+    return (
       <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
         <DueIndicator {...args} date="2026-03-07" />
         <DueIndicator {...args} date="2026-03-10" />
-        <DueIndicator {...args} date="2026-03-11" />
-        <DueIndicator {...args} paid />
+        <DueIndicator {...args} date="2026-04-20" />
+        <DueIndicator {...args} date="2026-03-07" paid />
       </div>
-    </DSProvider>
-  ),
+    );
+  },
+};
+
+export const Portuguese: Story = {
+  render: (props) => {
+    const args = props as DueIndicatorDateProps;
+    return (
+      <DSProvider locale="pt-BR">
+        <div style={{ display: 'grid', gap: 'var(--ds-space-2)' }}>
+          <DueIndicator {...args} date="2026-03-07" />
+          <DueIndicator {...args} date="2026-03-10" />
+          <DueIndicator {...args} date="2026-03-11" />
+          <DueIndicator {...args} paid />
+        </div>
+      </DSProvider>
+    );
+  },
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByText('Vence hoje')).toBeInTheDocument();
   },

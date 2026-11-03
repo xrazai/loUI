@@ -85,6 +85,28 @@ export function toISODate(date: Date, options: { utc?: boolean } = {}): ISODate 
   return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
+const DATE_TIME_START = /^\d{4}-\d{2}-\d{2}[T ]/;
+
+/**
+ * Normalizes a calendar-day input to `YYYY-MM-DD`. Accepts an `ISODate` (returned unchanged, so a
+ * plain date is never shifted by a time zone), a `Date` (its **local** day) or an ISO date-time
+ * string such as `2026-10-31T23:30:00-03:00` (parsed with `new Date()`, then its **local** day).
+ * Any other string is returned unchanged for the caller's own validation. An unparsable `Date`
+ * or date-time throws in development and gives `''` in production.
+ */
+export function toCalendarDay(value: Date | string): ISODate {
+  if (value instanceof Date) return toISODate(value);
+  if (DATE_TIME_START.test(value)) {
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+      reportInvalid(`toCalendarDay received an unparsable date-time "${value}".`);
+      return '';
+    }
+    return toISODate(parsed);
+  }
+  return value;
+}
+
 /**
  * Whole days from `isoA` to `isoB` (positive when `isoB` is later). Uses UTC
  * date math, so daylight-saving changes cannot produce 23- or 25-hour "days".

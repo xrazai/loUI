@@ -5,6 +5,7 @@ import {
   formatDate,
   formatRelativeDays,
   isISODate,
+  toCalendarDay,
   toISODate,
 } from './date';
 
@@ -168,5 +169,27 @@ describe('formatRelativeDays', () => {
 
   it('rejects fractional days in development', () => {
     expect(() => formatRelativeDays(1.5, 'en-US')).toThrow(RangeError);
+  });
+});
+
+describe('toCalendarDay', () => {
+  it('returns plain ISO dates unchanged (no time-zone shift)', () => {
+    expect(toCalendarDay('2026-10-31')).toBe('2026-10-31');
+  });
+
+  it('uses the local day of a Date', () => {
+    expect(toCalendarDay(new Date(2026, 9, 31, 23, 59))).toBe('2026-10-31');
+  });
+
+  it('uses the local day of a date-time string', () => {
+    expect(toCalendarDay('2026-10-31T23:30:00')).toBe('2026-10-31');
+    expect(toCalendarDay('2026-10-31 00:15:00')).toBe('2026-10-31');
+    const instant = new Date(2026, 9, 31, 23, 30);
+    expect(toCalendarDay(instant.toISOString())).toBe('2026-10-31');
+  });
+
+  it('passes other strings through and throws for unparsable date-times in development', () => {
+    expect(toCalendarDay('10/03/2026')).toBe('10/03/2026');
+    expect(() => toCalendarDay('2026-13-45T10:00:00')).toThrow(/toCalendarDay/);
   });
 });

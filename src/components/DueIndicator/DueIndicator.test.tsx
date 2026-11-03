@@ -123,6 +123,107 @@ describe('DueIndicator', () => {
     });
   });
 
+  describe('flexible date input', () => {
+    it('accepts a Date and uses its local day', async () => {
+      const screen = await renderWithProvider(
+        <DueIndicator date={new Date(2026, 2, 14, 23, 59)} today="2026-03-10" data-testid="d" />,
+      );
+      expect(screen.getByTestId('d').element().textContent).toContain('Mar 14');
+      expect(screen.getByTestId('d').element().textContent).toContain('Due in 4 days');
+    });
+
+    it('maps a date-time near midnight to the local day', async () => {
+      const late = new Date(2026, 2, 14, 23, 30).toISOString();
+      const early = new Date(2026, 2, 14, 0, 15).toISOString();
+      expect((await status(late, '2026-03-10')).text).toBe('Mar 14 Due in 4 days');
+      expect((await status(early, '2026-03-10')).text).toBe('Mar 14 Due in 4 days');
+      expect((await status('2026-03-14T23:30:00', '2026-03-10')).text).toBe('Mar 14 Due in 4 days');
+    });
+
+    it('accepts a date-time for today', async () => {
+      expect((await status('2026-03-11', new Date(2026, 2, 10, 23, 59).toISOString())).text).toBe(
+        'Mar 11 Due tomorrow',
+      );
+    });
+
+    it('exposes the normalized day in <time dateTime>', async () => {
+      const { root } = await status('2026-03-14T23:30:00', '2026-03-10');
+      expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2026-03-14');
+    });
+
+    it('throws for an unparsable date-time in development', async () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      await expect(
+        renderWithProvider(<DueIndicator date="2026-13-45T10:00:00" today="2026-03-10" />),
+      ).rejects.toThrow(/date-time/);
+      error.mockRestore();
+    });
+  });
+
+  describe('label and tone form', () => {
+    it.each(['neutral', 'accent', 'success', 'warning', 'danger'] as const)(
+      'renders the label with tone %s',
+      async (tone) => {
+        const screen = await renderWithProvider(
+          <DueIndicator label="Pickup at 2 pm" tone={tone} data-testid="l" />,
+        );
+        const root = screen.getByTestId('l').element();
+        expect(root.textContent).toBe('Pickup at 2 pm');
+        expect(root.getAttribute('data-tone')).toBe(tone);
+        expect(root.querySelector('time')).toBeNull();
+        expect(root.querySelector('[aria-hidden="true"]')).not.toBeNull();
+      },
+    );
+  });
+
+  describe('paid date', () => {
+    it('shows the paid date and the success tone', async () => {
+      const screen = await renderWithProvider(
+        <DueIndicator
+          date="2026-03-01"
+          today="2026-03-10"
+          paidDate="2026-03-08"
+          showDate={false}
+          data-testid="p"
+        />,
+      );
+      const root = screen.getByTestId('p').element();
+      expect(root.textContent).toBe('Paid Mar 8');
+      expect(root.getAttribute('data-tone')).toBe('success');
+    });
+
+    it('accepts a Date and formats with dateStyle', async () => {
+      const screen = await renderWithProvider(
+        <DueIndicator
+          date="2026-03-01"
+          paidDate={new Date(2026, 2, 8, 22, 0)}
+          dateStyle="long"
+          showDate={false}
+          data-testid="p"
+        />,
+      );
+      expect(screen.getByTestId('p').element().textContent).toBe('Paid March 8, 2026');
+    });
+
+    it('uses a gender-neutral wording in pt-BR and can be overridden', async () => {
+      const pt = await renderWithProvider(
+        <DueIndicator date="2026-03-01" paidDate="2026-03-08" showDate={false} data-testid="p" />,
+        { locale: 'pt-BR' },
+      );
+      expect(pt.getByTestId('p').element().textContent).toBe('Pagamento em 8 de mar.');
+      const custom = await renderWithProvider(
+        <DueIndicator
+          date="2026-03-01"
+          paidDate="2026-03-08"
+          showDate={false}
+          messages={{ paidOn: (date: string) => `Settled on ${date}` }}
+          data-testid="c"
+        />,
+      );
+      expect(custom.getByTestId('c').element().textContent).toBe('Settled on Mar 8');
+    });
+  });
+
   describe('invalid input', () => {
     it('throws for a malformed date in development', async () => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
@@ -212,6 +313,14 @@ describe('DueIndicator', () => {
           <p>
             <DueIndicator date="2026-03-07" today="2026-03-10" paid />
           </p>
+          <p>
+            <DueIndicator date="2026-03-07" paidDate="2026-03-08" />
+          </p>
+          {(['neutral', 'accent', 'success', 'warning', 'danger'] as const).map((tone) => (
+            <p key={tone}>
+              <DueIndicator label="Pickup at 2 pm" tone={tone} />
+            </p>
+          ))}
         </main>,
       );
       await expectNoA11yViolations(screen.container);

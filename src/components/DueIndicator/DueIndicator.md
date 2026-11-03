@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Due today", "Due in 5 days", "Paid". Color reinforces the status; the text always states it.
+A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Due today", "Due in 5 days", "Paid", "Paid Oct 30". Color reinforces the status; the text always states it.
 
 - Handoff source: `components/erp/DueIndicator.jsx` (TODO `CMP-PAT-07`).
 
@@ -27,16 +27,51 @@ span[data-tone=danger|warning|neutral|success]
 
 ## Props
 
-| Prop        | Type                     | Default       | Notes                                                |
-| ----------- | ------------------------ | ------------- | ---------------------------------------------------- |
-| `date`      | `ISODate`                | required      | `YYYY-MM-DD`. Malformed values throw in development. |
-| `today`     | `ISODate`                | local day now | Inject for tests, stories and deterministic output.  |
-| `paid`      | `boolean`                | `false`       | Shows "Paid" in the success tone, ignoring the date. |
-| `showDate`  | `boolean`                | `true`        | Shows the formatted date before the status.          |
-| `dateStyle` | `DateStyle`              | `'monthDay'`  | Any `formatDate` style.                              |
-| `messages`  | `{ overdue, due, paid }` | none          | Overrides the texts for this instance.               |
+Two forms, enforced by a discriminated union: pass `date`, or pass `label` + `tone`.
 
-Tone comes from `dueStatus`: overdue is `danger`, 0 to 7 days `warning`, later `neutral`.
+| Prop        | Type                                                          | Default       | Notes                                                                                      |
+| ----------- | ------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| `date`      | `ISODate \| Date \| string`                                   | required      | `YYYY-MM-DD`, a `Date`, or an ISO date-time string. Malformed values throw in development. |
+| `today`     | `ISODate \| Date \| string`                                   | local day now | Same forms as `date`. Inject for tests, stories and deterministic output.                  |
+| `paid`      | `boolean`                                                     | `false`       | Shows "Paid" in the success tone, ignoring the date.                                       |
+| `paidDate`  | `ISODate \| Date \| string`                                   | none          | Implies `paid` and shows "Paid Oct 30" (`paidOn` message, formatted with `dateStyle`).     |
+| `showDate`  | `boolean`                                                     | `true`        | Shows the formatted due date before the status.                                            |
+| `dateStyle` | `DateStyle`                                                   | `'monthDay'`  | Any `formatDate` style; also used for `paidDate`.                                          |
+| `label`     | `string`                                                      | none          | Free-text form: the status text. Requires `tone`; excludes `date`.                         |
+| `tone`      | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` | none          | Free-text form only. In the date form the tone is computed.                                |
+| `messages`  | `{ overdue, due, paid, paidOn }`                              | none          | Overrides the texts for this instance.                                                     |
+
+Tone in the date form comes from `dueStatus`: overdue is `danger`, 0 to 7 days `warning`, later `neutral`.
+
+`paidDate` is a separate prop instead of widening `paid` to `boolean | date`: `paid` stays a plain flag, and "paid, date unknown" and "paid on Oct 30" read differently at the call site.
+
+## Time zones
+
+- `YYYY-MM-DD` is a calendar day with no time zone and takes a fast path: it is used as written and never shifted.
+- A `Date` or an ISO date-time string (`2026-10-31T23:30:00-03:00`, `2026-10-31T23:30:00Z`) is an instant. It is converted to the **viewer's local calendar day** with `toISODate`, so `2026-11-01T01:30:00Z` is Oct 31 in Sao Paulo and Nov 1 in Berlin. A date-time without an offset is read as local time.
+- Only strings that contain a time part (`YYYY-MM-DDTHH...` or `YYYY-MM-DD HH...`) are parsed with `new Date()`. If the due day must not depend on the viewer, send `YYYY-MM-DD`.
+- `today` follows the same rules. Unparsable date-times and malformed dates throw in development.
+
+## Free-text form
+
+For chips whose text is not date-driven ("Due today", "Pickup at 2 pm", "Waiting for you"), pass `label` and `tone`. It renders the same dot and text; no date is shown and no wording is generated, so translate `label` yourself.
+
+```tsx
+<DueIndicator label="Pickup at 2 pm" tone="neutral" />
+<DueIndicator label="Waiting for you" tone="accent" />
+```
+
+## Paid date and locales
+
+`paidDate` calls the `paidOn(date)` message with the date already formatted by `formatDate` for the active locale. The default is `Paid ${date}` (en) and `Pagamento em ${date}` (pt-BR), which avoids gendered agreement ("Paga em" / "Pago em" would have to match the item). Override it per instance (`messages`), per provider or in a locale catalog:
+
+```tsx
+<DueIndicator
+  date="2026-03-01"
+  paidDate="2026-03-08"
+  messages={{ paidOn: (date) => `Settled on ${date}` }}
+/>
+```
 
 ## Accessibility
 
@@ -54,6 +89,9 @@ Tone comes from `dueStatus`: overdue is `danger`, 0 to 7 days `warning`, later `
 
 ```tsx
 <DueIndicator date={invoice.dueISO} paid={invoice.paid} />
+
+// A Date or date-time maps to the local calendar day
+<DueIndicator date={order.dueAt} paidDate={order.paidAt} />
 
 // Deterministic output
 <DueIndicator date="2026-03-14" today="2026-03-10" dateStyle="long" />

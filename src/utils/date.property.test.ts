@@ -1,6 +1,13 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { daysBetween, dueStatus, formatRelativeDays, isISODate, toISODate } from './date';
+import {
+  daysBetween,
+  dueStatus,
+  formatRelativeDays,
+  isISODate,
+  toCalendarDay,
+  toISODate,
+} from './date';
 
 const dateArb = fc.date({
   min: new Date('1900-01-01T00:00:00Z'),
@@ -17,6 +24,16 @@ function addDays(iso: string, offset: number): string {
 }
 
 describe('date (properties)', () => {
+  it('toCalendarDay keeps plain ISO dates and maps a Date or its ISO string to the local day', () => {
+    fc.assert(
+      fc.property(isoArb, dateArb, (iso, date) => {
+        expect(toCalendarDay(iso)).toBe(iso);
+        expect(toCalendarDay(date)).toBe(toISODate(date));
+        expect(toCalendarDay(date.toISOString())).toBe(toISODate(date));
+      }),
+    );
+  });
+
   it('toISODate produces real ISO dates', () => {
     fc.assert(fc.property(isoArb, (iso) => isISODate(iso)));
   });

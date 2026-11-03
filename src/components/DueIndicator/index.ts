@@ -1,2 +1,8 @@
 export { DueIndicator } from './DueIndicator';
-export type { DueIndicatorProps } from './DueIndicator';
+export type {
+  DueDateInput,
+  DueIndicatorDateProps,
+  DueIndicatorLabelProps,
+  DueIndicatorProps,
+  DueIndicatorTone,
+} from './DueIndicator';

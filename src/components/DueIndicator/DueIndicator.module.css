@@ -43,6 +43,14 @@
     color: var(--ds-warning);
   }
 
+  .root[data-tone='accent'] .dot {
+    background-color: var(--ds-accent);
+  }
+
+  .root[data-tone='accent'] .status {
+    color: var(--ds-accent);
+  }
+
   .root[data-tone='success'] .dot {
     background-color: var(--ds-success);
   }
