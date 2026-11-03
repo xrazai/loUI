@@ -43,9 +43,9 @@ A `minor` may break; a `patch` never does. Breaking changes are still called out
 
 ## Deprecation window
 
-1. Mark the API `@deprecated` in TSDoc with the replacement (the manifest and the `loui/no-deprecated` lint rule read it), and set `Status: deprecated` for a whole component. Ship it in a **minor** with a changeset and a migration note.
+1. Mark the API `@deprecated` in TSDoc with the replacement (the manifest, the `loui/no-deprecated` lint rule and the MCP server read it; write the hint so [codemods can apply it](./codemods.md)), and set `Status: deprecated` for a whole component. Ship it in a **minor** with a changeset and a migration note.
 2. Keep it working and unchanged for at least **two minor releases and 90 days**, whichever is longer. After `1.0.0`, removal happens only in the next major.
-3. Remove it in a major (pre-1.0: in a minor announced under "Breaking"). Removal needs its own changeset.
+3. Remove it in a major (pre-1.0: in a minor announced under "Breaking"). Removal needs its own changeset and ships with a [codemod](./codemods.md).
 
 Security and legal issues can shorten the window; the changeset must say why.
 

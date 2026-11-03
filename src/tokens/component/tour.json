@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tour": {
+    "$type": "dimension",
+    "width": {
+      "$value": { "value": 320, "unit": "px" },
+      "$description": "Width of a Tour step (320px); it shrinks to fit narrow viewports."
+    },
+    "padding": {
+      "$value": "{space.4}",
+      "$description": "Inner padding of a Tour step (16px)."
+    },
+    "arrow-size": {
+      "$value": { "value": 8, "unit": "px" },
+      "$description": "Width of the Tour arrow (8px); its height is half of this."
+    }
+  }
+}

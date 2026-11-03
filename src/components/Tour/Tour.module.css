@@ -1,0 +1,108 @@
+@layer components {
+  /* Overlay: raised surface, strong line, overlay shadow, large radius (AGENTS.md section 5). */
+  .root {
+    box-sizing: border-box;
+    inline-size: var(--ds-tour-width);
+    max-inline-size: calc(100vw - 2 * var(--ds-space-4));
+
+    /* Distance from the target; the positioning engine adds the margin on the target side. */
+    margin: calc(var(--ds-space-1) + var(--ds-tour-arrow-size) / 2);
+    background: var(--ds-surface-raised);
+    border: 1px solid var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-overlay);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+  }
+
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    padding: var(--ds-tour-padding);
+    outline: none;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--ds-fs-heading);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-heading);
+  }
+
+  .content {
+    color: var(--ds-text-2);
+  }
+
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-2) var(--ds-space-3);
+    margin-block-start: var(--ds-space-2);
+  }
+
+  .progress {
+    color: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    white-space: nowrap;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-space-2);
+    margin-inline-start: auto;
+  }
+
+  .arrow svg {
+    display: block;
+    inline-size: var(--ds-tour-arrow-size);
+    block-size: calc(var(--ds-tour-arrow-size) / 2);
+    fill: var(--ds-surface-raised);
+    stroke: var(--ds-line-strong);
+    stroke-width: 1px;
+  }
+
+  /* The arrow is drawn pointing down (step above the target); turn it for the other sides. */
+  .root[data-placement='bottom'] .arrow svg {
+    transform: rotate(180deg);
+  }
+
+  .root[data-placement='left'] .arrow svg {
+    transform: rotate(-90deg);
+  }
+
+  .root[data-placement='right'] .arrow svg {
+    transform: rotate(90deg);
+  }
+
+  .root[data-entering] {
+    animation: tour-in var(--ds-duration) var(--ds-ease);
+  }
+
+  @keyframes tour-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .root[data-entering] {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .arrow svg {
+      fill: Canvas;
+      stroke: CanvasText;
+    }
+  }
+}

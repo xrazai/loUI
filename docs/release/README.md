@@ -6,6 +6,8 @@ Loui DS (`@loui/ds`) is **private** (ADR-0004): nothing is published to a regist
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | [Versioning policy](./versioning.md)  | Semver for a design system: what is major, minor, patch; deprecation window; support.                |
 | [Component lifecycle](./lifecycle.md) | proposal, experimental, stable, deprecated, removed; graduation checklist.                           |
+| [Codemods and migration hints](./codemods.md) | Every breaking change ships a codemod; deprecations carry a machine-readable migration hint. |
+| [Figma workflow](../figma/README.md) | Tokens Studio sync, component naming parity, Code Connect (optional). |
 | [CHANGELOG.md](./CHANGELOG.md)        | Consumer-facing release notes, generated from changesets (created by the first `changeset:version`). |
 
 ## Two changelogs, on purpose
