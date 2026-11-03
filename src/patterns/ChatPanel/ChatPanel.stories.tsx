@@ -56,6 +56,21 @@ export const Conversation: Story = { args: { items: conversation } };
 
 export const Busy: Story = { args: { items: conversation.slice(0, 1), busy: true, onStop: fn() } };
 
+/** Messages without ids (`{ role, content }`): keys come from the role and position, or from `getKey`. */
+export const WithoutIds: Story = {
+  args: { items: conversation.map(({ role, content }) => ({ role, content })) },
+};
+
+/** A busy row with the consumer's own text instead of "Thinking…". */
+export const CustomBusyLabel: Story = {
+  args: {
+    items: conversation.slice(0, 1),
+    busy: true,
+    busyLabel: 'Searching orders…',
+    onStop: fn(),
+  },
+};
+
 export const Streaming: Story = {
   args: {
     items: [

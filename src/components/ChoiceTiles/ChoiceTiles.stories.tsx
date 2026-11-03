@@ -43,6 +43,18 @@ export const ThreeColumns: Story = {
   args: { columns: 3, options: options.slice(0, 3), defaultValue: 'pickup' },
 };
 
+/** A second line (`detail`) under the label and meta, exposed as the radio's description. */
+export const WithDetail: Story = {
+  args: {
+    defaultValue: 'standard',
+    options: [
+      { value: 'pickup', label: 'Pick up', meta: 'Free', detail: 'Ready in 2 hours at the store' },
+      { value: 'standard', label: 'Standard', meta: '3-5 days', detail: 'Delivered to your door' },
+      { value: 'express', label: 'Express', meta: '1 day', detail: 'Order before 2 pm' },
+    ],
+  },
+};
+
 export const WithoutMeta: Story = {
   args: {
     label: 'Size',

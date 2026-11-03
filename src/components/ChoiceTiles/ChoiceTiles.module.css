@@ -71,6 +71,15 @@
     overflow-wrap: anywhere;
   }
 
+  .detail {
+    max-inline-size: 100%;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-lh-meta);
+    overflow-wrap: anywhere;
+  }
+
   /* Hover brightens the border; the fill never changes (the border must stay at 3:1 or better). */
   .button[data-hovered] {
     border-color: var(--ds-text-3);

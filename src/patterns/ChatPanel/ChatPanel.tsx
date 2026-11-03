@@ -14,8 +14,12 @@ export type ChatMessageRole = 'user' | 'assistant';
 export type ChatMessageStatus = 'complete' | 'streaming' | 'error';
 
 export interface ChatMessage {
-  /** Stable, unique id (never the array index): React keys and the first-announcement logic depend on it. */
-  id: string;
+  /**
+   * Stable, unique id (never the array index): React keys and the first-announcement logic
+   * depend on it. Optional: without it the key comes from `getKey` (default: the role plus the
+   * position among messages of the same role, which is stable while messages are only appended).
+   */
+  id?: string;
   /** Who wrote it. */
   role: ChatMessageRole;
   /** The text. Plain text with line breaks unless `renderContent` is given. While `streaming`, grow it in place. */
@@ -39,6 +43,24 @@ export interface ChatPanelProps extends Omit<
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   /** Waiting for the first part of a reply: shows a spinner with "Thinking…" and disables sending. */
   busy?: boolean;
+  /**
+   * Text shown next to the busy indicator and announced while waiting ("Searching orders…").
+   * Defaults to the "Thinking…" message.
+   */
+  busyLabel?: string;
+  /**
+   * Replaces the default `Spinner` of the busy row. Decorative: the busy text is `busyLabel`.
+   * Pass `null` to show the text only.
+   */
+  busyIndicator?: ReactNode;
+  /**
+   * Key of a message, used as the React key and to tell history from news. Must be unique and
+   * stable for the same message across renders. Default: `message.id` when present, otherwise
+   * the role plus the position among messages of the same role (`user-0`, `assistant-1`), which
+   * breaks if you insert or remove messages before the end. Pass `getKey` (or give each message
+   * an `id`) whenever the list is not append-only.
+   */
+  getKey?: (message: ChatMessage, index: number) => string;
   /** Short text shown while the conversation is empty. */
   intro?: ReactNode;
   /** Suggested prompts shown while the conversation is empty. Pressing one sends it. */
@@ -67,6 +89,17 @@ export interface ChatPanelProps extends Omit<
   sendVariant?: 'primary' | 'secondary';
   /** Override the built-in messages for this instance. */
   messages?: Partial<typeof messages.en>;
+}
+
+/** `id` when present, otherwise the role plus the position among messages of the same role. */
+function defaultKeys(items: readonly ChatMessage[]): string[] {
+  const counts: Record<string, number> = {};
+  return items.map((message) => {
+    if (message.id !== undefined) return message.id;
+    const n = counts[message.role] ?? 0;
+    counts[message.role] = n + 1;
+    return `${message.role}-${String(n)}`;
+  });
 }
 
 /** Within this distance (px) of the end, the list counts as "at the bottom" and follows new content. */
@@ -103,6 +136,9 @@ export function ChatPanel({
   title,
   headingLevel = 2,
   busy = false,
+  busyLabel,
+  busyIndicator,
+  getKey,
   intro,
   prompts = [],
   placeholder,
@@ -124,9 +160,12 @@ export function ChatPanel({
   const listRef = useRef<HTMLDivElement | null>(null);
   const stick = useRef(true);
   // Messages that were already complete on first render are history, not news: never announced.
+  const defaults = defaultKeys(items);
+  const keys = getKey ? items.map((message, index) => getKey(message, index)) : defaults;
   const [historyIds] = useState(
-    () => new Set(items.filter((m) => m.status !== 'streaming').map((m) => m.id)),
+    () => new Set(keys.filter((_, index) => items[index]?.status !== 'streaming')),
   );
+  const busyText = busyLabel ?? t.thinking;
 
   const last = items.at(-1);
   const streaming = items.some((m) => m.status === 'streaming');
@@ -169,8 +208,8 @@ export function ChatPanel({
 
   let announcement = '';
   if (last?.status === 'streaming') announcement = t.responding;
-  else if (busy) announcement = t.thinking;
-  else if (last && last.role === 'assistant' && !historyIds.has(last.id)) {
+  else if (busy) announcement = busyText;
+  else if (last && last.role === 'assistant' && !historyIds.has(keys[items.length - 1] ?? '')) {
     announcement =
       last.status === 'error' ? t.errorSaid(last.content) : t.assistantSaid(last.content);
   }
@@ -224,12 +263,12 @@ export function ChatPanel({
               ))}
             </div>
           ) : null}
-          {items.map((message) => {
+          {items.map((message, index) => {
             if (message.status === 'streaming' && message.content === '') return null;
             const failed = message.status === 'error';
             return (
               <div
-                key={message.id}
+                key={keys[index]}
                 className={styles.row}
                 data-role={message.role}
                 data-status={message.status ?? 'complete'}
@@ -256,8 +295,8 @@ export function ChatPanel({
           })}
           {thinking ? (
             <div className={styles.thinking}>
-              <Spinner size="sm" decorative />
-              <span>{t.thinking}</span>
+              {busyIndicator === undefined ? <Spinner size="sm" decorative /> : busyIndicator}
+              <span>{busy ? busyText : t.thinking}</span>
             </div>
           ) : null}
         </div>

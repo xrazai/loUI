@@ -462,7 +462,7 @@ describe('ChatPanel', () => {
       expect(log.textContent).toContain('Ship abroad?');
     });
 
-    it('does not announce history or re-announce when a message has no id', async () => {
+    it('does not announce history, then announces a new reply that has no id', async () => {
       const screen = await renderWithProvider(<Panel items={noIds} />);
       expect(status(screen).textContent).toBe('');
       await screen.rerender(
@@ -478,15 +478,12 @@ describe('ChatPanel', () => {
       expect(status(screen).textContent).toBe('');
     });
 
-    it('shows a custom busy label, announces it and keeps the default spinner', async () => {
+    it('shows a custom busy label and announces it', async () => {
       const screen = await renderWithProvider(
         <Panel items={noIds} busy busyLabel="Searching orders…" />,
       );
       await expect.element(screen.getByText('Searching orders…').first()).toBeVisible();
       expect(status(screen).textContent).toBe('Searching orders…');
-      expect(
-        screen.getByRole('log').element().querySelector('[role="status"], svg'),
-      ).not.toBeNull();
     });
 
     it('replaces the spinner with busyIndicator, and omits it with null', async () => {

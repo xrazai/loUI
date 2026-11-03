@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import { RadioButton, RadioField, RadioGroup as RACRadioGroup } from 'react-aria-components';
+import { RadioButton, RadioField, RadioGroup as RACRadioGroup, Text } from 'react-aria-components';
 import type { RadioGroupProps as RACRadioGroupProps } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
 import { FieldMessages, Label } from '../Field';
@@ -15,8 +15,15 @@ export interface ChoiceTilesOption {
   value: string;
   /** Main text of the tile: a short noun or phrase in sentence case. */
   label: string;
-  /** Optional second line in mono (a code, a count, a price). Read as part of the option's name. */
-  meta?: string;
+  /** Optional second line in mono (a code, a count, a price). Read as part of the option's name. Text or a short inline node. */
+  meta?: ReactNode;
+  /**
+   * Optional second line under the meta line, in the body font: a short sentence that helps
+   * decide ("Arrives in 2 to 3 days"). It is the option's accessible description, not part of
+   * its name, so screen readers read the label first and the detail after it. Keep it to one or
+   * two short lines.
+   */
+  detail?: ReactNode;
   /** Disables this tile. */
   isDisabled?: boolean;
 }
@@ -90,20 +97,33 @@ export function ChoiceTiles({
       ) : null}
       <div className={styles.grid} style={style} data-size={size}>
         {options.map((option) => (
-          <RadioField
-            key={option.value}
-            value={option.value}
-            isDisabled={option.isDisabled === true}
-            className={classNames(styles.tile)}
-          >
-            <RadioButton className={classNames(styles.button)}>
-              <span className={styles.label}>{option.label}</span>
-              {option.meta ? <span className={styles.meta}>{option.meta}</span> : null}
-            </RadioButton>
-          </RadioField>
+          <ChoiceTile key={option.value} option={option} />
         ))}
       </div>
       <FieldMessages description={description} errorMessage={errorMessage} />
     </RACRadioGroup>
+  );
+}
+
+function ChoiceTile({ option }: { option: ChoiceTilesOption }) {
+  const hasDetail = option.detail !== undefined && option.detail !== null && option.detail !== '';
+  return (
+    <RadioField
+      value={option.value}
+      isDisabled={option.isDisabled === true}
+      className={classNames(styles.tile)}
+    >
+      <RadioButton className={classNames(styles.button)}>
+        <span className={styles.label}>{option.label}</span>
+        {option.meta ? <span className={styles.meta}>{option.meta}</span> : null}
+        {hasDetail ? (
+          // Hidden from the name (the tile is a <label>); the description slot links it with
+          // aria-describedby, which still reads hidden text.
+          <Text slot="description" className={styles.detail} aria-hidden="true">
+            {option.detail}
+          </Text>
+        ) : null}
+      </RadioButton>
+    </RadioField>
   );
 }

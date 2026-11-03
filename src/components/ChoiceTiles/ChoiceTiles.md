@@ -25,7 +25,8 @@ div[role=radiogroup] aria-labelledby=label
   div.grid                   (responsive grid, at most `columns` columns)
     div > label.tile         (one per option; hidden native radio inside)
       label text
-      meta                   (optional, mono)
+      meta                   (optional, mono; text or a short inline node)
+      detail                 (optional second line, body font; the radio's description)
   description / error
 ```
 
@@ -33,7 +34,7 @@ div[role=radiogroup] aria-labelledby=label
 
 | Prop                                                          | Type                   | Default      | Notes                                                         |
 | ------------------------------------------------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
-| `options`                                                     | `ChoiceTilesOption[]`  | required     | `{ value, label, meta?, isDisabled? }`.                       |
+| `options`                                                     | `ChoiceTilesOption[]`  | required     | `{ value, label, meta?, detail?, isDisabled? }`.              |
 | `label` / `aria-label` / `aria-labelledby`                    | `ReactNode` / `string` | one required | Names the group. Enforced by the types.                       |
 | `value` / `defaultValue` / `onChange(value)`                  | `string`               | none         | Controlled / uncontrolled selection (React Aria names).       |
 | `columns`                                                     | `number`               | `2`          | Maximum columns. Fewer on narrow containers (min tile 120px). |
@@ -48,6 +49,8 @@ div[role=radiogroup] aria-labelledby=label
 - State is not color alone: the selected tile has a doubled (2px) accent border, a soft fill and ink text, and screen readers get "checked".
 - Boundaries: unselected tiles use `--ds-line-control` (3:1) and hover brightens the border instead of changing the fill, so the 3:1 holds in every state. The meta line uses `--ds-text-2` (`--ds-text-3` fails 4.5:1 on the selected fill).
 - Focus: accent border plus ring. Forced colors: the selected border uses `Highlight`.
+
+- `detail` is linked with `aria-describedby`: the radio's name stays the label plus the meta, and the detail is read after it as the description. Use it for a short helpful sentence, not for essential text.
 
 ## Content rules
 

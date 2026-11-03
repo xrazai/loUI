@@ -49,6 +49,18 @@ export const Default: Story = {
 };
 
 /** Nothing overflows: a plain container, no tab stop and no landmark. */
+/** `maxBlockSize` lets the region grow with its content up to a cap, then scroll (a visible list of N rows). */
+export const MaxHeight: Story = {
+  args: { maxBlockSize: '8rem' },
+  decorators: [
+    (Story) => (
+      <StoryFrame width={280} box>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+};
+
 export const NotScrollable: Story = {
   args: { children: <Rows count={2} /> },
   play: async ({ canvasElement }) => {

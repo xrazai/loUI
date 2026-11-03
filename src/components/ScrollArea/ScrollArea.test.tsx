@@ -132,4 +132,58 @@ describe('ScrollArea', () => {
     await expect.element(screen.getByRole('region', { name: 'Long list' })).toBeInTheDocument();
     await expectNoA11yViolations(screen.container);
   });
+
+  describe('maxBlockSize', () => {
+    it('caps the height at a length and keeps the region focusable while it scrolls', async () => {
+      const screen = await renderWithProvider(
+        <ScrollArea aria-label="Fabrics" data-testid="area" maxBlockSize="120px">
+          <Rows count={30} />
+        </ScrollArea>,
+      );
+      const area = screen.getByTestId('area').element();
+      await expect.poll(() => area.getAttribute('data-scrollable')).toBe('true');
+      expect(area.getBoundingClientRect().height).toBeLessThanOrEqual(120);
+      expect(area.style.getPropertyValue('--ds-scroll-area-max-h')).toBe('120px');
+      await expect
+        .element(screen.getByRole('region', { name: 'Fabrics' }))
+        .toHaveAttribute('tabindex', '0');
+    });
+
+    it('treats a number as pixels and keeps a consumer style', async () => {
+      const screen = await renderWithProvider(
+        <ScrollArea
+          aria-label="Fabrics"
+          data-testid="area"
+          maxBlockSize={90}
+          style={{ color: 'red' }}
+        >
+          <Rows count={2} />
+        </ScrollArea>,
+      );
+      const area = screen.getByTestId('area').element();
+      expect(area.style.getPropertyValue('--ds-scroll-area-max-h')).toBe('90px');
+      expect(area.style.color).toBe('red');
+    });
+
+    it('shrinks to its content when it is shorter than the cap, with no tab stop', async () => {
+      const screen = await renderWithProvider(
+        <ScrollArea aria-label="Fabrics" data-testid="area" maxBlockSize="400px">
+          <Rows count={2} />
+        </ScrollArea>,
+      );
+      const area = screen.getByTestId('area').element();
+      await expect.poll(() => area.getAttribute('data-scrollable')).toBeNull();
+      expect(area.getBoundingClientRect().height).toBeLessThan(400);
+      expect(area.hasAttribute('tabindex')).toBe(false);
+    });
+
+    it('has no axe violations when capped', async () => {
+      const screen = await renderWithProvider(
+        <ScrollArea aria-label="Fabrics" maxBlockSize="120px">
+          <Rows count={30} />
+        </ScrollArea>,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
+  });
 });

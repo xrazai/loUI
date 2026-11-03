@@ -34,21 +34,23 @@ section (named by the heading)
 
 ## Props
 
-| Prop                                     | Type                       | Default                                                  | Notes                                                                                     |
-| ---------------------------------------- | -------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `items`                                  | `ChatMessage[]`            | required                                                 | The conversation, oldest first. (Named `items` because `messages` overrides the catalog.) |
-| `busy`                                   | `boolean`                  | `false`                                                  | Waiting for the first part of a reply.                                                    |
-| `onSend`                                 | `(text: string) => void`   |                                                          | Trimmed text. Called from Enter, the button and the suggested prompts.                    |
-| `onStop`                                 | `() => void`               |                                                          | Stop generating. The button is disabled while working without it.                         |
-| `onRetry`                                | `(message) => void`        |                                                          | Shows Retry on failed messages.                                                           |
-| `onClear`                                | `() => void`               |                                                          | Shows Clear when there are messages.                                                      |
-| `intro` / `prompts`                      | `ReactNode` / `string[]`   |                                                          | Empty state.                                                                              |
-| `renderContent`                          | `(message) => ReactNode`   | plain text                                               | Plug in a sanitized renderer (see below).                                                 |
-| `sendVariant`                            | `'secondary' \| 'primary'` | `'secondary'`                                            | See "Send button".                                                                        |
-| `title` / `headingLevel` / `placeholder` |                            | "Chat with the agent" / `2` / "Ask or request something" |                                                                                           |
-| `messages`                               | partial catalog            |                                                          | Every string, including the announcements.                                                |
+| Prop                                     | Type                         | Default                                                  | Notes                                                                                      |
+| ---------------------------------------- | ---------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `items`                                  | `ChatMessage[]`              | required                                                 | The conversation, oldest first. (Named `items` because `messages` overrides the catalog.)  |
+| `busy`                                   | `boolean`                    | `false`                                                  | Waiting for the first part of a reply.                                                     |
+| `busyLabel` / `busyIndicator`            | `string` / `ReactNode`       | "Thinking…" / `Spinner`                                  | Text of the busy row (also announced) and a replacement for its spinner (`null` for none). |
+| `getKey`                                 | `(message, index) => string` | `id`, else role + position                               | React key and history detection. Pass it when messages are inserted or removed mid-list.   |
+| `onSend`                                 | `(text: string) => void`     |                                                          | Trimmed text. Called from Enter, the button and the suggested prompts.                     |
+| `onStop`                                 | `() => void`                 |                                                          | Stop generating. The button is disabled while working without it.                          |
+| `onRetry`                                | `(message) => void`          |                                                          | Shows Retry on failed messages.                                                            |
+| `onClear`                                | `() => void`                 |                                                          | Shows Clear when there are messages.                                                       |
+| `intro` / `prompts`                      | `ReactNode` / `string[]`     |                                                          | Empty state.                                                                               |
+| `renderContent`                          | `(message) => ReactNode`     | plain text                                               | Plug in a sanitized renderer (see below).                                                  |
+| `sendVariant`                            | `'secondary' \| 'primary'`   | `'secondary'`                                            | See "Send button".                                                                         |
+| `title` / `headingLevel` / `placeholder` |                              | "Chat with the agent" / `2` / "Ask or request something" |                                                                                            |
+| `messages`                               | partial catalog              |                                                          | Every string, including the announcements.                                                 |
 
-`ChatMessage`: `{ id: string; role: 'user' | 'assistant'; content: string; status?: 'complete' | 'streaming' | 'error' }`. Ids must be stable and unique; they are the React keys.
+`ChatMessage`: `{ id?: string; role: 'user' | 'assistant'; content: string; status?: 'complete' | 'streaming' | 'error' }`. `id` is optional so `{ role, content }` objects work as they are. Without it the key is the role plus the position among messages of the same role (`user-0`, `assistant-1`), which is stable while the list only grows. If you insert, remove or reorder messages, give each one an `id` or pass `getKey`; keys must be unique and stable across renders. Never use the array index.
 
 ## Streaming and live regions (research notes)
 

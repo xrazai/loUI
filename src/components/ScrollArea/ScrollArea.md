@@ -25,10 +25,11 @@ div (overflow auto, scrollbar-width: thin)
 
 ## Props
 
-| Prop                             | Type                                   | Default      | Notes                                             |
-| -------------------------------- | -------------------------------------- | ------------ | ------------------------------------------------- |
-| `aria-label` / `aria-labelledby` | `string`                               | **required** | One of them. It names the region while it scrolls |
-| `orientation`                    | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | Which axes scroll                                 |
+| Prop                             | Type                                   | Default      | Notes                                                                                                                      |
+| -------------------------------- | -------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `aria-label` / `aria-labelledby` | `string`                               | **required** | One of them. It names the region while it scrolls                                                                          |
+| `orientation`                    | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | Which axes scroll                                                                                                          |
+| `maxBlockSize`                   | `string \| number`                     | none         | Height cap (CSS length, or pixels as a number). The region grows with its content up to it, then scrolls (stays focusable) |
 
 Other `div` attributes (not `role`, `tabIndex`) and `ref` go to the root. Give the area a height, or put it in a flex column and let it shrink; it scrolls inside the space its parent gives it.
 

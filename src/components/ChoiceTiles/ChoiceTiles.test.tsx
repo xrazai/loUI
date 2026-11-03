@@ -277,4 +277,35 @@ describe('ChoiceTiles', () => {
       await expectNoA11yViolations(screen.container);
     });
   });
+
+  describe('detail line', () => {
+    const withDetail = [
+      { value: 'standard', label: 'Standard', meta: '3-5 days', detail: 'Delivered to your door' },
+      { value: 'express', label: 'Express', meta: <b>1 day</b> },
+    ];
+
+    it('shows a second line as the radio description, not as part of its name', async () => {
+      const screen = await renderWithProvider(<Example options={withDetail} />);
+      const radio = screen.getByRole('radio', { name: /Standard/ });
+      await expect.element(screen.getByText('Delivered to your door')).toBeVisible();
+      await expect.element(radio).toHaveAccessibleDescription('Delivered to your door');
+      await expect.element(screen.getByRole('radio', { name: 'Standard 3-5 days' })).toBeVisible();
+    });
+
+    it('accepts a node as meta and sets no description without detail', async () => {
+      const screen = await renderWithProvider(<Example options={withDetail} />);
+      await expect.element(screen.getByText('1 day')).toBeVisible();
+      expect(
+        screen
+          .getByRole('radio', { name: /Express/ })
+          .element()
+          .getAttribute('aria-describedby'),
+      ).toBeNull();
+    });
+
+    it('has no axe violations', async () => {
+      const screen = await renderWithProvider(<Example options={withDetail} />);
+      await expectNoA11yViolations(screen.container);
+    });
+  });
 });

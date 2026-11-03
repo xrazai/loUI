@@ -1,5 +1,5 @@
 import { useImperativeHandle, useRef } from 'react';
-import type { ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef, CSSProperties } from 'react';
 import { classNames } from '../../utils/classNames';
 import styles from './ScrollArea.module.css';
 import { useScrollable } from './useScrollable';
@@ -25,6 +25,14 @@ type ScrollAreaBaseProps = Omit<
 > & {
   /** Which axes scroll. Default `vertical`. */
   orientation?: ScrollAreaOrientation;
+  /**
+   * Maximum height of the region: a CSS length (`"20rem"`, `"40vh"`) or a number of pixels. The
+   * region grows with its content up to this height and then scrolls, which suits a list that
+   * should show a fixed number of rows (a searchable picker). Set as the
+   * `--ds-scroll-area-max-h` custom property; without it the region is limited by its parent
+   * (`100%`). While it scrolls it stays a focusable, labelled region.
+   */
+  maxBlockSize?: number | string;
 };
 
 export type ScrollAreaProps = ScrollAreaBaseProps & ScrollAreaLabelProps;
@@ -40,7 +48,9 @@ export type ScrollAreaProps = ScrollAreaBaseProps & ScrollAreaLabelProps;
  */
 export function ScrollArea({
   orientation = 'vertical',
+  maxBlockSize,
   className,
+  style,
   children,
   ref,
   'aria-label': ariaLabel,
@@ -64,6 +74,15 @@ export function ScrollArea({
           }
         : {})}
       className={classNames(styles.root, className)}
+      style={
+        maxBlockSize === undefined
+          ? style
+          : ({
+              ...style,
+              '--ds-scroll-area-max-h':
+                typeof maxBlockSize === 'number' ? `${String(maxBlockSize)}px` : maxBlockSize,
+            } as CSSProperties)
+      }
       data-orientation={orientation}
       data-scrollable={scrollable ? 'true' : undefined}
     >
