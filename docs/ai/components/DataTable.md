@@ -15,7 +15,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
 
 ## Props
 

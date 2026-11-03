@@ -3862,6 +3862,12 @@
             "hasPlay": true
           },
           {
+            "name": "PickDate",
+            "id": "components-date-picker--pick-date",
+            "description": "Pointer path: open the calendar, click a day, the popover closes and the field shows the date. TEST-012.",
+            "hasPlay": true
+          },
+          {
             "name": "EscapeRestoresFocus",
             "id": "components-date-picker--escape-restores-focus",
             "hasPlay": true
@@ -7886,6 +7892,12 @@
             "hasPlay": true
           },
           {
+            "name": "SelectWithPointer",
+            "id": "components-combobox--select-with-pointer",
+            "description": "Pointer path: filter by typing, click the suggestion, the list closes and the value stays. TEST-012.",
+            "hasPlay": true
+          },
+          {
             "name": "WithSelection",
             "id": "components-combobox--with-selection",
             "hasPlay": true
@@ -8603,6 +8615,12 @@
           {
             "name": "EscapeCancels",
             "id": "components-confirm-dialog--escape-cancels",
+            "hasPlay": true
+          },
+          {
+            "name": "ConfirmFlow",
+            "id": "components-confirm-dialog--confirm-flow",
+            "description": "The whole destructive flow with a pointer: opening lands focus on Cancel (not on the red\nbutton), and the focus ring is part of the visual baseline. TEST-012.",
             "hasPlay": true
           },
           {
@@ -9935,6 +9953,12 @@
             "hasPlay": true
           },
           {
+            "name": "SortSelectPaginate",
+            "id": "components-data-table--sort-select-paginate",
+            "description": "Sort, select and paginate in one flow: the selection and the sort survive the page change. TEST-012.",
+            "hasPlay": true
+          },
+          {
             "name": "ClickableRows",
             "id": "components-data-table--clickable-rows",
             "description": "Clickable rows (`onRowAction`) and the active row, for a list that opens a detail panel.",
@@ -10508,6 +10532,12 @@
             "hasPlay": true
           },
           {
+            "name": "PickDate",
+            "id": "components-date-picker--pick-date",
+            "description": "Pointer path: open the calendar, click a day, the popover closes and the field shows the date. TEST-012.",
+            "hasPlay": true
+          },
+          {
             "name": "EscapeRestoresFocus",
             "id": "components-date-picker--escape-restores-focus",
             "hasPlay": true
@@ -10927,6 +10957,12 @@
           {
             "name": "EscapeCancels",
             "id": "components-confirm-dialog--escape-cancels",
+            "hasPlay": true
+          },
+          {
+            "name": "ConfirmFlow",
+            "id": "components-confirm-dialog--confirm-flow",
+            "description": "The whole destructive flow with a pointer: opening lands focus on Cancel (not on the red\nbutton), and the focus ring is part of the visual baseline. TEST-012.",
             "hasPlay": true
           },
           {
@@ -37249,7 +37285,7 @@
         "path": "src/components/Tour/Tour.md",
         "summary": "Step-by-step onboarding hints anchored to elements of the page. Each step is a non-modal popover (React Aria `Popover` with `isNonModal`) with a title, a short text, a \"Step 2 of 5\" counter and Skip, Back and Next or Done buttons. Generic: it lives in the core entry point.",
         "whenToUse": [
-          "Introducing a screen to a first-time user in a few steps (three to six).",
+          "Guiding new users through the interface with a few onboarding hints (three to six steps) that introduce a screen.",
           "Pointing at controls that are not obvious from their label."
         ],
         "whenNotToUse": [
@@ -37269,7 +37305,7 @@
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- Introducing a screen to a first-time user in a few steps (three to six).\n- Pointing at controls that are not obvious from their label."
+            "content": "- Guiding new users through the interface with a few onboarding hints (three to six steps) that introduce a screen.\n- Pointing at controls that are not obvious from their label."
           },
           {
             "id": "when-not-to-use",

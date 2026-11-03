@@ -14,7 +14,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 - Import: `import { ConfirmDialog } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/ConfirmDialog.tsx`
-- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
+- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
 
 ## Props
 

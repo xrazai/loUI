@@ -2559,7 +2559,7 @@ ringed and named "Today".
 - Import: `import { Calendar } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/Calendar.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
 
 #### Props
 
@@ -3687,7 +3687,7 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 - Import: `import { Combobox } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
-- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
+- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, SelectWithPointer, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
 
 #### Props
 
@@ -3987,7 +3987,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 - Import: `import { ConfirmDialog } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/ConfirmDialog.tsx`
-- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
+- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
 
 #### Props
 
@@ -4334,7 +4334,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
 
 #### Props
 
@@ -4533,7 +4533,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 - Import: `import { DatePicker } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/DatePicker.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
 
 #### Props
 
@@ -4775,7 +4775,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 - Import: `import { Dialog } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/Dialog.tsx`
-- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
+- Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
 
 #### Props
 
@@ -13584,7 +13584,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### When to use
 
-- Introducing a screen to a first-time user in a few steps (three to six).
+- Guiding new users through the interface with a few onboarding hints (three to six steps) that introduce a screen.
 - Pointing at controls that are not obvious from their label.
 
 #### When not to use

@@ -13,7 +13,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 - Import: `import { DatePicker } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/DatePicker.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
 
 ## Props
 
