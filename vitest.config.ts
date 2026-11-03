@@ -49,6 +49,9 @@ export default defineConfig({
           name: 'visual',
           include: ['tests/visual/**/*.test.tsx'],
           setupFiles: ['src/test/setup.ts'],
+          // Flaky-test policy (docs/contributing/flaky-tests.md): retries only here and only in CI,
+          // where font rasterization can differ by a pixel on a cold container. Never elsewhere.
+          retry: process.env.CI ? 2 : 0,
           // Wide enough for the widest stories (DataTable, MatrixGrid); a fixed size keeps captures deterministic.
           browser: browser('visual', { width: 1024, height: 800 }),
         },
