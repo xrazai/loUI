@@ -264,8 +264,7 @@ describe('Dialog', () => {
       const screen = await renderWithProvider(<SheetWithDialog />);
       const sheet = screen.getByRole('dialog', { name: 'Order' });
       await expect.element(sheet).toBeVisible();
-      // Open from the keyboard: focus restoration targets the element that had focus, and a
-      // pointer click during the sheet's entry animation does not always leave it focused.
+      // Opened from the keyboard; the pointer path has its own test below (TEST-022).
       const trigger = screen.getByRole('button', { name: 'Delete order' });
       trigger.element().focus();
       await expect.element(trigger).toHaveFocus();
@@ -283,6 +282,26 @@ describe('Dialog', () => {
 
       await userEvent.keyboard('{Escape}');
       await expect.poll(() => none()).toBe(true);
+    });
+
+    it('restores focus to the trigger after a pointer-opened Dialog inside a Sheet', async () => {
+      const screen = await renderWithProvider(<SheetWithDialog />);
+      const trigger = screen.getByRole('button', { name: 'Delete order' });
+      await expect.element(trigger).toBeVisible();
+      // TEST-022: React Aria's Dialog focuses itself once its entry animation ends (`!isEntering`
+      // in useDialog). A pointer click that lands before that moment opens the nested Dialog, and
+      // the Sheet then moves focus to itself, so Escape restored focus to the Sheet instead of the
+      // trigger on a loaded machine. Real users do not click within the first 150 ms; the test
+      // waits for the entry to finish, which is the state it means to cover.
+      await settled();
+      await trigger.click();
+      await expect
+        .element(screen.getByRole('dialog', { name: 'Delete order #1048?' }))
+        .toBeVisible();
+
+      await userEvent.keyboard('{Escape}');
+      await expect.poll(() => screen.getByRole('dialog').elements().length).toBe(1);
+      await expect.element(screen.getByRole('button', { name: 'Delete order' })).toHaveFocus();
     });
 
     it('stacks the Dialog above the Sheet', async () => {
