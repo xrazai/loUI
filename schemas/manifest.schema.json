@@ -104,7 +104,11 @@
         "required": { "type": "boolean" },
         "default": { "type": "string" },
         "description": { "type": "string" },
-        "values": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        "values": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "deprecated": {
+          "type": "string",
+          "description": "Present when the prop is marked @deprecated in TSDoc. The value is the migration hint (for example \"Use variant instead\"); an empty string means no hint was given."
+        }
       }
     },
     "inheritedGroup": {

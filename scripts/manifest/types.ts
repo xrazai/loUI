@@ -11,6 +11,11 @@ export interface ManifestProp {
   description: string;
   /** Allowed values when the type is a union of string literals. */
   values?: string[];
+  /**
+   * Present when the prop's TSDoc carries `@deprecated`. The text after the tag is the migration
+   * hint (`Use X instead`); an empty string means deprecated without a hint.
+   */
+  deprecated?: string;
 }
 
 export interface InheritedGroup {
