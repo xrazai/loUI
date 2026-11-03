@@ -8,6 +8,7 @@ export {
   formatDate,
   formatRelativeDays,
   isISODate,
+  toCalendarDay,
   toISODate,
 } from './date';
 export type { DateStyle, DueStatus, DueTone, ISODate } from './date';

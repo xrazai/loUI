@@ -185,9 +185,17 @@ export { Slider } from './components/Slider';
 export type { SliderProps } from './components/Slider';
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
 export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
-export { Description, FieldError, FieldMessages, Label, RequiredMark } from './components/Field';
+export {
+  Description,
+  ErrorText,
+  FieldError,
+  FieldMessages,
+  Label,
+  RequiredMark,
+} from './components/Field';
 export type {
   DescriptionProps,
+  ErrorTextProps,
   FieldErrorMessage,
   FieldErrorProps,
   FieldLabelingProps,
@@ -308,7 +316,13 @@ export type {
   ChoiceTilesSize,
 } from './components/ChoiceTiles';
 export { DueIndicator } from './components/DueIndicator';
-export type { DueIndicatorProps } from './components/DueIndicator';
+export type {
+  DueDateInput,
+  DueIndicatorDateProps,
+  DueIndicatorLabelProps,
+  DueIndicatorProps,
+  DueIndicatorTone,
+} from './components/DueIndicator';
 export { StatusSteps } from './components/StatusSteps';
 export type { StatusStep, StatusStepState, StatusStepsProps } from './components/StatusSteps';
 export { Swatch, isHexColor } from './components/Swatch';

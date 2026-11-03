@@ -270,6 +270,26 @@ describe('ActionList', () => {
       expect((third.element() as HTMLInputElement).checked).toBe(false);
     });
 
+    it('moves focus to the clicked row, so the keyboard continues from there', async () => {
+      const onAction = vi.fn();
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          defaultSelectedKeys={['contract']}
+          onAction={onAction}
+        />,
+      );
+      await userEvent.click(screen.getByText('Price list 2026'));
+      const rows = screen.getByRole('row').all();
+      expect(rows[1]?.element().contains(document.activeElement)).toBe(true);
+      await userEvent.keyboard('{ArrowDown}');
+      expect(rows[2]?.element().contains(document.activeElement)).toBe(true);
+      await userEvent.keyboard('{Enter}');
+      expect(onAction).toHaveBeenLastCalledWith(items[2]);
+    });
+
     it('disables the checkbox of a disabled row', async () => {
       const disabled = items.map((item, index) =>
         index === 1 ? { ...item, isDisabled: true } : item,

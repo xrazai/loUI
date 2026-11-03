@@ -108,4 +108,4 @@ A checkbox with a native `<input type="checkbox">`, an 18px box and an optional 
 - Instead, see Switch: An on/off setting that applies at once: `Switch`.
 - Instead, see RadioGroup: One choice from several: `RadioGroup`.
 - Renders: FieldMessages, Icon, RequiredMark
-- Used by: DataTable
+- Used by: ActionList, DataTable

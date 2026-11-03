@@ -8,17 +8,17 @@ Body text on the type scale, with a tone, an optional mono face and truncation.
 - Import: `import { Text } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Text/Text.tsx`
-- Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Mono, AsParagraph, Truncated, LongText, RightToLeft
+- Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Success, Warning, Danger, Mono, AsParagraph, Truncated, LongText, RightToLeft
 
 ## Props
 
-| Prop       | Type                                                                                                                   | Required | Default     | Description                                                                                                                                                                                                                                                                 |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `size`     | `'body' \| 'caption' \| 'label' \| 'meta' \| 'small'`                                                                  |          | `'body'`    | Type scale step: `body` 15px, `small` 14px, `label` 13px, `meta` 12px, or `caption` 11.5px. `caption` is always Geist Mono, uppercase by CSS, with extra tracking: write the source text in sentence case. Default `body`.                                                  |
-| `tone`     | `'default' \| 'secondary' \| 'tertiary'`                                                                               |          | `'default'` | Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals the lowest importance: use it for meta and hints, never for primary content. Default `default`. |
-| `mono`     | `boolean`                                                                                                              |          | `false`     | Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts.                                                                                                                                                                                             |
-| `truncate` | `boolean`                                                                                                              |          | `false`     | Keeps the text on one line and cuts it with an ellipsis. Put the full text in `title` or nearby for sighted users.                                                                                                                                                          |
-| `as`       | `'span' \| 'dd' \| 'div' \| 'dt' \| 'em' \| 'figcaption' \| 'label' \| 'legend' \| 'li' \| 'p' \| 'small' \| 'strong'` |          | `'span'`    | Element to render. Default `span`, which is safe inside any inline context; use `p` for a paragraph.                                                                                                                                                                        |
+| Prop       | Type                                                                                                                   | Required | Default     | Description                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`     | `'body' \| 'caption' \| 'label' \| 'meta' \| 'small'`                                                                  |          | `'body'`    | Type scale step: `body` 15px, `small` 14px, `label` 13px, `meta` 12px, or `caption` 11.5px. `caption` is always Geist Mono, uppercase by CSS, with extra tracking: write the source text in sentence case. Default `body`.                                                                                                                                                                                                             |
+| `tone`     | `'default' \| 'secondary' \| 'tertiary' \| 'success' \| 'warning' \| 'danger'`                                         |          | `'default'` | Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals the lowest importance: use it for meta and hints, never for primary content. `success`, `warning` and `danger` are signal colours (4.5:1 on the base surfaces): always pair them with words that carry the meaning, never colour alone. Default `default`. |
+| `mono`     | `boolean`                                                                                                              |          | `false`     | Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts.                                                                                                                                                                                                                                                                                                                                                        |
+| `truncate` | `boolean`                                                                                                              |          | `false`     | Keeps the text on one line and cuts it with an ellipsis. Put the full text in `title` or nearby for sighted users.                                                                                                                                                                                                                                                                                                                     |
+| `as`       | `'span' \| 'dd' \| 'div' \| 'dt' \| 'em' \| 'figcaption' \| 'label' \| 'legend' \| 'li' \| 'p' \| 'small' \| 'strong'` |          | `'span'`    | Element to render. Default `span`, which is safe inside any inline context; use `p` for a paragraph.                                                                                                                                                                                                                                                                                                                                   |
 
 ### Inherited props
 
@@ -27,11 +27,11 @@ Body text on the type scale, with a tone, an optional mono face and truncation.
 ## Variants, sizes and tones
 
 - `size`: `body`, `caption`, `label`, `meta`, `small`
-- `tone`: `default`, `secondary`, `tertiary`
+- `tone`: `default`, `secondary`, `tertiary`, `success`, `warning`, `danger`
 
 ## Design tokens used
 
-`--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-warning`, `--ds-weight-medium`, `--ds-weight-regular`
 
 ## When to use
 
@@ -53,6 +53,7 @@ span (or the element in `as`)
 ## Accessibility
 
 - `tertiary` passes 4.5:1 on every surface (TOK-004), but it carries the lowest importance: use it for hints and meta, never for primary content.
+- `success`, `warning` and `danger` pass 4.5:1 on bg, surface and raised. The colour only reinforces: the words must carry the meaning ("Select at least one color."), never colour alone. For an error tied to a group of controls use `ErrorText`.
 - Truncated text hides content visually: show the full value elsewhere (a `title`, a tooltip, a detail view) when it matters.
 - The caption's uppercase is CSS only, so screen readers read the sentence-case source.
 - Long unbroken values wrap (`overflow-wrap: break-word`).

@@ -45,6 +45,7 @@ const {
   Dialog,
   DueIndicator,
   EmptyState,
+  ErrorText,
   FieldError,
   FieldMessages,
   FileUpload,
@@ -188,6 +189,7 @@ const CASES: Record<string, () => ReactElement> = {
   ScrollArea: () => <ScrollArea aria-label="Area">x</ScrollArea>,
   Stack: () => <Stack gap={2}>x</Stack>,
   Text: () => <Text>x</Text>,
+  ErrorText: () => <ErrorText>Choose at least one colour.</ErrorText>,
   CommandPalette: () => (
     <CommandPalette commands={[{ id: 'a', label: 'Alpha', onAction: () => undefined }]} />
   ),

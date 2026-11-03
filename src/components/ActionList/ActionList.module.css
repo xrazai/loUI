@@ -5,6 +5,7 @@
 
   .root {
     box-sizing: border-box;
+    container-type: inline-size;
     min-inline-size: 0;
     color: var(--ds-text);
     outline: none;
@@ -106,6 +107,45 @@
     display: flex;
     flex: none;
     align-items: center;
+  }
+
+  /* In a narrow list (the root is the container) the meta, such as a module label or a due
+     chip, moves under the title, so the title keeps its width. */
+  @container (max-width: 480px) {
+    .item {
+      display: grid;
+      grid-template-areas:
+        'selection leading body actions'
+        'selection leading meta actions';
+      grid-template-columns: auto auto minmax(0, 1fr) auto;
+      gap: 0;
+    }
+
+    .selection {
+      grid-area: selection;
+      margin-inline-end: var(--ds-space-3);
+    }
+
+    .leading {
+      grid-area: leading;
+      margin-inline-end: var(--ds-space-3);
+    }
+
+    .body {
+      grid-area: body;
+    }
+
+    .meta {
+      flex-wrap: wrap;
+      grid-area: meta;
+      justify-self: start;
+      margin-block-start: var(--ds-space-1);
+    }
+
+    .actions {
+      grid-area: actions;
+      margin-inline-start: var(--ds-space-3);
+    }
   }
 
   @media (forced-colors: active) {

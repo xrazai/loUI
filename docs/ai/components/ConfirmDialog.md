@@ -98,6 +98,8 @@ DialogTrigger
 
 Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (45) < dropdown (50) < popover (55) < toast (58) < tooltip (60). A `Select`, `Menu`, `Popover` or `Combobox` opened from inside a Dialog or Sheet therefore renders **above** it. This is safe because a modal blocks page-level popovers while it is open. Tests assert the order.
 
+Controlled use without a `trigger` renders the overlay directly, without a `DialogTrigger`, so opening the dialog logs nothing to the console (GAP-022). Focus still returns to the element focused before it opened.
+
 ## Content rules
 
 - Title: a question for confirmations that names the object ("Delete order #1048?"), otherwise verb plus object or a noun phrase ("Edit customer"). Sentence case, no exclamation marks.

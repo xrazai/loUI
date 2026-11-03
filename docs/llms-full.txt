@@ -1325,7 +1325,7 @@ A stack of sections that expand and collapse. Each header is a heading that wrap
 ### ActionList
 
 > A vertical list of records, each with a title, optional description, a mono meta value and a
-"more actions" menu. Built on React Aria `GridList`: rows are reached with the arrow keys
+"more actions" menu, with optional row checkboxes (`selectionMode="multiple"`). Built on React Aria `GridList`: rows are reached with the arrow keys
 (one tab stop for the list), `Enter` runs `onAction`, and `Tab` or the right arrow moves
 from a row to its menu button.
 
@@ -1334,7 +1334,7 @@ A vertical list of records. Each row has an optional leading node, a title, an o
 - Import: `import { ActionList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ActionList/ActionList.tsx`
-- Stories (Storybook title `Components/ActionList`): Default, Actionable, KeyboardNavigation, RowMenu, Borderless, WithLeadingAndLongText, DisabledRow, Empty, CustomEmpty, PortugueseBrazil
+- Stories (Storybook title `Components/ActionList`): Default, Actionable, KeyboardNavigation, RowMenu, Borderless, WithLeadingAndLongText, DisabledRow, Empty, CustomEmpty, PortugueseBrazil, WithCheckboxes, CheckboxWithRowActionAndMenu, TaskRows, DoneRows, CheckboxesLongText, CheckboxesDisabledRow, ToggleWithUndo
 
 #### Props
 
@@ -1344,9 +1344,13 @@ A vertical list of records. Each row has an optional leading node, a title, an o
 | `className` | `string` |  |  | Class name for the list root. |
 | `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the list root element. |
 | `onAction` | `(item: ActionListItem) => void` |  |  | Called when the user activates a row (click, or Enter on the focused row). Makes the whole row a press target with hover and pointer cursor. The menu button does not trigger it. |
+| `selectionMode` | `'none' \| 'multiple'` |  | `'none'` | Adds a checkbox at the start of every row. `'multiple'` toggles rows independently (the checkbox toggles, the row still runs `onAction`). Default `'none'`. |
+| `selectedKeys` | `"all" \| Iterable<Key>` |  |  | Controlled selected row ids. Use together with `onSelectionChange`. |
+| `defaultSelectedKeys` | `"all" \| Iterable<Key>` |  |  | Initially selected row ids (uncontrolled). |
+| `onSelectionChange` | `(keys: Selection) => void` |  |  | Called when the checkbox of a row is toggled (click, or `Space` on the focused row or checkbox). The list never shows an Undo toast itself: update your state, then call `toastWithUndo` (reversible toggles never ask for confirmation). |
 | `bordered` | `boolean` |  | `true` | Draws the border, surface and radius around the list. Turn off inside a `Card`. Default `true`. |
 | `emptyState` | `ReactNode` |  |  | Content when `items` is empty. Default: an `EmptyState` with built-in text. |
-| `messages` | `Partial<{ moreActions: (title: string) => string; emptyTitle: string; emptyDescription: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `messages` | `Partial<{ moreActions: (title: string) => string; select: string; done: string; emptyTitle: string; emptyDescription: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 | `aria-label` | `string` |  |  | Accessible name of the list. Required unless `aria-labelledby` is set. |
 | `aria-labelledby` | `string` |  |  | Id of the element that names the list (a visible heading). |
 
@@ -1367,12 +1371,14 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | Key | English default | Notes |
 | --- | --- | --- |
 | `moreActions(title: string)` | `More actions for {title}` | Accessible name of the row actions button. `title` is the text of the row ("More actions for Price list"). |
+| `select` | `Select` | Start of the accessible name of a row checkbox. React Aria appends the text of the row ("Select" + "Price list 2026"), so keep it a bare verb. |
+| `done` | `Done` | Visually hidden text added to a row marked `isDone`, read after the title. |
 | `emptyTitle` | `No items found` | Title of the default empty state. |
 | `emptyDescription` | `Try another filter or search term.` | Description of the default empty state. |
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-line`, `--ds-line-subtle`, `--ds-radius-lg`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-weight-medium`
+`--ds-accent`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-line`, `--ds-line-subtle`, `--ds-radius-lg`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
 
 #### When to use
 
@@ -1381,7 +1387,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### When not to use
 
-- Many comparable columns, sorting or selection: use `DataTable`.
+- Many comparable columns or sorting: use `DataTable`.
 - Navigation between pages: use `NavItem` or `Tabs`.
 - Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
 
@@ -1390,31 +1396,79 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 ```
 div[role=grid]            named by aria-label / aria-labelledby
   div[role=row]           one tab stop for the whole list; arrow keys move between rows
+    Checkbox  selection   optional (selectionMode="multiple"), named "Select {title}"
     span  leading         optional (Avatar, Icon)
     span  title / description
-    span  meta            mono, text-2
+    span  meta            mono, text-2; a node: a module label plus a Badge / DueIndicator
     MoreActionsMenu       IconButton "More actions for {title}" + Menu (optional)
 ```
 
+In a list 480 px wide or narrower (a container query on the list, not the viewport), `meta` moves under the title and description, so a long title keeps its width instead of shrinking to a few characters next to a due chip.
+
 #### Props (key ones)
 
-| Prop         | Type                | Default | Notes                                                                                 |
-| ------------ | ------------------- | ------- | ------------------------------------------------------------------------------------- |
-| `items`      | `ActionListItem[]`  | -       | `id`, `title`, `textValue`, `description`, `meta`, `leading`, `actions`, `isDisabled` |
-| `aria-label` | `string`            | -       | Required (or `aria-labelledby`)                                                       |
-| `onAction`   | `(item) => void`    |         | Row click or Enter. Makes the row a press target                                      |
-| `bordered`   | `boolean`           | `true`  | Border, surface and radius. Turn off inside a `Card`                                  |
-| `emptyState` | `ReactNode`         |         | Default: compact `EmptyState` with built-in text                                      |
-| `messages`   | `Partial<messages>` |         | `moreActions(title)`, `emptyTitle`, `emptyDescription`                                |
+| Prop                                   | Type                        | Default  | Notes                                                                                           |
+| -------------------------------------- | --------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `items`                                | `ActionListItem[]`          | -        | `id`, `title`, `textValue`, `description`, `meta`, `leading`, `actions`, `isDisabled`, `isDone` |
+| `aria-label`                           | `string`                    | -        | Required (or `aria-labelledby`)                                                                 |
+| `onAction`                             | `(item) => void`            |          | Row click or Enter. Makes the row a press target                                                |
+| `selectionMode`                        | `'none' \| 'multiple'`      | `'none'` | `'multiple'` adds a checkbox to every row (toggle behavior)                                     |
+| `selectedKeys` / `defaultSelectedKeys` | `'all' \| Iterable<Key>`    |          | Controlled / initial selected row ids                                                           |
+| `onSelectionChange`                    | `(keys: Selection) => void` |          | Called when a checkbox is toggled. The consumer owns Undo                                       |
+| `bordered`                             | `boolean`                   | `true`   | Border, surface and radius. Turn off inside a `Card`                                            |
+| `emptyState`                           | `ReactNode`                 |          | Default: compact `EmptyState` with built-in text                                                |
+| `messages`                             | `Partial<messages>`         |          | `moreActions(title)`, `select`, `done`, `emptyTitle`, `emptyDescription`                        |
 
 `actions` is a node: `MenuItem`, `MenuSection` and `MenuSeparator` elements from `Menu`. Put the handler on the item (`<MenuItem onAction={...}>`). Destructive items use `tone="danger"` and still ask for confirmation in a dialog.
 
 The list renders `items` in the order given. Lists are alphabetical by default in this design system: pass them through `sortByText` first (exceptions: tasks by urgency, dated records newest first).
 
+#### Checkbox rows and done state
+
+```tsx
+const [done, setDone] = useState<Set<string>>(new Set());
+
+<ActionList
+  aria-label="Tasks"
+  selectionMode="multiple"
+  selectedKeys={done}
+  onSelectionChange={(keys) => {
+    if (keys === 'all') return;
+    const before = done;
+    setDone(new Set([...keys].map(String)));
+    toastWithUndo('Task updated', { onUndo: () => setDone(before) });
+  }}
+  onAction={(task) => openTask(task.id)}
+  items={tasks.map((task) => ({
+    id: task.id,
+    title: task.name,
+    isDone: done.has(task.id),
+    meta: (
+      <>
+        <span>{task.module}</span>
+        <DueIndicator date={task.due} />
+      </>
+    ),
+    actions: <MenuItem onAction={() => edit(task)}>Edit task</MenuItem>,
+  }))}
+/>;
+```
+
+- `isDone` and the checkbox are independent: the list does not derive one from the other. A to-do usually passes `isDone: selected` as above.
+- `isDone` sets the title to `text-3` with a line-through (also in forced colors) and adds a visually hidden "Done" after the title (`messages.done`), so the state is never color or decoration alone.
+- Toggling is reversible, so it never asks for confirmation. The list does not toggle silently with undo built in: show `toastWithUndo` from `onSelectionChange` as above.
+
+#### Design note (GAP-017, GAP-015)
+
+Decision: extend `ActionList`; no separate `CheckList`. A checkbox list is the same anatomy (title, description, meta, menu) plus a leading control, and consumers need both the checkbox and the row action, which is what `GridList` models. Only `selectionMode: 'none' | 'multiple'` is exposed with `selectionBehavior="toggle"` fixed; `single` is a different pattern (`RadioGroup`, `ListBox`). The "control, module label, due chip, actions" row is built with the existing slots: the checkbox is the selection control, `meta` accepts nodes (module label plus `Badge` or `DueIndicator`), `actions` is the menu. No new slot was needed.
+
+React Aria turns a row into a pure selection toggle as soon as one row is selected, which would silence `onAction`. With `selectionMode="multiple"` the list therefore handles the row action itself (click on the row content, `Enter` on the focused row), so it works whether or not rows are selected. Only the checkbox and `Space` toggle selection.
+
 #### Accessibility
 
 - `GridList` gives `role="grid"` with `row` and `gridcell` roles; rows are not a `list`/`listitem` pair because they are focusable and actionable.
 - Keyboard: `Tab` enters the list on one row (one tab stop); Arrow Up/Down, Home and End move between rows; Arrow Right moves from the row to its menu button (Arrow Left back); `Enter` on a row runs `onAction`; the menu button follows the Menu contract (`Enter`/`Space`/`Arrow Down` opens, `Escape` closes and focus returns to the button).
+- With `selectionMode="multiple"`: `Space` on the focused row (or on its checkbox) toggles it, `Enter` and a click on the row content run `onAction`, a click on the checkbox toggles. Each checkbox is named "Select {title}" (React Aria composes the message `select` with the row text). `Tab`/`ArrowRight` moves from the row to its checkbox and menu button.
 - Every menu button has its own name ("More actions for Price list 2026") so a screen reader user can tell them apart.
 - Row actions never rely on color; the meta value is text. Disabled rows are dimmed and skipped.
 - Known quirk: React Aria moves focus to the row after an overlay inside a row closes. The component hands focus back to the button that was pressed.
@@ -1450,13 +1504,13 @@ The list renders `items` in the order given. Lists are alphabetical by default i
 
 #### Related components
 
-- Instead, see DataTable: Many comparable columns, sorting or selection: use `DataTable`.
+- Instead, see DataTable: Many comparable columns or sorting: use `DataTable`.
 - Instead, see NavItem: Navigation between pages: use `NavItem` or `Tabs`.
 - Instead, see Tabs: Navigation between pages: use `NavItem` or `Tabs`.
 - Instead, see RadioGroup: Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
 - Instead, see CheckboxGroup: Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
 - Instead, see Select: Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
-- Renders: EmptyState, MoreActionsMenu
+- Renders: Checkbox, EmptyState, MoreActionsMenu, VisuallyHidden
 
 ### AgentCard
 
@@ -3176,7 +3230,7 @@ A checkbox with a native `<input type="checkbox">`, an 18px box and an optional 
 - Instead, see Switch: An on/off setting that applies at once: `Switch`.
 - Instead, see RadioGroup: One choice from several: `RadioGroup`.
 - Renders: FieldMessages, Icon, RequiredMark
-- Used by: DataTable
+- Used by: ActionList, DataTable
 
 ### CheckboxGroup
 
@@ -4081,6 +4135,8 @@ DialogTrigger
 
 Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (45) < dropdown (50) < popover (55) < toast (58) < tooltip (60). A `Select`, `Menu`, `Popover` or `Combobox` opened from inside a Dialog or Sheet therefore renders **above** it. This is safe because a modal blocks page-level popovers while it is open. Tests assert the order.
 
+Controlled use without a `trigger` renders the overlay directly, without a `DialogTrigger`, so opening the dialog logs nothing to the console (GAP-022). Focus still returns to the element focused before it opened.
+
 #### Content rules
 
 - Title: a question for confirmations that names the object ("Delete order #1048?"), otherwise verb plus object or a noun phrase ("Edit customer"). Sentence case, no exclamation marks.
@@ -4707,7 +4763,7 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 - Import: `import { Description } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
-- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
 
 #### Props
 
@@ -4728,16 +4784,17 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 #### Exports
 
-| Export                                 | What it is                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
-| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
-| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
-| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
-| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
-| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
 
 #### Anatomy and spacing
 
@@ -4808,6 +4865,28 @@ Rules for authors:
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
 
 #### Accessibility
 
@@ -4913,6 +4992,8 @@ DialogTrigger
 ##### Layers
 
 Overlays are portaled to `body`, each with its own layer: sheet (40) < dialog (45) < dropdown (50) < popover (55) < toast (58) < tooltip (60). A `Select`, `Menu`, `Popover` or `Combobox` opened from inside a Dialog or Sheet therefore renders **above** it. This is safe because a modal blocks page-level popovers while it is open. Tests assert the order.
+
+Controlled use without a `trigger` renders the overlay directly, without a `DialogTrigger`, so opening the dialog logs nothing to the console (GAP-022). Focus still returns to the element focused before it opened.
 
 #### Content rules
 
@@ -5271,36 +5352,44 @@ const [open, setOpen] = useState(false);
 ### DueIndicator
 
 > A due date with a status in words: "Mar 9  Overdue by 3 days", "Due today", "Due in 5 days",
-"Paid". A dot and the text color follow the tone (`danger` overdue, `warning` within a week,
-`neutral` later, `success` paid), but the status is always text, never color alone.
+"Paid", "Paid Oct 30". A dot and the text color follow the tone (`danger` overdue, `warning`
+within a week, `neutral` later, `success` paid), but the status is always text, never color
+alone. Pass `label` + `tone` instead of `date` for free-text chips ("Pickup at 2 pm").
 
 The urgency comes from `dueStatus`, the wording from messages and `Intl` (`formatRelativeDays`),
 the date from `formatDate`. Day arithmetic is calendar-based, so daylight-saving changes never
 shift the count.
 
-A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Due today", "Due in 5 days", "Paid". Color reinforces the status; the text always states it.
+A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Due today", "Due in 5 days", "Paid", "Paid Oct 30". Color reinforces the status; the text always states it.
 
 - Handoff source: `components/erp/DueIndicator.jsx` (TODO `CMP-PAT-07`).
 
 - Import: `import { DueIndicator } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DueIndicator/DueIndicator.tsx`
-- Stories (Storybook title `Components/DueIndicator`): Default, Overdue, DueToday, DueTomorrow, Later, Paid, WithoutDate, LongDate, AcrossDaylightSaving, AllTones, Portuguese, RightToLeft
+- Stories (Storybook title `Components/DueIndicator`): Default, Overdue, DueToday, DueTomorrow, Later, Paid, PaidWithDate, DateObject, DateTimeString, LabelAndTone, WithoutDate, LongDate, AcrossDaylightSaving, AllTones, Portuguese, RightToLeft
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `date` | `string` | yes |  | The due date as `YYYY-MM-DD` (`ISODate`). Invalid values throw in development. |
-| `today` | `string` |  |  | The current day as `YYYY-MM-DD`. Defaults to the user's local day at render time. Pass it to make output deterministic (tests, stories, server rendering with a known day). |
-| `paid` | `boolean` |  | `false` | The item is settled: shows "Paid" in the success tone, whatever the date. |
-| `showDate` | `boolean` |  | `true` | Shows the formatted date before the status. Default `true`. |
-| `dateStyle` | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'` |  | `'monthDay'` | Format of the date (`formatDate` styles). Default `monthDay` ("Mar 9"). |
-| `messages` | `Partial<{ overdue: (days: number) => string; due: (relative: string) => string; paid: string; }>` |  |  | Message overrides for this instance. |
+| `date` | `DueDateInput` |  |  | The due date: `YYYY-MM-DD` (`ISODate`, never shifted by a time zone), a `Date` or an ISO date-time string (`2026-10-31T23:30:00-03:00`). A `Date` or date-time maps to the **local** calendar day of the viewer. Invalid values throw in development. |
+| `today` | `DueDateInput` |  |  | The current day, same accepted forms as `date`. Defaults to the user's local day at render time. Pass it to make output deterministic (tests, stories, server rendering). |
+| `paid` | `boolean` |  |  | The item is settled: shows "Paid" in the success tone, whatever the date. |
+| `paidDate` | `DueDateInput` |  |  | The day the item was paid (same forms as `date`). Implies `paid` and shows "Paid Oct 30" from the `paidOn` message, formatted with `dateStyle`. |
+| `showDate` | `boolean` |  |  | Shows the formatted date before the status. Default `true`. |
+| `dateStyle` | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'` |  |  | Format of the date (`formatDate` styles). Default `monthDay` ("Mar 9"). |
+| `label` | `string` |  |  | The status text ("Pickup at 2 pm"). It carries the meaning; the tone only reinforces it. |
+| `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the dot and the text. |
+| `messages` | `Partial<{ overdue: (days: number) => string; due: (relative: string) => string; paid: string; paidOn: (date: string) => string; }>` |  |  | Message overrides for this instance. |
 
 ##### Inherited props
 
 - Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `tone`: `neutral`, `accent`, `success`, `warning`, `danger`
 
 #### Messages (i18n)
 
@@ -5311,10 +5400,11 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `overdue(days: number)` | `Overdue by 2 days` | Status of a date in the past. `days` is a positive whole number. |
 | `due(relative: string)` | `Due {relative}` | Status of a date today or later. `relative` is the locale's relative time from `formatRelativeDays` ("today", "tomorrow", "in 3 days"). |
 | `paid` | `Paid` | Status of a settled item: the due date no longer matters. |
+| `paidOn(date: string)` | `Paid {date}` | Status of an item paid on a known day. `date` is already formatted for the locale ("Oct 30"). Word it without grammatical gender so it fits any item ("Paid", not "Paga"). |
 
 #### Design tokens used
 
-`--ds-danger`, `--ds-due-indicator-dot-size`, `--ds-due-indicator-gap`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-label`, `--ds-lh-label`, `--ds-radius-pill`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-accent`, `--ds-danger`, `--ds-due-indicator-dot-size`, `--ds-due-indicator-gap`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-label`, `--ds-lh-label`, `--ds-radius-pill`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 #### When to use
 
@@ -5335,6 +5425,34 @@ span[data-tone=danger|warning|neutral|success]
   span.status       "Overdue by 3 days" | "Due today" | "Due in 5 days" | "Paid"
 ```
 
+#### Time zones
+
+- `YYYY-MM-DD` is a calendar day with no time zone and takes a fast path: it is used as written and never shifted.
+- A `Date` or an ISO date-time string (`2026-10-31T23:30:00-03:00`, `2026-10-31T23:30:00Z`) is an instant. It is converted to the **viewer's local calendar day** with `toISODate`, so `2026-11-01T01:30:00Z` is Oct 31 in Sao Paulo and Nov 1 in Berlin. A date-time without an offset is read as local time.
+- Only strings that contain a time part (`YYYY-MM-DDTHH...` or `YYYY-MM-DD HH...`) are parsed with `new Date()`. If the due day must not depend on the viewer, send `YYYY-MM-DD`.
+- `today` follows the same rules. Unparsable date-times and malformed dates throw in development.
+
+#### Free-text form
+
+For chips whose text is not date-driven ("Due today", "Pickup at 2 pm", "Waiting for you"), pass `label` and `tone`. It renders the same dot and text; no date is shown and no wording is generated, so translate `label` yourself.
+
+```tsx
+<DueIndicator label="Pickup at 2 pm" tone="neutral" />
+<DueIndicator label="Waiting for you" tone="accent" />
+```
+
+#### Paid date and locales
+
+`paidDate` calls the `paidOn(date)` message with the date already formatted by `formatDate` for the active locale. The default is `Paid ${date}` (en) and `Pagamento em ${date}` (pt-BR), which avoids gendered agreement ("Paga em" / "Pago em" would have to match the item). Override it per instance (`messages`), per provider or in a locale catalog:
+
+```tsx
+<DueIndicator
+  date="2026-03-01"
+  paidDate="2026-03-08"
+  messages={{ paidOn: (date) => `Settled on ${date}` }}
+/>
+```
+
 #### Accessibility
 
 - The status is text (`Overdue by 3 days`), so color is never the only signal; the dot is `aria-hidden`.
@@ -5351,6 +5469,9 @@ span[data-tone=danger|warning|neutral|success]
 
 ```tsx
 <DueIndicator date={invoice.dueISO} paid={invoice.paid} />
+
+// A Date or date-time maps to the local calendar day
+<DueIndicator date={order.dueAt} paidDate={order.paidAt} />
 
 // Deterministic output
 <DueIndicator date="2026-03-14" today="2026-03-10" dateStyle="long" />
@@ -5451,29 +5572,32 @@ Avoid "Oops", "Sorry", blame ("You have no orders") and filler ("There is nothin
 - Instead, see Alert: When loading failed: use `Alert` with a retry action.
 - Used by: ActionList, DataTable
 
-### FieldError
+### ErrorText
 
-> Error text of a field. Renders only while the field is invalid and the error is *displayed*:
-with the default `validationBehavior="native"` that is after a submit attempt (see Field.md).
-The message sits in a `role="alert"` element so it is announced when it appears; on submit focus also
-moves to the first invalid field, which reads it again through `aria-describedby`.
+> Standalone error text for a group of controls that has no React Aria field around it (a
+hand-built set of colour options, a list of rows). Same look as `FieldError`, but it needs no
+field context and renders whenever it has content: you decide when it shows. Link it from
+the group with `aria-describedby` , see Field.md. Use `FieldError` inside
+a field and `Alert` for an error about the whole page or form.
 
 Shared building blocks that make every form control (`Input`, `Textarea`, `Select`, `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`) look and behave the same: the same label, description and error styles, the same spacing, the same required marker, the same disabled treatment and the same validation timing. Tickets: ARCH-008, ARCH-009, part of GAP-003.
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { FieldError } from 'loui-ds';`
+- Import: `import { ErrorText } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
-- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `FieldErrorMessage` |  |  | The message. A function receives the validation result and decides everything. A static message replaces only the browser's own constraint text; an error the app supplied (a `validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without children, the validation errors are shown (the browser's message for native constraints). |
+| `children` | `ReactNode` |  |  | The message. Renders nothing when empty (`null`, `undefined`, `false` or `''`). |
+| `id` | `string` |  |  | Element id. Defaults to a generated one; pass your own to link the group with `aria-describedby={id}` (and `aria-errormessage={id}`). |
+| `announce` | `boolean` |  | `false` | Announces the message when it appears by rendering it as `role="alert"`. Off by default: the group links the text with `aria-describedby`, and focus normally moves to the first invalid control on submit, which reads it. Turn it on for an error that appears with no focus move (for example after a server response). |
 | `className` | `string` |  |  |  |
-| `ref` | `Ref<HTMLElement>` |  |  |  |
+| `ref` | `Ref<HTMLParagraphElement>` |  |  |  |
 
 #### Design tokens used
 
@@ -5481,16 +5605,17 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 #### Exports
 
-| Export                                 | What it is                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
-| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
-| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
-| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
-| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
-| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
 
 #### Anatomy and spacing
 
@@ -5561,6 +5686,168 @@ Rules for authors:
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
+
+#### Accessibility
+
+- Every control needs an accessible name: `label`, `aria-label` or `aria-labelledby`. The types enforce it; a development warning covers untyped callers.
+- `Description` and `FieldError` are linked with `aria-describedby`; the order is description, then error.
+- Disabled fields are exempt from contrast requirements; everything else meets 4.5:1 for text and 3:1 for borders.
+
+### FieldError
+
+> Error text of a field. Renders only while the field is invalid and the error is *displayed*:
+with the default `validationBehavior="native"` that is after a submit attempt (see Field.md).
+The message sits in a `role="alert"` element so it is announced when it appears; on submit focus also
+moves to the first invalid field, which reads it again through `aria-describedby`.
+
+Shared building blocks that make every form control (`Input`, `Textarea`, `Select`, `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`) look and behave the same: the same label, description and error styles, the same spacing, the same required marker, the same disabled treatment and the same validation timing. Tickets: ARCH-008, ARCH-009, part of GAP-003.
+
+Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
+
+- Import: `import { FieldError } from 'loui-ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/Field/Field.tsx`
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `FieldErrorMessage` |  |  | The message. A function receives the validation result and decides everything. A static message replaces only the browser's own constraint text; an error the app supplied (a `validate` rule, or `validationErrors` on a `Form`) is shown instead of it. Without children, the validation errors are shown (the browser's message for native constraints). |
+| `className` | `string` |  |  |  |
+| `ref` | `Ref<HTMLElement>` |  |  |  |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
+
+#### Exports
+
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
+
+#### Anatomy and spacing
+
+```
+Label                       13/18 medium, --ds-text
+  gap: --ds-field-gap (6px)
+Control box                 border --ds-line-control, radius md, height 32/40/48
+  gap: --ds-field-gap
+Description                 13/18, --ds-text-3
+Error                       13/18, --ds-danger
+```
+
+The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
+
+#### One state model (ARCH-009)
+
+| State     | Look                                                                                                                       | Semantics                                          |
+| --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Default   | `--ds-line-control` border, `--ds-bg` fill                                                                                 |                                                    |
+| Hover     | Border brightens to `--ds-text-3`. The fill never changes, so the border stays at 3:1 or more.                             |                                                    |
+| Focus     | Accent border and the 3px focus ring (`--ds-focus-ring`); forced-colors gets a system outline                              |                                                    |
+| Invalid   | Danger border and danger focus ring                                                                                        | `aria-invalid`, error linked by `aria-describedby` |
+| Read only | `--ds-surface` fill, same border                                                                                           | `readonly`; focusable, submitted with the form     |
+| Disabled  | Label and control at `--ds-opacity-disabled`, dashed border, `--ds-surface` fill; description and error stay full strength | `disabled`; not focusable, not submitted           |
+| Required  | Marker after the label                                                                                                     | `required` / `aria-required` on the control        |
+
+Form-control borders use `--ds-line-control` and stay at 3:1 or better against the page in every state (WCAG 1.4.11). The suites assert this per state.
+
+#### Required marker
+
+`Label isRequired` appends the text of the `requiredMark` message (`*` by default) inside the label. The marker is `aria-hidden`: the control itself exposes "required", so announcing the marker too would repeat it. Override the text per instance (`messages={{ requiredMark: '(required)' }}`) or app-wide:
+
+```tsx
+<DSProvider locale="pt-BR" messages={{ Field: { requiredMark: '(obrigatório)' } }}>
+```
+
+#### Validation behavior: native (default), and why
+
+React Aria fields validate in one of two modes:
+
+- `validationBehavior="native"` (React Aria's default, kept here): the browser's constraint validation. Constraints such as `required`, `type`, `pattern` and `minLength` block submission. The error is **not displayed until the user tries to submit**; then focus moves to the first invalid field and the error appears. Custom `validate` rules report when the user commits the field (leaves it) and again on submit.
+- `validationBehavior="aria"`: only ARIA attributes are set; nothing blocks submission, and the error follows every keystroke.
+
+**Decision: `native` is the default for all fields.** It implements the product rule _errors appear only after a save attempt_ without extra code, it works without JavaScript hydration problems (the browser blocks the submit), it puts `required` on the real control and it moves focus to the first problem. `aria` suits fields that need live feedback (a username availability check, a counter): opt in per field with `validationBehavior="aria"`. A consumer that renders its own `Form` can set the mode for every field below it.
+
+Rules for authors:
+
+- Provide an `errorMessage` that says how to fix the problem ("Enter a complete email address."). Without one, React Aria shows the browser's own message, in the browser's language. A static `errorMessage` replaces only that browser text: a message the app supplied (a `validate` rule or `validationErrors` on a `Form`) is shown instead (GAP-009).
+- To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
+- The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
+- Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
 
 #### Accessibility
 
@@ -5579,7 +5866,7 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 - Import: `import { FieldMessages } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
-- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
 
 #### Props
 
@@ -5595,16 +5882,17 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 #### Exports
 
-| Export                                 | What it is                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
-| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
-| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
-| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
-| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
-| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
 
 #### Anatomy and spacing
 
@@ -5675,6 +5963,28 @@ Rules for authors:
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
 
 #### Accessibility
 
@@ -6913,7 +7223,7 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 - Import: `import { Label } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
-- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
 
 #### Props
 
@@ -6944,16 +7254,17 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Exports
 
-| Export                                 | What it is                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
-| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
-| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
-| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
-| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
-| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
 
 #### Anatomy and spacing
 
@@ -7024,6 +7335,28 @@ Rules for authors:
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
 
 #### Accessibility
 
@@ -9335,7 +9668,7 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 - Import: `import { RequiredMark } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
-- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
+- Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation, StandaloneErrorText
 
 #### Props
 
@@ -9357,16 +9690,17 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Exports
 
-| Export                                 | What it is                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
-| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
-| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
-| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
-| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
-| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
+| Export                                 | What it is                                                                                                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                                       |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).                          |
+| `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`.               |
+| `ErrorText`                            | Standalone error text for a group with no field around it. Same look as `FieldError`; `id` (generated by default), `announce` adds `role="alert"`. Renders nothing when empty. |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                                       |
+| `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                                     |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                                |
+| `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                                     |
+| `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                                             |
 
 #### Anatomy and spacing
 
@@ -9437,6 +9771,28 @@ Rules for authors:
 - To control `isInvalid` yourself (for example after a server response), pass `isInvalid` and `errorMessage`; the error shows at once.
 - The error text is announced when it appears (`role="alert"`) and read again when focus lands on the field.
 - Putting `<form>` in the page is enough; no wrapper component is required.
+
+#### Errors outside a field: `ErrorText`
+
+| Use                   | When                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `FieldError`          | Inside a React Aria field (`Input`, `Select`, `CheckboxGroup`, ...): validation is wired for you.                     |
+| `ErrorText`           | A group of controls you built by hand (colour options, rows) with no field around it. Light, inline, under the group. |
+| `Alert tone="danger"` | An error about the whole page, form or request ("Could not save the order"). Heavy, boxed.                            |
+
+`ErrorText` renders whenever it has content, so you decide when it shows. It is not a live region by default: link it with `aria-describedby`, and move focus to the first invalid control on submit so the message is read. Set `announce` when the error appears with no focus move (it adds `role="alert"`). `aria-invalid` is not allowed on `role="group"`; if the group has a role that supports it (`radiogroup`, `listbox`), set it together with `aria-describedby`.
+
+```tsx
+const errorId = useId();
+<div
+  role="group"
+  aria-labelledby={labelId}
+  aria-describedby={error ? errorId : undefined}
+>
+  {options}
+</div>
+<ErrorText id={errorId}>{error}</ErrorText>
+```
 
 #### Accessibility
 
@@ -10153,6 +10509,8 @@ DialogTrigger
 - The panel is `Modal` content inside the overlay, so it stacks above the scrim without a second z-index.
 - See the Dialog doc ("Layers") for popovers opened from inside the sheet.
 - **Exit animation.** The sheet stays mounted for the 150 ms slide-out. It keeps rendering the props of its last open render during that time, so you can clear the state that feeds it (`setRecord(null)`) in the same update that closes it and the panel will not animate out empty (no blank fields or title). Reopening shows the new content at once. Under `prefers-reduced-motion` there is no animation, so it leaves the DOM immediately (tested). If the tab is hidden the browser does not run animations and React Aria unmounts the sheet only once the tab is visible again.
+
+Controlled use without a `trigger` renders the overlay directly, without a `DialogTrigger`, so opening the sheet logs nothing to the console (GAP-022). Focus still returns to the element focused before it opened.
 
 #### Content rules
 
@@ -12767,14 +13125,14 @@ Body text on the type scale, with a tone, an optional mono face and truncation.
 - Import: `import { Text } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Text/Text.tsx`
-- Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Mono, AsParagraph, Truncated, LongText, RightToLeft
+- Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Success, Warning, Danger, Mono, AsParagraph, Truncated, LongText, RightToLeft
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `size` | `'body' \| 'caption' \| 'label' \| 'meta' \| 'small'` |  | `'body'` | Type scale step: `body` 15px, `small` 14px, `label` 13px, `meta` 12px, or `caption` 11.5px. `caption` is always Geist Mono, uppercase by CSS, with extra tracking: write the source text in sentence case. Default `body`. |
-| `tone` | `'default' \| 'secondary' \| 'tertiary'` |  | `'default'` | Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals the lowest importance: use it for meta and hints, never for primary content. Default `default`. |
+| `tone` | `'default' \| 'secondary' \| 'tertiary' \| 'success' \| 'warning' \| 'danger'` |  | `'default'` | Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals the lowest importance: use it for meta and hints, never for primary content. `success`, `warning` and `danger` are signal colours (4.5:1 on the base surfaces): always pair them with words that carry the meaning, never colour alone. Default `default`. |
 | `mono` | `boolean` |  | `false` | Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts. |
 | `truncate` | `boolean` |  | `false` | Keeps the text on one line and cuts it with an ellipsis. Put the full text in `title` or nearby for sighted users. |
 | `as` | `'span' \| 'dd' \| 'div' \| 'dt' \| 'em' \| 'figcaption' \| 'label' \| 'legend' \| 'li' \| 'p' \| 'small' \| 'strong'` |  | `'span'` | Element to render. Default `span`, which is safe inside any inline context; use `p` for a paragraph. |
@@ -12786,11 +13144,11 @@ Body text on the type scale, with a tone, an optional mono face and truncation.
 #### Variants, sizes and tones
 
 - `size`: `body`, `caption`, `label`, `meta`, `small`
-- `tone`: `default`, `secondary`, `tertiary`
+- `tone`: `default`, `secondary`, `tertiary`, `success`, `warning`, `danger`
 
 #### Design tokens used
 
-`--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-warning`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -12812,6 +13170,7 @@ span (or the element in `as`)
 #### Accessibility
 
 - `tertiary` passes 4.5:1 on every surface (TOK-004), but it carries the lowest importance: use it for hints and meta, never for primary content.
+- `success`, `warning` and `danger` pass 4.5:1 on bg, surface and raised. The colour only reinforces: the words must carry the meaning ("Select at least one color."), never colour alone. For an error tied to a group of controls use `ErrorText`.
 - Truncated text hides content visually: show the full value elsewhere (a `title`, a tooltip, a detail view) when it matters.
 - The caption's uppercase is CSS only, so screen readers read the sentence-case source.
 - Long unbroken values wrap (`overflow-wrap: break-word`).
@@ -14043,7 +14402,7 @@ span.root   (or as="h2", "div", ...)
 #### Related components
 
 - Instead, see SkipLink: For a skip link that appears on focus: use `SkipLink`.
-- Used by: Alert, ApprovalCard, Banner, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep
+- Used by: ActionList, Alert, ApprovalCard, Banner, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep
 
 ---
 
@@ -14604,6 +14963,18 @@ Outside React there is no context, so the locale is the one of the mounted `Toas
 
 ```ts
 toastWithUndo(message: ReactNode, options: ToastWithUndoOptions): string
+```
+
+#### toCalendarDay
+
+Normalizes a calendar-day input to `YYYY-MM-DD`. Accepts an `ISODate` (returned unchanged, so a
+plain date is never shifted by a time zone), a `Date` (its **local** day) or an ISO date-time
+string such as `2026-10-31T23:30:00-03:00` (parsed with `new Date()`, then its **local** day).
+Any other string is returned unchanged for the caller's own validation. An unparsable `Date`
+or date-time throws in development and gives `''` in production.
+
+```ts
+toCalendarDay(value: Date | string): ISODate
 ```
 
 #### toISODate

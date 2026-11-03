@@ -561,6 +561,18 @@ Outside React there is no context, so the locale is the one of the mounted `Toas
 toastWithUndo(message: ReactNode, options: ToastWithUndoOptions): string
 ```
 
+### toCalendarDay
+
+Normalizes a calendar-day input to `YYYY-MM-DD`. Accepts an `ISODate` (returned unchanged, so a
+plain date is never shifted by a time zone), a `Date` (its **local** day) or an ISO date-time
+string such as `2026-10-31T23:30:00-03:00` (parsed with `new Date()`, then its **local** day).
+Any other string is returned unchanged for the caller's own validation. An unparsable `Date`
+or date-time throws in development and gives `''` in production.
+
+```ts
+toCalendarDay(value: Date | string): ISODate
+```
+
 ### toISODate
 
 Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the

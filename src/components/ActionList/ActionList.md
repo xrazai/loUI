@@ -27,6 +27,8 @@ div[role=grid]            named by aria-label / aria-labelledby
     MoreActionsMenu       IconButton "More actions for {title}" + Menu (optional)
 ```
 
+In a list 480 px wide or narrower (a container query on the list, not the viewport), `meta` moves under the title and description, so a long title keeps its width instead of shrinking to a few characters next to a due chip.
+
 ## Props (key ones)
 
 | Prop                                   | Type                        | Default  | Notes                                                                                           |

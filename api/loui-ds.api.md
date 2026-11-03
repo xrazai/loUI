@@ -71,6 +71,7 @@ import { RefreshCw as RefreshIcon } from 'lucide-react';
 import { RouterProvider } from 'react-aria-components';
 import { SearchFieldProps } from 'react-aria-components';
 import { Search as SearchIcon } from 'lucide-react';
+import { Selection as Selection_2 } from 'react-aria-components';
 import { SelectProps as SelectProps_2 } from 'react-aria-components';
 import { SeparatorProps } from 'react-aria-components';
 import { SliderProps as SliderProps_2 } from 'react-aria-components';
@@ -136,6 +137,7 @@ export interface ActionListItem {
     description?: ReactNode;
     id: string;
     isDisabled?: boolean;
+    isDone?: boolean;
     leading?: ReactNode;
     meta?: ReactNode;
     textValue?: string;
@@ -704,17 +706,48 @@ export interface DSProviderProps {
 }
 
 // @public
-export function DueIndicator(input: DueIndicatorProps): JSX.Element;
+export type DueDateInput = Date | string;
+
+// @public
+export function DueIndicator(props: DueIndicatorProps): JSX.Element;
+
+// @public
+export interface DueIndicatorDateProps extends DueIndicatorBaseProps {
+    date: DueDateInput;
+    dateStyle?: DateStyle;
+    // (undocumented)
+    label?: never;
+    paid?: boolean;
+    paidDate?: DueDateInput;
+    showDate?: boolean;
+    today?: DueDateInput;
+    // (undocumented)
+    tone?: never;
+}
+
+// @public
+export interface DueIndicatorLabelProps extends DueIndicatorBaseProps {
+    // (undocumented)
+    date?: never;
+    // (undocumented)
+    dateStyle?: never;
+    label: string;
+    // (undocumented)
+    paid?: never;
+    // (undocumented)
+    paidDate?: never;
+    // (undocumented)
+    showDate?: never;
+    // (undocumented)
+    today?: never;
+    tone: DueIndicatorTone;
+}
 
 // @public (undocumented)
-export interface DueIndicatorProps extends Omit<ComponentPropsWithRef<'span'>, 'children'> {
-    date: ISODate;
-    dateStyle?: DateStyle;
-    messages?: Partial<typeof messages_16.en>;
-    paid?: boolean;
-    showDate?: boolean;
-    today?: ISODate;
-}
+export type DueIndicatorProps = DueIndicatorDateProps | DueIndicatorLabelProps;
+
+// @public
+export type DueIndicatorTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
 // @public (undocumented)
 export interface DueStatus {
@@ -747,6 +780,20 @@ export interface EmptyStateProps extends Omit<ComponentPropsWithRef<'div'>, 'tit
     icon?: ReactNode;
     secondaryAction?: ReactNode;
     title: ReactNode;
+}
+
+// @public
+export function ErrorText(input: ErrorTextProps): JSX.Element | null;
+
+// @public (undocumented)
+export interface ErrorTextProps {
+    announce?: boolean | undefined;
+    children?: ReactNode;
+    // (undocumented)
+    className?: string | undefined;
+    id?: string | undefined;
+    // (undocumented)
+    ref?: Ref<HTMLParagraphElement> | undefined;
 }
 
 export { ExternalLinkIcon }
@@ -2117,7 +2164,7 @@ export interface TextToggleProps extends ToggleBaseProps {
 }
 
 // @public (undocumented)
-export type TextTone = 'default' | 'secondary' | 'tertiary';
+export type TextTone = 'default' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger';
 
 export { ThumbsDownIcon }
 
@@ -2212,6 +2259,9 @@ export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'actio
     toast?: ToastApi;
     tone?: Exclude<ToastTone, 'danger'>;
 }
+
+// @public
+export function toCalendarDay(value: Date | string): ISODate;
 
 // @public
 export function Toggle(props: ToggleProps): JSX.Element;
