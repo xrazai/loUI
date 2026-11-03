@@ -103,6 +103,7 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 - [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
 - [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
 - [ ] **TEST-022** (P2 · S) Investigate focus restoration after a pointer-opened Dialog inside a Sheet: when the trigger is clicked during the sheet entry animation, focus sometimes does not return to it on Escape (flaky on Linux CI). The nested-overlay test now opens from the keyboard; add a dedicated pointer test once understood.
+- [ ] **TEST-023** (P3 · S) Visual baselines of calendar stories depend on the real date (the "today" marker): the Linux DatePicker baselines changed when the date left October 2026. Freeze the date in the visual harness (or pass a fixed `today`) so baselines never depend on the clock.
 
 ---
 
