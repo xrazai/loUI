@@ -23,18 +23,28 @@
     grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto;
   }
 
-  /* The delete column is reserved on every row so fixed rows align with deletable ones. */
-  .root[data-deletable] .entry {
-    grid-template-areas: 'text amounts delete';
+  /* The actions column is reserved on every row so rows without buttons align with the others. */
+  .root[data-actions] .entry {
+    grid-template-areas: 'text amounts actions';
     grid-template-columns: minmax(0, 1fr) auto var(--ds-control-h-sm);
     padding-inline-end: var(--ds-space-3);
   }
 
-  .root[data-dated][data-deletable] .entry {
-    grid-template-areas: 'date text amounts delete';
+  .root[data-actions='2'] .entry {
+    grid-template-columns: minmax(0, 1fr) auto calc(var(--ds-control-h-sm) * 2);
+  }
+
+  .root[data-dated][data-actions] .entry {
+    grid-template-areas: 'date text amounts actions';
     grid-template-columns:
       var(--ds-ledger-list-date-width) minmax(0, 1fr) auto
       var(--ds-control-h-sm);
+  }
+
+  .root[data-dated][data-actions='2'] .entry {
+    grid-template-columns:
+      var(--ds-ledger-list-date-width) minmax(0, 1fr) auto
+      calc(var(--ds-control-h-sm) * 2);
   }
 
   .date {
@@ -121,8 +131,10 @@
     white-space: nowrap;
   }
 
-  .delete {
-    grid-area: delete;
+  .actions {
+    grid-area: actions;
+    display: flex;
+    justify-content: flex-end;
   }
 
   @media (forced-colors: active) {

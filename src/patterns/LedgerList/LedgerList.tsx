@@ -1,6 +1,6 @@
 import type { ComponentPropsWithRef } from 'react';
 import { IconButton } from '../../components/IconButton';
-import { XIcon } from '../../components/Icon/icons';
+import { PencilIcon, XIcon } from '../../components/Icon/icons';
 import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { formatCurrency } from '../../utils/currency';
@@ -13,7 +13,7 @@ import styles from './LedgerList.module.css';
 export type LedgerNegativeTone = 'neutral' | 'success' | 'warning' | 'danger';
 
 export interface LedgerEntry {
-  /** Stable identifier: the React key and what `onDelete` identifies. */
+  /** Stable identifier: the React key and what `onEdit` and `onDelete` identify. */
   id: string;
   /**
    * Date of the entry as `YYYY-MM-DD`. Optional: an entry without a date renders no date (and no
@@ -39,6 +39,13 @@ export interface LedgerEntry {
    * effect without `onDelete`.
    */
   isDeletable?: boolean | undefined;
+  /**
+   * Whether this entry gets an "Edit entry" button when the list has `onEdit`. Default `true`.
+   * Set `false` for a row that cannot change (an opening balance, a system entry): it renders no
+   * button, so nothing is focusable on it, and its amounts stay aligned with the editable rows.
+   * Has no effect without `onEdit`.
+   */
+  isEditable?: boolean | undefined;
 }
 
 export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'children'> {
@@ -69,6 +76,13 @@ export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'chil
    * (dialog or inline confirmation) before data is removed, and offer Undo afterwards.
    */
   onDelete?: (entry: LedgerEntry) => void;
+  /**
+   * Adds an "Edit entry" button (pencil icon) before the delete button of each row (except entries
+   * with `isEditable: false`) and calls this with the entry. The component only reports the
+   * request: the consumer shows the editing UI, either a `Sheet` or an inline field in the row's
+   * place. When a sheet closes, focus returns to the edit button that opened it.
+   */
+  onEdit?: (entry: LedgerEntry) => void;
   /** Message overrides for this instance. */
   messages?: Partial<typeof messages.en>;
 }
@@ -91,6 +105,7 @@ export function LedgerList({
   format,
   negativeTone = 'danger',
   dateStyle = 'monthDay',
+  onEdit,
   onDelete,
   messages: overrides,
   className,
@@ -108,7 +123,7 @@ export function LedgerList({
     <ul
       {...rest}
       className={classNames(styles.root, className)}
-      data-deletable={onDelete ? 'true' : undefined}
+      data-actions={onEdit && onDelete ? '2' : onEdit || onDelete ? '1' : undefined}
       data-dated={entries.some((entry) => entry.date !== undefined) ? 'true' : undefined}
     >
       {entries.map((entry) => {
@@ -142,17 +157,31 @@ export function LedgerList({
                 <span className={styles.balance}>{t.balance(formatValue(entry.balance))}</span>
               ) : null}
             </div>
-            {onDelete && entry.isDeletable !== false ? (
-              <IconButton
-                variant="ghost"
-                size="sm"
-                icon={XIcon}
-                label={t.deleteEntry(entry.title)}
-                className={classNames(styles.delete)}
-                onPress={() => {
-                  onDelete(entry);
-                }}
-              />
+            {onEdit || onDelete ? (
+              <div className={styles.actions}>
+                {onEdit && entry.isEditable !== false ? (
+                  <IconButton
+                    variant="ghost"
+                    size="sm"
+                    icon={PencilIcon}
+                    label={t.editEntry(entry.title)}
+                    onPress={() => {
+                      onEdit(entry);
+                    }}
+                  />
+                ) : null}
+                {onDelete && entry.isDeletable !== false ? (
+                  <IconButton
+                    variant="ghost"
+                    size="sm"
+                    icon={XIcon}
+                    label={t.deleteEntry(entry.title)}
+                    onPress={() => {
+                      onDelete(entry);
+                    }}
+                  />
+                ) : null}
+              </div>
             ) : null}
           </li>
         );

@@ -155,6 +155,104 @@ describe('LedgerList', () => {
     });
   });
 
+  describe('edit', () => {
+    it('has no edit buttons without onEdit', async () => {
+      const screen = await renderWithProvider(<Example onDelete={vi.fn()} />);
+      expect(screen.getByRole('button', { name: /Edit entry/ }).elements()).toHaveLength(0);
+    });
+
+    it('adds a named edit button per entry and reports the entry', async () => {
+      const onEdit = vi.fn();
+      const screen = await renderWithProvider(<Example onEdit={onEdit} />);
+      expect(screen.getByRole('button').elements()).toHaveLength(3);
+      await userEvent.click(screen.getByRole('button', { name: 'Edit entry Payment received' }));
+      expect(onEdit).toHaveBeenCalledWith(entries[1]);
+    });
+
+    it('puts edit before delete in the tab order and operates by keyboard', async () => {
+      const onEdit = vi.fn();
+      const onDelete = vi.fn();
+      const screen = await renderWithProvider(<Example onEdit={onEdit} onDelete={onDelete} />);
+      await userEvent.keyboard('{Tab}');
+      await expect.element(screen.getByRole('button', { name: 'Edit entry Refund' })).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+      expect(onEdit).toHaveBeenCalledWith(entries[0]);
+      await userEvent.keyboard('{Tab}');
+      await expect
+        .element(screen.getByRole('button', { name: 'Delete entry Refund' }))
+        .toHaveFocus();
+    });
+
+    it('skips entries with isEditable false and treats true and omitted the same', async () => {
+      const screen = await renderWithProvider(
+        <Example
+          entries={[
+            { id: 'a', date: '2026-03-12', title: 'Fixed', delta: 1, isEditable: false },
+            { id: 'b', date: '2026-03-11', title: 'Explicit', delta: 1, isEditable: true },
+            { id: 'c', date: '2026-03-10', title: 'Default', delta: 1 },
+          ]}
+          onEdit={vi.fn()}
+        />,
+      );
+      expect(screen.getByRole('button').elements()).toHaveLength(2);
+      expect(screen.getByRole('button', { name: 'Edit entry Fixed' }).elements()).toHaveLength(0);
+    });
+
+    it('ignores isEditable without onEdit', async () => {
+      const screen = await renderWithProvider(
+        <Example entries={[{ id: 'a', title: 'Row', delta: 1, isEditable: true }]} />,
+      );
+      expect(screen.getByRole('button').elements()).toHaveLength(0);
+    });
+
+    it('keeps amounts aligned across rows with both, one or no buttons', async () => {
+      const screen = await renderWithProvider(
+        <Example
+          entries={[
+            { id: 'a', date: '2026-03-12', title: 'Both', delta: 100 },
+            { id: 'b', date: '2026-03-11', title: 'Edit only', delta: 100, isDeletable: false },
+            { id: 'c', date: '2026-03-10', title: 'Delete only', delta: 100, isEditable: false },
+            {
+              id: 'd',
+              date: '2026-03-09',
+              title: 'Neither',
+              delta: 100,
+              isEditable: false,
+              isDeletable: false,
+            },
+          ]}
+          onEdit={vi.fn()}
+          onDelete={vi.fn()}
+        />,
+      );
+      const rights = (screen.getByRole('listitem').elements() as HTMLElement[]).map(
+        (item) => item.querySelector('[data-part="amount"]')?.getBoundingClientRect().right,
+      );
+      expect(new Set(rights).size).toBe(1);
+    });
+
+    it('speaks pt-BR and accepts an override', async () => {
+      const pt = await renderWithProvider(<Example onEdit={vi.fn()} />, { locale: 'pt-BR' });
+      await expect
+        .element(pt.getByRole('button', { name: 'Editar lançamento Refund' }))
+        .toBeVisible();
+      const en = await renderWithProvider(<Example onEdit={vi.fn()} />, {
+        messages: { LedgerList: { editEntry: (title: string) => `Change ${title}` } },
+      });
+      await expect.element(en.getByRole('button', { name: 'Change Refund' })).toBeVisible();
+    });
+
+    it('has no axe violations with edit and delete buttons (axe)', async () => {
+      const screen = await renderWithProvider(
+        <main>
+          <Example onEdit={vi.fn()} onDelete={vi.fn()} />
+        </main>,
+      );
+      await userEvent.keyboard('{Tab}');
+      await expectNoA11yViolations(screen.container);
+    });
+  });
+
   describe('mixed deletable and fixed entries', () => {
     const mixed: LedgerEntry[] = [
       { id: 'm3', date: '2026-03-12', title: 'Refund', delta: -2500, balance: 12500 },
@@ -252,7 +350,7 @@ describe('LedgerList', () => {
       );
       const item = screen.getByRole('listitem').element() as HTMLElement;
       const order = Array.from(item.children).map((child) =>
-        child.tagName === 'BUTTON' ? 'button' : child.textContent,
+        child.querySelector('button') ? 'button' : child.textContent,
       );
       expect(order).toHaveLength(3);
       expect(order[0]).toContain('Adjustment');
