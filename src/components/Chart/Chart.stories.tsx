@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
 import { formatCurrency } from '../../utils/currency';
 import { Chart } from './Chart';
+import { chartAverage } from './chartAverage';
 import type { ChartDatum, ChartProps } from './Chart';
 import { StoryFrame } from '../../test/StoryFrame';
 
@@ -90,6 +91,109 @@ export const NegativeValues: Story = {
     ],
     'aria-label': 'Profit and loss',
   },
+};
+
+const weekdayAverage = {
+  kind: 'average' as const,
+  label: 'Average',
+  value: chartAverage(weekdays),
+};
+const weekdayTarget = { kind: 'target' as const, label: 'Goal', value: 80 };
+
+/**
+ * `notes` attach long text to a point by index. A small diamond marks the point; the text shows
+ * under the value in the label of the active point, in the "Note" column of the hidden table and
+ * in the announcement.
+ */
+export const Notes: Story = {
+  args: {
+    notes: { 2: 'Store closed for inventory until noon.', 5: 'Free shipping campaign started.' },
+  },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    const canvas = within(canvasElement);
+    await expect(canvasElement.querySelectorAll('svg path[class*="noteMarker"]')).toHaveLength(2);
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}{ArrowRight}');
+    await expect(canvas.getByRole('status')).toHaveTextContent(
+      'Wed: 31, Store closed for inventory until noon.. 3 of 7',
+    );
+    await expect(canvas.getByText('Store closed for inventory until noon.')).toBeInTheDocument();
+  },
+};
+
+/** A long note wraps inside the label instead of stretching it. */
+export const LongNote: Story = {
+  args: {
+    notes: {
+      3: 'Supplier delivery arrived two days late, so the Thursday fabric cut was moved to Friday morning and part of the orders shipped with a delay.',
+    },
+    highlight: { 3: 'Late' },
+  },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}{ArrowRight}{ArrowRight}');
+    await expect(canvasElement.querySelector('[data-note]')).not.toBeNull();
+  },
+};
+
+/** An average line is drawn with long dashes; use `chartAverage(values)` to compute it. */
+export const AverageLine: Story = {
+  args: { referenceLines: [weekdayAverage] },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    await expect(canvasElement.querySelector('svg')).toHaveTextContent('Average 54');
+  },
+};
+
+/** A target line is drawn with dash and dot. A target above the data widens the axis. */
+export const TargetLine: Story = {
+  args: { referenceLines: [{ kind: 'target', label: 'Goal', value: 120 }] },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    await expect(canvasElement.querySelector('svg')).toHaveTextContent('Goal 120');
+  },
+};
+
+export const AverageAndTarget: Story = {
+  args: { type: 'line', referenceLines: [weekdayAverage, weekdayTarget] },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('table', { name: 'Data for Sales per weekday' }),
+    ).toBeInTheDocument();
+    await expect(canvasElement.querySelectorAll('tfoot tr')).toHaveLength(2);
+  },
+};
+
+/** `tickEvery` shows every nth category label, whatever the width. */
+export const TickEvery: Story = {
+  args: { data: thirtyDays, tickEvery: 7, 'aria-label': 'Sales, last 30 days' },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    const labels = [...canvasElement.querySelectorAll('svg text[class*="category"]')].map(
+      (node) => node.textContent,
+    );
+    await expect(labels).toEqual(['1', '8', '15', '22', '29']);
+  },
+};
+
+/** Notes, reference lines and a highlight together; the chart itself is not mirrored. */
+export const AnnotatedRtl: Story = {
+  args: {
+    notes: { 2: 'Store closed for inventory until noon.' },
+    highlight: { 5: 'Best day' },
+    referenceLines: [weekdayAverage, weekdayTarget],
+  },
+  decorators: [
+    (Story) => (
+      <StoryFrame dir="rtl" maxWidth={520}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
 };
 
 /** Tiny values still get a readable, round axis. */

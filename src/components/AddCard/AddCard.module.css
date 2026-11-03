@@ -1,0 +1,61 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-add-card-gap);
+    min-block-size: var(--ds-add-card-min-block-size);
+    min-inline-size: 0;
+    padding: var(--ds-card-padding);
+    border: 1px dashed var(--ds-line-strong);
+    border-radius: var(--ds-radius-lg);
+    background-color: transparent;
+    color: var(--ds-text-2);
+    font: inherit;
+    font-size: var(--ds-fs-body);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-body);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--ds-duration) var(--ds-ease),
+      color var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Hover: one surface step lighter, text to full strength. */
+  .root[data-hovered] {
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+  }
+
+  /* Focus: accent ring; the transparent outline survives forced colors. */
+  .root[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .root[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  .label {
+    overflow-wrap: anywhere;
+  }
+
+  @media (forced-colors: active) {
+    .root[data-focus-visible] {
+      outline: 2px solid Highlight;
+    }
+
+    .root[data-disabled] {
+      opacity: 1;
+      color: GrayText;
+    }
+  }
+}

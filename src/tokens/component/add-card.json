@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "add-card": {
+    "min-block-size": {
+      "$type": "dimension",
+      "$value": "{space.16}",
+      "$description": "Minimum height of an AddCard (64px), so a lone tile keeps a comfortable target."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between the plus icon and the label of an AddCard (8px)."
+    }
+  }
+}

@@ -1,0 +1,124 @@
+@layer components {
+  /*
+   * Stretched-link pattern: the title link or button is the only interactive element and its
+   * ::after covers the whole card, so the full surface is the hit area (ADR-0011).
+   */
+  .root {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-card-link-gap);
+    min-inline-size: 0;
+    padding: var(--ds-card-padding);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  /* Hover: one surface step lighter. */
+  .root:hover:not([data-disabled]) {
+    background-color: var(--ds-surface-raised);
+  }
+
+  .root[data-disabled] {
+    border-style: dashed;
+  }
+
+  .leading {
+    display: inline-flex;
+    flex: none;
+    color: var(--ds-text-2);
+  }
+
+  .text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-card-link-text-gap);
+    min-inline-size: 0;
+  }
+
+  .heading {
+    margin: 0;
+    font-size: var(--ds-fs-body);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-body);
+  }
+
+  .action {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* The stretched hit area; inset -1px also covers the border. */
+  .action::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--ds-radius-lg);
+  }
+
+  /* Focus: accent ring on the card outline; the transparent outline survives forced colors. */
+  .action[data-focus-visible]::after {
+    outline: 2px solid transparent;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .action[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  .description {
+    margin: 0;
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-small);
+    line-height: var(--ds-lh-small);
+    overflow-wrap: anywhere;
+  }
+
+  .meta {
+    margin: 0;
+    color: var(--ds-text-3);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    overflow-wrap: anywhere;
+  }
+
+  /*
+   * Disabled: dashed border, dimmed title and icon. The description stays at text-3 instead of
+   * being dimmed, because non-control text still has to meet 4.5:1 (axe color-contrast).
+   */
+  .root[data-disabled] .leading,
+  .action[data-disabled] {
+    opacity: var(--ds-opacity-disabled);
+  }
+
+  .root[data-disabled] .description {
+    color: var(--ds-text-3);
+  }
+
+  @media (forced-colors: active) {
+    .action[data-focus-visible]::after {
+      outline: 2px solid Highlight;
+    }
+
+    .root[data-disabled] .leading,
+    .action[data-disabled] {
+      opacity: 1;
+      color: GrayText;
+    }
+  }
+}

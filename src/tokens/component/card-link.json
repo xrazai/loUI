@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "card-link": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between the leading node and the text of a CardLink (12px)."
+    },
+    "text-gap": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Vertical gap between the title, description and meta of a CardLink (4px)."
+    }
+  }
+}
