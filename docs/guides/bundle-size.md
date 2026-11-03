@@ -13,7 +13,7 @@ Measured on `examples/vite-app` (Vite 8, production build): an `AppShell` with `
 | `@loui/ds` (components, i18n, utilities)                 | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
 | `lucide-react`                                           | ~10 kB              | Only the curated icons that are used.                                                                    |
 
-Minified output: **531 kB (163 kB gzip)** without optimization, **489 kB (150 kB gzip)** with the locale plugin below. The design system's own code is under a fifth of the total; the rest is React and React Aria, which every app built on this system needs anyway.
+Minified output: **531 kB (163 kB gzip)** without optimization, **489 kB (150 kB gzip)** with the locale plugin below. The design system's own code is under a tenth of the total; the rest is React and React Aria, which every app built on this system needs anyway.
 
 ## 1. Strip unused React Aria locales (recommended)
 
