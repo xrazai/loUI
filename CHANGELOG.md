@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.5.0] - 2026-11-03
 ### Added
 
 - **GAP-043** (2026-11-03) `Swatch` accepts `undefined`, `null` and `''` as an empty decorative circle (dashed outline); a non-empty value that is not `#rgb`/`#rrggbb` still throws in development. `isHexColor` is exported from the package entry.
