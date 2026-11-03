@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "package": {
     "name": "loui-ds",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "generator": "scripts/manifest/build.ts",
   "entryPoints": [

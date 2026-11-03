@@ -6,6 +6,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-03
 ### Added
 
 - **AI-017** (2026-11-03) `loui-ds/changes.json` (schema `schemas/changes.schema.json`, built into `dist/` by `scripts/manifest/changes.ts` from the task log and the backlog): releases with entries by task id, components named, `internal` flag, unreleased entries and open gaps. Tested with the real log and validated against the schema; verified from a packed tarball with `require` and ESM import. Consumer side: the ERP `docs/ds-issues/` index and `/ds-sync` command. Also `pnpm dev:lib` and `docs/guides/local-development.md` (link, tarball and npm routes).
