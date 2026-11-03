@@ -15,10 +15,12 @@ import type { InputProps, InputSize } from '../Input';
 import {
   MAX_SAFE_DIGITS,
   formatMinorCurrency,
+  interpretAmountTyping,
   interpretPaste,
   interpretTyping,
+  plainAmountText,
 } from './CurrencyInput.model';
-import type { TypedAmount, TypingOptions } from './CurrencyInput.model';
+import type { CurrencyEntryMode, TypedAmount, TypingOptions } from './CurrencyInput.model';
 import styles from './CurrencyInput.module.css';
 
 interface CurrencyInputBaseProps extends Omit<
@@ -61,6 +63,12 @@ interface CurrencyInputBaseProps extends Omit<
    * largest count that is always a safe integer). Typing beyond it is ignored. Default `15`.
    */
   maxDigits?: number | undefined;
+  /**
+   * How digits are typed. `'cents'` (default) shifts digits in from the right: `200` is 2.00.
+   * `'amount'` types whole units: `200` is 200.00, and the decimal mark (`.` or `,`) starts the
+   * fraction (`12,5` is 12.50). Both give integer minor units. See "Typing modes" in the docs.
+   */
+  entryMode?: CurrencyEntryMode | undefined;
   /**
    * Name for form submission. The form receives the **integer minor units** (`123456`), or an
    * empty string when the field is empty, never the formatted text.
@@ -116,6 +124,7 @@ export function CurrencyInput({
   onChange,
   allowNegative = false,
   maxDigits = MAX_SAFE_DIGITS,
+  entryMode = 'cents',
   name,
   inputRef,
   inputClassName,
@@ -133,8 +142,19 @@ export function CurrencyInput({
   });
   const [typedNegative, setTypedNegative] = useState(false);
   const showNegativeZero = typedNegative && amount === 0;
+  const isAmountMode = entryMode === 'amount';
+  // Amount mode edits plain text while focused; `amount` ties the draft to the value it produced,
+  // so a value changed from outside replaces a stale draft.
+  const [draft, setDraft] = useState<{ text: string; amount: number | null } | null>(null);
+  const selectOnRender = useRef(false);
+  let draftText: string | null = null;
+  if (isAmountMode && draft) {
+    if (draft.amount === amount) draftText = draft.text;
+    else draftText = amount === null ? '' : plainAmountText(amount, currency, locale);
+  }
   const text =
-    amount === null ? '' : formatMinorCurrency(amount, currency, locale, showNegativeZero);
+    draftText ??
+    (amount === null ? '' : formatMinorCurrency(amount, currency, locale, showNegativeZero));
   const options: TypingOptions = { currency, locale, allowNegative, maxDigits };
 
   const input = useRef<HTMLInputElement | null>(null);
@@ -143,11 +163,16 @@ export function CurrencyInput({
   // The caret always stays at the end: digits shift in from the right, wherever you click.
   useLayoutEffect(() => {
     const element = input.current;
-    if (element && document.activeElement === element) {
+    if (!element || document.activeElement !== element) return;
+    if (selectOnRender.current) {
+      selectOnRender.current = false;
+      element.select();
+    } else if (!isAmountMode) {
       element.setSelectionRange(text.length, text.length);
     }
-  }, [text]);
+  }, [text, isAmountMode]);
   useEffect(() => {
+    if (isAmountMode) return undefined;
     const keepCaretAtEnd = () => {
       const element = input.current;
       if (!element || document.activeElement !== element) return;
@@ -161,7 +186,7 @@ export function CurrencyInput({
     return () => {
       document.removeEventListener('selectionchange', keepCaretAtEnd);
     };
-  }, []);
+  }, [isAmountMode]);
 
   const apply = (next: TypedAmount | undefined) => {
     if (!next) return;
@@ -173,6 +198,14 @@ export function CurrencyInput({
     ...rest,
     value: text,
     onChange: (typed: string) => {
+      if (isAmountMode) {
+        const result = interpretAmountTyping(typed, options);
+        if (!result) return;
+        setTypedNegative(result.typed.negativeZero);
+        setDraft({ text: result.draft, amount: result.typed.minorUnits });
+        setAmount(result.typed.minorUnits);
+        return;
+      }
       const next = interpretTyping(typed, options);
       // Backspace over a non-digit (the trailing symbol of "10,00 EUR", a group separator)
       // changes the text but not the digits: treat it as shifting the last digit out.
@@ -192,19 +225,37 @@ export function CurrencyInput({
     onPaste: (event: ClipboardEvent<HTMLInputElement>) => {
       const pasted = event.clipboardData.getData('text');
       event.preventDefault();
-      apply(interpretPaste(pasted, options));
+      const next = interpretPaste(pasted, options);
+      apply(next);
+      if (isAmountMode && next) {
+        setDraft({
+          text: next.minorUnits === null ? '' : plainAmountText(next.minorUnits, currency, locale),
+          amount: next.minorUnits,
+        });
+      }
     },
     onFocus: (event: FocusEvent<HTMLInputElement>) => {
       onFocus?.(event);
+      if (isAmountMode) {
+        // Edit plain text while focused; select it so typing replaces the whole amount.
+        setDraft({
+          text: amount === null ? '' : plainAmountText(amount, currency, locale),
+          amount,
+        });
+        selectOnRender.current = amount !== null;
+        return;
+      }
       const element = event.currentTarget;
       element.setSelectionRange(element.value.length, element.value.length);
     },
     onBlur: (event: FocusEvent<HTMLInputElement>) => {
       setTypedNegative(false);
+      setDraft(null);
+      selectOnRender.current = false;
       onBlur?.(event);
     },
     mono: true,
-    inputMode: allowNegative ? 'text' : 'numeric',
+    inputMode: allowNegative ? 'text' : isAmountMode ? 'decimal' : 'numeric',
     autoComplete: 'off',
     inputClassName: classNames(styles.input, inputClassName),
     inputRef: input,

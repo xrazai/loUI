@@ -26,6 +26,18 @@ export const messages = defineMessages({
     value: 'Value',
     /** Header of the note column of the data table (shown when a point is highlighted). */
     note: 'Note',
+    /** Name of the `average` reference line kind (dash pattern: long dashes). */
+    average: 'Average',
+    /** Name of the `target` reference line kind (dash pattern: dash and dot). */
+    target: 'Target',
+    /**
+     * Read form of one reference line, used in the description and as the row header in the
+     * data table. `kind` is the "Average" / "Target" message; `label` is the author's text.
+     */
+    referenceLine: (kind: string, label: string) =>
+      label.trim().toLowerCase() === kind.toLowerCase() ? kind : `${kind}, ${label}`,
+    /** Sentence added to the description. `items` is the joined list of "kind, label: value". */
+    referenceSummary: (items: string) => `Reference lines: ${items}.`,
     /** Text shown inside the plot when there is no data. */
     empty: 'No data to show',
   },
@@ -42,6 +54,11 @@ export const messages = defineMessages({
     category: 'Categoria',
     value: 'Valor',
     note: 'ObservaÃ§Ã£o',
+    average: 'Média',
+    target: 'Meta',
+    referenceLine: (kind: string, label: string) =>
+      label.trim().toLowerCase() === kind.toLowerCase() ? kind : `${kind}, ${label}`,
+    referenceSummary: (items: string) => `Linhas de referência: ${items}.`,
     empty: 'Nenhum dado para mostrar',
   },
 });

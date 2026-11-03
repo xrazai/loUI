@@ -1,4 +1,9 @@
-import { getCurrencyDigits, parseCurrencyInput } from '../../utils/currency';
+import {
+  getCurrencyDigits,
+  getCurrencySeparators,
+  parseCurrencyInput,
+  splitCurrencyAmount,
+} from '../../utils/currency';
 import { getNumberFormat } from '../../utils/number';
 
 /**
@@ -157,5 +162,72 @@ export function interpretPaste(text: string, options: TypingOptions): TypedAmoun
   return {
     minorUnits: negative && magnitude !== 0 ? -magnitude : magnitude,
     negativeZero: negative && magnitude === 0,
+  };
+}
+
+/** How digits are typed: `cents` shifts digits in from the right, `amount` types whole units. */
+export type CurrencyEntryMode = 'cents' | 'amount';
+
+export interface AmountTyping {
+  /** The text to keep in the box while editing: digits, one decimal mark, a leading `-`. */
+  draft: string;
+  typed: TypedAmount;
+}
+
+/**
+ * The amount as editable plain text for the `amount` mode: no symbol, no grouping, the locale's
+ * decimal mark (`123456` in BRL is `1234,56`, `-5` in JPY is `-5`).
+ */
+export function plainAmountText(minorUnits: number, currency: string, locale: string): string {
+  const digits = getCurrencyDigits(currency, locale);
+  const { decimal } = getCurrencySeparators(currency, locale);
+  return toDecimalString(minorUnits, digits).replace('.', decimal);
+}
+
+/**
+ * Interprets the text of the box after an edit in the `amount` mode (see `parseCurrencyAmount`
+ * for the rules). Keeps what was typed readable: `200,` stays `200,`. Returns `undefined` when
+ * the edit must be ignored: more fraction digits than the currency has, a second locale decimal
+ * mark, or more than `maxDigits` digits. The caller keeps the previous text then.
+ */
+export function interpretAmountTyping(
+  text: string,
+  options: TypingOptions,
+): AmountTyping | undefined {
+  const minorDigits = getCurrencyDigits(options.currency, options.locale);
+  const { decimal } = getCurrencySeparators(options.currency, options.locale);
+  const negative = options.allowNegative && countMinus(text) % 2 === 1;
+
+  let cleaned = '';
+  for (const char of text) {
+    if (hasDigit(char)) {
+      cleaned += String(parseCurrencyInput(char, options.currency, options.locale));
+    } else if (minorDigits > 0 && (char === '.' || char === ',' || char === decimal)) {
+      cleaned += char;
+    }
+  }
+  if (cleaned.split(decimal).length > 2) return undefined;
+
+  const parts = splitCurrencyAmount(cleaned, options.currency, options.locale);
+  if (parts.excessFraction) return undefined;
+  const total = `${parts.integer}${parts.fraction.padEnd(minorDigits, '0')}`.replace(/^0+/u, '');
+  if (total.length > clampDigits(options.maxDigits)) return undefined;
+
+  const draft = `${negative ? '-' : ''}${cleaned}`;
+  if (!hasDigit(cleaned)) {
+    return {
+      draft,
+      typed: negative
+        ? { minorUnits: 0, negativeZero: true }
+        : { minorUnits: null, negativeZero: false },
+    };
+  }
+  const magnitude = total === '' ? 0 : Number(total);
+  return {
+    draft,
+    typed: {
+      minorUnits: negative && magnitude !== 0 ? -magnitude : magnitude,
+      negativeZero: negative && magnitude === 0,
+    },
   };
 }

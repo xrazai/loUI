@@ -113,3 +113,98 @@ export function parseCurrencyInput(text: string, currency: string, locale: strin
   if (digits === '') return 0;
   return Number(digits.slice(0, MAX_DIGITS));
 }
+
+/** The decimal and grouping characters of a currency format in a locale. */
+export function getCurrencySeparators(
+  currency: string,
+  locale: string,
+): { decimal: string; group: string } {
+  const parts = getNumberFormat(locale, { style: 'currency', currency }).formatToParts(-12345.6);
+  return {
+    decimal: parts.find((part) => part.type === 'decimal')?.value ?? '.',
+    group: parts.find((part) => part.type === 'group')?.value ?? ',',
+  };
+}
+
+export interface CurrencyAmountParts {
+  /** Whole-unit digits as ASCII, without leading zeros (empty when none). */
+  integer: string;
+  /** Fraction digits as ASCII, cut to the currency's minor digits. */
+  fraction: string;
+  /** True when a decimal mark was found (even with no digits after it, as in `200,`). */
+  hasDecimalMark: boolean;
+  /** True when the text had more fraction digits than the currency allows (they were cut). */
+  excessFraction: boolean;
+}
+
+/**
+ * Splits text typed in whole units into integer and fraction digits. See
+ * {@link parseCurrencyAmount} for the rules.
+ */
+export function splitCurrencyAmount(
+  text: string,
+  currency: string,
+  locale: string,
+): CurrencyAmountParts {
+  const minorDigits = getCurrencyDigits(currency, locale);
+  const map = getDigitMap(locale);
+  const { decimal, group } = getCurrencySeparators(currency, locale);
+  // A digit is a single ASCII character in `sequence`; anything longer-lived is a mark.
+  const sequence: string[] = [];
+  for (const char of text) {
+    const digit = map.get(char) ?? fullWidthDigit(char);
+    if (digit !== undefined) sequence.push(digit);
+    else if (minorDigits > 0 && (char === '.' || char === ',' || char === decimal))
+      sequence.push(char);
+  }
+  const isDigit = (entry: string | undefined) => entry !== undefined && /^\d$/u.test(entry);
+
+  let markAt = -1;
+  const last = sequence.findLastIndex((entry) => !isDigit(entry));
+  if (last !== -1) {
+    const mark = sequence[last] ?? '';
+    const occurrences = sequence.filter((entry) => entry === mark).length;
+    const after = sequence.length - last - 1;
+    if (occurrences === 1) {
+      if (mark === decimal) markAt = last;
+      else if (after <= minorDigits && !(mark === group && after === 3)) markAt = last;
+    }
+  }
+
+  const digitsOf = (entries: string[]) => entries.filter(isDigit).join('');
+  const integer = digitsOf(markAt === -1 ? sequence : sequence.slice(0, markAt)).replace(
+    /^0+/u,
+    '',
+  );
+  const fractionAll = markAt === -1 ? '' : digitsOf(sequence.slice(markAt + 1));
+  return {
+    integer,
+    fraction: fractionAll.slice(0, minorDigits),
+    hasDecimalMark: markAt !== -1,
+    excessFraction: fractionAll.length > minorDigits,
+  };
+}
+
+/**
+ * Parses what the user typed in **whole units** into integer minor units (the `amount` typing
+ * mode of `CurrencyInput`): `200` is 200.00, so `20000` in BRL; `12,5` is `1250`.
+ *
+ * Rules, applied with string manipulation only (no floats):
+ * - Digits are whole units until a decimal mark; the locale's own digits and full-width digits
+ *   count. Other characters (symbols, spaces, signs, letters) are ignored.
+ * - The **last** `.` or `,` (or the locale's decimal mark) starts the fraction when it is the
+ *   only one of its kind and either it is the locale's decimal mark, or it is followed by at
+ *   most as many digits as the currency has minor digits (and is not the locale's grouping
+ *   mark followed by exactly three digits, as in `1.234` for KWD in pt-BR). Otherwise it is
+ *   grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
+ * - Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
+ *   0 minor digits (JPY) have no fraction: every mark is ignored.
+ * - A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
+ *   15 digits so it is always a safe integer. The sign is not handled here.
+ */
+export function parseCurrencyAmount(text: string, currency: string, locale: string): number {
+  const minorDigits = getCurrencyDigits(currency, locale);
+  const { integer, fraction } = splitCurrencyAmount(text, currency, locale);
+  const digits = `${integer}${fraction.padEnd(minorDigits, '0')}`.replace(/^0+/u, '');
+  return digits === '' ? 0 : Number(digits.slice(0, MAX_DIGITS));
+}

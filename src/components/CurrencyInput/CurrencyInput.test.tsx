@@ -514,10 +514,10 @@ describe('CurrencyInput amount entry mode', () => {
     await expect.element(field).toHaveValue('12.56');
   });
 
-  it('respects maxDigits, fraction digits included', async () => {
+  it('respects maxDigits counted in minor units (5 digits is 999.99)', async () => {
     const { onChange, field } = await typeInto({ maxDigits: 5 }, '1234.567');
-    await expect.element(field).toHaveValue('1234.5');
-    expect(onChange).toHaveBeenLastCalledWith(123450);
+    await expect.element(field).toHaveValue('123.56');
+    expect(onChange).toHaveBeenLastCalledWith(12356);
   });
 
   it('Backspace edits the text and select all + Delete gives null', async () => {

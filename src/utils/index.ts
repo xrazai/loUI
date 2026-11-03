@@ -1,4 +1,9 @@
-export { formatCurrency, getCurrencyDigits, parseCurrencyInput } from './currency';
+export {
+  formatCurrency,
+  getCurrencyDigits,
+  parseCurrencyAmount,
+  parseCurrencyInput,
+} from './currency';
 export type { FormatCurrencyOptions } from './currency';
 export { formatNumber, formatPercent } from './number';
 export type { FormatNumberOptions } from './number';
