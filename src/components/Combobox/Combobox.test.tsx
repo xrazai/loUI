@@ -6,6 +6,8 @@ import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast, cssColorToHex, tokenColor } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
+import { Inline } from '../Inline';
+import { Swatch } from '../Swatch';
 import { Combobox } from './Combobox';
 import type { ComboboxProps } from './Combobox';
 
@@ -488,5 +490,222 @@ describe('Combobox', () => {
       await expect.element(loading.getByRole('listbox')).toHaveTextContent('Loading');
       await expectNoA11yViolations(document.body);
     });
+  });
+});
+
+const colours = [
+  { value: 'navy', label: 'Navy', leading: <Swatch color="#1f3a5f" decorative /> },
+  { value: 'olive', label: 'Olive', leading: <Swatch color="#708238" decorative /> },
+  { value: 'plain', label: 'Plain' },
+];
+
+describe('Combobox option leading', () => {
+  it('shows the node in the option, hidden from assistive technology, name stays the text', async () => {
+    const screen = await renderWithProvider(<Combobox label="Colour" options={colours} />);
+    await userEvent.click(screen.getByRole('button', { name: /Show options/ }));
+    const option = screen.getByRole('option', { name: 'Navy' });
+    await expect.element(option).toBeVisible();
+    expect(option.element().querySelector('[aria-hidden="true"]')).not.toBeNull();
+    expect(option.element().getAttribute('data-has-leading')).toBe('true');
+    expect(
+      screen.getByRole('option', { name: 'Plain' }).element().hasAttribute('data-has-leading'),
+    ).toBe(false);
+  });
+
+  it('shows the leading of the selected option at the start of the input, and drops it when the text changes', async () => {
+    const screen = await renderWithProvider(
+      <Combobox label="Colour" options={colours} defaultValue="navy" />,
+    );
+    const group = screen.getByRole('combobox').element().parentElement as HTMLElement;
+    expect(group.querySelector('[class*="inputLeading"]')).not.toBeNull();
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('x');
+    expect(group.querySelector('[class*="inputLeading"]')).toBeNull();
+  });
+
+  it('shows no leading in the input for an option without one', async () => {
+    const screen = await renderWithProvider(
+      <Combobox label="Colour" options={colours} defaultValue="plain" />,
+    );
+    const group = screen.getByRole('combobox').element().parentElement as HTMLElement;
+    expect(group.querySelector('[class*="inputLeading"]')).toBeNull();
+  });
+});
+
+describe('Combobox onCreate', () => {
+  function Creatable(props: Partial<ComboboxProps> & { onCreated?: (text: string) => void }) {
+    const { onCreated, ...rest } = props;
+    const [items, setItems] = useState(customers);
+    const [value, setValue] = useState<string | null>(null);
+    return (
+      <Combobox
+        label="Customer"
+        options={items}
+        value={value}
+        onChange={setValue}
+        onCreate={(text) => {
+          onCreated?.(text);
+          setItems((list) => [...list, { value: text.toLowerCase(), label: text }]);
+          setValue(text.toLowerCase());
+        }}
+        {...rest}
+      />
+    );
+  }
+
+  const inputOf = (screen: { getByRole: (role: string) => { element: () => Element } }) =>
+    screen.getByRole('combobox').element() as HTMLInputElement;
+
+  it('adds a Create row with the typed text, only when nothing matches exactly', async () => {
+    const screen = await renderWithProvider(<Creatable />);
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('Nord');
+    await expect.element(screen.getByRole('option', { name: 'Nordic Goods' })).toBeVisible();
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(2);
+    await userEvent.keyboard('{Backspace}{Backspace}{Backspace}{Backspace}Zeta');
+    await expect.element(screen.getByRole('option', { name: 'Create “Zeta”' })).toBeVisible();
+    // An exact match (accent- and case-insensitive) hides it.
+    await userEvent.keyboard('{Control>}a{/Control}cafe central');
+    await expect.element(screen.getByRole('option', { name: 'Café Central' })).toBeVisible();
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(1);
+  });
+
+  it('does not show the row without onCreate or while the text is blank', async () => {
+    const plain = await renderWithProvider(<Customers />);
+    await userEvent.click(plain.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await expect.element(plain.getByRole('listbox')).toHaveTextContent('No results');
+    await plain.unmount();
+    const screen = await renderWithProvider(<Creatable />);
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('   ');
+    expect(document.body.textContent).not.toContain('Create');
+  });
+
+  it('calls onCreate with the trimmed text and not onChange', async () => {
+    const onCreate = vi.fn();
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(
+      <Customers onCreate={onCreate} onChange={onChange} value={null} />,
+    );
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('  Zeta  ');
+    await userEvent.click(screen.getByRole('option', { name: 'Create “Zeta”' }));
+    expect(onCreate).toHaveBeenCalledExactlyOnceWith('Zeta');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('creates and then selects the new option when the handler sets value', async () => {
+    const onCreated = vi.fn();
+    const screen = await renderWithProvider(<Creatable onCreated={onCreated} />);
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await userEvent.click(screen.getByRole('option', { name: 'Create “Zeta”' }));
+    expect(onCreated).toHaveBeenCalledWith('Zeta');
+    await expect.poll(() => inputOf(screen).value).toBe('Zeta');
+    await userEvent.click(screen.getByRole('button', { name: /Show options/ }));
+    await expect
+      .element(screen.getByRole('option', { name: 'Zeta' }))
+      .toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('works uncontrolled: the Create row never becomes the selection', async () => {
+    const onCreate = vi.fn();
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(<Customers onCreate={onCreate} onChange={onChange} />);
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await userEvent.click(screen.getByRole('option', { name: 'Create “Zeta”' }));
+    expect(onCreate).toHaveBeenCalledWith('Zeta');
+    expect(onChange).not.toHaveBeenCalled();
+    await expect.poll(() => inputOf(screen).getAttribute('aria-expanded')).toBe('false');
+    expect(onCreate).toHaveBeenCalledTimes(1);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('keeps the typed text with allowsCustomValue, where the text is the value', async () => {
+    const onCreate = vi.fn();
+    const screen = await renderWithProvider(<Customers onCreate={onCreate} allowsCustomValue />);
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('Zeta{ArrowDown}{Enter}');
+    expect(onCreate).toHaveBeenCalledExactlyOnceWith('Zeta');
+    expect(inputOf(screen).value).toBe('Zeta');
+  });
+
+  it('keeps the row with a custom filter, in pt-BR and with a message override', async () => {
+    const ptBR = await renderWithProvider(
+      <Customers label="Cliente" onCreate={() => undefined} filter={(l, q) => l.startsWith(q)} />,
+      { locale: 'pt-BR' },
+    );
+    await userEvent.click(ptBR.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await expect.element(ptBR.getByRole('option', { name: 'Criar “Zeta”' })).toBeVisible();
+    await ptBR.unmount();
+    const custom = await renderWithProvider(
+      <Customers
+        onCreate={() => undefined}
+        messages={{ createOption: (v: string) => `Add ${v}` }}
+      />,
+    );
+    await userEvent.click(custom.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await expect.element(custom.getByRole('option', { name: 'Add Zeta' })).toBeVisible();
+  });
+
+  it('is not offered when read-only', async () => {
+    const screen = await renderWithProvider(
+      <Customers onCreate={() => undefined} isReadOnly defaultInputValue="Zeta" />,
+    );
+    screen.getByRole('combobox').element().focus();
+    await userEvent.keyboard('{ArrowDown}');
+    expect(document.body.textContent).not.toContain('Create');
+  });
+
+  it('has no axe violations with the row open, and with leading nodes', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <Customers onCreate={() => undefined} options={colours} />
+      </main>,
+    );
+    await userEvent.click(screen.getByRole('combobox'));
+    await userEvent.keyboard('Zeta');
+    await expect.element(screen.getByRole('option', { name: 'Create “Zeta”' })).toBeVisible();
+    await expectNoA11yViolations(document.body);
+    await userEvent.keyboard('{Control>}a{/Control}{Backspace}');
+    await expect.element(screen.getByRole('option', { name: 'Navy' })).toBeVisible();
+    await expectNoA11yViolations(document.body);
+  });
+});
+
+describe('Combobox fullWidth', () => {
+  async function renderRow(props: { fullWidth?: boolean }) {
+    return renderWithProvider(
+      <div style={{ inlineSize: 700 }}>
+        <Inline gap={2} wrap={false}>
+          <Customers {...props} />
+          <button type="button">Apply</button>
+        </Inline>
+      </div>,
+    );
+  }
+
+  it('takes the free space of an Inline row, and not by default', async () => {
+    const rowOf = (screen: { container: Element }) =>
+      (screen.container.firstElementChild as HTMLElement).firstElementChild as HTMLElement;
+    const plain = await renderRow({});
+    const plainField = rowOf(plain).children[0] as HTMLElement;
+    expect(plainField.hasAttribute('data-full-width')).toBe(false);
+    const plainWidth = plainField.getBoundingClientRect().width;
+    await plain.unmount();
+    const full = await renderRow({ fullWidth: true });
+    const fullRow = rowOf(full);
+    const field = fullRow.querySelector('[data-full-width]') as HTMLElement;
+    const button = fullRow.lastElementChild as HTMLElement;
+    expect(field.getAttribute('data-full-width')).toBe('true');
+    expect(field.getBoundingClientRect().width).toBeGreaterThanOrEqual(plainWidth);
+    expect(button.getBoundingClientRect().right).toBeCloseTo(700, 0);
+    expect(field.getBoundingClientRect().right).toBeLessThanOrEqual(
+      button.getBoundingClientRect().left + 0.5,
+    );
   });
 });

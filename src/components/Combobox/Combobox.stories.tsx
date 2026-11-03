@@ -5,6 +5,9 @@ import type { WithLabel } from '../Field';
 import { Combobox } from './Combobox';
 import type { ComboboxOption, ComboboxProps } from './Combobox';
 import { StoryFrame } from '../../test/StoryFrame';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
+import { Swatch } from '../Swatch';
 
 const customers: ComboboxOption[] = [
   { value: 'cafe', label: 'Café Central', meta: '3 orders' },
@@ -234,4 +237,71 @@ export const LongText: Story = {
       },
     ],
   },
+};
+
+const colours: ComboboxOption[] = [
+  { value: 'navy', label: 'Navy', leading: <Swatch color="#1f3a5f" decorative /> },
+  { value: 'olive', label: 'Olive', leading: <Swatch color="#708238" decorative /> },
+  {
+    value: 'sand',
+    label: 'Sand',
+    description: 'Out of stock',
+    leading: <Swatch color="#c2b280" decorative />,
+  },
+  { value: 'none', label: 'No colour', leading: <Swatch decorative /> },
+];
+
+/** A `leading` node on each option; the selected one also shows at the start of the input. */
+export const WithLeading: Story = {
+  args: { label: 'Colour', options: colours, defaultValue: 'olive' },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: /Show options/ }));
+    await expect(await screen.findByRole('option', { name: 'Navy' })).toBeVisible();
+  },
+};
+
+function CreatableDemo(args: ComboboxProps) {
+  const [items, setItems] = useState<ComboboxOption[]>(colours.slice(0, 2));
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <Combobox
+      {...args}
+      label="Colour"
+      options={items}
+      value={value}
+      onChange={setValue}
+      onCreate={(text) => {
+        const id = text.toLowerCase();
+        setItems((list) => [...list, { value: id, label: text, leading: <Swatch decorative /> }]);
+        setValue(id);
+      }}
+    />
+  );
+}
+
+/** Typed text that matches nothing ends the list with a Create row; choosing it selects the new option. */
+export const CreateNew: Story = {
+  render: (args) => <CreatableDemo {...args} />,
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole('combobox', { name: 'Colour' });
+    await userEvent.click(input);
+    await userEvent.keyboard('Teal');
+    await userEvent.click(await screen.findByRole('option', { name: 'Create “Teal”' }));
+    await waitFor(() => expect(input).toHaveValue('Teal'));
+    await waitFor(() => expect(input).toHaveAttribute('aria-expanded', 'false'));
+  },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap={false}>
+      <Combobox {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 import type { ComboBoxProps as RACComboBoxProps } from 'react-aria-components';
 import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
-import { matchesSearch } from '../../utils/text';
+import { matchesSearch, normalizeSearch } from '../../utils/text';
 import { FieldMessages, Label } from '../Field';
 import type {
   FieldErrorMessage,
@@ -27,7 +27,7 @@ import type {
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import { Icon } from '../Icon';
-import { CheckIcon, ChevronDownIcon } from '../Icon/icons';
+import { CheckIcon, ChevronDownIcon, PlusIcon } from '../Icon/icons';
 import { Spinner } from '../Spinner';
 import { messages } from './Combobox.messages';
 import styles from './Combobox.module.css';
@@ -45,6 +45,13 @@ export interface ComboboxOption {
   meta?: string | undefined;
   /** Not selectable, dimmed, skipped by keyboard navigation. */
   isDisabled?: boolean | undefined;
+  /**
+   * Decoration before the label: a `Swatch`, an `Icon`, an `Avatar`. It is hidden from assistive
+   * technology (`aria-hidden`), so the option name stays its text: put anything that carries
+   * meaning in `label`, `description` or `meta`. While this option is selected and the input
+   * shows its label, the same node also appears at the start of the input.
+   */
+  leading?: ReactNode;
 }
 
 export interface ComboboxGroup {
@@ -61,6 +68,9 @@ function allOptions(entries: readonly (ComboboxOption | ComboboxGroup)[]): Combo
 
 type ComboboxState = NonNullable<React.ContextType<typeof ComboBoxStateContext>>;
 
+/** `id` of the "Create" row. Never reaches `onChange`. */
+const CREATE_KEY = '__loui-combobox-create__';
+
 /** Hands the React Aria combobox state to the parent (it lives below `ComboBox`). */
 function StateBridge({ stateRef }: { stateRef: { current: ComboboxState | null } }) {
   const state = useContext(ComboBoxStateContext);
@@ -68,6 +78,18 @@ function StateBridge({ stateRef }: { stateRef: { current: ComboboxState | null }
     stateRef.current = state;
   });
   return null;
+}
+
+/** The `leading` of the selected option, at the start of the input, while the input shows its label. */
+function SelectedLeading({ options }: { options: readonly ComboboxOption[] }) {
+  const state = useContext(ComboBoxStateContext);
+  const selected = state?.value == null ? undefined : options.find((o) => o.value === state.value);
+  if (!selected?.leading || state?.inputValue !== selected.label) return null;
+  return (
+    <span aria-hidden="true" className={styles.inputLeading}>
+      {selected.leading}
+    </span>
+  );
 }
 
 interface CollectionNode {
@@ -148,6 +170,17 @@ interface ComboboxBaseProps extends Omit<
    */
   selectFirstOnEnter?: boolean | undefined;
   /**
+   * Turns on the "create new" row. While the typed text is not blank and matches no option label
+   * (accent- and case-insensitive), the list ends with a `Create "text"` row (message
+   * `createOption`). Choosing it (click, or `ArrowDown` then `Enter`) calls `onCreate` with the
+   * trimmed text and does not call `onChange`; the typed text is never replaced by the row's
+   * text. Add the option to `options` in the handler and set `value` to it: the input then shows
+   * its label. Pair it with a controlled `value`. If the handler selects nothing, the input
+   * empties when the list closes, as in any combobox without `allowsCustomValue`; with
+   * `allowsCustomValue` the typed text stays as the value.
+   */
+  onCreate?: ((inputValue: string) => void) | undefined;
+  /**
    * Shows a spinner in the box and, when there are no options yet, a "Loading" row instead of
    * "No results". The consumer owns the data: see `filter={false}` and `onInputChange`.
    */
@@ -165,6 +198,11 @@ interface ComboboxBaseProps extends Omit<
   placeholder?: string | undefined;
   /** Control height: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: ComboboxSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the popover that holds the options. */
@@ -173,7 +211,7 @@ interface ComboboxBaseProps extends Omit<
   inputClassName?: string | undefined;
   /** Ref to the `<input>` element. The `ref` prop points at the field root. */
   inputRef?: Ref<HTMLInputElement> | undefined;
-  /** Message overrides for this instance: `noResults`, `loading`, `showOptions`, `requiredMark`. */
+  /** Message overrides for this instance: `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`. */
   messages?: ComboboxMessages | undefined;
   /** Ref to the field root `<div>`. */
   ref?: Ref<HTMLDivElement> | undefined;
@@ -188,10 +226,16 @@ function renderOption(option: ComboboxOption) {
       id={option.value}
       textValue={option.label}
       className={classNames(styles.option)}
+      data-has-leading={option.leading ? true : undefined}
       {...(option.isDisabled ? { isDisabled: true } : {})}
     >
       {({ isSelected }) => (
         <>
+          {option.leading ? (
+            <span aria-hidden="true" className={styles.leading}>
+              {option.leading}
+            </span>
+          ) : null}
           {/* One label element holds the label, meta and description, so the option name
               contains everything that is visible (WCAG 2.5.3); `display: contents` lets the
               spans join the option grid. */}
@@ -220,7 +264,8 @@ function renderOption(option: ComboboxOption) {
  * open the list and move, `Home` / `End` move the caret in the input (React Aria keeps them for
  * text editing). With `allowsCustomValue` the typed text itself is a valid value.
  *
- * Use it for long lists (10 or more options); for fewer prefer `Select`.
+ * Use it for long lists (10 or more options); for fewer prefer `Select`. `onCreate` adds a
+ * `Create "text"` row for text that matches no option (see Combobox.md).
  */
 export function Combobox({
   label,
@@ -237,6 +282,11 @@ export function Combobox({
   isLoading = false,
   placeholder,
   size = 'md',
+  fullWidth = false,
+  onCreate,
+  inputValue,
+  defaultInputValue,
+  onInputChange,
   className,
   popoverClassName,
   inputClassName,
@@ -253,15 +303,43 @@ export function Combobox({
   });
   const t = useMessages('Combobox', messages, messageOverrides);
   const stateRef = useRef<ComboboxState | null>(null);
+  const [typed, setTyped] = useState(defaultInputValue ?? '');
+  const [ownValue, setOwnValue] = useState<string | null>(defaultValue ?? null);
+  const flatOptions = allOptions(options);
+  const currentInput = inputValue ?? typed;
+  const createText = currentInput.trim();
+  const showCreate =
+    onCreate !== undefined &&
+    !rest.isReadOnly &&
+    createText !== '' &&
+    !flatOptions.some((o) => normalizeSearch(o.label) === normalizeSearch(createText));
+  // Without a controlled `value`, `onCreate` owns the selection here: the "Create" row is an
+  // item of the collection and must never become the selected key.
+  const ownsValue = value === undefined && onCreate !== undefined;
+  const effectiveValue = ownsValue ? ownValue : value;
+  // React Aria clears the input when a selection ends (the "Create" row selects nothing).
+  // After `onCreate` the text is put back, or replaced by the label of the option the
+  // handler selected, once that option is in the collection. React Aria may clear it again a
+  // render later, so the correction stays active until the current task ends.
+  const createdText = useRef<string | null>(null);
+  useEffect(() => {
+    const text = createdText.current;
+    const state = stateRef.current;
+    if (text === null || !state) return;
+    const selected = flatOptions.find((o) => o.value === effectiveValue);
+    const next = selected?.label ?? text;
+    if (state.inputValue !== next) state.setInputValue(next);
+  });
   let defaultFilter: (text: string, query: string) => boolean;
   if (filter === false) {
     defaultFilter = () => true;
   } else if (filter) {
     const byLabel = new Map<string, ComboboxOption[]>();
-    for (const option of allOptions(options)) {
+    for (const option of flatOptions) {
       byLabel.set(option.label, [...(byLabel.get(option.label) ?? []), option]);
     }
     defaultFilter = (text, query) =>
+      (showCreate && text === currentInput) ||
       (byLabel.get(text) ?? []).some((option) => filter(option.label, query, option));
   } else {
     defaultFilter = (text, query) => matchesSearch(text, query);
@@ -298,17 +376,36 @@ export function Combobox({
       {...rest}
       ref={ref}
       data-size={size}
+      data-full-width={fullWidth || undefined}
       data-loading={isLoading || undefined}
       defaultFilter={defaultFilter}
       onKeyDown={handleKeyDown}
       allowsEmptyCollection
       {...(allowsCustomValue === undefined ? {} : { allowsCustomValue })}
-      {...(value === undefined ? {} : { value })}
-      {...(defaultValue === undefined ? {} : { defaultValue })}
-      onChange={(key) => {
-        onChange?.(key === null ? null : String(key));
+      {...(inputValue === undefined ? {} : { inputValue })}
+      {...(defaultInputValue === undefined ? {} : { defaultInputValue })}
+      onInputChange={(text) => {
+        setTyped(text);
+        onInputChange?.(text);
       }}
-      className={classNames(fieldStyles.root, className)}
+      {...(effectiveValue === undefined ? {} : { value: effectiveValue })}
+      {...(defaultValue === undefined || ownsValue ? {} : { defaultValue })}
+      onChange={(key) => {
+        if (key === CREATE_KEY) {
+          createdText.current = currentInput;
+          setTimeout(() => {
+            createdText.current = null;
+            // Putting the text back counts as typing, which opens the list; a chosen row closes it.
+            stateRef.current?.close();
+          }, 0);
+          onCreate?.(createText);
+          return;
+        }
+        const next = key === null ? null : String(key);
+        if (ownsValue) setOwnValue(next);
+        onChange?.(next);
+      }}
+      className={classNames(fieldStyles.root, styles.field, className)}
     >
       <StateBridge stateRef={stateRef} />
       {label ? (
@@ -317,6 +414,7 @@ export function Combobox({
         </Label>
       ) : null}
       <Group className={classNames(fieldStyles.control, fieldStyles.row, styles.group)}>
+        <SelectedLeading options={flatOptions} />
         <RACInput
           ref={inputRef}
           {...(placeholder === undefined ? {} : { placeholder })}
@@ -354,6 +452,19 @@ export function Combobox({
               renderOption(entry)
             ),
           )}
+          {showCreate ? (
+            <ListBoxItem
+              id={CREATE_KEY}
+              // The row's text is the typed text, so choosing it leaves the input as it is.
+              textValue={currentInput}
+              className={classNames(styles.option, styles.create)}
+            >
+              <Icon icon={PlusIcon} size="sm" className={styles.createIcon} />
+              <Text slot="label" className={styles.createLabel}>
+                {t.createOption(createText)}
+              </Text>
+            </ListBoxItem>
+          ) : null}
         </ListBox>
       </Popover>
     </RACComboBox>

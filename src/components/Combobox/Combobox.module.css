@@ -1,4 +1,16 @@
 @layer components {
+  .field[data-full-width] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  /* The leading node of the selected option, before the text. */
+  .inputLeading {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+  }
+
   /* The group is the visible box (Field.module.css draws border, focus ring and states). */
   .group {
     gap: var(--ds-space-1);
@@ -116,6 +128,33 @@
     cursor: pointer;
   }
 
+  .leading {
+    display: inline-flex;
+    grid-column: 1;
+    grid-row: 1;
+    align-items: center;
+  }
+
+  /* The "Create" row: icon and text, set apart from the options. */
+  .create {
+    grid-template-columns: auto minmax(0, 1fr);
+    margin-block-start: var(--ds-space-1);
+    border-block-start: 1px solid var(--ds-line);
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  .createIcon {
+    grid-column: 1;
+    color: var(--ds-text-2);
+  }
+
+  .createLabel {
+    grid-column: 2;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
   .optionLabel {
     grid-column: 1;
     min-inline-size: 0;
@@ -148,6 +187,27 @@
     grid-column: 3;
     grid-row: 1;
     color: var(--ds-accent);
+  }
+
+  /* With a leading node the grid gets a first column; the rest moves one column right. */
+  .option[data-has-leading] {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+
+  .option[data-has-leading] .optionLabel {
+    grid-column: 2;
+  }
+
+  .option[data-has-leading] .meta {
+    grid-column: 3;
+  }
+
+  .option[data-has-leading] .optionDescription {
+    grid-column: 2 / -1;
+  }
+
+  .option[data-has-leading] .check {
+    grid-column: 4;
   }
 
   .option[data-focused],

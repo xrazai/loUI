@@ -347,3 +347,32 @@ describe('keyboard contract: TagInput', () => {
     expect(onChange).toHaveBeenLastCalledWith(['one']);
   });
 });
+
+describe('keyboard contract: Combobox create row', () => {
+  it('ArrowDown reaches the Create row, Enter chooses it, focus stays in the input', async () => {
+    const onCreate = vi.fn();
+    const onChange = vi.fn();
+    await renderWithProvider(
+      <>
+        <button type="button">Before</button>
+        <Combobox label="Customer" options={customers} onCreate={onCreate} onChange={onChange} />
+        <button type="button">After</button>
+      </>,
+    );
+    await userEvent.tab();
+    await userEvent.tab();
+    await expectFocus('Customer');
+    await press('Zeta');
+    await expect.poll(listboxOpen).toBe(true);
+    await press('{ArrowDown}');
+    await expect.poll(() => activeOption(field())).toBe('Create “Zeta”');
+    expect(document.activeElement).toBe(field());
+    await press('{Enter}');
+    await expect.poll(listboxOpen).toBe(false);
+    expect(onCreate).toHaveBeenCalledExactlyOnceWith('Zeta');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(field());
+    await userEvent.tab();
+    expect(labelOf(document.activeElement)).toBe('After');
+  });
+});

@@ -19,18 +19,51 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 | Prop                                                                                                                                   | Notes                                                                                                                                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                                                                                                                                                                                                                 |
-| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |
+| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `leading`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                        |
 | `value` / `defaultValue` / `onChange(value)`                                                                                           | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |
 | `inputValue` / `defaultInputValue` / `onInputChange`                                                                                   | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |
 | `allowsCustomValue`                                                                                                                    | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |
 | `filter`                                                                                                                               | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |
+| `onCreate(text)`                                                                                                                       | Adds a `Create “text”` row when the typed text matches no option; see Create new below.                                                                                                                                                                                                          |
+| `fullWidth`                                                                                                                            | In an `Inline` row the field takes the free space (`flex: 1 1 auto`, can shrink). Off by default; in a block context the field already spans the width.                                                                                                                                          |
 | `selectFirstOnEnter`                                                                                                                   | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing "tri" then `Enter` picks "Trimestral").                                                                                                                                                              |
 | `isLoading`                                                                                                                            | Spinner in the box; "Loading" row when there are no options yet.                                                                                                                                                                                                                                 |
 | `menuTrigger`                                                                                                                          | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |
 | `description`, `descriptionTone`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |
-| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |
+| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`.                                                                                                                                                                                                                           |
 
 Option order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning.
+
+## Option leading (swatch, icon, avatar)
+
+`leading` on an option puts a node before its label (a `Swatch`, an `Icon`, an `Avatar`). It is hidden from assistive technology: the option name stays its text (label, meta, description), so put anything that carries meaning in the text, never only in the node. While an option with `leading` is selected and the input shows its label, the same node appears at the start of the input (a colour picker shows the chosen colour); it disappears as soon as the text is edited.
+
+```tsx
+<Combobox
+  label="Colour"
+  options={[{ value: 'navy', label: 'Navy', leading: <Swatch color="#1f3a5f" decorative /> }]}
+/>
+```
+
+## Create new (`onCreate`)
+
+While the typed text is not blank and matches no option label (accent- and case-insensitive), the list ends with a `Create “text”` row (message `createOption`; `Criar “text”` in pt-BR). It is a normal option: `ArrowDown` reaches it, `Enter` or a click chooses it. Choosing it calls `onCreate` with the trimmed text and does **not** call `onChange`, and the typed text is never replaced by the row's text. In the handler add the option to `options` and set `value` to it; the input then shows its label.
+
+```tsx
+<Combobox
+  label="Label"
+  options={labels}
+  value={value}
+  onChange={setValue}
+  onCreate={(name) => {
+    const created = { value: slug(name), label: name };
+    setLabels((list) => [...list, created]);
+    setValue(created.value);
+  }}
+/>
+```
+
+Keep `value` controlled. If the handler selects nothing, the input empties when the list closes, as in any combobox without `allowsCustomValue`; with `allowsCustomValue` the typed text stays as the value (there the Create row is rarely needed). The row is not offered when the field is read-only. Creating is reversible: offer Undo with `useUndoable`. The full flow (create, select, toast with Undo) is the `create-on-the-fly` recipe (`docs/recipes/create-on-the-fly.md`).
 
 ## Async options (documented pattern; a full async list is P2)
 

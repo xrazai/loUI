@@ -8,10 +8,13 @@ export const messages = defineMessages({
     loading: 'Loading',
     /** Accessible name of the button that opens the list. */
     showOptions: 'Show options',
+    /** Last row of the list when `onCreate` is set and the typed text matches no option. */
+    createOption: (value: string) => `Create “${value}”`,
   },
   'pt-BR': {
     noResults: 'Nenhum resultado',
     loading: 'Carregando',
     showOptions: 'Mostrar opções',
+    createOption: (value: string) => `Criar “${value}”`,
   },
 });
