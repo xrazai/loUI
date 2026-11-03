@@ -3,14 +3,21 @@ import react from '@vitejs/plugin-react';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import { dropFiles, grantClipboard } from './tests/browser-commands';
 
 const dirname = fileURLToPath(new URL('.', import.meta.url));
 
-function browser(name: string, viewport?: { width: number; height: number }) {
+function browser(
+  name: string,
+  viewport?: { width: number; height: number },
+  commands?:
+    Record<string, never> | { grantClipboard: typeof grantClipboard; dropFiles: typeof dropFiles },
+) {
   return {
     enabled: true,
     headless: true,
     provider: playwright(),
+    ...(commands ? { commands } : {}),
     instances: [{ browser: 'chromium' as const, name, ...(viewport ? { viewport } : {}) }],
   };
 }
@@ -39,7 +46,7 @@ export default defineConfig({
           // Overlay and timer tests run real animations and clocks; the default 5 s is too tight
           // when the four projects share the machine in one `pnpm test` run.
           testTimeout: 20_000,
-          browser: browser('browser'),
+          browser: browser('browser', undefined, { grantClipboard, dropFiles }),
         },
       },
       {

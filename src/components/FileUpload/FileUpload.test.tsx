@@ -1,5 +1,5 @@
 import { createRef, useState } from 'react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
@@ -216,6 +216,35 @@ describe('FileUpload', () => {
     await userEvent.tab();
     await expect.element(screen.getByRole('button', { name: 'Remove a.pdf' })).toHaveFocus();
     await userEvent.keyboard('{Enter}');
+    expect(screen.container.querySelector('ul')).toBeNull();
+  });
+
+  it('adds files dropped from the desktop with a native drag (CDP), and styles the zone while dragging', async () => {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(<Attachments onChange={onChange} />);
+    // React Aria rejects synthetic DragEvents; this is a real browser drag with real files.
+    await commands.dropFiles('[aria-label="Drop zone"]', [
+      { name: 'dropped.txt', content: 'hello' },
+      { name: 'second.txt', content: 'world' },
+    ]);
+    await expect.poll(() => screen.getByRole('listitem').elements().length).toBe(2);
+    expect(screen.container.textContent).toContain('dropped.txt');
+    expect(screen.container.textContent).toContain('second.txt');
+    expect(onChange).toHaveBeenLastCalledWith([
+      expect.objectContaining({ name: 'dropped.txt' }),
+      expect.objectContaining({ name: 'second.txt' }),
+    ]);
+    expect(screen.container.querySelector('[role="status"]')?.textContent).toBe('2 files added.');
+    // The drop ended, so the drag styling is gone.
+    expect(
+      screen.container.querySelector('[class*="zone"]')?.hasAttribute('data-drop-target'),
+    ).toBe(false);
+  });
+
+  it('ignores a drop while disabled', async () => {
+    const screen = await renderWithProvider(<Attachments isDisabled />);
+    await commands.dropFiles('[aria-label="Drop zone"]', [{ name: 'nope.txt', content: 'x' }]);
+    await new Promise((resolve) => setTimeout(resolve, 200));
     expect(screen.container.querySelector('ul')).toBeNull();
   });
 
