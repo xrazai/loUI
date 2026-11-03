@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
-import type { MouseEvent, ReactNode, Ref } from 'react';
+import type { FocusEventHandler, KeyboardEventHandler, MouseEvent, ReactNode, Ref } from 'react';
 import { Form as RACForm } from 'react-aria-components';
 import type { FormProps as RACFormProps } from 'react-aria-components';
 import { useMessages } from '../../i18n';
@@ -42,6 +42,23 @@ export interface FormProps extends Omit<
    * this off and render `FormErrorSummary` inside the form yourself.
    */
   errorSummary?: boolean;
+  /**
+   * The `id` of the `<form>`. Other elements link to it with the `form` attribute, for example
+   * a submit button in a `Sheet` footer: `<Button type="submit" form="order-form">`.
+   */
+  id?: string;
+  /**
+   * Key handlers on the `<form>`. They receive every key pressed inside a field (the events
+   * bubble), so a form-level shortcut such as `Ctrl+Enter` can live here. The form adds no key
+   * handling of its own, so yours never replaces anything.
+   */
+  onKeyDown?: KeyboardEventHandler<HTMLFormElement>;
+  /** Key-up handler on the `<form>`; see `onKeyDown`. */
+  onKeyUp?: KeyboardEventHandler<HTMLFormElement>;
+  /** Fires when focus enters the form or moves between its fields (React `focus` bubbles). */
+  onFocus?: FocusEventHandler<HTMLFormElement>;
+  /** Fires when focus leaves a field in the form; check `relatedTarget` to detect leaving the form. */
+  onBlur?: FocusEventHandler<HTMLFormElement>;
   /** The fields and actions of the form. */
   children?: ReactNode;
   /** Per-instance overrides of the built-in messages. */

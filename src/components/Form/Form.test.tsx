@@ -299,4 +299,91 @@ describe('Form error summary', () => {
     await userEvent.click(instance.getByRole('button', { name: 'Save changes' }));
     await expect.element(instance.getByText('Instance 2')).toBeVisible();
   });
+  describe('outside access (GAP-023)', () => {
+    it('renders the id on the form element', async () => {
+      const screen = await renderForm({ id: 'profile-form' });
+      expect(screen.getByRole('form', { name: 'Profile' }).element().id).toBe('profile-form');
+    });
+
+    it('forwards DOM handlers to the form', async () => {
+      const onKeyDown = vi.fn();
+      const onKeyUp = vi.fn();
+      const onFocus = vi.fn();
+      const onBlur = vi.fn();
+      const screen = await renderForm({ onKeyDown, onKeyUp, onFocus, onBlur });
+      await userEvent.click(screen.getByRole('textbox', { name: /Name/ }));
+      await userEvent.keyboard('a');
+      expect(onFocus).toHaveBeenCalled();
+      expect(onKeyDown).toHaveBeenCalledOnce();
+      expect(onKeyUp).toHaveBeenCalledOnce();
+      await userEvent.tab();
+      expect(onBlur).toHaveBeenCalled();
+    });
+
+    it('composes consumer handlers with the internal behavior', async () => {
+      const onKeyDown = vi.fn();
+      const onReset = vi.fn();
+      const screen = await renderForm({ errorSummary: true, onKeyDown, onReset });
+      await userEvent.click(screen.getByRole('textbox', { name: /Name/ }));
+      await userEvent.keyboard('{Enter}');
+      expect(onKeyDown).toHaveBeenCalled();
+      // The internal submit/invalid handling still runs: the summary appears.
+      await expect.element(screen.getByText('Fix 2 fields before saving')).toBeVisible();
+    });
+
+    it('is submitted by a button outside it that uses the form attribute', async () => {
+      const onSubmit = vi.fn((event: { preventDefault: () => void }) => {
+        event.preventDefault();
+      });
+      const screen = await renderWithProvider(
+        <>
+          <Form aria-label="Profile" id="outside" onSubmit={onSubmit}>
+            <Input label="Name" name="name" />
+          </Form>
+          <Button type="submit" form="outside" variant="primary">
+            Save changes
+          </Button>
+        </>,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+      expect(onSubmit).toHaveBeenCalledOnce();
+    });
+
+    it('submits with Enter inside a field', async () => {
+      const onSubmit = vi.fn((event: { preventDefault: () => void }) => {
+        event.preventDefault();
+      });
+      const screen = await renderWithProvider(
+        <>
+          <Form aria-label="Profile" id="enter" onSubmit={onSubmit}>
+            <Input label="Name" name="name" />
+          </Form>
+          <Button type="submit" form="enter">
+            Save changes
+          </Button>
+        </>,
+      );
+      await userEvent.click(screen.getByRole('textbox', { name: 'Name' }));
+      await userEvent.keyboard('{Enter}');
+      expect(onSubmit).toHaveBeenCalledOnce();
+    });
+
+    it('validates natively from the outside button: focuses the first invalid field and shows its error', async () => {
+      const onSubmit = vi.fn();
+      const screen = await renderWithProvider(
+        <>
+          <Form aria-label="Profile" id="validated" onSubmit={onSubmit}>
+            <Fields />
+          </Form>
+          <Button type="submit" form="validated">
+            Outside save
+          </Button>
+        </>,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Outside save' }));
+      expect(onSubmit).not.toHaveBeenCalled();
+      await expect.element(screen.getByRole('textbox', { name: /Name/ })).toHaveFocus();
+      await expect.element(screen.getByText('Enter a name.')).toBeVisible();
+    });
+  });
 });

@@ -20,6 +20,7 @@ export const RECIPE_NAMES = [
   'FormWithValidation',
   'MarkdownMessage',
   'SettingsPage',
+  'SheetForm',
   'UndoableAction',
 ] as const;
 
