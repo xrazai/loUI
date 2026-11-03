@@ -5,6 +5,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 ## When to use
 
 - Prices, totals, payments, adjustments: anywhere a person types an amount of money.
+- Editing a price inline, in place of its text in a table row or list (see the `InlinePriceEdit` recipe).
 
 ## When not to use
 

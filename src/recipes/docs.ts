@@ -14,10 +14,12 @@ import prettier from 'prettier';
 export const RECIPE_NAMES = [
   'ApprovalQueue',
   'CommandPaletteSetup',
+  'CreateOnTheFly',
   'DestructiveConfirm',
   'DetailSheet',
   'FilterableTable',
   'FormWithValidation',
+  'InlinePriceEdit',
   'MarkdownMessage',
   'SettingsPage',
   'SheetForm',

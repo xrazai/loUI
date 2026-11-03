@@ -15,32 +15,33 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 - Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
-- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
+- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled, WithPlaceholder, FullWidthInRow
 
 ## Props
 
-| Prop              | Type                                                          | Required | Default | Description                                                                                                                                                                      |
-| ----------------- | ------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `currency`        | `string`                                                      | yes      |         | ISO 4217 code of the currency (`'USD'`, `'BRL'`, `'JPY'`). It decides the number of fraction digits (JPY has 0, KWD has 3), the symbol and where the locale places it.           |
-| `value`           | `number \| null`                                              |          |         | The amount in **integer minor units** (ADR-0006): `123456` is `$1,234.56` in USD and `¥123456` in JPY. `null` is an empty field (nothing entered), which is different from `0`.  |
-| `defaultValue`    | `number \| null`                                              |          |         | The initial amount when uncontrolled. Defaults to empty (`null`).                                                                                                                |
-| `onChange`        | `((minorUnits: number \| null) => void)`                      |          |         | Called with the new amount in minor units, or `null` when the field is emptied.                                                                                                  |
-| `allowNegative`   | `boolean`                                                     |          | `false` | Accepts negative amounts. Type `-` anywhere to flip the sign. Default `false`.                                                                                                   |
-| `maxDigits`       | `number`                                                      |          | `15`    | Most digits the amount may have, fraction digits included (`15` is the maximum, the largest count that is always a safe integer). Typing beyond it is ignored. Default `15`.     |
-| `name`            | `string`                                                      |          |         | Name for form submission. The form receives the **integer minor units** (`123456`), or an empty string when the field is empty, never the formatted text.                        |
-| `description`     | `ReactNode`                                                   |          |         | Helper text under the control. Linked with `aria-describedby`.                                                                                                                   |
-| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |          |         | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
-| `errorMessage`    | `FieldErrorMessage`                                           |          |         | Error text, shown while the field is invalid and the error is displayed. See `Input`.                                                                                            |
-| `placeholder`     | `string`                                                      |          |         | Text shown while the field is empty.                                                                                                                                             |
-| `size`            | `'sm' \| 'md' \| 'lg'`                                        |          |         | Control height: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                                       |
-| `className`       | `string`                                                      |          |         | Class name for the field root.                                                                                                                                                   |
-| `inputClassName`  | `string`                                                      |          |         | Class name for the `<input>` element.                                                                                                                                            |
-| `inputRef`        | `Ref<HTMLInputElement>`                                       |          |         | Ref to the `<input>` element. The `ref` prop points at the field root.                                                                                                           |
-| `messages`        | `Partial<{ requiredMark: string; }>`                          |          |         | Message overrides for this instance (`requiredMark`).                                                                                                                            |
-| `ref`             | `Ref<HTMLDivElement>`                                         |          |         | Ref to the field root `<div>`.                                                                                                                                                   |
-| `label`           | `ReactNode`                                                   |          |         | Visible label. Prefer it: sighted and assistive technology users see the same name.                                                                                              |
-| `aria-label`      | `string`                                                      |          |         | Accessible name when there is no visible label (for example a search box with an icon).                                                                                          |
-| `aria-labelledby` | `string`                                                      |          |         | Id of the element that names the field.                                                                                                                                          |
+| Prop              | Type                                                          | Required | Default | Description                                                                                                                                                                               |
+| ----------------- | ------------------------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `currency`        | `string`                                                      | yes      |         | ISO 4217 code of the currency (`'USD'`, `'BRL'`, `'JPY'`). It decides the number of fraction digits (JPY has 0, KWD has 3), the symbol and where the locale places it.                    |
+| `value`           | `number \| null`                                              |          |         | The amount in **integer minor units** (ADR-0006): `123456` is `$1,234.56` in USD and `¥123456` in JPY. `null` is an empty field (nothing entered), which is different from `0`.           |
+| `defaultValue`    | `number \| null`                                              |          |         | The initial amount when uncontrolled. Defaults to empty (`null`).                                                                                                                         |
+| `onChange`        | `((minorUnits: number \| null) => void)`                      |          |         | Called with the new amount in minor units, or `null` when the field is emptied.                                                                                                           |
+| `allowNegative`   | `boolean`                                                     |          | `false` | Accepts negative amounts. Type `-` anywhere to flip the sign. Default `false`.                                                                                                            |
+| `maxDigits`       | `number`                                                      |          | `15`    | Most digits the amount may have, fraction digits included (`15` is the maximum, the largest count that is always a safe integer). Typing beyond it is ignored. Default `15`.              |
+| `name`            | `string`                                                      |          |         | Name for form submission. The form receives the **integer minor units** (`123456`), or an empty string when the field is empty, never the formatted text.                                 |
+| `description`     | `ReactNode`                                                   |          |         | Helper text under the control. Linked with `aria-describedby`.                                                                                                                            |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |          |         | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.          |
+| `errorMessage`    | `FieldErrorMessage`                                           |          |         | Error text, shown while the field is invalid and the error is displayed. See `Input`.                                                                                                     |
+| `placeholder`     | `string`                                                      |          |         | Text shown while the field is empty (`value` is `null`), until the first digit is typed.                                                                                                  |
+| `size`            | `'sm' \| 'md' \| 'lg'`                                        |          |         | Control height: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                                                |
+| `fullWidth`       | `boolean`                                                     |          |         | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
+| `className`       | `string`                                                      |          |         | Class name for the field root.                                                                                                                                                            |
+| `inputClassName`  | `string`                                                      |          |         | Class name for the `<input>` element.                                                                                                                                                     |
+| `inputRef`        | `Ref<HTMLInputElement>`                                       |          |         | Ref to the `<input>` element. The `ref` prop points at the field root.                                                                                                                    |
+| `messages`        | `Partial<{ requiredMark: string; }>`                          |          |         | Message overrides for this instance (`requiredMark`).                                                                                                                                     |
+| `ref`             | `Ref<HTMLDivElement>`                                         |          |         | Ref to the field root `<div>`.                                                                                                                                                            |
+| `label`           | `ReactNode`                                                   |          |         | Visible label. Prefer it: sighted and assistive technology users see the same name.                                                                                                       |
+| `aria-label`      | `string`                                                      |          |         | Accessible name when there is no visible label (for example a search box with an icon).                                                                                                   |
+| `aria-labelledby` | `string`                                                      |          |         | Id of the element that names the field.                                                                                                                                                   |
 
 ### Inherited props
 
@@ -70,6 +71,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 ## When to use
 
 - Prices, totals, payments, adjustments: anywhere a person types an amount of money.
+- Editing a price inline, in place of its text in a table row or list (see the `InlinePriceEdit` recipe).
 
 ## When not to use
 
@@ -97,20 +99,37 @@ Two models were considered:
 
 ## Props (key ones)
 
-| Prop                                                                                                                                   | Notes                            |
-| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `currency`                                                                                                                             | Required ISO 4217 code.          |
-| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units. |
-| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |
-| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |
-| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
-| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |
+| Prop                                                                                                                                   | Notes                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |
+| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units.                                                                   |
+| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |
+| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |
+| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |
+| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |
+| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |
 
 ## Accessibility and keyboard
 
 A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).
 
 Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
+
+## Events: `onKeyDown`, `onFocus`, `onBlur`
+
+These come from the underlying text field and are **composed** with the internal handlers, never replaced:
+
+- `onKeyDown`: runs for every key. A key your handler does not `preventDefault()` keeps bubbling to `useHotkeys` shortcuts and still types a digit. Call `preventDefault()` for the keys you take (`Enter`, `Escape`).
+- `onFocus`: your handler runs first, then the caret moves to the end of the text.
+- `onBlur`: your handler runs after the field resets a lone `-` (negative zero). `onChange` has already delivered the last typed value, so a blur handler may confirm it.
+
+Inline price editing (`Enter` confirms, `Escape` cancels, blur confirms) is the recipe `inline-price-edit`.
+
+## Placeholder
+
+While `value` is `null` the box is empty and shows `placeholder` in `--ds-text-3`, focused or not. It disappears with the first digit and returns when the field is emptied again (select all, then `Delete`). `0` is a value, not empty: it shows `$0.00`. Use the placeholder for a hint such as an inherited price, never as the label.
 
 ## Content rules
 

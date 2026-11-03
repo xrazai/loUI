@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "package": {
     "name": "loui-ds",
-    "version": "0.5.0"
+    "version": "0.6.0"
   },
   "generator": "scripts/manifest/build.ts",
   "entryPoints": [
@@ -28,7 +28,7 @@
     "hooks": 11,
     "utilities": 44,
     "icons": 40,
-    "recipes": 10
+    "recipes": 12
   },
   "components": [
     {
@@ -7595,7 +7595,7 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                                          | Notes                                                                                           |\n| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`                    | One is required.                                                                                |\n| `value` / `defaultValue` / `onChange(color)`                  | RAC naming. A `#RRGGBB` string or a `Color`. `onChange` receives a `Color`, or `null` if empty. |\n| `validate`                                                    | Receives the `Color \\| null`; return a message (or messages) to mark the field invalid.         |\n| `size`                                                        | `sm` / `md` (default) / `lg`.                                                                   |\n| `fullWidth` | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default. |\n| `description`, `descriptionTone`, `errorMessage`              | As in `Input`. `errorMessage` defaults to the catalog `invalid` message.                        |\n| `placeholder`                                                 | For example `#RRGGBB`. Never a substitute for the label.                                        |\n| `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits `#RRGGBB`.                                                             |\n| `messages`                                                    | `invalid`, `requiredMark`.                                                                      |\n\n### Getting the hex\n\n`onChange` gives a React Aria `Color`. The normalised string is `color?.toString('hex')`: always `#RRGGBB`, upper case (`null` when the field is empty). To store the value as a string, keep that string and pass it back as `value`.\n\n```tsx\nconst [hex, setHex] = useState('#C2603E');\n<ColorField label=\"Hex\" value={hex} onChange={(color) => setHex(color?.toString('hex') ?? '')} />;\n```"
+            "content": "| Prop                                                          | Notes                                                                                           |\n| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`                    | One is required.                                                                                |\n| `value` / `defaultValue` / `onChange(color)`                  | RAC naming. A `#RRGGBB` string or a `Color`. `onChange` receives a `Color`, or `null` if empty. |\n| `validate`                                                    | Receives the `Color \\| null`; return a message (or messages) to mark the field invalid.         |\n| `size`                                                        | `sm` / `md` (default) / `lg`.                                                                   |\n| `fullWidth`                                                   | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default.         |\n| `description`, `descriptionTone`, `errorMessage`              | As in `Input`. `errorMessage` defaults to the catalog `invalid` message.                        |\n| `placeholder`                                                 | For example `#RRGGBB`. Never a substitute for the label.                                        |\n| `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits `#RRGGBB`.                                                             |\n| `messages`                                                    | `invalid`, `requiredMark`.                                                                      |\n\n### Getting the hex\n\n`onChange` gives a React Aria `Color`. The normalised string is `color?.toString('hex')`: always `#RRGGBB`, upper case (`null` when the field is empty). To store the value as a string, keep that string and pass it back as `value`.\n\n```tsx\nconst [hex, setHex] = useState('#C2603E');\n<ColorField label=\"Hex\" value={hex} onChange={(color) => setHex(color?.toString('hex') ?? '')} />;\n```"
           },
           {
             "id": "behaviour",
@@ -8599,7 +8599,7 @@
       "sourceFile": "src/components/Combobox/Combobox.tsx",
       "status": "experimental",
       "statusSource": "default",
-      "description": "A text input with a filtered list of options in a popover (ARIA combobox pattern, built on\nReact Aria `ComboBox`): the input has `role=\"combobox\"` with `aria-expanded`,\n`aria-controls`, `aria-autocomplete=\"list\"` and `aria-activedescendant`, so focus stays in\nthe input while the arrow keys move through the list.\n\nTyping filters the options accent- and case-insensitively. `Enter` selects the highlighted\noption, `Escape` closes the list and then restores the selected text, `ArrowDown` / `ArrowUp`\nopen the list and move, `Home` / `End` move the caret in the input (React Aria keeps them for\ntext editing). With `allowsCustomValue` the typed text itself is a valid value.\n\nUse it for long lists (10 or more options); for fewer prefer `Select`.",
+      "description": "A text input with a filtered list of options in a popover (ARIA combobox pattern, built on\nReact Aria `ComboBox`): the input has `role=\"combobox\"` with `aria-expanded`,\n`aria-controls`, `aria-autocomplete=\"list\"` and `aria-activedescendant`, so focus stays in\nthe input while the arrow keys move through the list.\n\nTyping filters the options accent- and case-insensitively. `Enter` selects the highlighted\noption, `Escape` closes the list and then restores the selected text, `ArrowDown` / `ArrowUp`\nopen the list and move, `Home` / `End` move the caret in the input (React Aria keeps them for\ntext editing). With `allowsCustomValue` the typed text itself is a valid value.\n\nUse it for long lists (10 or more options); for fewer prefer `Select`. `onCreate` adds a\n`Create \"text\"` row for text that matches no option (see Combobox.md).",
       "props": [
         {
           "name": "options",
@@ -8637,6 +8637,12 @@
           "required": false,
           "default": "false",
           "description": "Press `Enter` with no option highlighted to select the first matching option (typing\n\"tri\" then `Enter` picks \"Trimestral\"). Default `false`: the WAI-ARIA editable combobox\ndoes not auto-select, so `Enter` without a highlighted option keeps the typed text (and\nsubmits the surrounding form). Turn it on for lookup fields where the typed text alone is\nnever a valid value. Ignored while the list is closed, empty or has only disabled options."
+        },
+        {
+          "name": "onCreate",
+          "type": "((inputValue: string) => void)",
+          "required": false,
+          "description": "Turns on the \"create new\" row. While the typed text is not blank and matches no option label\n(accent- and case-insensitive), the list ends with a `Create \"text\"` row (message\n`createOption`). Choosing it (click, or `ArrowDown` then `Enter`) calls `onCreate` with the\ntrimmed text and does not call `onChange`; the typed text is never replaced by the row's\ntext. Add the option to `options` in the handler and set `value` to it: the input then shows\nits label. Pair it with a controlled `value`. If the handler selects nothing, the input\nempties when the list closes, as in any combobox without `allowsCustomValue`; with\n`allowsCustomValue` the typed text stays as the value."
         },
         {
           "name": "isLoading",
@@ -8679,6 +8685,13 @@
           "values": ["sm", "md", "lg"]
         },
         {
+          "name": "fullWidth",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink\nbelow its content width. Off by default. In a block context the field already spans the width."
+        },
+        {
           "name": "className",
           "type": "string",
           "required": false,
@@ -8704,9 +8717,9 @@
         },
         {
           "name": "messages",
-          "type": "Partial<{ noResults: string; loading: string; showOptions: string; } & { requiredMark: string; }>",
+          "type": "Partial<{ noResults: string; loading: string; showOptions: string; createOption: (value: string) => string; } & { requiredMark: string; }>",
           "required": false,
-          "description": "Message overrides for this instance: `noResults`, `loading`, `showOptions`, `requiredMark`."
+          "description": "Message overrides for this instance: `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`."
         },
         {
           "name": "ref",
@@ -9005,6 +9018,13 @@
             "kind": "string",
             "default": "Show options",
             "description": "Accessible name of the button that opens the list."
+          },
+          {
+            "key": "createOption",
+            "kind": "function",
+            "default": "Create “{value}”",
+            "signature": "(value: string)",
+            "description": "Last row of the list when `onCreate` is set and the typed text matches no option."
           }
         ]
       },
@@ -9136,6 +9156,24 @@
             "name": "LongText",
             "id": "components-combobox--long-text",
             "hasPlay": false
+          },
+          {
+            "name": "WithLeading",
+            "id": "components-combobox--with-leading",
+            "description": "A `leading` node on each option; the selected one also shows at the start of the input.",
+            "hasPlay": true
+          },
+          {
+            "name": "CreateNew",
+            "id": "components-combobox--create-new",
+            "description": "Typed text that matches nothing ends the list with a Create row; choosing it selects the new option.",
+            "hasPlay": true
+          },
+          {
+            "name": "FullWidthInRow",
+            "id": "components-combobox--full-width-in-row",
+            "description": "In an `Inline` row the field takes the free space next to the button.",
+            "hasPlay": false
           }
         ]
       },
@@ -9168,7 +9206,17 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                                                                                                                   | Notes                                                                                                                                                                                                                                                                                            |\n| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                                                                                                                                                                                                                 |\n| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |\n| `value` / `defaultValue` / `onChange(value)`                                                                                           | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |\n| `inputValue` / `defaultInputValue` / `onInputChange`                                                                                   | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |\n| `allowsCustomValue`                                                                                                                    | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |\n| `filter`                                                                                                                               | Default accent- and case-insensitive \"contains\" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |\n| `selectFirstOnEnter`                                                                                                                   | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing \"tri\" then `Enter` picks \"Trimestral\").                                                                                                                                                              |\n| `isLoading`                                                                                                                            | Spinner in the box; \"Loading\" row when there are no options yet.                                                                                                                                                                                                                                 |\n| `menuTrigger`                                                                                                                          | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |\n| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |\n\nOption order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning."
+            "content": "| Prop                                                                                                                                   | Notes                                                                                                                                                                                                                                                                                            |\n| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                                                                                                                                                                                                                 |\n| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `leading`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                        |\n| `value` / `defaultValue` / `onChange(value)`                                                                                           | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |\n| `inputValue` / `defaultInputValue` / `onInputChange`                                                                                   | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |\n| `allowsCustomValue`                                                                                                                    | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |\n| `filter`                                                                                                                               | Default accent- and case-insensitive \"contains\" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |\n| `onCreate(text)`                                                                                                                       | Adds a `Create “text”` row when the typed text matches no option; see Create new below.                                                                                                                                                                                                          |\n| `fullWidth`                                                                                                                            | In an `Inline` row the field takes the free space (`flex: 1 1 auto`, can shrink). Off by default; in a block context the field already spans the width.                                                                                                                                          |\n| `selectFirstOnEnter`                                                                                                                   | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing \"tri\" then `Enter` picks \"Trimestral\").                                                                                                                                                              |\n| `isLoading`                                                                                                                            | Spinner in the box; \"Loading\" row when there are no options yet.                                                                                                                                                                                                                                 |\n| `menuTrigger`                                                                                                                          | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |\n| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`.                                                                                                                                                                                                                           |\n\nOption order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning."
+          },
+          {
+            "id": "option-leading-swatch-icon-avatar",
+            "heading": "Option leading (swatch, icon, avatar)",
+            "content": "`leading` on an option puts a node before its label (a `Swatch`, an `Icon`, an `Avatar`). It is hidden from assistive technology: the option name stays its text (label, meta, description), so put anything that carries meaning in the text, never only in the node. While an option with `leading` is selected and the input shows its label, the same node appears at the start of the input (a colour picker shows the chosen colour); it disappears as soon as the text is edited.\n\n```tsx\n<Combobox\n  label=\"Colour\"\n  options={[{ value: 'navy', label: 'Navy', leading: <Swatch color=\"#1f3a5f\" decorative /> }]}\n/>\n```"
+          },
+          {
+            "id": "create-new-oncreate",
+            "heading": "Create new (`onCreate`)",
+            "content": "While the typed text is not blank and matches no option label (accent- and case-insensitive), the list ends with a `Create “text”` row (message `createOption`; `Criar “text”` in pt-BR). It is a normal option: `ArrowDown` reaches it, `Enter` or a click chooses it. Choosing it calls `onCreate` with the trimmed text and does **not** call `onChange`, and the typed text is never replaced by the row's text. In the handler add the option to `options` and set `value` to it; the input then shows its label.\n\n```tsx\n<Combobox\n  label=\"Label\"\n  options={labels}\n  value={value}\n  onChange={setValue}\n  onCreate={(name) => {\n    const created = { value: slug(name), label: name };\n    setLabels((list) => [...list, created]);\n    setValue(created.value);\n  }}\n/>\n```\n\nKeep `value` controlled. If the handler selects nothing, the input empties when the list closes, as in any combobox without `allowsCustomValue`; with `allowsCustomValue` the typed text stays as the value (there the Create row is rarely needed). The row is not offered when the field is read-only. Creating is reversible: offer Undo with `useUndoable`. The full flow (create, select, toast with Undo) is the `create-on-the-fly` recipe (`docs/recipes/create-on-the-fly.md`)."
           },
           {
             "id": "async-options-documented-pattern-a-full-async-list-is-p2",
@@ -10244,7 +10292,7 @@
           "name": "placeholder",
           "type": "string",
           "required": false,
-          "description": "Text shown while the field is empty."
+          "description": "Text shown while the field is empty (`value` is `null`), until the first digit is typed."
         },
         {
           "name": "size",
@@ -10252,6 +10300,12 @@
           "required": false,
           "description": "Control height: `sm` 32px, `md` 40px (default), `lg` 48px.",
           "values": ["sm", "md", "lg"]
+        },
+        {
+          "name": "fullWidth",
+          "type": "boolean",
+          "required": false,
+          "description": "Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink\nbelow its content width. Off by default. In a block context the field already spans the width."
         },
         {
           "name": "className",
@@ -10705,6 +10759,18 @@
             "name": "Controlled",
             "id": "components-currency-input--controlled",
             "hasPlay": true
+          },
+          {
+            "name": "WithPlaceholder",
+            "id": "components-currency-input--with-placeholder",
+            "description": "The placeholder shows while the value is `null`, also when focused, until a digit is typed.",
+            "hasPlay": true
+          },
+          {
+            "name": "FullWidthInRow",
+            "id": "components-currency-input--full-width-in-row",
+            "description": "In an `Inline` row the field takes the free space next to the button.",
+            "hasPlay": false
           }
         ]
       },
@@ -10712,7 +10778,8 @@
         "path": "src/components/CurrencyInput/CurrencyInput.md",
         "summary": "A money field. The value is an **integer in minor units** plus an ISO 4217 `currency` (ADR-0006), never a float. Built on [Input](../Input/Input.md); the formatting comes from `Intl` through `formatCurrency`-style helpers and `parseCurrencyInput` (see `docs/architecture/utilities.md`). Task: CMP-INP-05.",
         "whenToUse": [
-          "Prices, totals, payments, adjustments: anywhere a person types an amount of money."
+          "Prices, totals, payments, adjustments: anywhere a person types an amount of money.",
+          "Editing a price inline, in place of its text in a table row or list (see the `InlinePriceEdit` recipe)."
         ],
         "whenNotToUse": [
           "Quantities or measures: `NumberField`.",
@@ -10724,7 +10791,7 @@
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- Prices, totals, payments, adjustments: anywhere a person types an amount of money."
+            "content": "- Prices, totals, payments, adjustments: anywhere a person types an amount of money.\n- Editing a price inline, in place of its text in a table row or list (see the `InlinePriceEdit` recipe)."
           },
           {
             "id": "when-not-to-use",
@@ -10744,12 +10811,22 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                                                                                                                   | Notes                            |\n| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |\n| `currency`                                                                                                                             | Required ISO 4217 code.          |\n| `value` / `defaultValue` / `onChange`                                                                                                  | `number \\| null` in minor units. |\n| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |\n| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |"
+            "content": "| Prop                                                                                                                                   | Notes                                                                                              |\n| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |\n| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |\n| `value` / `defaultValue` / `onChange`                                                                                                  | `number \\| null` in minor units.                                                                   |\n| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |\n| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |\n| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |\n| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |\n| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |"
           },
           {
             "id": "accessibility-and-keyboard",
             "heading": "Accessibility and keyboard",
             "content": "A text input (`inputmode=\"numeric\"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).\n\nHotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`."
+          },
+          {
+            "id": "events-onkeydown-onfocus-onblur",
+            "heading": "Events: `onKeyDown`, `onFocus`, `onBlur`",
+            "content": "These come from the underlying text field and are **composed** with the internal handlers, never replaced:\n\n- `onKeyDown`: runs for every key. A key your handler does not `preventDefault()` keeps bubbling to `useHotkeys` shortcuts and still types a digit. Call `preventDefault()` for the keys you take (`Enter`, `Escape`).\n- `onFocus`: your handler runs first, then the caret moves to the end of the text.\n- `onBlur`: your handler runs after the field resets a lone `-` (negative zero). `onChange` has already delivered the last typed value, so a blur handler may confirm it.\n\nInline price editing (`Enter` confirms, `Escape` cancels, blur confirms) is the recipe `inline-price-edit`."
+          },
+          {
+            "id": "placeholder",
+            "heading": "Placeholder",
+            "content": "While `value` is `null` the box is empty and shows `placeholder` in `--ds-text-3`, focused or not. It disappears with the first digit and returns when the field is emptied again (select all, then `Delete`). `0` is a value, not empty: it shows `$0.00`. Use the placeholder for a hint such as an inherited price, never as the label."
           },
           {
             "id": "content-rules",
@@ -11058,6 +11135,7 @@
         "--ds-data-table-cell-padding-inline",
         "--ds-data-table-col-min-w",
         "--ds-data-table-col-w",
+        "--ds-data-table-flex-count",
         "--ds-data-table-gap",
         "--ds-data-table-header-padding-block",
         "--ds-data-table-max-h",
@@ -11188,9 +11266,14 @@
             "hasPlay": false
           },
           {
+            "name": "EmptyWithMinimumColumnWidth",
+            "id": "components-data-table--empty-with-minimum-column-width",
+            "description": "An empty table with `minWidth` columns does not scroll sideways: the empty state fits the container.",
+            "hasPlay": true
+          },
+          {
             "name": "MinimumColumnWidth",
             "id": "components-data-table--minimum-column-width",
-            "description": "`minWidth` keeps a column from being squashed: in a container that is too narrow the table area\nscrolls horizontally instead. Here the container is 360 px wide and the table needs more.",
             "hasPlay": true
           },
           {
@@ -11266,7 +11349,7 @@
           {
             "id": "column-sizing",
             "heading": "Column sizing",
-            "content": "| Column prop | Type      | Default | Effect                                                                                                                                     |\n| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |\n| `width`     | `string`  | -       | CSS width (`96px`, `20%`). Columns without it share the remaining space equally                                                            |\n| `minWidth`  | `string`  | -       | CSS minimum width (`120px`, `8rem`). The column is never narrower; a container that is too small scrolls horizontally instead of squashing |\n| `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |\n| `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |\n\n- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width of the fixed columns plus the flexible ones at their largest `minWidth` (`--ds-data-table-min-w`). Without any `minWidth` the layout is unchanged.\n- A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.\n- Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.\n- Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.\n- **Headers never wrap by default.** The mono uppercase caption style is cut with an ellipsis in a narrow column (\"SUPPL…\"). Either give the column a `minWidth` that fits the label, or set `truncate: false` to allow a two-line header.\n- **Icon-only columns:** set `hideLabel: true` and `sortable: false`. The header cell is named by `label` (\"Row actions\"), so a screen reader still announces it; never leave the label empty."
+            "content": "| Column prop | Type      | Default | Effect                                                                                                                                     |\n| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |\n| `width`     | `string`  | -       | CSS width (`96px`, `20%`). Columns without it share the remaining space equally                                                            |\n| `minWidth`  | `string`  | -       | CSS minimum width (`120px`, `8rem`). The column is never narrower; a container that is too small scrolls horizontally instead of squashing |\n| `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |\n| `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |\n\n- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width (`--ds-data-table-min-w`): the sum of every column's own minimum (fixed columns at the larger of `width` and `minWidth`, flexible columns at their `minWidth`, a flexible column without `minWidth` at 0). Without any `minWidth` the layout is unchanged.\n- **Flexible columns keep their own minimum.** Each flexible column is its `minWidth` plus an equal share of the space left after all minimums. Example in a 1000px container with `Order` (`width: 100px`), `Customer` (`minWidth: 240px`), `Status` (`minWidth: 80px`) and `Total` (no `minWidth`): 580px is left, so the widths are 100, 433, 273 and 193px. In a 200px container the table is 420px wide and scrolls: 100, 240, 80 and just the cell padding for `Total`. Give every flexible column that must stay readable a `minWidth`.\n- Use fixed units (`px`, `rem`) for `width` and `minWidth` in a table with a `minWidth` column; percentages are not part of the minimum calculation. The scroll area is a size container (`container-type: inline-size`) because browsers treat a `calc()` mixing a percentage as `auto` in a fixed table layout; a container unit is a plain length.\n- An empty table (no rows, not loading) drops the table minimum width, so the empty state never scrolls sideways. The header stays visible and its labels are cut with an ellipsis.\n- A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.\n- Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.\n- Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.\n- **Headers never wrap by default.** The mono uppercase caption style is cut with an ellipsis in a narrow column (\"SUPPL…\"). Either give the column a `minWidth` that fits the label, or set `truncate: false` to allow a two-line header.\n- **Icon-only columns:** set `hideLabel: true` and `sortable: false`. The header cell is named by `label` (\"Row actions\"), so a screen reader still announces it; never leave the label empty."
           },
           {
             "id": "sorting",
@@ -28268,6 +28351,11 @@
             "hasPlay": false
           },
           {
+            "name": "StatusNeutral",
+            "id": "components-sidebar--status-neutral",
+            "hasPlay": false
+          },
+          {
             "name": "WithoutCaptions",
             "id": "components-sidebar--without-captions",
             "hasPlay": true
@@ -28339,12 +28427,17 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop         | Type                              | Notes                                                                                    |\n| ------------ | --------------------------------- | ---------------------------------------------------------------------------------------- |\n| `workspace`  | `{ name, subtitle?, initial? }`   | `initial` defaults to the first letter of the name (locale upper-casing).                |\n| `sections`   | `SidebarSection[]`                | `{ id, title, items }` or `{ id, label, items }` (one of `title` / `label` is required). |\n| `value`      | `string`                          | `value` of the active item.                                                              |\n| `onChange`   | `(value: string) => void`         | Called with the item the user pressed (links and buttons).                               |\n| `status`     | `{ tone?, title, meta?, value? }` | `tone`: `success` (default), `warning`, `danger`. The title carries the meaning.         |\n| `footer`     | `ReactNode`                       | Free slot above the user block.                                                          |\n| `user`       | `{ name, role?, avatarSrc? }`     | Rendered with a decorative `Avatar` (the name is next to it).                            |\n| `aria-label` | `string`                          | Overrides the landmark name (default \"Sidebar\" from the catalog).                        |\n| `messages`   | `{ label?: string }`              | Per-instance message override (ADR-0005).                                                |\n\nA `SidebarItem` is `{ value, label, href?, icon?, count?, countLabel?, countTone?, isDisabled? }`; it renders a `NavItem`. Always set `countLabel` with `count`."
+            "content": "| Prop         | Type                              | Notes                                                                                       |\n| ------------ | --------------------------------- | ------------------------------------------------------------------------------------------- |\n| `workspace`  | `{ name, subtitle?, initial? }`   | `initial` defaults to the first letter of the name (locale upper-casing).                   |\n| `sections`   | `SidebarSection[]`                | `{ id, title, items }` or `{ id, label, items }` (one of `title` / `label` is required).    |\n| `value`      | `string`                          | `value` of the active item.                                                                 |\n| `onChange`   | `(value: string) => void`         | Called with the item the user pressed (links and buttons).                                  |\n| `status`     | `{ tone?, title, meta?, value? }` | `tone`: `neutral` (default), `success`, `warning`, `danger`. The title carries the meaning. |\n| `footer`     | `ReactNode`                       | Free slot above the user block.                                                             |\n| `user`       | `{ name, role?, avatarSrc? }`     | Rendered with a decorative `Avatar` (the name is next to it).                               |\n| `aria-label` | `string`                          | Overrides the landmark name (default \"Sidebar\" from the catalog).                           |\n| `messages`   | `{ label?: string }`              | Per-instance message override (ADR-0005).                                                   |\n\nA `SidebarItem` is `{ value, label, href?, icon?, count?, countLabel?, countTone?, isDisabled? }`; it renders a `NavItem`. Always set `countLabel` with `count`."
           },
           {
             "id": "layout",
             "heading": "Layout",
             "content": "- Width is `--ds-sidebar-w` (240px). The handoff's `width` prop and 248px default are dropped; there is one width in the system.\n- The sidebar uses `max-block-size: 100%` and `overflow-y: auto`: give its parent a definite height (for example a full-height flex row) and it scrolls on its own while the content scrolls separately. The status, footer and user stay at the bottom when there is room."
+          },
+          {
+            "id": "behavior-change",
+            "heading": "Behavior change",
+            "content": "The status dot is now grey (`neutral`) when `tone` is omitted; it used to default to green. Pass `tone: 'success'` to keep the green dot."
           },
           {
             "id": "accessibility",
@@ -37050,7 +37143,7 @@
       "sourceFile": "src/components/Toast/Toast.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "Renders the toasts of a queue. Mount **one** near the app root, inside `DSProvider`, and call\n`toast()` from anywhere. Built on React Aria's toast region (isolated in `toast.rac.ts`).\n\nThe region is a landmark named \"Toast notifications\" that `F6` moves into; the timer of every toast\npauses while the pointer is over the region or focus is inside it (WCAG 2.2.1). Toasts stack\nat the bottom center of the viewport, clear of side panels, above dialogs and below tooltips.",
+      "description": "Renders the toasts of a queue. Mount **one** near the app root, inside `DSProvider`, and call\n`toast()` from anywhere. Built on React Aria's toast region (isolated in `toast.rac.ts`).\n\nThe region is a landmark named \"Toast notifications\" that `F6` moves into; the timer of every toast\npauses while the pointer is over the region or focus is inside it (WCAG 2.2.1). Toasts stack\nat the bottom center of the viewport, above dialogs and below tooltips. While a `Sheet` is open\nthey move into the free space beside it (or to the top, below its header, on narrow screens), so\nthey never cover its footer.",
       "props": [
         {
           "name": "queue",
@@ -37138,6 +37231,9 @@
         "--ds-radius-lg",
         "--ds-radius-pill",
         "--ds-shadow-overlay",
+        "--ds-sheet-width-lg",
+        "--ds-sheet-width-md",
+        "--ds-sheet-width-sm",
         "--ds-space-1",
         "--ds-space-2",
         "--ds-space-3",
@@ -37150,6 +37246,7 @@
         "--ds-toast-max-width",
         "--ds-toast-min-height",
         "--ds-toast-offset",
+        "--ds-topbar-h",
         "--ds-warning",
         "--ds-z-toast"
       ],
@@ -37237,7 +37334,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- The region is a landmark named \"Toast notifications\". **F6** moves focus into it (and back), so Undo is keyboard reachable. React Aria registers a region as a landmark only if it is mounted with its first toast, so `ToastRegion` renders nothing while the queue is empty and mounts the region when a toast arrives.\n- Each toast is announced by React Aria's toast semantics. The tone is spoken as a prefix (\"Success: ...\", \"Error: ...\") from messages; the colored dot is decorative and `aria-hidden`.\n- Pause on hover and on focus within the region; the timer resumes on leave or blur.\n- Dismiss button named from messages (\"Dismiss notification\"); action is a real `Button`.\n- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sheet, Sidebar).\n- Reduced motion: the 150 ms fade-in is removed. Forced colors: border and dot use `CanvasText`.\n- `UNSTABLE_*` isolation: all React Aria `UNSTABLE_Toast*` imports live in `toast.rac.ts`. Renaming or stabilizing them is a one-file change."
+            "content": "- The region is a landmark named \"Toast notifications\". **F6** moves focus into it (and back), so Undo is keyboard reachable. React Aria registers a region as a landmark only if it is mounted with its first toast, so `ToastRegion` renders nothing while the queue is empty and mounts the region when a toast arrives.\n- Each toast is announced by React Aria's toast semantics. The tone is spoken as a prefix (\"Success: ...\", \"Error: ...\") from messages; the colored dot is decorative and `aria-hidden`.\n- Pause on hover and on focus within the region; the timer resumes on leave or blur.\n- Dismiss button named from messages (\"Dismiss notification\"); action is a real `Button`.\n- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sidebar). While a `Sheet` is open (GAP-052) the region moves into the free space beside it by reading `data-ds-sheet` on the document (`:root:has(...)`, CSS only, SSR-safe), so stacked toasts never cover the sheet footer; below 768px the sheet fills the width and toasts go to the top, under the sheet header. Keyboard (F6), pause on hover/focus and reduced motion are unchanged.\n- Reduced motion: the 150 ms fade-in is removed. Forced colors: border and dot use `CanvasText`.\n- `UNSTABLE_*` isolation: all React Aria `UNSTABLE_Toast*` imports live in `toast.rac.ts`. Renaming or stabilizing them is a one-file change."
           },
           {
             "id": "content-rules",
@@ -37247,7 +37344,7 @@
           {
             "id": "the-undo-pattern-recipe",
             "heading": "The undo pattern (recipe)",
-            "content": "\"Reversible actions never ask; they offer Undo\" (AGENTS.md section 5). Do the action immediately, then toast with an Undo that reverses it:\n\n```tsx\nfunction archiveOrder(order: Order) {\n  const previous = order.status;\n  setStatus(order.id, 'archived'); // 1. do it now\n  toast.success(`Order #${order.number} archived`, {\n    // 2. say so, past tense\n    action: {\n      label: 'Undo',\n      onPress: () => setStatus(order.id, previous), // 3. reverse it from the saved state\n    },\n  });\n}\n```\n\nRules:\n\n1. Save what you need to reverse **before** acting; Undo must not depend on state that has moved on.\n2. If the change was already sent to a server, Undo sends the inverse change; do not delay the real action to \"wait for Undo\".\n3. For deletes, soft-delete or keep the record for the Undo window plus a margin, and keep the confirmation dialog (`ConfirmDialog`), then show the toast. For example: confirm, delete, toast \"Order #1048 deleted\" with Undo.\n4. Irreversible actions get a `ConfirmDialog`, not a toast.\n5. Inside components, `useUndoable` wraps steps 1 to 3 and adds a deferred commit with failure handling. In plain modules (stores, services, handlers outside React) use `toastWithUndo`, below.\n\n### Undo outside React: `toastWithUndo`\n\n`toast(..., { action })` has no default label, and a hook cannot run in a plain module. `toastWithUndo` is a non-hook helper that takes the **Undo** label from the message catalogue (`Toast` key `undo`) instead of every call site repeating the word:\n\n```ts\nimport { toastWithUndo } from 'loui-ds';\n\nexport function archiveOrder(order: Order) {\n  const previous = order.status;\n  orders.setStatus(order.id, 'archived'); // do it now\n  toastWithUndo(`Order #${order.number} archived`, {\n    onUndo: () => orders.setStatus(order.id, previous),\n  });\n}\n```\n\n| Option               | Type                | Default        | Notes                                             |\n| -------------------- | ------------------- | -------------- | ------------------------------------------------- |\n| `onUndo`             | `() => void`        | required       | Reverses the change. The toast closes afterwards. |\n| `tone`               | `info               | success        | warning`                                          | `success` | Not `danger`: a failure is not undoable. |\n| `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |\n| `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |\n| `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |\n| `timeout`, `onClose` |                     |                | As in `toast()`.                                  |\n\nIt returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that."
+            "content": "\"Reversible actions never ask; they offer Undo\" (AGENTS.md section 5). Do the action immediately, then toast with an Undo that reverses it:\n\n```tsx\nfunction archiveOrder(order: Order) {\n  const previous = order.status;\n  setStatus(order.id, 'archived'); // 1. do it now\n  toast.success(`Order #${order.number} archived`, {\n    // 2. say so, past tense\n    action: {\n      label: 'Undo',\n      onPress: () => setStatus(order.id, previous), // 3. reverse it from the saved state\n    },\n  });\n}\n```\n\nRules:\n\n1. Save what you need to reverse **before** acting; Undo must not depend on state that has moved on.\n2. If the change was already sent to a server, Undo sends the inverse change; do not delay the real action to \"wait for Undo\".\n3. For deletes, soft-delete or keep the record for the Undo window plus a margin, and keep the confirmation dialog (`ConfirmDialog`), then show the toast. For example: confirm, delete, toast \"Order #1048 deleted\" with Undo.\n4. Irreversible actions get a `ConfirmDialog`, not a toast.\n5. Inside components, `useUndoable` wraps steps 1 to 3 and adds a deferred commit with failure handling. In plain modules (stores, services, handlers outside React) use `toastWithUndo`, below.\n\n### Undo outside React: `toastWithUndo`\n\n`toast(..., { action })` has no default label, and a hook cannot run in a plain module. `toastWithUndo` is a non-hook helper that takes the **Undo** label from the message catalogue (`Toast` key `undo`) instead of every call site repeating the word:\n\n```ts\nimport { toastWithUndo } from 'loui-ds';\n\nexport function archiveOrder(order: Order) {\n  const previous = order.status;\n  orders.setStatus(order.id, 'archived'); // do it now\n  toastWithUndo(`Order #${order.number} archived`, {\n    onUndo: () => orders.setStatus(order.id, previous),\n  });\n}\n```\n\n| Option               | Type                | Default        | Notes                                             |\n| -------------------- | ------------------- | -------------- | ------------------------------------------------- |\n| `onUndo`             | `() => void`        | required       | Reverses the change. The toast closes afterwards. |\n| `tone`               | `info               | success        | warning`                                          | `success` | Not `danger`: a failure is not undoable. |\n| `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |\n| `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |\n| `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |\n| `groupKey`           | `string`            |                | Replaces the previous undo toast of the same key. |\n| `timeout`, `onClose` |                     |                | As in `toast()`.                                  |\n\n`groupKey` (GAP-053) is for quick repeated actions of one kind (four toggles in a grid): a new toast with the same key closes the previous one, so only the latest change offers Undo and earlier ones are final. It does not offer \"Undo 4 changes\": the changes may be on different records and made in any order, so one Undo could not safely reverse them all. Different keys still stack. `useUndoable` takes the same `groupKey` on the action. It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that."
           },
           {
             "id": "differences-from-the-handoff",
@@ -39658,6 +39755,12 @@
       "doc": "recipes/command-palette-setup.md"
     },
     {
+      "name": "CreateOnTheFly",
+      "description": "Pick an item from a list, or create it without leaving the field: typing a name that matches nothing ends the list with a `Create \"name\"` row. Choosing it creates the item, selects it and shows a toast with Undo. Built on `Combobox` (`onCreate`, option `leading`) and the `useUndoable` hook.",
+      "status": "experimental",
+      "doc": "recipes/create-on-the-fly.md"
+    },
+    {
       "name": "DestructiveConfirm",
       "description": "Delete a record from a row action: ask first in a dialog that names the object and the consequence, then delete and offer Undo in a toast.",
       "status": "experimental",
@@ -39680,6 +39783,12 @@
       "description": "A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and \"Saved\" next to it.",
       "status": "experimental",
       "doc": "recipes/form-with-validation.md"
+    },
+    {
+      "name": "InlinePriceEdit",
+      "description": "A price that reads as text and turns into a field when pressed. Enter confirms, Esc cancels and restores the old value, leaving the field confirms. An empty field means \"use the inherited price\", which the placeholder shows.",
+      "status": "experimental",
+      "doc": "recipes/inline-price-edit.md"
     },
     {
       "name": "MarkdownMessage",

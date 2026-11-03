@@ -798,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-442 tokens; the table lists the 428 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+443 tokens; the table lists the 429 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -1027,7 +1027,8 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-data-table-sticky-z-index` | `1` | Stacking order of a sticky DataTable header inside its scroll container (1). Local to the table, not a layer. |
 | `--ds-data-table-col-w` | `160px` | Width of a DataTable column that has a `width` prop (default 160px). Set at runtime via style on that column header; columns without `width` share the remaining space. |
 | `--ds-data-table-col-min-w` | `0px` | Minimum width of a DataTable column that has `width` and `minWidth` props (default 0px, no minimum). Set at runtime via style on that column header; the column is as wide as the larger of `width` and `minWidth`. |
-| `--ds-data-table-min-w` | `0px` | Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the fixed columns plus the flexible ones at their largest `minWidth`. A narrower container then scrolls horizontally. |
+| `--ds-data-table-min-w` | `0px` | Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the sum of every column's own minimum. A narrower container then scrolls horizontally. |
+| `--ds-data-table-flex-count` | `1` | Number of flexible DataTable columns (no `width`), which share the space left after every column minimum. Set at runtime via style on the table when any column has a `minWidth`; default 1. |
 | `--ds-data-table-max-h` | `480px` | Maximum height of a scrollable DataTable (default 480px). Set at runtime via style from the `maxHeight` prop. |
 | `--ds-dialog-width-sm` | `420px` | Maximum width of a small Dialog (420px): confirmations and short forms. The handoff default. |
 | `--ds-dialog-width-md` | `540px` | Maximum width of a medium Dialog (540px): forms with several fields. |
@@ -3731,7 +3732,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `value` / `defaultValue` / `onChange(color)`                  | RAC naming. A `#RRGGBB` string or a `Color`. `onChange` receives a `Color`, or `null` if empty. |
 | `validate`                                                    | Receives the `Color \| null`; return a message (or messages) to mark the field invalid.         |
 | `size`                                                        | `sm` / `md` (default) / `lg`.                                                                   |
-| `fullWidth` | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default. |
+| `fullWidth`                                                   | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default.         |
 | `description`, `descriptionTone`, `errorMessage`              | As in `Input`. `errorMessage` defaults to the catalog `invalid` message.                        |
 | `placeholder`                                                 | For example `#RRGGBB`. Never a substitute for the label.                                        |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits `#RRGGBB`.                                                             |
@@ -4008,14 +4009,15 @@ option, `Escape` closes the list and then restores the selected text, `ArrowDown
 open the list and move, `Home` / `End` move the caret in the input (React Aria keeps them for
 text editing). With `allowsCustomValue` the typed text itself is a valid value.
 
-Use it for long lists (10 or more options); for fewer prefer `Select`.
+Use it for long lists (10 or more options); for fewer prefer `Select`. `onCreate` adds a
+`Create "text"` row for text that matches no option (see Combobox.md).
 
 A text input with a filtered list of options in a popover (ARIA combobox pattern). Built on React Aria `ComboBox` (`Input`, `Button`, `Popover`, `ListBox`). Shared field behavior is in [Field](../Field/Field.md). Task: CMP-INP-01.
 
 - Import: `import { Combobox } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
-- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, SelectWithPointer, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
+- Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, SelectWithPointer, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText, WithLeading, CreateNew, FullWidthInRow
 
 #### Props
 
@@ -4027,17 +4029,19 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 | `onChange` | `((value: string \| null) => void)` |  |  | Called with the selected `value`, or `null` when the selection is cleared. |
 | `filter` | `false \| ((label: string, query: string, option: ComboboxOption) => boolean)` |  |  | How options are matched against the typed text. Default: accent- and case-insensitive "contains" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function, or `false` to show `options` as given: use it when the list is loaded from a server as the user types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile).  The function receives the whole option as a third argument, so you can search by a field that is not the label (`option.value` as a code, `option.meta` as an SKU). Two-argument functions keep working. Options that share a label are matched together: give each option a distinct label when the filter looks at other fields. |
 | `selectFirstOnEnter` | `boolean` |  | `false` | Press `Enter` with no option highlighted to select the first matching option (typing "tri" then `Enter` picks "Trimestral"). Default `false`: the WAI-ARIA editable combobox does not auto-select, so `Enter` without a highlighted option keeps the typed text (and submits the surrounding form). Turn it on for lookup fields where the typed text alone is never a valid value. Ignored while the list is closed, empty or has only disabled options. |
+| `onCreate` | `((inputValue: string) => void)` |  |  | Turns on the "create new" row. While the typed text is not blank and matches no option label (accent- and case-insensitive), the list ends with a `Create "text"` row (message `createOption`). Choosing it (click, or `ArrowDown` then `Enter`) calls `onCreate` with the trimmed text and does not call `onChange`; the typed text is never replaced by the row's text. Add the option to `options` in the handler and set `value` to it: the input then shows its label. Pair it with a controlled `value`. If the handler selects nothing, the input empties when the list closes, as in any combobox without `allowsCustomValue`; with `allowsCustomValue` the typed text stays as the value. |
 | `isLoading` | `boolean` |  | `false` | Shows a spinner in the box and, when there are no options yet, a "Loading" row instead of "No results". The consumer owns the data: see `filter={false}` and `onInputChange`. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Text shown while the box is empty. Never a substitute for the label. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `popoverClassName` | `string` |  |  | Class name for the popover that holds the options. |
 | `inputClassName` | `string` |  |  | Class name for the `<input>` element. |
 | `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
-| `messages` | `Partial<{ noResults: string; loading: string; showOptions: string; } & { requiredMark: string; }>` |  |  | Message overrides for this instance: `noResults`, `loading`, `showOptions`, `requiredMark`. |
+| `messages` | `Partial<{ noResults: string; loading: string; showOptions: string; createOption: (value: string) => string; } & { requiredMark: string; }>` |  |  | Message overrides for this instance: `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`. |
 | `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the field root `<div>`. |
 | `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
 | `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
@@ -4073,6 +4077,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `noResults` | `No results` | Shown in the list when the typed text matches no option. |
 | `loading` | `Loading` | Shown in the list while options are loading and there are none yet; also names the spinner. |
 | `showOptions` | `Show options` | Accessible name of the button that opens the list. |
+| `createOption(value: string)` | `Create “{value}”` | Last row of the list when `onCreate` is set and the typed text matches no option. |
 
 #### Design tokens used
 
@@ -4095,18 +4100,51 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | Prop                                                                                                                                   | Notes                                                                                                                                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                                                                                                                                                                                                                 |
-| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |
+| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `leading`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                        |
 | `value` / `defaultValue` / `onChange(value)`                                                                                           | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |
 | `inputValue` / `defaultInputValue` / `onInputChange`                                                                                   | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |
 | `allowsCustomValue`                                                                                                                    | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |
 | `filter`                                                                                                                               | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |
+| `onCreate(text)`                                                                                                                       | Adds a `Create “text”` row when the typed text matches no option; see Create new below.                                                                                                                                                                                                          |
+| `fullWidth`                                                                                                                            | In an `Inline` row the field takes the free space (`flex: 1 1 auto`, can shrink). Off by default; in a block context the field already spans the width.                                                                                                                                          |
 | `selectFirstOnEnter`                                                                                                                   | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing "tri" then `Enter` picks "Trimestral").                                                                                                                                                              |
 | `isLoading`                                                                                                                            | Spinner in the box; "Loading" row when there are no options yet.                                                                                                                                                                                                                                 |
 | `menuTrigger`                                                                                                                          | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |
 | `description`, `descriptionTone`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |
-| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |
+| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `createOption`, `requiredMark`.                                                                                                                                                                                                                           |
 
 Option order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning.
+
+#### Option leading (swatch, icon, avatar)
+
+`leading` on an option puts a node before its label (a `Swatch`, an `Icon`, an `Avatar`). It is hidden from assistive technology: the option name stays its text (label, meta, description), so put anything that carries meaning in the text, never only in the node. While an option with `leading` is selected and the input shows its label, the same node appears at the start of the input (a colour picker shows the chosen colour); it disappears as soon as the text is edited.
+
+```tsx
+<Combobox
+  label="Colour"
+  options={[{ value: 'navy', label: 'Navy', leading: <Swatch color="#1f3a5f" decorative /> }]}
+/>
+```
+
+#### Create new (`onCreate`)
+
+While the typed text is not blank and matches no option label (accent- and case-insensitive), the list ends with a `Create “text”` row (message `createOption`; `Criar “text”` in pt-BR). It is a normal option: `ArrowDown` reaches it, `Enter` or a click chooses it. Choosing it calls `onCreate` with the trimmed text and does **not** call `onChange`, and the typed text is never replaced by the row's text. In the handler add the option to `options` and set `value` to it; the input then shows its label.
+
+```tsx
+<Combobox
+  label="Label"
+  options={labels}
+  value={value}
+  onChange={setValue}
+  onCreate={(name) => {
+    const created = { value: slug(name), label: name };
+    setLabels((list) => [...list, created]);
+    setValue(created.value);
+  }}
+/>
+```
+
+Keep `value` controlled. If the handler selects nothing, the input empties when the list closes, as in any combobox without `allowsCustomValue`; with `allowsCustomValue` the typed text stays as the value (there the Create row is rarely needed). The row is not offered when the field is read-only. Creating is reversible: offer Undo with `useUndoable`. The full flow (create, select, toast with Undo) is the `create-on-the-fly` recipe (`docs/recipes/create-on-the-fly.md`).
 
 #### Async options (documented pattern; a full async list is P2)
 
@@ -4540,7 +4578,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 - Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
-- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
+- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled, WithPlaceholder, FullWidthInRow
 
 #### Props
 
@@ -4556,8 +4594,9 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
-| `placeholder` | `string` |  |  | Text shown while the field is empty. |
+| `placeholder` | `string` |  |  | Text shown while the field is empty (`value` is `null`), until the first digit is typed. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  |  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  |  | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `inputClassName` | `string` |  |  | Class name for the `<input>` element. |
 | `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
@@ -4595,6 +4634,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 #### When to use
 
 - Prices, totals, payments, adjustments: anywhere a person types an amount of money.
+- Editing a price inline, in place of its text in a table row or list (see the `InlinePriceEdit` recipe).
 
 #### When not to use
 
@@ -4622,20 +4662,37 @@ Two models were considered:
 
 #### Props (key ones)
 
-| Prop                                                                                                                                   | Notes                            |
-| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `currency`                                                                                                                             | Required ISO 4217 code.          |
-| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units. |
-| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |
-| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |
-| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
-| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |
+| Prop                                                                                                                                   | Notes                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |
+| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units.                                                                   |
+| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |
+| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |
+| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |
+| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |
+| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |
 
 #### Accessibility and keyboard
 
 A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).
 
 Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
+
+#### Events: `onKeyDown`, `onFocus`, `onBlur`
+
+These come from the underlying text field and are **composed** with the internal handlers, never replaced:
+
+- `onKeyDown`: runs for every key. A key your handler does not `preventDefault()` keeps bubbling to `useHotkeys` shortcuts and still types a digit. Call `preventDefault()` for the keys you take (`Enter`, `Escape`).
+- `onFocus`: your handler runs first, then the caret moves to the end of the text.
+- `onBlur`: your handler runs after the field resets a lone `-` (negative zero). `onChange` has already delivered the last typed value, so a blur handler may confirm it.
+
+Inline price editing (`Enter` confirms, `Escape` cancels, blur confirms) is the recipe `inline-price-edit`.
+
+#### Placeholder
+
+While `value` is `null` the box is empty and shows `placeholder` in `--ds-text-3`, focused or not. It disappears with the first digit and returns when the field is emptied again (select all, then `Delete`). `0` is a value, not empty: it shows `$0.00`. Use the placeholder for a hint such as an inherited price, never as the label.
 
 #### Content rules
 
@@ -4675,7 +4732,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, EmptyWithMinimumColumnWidth, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
 
 #### Props
 
@@ -4730,7 +4787,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-flex-count`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 #### When to use
 
@@ -4787,7 +4844,10 @@ div.root
 | `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |
 | `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |
 
-- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width of the fixed columns plus the flexible ones at their largest `minWidth` (`--ds-data-table-min-w`). Without any `minWidth` the layout is unchanged.
+- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width (`--ds-data-table-min-w`): the sum of every column's own minimum (fixed columns at the larger of `width` and `minWidth`, flexible columns at their `minWidth`, a flexible column without `minWidth` at 0). Without any `minWidth` the layout is unchanged.
+- **Flexible columns keep their own minimum.** Each flexible column is its `minWidth` plus an equal share of the space left after all minimums. Example in a 1000px container with `Order` (`width: 100px`), `Customer` (`minWidth: 240px`), `Status` (`minWidth: 80px`) and `Total` (no `minWidth`): 580px is left, so the widths are 100, 433, 273 and 193px. In a 200px container the table is 420px wide and scrolls: 100, 240, 80 and just the cell padding for `Total`. Give every flexible column that must stay readable a `minWidth`.
+- Use fixed units (`px`, `rem`) for `width` and `minWidth` in a table with a `minWidth` column; percentages are not part of the minimum calculation. The scroll area is a size container (`container-type: inline-size`) because browsers treat a `calc()` mixing a percentage as `auto` in a fixed table layout; a container unit is a plain length.
+- An empty table (no rows, not loading) drops the table minimum width, so the empty state never scrolls sideways. The header stays visible and its labels are cut with an ellipsis.
 - A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.
 - Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.
 - Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.
@@ -10947,7 +11007,7 @@ The app sidebar: workspace block, navigation sections, optional status card, foo
 - Import: `import { Sidebar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sidebar/Sidebar.tsx`
-- Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft
+- Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, StatusNeutral, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft
 
 #### Props
 
@@ -11006,6 +11066,10 @@ aside[aria-label="Sidebar"]         (--ds-sidebar-w wide, scrolls on its own)
 
 - Width is `--ds-sidebar-w` (240px). The handoff's `width` prop and 248px default are dropped; there is one width in the system.
 - The sidebar uses `max-block-size: 100%` and `overflow-y: auto`: give its parent a definite height (for example a full-height flex row) and it scrolls on its own while the content scrolls separately. The status, footer and user stay at the bottom when there is room.
+
+#### Behavior change
+
+The status dot is now grey (`neutral`) when `tone` is omitted; it used to default to green. Pass `tone: 'success'` to keep the green dot.
 
 #### Accessibility
 
@@ -13810,7 +13874,9 @@ ol[aria-label]
 
 The region is a landmark named "Toast notifications" that `F6` moves into; the timer of every toast
 pauses while the pointer is over the region or focus is inside it (WCAG 2.2.1). Toasts stack
-at the bottom center of the viewport, clear of side panels, above dialogs and below tooltips.
+at the bottom center of the viewport, above dialogs and below tooltips. While a `Sheet` is open
+they move into the free space beside it (or to the top, below its header, on narrow screens), so
+they never cover its footer.
 
 A short, temporary message about something that just happened, with an optional action (usually Undo). Mount one `ToastRegion` and call `toast()` from anywhere. Built on React Aria's toast region and queue.
 
@@ -13846,7 +13912,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-small`, `--ds-lh-small`, `--ds-line-strong`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-shadow-overlay`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-toast-dot-size`, `--ds-toast-max-width`, `--ds-toast-min-height`, `--ds-toast-offset`, `--ds-warning`, `--ds-z-toast`
+`--ds-accent`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-small`, `--ds-lh-small`, `--ds-line-strong`, `--ds-radius-lg`, `--ds-radius-pill`, `--ds-shadow-overlay`, `--ds-sheet-width-lg`, `--ds-sheet-width-md`, `--ds-sheet-width-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-toast-dot-size`, `--ds-toast-max-width`, `--ds-toast-min-height`, `--ds-toast-offset`, `--ds-topbar-h`, `--ds-warning`, `--ds-z-toast`
 
 #### When to use
 
@@ -13905,7 +13971,7 @@ The handoff closed toasts after 3.6 s, which is too short to read a sentence and
 - Each toast is announced by React Aria's toast semantics. The tone is spoken as a prefix ("Success: ...", "Error: ...") from messages; the colored dot is decorative and `aria-hidden`.
 - Pause on hover and on focus within the region; the timer resumes on leave or blur.
 - Dismiss button named from messages ("Dismiss notification"); action is a real `Button`.
-- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sheet, Sidebar).
+- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sidebar). While a `Sheet` is open (GAP-052) the region moves into the free space beside it by reading `data-ds-sheet` on the document (`:root:has(...)`, CSS only, SSR-safe), so stacked toasts never cover the sheet footer; below 768px the sheet fills the width and toasts go to the top, under the sheet header. Keyboard (F6), pause on hover/focus and reduced motion are unchanged.
 - Reduced motion: the 150 ms fade-in is removed. Forced colors: border and dot use `CanvasText`.
 - `UNSTABLE_*` isolation: all React Aria `UNSTABLE_Toast*` imports live in `toast.rac.ts`. Renaming or stabilizing them is a one-file change.
 
@@ -13964,9 +14030,10 @@ export function archiveOrder(order: Order) {
 | `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |
 | `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |
 | `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |
+| `groupKey`           | `string`            |                | Replaces the previous undo toast of the same key. |
 | `timeout`, `onClose` |                     |                | As in `toast()`.                                  |
 
-It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
+`groupKey` (GAP-053) is for quick repeated actions of one kind (four toggles in a grid): a new toast with the same key closes the previous one, so only the latest change offers Undo and earlier ones are final. It does not offer "Undo 4 changes": the changes may be on different records and made in any order, so one Undo could not safely reverse them all. Different keys still stack. `useUndoable` takes the same `groupKey` on the action. It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
 
 #### Related components
 
@@ -15778,6 +15845,136 @@ export function CommandPaletteSetup({ platform }: CommandPaletteSetupProps) {
 
 `src/recipes/CommandPaletteSetup/CommandPaletteSetup.test.tsx` (number keys, open with `Mod+K`, run by label and by keyword, open from the button and Esc, `F2`, the shortcuts help, recent commands, axe with the palette and the help open) and the `Recipes/CommandPaletteSetup` stories.
 
+### CreateOnTheFly
+
+Status: experimental
+
+Pick an item from a list, or create it without leaving the field: typing a name that matches nothing ends the list with a `Create "name"` row. Choosing it creates the item, selects it and shows a toast with Undo. Built on `Combobox` (`onCreate`, option `leading`) and the `useUndoable` hook.
+
+Components: `Combobox`, `Swatch`, `Text`, `Toast` (through `useUndoable`).
+
+#### When to use
+
+- A field whose list the user can extend as they go: labels, categories, tags, customers, colours.
+- The new item needs nothing more than a name (the rest has a sensible default).
+
+#### When not to use
+
+- The new item needs several fields: open a `Sheet` or `Dialog` from `onCreate` instead (see `sheet-form`).
+- The typed text is itself the value and nothing is stored (a free-text field with suggestions): use `allowsCustomValue`.
+
+#### What it does
+
+1. The options are alphabetical, each with a decorative `Swatch` as `leading`. The selected option's swatch also shows at the start of the input.
+2. While the typed text is not blank and matches no label (accent- and case-insensitive), the list ends with `Create “name”`. It is reachable with `ArrowDown` and chosen with `Enter` or a click, like any option.
+3. Choosing it calls `onCreate(name)` and not `onChange`. The handler adds the label and sets `value` to it; the input then shows the new label.
+4. A toast says what happened, in the past tense, with **Undo**. Undo removes the label and restores the previous selection. Creating is reversible, so nothing is asked first. The optional `saveLabel` runs when the Undo window closes.
+
+#### Things to keep when you adapt it
+
+- Keep `value` controlled. The Create row never becomes the selection; the handler is what selects the new item.
+- Give the new item every default it needs inside `onCreate` (here, the next colour of a palette).
+- Trim and normalise the name in the handler; `onCreate` already receives it trimmed.
+- The `leading` node is hidden from assistive technology: the option name is its text. Do not use it as the only carrier of meaning.
+- If the handler selects nothing, the input empties when the list closes, as in any combobox without `allowsCustomValue`.
+
+#### Code
+
+<!-- recipe-source:start -->
+
+```tsx
+import { useState } from 'react';
+import { Combobox, sortByText, Stack, Swatch, Text, useUndoable } from 'loui-ds';
+import type { ComboboxOption } from 'loui-ds';
+
+export interface Label {
+  value: string;
+  label: string;
+  /** Hex colour, `#rrggbb`. */
+  color: string;
+}
+
+const LABELS: Label[] = [
+  { value: 'fragile', label: 'Fragile', color: '#c2764f' },
+  { value: 'gift', label: 'Gift', color: '#6f8fc8' },
+  { value: 'priority', label: 'Priority', color: '#d2a44a' },
+];
+
+/** Colours given to labels created on the fly, in turn. */
+const PALETTE = ['#5fd49a', '#8ab4ff', '#e9b65c', '#f07a6e', '#b49ae8'];
+
+export interface CreateOnTheFlyProps {
+  initialLabels?: Label[];
+  /** Saves the new label on the server. Runs after the Undo window closes. */
+  saveLabel?: (label: Label) => Promise<void>;
+}
+
+function toOption(label: Label): ComboboxOption {
+  return {
+    value: label.value,
+    label: label.label,
+    leading: <Swatch color={label.color} decorative />,
+  };
+}
+
+/**
+ * Pick a label, or create it without leaving the field. Typing a name that matches no label adds
+ * a `Create "name"` row at the end of the list; choosing it creates the label, selects it and
+ * shows a toast with Undo (creating is reversible, so it never asks first).
+ */
+export function CreateOnTheFly({ initialLabels = LABELS, saveLabel }: CreateOnTheFlyProps) {
+  const [labels, setLabels] = useState(initialLabels);
+  const [value, setValue] = useState<string | null>(null);
+  const undoable = useUndoable();
+  const options = sortByText(labels.map(toOption), (option) => option.label, 'en');
+  const selected = labels.find((label) => label.value === value);
+
+  function create(name: string) {
+    const label: Label = {
+      value: name.toLowerCase().replace(/\s+/g, '-'),
+      label: name,
+      color: PALETTE[labels.length % PALETTE.length] ?? '#8ab4ff',
+    };
+    const previous = value;
+    undoable.run({
+      message: `Label “${name}” created`,
+      apply: () => {
+        setLabels((list) => [...list, label]);
+        setValue(label.value);
+      },
+      revert: () => {
+        setLabels((list) => list.filter((item) => item.value !== label.value));
+        setValue((current) => (current === label.value ? previous : current));
+      },
+      commit: () => saveLabel?.(label),
+    });
+  }
+
+  return (
+    <Stack gap={3}>
+      <Combobox
+        label="Label"
+        description="Type a new name to create a label."
+        options={options}
+        value={value}
+        onChange={setValue}
+        onCreate={create}
+        placeholder="Search or create"
+      />
+      <Text tone="secondary" size="small" as="p">
+        {selected ? `Selected: ${selected.label}` : 'No label selected'}
+      </Text>
+    </Stack>
+  );
+}
+```
+
+<!-- recipe-source:end -->
+
+#### Verified by
+
+`src/recipes/CreateOnTheFly/CreateOnTheFly.test.tsx` (alphabetical list with swatches, Create only without a match, create and select from the keyboard, Undo, deferred save, axe), `src/components/Combobox/Combobox.test.tsx` (the `onCreate` and `leading` contracts) and the `Recipes/CreateOnTheFly` stories.
+
 ### DestructiveConfirm
 
 Status: experimental
@@ -16558,6 +16755,168 @@ export function FormWithValidation({ saveCustomer = fakeSave }: FormWithValidati
 #### Verified by
 
 `src/recipes/FormWithValidation/FormWithValidation.test.tsx` (empty submit and focus on the summary, malformed email, server error cycle, Enter to submit, tab order, axe in the empty, error and saved states) and the `Recipes/FormWithValidation` stories.
+
+### InlinePriceEdit
+
+Status: experimental
+
+A price that reads as text and turns into a field when pressed. Enter confirms, Esc cancels and restores the old value, leaving the field confirms. An empty field means "use the inherited price", which the placeholder shows.
+
+Components: `Button`, `CurrencyInput`, `Text`, `Inline`, `Stack`.
+
+#### When to use
+
+- Prices, quantities of money or any single value edited in a table cell or a list row, where a form or a sheet would be heavy.
+- A value that can fall back to an inherited one (a variant price that follows its product).
+
+#### When not to use
+
+- Several fields that belong together: use a form. See `form-with-validation` or `sheet-form`.
+- A value whose change needs a confirmation (it reaches a customer or moves money): use an approval step. See `approval-queue`.
+
+#### What it does
+
+1. **Press** the price (or `Enter` / `Space` on it) to open the field. It takes focus with the current value; the digits-only typing model of `CurrencyInput` applies ("1800" gives $18.00).
+2. **Enter** confirms. **Esc** cancels: the old value stays, nothing is saved, and the key does not close a surrounding dialog or sheet (`stopPropagation`).
+3. **Blur** confirms (clicking or tabbing elsewhere). Focus stays where the user moved it. After Enter or Esc, focus returns to the price button.
+4. **Empty** (select all, then `Delete`) means "no price of its own". The placeholder shows the inherited price while the field is empty, even focused, until the first digit is typed.
+5. A polite `role="status"` region says "Price saved: $18.00". It is always in the DOM so the change is announced. Nothing is saved when the value did not change.
+
+#### Things to keep when you adapt it
+
+- Guard against saving twice: Enter unmounts the field, which can also fire a blur. The recipe settles once per edit with a ref.
+- Give the price button a full name ("Edit price of Linen, white: $12.50"); it starts with the visible text, so voice control still works.
+- `0` is a value, not empty. If `0` should mean "inherit" in your product, say so in the handler (`draft || null` here).
+- Save errors: show an `Alert` or error toast and restore the old price. Reversible edits may also use `useUndoable` instead of the status line; see `undoable-action`.
+
+#### Code
+
+<!-- recipe-source:start -->
+
+```tsx
+import { useLayoutEffect, useRef, useState } from 'react';
+import { Button, CurrencyInput, formatCurrency, Inline, Stack, Text, useDSLocale } from 'loui-ds';
+
+export interface InlinePriceEditProps {
+  /** What is priced, used in the accessible names: "Linen, white". */
+  name?: string;
+  /** The product's own price in minor units, or `null` to inherit `inheritedPrice`. */
+  initialPrice?: number | null;
+  /** The price used while the product has none of its own, in minor units. */
+  inheritedPrice?: number;
+  currency?: string;
+  /** Called with the confirmed price (`null` means "inherit"). Not called on cancel. */
+  onSave?: (price: number | null) => void;
+}
+
+/**
+ * A price that reads as text and edits in place. Press (or Enter on) the price to edit it:
+ * Enter confirms, Esc cancels and restores the old value, and leaving the field confirms. An
+ * empty field means "use the inherited price", which the placeholder shows while it is empty.
+ */
+export function InlinePriceEdit({
+  name = 'Linen, white',
+  initialPrice = null,
+  inheritedPrice = 4990,
+  currency = 'USD',
+  onSave,
+}: InlinePriceEditProps) {
+  const locale = useDSLocale();
+  const [price, setPrice] = useState<number | null>(initialPrice);
+  const [draft, setDraft] = useState<number | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [saved, setSaved] = useState('');
+  const settled = useRef(false);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const field = useRef<HTMLInputElement>(null);
+  const restoreFocus = useRef(false);
+  const money = (minor: number) => formatCurrency(minor, currency, locale);
+
+  // The field unmounts when editing ends, so focus goes back to the trigger by hand. After a
+  // blur it stays where the user moved it.
+  useLayoutEffect(() => {
+    if (!editing && restoreFocus.current) {
+      restoreFocus.current = false;
+      trigger.current?.focus();
+    }
+  }, [editing]);
+
+  // Focus the field when it opens (the autoFocus attribute is avoided on purpose).
+  useLayoutEffect(() => {
+    if (editing) field.current?.focus();
+  }, [editing]);
+
+  function start() {
+    settled.current = false;
+    setSaved('');
+    setDraft(price);
+    setEditing(true);
+  }
+
+  function finish(commit: boolean, returnFocus: boolean) {
+    if (settled.current) return; // Enter and the blur it causes must not save twice.
+    settled.current = true;
+    restoreFocus.current = returnFocus;
+    setEditing(false);
+    // 0 and empty both mean "no price of its own".
+    const next = commit ? draft || null : price;
+    if (commit && next !== price) {
+      setPrice(next);
+      onSave?.(next);
+      setSaved(`Price saved: ${money(next ?? inheritedPrice)}`);
+    }
+  }
+
+  return (
+    <Stack gap={2}>
+      <Inline gap={3} align="center">
+        <Text>{name}</Text>
+        {editing ? (
+          <CurrencyInput
+            size="sm"
+            aria-label={`Price of ${name}`}
+            currency={currency}
+            inputRef={field}
+            placeholder={money(inheritedPrice)}
+            description="Leave empty to use the inherited price."
+            value={draft}
+            onChange={setDraft}
+            onBlur={() => {
+              finish(true, false);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                finish(true, true);
+              } else if (event.key === 'Escape') {
+                // Stop here so a surrounding dialog or sheet does not close with it.
+                event.preventDefault();
+                event.stopPropagation();
+                finish(false, true);
+              }
+            }}
+          />
+        ) : (
+          <Button
+            ref={trigger}
+            size="sm"
+            variant="ghost"
+            aria-label={`Edit price of ${name}: ${money(price ?? inheritedPrice)}`}
+            onPress={start}
+          >
+            {money(price ?? inheritedPrice)}
+          </Button>
+        )}
+      </Inline>
+      <Text role="status" size="small" tone="secondary">
+        {saved}
+      </Text>
+    </Stack>
+  );
+}
+```
+
+<!-- recipe-source:end -->
 
 ### MarkdownMessage
 

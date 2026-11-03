@@ -433,6 +433,7 @@ export interface ComboboxOption {
     description?: string | undefined;
     isDisabled?: boolean | undefined;
     label: string;
+    leading?: ReactNode;
     meta?: string | undefined;
     value: string;
 }
@@ -1811,7 +1812,7 @@ export type SidebarSection = TitledSection | UntitledSection;
 export interface SidebarStatus {
     meta?: string;
     title: string;
-    tone?: 'success' | 'warning' | 'danger';
+    tone?: 'neutral' | 'success' | 'warning' | 'danger';
     value?: string;
 }
 
@@ -2290,6 +2291,7 @@ export function toastWithUndo(message: ReactNode, options: ToastWithUndoOptions)
 
 // @public (undocumented)
 export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'action'> {
+    groupKey?: string;
     locale?: string;
     messages?: Partial<typeof messages_46.en>;
     onUndo: () => void;
@@ -2415,6 +2417,7 @@ export { TriangleAlertIcon }
 export interface UndoableAction {
     apply: () => void;
     commit?: (() => void | Promise<void>) | undefined;
+    groupKey?: string | undefined;
     message: ReactNode;
     onCommit?: (() => void) | undefined;
     onUndo?: (() => void) | undefined;

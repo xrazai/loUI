@@ -315,6 +315,7 @@
     --ds-data-table-col-w: 160px;
     --ds-data-table-col-min-w: 0px;
     --ds-data-table-min-w: 0px;
+    --ds-data-table-flex-count: 1;
     --ds-data-table-max-h: 480px;
 
     /* dialog */

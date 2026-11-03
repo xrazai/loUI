@@ -2,7 +2,7 @@
 
 > Loui DS is a dark, minimal, functional React design system (React 19, React Aria Components, CSS Modules, DTCG tokens) for internal tools, dashboards and apps. It is built to be operated by humans and AI agents.
 
-Package loui-ds@0.5.0. Entry points: `loui-ds`, `loui-ds/patterns`, `loui-ds/styles.css`. All component and token names below are exact; do not invent others.
+Package loui-ds@0.6.0. Entry points: `loui-ds`, `loui-ds/patterns`, `loui-ds/styles.css`. All component and token names below are exact; do not invent others.
 
 Rules for generated UI:
 
@@ -161,10 +161,12 @@ Tested compositions for common situations. Start from the one that fits, keep it
 
 - [ApprovalQueue](./recipes/approval-queue.md): A queue of replies written by an agent that wait for a person to approve them before anything reaches a customer. (experimental)
 - [CommandPaletteSetup](./recipes/command-palette-setup.md): Keyboard first, wired end to end: one list of destinations and actions feeds the bare-key shortcuts, the command palette (`Mod+K`) and the shortcuts help (`?`). (experimental)
+- [CreateOnTheFly](./recipes/create-on-the-fly.md): Pick an item from a list, or create it without leaving the field: typing a name that matches nothing ends the list with a `Create "name"` row. (experimental)
 - [DestructiveConfirm](./recipes/destructive-confirm.md): Delete a record from a row action: ask first in a dialog that names the object and the consequence, then delete and offer Undo in a toast. (experimental)
 - [DetailSheet](./recipes/detail-sheet.md): Open a record next to its list: a row opens a side `Sheet` with the details in editable fields, a footer with the destructive action at the start and Cancel plus one primary action at the end. (experimental)
 - [FilterableTable](./recipes/filterable-table.md): A list of records with search, status filters that show counts, a sortable table, row selection with a bulk action and an empty state that tells the user what to do. (experimental)
 - [FormWithValidation](./recipes/form-with-validation.md): A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and "Saved" next to it. (experimental)
+- [InlinePriceEdit](./recipes/inline-price-edit.md): A price that reads as text and turns into a field when pressed. (experimental)
 - [MarkdownMessage](./recipes/markdown-message.md): Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. (experimental)
 - [SettingsPage](./recipes/settings-page.md): A settings screen: app shell, a top bar with the page's one primary action and its keyboard shortcut, and one card per topic with switches, a select and a radio group. (experimental)
 - [SheetForm](./recipes/sheet-form.md): A form inside a side `Sheet` whose primary button sits in the sheet footer, outside the `<form>`. (experimental)
@@ -177,7 +179,7 @@ Tested compositions for common situations. Start from the one that fits, keep it
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (118 components).
-- [tokens.json](./tokens.json): 442 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 443 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

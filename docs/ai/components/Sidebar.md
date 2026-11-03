@@ -15,7 +15,7 @@ The app sidebar: workspace block, navigation sections, optional status card, foo
 - Import: `import { Sidebar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sidebar/Sidebar.tsx`
-- Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft
+- Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, StatusNeutral, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft
 
 ## Props
 
@@ -74,6 +74,10 @@ aside[aria-label="Sidebar"]         (--ds-sidebar-w wide, scrolls on its own)
 
 - Width is `--ds-sidebar-w` (240px). The handoff's `width` prop and 248px default are dropped; there is one width in the system.
 - The sidebar uses `max-block-size: 100%` and `overflow-y: auto`: give its parent a definite height (for example a full-height flex row) and it scrolls on its own while the content scrolls separately. The status, footer and user stay at the bottom when there is room.
+
+## Behavior change
+
+The status dot is now grey (`neutral`) when `tone` is omitted; it used to default to green. Pass `tone: 'success'` to keep the green dot.
 
 ## Accessibility
 

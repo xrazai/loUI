@@ -10,18 +10,20 @@ Agents: start from a recipe when one fits (`get_recipe` in the MCP server return
 
 Every recipe assumes one `ToastRegion` near the root of the app, inside `DSProvider`.
 
-| Recipe                                                               | Use it for                                                                                       | Doc                                     |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------- |
-| [DestructiveConfirm](?path=/docs/recipes-destructiveconfirm--docs)   | Delete from a row action: ask, delete, offer Undo.                                               | `docs/recipes/destructive-confirm.md`   |
-| [UndoableAction](?path=/docs/recipes-undoableaction--docs)           | A reversible action with no confirmation and an Undo toast (`useUndoable`).                      | `docs/recipes/undoable-action.md`       |
-| [FormWithValidation](?path=/docs/recipes-formwithvalidation--docs)   | Native validation, error summary, server errors, Save and "Saved".                               | `docs/recipes/form-with-validation.md`  |
-| [FilterableTable](?path=/docs/recipes-filterabletable--docs)         | Search, status filters with counts, sortable table, bulk action, empty state.                    | `docs/recipes/filterable-table.md`      |
-| [SettingsPage](?path=/docs/recipes-settingspage--docs)               | App shell, one primary action with its shortcut, cards of switches, selects and radios.          | `docs/recipes/settings-page.md`         |
-| [DetailSheet](?path=/docs/recipes-detailsheet--docs)                 | A list row opens a side sheet to view and edit; footer with the destructive action at the start. | `docs/recipes/detail-sheet.md`          |
-| [SheetForm](?path=/docs/recipes-sheetform--docs)                     | A form in a Sheet submitted by the footer button (`form` attribute): Enter, validation, saved.   | `docs/recipes/sheet-form.md`            |
-| [ApprovalQueue](?path=/docs/recipes-approvalqueue--docs)             | Replies that wait for approval; Send and Discard act at once and offer Undo.                     | `docs/recipes/approval-queue.md`        |
-| [CommandPaletteSetup](?path=/docs/recipes-commandpalettesetup--docs) | `Mod+K` palette, shortcuts help and bare-key shortcuts from one list.                            | `docs/recipes/command-palette-setup.md` |
-| [MarkdownMessage](?path=/docs/recipes-markdownmessage--docs)         | Safe markdown in `ChatPanel` replies (`renderContent`): no dependency, no raw HTML.              | `docs/recipes/markdown-message.md`      |
+| Recipe                                                               | Use it for                                                                                             | Doc                                     |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| [DestructiveConfirm](?path=/docs/recipes-destructiveconfirm--docs)   | Delete from a row action: ask, delete, offer Undo.                                                     | `docs/recipes/destructive-confirm.md`   |
+| [UndoableAction](?path=/docs/recipes-undoableaction--docs)           | A reversible action with no confirmation and an Undo toast (`useUndoable`).                            | `docs/recipes/undoable-action.md`       |
+| [FormWithValidation](?path=/docs/recipes-formwithvalidation--docs)   | Native validation, error summary, server errors, Save and "Saved".                                     | `docs/recipes/form-with-validation.md`  |
+| [InlinePriceEdit](?path=/docs/recipes-inlinepriceedit--docs)         | A price that reads as text and edits in place: Enter or blur confirms, Esc cancels, empty inherits.    | `docs/recipes/inline-price-edit.md`     |
+| [FilterableTable](?path=/docs/recipes-filterabletable--docs)         | Search, status filters with counts, sortable table, bulk action, empty state.                          | `docs/recipes/filterable-table.md`      |
+| [SettingsPage](?path=/docs/recipes-settingspage--docs)               | App shell, one primary action with its shortcut, cards of switches, selects and radios.                | `docs/recipes/settings-page.md`         |
+| [DetailSheet](?path=/docs/recipes-detailsheet--docs)                 | A list row opens a side sheet to view and edit; footer with the destructive action at the start.       | `docs/recipes/detail-sheet.md`          |
+| [SheetForm](?path=/docs/recipes-sheetform--docs)                     | A form in a Sheet submitted by the footer button (`form` attribute): Enter, validation, saved.         | `docs/recipes/sheet-form.md`            |
+| [ApprovalQueue](?path=/docs/recipes-approvalqueue--docs)             | Replies that wait for approval; Send and Discard act at once and offer Undo.                           | `docs/recipes/approval-queue.md`        |
+| [CommandPaletteSetup](?path=/docs/recipes-commandpalettesetup--docs) | `Mod+K` palette, shortcuts help and bare-key shortcuts from one list.                                  | `docs/recipes/command-palette-setup.md` |
+| [CreateOnTheFly](?path=/docs/recipes-createonthefly--docs)           | Pick an item or create it from the field: Create row, select, toast with Undo (`Combobox` `onCreate`). | `docs/recipes/create-on-the-fly.md`     |
+| [MarkdownMessage](?path=/docs/recipes-markdownmessage--docs)         | Safe markdown in `ChatPanel` replies (`renderContent`): no dependency, no raw HTML.                    | `docs/recipes/markdown-message.md`      |
 
 ## How they stay true
 

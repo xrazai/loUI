@@ -15,7 +15,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, EmptyWithMinimumColumnWidth, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
 
 ## Props
 
@@ -70,7 +70,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-flex-count`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 ## When to use
 
@@ -127,7 +127,10 @@ div.root
 | `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |
 | `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |
 
-- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width of the fixed columns plus the flexible ones at their largest `minWidth` (`--ds-data-table-min-w`). Without any `minWidth` the layout is unchanged.
+- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width (`--ds-data-table-min-w`): the sum of every column's own minimum (fixed columns at the larger of `width` and `minWidth`, flexible columns at their `minWidth`, a flexible column without `minWidth` at 0). Without any `minWidth` the layout is unchanged.
+- **Flexible columns keep their own minimum.** Each flexible column is its `minWidth` plus an equal share of the space left after all minimums. Example in a 1000px container with `Order` (`width: 100px`), `Customer` (`minWidth: 240px`), `Status` (`minWidth: 80px`) and `Total` (no `minWidth`): 580px is left, so the widths are 100, 433, 273 and 193px. In a 200px container the table is 420px wide and scrolls: 100, 240, 80 and just the cell padding for `Total`. Give every flexible column that must stay readable a `minWidth`.
+- Use fixed units (`px`, `rem`) for `width` and `minWidth` in a table with a `minWidth` column; percentages are not part of the minimum calculation. The scroll area is a size container (`container-type: inline-size`) because browsers treat a `calc()` mixing a percentage as `auto` in a fixed table layout; a container unit is a plain length.
+- An empty table (no rows, not loading) drops the table minimum width, so the empty state never scrolls sideways. The header stays visible and its labels are cut with an ellipsis.
 - A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.
 - Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.
 - Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.

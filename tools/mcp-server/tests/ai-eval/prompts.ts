@@ -101,4 +101,14 @@ export const CASES: EvalCase[] = [
     include: ['ToolCallStep', 'ToolCallList'],
   },
   { prompt: 'how much of the storage is used', include: ['DonutMeter', 'Meter'] },
+  {
+    prompt: 'edit a price inline in a table row',
+    include: ['CurrencyInput'],
+    recipes: ['inline-price-edit'],
+  },
+  {
+    prompt: 'pick a label from a list or create a new one by typing',
+    include: ['Combobox'],
+    recipes: ['create-on-the-fly'],
+  },
 ];

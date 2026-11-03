@@ -49,7 +49,12 @@
     "min-w": {
       "$type": "dimension",
       "$value": { "value": 0, "unit": "px" },
-      "$description": "Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the fixed columns plus the flexible ones at their largest `minWidth`. A narrower container then scrolls horizontally."
+      "$description": "Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the sum of every column's own minimum. A narrower container then scrolls horizontally."
+    },
+    "flex-count": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Number of flexible DataTable columns (no `width`), which share the space left after every column minimum. Set at runtime via style on the table when any column has a `minWidth`; default 1."
     },
     "max-h": {
       "$type": "dimension",
