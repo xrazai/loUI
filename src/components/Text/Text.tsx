@@ -3,7 +3,7 @@ import { classNames } from '../../utils/classNames';
 import styles from './Text.module.css';
 
 export type TextSize = 'body' | 'small' | 'label' | 'meta' | 'caption';
-export type TextTone = 'default' | 'secondary' | 'tertiary';
+export type TextTone = 'default' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger';
 export type TextElement =
   | 'span'
   | 'p'
@@ -28,7 +28,9 @@ export interface TextProps extends ComponentPropsWithRef<'span'> {
   /**
    * Text color: `default` (`--ds-text`), `secondary` (`--ds-text-2`, supporting text) or
    * `tertiary` (`--ds-text-3`, hints). Tertiary passes 4.5:1 on every surface, but signals
-   * the lowest importance: use it for meta and hints, never for primary content. Default `default`.
+   * the lowest importance: use it for meta and hints, never for primary content. `success`,
+   * `warning` and `danger` are signal colours (4.5:1 on the base surfaces): always pair them with
+   * words that carry the meaning, never colour alone. Default `default`.
    */
   tone?: TextTone;
   /** Geist Mono with tabular figures, for codes, identifiers, amounts and shortcuts. */

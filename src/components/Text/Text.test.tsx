@@ -53,6 +53,15 @@ describe('Text', () => {
         <Text tone="tertiary" data-testid="tertiary">
           C
         </Text>
+        <Text tone="success" data-testid="success">
+          D
+        </Text>
+        <Text tone="warning" data-testid="warning">
+          E
+        </Text>
+        <Text tone="danger" data-testid="danger">
+          F
+        </Text>
       </>,
     );
     const root = getComputedStyle(document.documentElement);
@@ -68,6 +77,9 @@ describe('Text', () => {
     expect(color('default')).toBe(resolve('--ds-text'));
     expect(color('secondary')).toBe(resolve('--ds-text-2'));
     expect(color('tertiary')).toBe(resolve('--ds-text-3'));
+    expect(color('success')).toBe(resolve('--ds-success'));
+    expect(color('warning')).toBe(resolve('--ds-warning'));
+    expect(color('danger')).toBe(resolve('--ds-danger'));
   });
 
   it('mono switches to Geist Mono', async () => {
@@ -124,6 +136,9 @@ describe('Text', () => {
         </Text>
         <Text as="p" size="caption" tone="secondary">
           Caption
+        </Text>
+        <Text as="p" size="small" tone="danger">
+          Select at least one color.
         </Text>
         <Text as="p" size="meta" tone="tertiary">
           Hint

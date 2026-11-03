@@ -23,19 +23,20 @@ span (or the element in `as`)
 
 ## Props
 
-| Prop       | Type                                                      | Default     | Notes                                                                             |
-| ---------- | --------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------- |
-| `size`     | `'body' \| 'small' \| 'label' \| 'meta' \| 'caption'`     | `'body'`    | 15/24 · 14/22 · 13/18 · 12/16 · 11.5/16 px. `caption` is mono, uppercase, tracked |
-| `tone`     | `'default' \| 'secondary' \| 'tertiary'`                  | `'default'` | `--ds-text`, `--ds-text-2`, `--ds-text-3`                                         |
-| `mono`     | `boolean`                                                 | `false`     | Geist Mono with tabular figures, for codes, amounts and shortcuts                 |
-| `truncate` | `boolean`                                                 | `false`     | One line with an ellipsis. Becomes a block                                        |
-| `as`       | `'span' \| 'p' \| 'div' \| 'label' \| 'strong' \| 'em' …` | `'span'`    | Pick the element for the meaning                                                  |
+| Prop       | Type                                                                           | Default     | Notes                                                                                    |
+| ---------- | ------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------------- |
+| `size`     | `'body' \| 'small' \| 'label' \| 'meta' \| 'caption'`                          | `'body'`    | 15/24 · 14/22 · 13/18 · 12/16 · 11.5/16 px. `caption` is mono, uppercase, tracked        |
+| `tone`     | `'default' \| 'secondary' \| 'tertiary' \| 'success' \| 'warning' \| 'danger'` | `'default'` | `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-success`, `--ds-warning`, `--ds-danger` |
+| `mono`     | `boolean`                                                                      | `false`     | Geist Mono with tabular figures, for codes, amounts and shortcuts                        |
+| `truncate` | `boolean`                                                                      | `false`     | One line with an ellipsis. Becomes a block                                               |
+| `as`       | `'span' \| 'p' \| 'div' \| 'label' \| 'strong' \| 'em' …`                      | `'span'`    | Pick the element for the meaning                                                         |
 
 Other attributes and `ref` go to the root.
 
 ## Accessibility
 
 - `tertiary` passes 4.5:1 on every surface (TOK-004), but it carries the lowest importance: use it for hints and meta, never for primary content.
+- `success`, `warning` and `danger` pass 4.5:1 on bg, surface and raised. The colour only reinforces: the words must carry the meaning ("Select at least one color."), never colour alone. For an error tied to a group of controls use `ErrorText`.
 - Truncated text hides content visually: show the full value elsewhere (a `title`, a tooltip, a detail view) when it matters.
 - The caption's uppercase is CSS only, so screen readers read the sentence-case source.
 - Long unbroken values wrap (`overflow-wrap: break-word`).

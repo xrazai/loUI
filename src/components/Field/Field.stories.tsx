@@ -5,7 +5,7 @@ import { Checkbox } from '../Checkbox';
 import { Input } from '../Input';
 import { Select } from '../Select';
 import { Textarea } from '../Textarea';
-import { Description, FieldError, Label } from './Field';
+import { Description, ErrorText, FieldError, Label } from './Field';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -100,4 +100,21 @@ export const RealtimeValidation: Story = {
     await userEvent.type(canvas.getByRole('textbox'), 'a');
     await waitFor(() => expect(canvas.getByRole('alert')).toBeVisible());
   },
+};
+
+/** Error text for a hand-built group with no field around it, linked with `aria-describedby`. */
+export const StandaloneErrorText: Story = {
+  render: () => (
+    <div>
+      <div
+        role="group"
+        aria-label="Colors"
+
+        aria-describedby="colors-error-story"
+      >
+        <Checkbox label="Red" />
+      </div>
+      <ErrorText id="colors-error-story">Select at least one color.</ErrorText>
+    </div>
+  ),
 };

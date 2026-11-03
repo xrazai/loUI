@@ -10,7 +10,10 @@ const meta = {
   args: { children: 'Orders shipped this week' },
   argTypes: {
     size: { control: 'inline-radio', options: ['body', 'small', 'label', 'meta', 'caption'] },
-    tone: { control: 'inline-radio', options: ['default', 'secondary', 'tertiary'] },
+    tone: {
+      control: 'inline-radio',
+      options: ['default', 'secondary', 'tertiary', 'success', 'warning', 'danger'],
+    },
     mono: { control: 'boolean' },
     truncate: { control: 'boolean' },
     as: { control: 'select', options: ['span', 'p', 'div', 'label', 'strong', 'em', 'small'] },
@@ -35,6 +38,19 @@ export const Secondary: Story = { args: { tone: 'secondary' } };
 
 /** Tertiary text is for hints on the base surfaces. It is too faint on raised and hover surfaces. */
 export const Tertiary: Story = { args: { tone: 'tertiary', size: 'small' } };
+
+/** Signal tones always pair with words that carry the meaning. */
+export const Success: Story = {
+  args: { tone: 'success', size: 'small', children: 'Matches the invoice total' },
+};
+
+export const Warning: Story = {
+  args: { tone: 'warning', size: 'small', children: 'Over by $5.00' },
+};
+
+export const Danger: Story = {
+  args: { tone: 'danger', size: 'small', children: 'Select at least one color.' },
+};
 
 export const Mono: Story = { args: { mono: true, children: 'ORD-1048' } };
 

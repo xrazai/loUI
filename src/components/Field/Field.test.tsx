@@ -10,7 +10,7 @@ import { Input } from '../Input';
 import { NumberField } from '../NumberField';
 import { Select } from '../Select';
 import { Textarea } from '../Textarea';
-import { Description, FieldError, FieldMessages, Label } from './Field';
+import { Description, ErrorText, FieldError, FieldMessages, Label } from './Field';
 import type { FieldMessageTone } from './labeling';
 
 function Composed(props: {
@@ -304,5 +304,39 @@ describe('toned description (GAP-039)', () => {
       </main>,
     );
     await expectNoA11yViolations(screen.container);
+  });
+});
+
+describe('ErrorText', () => {
+  it('renders outside a field, links by id and is not a live region by default', async () => {
+    const screen = await renderWithProvider(
+      <>
+        <div role="group" aria-label="Colors" aria-describedby="colors-error">
+          <button type="button">Red</button>
+        </div>
+        <ErrorText id="colors-error">Select at least one color.</ErrorText>
+      </>,
+    );
+    const el = screen.container.querySelector('#colors-error');
+    expect(el?.textContent).toBe('Select at least one color.');
+    expect(el?.getAttribute('role')).toBeNull();
+    await expect
+      .element(screen.getByRole('group', { name: 'Colors' }))
+      .toHaveAccessibleDescription('Select at least one color.');
+    await expectNoA11yViolations(screen.container);
+  });
+
+  it('generates an id, announces with announce, and renders nothing when empty', async () => {
+    const screen = await renderWithProvider(
+      <>
+        <ErrorText announce>Pick a size.</ErrorText>
+        <ErrorText>{''}</ErrorText>
+        <ErrorText>{null}</ErrorText>
+      </>,
+    );
+    const paragraphs = screen.container.querySelectorAll('p');
+    expect(paragraphs).toHaveLength(1);
+    expect(paragraphs[0]?.getAttribute('role')).toBe('alert');
+    expect(paragraphs[0]?.id).not.toBe('');
   });
 });

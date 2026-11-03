@@ -1,6 +1,7 @@
-export { Description, FieldError, FieldMessages, Label, RequiredMark } from './Field';
+export { Description, ErrorText, FieldError, FieldMessages, Label, RequiredMark } from './Field';
 export type {
   DescriptionProps,
+  ErrorTextProps,
   FieldErrorProps,
   FieldMessagesProps,
   LabelProps,

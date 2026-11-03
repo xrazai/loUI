@@ -67,6 +67,7 @@
   }
 
   .error {
+    margin: 0;
     font-size: var(--ds-fs-label);
     line-height: var(--ds-lh-label);
     color: var(--ds-danger);

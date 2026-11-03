@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type { ReactNode, Ref } from 'react';
 import {
   FieldError as RACFieldError,
@@ -129,6 +130,57 @@ export function FieldError({ className, children, ...rest }: FieldErrorProps) {
         return <span role="alert">{content}</span>;
       }}
     </RACFieldError>
+  );
+}
+
+export interface ErrorTextProps {
+  /** The message. Renders nothing when empty (`null`, `undefined`, `false` or `''`). */
+  children?: ReactNode;
+  /**
+   * Element id. Defaults to a generated one; pass your own to link the group with
+   * `aria-describedby={id}` (and `aria-errormessage={id}`).
+   */
+  id?: string | undefined;
+  /**
+   * Announces the message when it appears by rendering it as `role="alert"`. Off by default:
+   * the group links the text with `aria-describedby`, and focus normally moves to the first
+   * invalid control on submit, which reads it. Turn it on for an error that appears with no
+   * focus move (for example after a server response).
+   */
+  announce?: boolean | undefined;
+  className?: string | undefined;
+  ref?: Ref<HTMLParagraphElement> | undefined;
+}
+
+/**
+ * Standalone error text for a group of controls that has no React Aria field around it (a
+ * hand-built set of colour options, a list of rows). Same look as `FieldError`, but it needs no
+ * field context and renders whenever it has content: you decide when it shows. Link it from
+ * the group with `aria-describedby` , see Field.md. Use `FieldError` inside
+ * a field and `Alert` for an error about the whole page or form.
+ */
+export function ErrorText({
+  id,
+  announce = false,
+  className,
+  children,
+  ref,
+  ...rest
+}: ErrorTextProps) {
+  const generatedId = useId();
+  if (children === null || children === undefined || children === false || children === '') {
+    return null;
+  }
+  return (
+    <p
+      {...rest}
+      ref={ref}
+      id={id ?? generatedId}
+      role={announce ? 'alert' : undefined}
+      className={classNames(styles.error, className)}
+    >
+      {children}
+    </p>
   );
 }
 

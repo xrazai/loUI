@@ -43,6 +43,19 @@
     color: var(--ds-text-3);
   }
 
+  /* Signal tones: the words carry the meaning, the colour only reinforces it. */
+  .root[data-tone='success'] {
+    color: var(--ds-success);
+  }
+
+  .root[data-tone='warning'] {
+    color: var(--ds-warning);
+  }
+
+  .root[data-tone='danger'] {
+    color: var(--ds-danger);
+  }
+
   .root[data-mono='true'] {
     font-family: var(--ds-font-mono);
     font-variant-numeric: tabular-nums;
