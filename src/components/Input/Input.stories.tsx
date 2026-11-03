@@ -5,6 +5,8 @@ import { SearchIcon } from '../Icon/icons';
 import type { WithLabel } from '../Field';
 import { Input } from './Input';
 import type { InputProps } from './Input';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -162,4 +164,15 @@ export const FocusKeepsRingWithConsumerHandlers: Story = {
     await expect(args.onFocus).toHaveBeenCalledTimes(1);
     await expect(input).toHaveAttribute('data-focused', 'true');
   },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <Input {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

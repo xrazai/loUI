@@ -6,6 +6,8 @@ import type { WithLabel } from '../Field';
 import { Calendar } from './Calendar';
 import { DatePicker } from './DatePicker';
 import type { DatePickerProps } from './DatePicker';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -174,4 +176,15 @@ export const StandaloneCalendar: Story = {
     await userEvent.click(within(canvasElement).getByRole('button', { name: /October 20, 2026/ }));
     await expect(within(canvasElement).getByTestId('picked')).toHaveTextContent('2026-10-20');
   },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <DatePicker {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

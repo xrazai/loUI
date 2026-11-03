@@ -3,6 +3,8 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Textarea } from './Textarea';
 import type { TextareaProps } from './Textarea';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -116,4 +118,15 @@ export const Focused: Story = {
     await userEvent.tab();
     await expect(within(canvasElement).getByRole('textbox')).toHaveFocus();
   },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <Textarea {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

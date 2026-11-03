@@ -4,6 +4,8 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { NumberField } from './NumberField';
 import type { NumberFieldProps } from './NumberField';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -147,4 +149,15 @@ export const Controlled: Story = {
     await expect(canvas.getByTestId('mirror')).toHaveTextContent('4');
     await expect(canvas.getByRole('textbox')).toHaveValue('4');
   },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <NumberField {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

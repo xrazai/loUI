@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import { SearchInput } from './SearchInput';
 import type { SearchInputProps } from './SearchInput';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 type NamedByAriaLabel = Extract<SearchInputProps, { 'aria-label': string }>;
@@ -117,5 +119,16 @@ export const Sizes: Story = {
       <SearchInput {...args} size="md" aria-label="Medium" />
       <SearchInput {...args} size="lg" aria-label="Large" />
     </div>
+  ),
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <SearchInput {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
   ),
 };

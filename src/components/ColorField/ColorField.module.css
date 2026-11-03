@@ -1,0 +1,39 @@
+@layer components {
+  .preview {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    padding-inline-start: var(--ds-field-control-padding-inline);
+  }
+
+  /* The wrapper draws the border and the focus ring (Field.module.css), as in Input. */
+  .input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--ds-space-2) var(--ds-field-control-padding-inline);
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-family: var(--ds-font-mono);
+    font-size: inherit;
+    line-height: inherit;
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+  }
+
+  .input::placeholder {
+    text-transform: none;
+  }
+
+  .input:focus-visible {
+    box-shadow: none;
+  }
+
+  .input:disabled {
+    cursor: not-allowed;
+    color: var(--ds-text-3);
+  }
+}

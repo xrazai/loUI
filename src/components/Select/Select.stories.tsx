@@ -3,6 +3,8 @@ import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import type { WithLabel } from '../Field';
 import { Select } from './Select';
 import type { SelectProps } from './Select';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const regions = [
@@ -181,4 +183,15 @@ export const LongLabels: Story = {
       { value: 'short', label: 'Local pickup' },
     ],
   },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap="nowrap">
+      <Select {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

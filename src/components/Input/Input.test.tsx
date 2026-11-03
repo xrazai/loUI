@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { expectHovered } from '../../test/hover';
 import { renderWithProvider } from '../../test/render';
+import { Inline } from '../Inline';
 import { borderContrast } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
 import { Input } from './Input';
@@ -336,5 +337,31 @@ describe('Input', () => {
       );
       await expectNoA11yViolations(screen.container);
     });
+  });
+});
+
+describe('Input fullWidth', () => {
+  async function renderRow(props: { fullWidth?: boolean }) {
+    return renderWithProvider(
+      <div style={{ inlineSize: 700 }}>
+        <Inline gap={2} wrap="nowrap">
+          <Input label="Name" {...props} />
+          <button type="button">Apply</button>
+        </Inline>
+      </div>,
+    );
+  }
+
+  it('takes the free space of an Inline row, and not by default', async () => {
+    const plain = await renderRow({});
+    const plainRoot = plain.container.querySelector('[data-size]') as HTMLElement;
+    expect(plainRoot.hasAttribute('data-full-width')).toBe(false);
+    const plainWidth = plainRoot.getBoundingClientRect().width;
+    await plain.unmount();
+    const full = await renderRow({ fullWidth: true });
+    const root = full.container.querySelector('[data-full-width="true"]') as HTMLElement;
+    const button = full.container.querySelector('button:last-of-type') as HTMLElement;
+    expect(root.getBoundingClientRect().width).toBeGreaterThan(plainWidth);
+    expect(button.getBoundingClientRect().right).toBeCloseTo(700, 0);
   });
 });

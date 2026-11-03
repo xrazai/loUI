@@ -6,6 +6,7 @@
  */
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { ColorField } from '../../components/ColorField';
 import { CurrencyInput } from '../../components/CurrencyInput';
 import { NumberField } from '../../components/NumberField';
 import { Slider } from '../../components/Slider';
@@ -159,6 +160,44 @@ describe('keyboard contract: number field', () => {
     await press('{Control>}a{/Control}7{Enter}');
     await expect.element(field).toHaveValue('7');
     expect(onChange).toHaveBeenLastCalledWith(7);
+  });
+});
+
+describe('keyboard contract: colour field', () => {
+  async function arrive() {
+    const screen = await renderWithProvider(
+      <Around>
+        <ColorField label="Hex" defaultValue="#000010" />
+      </Around>,
+    );
+    await userEvent.tab();
+    await userEvent.tab();
+    await expectFocus('Hex');
+    return screen.getByRole('textbox');
+  }
+
+  it('is one Tab stop', async () => {
+    await renderWithProvider(
+      <Around>
+        <ColorField label="Hex" defaultValue="#000010" />
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(2)).toEqual(['Hex', 'After']);
+  });
+
+  it('Up/Down step the hex value', async () => {
+    const field = await arrive();
+    await press('{ArrowUp}');
+    await expect.element(field).toHaveValue('#000011');
+    await press('{ArrowDown}{ArrowDown}');
+    await expect.element(field).toHaveValue('#00000F');
+  });
+
+  it('typing is allowed and Enter commits a normalised #RRGGBB', async () => {
+    const field = await arrive();
+    await press('{Control>}a{/Control}#abc{Enter}');
+    await expect.element(field).toHaveValue('#AABBCC');
   });
 });
 
