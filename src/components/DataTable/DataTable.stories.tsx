@@ -168,6 +168,34 @@ export const Paginated: Story = {
   },
 };
 
+/** Sort, select and paginate in one flow: the selection and the sort survive the page change. TEST-012. */
+export const SortSelectPaginate: Story = {
+  args: { selectionMode: 'multiple', pageSize: 3 },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const total = canvas.getByRole('columnheader', { name: /Total/ });
+    const before = firstColumnTexts(canvasElement, 1);
+    await userEvent.click(total);
+    await expect(total).toHaveAttribute('aria-sort', 'ascending');
+    await expect(firstColumnTexts(canvasElement, 1)).not.toEqual(before);
+
+    const [firstRow] = canvas.getAllByRole('checkbox', { name: /^Select row / });
+    if (!firstRow) throw new Error('No selectable row rendered.');
+    await userEvent.click(firstRow);
+    await expect(
+      canvas.getByRole('group', { name: 'Actions for selected rows' }),
+    ).toHaveTextContent('1 selected');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Next page' }));
+    await expect(canvas.getByText('4–6 of 7')).toBeInTheDocument();
+    await expect(total).toHaveAttribute('aria-sort', 'ascending');
+    await expect(
+      canvas.getByRole('group', { name: 'Actions for selected rows' }),
+    ).toHaveTextContent('1 selected');
+  },
+};
+
 /** Clickable rows (`onRowAction`) and the active row, for a list that opens a detail panel. */
 export const ClickableRows: Story = {
   render: function Render(args) {

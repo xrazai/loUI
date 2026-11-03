@@ -66,6 +66,24 @@ export const Open: Story = {
   },
 };
 
+/** Pointer path: open the calendar, click a day, the popover closes and the field shows the date. TEST-012. */
+export const PickDate: Story = {
+  args: { defaultValue: '2026-10-15', onChange: fn() },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /Open calendar/ });
+    await userEvent.click(trigger);
+    await userEvent.click(await screen.findByRole('button', { name: /October 22, 2026/ }));
+    await expect(args.onChange).toHaveBeenLastCalledWith('2026-10-22');
+    await waitFor(() => expect(screen.queryByRole('grid')).toBeNull());
+    await expect(canvas.getByRole('group', { name: /Delivery date/ })).toHaveTextContent(
+      /10\/22\/2026/,
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
+  },
+};
+
 export const EscapeRestoresFocus: Story = {
   play: async ({ canvasElement }) => {
     const trigger = within(canvasElement).getByRole('button', { name: /Open calendar/ });

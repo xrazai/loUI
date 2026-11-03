@@ -66,6 +66,23 @@ export const EscapeCancels: Story = {
   },
 };
 
+/**
+ * The whole destructive flow with a pointer: opening lands focus on Cancel (not on the red
+ * button), and the focus ring is part of the visual baseline. TEST-012.
+ */
+export const ConfirmFlow: Story = {
+  parameters: { visual: { play: true, selector: '[role="alertdialog"]' } },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole('button', { name: 'Delete order' }));
+    const dialog = await screen.findByRole('alertdialog', { name: 'Delete order #1048?' });
+    await waitFor(() => expect(dialog).toBeVisible());
+    await waitFor(() =>
+      expect(within(dialog).getByRole('button', { name: 'Cancel' })).toHaveFocus(),
+    );
+    await expect(args.onConfirm).not.toHaveBeenCalled();
+  },
+};
+
 /** Open for the visual review. */
 export const Open: Story = {
   parameters: { visual: { selector: '[role="alertdialog"]' } },

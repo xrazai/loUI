@@ -52,6 +52,19 @@ export const DeleteAndUndo: Story = {
   },
 };
 
+/** The state after confirming: the row is gone and the Undo toast is showing. TEST-012. */
+export const DeletedToast: Story = {
+  parameters: {
+    visual: { play: true, selector: '[role="region"][aria-label="Toast notifications"]' },
+  },
+  play: async ({ canvasElement }) => {
+    const dialog = await openConfirm(canvasElement);
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Delete order #1048' }));
+    await expectToast(/Order #1048 deleted/);
+    await expect(screen.getByRole('button', { name: 'Undo' })).toBeVisible();
+  },
+};
+
 /** The confirmation open, for the visual review. */
 export const ConfirmationOpen: Story = {
   parameters: { visual: { play: true, selector: '[role="alertdialog"]' } },

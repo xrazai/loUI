@@ -83,6 +83,23 @@ export const WithDescriptionAndMeta: Story = {
   },
 };
 
+/** Pointer path: filter by typing, click the suggestion, the list closes and the value stays. TEST-012. */
+export const SelectWithPointer: Story = {
+  args: { onChange: fn() },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole('combobox', { name: 'Customer' });
+    await userEvent.click(input);
+    await userEvent.keyboard('nor');
+    const option = await screen.findByRole('option', { name: /Nordic Goods/ });
+    await userEvent.click(option);
+    await waitFor(() => expect(input).toHaveValue('Nordic Goods'));
+    await expect(args.onChange).toHaveBeenLastCalledWith('nordic');
+    await waitFor(() => expect(screen.queryByRole('listbox')).toBeNull());
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
+  },
+};
+
 export const WithSelection: Story = {
   args: { defaultValue: 'mira' },
   play: async ({ canvasElement }) => {
