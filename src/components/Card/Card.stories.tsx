@@ -3,6 +3,9 @@ import { Card } from './Card';
 import { Alert } from '../Alert';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
+import { Divider } from '../Divider';
+import { Heading } from '../Heading';
+import { Text } from '../Text';
 import { StoryFrame } from '../../test/StoryFrame';
 
 const meta = {
@@ -117,6 +120,37 @@ export const PaperReceipt: Story = {
               Cancel receipt
             </Button>
           </div>
+        </div>
+      </Card>
+    </StoryFrame>
+  ),
+};
+
+/**
+ * The entry point of the paper scope: put `data-theme="paper"` on the `Card` itself. The card
+ * takes the light paper surface, border and text, and nested `Text`, `Heading` and `Divider`
+ * (solid and dashed) follow. This is an example composition, not a receipt component.
+ */
+export const ReceiptPreview: Story = {
+  args: { title: 'Receipt #1051' },
+  render: (args) => (
+    <StoryFrame maxWidth={360} padding={4}>
+      <Card {...args} data-theme="paper">
+        <Heading level={3}>Northwind Web</Heading>
+        <Text tone="secondary">Order placed 29 Oct 2026</Text>
+        <Divider />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Text>Linen, 2 m</Text>
+          <Text mono>$1,200.00</Text>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Text tone="secondary">Shipping</Text>
+          <Text mono>$40.00</Text>
+        </div>
+        <Divider variant="dashed" />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Text>Total</Text>
+          <Text mono>$1,240.00</Text>
         </div>
       </Card>
     </StoryFrame>

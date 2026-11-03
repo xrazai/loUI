@@ -4,7 +4,7 @@ import type { SeparatorProps } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
 import styles from './Divider.module.css';
 
-export type DividerVariant = 'subtle' | 'default' | 'strong';
+export type DividerVariant = 'subtle' | 'default' | 'strong' | 'dashed';
 
 export interface DividerProps extends Omit<
   SeparatorProps,
@@ -15,7 +15,8 @@ export interface DividerProps extends Omit<
   /**
    * Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default`
    * (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls
-   * and overlays). Default `default`.
+   * and overlays). `dashed` is a 1px dashed `--ds-line-strong` rule for a total row or a
+   * receipt tear line (AGENTS.md section 7). Default `default`.
    */
   variant?: DividerVariant;
   className?: string;

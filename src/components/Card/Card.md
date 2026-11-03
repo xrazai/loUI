@@ -42,6 +42,20 @@ Other `section` attributes (including `aria-label` and `aria-labelledby`) and `r
 
 Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `raised` card gets the raised surface, a stronger border **and** `--ds-shadow-overlay`, so use it only when the card really floats (a pinned side panel, the shell of a custom popover). A card in the normal flow stays `default`.
 
+## Paper scope
+
+Put `data-theme="paper"` on the `Card` to render the only light surface in the system, for receipt and PDF previews (ADR-0007). The card reads semantic tokens (`--ds-surface`, `--ds-line`, `--ds-text`), which the `[data-theme='paper']` scope remaps on the element itself, so the background, border and text switch with no extra prop. Inside it, `Text`, `Heading` and `Divider` (solid and dashed) follow the same remap; use `<Divider variant="dashed" />` for the total line.
+
+```tsx
+<Card data-theme="paper" title="Receipt #1051">
+  <Text mono>$1,240.00</Text>
+  <Divider variant="dashed" />
+  <Text mono>Total $1,240.00</Text>
+</Card>
+```
+
+Paper-safe components (axe contrast tested in the paper scope): `Card`, `Text`, `Heading`, `Divider`, plus `Badge`, `Alert` and `Button` (see the `PaperReceipt` story). A receipt or PDF component is product domain and is not part of the design system; compose these instead.
+
 ## Accessibility
 
 - The root is a `section`. With a `title`, the heading id is wired to `aria-labelledby`, so screen readers expose a named `region` landmark. Without a title or a label it is a plain generic container (no landmark), which is correct for decorative grouping.

@@ -178,6 +178,66 @@ export const KeyboardNavigation: Story = {
   },
 };
 
+/**
+ * `onToggle` returns a promise: the cell shows a spinner and ignores repeat toggles while it
+ * runs. "Brick red" always fails, so `onToggleError` runs (here it only logs; use a toast).
+ */
+export const AsyncToggle: Story = {
+  render: (args) => {
+    function Async() {
+      const [linked, setLinked] = useState(() => new Set(initial));
+      return (
+        <MatrixGrid
+          {...args}
+          isLinked={(row, column) => linked.has(`${row}:${column}`)}
+          onToggle={async (row, column) => {
+            await new Promise((resolve) => setTimeout(resolve, 1200));
+            if (column === 'red') throw new Error('Request failed');
+            setLinked((current) => {
+              const next = new Set(current);
+              const key = `${row}:${column}`;
+              if (next.has(key)) next.delete(key);
+              else next.add(key);
+              return next;
+            });
+          }}
+          onToggleError={() => undefined}
+        />
+      );
+    }
+    return <Async />;
+  },
+  parameters: { visual: { play: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Backpack · Gray: not linked' }));
+    await expect(
+      canvas.getByRole('button', { name: 'Backpack · Gray: not linked, saving' }),
+    ).toBeVisible();
+  },
+};
+
+/** The header row and the row header stay in view while the region scrolls in both directions. */
+export const StickyHeaders: Story = {
+  render: (args) => (
+    <div style={{ blockSize: 280, display: 'flex' }}>
+      <Stateful
+        {...args}
+        cornerLabel="Product"
+        style={{ flex: 1 }}
+        rows={Array.from({ length: 20 }, (_, index) => ({
+          id: `p${String(index)}`,
+          label: `Product ${String(index + 1)}`,
+        }))}
+        columns={Array.from({ length: 14 }, (_, index) => ({
+          id: `c${String(index)}`,
+          label: `Shade ${String(index + 1)}`,
+        }))}
+      />
+    </div>
+  ),
+};
+
 export const Portuguese: Story = {
   render: (args) => (
     <DSProvider locale="pt-BR">

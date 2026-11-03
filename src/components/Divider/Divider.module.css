@@ -27,9 +27,30 @@
     background-color: var(--ds-line-strong);
   }
 
+  /* Dashed is drawn with a border so the dashes stay crisp; the fill is cleared. */
+  .root[data-variant='dashed'] {
+    background-color: transparent;
+    border-style: dashed;
+    border-color: var(--ds-line-strong);
+    border-width: 0;
+  }
+
+  .root[data-variant='dashed'][data-orientation='horizontal'] {
+    border-block-start-width: 1px;
+  }
+
+  .root[data-variant='dashed'][data-orientation='vertical'] {
+    border-inline-start-width: 1px;
+  }
+
   @media (forced-colors: active) {
     .root {
       background-color: CanvasText;
+    }
+
+    .root[data-variant='dashed'] {
+      background-color: transparent;
+      border-color: CanvasText;
     }
   }
 }

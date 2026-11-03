@@ -3,6 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { Card } from './Card';
+import { Divider } from '../Divider';
+import { Heading } from '../Heading';
+import { Text } from '../Text';
 
 describe('Card', () => {
   it('renders a section without a header when there is no title or actions', async () => {
@@ -104,5 +107,51 @@ describe('Card', () => {
       </main>,
     );
     await expectNoA11yViolations(screen.container);
+  });
+
+  describe('paper scope', () => {
+    function Receipt() {
+      return (
+        <Card data-theme="paper" data-testid="paper-card" title="Receipt #1051">
+          <Heading level={3}>Northwind Web</Heading>
+          <Text tone="secondary">Order placed 29 Oct 2026</Text>
+          <Divider />
+          <Text mono>Subtotal $1,200.00</Text>
+          <Divider variant="dashed" />
+          <Text mono>Total $1,240.00</Text>
+        </Card>
+      );
+    }
+
+    it('switches surface, border and text to the paper tokens', async () => {
+      const screen = await renderWithProvider(
+        <>
+          <Card data-testid="dark-card">Dark</Card>
+          <Receipt />
+        </>,
+      );
+      const dark = getComputedStyle(screen.getByTestId('dark-card').element());
+      const paper = getComputedStyle(screen.getByTestId('paper-card').element());
+      expect(paper.backgroundColor).not.toBe(dark.backgroundColor);
+      expect(paper.borderTopColor).not.toBe(dark.borderTopColor);
+      expect(paper.color).not.toBe(dark.color);
+      const root = getComputedStyle(document.documentElement);
+      const probe = document.createElement('div');
+      probe.style.color = root.getPropertyValue('--ds-paper');
+      document.body.append(probe);
+      const paperColor = getComputedStyle(probe).color;
+      probe.remove();
+      expect(paper.backgroundColor).toBe(paperColor);
+    });
+
+    it('has no axe violations, including color contrast', async () => {
+      const screen = await renderWithProvider(
+        <main>
+          <h1>Page</h1>
+          <Receipt />
+        </main>,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
   });
 });

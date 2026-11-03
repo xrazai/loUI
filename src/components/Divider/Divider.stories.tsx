@@ -10,7 +10,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
-    variant: { control: 'inline-radio', options: ['subtle', 'default', 'strong'] },
+    variant: { control: 'inline-radio', options: ['subtle', 'default', 'strong', 'dashed'] },
   },
   decorators: [
     (Story) => (
@@ -37,6 +37,21 @@ export const Default: Story = {
 export const Subtle: Story = { args: { variant: 'subtle' } };
 
 export const Strong: Story = { args: { variant: 'strong' } };
+
+/** The total-row rule: dashed, for the line above a total (AGENTS.md section 7). */
+export const Dashed: Story = { args: { variant: 'dashed' } };
+
+/** The dashed rule inside the paper scope. */
+export const DashedOnPaper: Story = {
+  args: { variant: 'dashed' },
+  decorators: [
+    (Story) => (
+      <StoryFrame width={320} theme="paper" padding={4}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+};
 
 /** A vertical divider stretches to the height of a row. */
 export const Vertical: Story = {
@@ -74,6 +89,7 @@ export const Weights: Story = {
         <Divider variant="subtle" />
         <Divider variant="default" />
         <Divider variant="strong" />
+        <Divider variant="dashed" />
       </Stack>
     </StoryFrame>
   ),

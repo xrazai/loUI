@@ -447,4 +447,62 @@ describe('ChatPanel', () => {
     );
     await expectNoA11yViolations(screen.container);
   });
+
+  describe('messages without ids and busy indicator', () => {
+    const noIds: ChatMessage[] = [
+      { role: 'user', content: 'Hi' },
+      { role: 'assistant', content: 'Hello' },
+      { role: 'user', content: 'Ship abroad?' },
+    ];
+
+    it('renders messages that have no id', async () => {
+      const screen = await renderWithProvider(<Panel items={noIds} />);
+      const log = screen.getByRole('log').element();
+      expect(log.textContent).toContain('Hello');
+      expect(log.textContent).toContain('Ship abroad?');
+    });
+
+    it('does not announce history or re-announce when a message has no id', async () => {
+      const screen = await renderWithProvider(<Panel items={noIds} />);
+      expect(status(screen).textContent).toBe('');
+      await screen.rerender(
+        <Panel items={[...noIds, { role: 'assistant', content: 'Yes, we do.' }]} />,
+      );
+      await expect.poll(() => status(screen).textContent).toBe('Assistant: Yes, we do.');
+    });
+
+    it('uses getKey for keys and the first-announcement logic', async () => {
+      const getKey = vi.fn((message: ChatMessage) => `${message.role}:${message.content}`);
+      const screen = await renderWithProvider(<Panel items={noIds} getKey={getKey} />);
+      expect(getKey).toHaveBeenCalledWith(noIds[0], 0);
+      expect(status(screen).textContent).toBe('');
+    });
+
+    it('shows a custom busy label, announces it and keeps the default spinner', async () => {
+      const screen = await renderWithProvider(
+        <Panel items={noIds} busy busyLabel="Searching orders…" />,
+      );
+      await expect.element(screen.getByText('Searching orders…').first()).toBeVisible();
+      expect(status(screen).textContent).toBe('Searching orders…');
+      expect(
+        screen.getByRole('log').element().querySelector('[role="status"], svg'),
+      ).not.toBeNull();
+    });
+
+    it('replaces the spinner with busyIndicator, and omits it with null', async () => {
+      const screen = await renderWithProvider(
+        <Panel items={noIds} busy busyIndicator={<span data-testid="mine">...</span>} />,
+      );
+      expect(screen.getByTestId('mine').element()).not.toBeNull();
+      await screen.rerender(<Panel items={noIds} busy busyIndicator={null} />);
+      await expect.element(screen.getByText('Thinking…').first()).toBeVisible();
+    });
+
+    it('has no axe violations with a custom busy row', async () => {
+      const screen = await renderWithProvider(
+        <Panel items={noIds} busy busyLabel="Searching orders…" />,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
+  });
 });

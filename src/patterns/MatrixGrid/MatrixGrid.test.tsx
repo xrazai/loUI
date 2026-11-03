@@ -340,7 +340,7 @@ describe('MatrixGrid', () => {
       const screen = await renderWithProvider(<Example onToggle={onToggle} />);
       await userEvent.click(cell(screen, 'Backpack · Gray: not linked'));
       const busy = screen.getByRole('button', { name: 'Backpack · Gray: not linked, saving' });
-      await expect.element(busy).toHaveAttribute('aria-busy', 'true');
+      expect(busy.element().closest('[role="gridcell"]')?.getAttribute('aria-busy')).toBe('true');
       await userEvent.click(busy);
       await userEvent.keyboard('{Enter}');
       expect(onToggle).toHaveBeenCalledTimes(1);
@@ -348,9 +348,7 @@ describe('MatrixGrid', () => {
       await userEvent.click(cell(screen, 'Backpack · Navy: not linked'));
       expect(onToggle).toHaveBeenCalledTimes(2);
       pending.resolve();
-      await expect
-        .element(screen.getByRole('button', { name: 'Backpack · Gray: not linked' }))
-        .not.toHaveAttribute('aria-busy');
+      await expect.poll(() => document.querySelectorAll('[aria-busy]').length).toBe(0);
     });
 
     it('keeps the cell as isLinked reports it and calls onToggleError when the promise rejects', async () => {
@@ -364,9 +362,7 @@ describe('MatrixGrid', () => {
       pending.reject(failure);
       await expect.poll(() => onToggleError.mock.calls.length).toBe(1);
       expect(onToggleError).toHaveBeenCalledWith(failure, 'backpack', 'gray');
-      await expect
-        .element(cell(screen, 'Backpack · Gray: not linked'))
-        .not.toHaveAttribute('aria-busy');
+      await expect.poll(() => document.querySelectorAll('[aria-busy]').length).toBe(0);
       await expect
         .element(screen.getByRole('status'))
         .toHaveTextContent("Couldn't update Backpack · Gray. Try again.");
@@ -401,9 +397,7 @@ describe('MatrixGrid', () => {
     it('keeps synchronous onToggle behavior unchanged (no pending state)', async () => {
       const screen = await renderWithProvider(<Example />);
       await userEvent.click(cell(screen, 'Backpack · Gray: not linked'));
-      await expect
-        .element(cell(screen, 'Backpack · Gray: not linked'))
-        .not.toHaveAttribute('aria-busy');
+      expect(document.querySelectorAll('[aria-busy]')).toHaveLength(0);
     });
 
     it('names the pending cell in pt-BR', async () => {

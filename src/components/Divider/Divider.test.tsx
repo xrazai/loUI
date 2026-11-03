@@ -60,6 +60,40 @@ describe('Divider', () => {
     expect(new Set(colors).size).toBe(3);
   });
 
+  it('draws the dashed variant as a 1px dashed border on both orientations', async () => {
+    const screen = await renderWithProvider(
+      <div style={{ display: 'flex', blockSize: 40, inlineSize: 200, flexDirection: 'column' }}>
+        <Divider data-testid="h" variant="dashed" />
+        <div style={{ display: 'flex', blockSize: 20 }}>
+          <Divider data-testid="v" variant="dashed" orientation="vertical" />
+        </div>
+      </div>,
+    );
+    const h = screen.getByTestId('h').element();
+    const hStyle = getComputedStyle(h);
+    expect(hStyle.borderTopStyle).toBe('dashed');
+    expect(hStyle.borderTopWidth).toBe('1px');
+    expect(hStyle.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+    expect(h.getBoundingClientRect().height).toBe(1);
+    const v = screen.getByTestId('v').element();
+    expect(getComputedStyle(v).borderInlineStartStyle).toBe('dashed');
+    expect(v.getBoundingClientRect().width).toBe(1);
+  });
+
+  it('repaints the dashed variant with the paper rule inside the paper scope', async () => {
+    const screen = await renderWithProvider(
+      <>
+        <Divider data-testid="dark" variant="dashed" />
+        <div data-theme="paper">
+          <Divider data-testid="paper" variant="dashed" />
+        </div>
+      </>,
+    );
+    const dark = getComputedStyle(screen.getByTestId('dark').element()).borderTopColor;
+    const paper = getComputedStyle(screen.getByTestId('paper').element()).borderTopColor;
+    expect(paper).not.toBe(dark);
+  });
+
   it('merges className and takes the ref as a prop', async () => {
     const ref = createRef<HTMLElement>();
     await renderWithProvider(<Divider ref={ref} className="extra" />);

@@ -48,6 +48,10 @@ DialogTrigger
 | `isKeyboardDismissDisabled`               | `boolean`                               | `false` |                                                                           |
 | `messages`                                | `{ close }`                             |         | "Close panel" (pt-BR "Fechar painel").                                    |
 
+## Initial focus
+
+React Aria moves focus into the sheet on open: to the first element with `autoFocus` if there is one, otherwise to the dialog itself. This holds for every way of opening it (keyboard or pointer on the trigger, `element.click()` from code, and a controlled sheet without a trigger whose `isOpen` is set from an effect or a timer); regression tests cover each one (GAP-031). If `autoFocus` seems lost in your own tests, the cause is the test environment, not `Sheet`: wait for the dialog to be visible before asserting focus (the field is focused after the overlay mounts).
+
 ## Accessibility
 
 - Same overlay contract as `Dialog`: focus trapped and restored, `inert` page, scroll lock, `Escape` closes only the top layer (a `Dialog` opened inside the sheet closes first; tested in `Dialog.test.tsx`).

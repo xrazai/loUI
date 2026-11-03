@@ -38,10 +38,17 @@ div.root
 | `rows`        | `{ id, label, meta? }[]`       | required     | Display order is yours (sort alphabetically by default).              |
 | `columns`     | `{ id, label, color? }[]`      | required     | `color` is `#rgb` / `#rrggbb`; fills linked cells and shows a swatch. |
 | `isLinked`    | `(rowId, columnId) => boolean` | required     | Source of truth is yours.                                             |
-| `onToggle`    | `(rowId, columnId) => void`    | required     | Update your state here.                                               |
+| `onToggle`    | `(rowId, columnId) => void \| Promise` | required | Update your state here. A returned promise gives the cell a pending state. |
+| `onToggleError` | `(error, rowId, columnId) => void` | none | Runs when the promise from `onToggle` rejects. |
 | `cornerLabel` | `string`                       | hidden "Row" | Caption of the row header column.                                     |
 | `countLabel`  | `string`                       | none         | Adds a count column ("Linked") with the per-row number of links.      |
 | `hint`        | `ReactNode`                    | none         | Help text under the grid, linked with `aria-describedby`.             |
+
+## Async toggle, sticky headers and focus guides
+
+- **Async toggle.** `onToggle` may return a promise (saving the link on a server). While it is pending the cell is `aria-busy` (on the `gridcell`), shows a small spinner, is named "{row} · {column}: linked, saving" (message `cellPending`) and ignores further toggles; focus stays on it and other cells keep working. The grid never flips a cell by itself: it shows what `isLinked` says. If you update your state optimistically, revert it in `onToggleError`, which runs when the promise rejects (also when `onToggle` throws). Use it for a toast: `onToggleError={() => toast.error('Could not save the link')}`. The grid also announces "Couldn't update {row} · {column}. Try again." in a visually hidden `role="status"` (message `toggleFailed`).
+- **Sticky headers.** The column header row and the row header column are `position: sticky`; the corner sits above both. For vertical scrolling give the root a height or `max-block-size` through `className` / `style` (the scroll region fills it). `scroll-padding` keeps a focused cell out from behind the sticky parts (WCAG 2.4.11).
+- **Focus guides.** While a cell has focus, its row, its column and the column header get one surface step (`--ds-surface-row-hover`). It is a visual aid only: the focus ring and the cell name carry the meaning, nothing changes in the accessibility tree.
 
 ## Accessibility
 
