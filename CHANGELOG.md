@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.2.1] - 2026-11-03
 ### Changed
 
 - **REL-009** (2026-11-03) npm publishing uses Trusted Publishing (OIDC) instead of the `NPM_TOKEN` secret: `.github/workflows/release.yml` no longer reads a token, and `loui-ds` on npmjs.com trusts `xrazai/loUI` › `release.yml`. Docs and ADR-0004 updated.
