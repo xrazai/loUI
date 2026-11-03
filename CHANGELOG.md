@@ -6,6 +6,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-03
 ### Added
 
 - **GAP-023** (2026-11-03) `Form` types and documents `id`, `onKeyDown`, `onKeyUp`, `onFocus` and `onBlur` (reproduced: `id` already reached the `<form>`; only the types rejected key handlers), plus the tested `SheetForm` recipe (`docs/recipes/sheet-form.md`): a `Sheet` footer submit button linked with the `form` attribute, native Enter, validation and a saved toast.
