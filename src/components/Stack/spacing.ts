@@ -6,8 +6,14 @@ import type { CSSProperties } from 'react';
  */
 export type SpaceKey = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16;
 
-/** The CSS value of a space key: `var(--ds-space-4)`. */
-export function spaceVar(key: SpaceKey): string {
+/**
+ * A space key as layout props accept it: the number (`gap={4}`) or its string form (`gap="4"`).
+ * Both map to the same token, so JSX string attributes, JSON and agent output all work.
+ */
+export type SpaceValue = SpaceKey | `${SpaceKey}`;
+
+/** The CSS value of a space key: `var(--ds-space-4)`. Accepts the number or its string form. */
+export function spaceVar(key: SpaceValue): string {
   return `var(--ds-space-${String(key)})`;
 }
 

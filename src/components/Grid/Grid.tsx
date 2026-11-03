@@ -1,15 +1,15 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 import { classNames } from '../../utils/classNames';
 import { spaceVar, withCustomProperties } from '../Stack/spacing';
-import type { LayoutElement, SpaceKey } from '../Stack/spacing';
+import type { LayoutElement, SpaceValue } from '../Stack/spacing';
 import styles from './Grid.module.css';
 
 export type GridColumns = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type GridMinItemWidth = 'sm' | 'md' | 'lg';
 
 interface GridBaseProps extends ComponentPropsWithRef<'div'> {
-  /** Space between rows and columns, as a key of the space scale. Default `4`. */
-  gap?: SpaceKey;
+  /** Space between rows and columns, as a key of the space scale (a number or its string form). Default `4`. */
+  gap?: SpaceValue;
   /**
    * Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the
    * list reset is applied and `role="list"` keeps the list semantics in Safari.

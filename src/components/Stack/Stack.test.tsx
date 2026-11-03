@@ -37,6 +37,16 @@ describe('Stack', () => {
     expect(getComputedStyle(screen.getByTestId('stack').element()).rowGap).toBe(expected);
   });
 
+  it('accepts the space key as a string, like the generated docs and JSX attributes', async () => {
+    const screen = await renderWithProvider(
+      <Stack data-testid="stack" gap="6">
+        <span>One</span>
+        <span>Two</span>
+      </Stack>,
+    );
+    expect(getComputedStyle(screen.getByTestId('stack').element()).rowGap).toBe('24px');
+  });
+
   it('aligns children on the cross axis', async () => {
     const screen = await renderWithProvider(
       <>

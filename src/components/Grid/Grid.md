@@ -24,12 +24,12 @@ div (grid, gap)
 
 ## Props
 
-| Prop           | Type                                          | Default | Notes                                                                    |
-| -------------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------ |
-| `columns`      | `1` to `12`                                   |         | Fixed equal columns. Pass this **or** `minItemWidth`                     |
-| `minItemWidth` | `'sm' \| 'md' \| 'lg'`                        |         | Auto-fill; items are at least 160 / 240 / 320px (`--ds-grid-min-item-*`) |
-| `gap`          | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16` | `4`     | Space token key, used for rows and columns                               |
-| `as`           | `'div' \| 'ul' \| 'ol' …`                     | `'div'` | Lists get the reset and `role="list"`                                    |
+| Prop           | Type                                                                          | Default | Notes                                                                    |
+| -------------- | ----------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| `columns`      | `1` to `12`                                                                   |         | Fixed equal columns. Pass this **or** `minItemWidth`                     |
+| `minItemWidth` | `'sm' \| 'md' \| 'lg'`                                                        |         | Auto-fill; items are at least 160 / 240 / 320px (`--ds-grid-min-item-*`) |
+| `gap`          | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16` or the same as a string (`"4"`) | `4`     | Space token key, used for rows and columns                               |
+| `as`           | `'div' \| 'ul' \| 'ol' …`                                                     | `'div'` | Lists get the reset and `role="list"`                                    |
 
 The types make `columns` and `minItemWidth` exclusive. Item widths are tokens, not pixels, like the gap.
 

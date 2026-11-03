@@ -1,15 +1,15 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 import { classNames } from '../../utils/classNames';
 import { spaceVar, withCustomProperties } from '../Stack/spacing';
-import type { LayoutElement, SpaceKey } from '../Stack/spacing';
+import type { LayoutElement, SpaceValue } from '../Stack/spacing';
 import styles from './Inline.module.css';
 
 export type InlineAlign = 'start' | 'center' | 'end' | 'baseline' | 'stretch';
 export type InlineJustify = 'start' | 'center' | 'end' | 'between';
 
 export interface InlineProps extends ComponentPropsWithRef<'div'> {
-  /** Space between children, as a key of the space scale (`2` = `--ds-space-2` = 8px). Default `2`. */
-  gap?: SpaceKey;
+  /** Space between children, as a key of the space scale, a number or its string form (`2` = `--ds-space-2` = 8px). Default `2`. */
+  gap?: SpaceValue;
   /** Cross-axis (vertical) alignment. Default `center`. */
   align?: InlineAlign;
   /** Main-axis (horizontal) distribution. `between` pushes the first and last child to the edges. Default `start`. */

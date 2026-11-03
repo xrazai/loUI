@@ -24,13 +24,13 @@ div (flex row, wrap, gap)
 
 ## Props
 
-| Prop      | Type                                                      | Default    | Notes                                                            |
-| --------- | --------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |
-| `gap`     | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16`             | `2`        | Space token key (8px by default)                                 |
-| `align`   | `'start' \| 'center' \| 'end' \| 'baseline' \| 'stretch'` | `'center'` | Vertical alignment. Use `baseline` for a number beside its label |
-| `justify` | `'start' \| 'center' \| 'end' \| 'between'`               | `'start'`  | `between` pushes the first and last child to the edges           |
-| `wrap`    | `boolean`                                                 | `true`     | Turn off only for short, fixed rows                              |
-| `as`      | `'div' \| 'section' \| 'ul' \| 'ol' …`                    | `'div'`    | Lists get the reset and `role="list"`                            |
+| Prop      | Type                                                                          | Default    | Notes                                                            |
+| --------- | ----------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |
+| `gap`     | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16` or the same as a string (`"4"`) | `2`        | Space token key (8px by default)                                 |
+| `align`   | `'start' \| 'center' \| 'end' \| 'baseline' \| 'stretch'`                     | `'center'` | Vertical alignment. Use `baseline` for a number beside its label |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between'`                                   | `'start'`  | `between` pushes the first and last child to the edges           |
+| `wrap`    | `boolean`                                                                     | `true`     | Turn off only for short, fixed rows                              |
+| `as`      | `'div' \| 'section' \| 'ul' \| 'ol' …`                                        | `'div'`    | Lists get the reset and `role="list"`                            |
 
 Other `div` attributes and `ref` go to the root.
 

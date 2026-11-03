@@ -1,14 +1,14 @@
 import type { ComponentPropsWithRef, ElementType } from 'react';
 import { classNames } from '../../utils/classNames';
 import { spaceVar, withCustomProperties } from './spacing';
-import type { LayoutElement, SpaceKey } from './spacing';
+import type { LayoutElement, SpaceValue } from './spacing';
 import styles from './Stack.module.css';
 
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch';
 
 export interface StackProps extends ComponentPropsWithRef<'div'> {
-  /** Space between children, as a key of the space scale (`4` = `--ds-space-4` = 16px). Default `4`. */
-  gap?: SpaceKey;
+  /** Space between children, as a key of the space scale, a number or its string form (`4` = `--ds-space-4` = 16px). Default `4`. */
+  gap?: SpaceValue;
   /** Cross-axis (horizontal) alignment of the children. Default `stretch`. */
   align?: StackAlign;
   /**

@@ -96,20 +96,28 @@ export function deprecationOf(description: string): string | undefined {
 }
 
 function convertProp(item: PropItem): ManifestProp {
-  const values =
+  const members =
     item.type.name === 'enum' && Array.isArray(item.type.value)
-      ? (item.type.value as { value: string }[]).map((v) => unquote(v.value))
+      ? (item.type.value as { value: string }[]).map((v) => ({
+          text: unquote(v.value),
+          // Numeric literal members (`4`) are printed bare; string literals are quoted.
+          numeric: v.value === unquote(v.value) && /^-?\d+(\.\d+)?$/.test(v.value),
+        }))
       : undefined;
-  const type = values ? values.map((v) => `'${v}'`).join(' | ') : item.type.name;
+  const values = members ? [...new Set(members.map((m) => m.text))] : undefined;
+  const literal = (m: { text: string; numeric: boolean }) => (m.numeric ? m.text : `'${m.text}'`);
+  const type = members ? [...new Set(members.map(literal))].join(' | ') : item.type.name;
   const rawDefault = item.defaultValue
     ? String((item.defaultValue as { value: unknown }).value)
     : undefined;
   const defaultValue =
     rawDefault === undefined
       ? undefined
-      : values?.includes(rawDefault)
-        ? `'${rawDefault}'`
-        : rawDefault;
+      : members?.some((m) => m.numeric && m.text === rawDefault)
+        ? rawDefault
+        : values?.includes(rawDefault)
+          ? `'${rawDefault}'`
+          : rawDefault;
   const deprecated = deprecationOf(item.description);
   return {
     name: item.name,

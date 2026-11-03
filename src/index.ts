@@ -37,7 +37,13 @@ export type {
   ScrollAreaProps,
 } from './components/ScrollArea';
 export { Stack } from './components/Stack';
-export type { LayoutElement, SpaceKey, StackAlign, StackProps } from './components/Stack';
+export type {
+  LayoutElement,
+  SpaceKey,
+  SpaceValue,
+  StackAlign,
+  StackProps,
+} from './components/Stack';
 export { Text } from './components/Text';
 export type { TextElement, TextProps, TextSize, TextTone } from './components/Text';
 

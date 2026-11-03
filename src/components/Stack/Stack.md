@@ -24,11 +24,11 @@ div (flex column, gap)
 
 ## Props
 
-| Prop    | Type                                                | Default     | Notes                                                       |
-| ------- | --------------------------------------------------- | ----------- | ----------------------------------------------------------- |
-| `gap`   | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16`       | `4`         | Space token key: 4, 8, 12, 16, 20, 24, 32, 48, 64 px        |
-| `align` | `'start' \| 'center' \| 'end' \| 'stretch'`         | `'stretch'` | Horizontal alignment of the children                        |
-| `as`    | `'div' \| 'section' \| 'article' \| 'ul' \| 'ol' …` | `'div'`     | `ul` and `ol` get the list reset and `role="list"` (Safari) |
+| Prop    | Type                                                                          | Default     | Notes                                                       |
+| ------- | ----------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------- |
+| `gap`   | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16` or the same as a string (`"4"`) | `4`         | Space token key: 4, 8, 12, 16, 20, 24, 32, 48, 64 px        |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'`                                   | `'stretch'` | Horizontal alignment of the children                        |
+| `as`    | `'div' \| 'section' \| 'article' \| 'ul' \| 'ol' …`                           | `'div'`     | `ul` and `ol` get the list reset and `role="list"` (Safari) |
 
 Other `div` attributes and `ref` go to the root. The gap travels as the custom property `--ds-stack-gap` (ADR-0002 amendment); a consumer `style` is kept.
 
