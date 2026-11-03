@@ -318,6 +318,7 @@ export type TokenName =
   | 'matrix-grid.count-width'
   | 'matrix-grid.label-width'
   | 'matrix-grid.padding-inline'
+  | 'matrix-grid.sticky-z-index'
   | 'matrix-grid.row-header-gap'
   | 'matrix-grid.row-min-height'
   | 'menu.min-width'
@@ -768,6 +769,7 @@ export type TokenCssVar =
   | '--ds-matrix-grid-count-width'
   | '--ds-matrix-grid-label-width'
   | '--ds-matrix-grid-padding-inline'
+  | '--ds-matrix-grid-sticky-z-index'
   | '--ds-matrix-grid-row-header-gap'
   | '--ds-matrix-grid-row-min-height'
   | '--ds-menu-min-width'
@@ -1236,6 +1238,7 @@ export const tokenValues = {
   'matrix-grid.count-width': { cssVar: '--ds-matrix-grid-count-width', type: 'dimension', value: '64px' },
   'matrix-grid.label-width': { cssVar: '--ds-matrix-grid-label-width', type: 'dimension', value: '220px' },
   'matrix-grid.padding-inline': { cssVar: '--ds-matrix-grid-padding-inline', type: 'dimension', value: '20px' },
+  'matrix-grid.sticky-z-index': { cssVar: '--ds-matrix-grid-sticky-z-index', type: 'number', value: 1 },
   'matrix-grid.row-header-gap': { cssVar: '--ds-matrix-grid-row-header-gap', type: 'dimension', value: '2px' },
   'matrix-grid.row-min-height': { cssVar: '--ds-matrix-grid-row-min-height', type: 'dimension', value: '60px' },
   'menu.min-width': { cssVar: '--ds-menu-min-width', type: 'dimension', value: '200px' },

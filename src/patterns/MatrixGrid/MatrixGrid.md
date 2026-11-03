@@ -32,17 +32,17 @@ div.root
 
 ## Props
 
-| Prop          | Type                           | Default      | Notes                                                                 |
-| ------------- | ------------------------------ | ------------ | --------------------------------------------------------------------- |
-| `aria-label`  | `string`                       | required     | Names the grid; the scroll region is named "{label}, scrollable".     |
-| `rows`        | `{ id, label, meta? }[]`       | required     | Display order is yours (sort alphabetically by default).              |
-| `columns`     | `{ id, label, color? }[]`      | required     | `color` is `#rgb` / `#rrggbb`; fills linked cells and shows a swatch. |
-| `isLinked`    | `(rowId, columnId) => boolean` | required     | Source of truth is yours.                                             |
-| `onToggle`    | `(rowId, columnId) => void \| Promise` | required | Update your state here. A returned promise gives the cell a pending state. |
-| `onToggleError` | `(error, rowId, columnId) => void` | none | Runs when the promise from `onToggle` rejects. |
-| `cornerLabel` | `string`                       | hidden "Row" | Caption of the row header column.                                     |
-| `countLabel`  | `string`                       | none         | Adds a count column ("Linked") with the per-row number of links.      |
-| `hint`        | `ReactNode`                    | none         | Help text under the grid, linked with `aria-describedby`.             |
+| Prop            | Type                                   | Default      | Notes                                                                      |
+| --------------- | -------------------------------------- | ------------ | -------------------------------------------------------------------------- |
+| `aria-label`    | `string`                               | required     | Names the grid; the scroll region is named "{label}, scrollable".          |
+| `rows`          | `{ id, label, meta? }[]`               | required     | Display order is yours (sort alphabetically by default).                   |
+| `columns`       | `{ id, label, color? }[]`              | required     | `color` is `#rgb` / `#rrggbb`; fills linked cells and shows a swatch.      |
+| `isLinked`      | `(rowId, columnId) => boolean`         | required     | Source of truth is yours.                                                  |
+| `onToggle`      | `(rowId, columnId) => void \| Promise` | required     | Update your state here. A returned promise gives the cell a pending state. |
+| `onToggleError` | `(error, rowId, columnId) => void`     | none         | Runs when the promise from `onToggle` rejects.                             |
+| `cornerLabel`   | `string`                               | hidden "Row" | Caption of the row header column.                                          |
+| `countLabel`    | `string`                               | none         | Adds a count column ("Linked") with the per-row number of links.           |
+| `hint`          | `ReactNode`                            | none         | Help text under the grid, linked with `aria-describedby`.                  |
 
 ## Async toggle, sticky headers and focus guides
 

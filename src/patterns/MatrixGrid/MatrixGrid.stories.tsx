@@ -220,6 +220,7 @@ export const AsyncToggle: Story = {
 /** The header row and the row header stay in view while the region scrolls in both directions. */
 export const StickyHeaders: Story = {
   render: (args) => (
+    // eslint-disable-next-line loui/no-raw-spacing -- a fixed demo height so the region scrolls.
     <div style={{ blockSize: 280, display: 'flex' }}>
       <Stateful
         {...args}

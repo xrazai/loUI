@@ -1,8 +1,9 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import { Button, useLocale } from 'react-aria-components';
 import { Icon } from '../../components/Icon';
 import { CheckIcon, PlusIcon } from '../../components/Icon/icons';
+import { Spinner } from '../../components/Spinner';
 import { Swatch } from '../../components/Swatch';
 import { isHexColor } from '../../components/Swatch/hex';
 import { VisuallyHidden } from '../../components/VisuallyHidden';
@@ -47,8 +48,21 @@ export interface MatrixGridProps extends Omit<
   columns: readonly MatrixGridColumn[];
   /** Whether a row and a column are linked. Called for every cell on each render; keep it cheap. */
   isLinked: (rowId: string, columnId: string) => boolean;
-  /** Called with the row and column ids when the user toggles a cell. Update your state in it. */
-  onToggle: (rowId: string, columnId: string) => void;
+  /**
+   * Called with the row and column ids when the user toggles a cell. Update your state in it.
+   *
+   * It may return a promise (a request to save the link). While it is pending the cell shows a
+   * spinner, is `aria-busy` and ignores further toggles. The grid never flips a cell by itself:
+   * the cell shows what `isLinked` returns, so if you update optimistically, revert in
+   * `onToggleError`. A rejected promise calls `onToggleError`.
+   */
+  onToggle: (rowId: string, columnId: string) => unknown;
+  /**
+   * Called when the promise returned by `onToggle` rejects, with the error and the cell's ids.
+   * Revert an optimistic update here and tell the user (a toast). The grid also announces
+   * "Couldn't update {row} · {column}. Try again." in a visually hidden status.
+   */
+  onToggleError?: (error: unknown, rowId: string, columnId: string) => void;
   /** Caption of the first (row header) column. Without it a visually hidden "Row" is used. */
   cornerLabel?: string;
   /** Adds a last column with the number of linked cells per row; this is its header ("Linked"). */
@@ -74,6 +88,11 @@ function clamp(value: number, max: number): number {
  * between cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last
  * cell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.
  *
+ * The row and the column of the focused cell get a subtle surface step (a visual aid; the focus
+ * ring and the cell name carry the meaning). The column header row and the row header column stay
+ * fixed while the region scrolls; give the root a height (`className`) to scroll vertically.
+ * `onToggle` may return a promise for a per-cell pending state (see `onToggle`).
+ *
  * Each cell is a button named "{row} · {column}: linked" / "not linked" (messages). The grid
  * scrolls horizontally inside a labelled, focusable region.
  *
@@ -84,6 +103,7 @@ export function MatrixGrid({
   columns,
   isLinked,
   onToggle,
+  onToggleError,
   cornerLabel,
   countLabel,
   hint,
@@ -105,7 +125,48 @@ export function MatrixGrid({
     row: clamp(active.row, lastRow),
     column: clamp(active.column, lastColumn),
   };
+  const [focused, setFocused] = useState(false);
+  const [pending, setPending] = useState<ReadonlySet<string>>(() => new Set());
+  const pendingRef = useRef(new Set<string>());
+  const [failure, setFailure] = useState('');
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const showCount = countLabel !== undefined && countLabel !== '';
+
+  function toggle(row: MatrixGridRow, column: MatrixGridColumn) {
+    const key = `${row.id}\u0000${column.id}`;
+    if (pendingRef.current.has(key)) return;
+    let result: unknown;
+    try {
+      result = onToggle(row.id, column.id);
+    } catch (error) {
+      onToggleError?.(error, row.id, column.id);
+      setFailure(t.toggleFailed(row.label, column.label));
+      return;
+    }
+    if (
+      result === undefined ||
+      typeof (result as PromiseLike<unknown> | null | undefined)?.then !== 'function'
+    )
+      return;
+    pendingRef.current.add(key);
+    setPending(new Set(pendingRef.current));
+    setFailure('');
+    const settle = () => {
+      pendingRef.current.delete(key);
+      if (mounted.current) setPending(new Set(pendingRef.current));
+    };
+    void Promise.resolve(result as PromiseLike<unknown>).then(settle, (error: unknown) => {
+      settle();
+      onToggleError?.(error, row.id, column.id);
+      if (mounted.current) setFailure(t.toggleFailed(row.label, column.label));
+    });
+  }
 
   function focusCell({ row, column }: Position) {
     gridRef.current
@@ -171,13 +232,24 @@ export function MatrixGrid({
           className={styles.grid}
           data-count={showCount ? 'true' : undefined}
           onKeyDown={onKeyDown}
+          onFocus={() => {
+            setFocused(true);
+          }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
+          }}
         >
           <div role="row" className={styles.row} data-header="true">
             <div role="columnheader" className={styles.corner}>
               {cornerLabel ?? <VisuallyHidden>{t.rowHeader}</VisuallyHidden>}
             </div>
-            {columns.map((column) => (
-              <div key={column.id} role="columnheader" className={styles.columnHeader}>
+            {columns.map((column, headerIndex) => (
+              <div
+                key={column.id}
+                role="columnheader"
+                className={styles.columnHeader}
+                data-guide={focused && current.column === headerIndex ? 'true' : undefined}
+              >
                 {column.color !== undefined && isHexColor(column.color) ? (
                   <Swatch color={column.color} size="sm" decorative />
                 ) : null}
@@ -208,13 +280,25 @@ export function MatrixGrid({
                   : ({ '--ds-matrix-grid-color': color } as CSSProperties);
               const tone =
                 color === undefined ? 'dark' : readableTextOn(color) === 'light' ? 'light' : 'dark';
+              const isPending = pending.has(`${row.id}\u0000${column.id}`);
               const isActive = rowIndex === current.row && columnIndex === current.column;
               return (
-                <div key={column.id} role="gridcell" className={styles.cellBox}>
+                <div
+                  key={column.id}
+                  role="gridcell"
+                  className={styles.cellBox}
+                  aria-busy={isPending || undefined}
+                  data-guide={focused && columnIndex === current.column ? 'true' : undefined}
+                >
                   <Button
                     className={classNames(styles.cell)}
                     {...(cellStyle ? { style: cellStyle } : {})}
-                    aria-label={t.cell(row.label, column.label, linked)}
+                    aria-label={(isPending ? t.cellPending : t.cell)(
+                      row.label,
+                      column.label,
+                      linked,
+                    )}
+                    data-pending={isPending ? 'true' : undefined}
                     excludeFromTabOrder={!isActive}
                     data-matrix-cell=""
                     data-row={rowIndex}
@@ -225,16 +309,25 @@ export function MatrixGrid({
                       setActive({ row: rowIndex, column: columnIndex });
                     }}
                     onPress={() => {
-                      onToggle(row.id, column.id);
+                      toggle(row, column);
                     }}
                   >
-                    <Icon icon={linked ? CheckIcon : PlusIcon} size="md" />
+                    {isPending ? (
+                      <Spinner size="sm" decorative />
+                    ) : (
+                      <Icon icon={linked ? CheckIcon : PlusIcon} size="md" />
+                    )}
                   </Button>
                 </div>
               );
             });
             return (
-              <div key={row.id} role="row" className={styles.row}>
+              <div
+                key={row.id}
+                role="row"
+                className={styles.row}
+                data-guide={focused && rowIndex === current.row ? 'true' : undefined}
+              >
                 <div role="rowheader" className={styles.rowHeader}>
                   <span className={styles.rowLabel}>{row.label}</span>
                   {row.meta ? <span className={styles.rowMeta}>{row.meta}</span> : null}
@@ -250,6 +343,9 @@ export function MatrixGrid({
           })}
         </div>
       </div>
+      <VisuallyHidden>
+        <span role="status">{failure}</span>
+      </VisuallyHidden>
       {hint ? (
         <p id={hintId} className={styles.hint}>
           {hint}

@@ -56,6 +56,11 @@
       "$value": "{space.5}",
       "$description": "Horizontal padding of rows and the header (20px)."
     },
+    "sticky-z-index": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Stacking order of the sticky MatrixGrid header row and row header column inside the scroll region (1; the corner adds 1). Local to the grid, not a layer."
+    },
     "row-header-gap": {
       "$type": "dimension",
       "$value": {

@@ -427,6 +427,7 @@
     --ds-matrix-grid-count-width: 64px;
     --ds-matrix-grid-label-width: 220px;
     --ds-matrix-grid-padding-inline: var(--ds-space-5);
+    --ds-matrix-grid-sticky-z-index: 1;
     --ds-matrix-grid-row-header-gap: 2px;
     --ds-matrix-grid-row-min-height: 60px;
 

@@ -1,5 +1,7 @@
 @layer components {
   .root {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--ds-line);
     border-radius: var(--ds-radius-lg);
@@ -9,8 +11,23 @@
 
   /* Horizontal scroll region: labelled and focusable (keyboard users can scroll it). */
   .scroll {
+    flex: 1 1 auto;
+    min-block-size: 0;
     overflow: auto;
     outline: none;
+
+    /*
+     * WCAG 2.4.11: the sticky header row and row header column cover the start edges of the
+     * scrollport. Scrolling a focused cell into view must stop beyond them: header height
+     * (paddings, swatch, two label lines, border) and the row header width.
+     */
+    scroll-padding-block-start: calc(
+      var(--ds-space-3) + var(--ds-space-2) + var(--ds-space-2) + var(--ds-space-4) + 2 *
+        var(--ds-lh-meta) + 1px
+    );
+    scroll-padding-inline-start: calc(
+      var(--ds-matrix-grid-label-width) + var(--ds-matrix-grid-padding-inline)
+    );
   }
 
   .scroll:focus-visible {
@@ -33,6 +50,7 @@
     min-block-size: var(--ds-matrix-grid-row-min-height);
     padding-inline: var(--ds-matrix-grid-padding-inline);
     border-block-end: 1px solid var(--ds-line-subtle);
+    background-color: var(--ds-surface);
   }
 
   .grid[data-count] .row {
@@ -42,13 +60,36 @@
       var(--ds-matrix-grid-count-width);
   }
 
-  .row:not([data-header]):hover {
+  .row:not([data-header]):hover,
+  .row[data-guide] {
     background-color: var(--ds-surface-row-hover);
   }
 
+  /* Focus guide: the column of the focused cell gets the same step as its row (a visual aid only). */
+  .cellBox[data-guide],
+  .columnHeader[data-guide] {
+    background-color: var(--ds-surface-row-hover);
+  }
+
+  /* The header row stays at the top and the row header at the start while the region scrolls. */
   .row[data-header] {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--ds-matrix-grid-sticky-z-index);
     align-items: end;
     padding-block: var(--ds-space-3) var(--ds-space-2);
+  }
+
+  .corner,
+  .rowHeader {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: var(--ds-matrix-grid-sticky-z-index);
+    background-color: inherit;
+  }
+
+  .corner {
+    z-index: calc(var(--ds-matrix-grid-sticky-z-index) + 1);
   }
 
   .corner,
@@ -140,6 +181,10 @@
 
   .cell[data-hovered] {
     border-color: var(--ds-text-3);
+  }
+
+  .cell[data-pending] {
+    cursor: progress;
   }
 
   /* Linked: filled with the column color (or text-2); the check follows WCAG contrast. */

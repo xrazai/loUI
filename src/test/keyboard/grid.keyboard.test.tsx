@@ -183,11 +183,7 @@ describe('keyboard contract: matrix grid', () => {
     { id: 'gray', label: 'Gray' },
   ];
 
-  function Matrix({
-    onToggle,
-  }: {
-    onToggle?: (row: string, column: string) => void | PromiseLike<unknown>;
-  }) {
+  function Matrix({ onToggle }: { onToggle?: (row: string, column: string) => unknown }) {
     return (
       <>
         <button type="button">Before</button>

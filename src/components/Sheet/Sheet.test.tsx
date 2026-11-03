@@ -14,6 +14,11 @@ import type { SheetProps } from './Sheet';
 /** Waits for the slide animation, which moves the box being measured. */
 const settled = () => expect.poll(() => document.getAnimations().length).toBe(0);
 
+/** `element.click()`, the way code (not a user) opens a trigger. */
+const clickFromCode = (element: Element) => {
+  (element as HTMLElement).click();
+};
+
 const none = () => document.querySelector('[role="dialog"]') === null;
 
 function OrderSheet(props: Partial<SheetProps>) {
@@ -243,6 +248,118 @@ describe('Sheet', () => {
     }
   });
 
+  describe('initial focus (GAP-031)', () => {
+    function FocusSheet({ via }: { via: 'trigger' | 'controlled' }) {
+      const [open, setOpen] = useState(false);
+      const body = (
+        <>
+          {/* eslint-disable-next-line jsx-a11y-x/no-autofocus -- the behavior under test (GAP-031). */}
+          <Input label="Customer" autoFocus />
+          <Input label="Notes" />
+        </>
+      );
+      return (
+        <main>
+          {via === 'trigger' ? (
+            <Sheet trigger={<Button>Edit order</Button>} title="Edit order">
+              {body}
+            </Sheet>
+          ) : (
+            <>
+              <Button
+                onPress={() => {
+                  setOpen(true);
+                }}
+              >
+                Edit order
+              </Button>
+              <button
+                type="button"
+                onClick={() => {
+                  setTimeout(() => {
+                    setOpen(true);
+                  }, 0);
+                }}
+              >
+                Open later
+              </button>
+              <Sheet isOpen={open} onOpenChange={setOpen} title="Edit order">
+                {body}
+              </Sheet>
+            </>
+          )}
+        </main>
+      );
+    }
+
+    const customer = () => document.activeElement?.getAttribute('aria-label') ?? '';
+    const focusedLabel = () =>
+      (document.activeElement as HTMLInputElement | null)?.labels?.[0]?.textContent ?? customer();
+
+    it('focuses the autoFocus field when the trigger is opened with the keyboard', async () => {
+      const screen = await renderWithProvider(<FocusSheet via="trigger" />);
+      screen.getByRole('button', { name: 'Edit order' }).element().focus();
+      await userEvent.keyboard('{Enter}');
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await expect.poll(focusedLabel).toBe('Customer');
+    });
+
+    it('focuses the autoFocus field when the trigger is opened with the pointer', async () => {
+      const screen = await renderWithProvider(<FocusSheet via="trigger" />);
+      await userEvent.click(screen.getByRole('button', { name: 'Edit order' }));
+      await expect.poll(focusedLabel).toBe('Customer');
+    });
+
+    it('focuses the autoFocus field when a trigger is clicked from code (element.click())', async () => {
+      const screen = await renderWithProvider(<FocusSheet via="trigger" />);
+      clickFromCode(screen.getByRole('button', { name: 'Edit order' }).element());
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await expect.poll(focusedLabel).toBe('Customer');
+    });
+
+    it('focuses the autoFocus field when a controlled sheet without a trigger is opened by state', async () => {
+      const screen = await renderWithProvider(<FocusSheet via="controlled" />);
+      await userEvent.click(screen.getByRole('button', { name: 'Edit order' }));
+      await expect.poll(focusedLabel).toBe('Customer');
+    });
+
+    it('focuses the autoFocus field when the state is set from a timer, away from any user event', async () => {
+      const screen = await renderWithProvider(<FocusSheet via="controlled" />);
+      clickFromCode(screen.getByRole('button', { name: 'Open later' }).element());
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await expect.poll(focusedLabel).toBe('Customer');
+    });
+
+    it('moves focus into the dialog when no field asks for it, for a programmatic open', async () => {
+      function Plain() {
+        const [open, setOpen] = useState(false);
+        return (
+          <main>
+            <button
+              type="button"
+              onClick={() => {
+                setTimeout(() => {
+                  setOpen(true);
+                }, 0);
+              }}
+            >
+              Open later
+            </button>
+            <Sheet isOpen={open} onOpenChange={setOpen} title="Plain">
+              <p>No fields</p>
+            </Sheet>
+          </main>
+        );
+      }
+      const screen = await renderWithProvider(<Plain />);
+      clickFromCode(screen.getByRole('button', { name: 'Open later' }).element());
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await expect
+        .poll(() => document.querySelector('[role="dialog"]')?.contains(document.activeElement))
+        .toBe(true);
+    });
+  });
+
   it('is controlled through isOpen and reports changes', async () => {
     const onOpenChange = vi.fn();
     function Controlled() {
@@ -260,7 +377,7 @@ describe('Sheet', () => {
     const screen = await renderWithProvider(<Controlled />);
     await expect.element(screen.getByRole('dialog')).toBeVisible();
     await userEvent.keyboard('{Escape}');
-    expect(onOpenChange).toHaveBeenCalledWith(false);
+    await expect.poll(() => onOpenChange).toHaveBeenCalledWith(false);
     await expect.poll(none).toBe(true);
   });
 
