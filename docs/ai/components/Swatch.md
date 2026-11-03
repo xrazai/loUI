@@ -83,4 +83,4 @@ span[aria-hidden]                        (decorative)
 
 - Instead, see Badge: To carry a status: use `Badge` (text plus tone).
 - Instead, see ColorOption: To pick a color: use `ColorOption` from `loui-ds/patterns`.
-- Used by: ApprovalCard, ColorOption, MatrixGrid, RankList
+- Used by: ApprovalCard, ColorField, ColorOption, MatrixGrid, RankList

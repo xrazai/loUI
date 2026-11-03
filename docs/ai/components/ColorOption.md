@@ -15,7 +15,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 - Import: `import { ColorOption } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ColorOption/ColorOption.tsx`
-- Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused
+- Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused, Default, Preselected, WithDescription, DisabledItem, DisabledGroup, Invalid, SingleSelection, Controlled, LongLabels, SingleColumn, Portuguese, RightToLeft, KeyboardRoving
 
 ## Props
 
@@ -46,7 +46,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-control-h-md`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-color-option-group-columns`, `--ds-color-option-group-gap`, `--ds-color-option-group-min-width`, `--ds-control-h-md`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
 
 ## When to use
 
@@ -63,7 +63,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 
 The option exposes `aria-pressed` (a toggle button), not a radio. The handoff uses it for multi-select ("which colors does this item come in?"), and a radio group would force a single answer and a roving tab stop. React Aria `ColorSwatchPicker` was evaluated and does not fit: it is a single-select listbox of bare swatches with generated color names and no room for a visible label or mark. For single choice, use `ChoiceTiles`.
 
-Group several options in `role="group"` with an `aria-label` ("Available colors"); every option is its own tab stop.
+Group several options with `ColorOptionGroup` (a named group with a shared `value`, error text and roving arrow keys, see `ColorOptionGroup.md`). Outside a group every option is its own tab stop.
 
 ## Anatomy
 

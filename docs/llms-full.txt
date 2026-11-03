@@ -798,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-434 tokens; the table lists the 420 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+442 tokens; the table lists the 428 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -1006,6 +1006,9 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-choice-tiles-columns` | `2` | Maximum number of columns of ChoiceTiles. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers. |
 | `--ds-citation-size` | `24px` | Minimum side of an inline citation marker (24px, the WCAG 2.5.8 target size). |
 | `--ds-code-inline-padding-block` | `1px` | Vertical padding of inline Code (1px) so the box fits the line height of the surrounding text. |
+| `--ds-color-option-group-min-width` | `140px` | Minimum option width. Columns collapse so an option never gets narrower than this (responsive columns). |
+| `--ds-color-option-group-gap` | `8px` | Gap between options (8px). |
+| `--ds-color-option-group-columns` | `2` | Maximum number of columns of ColorOptionGroup. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers. |
 | `--ds-combobox-popover-max-height` | `320px` | Maximum height of the Combobox list before it scrolls (same as the Select list). |
 | `--ds-command-palette-width` | `640px` | Maximum width of the CommandPalette panel (640px). Narrower on small screens. |
 | `--ds-command-palette-list-max-height` | `360px` | Maximum height of the CommandPalette command list before it scrolls (360px, about 9 rows at item-h). |
@@ -1156,6 +1159,11 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-sparkline-color` | `#A3A3A9` | Series color of a Sparkline. Each tone sets it (neutral by default). |
 | `--ds-spinner-stroke-width` | `2px` | Ring thickness of the Spinner (2px) at every size. Not for progress bars or icon strokes. |
 | `--ds-spinner-duration` | `700ms` | Time of one full Spinner rotation (700ms). Replaced by a static ring under prefers-reduced-motion. Not for transitions. |
+| `--ds-split-layout-aside-w-sm` | `280px` | Width of the SplitLayout aside at asideWidth sm (280px): a short filter or summary panel. |
+| `--ds-split-layout-aside-w-md` | `360px` | Width of the SplitLayout aside at asideWidth md (360px). Same value as the AppShell detail pane, so a side panel looks the same in both. |
+| `--ds-split-layout-aside-w-lg` | `480px` | Width of the SplitLayout aside at asideWidth lg (480px): a chat or an editor beside a list. |
+| `--ds-split-layout-gap` | `24px` | Default gap between the main content and the aside (24px); set at runtime via style from the `gap` prop (a space token key). |
+| `--ds-split-layout-sticky-offset` | `16px` | Distance (16px) between the top of the scrolling area and a sticky aside, and the room kept below it. |
 | `--ds-stack-gap` | `16px` | Default Stack gap; set at runtime via style from the `gap` prop (a space token key). |
 | `--ds-stacked-bar-bar-thickness` | `20px` | Thickness of a horizontal StackedBar bar (20px). |
 | `--ds-stacked-bar-column-max-w` | `56px` | Maximum width of a vertical StackedBar column (56px). |
@@ -1916,7 +1924,7 @@ The application layout: a sidebar, and a main column with a top bar above a scro
 | `sidebar` | `ReactNode` |  |  | The app sidebar: a `Sidebar` element. Below the md breakpoint it becomes an off-canvas panel. |
 | `topBar` | `ReactNode` |  |  | The page header: a `TopBar` element. Put an `AppShellNavToggle` in its `children` so narrow screens can open the sidebar. |
 | `children` | `ReactNode` |  |  | The page content. It is rendered inside the one `main` landmark. |
-| `detail` | `ReactNode` |  |  | Optional detail pane at the inline end, `--ds-app-shell-detail-w` (360px) wide, for the record selected in the main content. It is an `aside` landmark with its own scroll. Below the md breakpoint it moves under the main content. |
+| `detail` | `ReactNode` |  |  | Optional detail pane at the inline end, `--ds-app-shell-detail-w` (360px) wide, for the record selected in the main content. It is an `aside` landmark with its own scroll. Below the md breakpoint it moves under the main content. `null`, `undefined` and `false` render nothing; a component that renders `null` leaves no empty aside and no reserved column either (the empty aside is hidden with `:empty`). |
 | `detailLabel` | `string` |  |  | Accessible name of the detail aside. Default "Details" from the message catalog. |
 | `mainId` | `string` |  | `main` | `id` of the `main` element, and the target of the skip link. Default `main`. |
 | `padded` | `boolean` |  | `true` | Pads the main content with `--ds-app-shell-main-padding`. Turn it off when the content brings its own padding (a `Container` has a gutter). Default `true`. |
@@ -1976,6 +1984,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - The shell measures **its own width** with a container query, so it behaves the same in a frame, a preview or a test. The 768px in the CSS is `--ds-breakpoint-md`; CSS cannot read variables inside a query, so `AppShell.test.tsx` asserts the two agree at 767/768px.
 - From md up the sidebar sits in the flow. Below, it leaves the flow; `AppShellNavToggle` (visible only below md) opens it as a panel over a scrim.
 - While open: focus moves into the panel, the rest of the page is `inert`, `Escape`, the scrim or the "Close menu" button close it, and focus returns to the toggle. It is not a `Dialog`: it keeps the sidebar's own landmarks.
+- An empty detail leaves nothing behind: `detail` set to `null`, `undefined` or `false` renders no aside, and a component that renders `null` leaves an empty aside that is hidden (`:empty`), so no landmark and no 360px column stay. Prefer `detail={selected ? <Detail /> : undefined}`.
 - The detail pane moves **under** the main content (half the height at most, own scroll) below md.
 - Breakpoint tokens: `--ds-breakpoint-sm|md|lg|xl` (480 / 768 / 1024 / 1280 px); content: `--ds-content-max`, `--ds-content-gutter`; `--ds-container-sm|md|lg`.
 
@@ -2070,6 +2079,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - The shell measures **its own width** with a container query, so it behaves the same in a frame, a preview or a test. The 768px in the CSS is `--ds-breakpoint-md`; CSS cannot read variables inside a query, so `AppShell.test.tsx` asserts the two agree at 767/768px.
 - From md up the sidebar sits in the flow. Below, it leaves the flow; `AppShellNavToggle` (visible only below md) opens it as a panel over a scrim.
 - While open: focus moves into the panel, the rest of the page is `inert`, `Escape`, the scrim or the "Close menu" button close it, and focus returns to the toggle. It is not a `Dialog`: it keeps the sidebar's own landmarks.
+- An empty detail leaves nothing behind: `detail` set to `null`, `undefined` or `false` renders no aside, and a component that renders `null` leaves an empty aside that is hidden (`:empty`), so no landmark and no 360px column stay. Prefer `detail={selected ? <Detail /> : undefined}`.
 - The detail pane moves **under** the main content (half the height at most, own scroll) below md.
 - Breakpoint tokens: `--ds-breakpoint-sm|md|lg|xl` (480 / 768 / 1024 / 1280 px); content: `--ds-content-max`, `--ds-content-gutter`; `--ds-container-sm|md|lg`.
 
@@ -2616,7 +2626,7 @@ ringed and named "Today".
 - Import: `import { Calendar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/Calendar.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar, FullWidthInRow
 
 #### Props
 
@@ -2673,6 +2683,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `value` / `defaultValue` / `onChange`                                                                | ISO string or `null`.                                                                                                           |
 | `min`, `max`                                                                                         | ISO strings. Outside days are disabled in the grid; typed dates outside are invalid. "Today" is disabled when today is outside. |
 | `description`, `errorMessage`, `size`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                 |
+| `fullWidth`                                                                                          | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                              |
 | `messages`                                                                                           | `today`, `clear`, `openCalendar`, `previousMonth`, `nextMonth`, `requiredMark`.                                                 |
 
 `Calendar` takes `value`, `defaultValue`, `onChange(iso)`, `min`, `max`, `isDisabled`, `isReadOnly`, `autoFocus`, `messages`, and requires `aria-label` or `aria-labelledby`.
@@ -3623,6 +3634,165 @@ pre > code           block (scrolls sideways, keeps whitespace)
 - Instead, see Kbd: For data values in the UI (IDs, amounts, shortcuts): use `Text mono`, or `Kbd` for a key.
 - Used by: ToolCallStep
 
+### ColorField
+
+> A hex colour field: a text input in Geist Mono with a `Swatch` preview of the current colour,
+built on React Aria `ColorField`. Type `#abc` or `aabbcc` and the value is normalised to
+`#AABBCC` on blur or `Enter`; text that is not a colour is reverted on blur. `ArrowUp` /
+`ArrowDown` step the value by one.
+
+`value` / `defaultValue` accept a `#RRGGBB` string or a React Aria `Color`; `onChange`
+receives a `Color` or `null` when the field is empty. Read the hex with
+`color?.toString('hex')` (always `#RRGGBB`, upper case). The swatch is decorative: the
+hex text next to it names the colour. A picker (area and sliders) is not part of this component.
+
+A hex colour input with a live `Swatch` preview. Built on React Aria `ColorField` (hex mode), styled like [Input](../Input/Input.md). Task: GAP-024.
+
+- Import: `import { ColorField } from 'loui-ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/ColorField/ColorField.tsx`
+- Stories (Storybook title `Components/ColorField`): Default, WithValue, Empty, NormalisesOnBlur, KeyboardContract, Required, Invalid, CustomError, DescriptionTone, Disabled, ReadOnly, Sizes, Controlled, Brazilian
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `description` | `ReactNode` |  |  | Helper text under the control, linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check. The text carries the meaning; colour only reinforces it. |
+| `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed (see `Input`). Defaults to the catalog message "Enter a colour as #RRGGBB.". |
+| `placeholder` | `string` |  |  | Text shown while the field is empty, for example `#RRGGBB`. Never a substitute for the label. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
+| `className` | `string` |  |  | Class name for the field root. |
+| `inputClassName` | `string` |  |  | Class name for the `<input>` element. |
+| `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
+| `messages` | `Partial<{ invalid: string; } & { requiredMark: string; }>` |  |  | Message overrides for this instance: `invalid`, `requiredMark`. |
+| `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the field root `<div>`. |
+| `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
+| `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the field. |
+
+##### Inherited props
+
+- From `AriaColorFieldProps` (react-aria): `isWheelDisabled`
+- From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`
+- From `AriaValidationProps` (@react-types/shared): `aria-errormessage`
+- From `ColorFieldProps` (react-stately): `onChange`
+- From `ColorFieldProps` (react-aria-components): `colorSpace`
+- From `DOMProps` (@react-types/shared): `id`
+- From `FocusableDOMProps` (@react-types/shared): `excludeFromTabOrder`
+- From `FocusableProps` (@react-types/shared): `autoFocus`
+- From `FocusEvents` (@react-types/shared): `onBlur`, `onFocus`, `onFocusChange`
+- From `InputBase` (@react-types/shared): `isDisabled`, `isReadOnly`
+- From `InputDOMProps` (@react-types/shared): `form`, `name`
+- From `KeyboardEvents` (@react-types/shared): `onKeyDown`, `onKeyUp`
+- From `RACValidation` (react-aria-components): `validationBehavior`
+- From `SlotProps` (react-aria-components): `slot`
+- From `TextInputDOMEvents` (@react-types/shared): `onBeforeInput`, `onCompositionEnd`, `onCompositionStart`, `onCompositionUpdate`, `onCopy`, `onCut`, `onInput`, `onPaste`, `onSelect`
+- From `Validation` (@react-types/shared): `isInvalid`, `isRequired`, `validate`
+- From `ValueBase` (@react-types/shared): `defaultValue`, `value`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Variants, sizes and tones
+
+- `size`: `sm`, `md`, `lg`
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ ColorField: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `invalid` | `Enter a colour as #RRGGBB.` | Error shown when the field is invalid and the consumer gave no `errorMessage`. |
+
+#### Design tokens used
+
+`--ds-field-control-padding-inline`, `--ds-font-mono`, `--ds-space-2`, `--ds-text-3`
+
+#### When to use
+
+- The user types or pastes a colour as a hex code: fabric colour, tag colour, brand colour in a settings form.
+
+#### When not to use
+
+- Choosing from a fixed palette: a hand-built set of options with `Swatch` and labels.
+- Exploring colours visually (area, hue slider, eyedropper): a picker is not part of this component yet.
+- A colour name or code that is not a hex value: `Input`.
+
+#### Anatomy
+
+`[ swatch | #RRGGBB ]` in one box (`sm` 32 / `md` 40 / `lg` 48), then description and error as in `Input`. The text is Geist Mono, shown upper case. The swatch is decorative (`aria-hidden`) and empty (dashed circle) when there is no value.
+
+#### Props (key ones)
+
+| Prop                                                          | Notes                                                                                           |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `label` / `aria-label` / `aria-labelledby`                    | One is required.                                                                                |
+| `value` / `defaultValue` / `onChange(color)`                  | RAC naming. A `#RRGGBB` string or a `Color`. `onChange` receives a `Color`, or `null` if empty. |
+| `validate`                                                    | Receives the `Color \| null`; return a message (or messages) to mark the field invalid.         |
+| `size`                                                        | `sm` / `md` (default) / `lg`.                                                                   |
+| `fullWidth` | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default. |
+| `description`, `descriptionTone`, `errorMessage`              | As in `Input`. `errorMessage` defaults to the catalog `invalid` message.                        |
+| `placeholder`                                                 | For example `#RRGGBB`. Never a substitute for the label.                                        |
+| `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits `#RRGGBB`.                                                             |
+| `messages`                                                    | `invalid`, `requiredMark`.                                                                      |
+
+##### Getting the hex
+
+`onChange` gives a React Aria `Color`. The normalised string is `color?.toString('hex')`: always `#RRGGBB`, upper case (`null` when the field is empty). To store the value as a string, keep that string and pass it back as `value`.
+
+```tsx
+const [hex, setHex] = useState('#C2603E');
+<ColorField label="Hex" value={hex} onChange={(color) => setHex(color?.toString('hex') ?? '')} />;
+```
+
+#### Behaviour
+
+- Typing is free. On blur or `Enter` the text is parsed and normalised: `#abc` and `abc` become `#AABBCC`.
+- Text that is not a colour is reverted to the last valid value on blur (React Aria). To flag an empty required field or a rule of your own (`validate`, `isInvalid`), the field shows the `invalid` message "Enter a colour as #RRGGBB." unless you pass `errorMessage`; an app-supplied `validate` message wins.
+- An empty field reports `null`; the swatch is then empty.
+
+#### Accessibility and keyboard
+
+| Key                     | Behavior                                         |
+| ----------------------- | ------------------------------------------------ |
+| Typing                  | Any text; parsed and normalised on blur or Enter |
+| `ArrowUp` / `ArrowDown` | Step the colour value by 1 (React Aria)          |
+
+The input is a text input named by its label, with description and error linked by `aria-describedby` and `aria-invalid`. The swatch is `aria-hidden`: the hex text next to it carries the meaning, so colour is never the only carrier. Focus ring on the box, also in forced-colors.
+
+#### Content rules
+
+Label with the noun ("Hex", "Fabric colour"). Errors say how to fix: "Enter a colour as #RRGGBB."
+
+#### Example
+
+```tsx
+<ColorField
+  label="Hex"
+  name="hex"
+  defaultValue="#C2603E"
+  description="Colour of the fabric as dyed."
+/>
+```
+
+#### Design note (GAP-024)
+
+Decision: wrap React Aria `ColorField` rather than keep a masked `Input` plus `Swatch` in every app. No new ADR: `react-aria-components` is already the behaviour layer (ADR-0001) and this adds no dependency. React Aria gives hex parsing, `#abc` expansion, stepping and form submission for free; the DS adds the field anatomy, the swatch preview, mono type and messages.
+
+Out of scope, a later task: a colour picker (area, hue and channel sliders, eyedropper) as a popover composed with this field, and channel fields (`channel` prop) for HSL or RGB inputs.
+
+#### Differences from the consumer workaround
+
+- No hand-built `normalizeHex`, `isHex` or preview row: the field normalises and previews itself.
+- The consumer disabled form validation and showed its own error; here the field uses `FieldError` and the catalog message, in en and pt-BR.
+
+#### Related components
+
+- Instead, see Swatch: Choosing from a fixed palette: a hand-built set of options with `Swatch` and labels.
+- Instead, see Input: A colour name or code that is not a hex value: `Input`.
+- Renders: FieldMessages, Label, Swatch
+
 ### ColorOption
 
 > A selectable option that shows a color swatch and its name. It is a toggle button
@@ -3640,7 +3810,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 - Import: `import { ColorOption } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ColorOption/ColorOption.tsx`
-- Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused
+- Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused, Default, Preselected, WithDescription, DisabledItem, DisabledGroup, Invalid, SingleSelection, Controlled, LongLabels, SingleColumn, Portuguese, RightToLeft, KeyboardRoving
 
 #### Props
 
@@ -3671,7 +3841,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-control-h-md`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-color-option-group-columns`, `--ds-color-option-group-gap`, `--ds-color-option-group-min-width`, `--ds-control-h-md`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
 
 #### When to use
 
@@ -3688,7 +3858,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 
 The option exposes `aria-pressed` (a toggle button), not a radio. The handoff uses it for multi-select ("which colors does this item come in?"), and a radio group would force a single answer and a roving tab stop. React Aria `ColorSwatchPicker` was evaluated and does not fit: it is a single-select listbox of bare swatches with generated color names and no room for a visible label or mark. For single choice, use `ChoiceTiles`.
 
-Group several options in `role="group"` with an `aria-label` ("Available colors"); every option is its own tab stop.
+Group several options with `ColorOptionGroup` (a named group with a shared `value`, error text and roving arrow keys, see `ColorOptionGroup.md`). Outside a group every option is its own tab stop.
 
 #### Anatomy
 
@@ -3724,6 +3894,107 @@ button[aria-pressed]
 - Instead, see RadioGroup: To choose exactly one color: use `ChoiceTiles` or `RadioGroup` (radio semantics).
 - Instead, see Swatch: To display a color with no interaction: use `Swatch`.
 - Renders: Icon, Swatch
+
+### ColorOptionGroup
+
+> A named group of `ColorOption`s that shares one value: the list of chosen option `id`s. It
+adds the group name (`label`, `aria-label` or `aria-labelledby`), helper text, an error linked
+with `aria-describedby`, per-option `isDisabled` (set it on the `ColorOption`) and one tab
+stop with arrow keys between options (they stop at the ends, like `ToggleGroup`). `Space` and
+`Enter` choose the focused option.
+
+List the options alphabetically by label (AGENTS.md 5b); the group keeps the order you give.
+Built on React Aria `ToggleButtonGroup`.
+
+A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `loui-ds/patterns`.
+
+- Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).
+
+- Import: `import { ColorOptionGroup } from 'loui-ds/patterns';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/patterns/ColorOption/ColorOptionGroup.tsx`
+- Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused, Default, Preselected, WithDescription, DisabledItem, DisabledGroup, Invalid, SingleSelection, Controlled, LongLabels, SingleColumn, Portuguese, RightToLeft, KeyboardRoving
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | yes |  | The `ColorOption` children. Each needs an `id` that is unique in the group (its value). |
+| `selectionMode` | `'single' \| 'multiple'` |  | `'multiple'` | `multiple` (default): any number of colors can be chosen (the group is a `toolbar` of toggle buttons). `single`: at most one color (a `radiogroup`). |
+| `value` | `readonly string[]` |  |  | The `id`s of the chosen options (controlled). Pair with `onChange`. |
+| `defaultValue` | `readonly string[]` |  |  | The `id`s of the options chosen at the start (uncontrolled). |
+| `onChange` | `(value: string[]) => void` |  |  | Called with the `id`s of all chosen options after the user chooses or clears one. |
+| `description` | `ReactNode` |  |  | Helper text under the options. Linked with `aria-describedby`. |
+| `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while `isInvalid` is set. Linked with `aria-describedby`. |
+| `isInvalid` | `boolean` |  | `false` | Marks the group invalid: danger border on the unselected options and the error text. |
+| `columns` | `number` |  | `2` | Maximum number of columns. Default `2`. The grid collapses to fewer columns on narrow containers so an option never gets narrower than `--ds-color-option-group-min-width`. |
+| `className` | `string` |  |  | Class name for the group root. |
+| `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the element that holds the options. |
+| `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
+| `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the field. |
+
+##### Inherited props
+
+- From `AriaLabelingProps` (@react-types/shared): `aria-details`
+- From `ToggleGroupProps` (react-stately): `isDisabled`
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-color-option-group-columns`, `--ds-color-option-group-gap`, `--ds-color-option-group-min-width`, `--ds-control-h-md`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+
+#### When to use
+
+- Choose any number of colors from a list: the colors available for an item, the colors to filter by.
+- When the color name must be visible next to the swatch.
+
+#### When not to use
+
+- To choose exactly one color: use `ChoiceTiles` or `RadioGroup` (radio semantics).
+- A free-form color input: use a color field.
+- To display a color with no interaction: use `Swatch`.
+
+#### Semantics decision: toggle, not radio
+
+The option exposes `aria-pressed` (a toggle button), not a radio. The handoff uses it for multi-select ("which colors does this item come in?"), and a radio group would force a single answer and a roving tab stop. React Aria `ColorSwatchPicker` was evaluated and does not fit: it is a single-select listbox of bare swatches with generated color names and no room for a visible label or mark. For single choice, use `ChoiceTiles`.
+
+Group several options with `ColorOptionGroup` (a named group with a shared `value`, error text and roving arrow keys, see `ColorOptionGroup.md`). Outside a group every option is its own tab stop.
+
+#### Anatomy
+
+```
+button[aria-pressed]
+  Swatch (decorative)
+  label
+  mark | check            (mark text if given, otherwise a check while selected)
+```
+
+#### Accessibility
+
+- `aria-pressed` states the selection; the selected look is also a doubled accent border, a soft fill and a check (not color alone).
+- The swatch is decorative because the label names the color.
+- Boundaries use `--ds-line-control` (3:1); hover brightens the border, never the fill. Focus: accent border and ring. Forced colors: `Highlight` border when selected.
+
+#### Content rules
+
+- Label is the color name in sentence case ("Brick red"); `mark` is two or three words at most.
+
+#### Examples
+
+```tsx
+<div role="group" aria-label="Available colors">
+  <ColorOption color="#1f3a93" label="Navy" isSelected={on.navy} onChange={set('navy')} />
+  <ColorOption color="#c0392b" label="Brick red" mark="12 left" />
+</div>
+```
+
+#### Related components
+
+- Instead, see ChoiceTiles: To choose exactly one color: use `ChoiceTiles` or `RadioGroup` (radio semantics).
+- Instead, see RadioGroup: To choose exactly one color: use `ChoiceTiles` or `RadioGroup` (radio semantics).
+- Instead, see Swatch: To display a color with no interaction: use `Swatch`.
+- Renders: ErrorText, Label
 
 ### Combobox
 
@@ -4623,7 +4894,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 - Import: `import { DatePicker } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/DatePicker.tsx`
-- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
+- Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar, FullWidthInRow
 
 #### Props
 
@@ -4637,6 +4908,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `popoverClassName` | `string` |  |  | Class name for the popover that holds the calendar. |
 | `messages` | `Partial<{ today: string; clear: string; openCalendar: string; } & { requiredMark: string; } & Partial<{ previousMonth: string; nextMonth: string; }>>` |  |  | Message overrides for this instance: `today`, `clear`, `openCalendar`, `previousMonth`, `nextMonth`, `requiredMark`. |
@@ -4704,6 +4976,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `value` / `defaultValue` / `onChange`                                                                | ISO string or `null`.                                                                                                           |
 | `min`, `max`                                                                                         | ISO strings. Outside days are disabled in the grid; typed dates outside are invalid. "Today" is disabled when today is outside. |
 | `description`, `errorMessage`, `size`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                 |
+| `fullWidth`                                                                                          | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                              |
 | `messages`                                                                                           | `today`, `clear`, `openCalendar`, `previousMonth`, `nextMonth`, `requiredMark`.                                                 |
 
 `Calendar` takes `value`, `defaultValue`, `onChange(iso)`, `min`, `max`, `isDisabled`, `isReadOnly`, `autoFocus`, `messages`, and requires `aria-label` or `aria-labelledby`.
@@ -5715,6 +5988,10 @@ const errorId = useId();
 - `Description` and `FieldError` are linked with `aria-describedby`; the order is description, then error.
 - Disabled fields are exempt from contrast requirements; everything else meets 4.5:1 for text and 3:1 for borders.
 
+#### Related components
+
+- Used by: ColorOptionGroup
+
 ### FieldError
 
 > Error text of a field. Renders only while the field is invalid and the error is *displayed*:
@@ -5994,7 +6271,7 @@ const errorId = useId();
 
 #### Related components
 
-- Used by: Checkbox, CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Switch, TagInput, Textarea
+- Used by: Checkbox, CheckboxGroup, ChoiceTiles, ColorField, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Switch, TagInput, Textarea
 
 ### FieldSet
 
@@ -6996,7 +7273,7 @@ Single-line text field with a label, helper text and error text wired together. 
 - Import: `import { Input } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Input/Input.tsx`
-- Stories (Storybook title `Components/Input`): Default, WithDescription, DescriptionTones, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers
+- Stories (Storybook title `Components/Input`): Default, WithDescription, DescriptionTones, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers, FullWidthInRow
 
 #### Props
 
@@ -7010,6 +7287,7 @@ Single-line text field with a label, helper text and error text wired together. 
 | `leading` | `ReactNode` |  |  | Decoration before the text, usually an `Icon`. Keep it decorative or give it its own name. |
 | `trailing` | `ReactNode` |  |  | Content after the text: a unit, a shortcut hint (`Kbd`), or an `IconButton`. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root (label, control and messages). |
 | `inputClassName` | `string` |  |  | Class name for the `<input>` element. |
 | `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
@@ -7079,6 +7357,7 @@ Error
 | `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.                                 |
 | `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                                                            |
 | `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                       |
+| `fullWidth`                                                         | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                               |
 | `mono`                                                              | Geist Mono with tabular figures.                                                                                                 |
 | `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                                                     |
 | `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).                                  |
@@ -7366,7 +7645,7 @@ const errorId = useId();
 
 #### Related components
 
-- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea
+- Used by: CheckboxGroup, ChoiceTiles, ColorField, ColorOptionGroup, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea
 
 ### LedgerList
 
@@ -7378,14 +7657,14 @@ money, `format` for anything else, or neither for plain quantities.
 
 Import it from `loui-ds/patterns`.
 
-A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. Rows can be fixed (no delete button) and the date is optional. The sign is shown as text and color. Import it from `loui-ds/patterns`.
+A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with optional edit and delete buttons per row. Rows can be fixed (no buttons) and the date is optional. The sign is shown as text and color. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).
 
 - Import: `import { LedgerList } from 'loui-ds/patterns';`
-- Status: experimental (do not use in recipes until stable)
+- Status: stable
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
-- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, EditableAndDeletable, EditOnly, EditInSheet, EditInline, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
 
 #### Props
 
@@ -7397,7 +7676,8 @@ A list of signed entries: date, title, optional sub line, a signed amount and an
 | `negativeTone` | `'neutral' \| 'success' \| 'warning' \| 'danger'` |  | `'danger'` | Color of negative amounts: `neutral`, `success`, `warning` or `danger` (default). The `-` sign is always shown too. Pick the tone by what the subtraction means (an expense is `danger`, a payment out of a balance owed may be `success`). |
 | `dateStyle` | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'` |  | `'monthDay'` | Format of each entry's date (`formatDate` styles). Default `monthDay`. |
 | `onDelete` | `(entry: LedgerEntry) => void` |  |  | Adds a "Delete entry" button to each row (except entries with `isDeletable: false`) and calls this with the entry. The component only reports the request: the consumer must confirm it (dialog or inline confirmation) before data is removed, and offer Undo afterwards. |
-| `messages` | `Partial<{ balance: (amount: string) => string; deleteEntry: (title: string) => string; }>` |  |  | Message overrides for this instance. |
+| `onEdit` | `(entry: LedgerEntry) => void` |  |  | Adds an "Edit entry" button (pencil icon) before the delete button of each row (except entries with `isEditable: false`) and calls this with the entry. The component only reports the request: the consumer shows the editing UI, either a `Sheet` or an inline field in the row's place. When a sheet closes, focus returns to the edit button that opened it. |
+| `messages` | `Partial<{ balance: (amount: string) => string; editEntry: (title: string) => string; deleteEntry: (title: string) => string; }>` |  |  | Message overrides for this instance. |
 
 ##### Inherited props
 
@@ -7410,6 +7690,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | Key | English default | Notes |
 | --- | --- | --- |
 | `balance(amount: string)` | `Balance {amount}` | Label of the running balance after an entry. `amount` is already formatted. |
+| `editEntry(title: string)` | `Edit entry {title}` | Accessible name of the edit button of an entry; `title` is the entry's title. |
 | `deleteEntry(title: string)` | `Delete entry {title}` | Accessible name of the delete button of an entry; `title` is the entry's title. |
 
 #### Design tokens used
@@ -7435,6 +7716,7 @@ ul aria-label
     title · sub
     amount                         "+" | "−" text sign + number   (color by negativeTone)
     balance                        "Balance $125.00"              (optional)
+    button "Edit entry …"          (only with onEdit and isEditable !== false)
     button "Delete entry …"        (only with onDelete and isDeletable !== false)
 ```
 
@@ -7443,6 +7725,7 @@ ul aria-label
 - A `ul` of `li`; the list should be named with `aria-label` or `aria-labelledby`.
 - The sign is text (`+` or the minus sign U+2212), so meaning never depends on color. Positive amounts use ink, negative ones the chosen tone, zero uses secondary text.
 - Dates are `<time datetime>`. The balance is labelled by text ("Balance $125.00"), not by position.
+- Edit buttons are `IconButton`s named "Edit entry {title}" and come before the delete button in the tab order. Rows with `isEditable: false` have none.
 - Delete buttons are `IconButton`s named "Delete entry {title}" (one per deletable row, distinguishable); they are 32px. Rows with `isDeletable: false` have no button, so they are skipped by `Tab`.
 - The component only calls `onDelete(entry)`; it never removes anything or asks for confirmation (AGENTS.md section 5.5). The consumer opens a confirmation dialog (title "Delete X?", the consequence, a danger button naming the action, initial focus on Cancel) in `onDelete`, removes the entry on confirm and then shows a toast with Undo.
 - Text truncates with an ellipsis; long titles do not push the amounts out.
@@ -8698,7 +8981,7 @@ A number input with minus and plus steppers; the successor of the handoff `Stepp
 - Import: `import { NumberField } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/NumberField/NumberField.tsx`
-- Stories (Storybook title `Components/NumberField`): Default, KeyboardContract, TypingClampsToLimits, WithSuffix, FormattedUnit, WithDescription, Required, Invalid, Disabled, ReadOnly, AtLimit, Sizes, Controlled
+- Stories (Storybook title `Components/NumberField`): Default, KeyboardContract, TypingClampsToLimits, WithSuffix, FormattedUnit, WithDescription, Required, Invalid, Disabled, ReadOnly, AtLimit, Sizes, Controlled, FullWidthInRow
 
 #### Props
 
@@ -8710,6 +8993,7 @@ A number input with minus and plus steppers; the successor of the handoff `Stepp
 | `placeholder` | `string` |  |  | Text shown while the field is empty. Never a substitute for the label. |
 | `suffix` | `ReactNode` |  |  | A unit shown after the number inside the box ("m", "kg", "pcs"). Visual only: for a spoken unit use `formatOptions={{ style: 'unit', unit: 'meter' }}`, which also formats the number. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Height of the box and of both stepper buttons: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `inputClassName` | `string` |  |  | Class name for the `<input>` element. |
 | `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
@@ -8779,6 +9063,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `formatOptions`                                               | `Intl.NumberFormat` options (`{ style: 'unit', unit: 'kilogram' }`, `{ maximumFractionDigits: 2 }`). |
 | `suffix`                                                      | A visual unit after the number ("m", "pcs"). For a spoken unit use `formatOptions`.                  |
 | `size`                                                        | `sm` / `md` (default) / `lg`; the steppers follow.                                                   |
+| `fullWidth`                                                   | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.   |
 | `description`, `descriptionTone`, `errorMessage`              | As in `Input`.                                                                                       |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits the raw number (`1234.5`), not the formatted text.                          |
 | `messages`                                                    | `decrease`, `increase`, `requiredMark`.                                                              |
@@ -9994,7 +10279,7 @@ A search box: leading search icon, clear button, optional decorative shortcut hi
 - Import: `import { SearchInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SearchInput/SearchInput.tsx`
-- Stories (Storybook title `Components/SearchInput`): Default, ClearButton, WithShortcutHint, Landmark, WithSuggestions, AccentInsensitiveHighlight, NoSuggestions, Disabled, VisibleLabel, Sizes
+- Stories (Storybook title `Components/SearchInput`): Default, ClearButton, WithShortcutHint, Landmark, WithSuggestions, AccentInsensitiveHighlight, NoSuggestions, Disabled, VisibleLabel, Sizes, FullWidthInRow
 
 #### Props
 
@@ -10010,6 +10295,7 @@ A search box: leading search icon, clear button, optional decorative shortcut hi
 | `placeholder` | `string` |  |  | Text shown while the box is empty. Default from messages: "Search". |
 | `landmark` | `boolean` |  |  | Wraps the field in a `role="search"` landmark named by the label. Use it once per page for the main search of a page or site; not for filters inside a table. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  |  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  |  | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `popoverClassName` | `string` |  |  | Class name for the popover that holds the suggestions. |
 | `inputRef` | `Ref<HTMLInputElement>` |  |  | Ref to the `<input>` element. The `ref` prop points at the field root. |
@@ -10084,6 +10370,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `shortcut`                                                                                            | Decorative hint such as `['Mod', 'K']`, drawn with `Kbd` while the box is empty. It registers nothing: use `useHotkey` and focus `inputRef`. Hidden from assistive technology. |
 | `landmark`                                                                                            | Wraps the field in `role="search"` named by the label. Once per page.                                                                                                          |
 | `size`, `placeholder`, `name`, `isDisabled`, `isReadOnly`, `autoFocus`, `inputRef`, `ref`, `messages` | `messages`: `clear`, `placeholder`, `noResults`.                                                                                                                               |
+| `fullWidth`                                                                                           | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                                                                             |
 
 #### Accessibility and keyboard
 
@@ -10294,7 +10581,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 - Import: `import { Select } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Select/Select.tsx`
-- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
+- Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels, FullWidthInRow
 
 #### Props
 
@@ -10309,6 +10596,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Trigger text while nothing is selected. Default from messages: "Select an option". |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `popoverClassName` | `string` |  |  | Class name for the popover that holds the options. |
 | `messages` | `Partial<{ placeholder: string; } & { requiredMark: string; }>` |  |  | Message overrides for this instance: `placeholder`, `requiredMark`. |
@@ -10370,6 +10658,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `value` / `defaultValue` / `onChange(value)`              | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
 | `placeholder`                                             | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
 | `size`                                                    | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
+| `fullWidth`                                               | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.  |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`           | Standard. `name` is submitted through the hidden `<select>`.                                        |
 | `popoverClassName`, `className`, `ref`                    | Styling hooks; `ref` is the field root.                                                             |
 | `messages`                                                | `placeholder`, `requiredMark`.                                                                      |
@@ -11332,6 +11621,98 @@ One element: a ring with an open top edge. Size comes from `--ds-icon-sm|md|lg`,
 - Instead, see Progress: When you know the progress: use `Progress` with a value.
 - Used by: Button, ChatPanel, Combobox, ToolCallStep
 
+### SplitLayout
+
+> A main column with a fixed-width side panel beside it: an editor with a chat, a list with a
+summary. The side panel can stay in view while the main content scrolls, and stacks under the
+main content when the layout is narrow. Use `Grid` for equal columns, and the `AppShell`
+`detail` prop for the detail pane of a whole screen.
+
+The main content comes first in the DOM (reading and Tab order); `asidePosition="start"` only
+changes where it is drawn.
+
+A main column with a fixed-width side panel beside it. The side panel can stay in view while the main content scrolls, and it stacks under the main content when the layout is narrow.
+
+- Import: `import { SplitLayout } from 'loui-ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/SplitLayout/SplitLayout.tsx`
+- Stories (Storybook title `Layout/SplitLayout`): End, Start, SmallAside, LargeAside, WithoutLandmark, Sticky, CollapsedNarrowContainer, CollapseNever, RightToLeft
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` |  |  | The main content. It takes the free width and can shrink, so long words wrap instead of widening the page. |
+| `aside` | `ReactNode` |  |  | The side panel: a chat, a filter, a summary. Without it, only the main content renders. |
+| `asideLabel` | `string` |  |  | Accessible name of the side panel. With it the panel is an `aside` landmark; without it, a plain `div`, because a layout primitive must not add unnamed landmarks. |
+| `asideWidth` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Width of the side panel: `sm` 280px, `md` 360px (default, same as the `AppShell` detail pane), `lg` 480px. |
+| `asidePosition` | `'start' \| 'end'` |  | `'end'` | Side of the side panel in the reading direction: `end` (default) or `start`. It is logical, so it flips in right-to-left text. The DOM order stays main first. |
+| `gap` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16 \| '1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `6` | Space between the main content and the aside, as a key of the space scale. Default `6` (24px). |
+| `sticky` | `boolean` |  | `false` | Keeps the aside in view while the main content scrolls (`position: sticky`). The aside is limited to the height of the viewport and scrolls on its own, and becomes a keyboard stop while it scrolls. Sticky only works beside the main content: it is off while collapsed. |
+| `collapseBelow` | `'sm' \| 'md' \| 'lg' \| 'never'` |  | `'md'` | Width of the layout (its own width, measured with a container query) under which the aside stacks under the main content: `sm` 480px, `md` 768px (default), `lg` 1024px, or `never`. The widths are the `--ds-breakpoint-*` tokens. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-line-control`, `--ds-space-1`, `--ds-split-layout-aside-w-lg`, `--ds-split-layout-aside-w-md`, `--ds-split-layout-aside-w-sm`, `--ds-split-layout-gap`, `--ds-split-layout-sticky-offset`, `--ds-toast-clearance`
+
+#### When to use
+
+- An editor or a long form with a chat, a summary or a help panel that should stay visible: `sticky`.
+- A list with a filter or preview panel next to it, inside a page.
+
+#### When not to use
+
+- Equal columns: use `Grid`.
+- The detail pane of a whole screen (beside the page content, with its own scroll and landmark): use the `detail` prop of `AppShell`.
+- A panel that slides over the page: use `Sheet`.
+
+#### Anatomy
+
+```
+div (container)
+  div (grid)
+    div            main content (children)
+    aside | div    side panel (aside), after the main content in the DOM
+```
+
+#### Responsive behavior
+
+- The layout measures its own width (a container query), so it behaves the same inside a frame, a preview or a test as on the page. The pixel values in the CSS repeat the `--ds-breakpoint-*` tokens; the test suite asserts that they agree.
+- Collapsed: one column, main content first, the aside under it. Sticky is off while collapsed.
+- `sticky` limits the aside to the viewport height (`100dvh`). Inside a scrolling region shorter than the viewport, such as the `main` of an `AppShell`, give the aside content its own bounded height, or accept that the aside scrolls to its end when the region ends.
+
+#### Accessibility
+
+- The DOM order is main first, then aside: reading order and Tab order follow it, also with `asidePosition="start"` (only the drawing order changes). Put content people need first in `children`.
+- `asideLabel` makes the panel a named `aside` (complementary) landmark. A layout primitive adds no unnamed landmark, so leave it off when the panel is not worth a landmark. Do not use it inside `AppShell` for the same content as `detail`.
+- A sticky aside that is taller than the viewport scrolls on its own and becomes a keyboard stop (`tabindex="0"`) so the arrow keys scroll it; with nothing to scroll there is no extra tab stop. The scroll padding keeps focused controls clear of the toast region (WCAG 2.4.11).
+- Reflow: nothing needs a minimum width; below the collapse width the layout is a single column (WCAG 1.4.10).
+
+#### Examples
+
+```tsx
+<SplitLayout aside={<ChatPanel … />} asideLabel="Assistant" sticky>
+  <Stack gap={4}>
+    <EditorSection … />
+    <EditorSection … />
+  </Stack>
+</SplitLayout>
+
+<SplitLayout asidePosition="start" asideWidth="sm" aside={<FilterList … />}>
+  <OrdersTable … />
+</SplitLayout>
+```
+
+#### Related components
+
+- Instead, see Grid: Equal columns: use `Grid`.
+- Instead, see AppShell: The detail pane of a whole screen (beside the page content, with its own scroll and landmark): use the `detail` prop of `AppShell`.
+- Instead, see Sheet: A panel that slides over the page: use `Sheet`.
+
 ### Stack
 
 > Lays its children out in a vertical column with a consistent gap. The gap is a space token
@@ -12234,7 +12615,7 @@ span[aria-hidden]                        (decorative)
 
 - Instead, see Badge: To carry a status: use `Badge` (text plus tone).
 - Instead, see ColorOption: To pick a color: use `ColorOption` from `loui-ds/patterns`.
-- Used by: ApprovalCard, ColorOption, MatrixGrid, RankList
+- Used by: ApprovalCard, ColorField, ColorOption, MatrixGrid, RankList
 
 ### Switch
 
@@ -13205,7 +13586,7 @@ Multi-line text field. Same contract as [Input](../Input/Input.md) (label, descr
 - Import: `import { Textarea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Textarea/Textarea.tsx`
-- Stories (Storybook title `Components/Textarea`): Default, WithDescription, WithAside, Required, Invalid, Disabled, ReadOnly, AutoGrow, WithCharacterCount, NoResize, LongLabel, Focused
+- Stories (Storybook title `Components/Textarea`): Default, WithDescription, WithAside, Required, Invalid, Disabled, ReadOnly, AutoGrow, WithCharacterCount, NoResize, LongLabel, Focused, FullWidthInRow
 
 #### Props
 
@@ -13220,6 +13601,7 @@ Multi-line text field. Same contract as [Input](../Input/Input.md) (label, descr
 | `resize` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` |  | `'vertical'` | Whether the user can drag the corner to resize. Default `vertical`. Ignored with `autoGrow`. |
 | `autoGrow` | `boolean` |  | `false` | Grows with its content instead of scrolling. |
 | `showCount` | `boolean` |  | `false` | Shows "used / max" on the label line and announces the remaining characters politely once typing pauses. Needs `maxLength`. |
+| `fullWidth` | `boolean` |  | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width. |
 | `className` | `string` |  |  | Class name for the field root. |
 | `textareaClassName` | `string` |  |  | Class name for the `<textarea>` element. |
 | `textareaRef` | `Ref<HTMLTextAreaElement>` |  |  | Ref to the `<textarea>` element. The `ref` prop points at the field root. |
@@ -13283,6 +13665,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `rows`                                                    | Visible lines. Default 3.                                                                                                |
 | `resize`                                                  | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
 | `autoGrow`                                                | Grows with its content; the manual resize handle is off.                                                                 |
+| `fullWidth`                                               | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                       |
 | `maxLength` + `showCount`                                 | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
 | `value` / `defaultValue` / `onChange(value)`              | React Aria naming; `onChange` receives the string.                                                                       |
 | `textareaRef` / `ref`                                     | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |

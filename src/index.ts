@@ -25,6 +25,13 @@ export type { ContainerProps, ContainerSize } from './components/Container';
 export { Divider } from './components/Divider';
 export type { DividerProps, DividerVariant } from './components/Divider';
 export { Grid } from './components/Grid';
+export { SplitLayout } from './components/SplitLayout';
+export type {
+  SplitLayoutAsidePosition,
+  SplitLayoutAsideWidth,
+  SplitLayoutCollapseBelow,
+  SplitLayoutProps,
+} from './components/SplitLayout';
 export type { GridColumns, GridMinItemWidth, GridProps } from './components/Grid';
 export { Heading } from './components/Heading';
 export type { HeadingLevel, HeadingProps, HeadingSize } from './components/Heading';
@@ -206,6 +213,8 @@ export type {
   RequiredMarkProps,
   WithLabel,
 } from './components/Field';
+export { ColorField } from './components/ColorField';
+export type { ColorFieldMessages, ColorFieldProps, ColorFieldSize } from './components/ColorField';
 export { Input } from './components/Input';
 export type { InputProps, InputSize } from './components/Input';
 export { Radio, RadioGroup } from './components/RadioGroup';

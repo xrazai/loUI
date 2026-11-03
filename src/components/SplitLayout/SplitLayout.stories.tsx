@@ -58,7 +58,7 @@ const meta = {
   title: 'Layout/SplitLayout',
   component: SplitLayout,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', visual: { width: 1024 } },
   args: { children: main, aside: side, asideLabel: 'Assistant' },
   argTypes: {
     asideWidth: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },

@@ -26,6 +26,7 @@ A hex colour input with a live `Swatch` preview. Built on React Aria `ColorField
 | `value` / `defaultValue` / `onChange(color)`                  | RAC naming. A `#RRGGBB` string or a `Color`. `onChange` receives a `Color`, or `null` if empty. |
 | `validate`                                                    | Receives the `Color \| null`; return a message (or messages) to mark the field invalid.         |
 | `size`                                                        | `sm` / `md` (default) / `lg`.                                                                   |
+| `fullWidth`                                                   | In a flex row (`Inline`) the field takes the free space and can shrink. Off by default.         |
 | `description`, `descriptionTone`, `errorMessage`              | As in `Input`. `errorMessage` defaults to the catalog `invalid` message.                        |
 | `placeholder`                                                 | For example `#RRGGBB`. Never a substitute for the label.                                        |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits `#RRGGBB`.                                                             |

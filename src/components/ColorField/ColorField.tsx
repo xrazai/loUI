@@ -40,6 +40,11 @@ interface ColorFieldBaseProps extends Omit<
   placeholder?: string | undefined;
   /** Control height: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: ColorFieldSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the `<input>` element. */
@@ -72,6 +77,7 @@ export function ColorField({
   errorMessage,
   placeholder,
   size = 'md',
+  fullWidth = false,
   className,
   inputClassName,
   inputRef,
@@ -90,7 +96,8 @@ export function ColorField({
       {...rest}
       ref={ref}
       data-size={size}
-      className={classNames(fieldStyles.root, className)}
+      data-full-width={fullWidth || undefined}
+      className={classNames(fieldStyles.root, styles.field, className)}
     >
       {({ state }) => {
         const hex = state.colorValue ? state.colorValue.toString('hex') : undefined;

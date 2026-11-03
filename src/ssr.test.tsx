@@ -53,6 +53,7 @@ const {
   IconButton,
   InlineConfirm,
   Input,
+  ColorField,
   Kbd,
   Label,
   Link,
@@ -110,6 +111,7 @@ const {
   Form,
   FormErrorSummary,
   Grid,
+  SplitLayout,
   Heading,
   Inline,
   ScrollArea,
@@ -133,6 +135,7 @@ const {
   ApprovalCard,
   ChatPanel,
   ColorOption,
+  ColorOptionGroup,
   LedgerList,
   MatrixGrid,
   ResponseFeedback,
@@ -184,6 +187,11 @@ const CASES: Record<string, () => ReactElement> = {
     </Form>
   ),
   Grid: () => <Grid columns={2}>x</Grid>,
+  SplitLayout: () => (
+    <SplitLayout aside={<p>Panel</p>} asideLabel="Assistant" sticky>
+      x
+    </SplitLayout>
+  ),
   Heading: () => <Heading>x</Heading>,
   Inline: () => <Inline>x</Inline>,
   ScrollArea: () => <ScrollArea aria-label="Area">x</ScrollArea>,
@@ -313,6 +321,7 @@ const CASES: Record<string, () => ReactElement> = {
   IconButton: () => <IconButton label="Close" icon={core.CheckIcon} />,
   InlineConfirm: () => <InlineConfirm label="Delete" onConfirm={() => undefined} />,
   Input: () => <Input label="Name" />,
+  ColorField: () => <ColorField label="Colour" defaultValue="#336699" />,
   Kbd: () => <Kbd>Ctrl+K</Kbd>,
   Link: () => <Link href="/orders">Orders</Link>,
   Menu: () => (
@@ -417,6 +426,11 @@ const CASES: Record<string, () => ReactElement> = {
     <ChatPanel items={[{ id: '1', role: 'user', content: 'Hello' }]} onSend={() => undefined} />
   ),
   ColorOption: () => <ColorOption color="#1f3a93" label="Navy" />,
+  ColorOptionGroup: () => (
+    <ColorOptionGroup label="Colours" defaultValue={['navy']}>
+      <ColorOption id="navy" color="#1f3a93" label="Navy" />
+    </ColorOptionGroup>
+  ),
   LedgerList: () => (
     <LedgerList
       entries={[{ id: '1', date: '2026-03-01', title: 'Opening balance', delta: 11000 }]}

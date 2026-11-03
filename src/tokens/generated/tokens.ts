@@ -220,6 +220,9 @@ export type TokenName =
   | 'choice-tiles.columns'
   | 'citation.size'
   | 'code.inline-padding-block'
+  | 'color-option-group.min-width'
+  | 'color-option-group.gap'
+  | 'color-option-group.columns'
   | 'combobox.popover-max-height'
   | 'command-palette.width'
   | 'command-palette.list-max-height'
@@ -370,6 +373,11 @@ export type TokenName =
   | 'sparkline.color'
   | 'spinner.stroke-width'
   | 'spinner.duration'
+  | 'split-layout.aside-w-sm'
+  | 'split-layout.aside-w-md'
+  | 'split-layout.aside-w-lg'
+  | 'split-layout.gap'
+  | 'split-layout.sticky-offset'
   | 'stack.gap'
   | 'stacked-bar.bar-thickness'
   | 'stacked-bar.column-max-w'
@@ -647,6 +655,9 @@ export type TokenCssVar =
   | '--ds-choice-tiles-columns'
   | '--ds-citation-size'
   | '--ds-code-inline-padding-block'
+  | '--ds-color-option-group-min-width'
+  | '--ds-color-option-group-gap'
+  | '--ds-color-option-group-columns'
   | '--ds-combobox-popover-max-height'
   | '--ds-command-palette-width'
   | '--ds-command-palette-list-max-height'
@@ -797,6 +808,11 @@ export type TokenCssVar =
   | '--ds-sparkline-color'
   | '--ds-spinner-stroke-width'
   | '--ds-spinner-duration'
+  | '--ds-split-layout-aside-w-sm'
+  | '--ds-split-layout-aside-w-md'
+  | '--ds-split-layout-aside-w-lg'
+  | '--ds-split-layout-gap'
+  | '--ds-split-layout-sticky-offset'
   | '--ds-stack-gap'
   | '--ds-stacked-bar-bar-thickness'
   | '--ds-stacked-bar-column-max-w'
@@ -1092,6 +1108,9 @@ export const tokenValues = {
   'choice-tiles.columns': { cssVar: '--ds-choice-tiles-columns', type: 'number', value: 2 },
   'citation.size': { cssVar: '--ds-citation-size', type: 'dimension', value: '24px' },
   'code.inline-padding-block': { cssVar: '--ds-code-inline-padding-block', type: 'dimension', value: '1px' },
+  'color-option-group.min-width': { cssVar: '--ds-color-option-group-min-width', type: 'dimension', value: '140px' },
+  'color-option-group.gap': { cssVar: '--ds-color-option-group-gap', type: 'dimension', value: '8px' },
+  'color-option-group.columns': { cssVar: '--ds-color-option-group-columns', type: 'number', value: 2 },
   'combobox.popover-max-height': { cssVar: '--ds-combobox-popover-max-height', type: 'dimension', value: '320px' },
   'command-palette.width': { cssVar: '--ds-command-palette-width', type: 'dimension', value: '640px' },
   'command-palette.list-max-height': { cssVar: '--ds-command-palette-list-max-height', type: 'dimension', value: '360px' },
@@ -1242,6 +1261,11 @@ export const tokenValues = {
   'sparkline.color': { cssVar: '--ds-sparkline-color', type: 'color', value: '#A3A3A9' },
   'spinner.stroke-width': { cssVar: '--ds-spinner-stroke-width', type: 'dimension', value: '2px' },
   'spinner.duration': { cssVar: '--ds-spinner-duration', type: 'duration', value: '700ms' },
+  'split-layout.aside-w-sm': { cssVar: '--ds-split-layout-aside-w-sm', type: 'dimension', value: '280px' },
+  'split-layout.aside-w-md': { cssVar: '--ds-split-layout-aside-w-md', type: 'dimension', value: '360px' },
+  'split-layout.aside-w-lg': { cssVar: '--ds-split-layout-aside-w-lg', type: 'dimension', value: '480px' },
+  'split-layout.gap': { cssVar: '--ds-split-layout-gap', type: 'dimension', value: '24px' },
+  'split-layout.sticky-offset': { cssVar: '--ds-split-layout-sticky-offset', type: 'dimension', value: '16px' },
   'stack.gap': { cssVar: '--ds-stack-gap', type: 'dimension', value: '16px' },
   'stacked-bar.bar-thickness': { cssVar: '--ds-stacked-bar-bar-thickness', type: 'dimension', value: '20px' },
   'stacked-bar.column-max-w': { cssVar: '--ds-stacked-bar-column-max-w', type: 'dimension', value: '56px' },

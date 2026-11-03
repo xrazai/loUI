@@ -8,8 +8,12 @@ export { ApprovalCard } from './ApprovalCard';
 export type { ApprovalCardKind, ApprovalCardProps } from './ApprovalCard';
 export { ChatPanel } from './ChatPanel';
 export type { ChatMessage, ChatMessageRole, ChatMessageStatus, ChatPanelProps } from './ChatPanel';
-export { ColorOption } from './ColorOption';
-export type { ColorOptionProps } from './ColorOption';
+export { ColorOption, ColorOptionGroup } from './ColorOption';
+export type {
+  ColorOptionGroupProps,
+  ColorOptionGroupSelectionMode,
+  ColorOptionProps,
+} from './ColorOption';
 export { LedgerList } from './LedgerList';
 export type { LedgerEntry, LedgerListProps, LedgerNegativeTone } from './LedgerList';
 export { MatrixGrid } from './MatrixGrid';

@@ -156,4 +156,4 @@ const errorId = useId();
 
 ## Related components
 
-- Used by: CheckboxGroup, ChoiceTiles, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea
+- Used by: CheckboxGroup, ChoiceTiles, ColorField, ColorOptionGroup, Combobox, DatePicker, Input, NumberField, Radio, RadioGroup, Select, Slider, TagInput, Textarea

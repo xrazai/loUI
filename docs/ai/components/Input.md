@@ -11,7 +11,7 @@ Single-line text field with a label, helper text and error text wired together. 
 - Import: `import { Input } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Input/Input.tsx`
-- Stories (Storybook title `Components/Input`): Default, WithDescription, DescriptionTones, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers
+- Stories (Storybook title `Components/Input`): Default, WithDescription, DescriptionTones, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers, FullWidthInRow
 
 ## Props
 
@@ -25,6 +25,7 @@ Single-line text field with a label, helper text and error text wired together. 
 | `leading`         | `ReactNode`                                                   |          |         | Decoration before the text, usually an `Icon`. Keep it decorative or give it its own name.                                                                                                                                                              |
 | `trailing`        | `ReactNode`                                                   |          |         | Content after the text: a unit, a shortcut hint (`Kbd`), or an `IconButton`.                                                                                                                                                                            |
 | `size`            | `'sm' \| 'md' \| 'lg'`                                        |          | `'md'`  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                                                                                                              |
+| `fullWidth`       | `boolean`                                                     |          | `false` | Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink below its content width. Off by default. In a block context the field already spans the width.                                                               |
 | `className`       | `string`                                                      |          |         | Class name for the field root (label, control and messages).                                                                                                                                                                                            |
 | `inputClassName`  | `string`                                                      |          |         | Class name for the `<input>` element.                                                                                                                                                                                                                   |
 | `inputRef`        | `Ref<HTMLInputElement>`                                       |          |         | Ref to the `<input>` element. The `ref` prop points at the field root.                                                                                                                                                                                  |
@@ -94,6 +95,7 @@ Error
 | `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.                                 |
 | `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                                                            |
 | `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                       |
+| `fullWidth`                                                         | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default.                               |
 | `mono`                                                              | Geist Mono with tabular figures.                                                                                                 |
 | `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                                                     |
 | `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).                                  |

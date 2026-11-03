@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { resetMissingNameWarnings } from '../Field/labeling';
+import { Inline } from '../Inline';
 import { ColorField } from './ColorField';
 import type { ColorFieldProps } from './ColorField';
 
@@ -208,5 +209,21 @@ describe('ColorField', () => {
       </>,
     );
     await expectNoA11yViolations(screen.container);
+  });
+});
+
+describe('ColorField fullWidth', () => {
+  it('takes the free space of an Inline row', async () => {
+    const screen = await renderWithProvider(
+      <div style={{ inlineSize: 700 }}>
+        <Inline gap={2} wrap={false}>
+          <ColorField label="Colour" fullWidth />
+          <button type="button">Apply</button>
+        </Inline>
+      </div>,
+    );
+    const field = screen.container.querySelector('[data-full-width]') as HTMLElement;
+    expect(field).not.toBeNull();
+    expect(field.getBoundingClientRect().width).toBeGreaterThan(500);
   });
 });

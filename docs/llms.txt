@@ -57,7 +57,9 @@ Rules for generated UI:
 - [ChoiceTiles](./ai/components/ChoiceTiles.md): Single-choice tiles: a `radiogroup` whose options are drawn as big buttons with a label and an optional meta line. (experimental)
 - [Citation](./ai/components/Citation.md): An inline marker for a claim in an answer. (experimental)
 - [Code](./ai/components/Code.md): Monospace code: inline in a sentence, or as a block (`pre` + `code`). (experimental)
+- [ColorField](./ai/components/ColorField.md): A hex colour field: a text input in Geist Mono with a `Swatch` preview of the current colour, built on React Aria `ColorField`. (experimental)
 - [ColorOption](./ai/components/ColorOption.md): A selectable option that shows a color swatch and its name. (experimental)
+- [ColorOptionGroup](./ai/components/ColorOptionGroup.md): A named group of `ColorOption`s that shares one value: the list of chosen option `id`s. (experimental)
 - [Combobox](./ai/components/Combobox.md): A text input with a filtered list of options in a popover (ARIA combobox pattern, built on React Aria `ComboBox`): the input has `role="combobox"` with `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`, so focus stays in the input while the arrow keys move through the list. (experimental)
 - [CommandPalette](./ai/components/CommandPalette.md): A command palette: a modal with a search field and a grouped list of commands, opened with `Mod+K` (configurable). (experimental)
 - [ConfirmDialog](./ai/components/ConfirmDialog.md): A destructive-action confirmation: an `alertdialog` with the question as the title, the consequence in one sentence, a Cancel button and a confirm button that names the action. (experimental)
@@ -88,7 +90,7 @@ Rules for generated UI:
 - [Input](./ai/components/Input.md): Single-line text field: label, control, description and error wired together (`for`, `aria-describedby`, `aria-invalid`), built on React Aria `TextField`. (experimental)
 - [Kbd](./ai/components/Kbd.md): A keyboard shortcut hint in mono type. (experimental)
 - [Label](./ai/components/Label.md): The visible label of a field. (experimental)
-- [LedgerList](./ai/components/LedgerList.md): A list of signed ledger entries: date, title, optional sub line, a signed amount and an optional running balance. (experimental)
+- [LedgerList](./ai/components/LedgerList.md): A list of signed ledger entries: date, title, optional sub line, a signed amount and an optional running balance. (stable)
 - [Legend](./ai/components/Legend.md): A list of the series of a chart: swatch, name and, optionally, a value. (experimental)
 - [Link](./ai/components/Link.md): A link built on React Aria's `Link`. (experimental)
 - [MatrixGrid](./ai/components/MatrixGrid.md): A matrix of toggle cells: rows by columns, each cell linking or unlinking one row with one column. (experimental)
@@ -123,6 +125,7 @@ Rules for generated UI:
 - [SourceList](./ai/components/SourceList.md): The numbered list of sources an answer is based on. (experimental)
 - [Sparkline](./ai/components/Sparkline.md): A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards and lists. (experimental)
 - [Spinner](./ai/components/Spinner.md): An indeterminate loading ring that inherits the text color. (experimental)
+- [SplitLayout](./ai/components/SplitLayout.md): A main column with a fixed-width side panel beside it: an editor with a chat, a list with a summary. (experimental)
 - [Stack](./ai/components/Stack.md): Lays its children out in a vertical column with a consistent gap. (experimental)
 - [StackedBar](./ai/components/StackedBar.md): Stacked bars: how each category divides into the same set of parts, horizontal (a row per category) or vertical (a column per category). (experimental)
 - [StatCard](./ai/components/StatCard.md): An indicator card: a mono caption, a large mono number and a short note, optionally with a trend and a small visual (such as a `ProportionBar`) in between. (experimental)
@@ -173,8 +176,8 @@ Tested compositions for common situations. Start from the one that fits, keep it
 
 ## Machine-readable data
 
-- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (115 components).
-- [tokens.json](./tokens.json): 434 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (118 components).
+- [tokens.json](./tokens.json): 442 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

@@ -1,4 +1,9 @@
 @layer components {
+  .field[data-full-width] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
   .preview {
     display: inline-flex;
     flex: none;

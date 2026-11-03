@@ -54,6 +54,7 @@ Why built in rather than left to apps: a sidebar hidden by an app without a way 
 - The shell measures **its own width** with a container query, so it behaves the same in a frame, a preview or a test. The 768px in the CSS is `--ds-breakpoint-md`; CSS cannot read variables inside a query, so `AppShell.test.tsx` asserts the two agree at 767/768px.
 - From md up the sidebar sits in the flow. Below, it leaves the flow; `AppShellNavToggle` (visible only below md) opens it as a panel over a scrim.
 - While open: focus moves into the panel, the rest of the page is `inert`, `Escape`, the scrim or the "Close menu" button close it, and focus returns to the toggle. It is not a `Dialog`: it keeps the sidebar's own landmarks.
+- An empty detail leaves nothing behind: `detail` set to `null`, `undefined` or `false` renders no aside, and a component that renders `null` leaves an empty aside that is hidden (`:empty`), so no landmark and no 360px column stay. Prefer `detail={selected ? <Detail /> : undefined}`.
 - The detail pane moves **under** the main content (half the height at most, own scroll) below md.
 - Breakpoint tokens: `--ds-breakpoint-sm|md|lg|xl` (480 / 768 / 1024 / 1280 px); content: `--ds-content-max`, `--ds-content-gutter`; `--ds-container-sm|md|lg`.
 

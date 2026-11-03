@@ -282,6 +282,11 @@
     /* code */
     --ds-code-inline-padding-block: 1px;
 
+    /* color-option-group */
+    --ds-color-option-group-min-width: 140px;
+    --ds-color-option-group-gap: var(--ds-space-2);
+    --ds-color-option-group-columns: 2;
+
     /* combobox */
     --ds-combobox-popover-max-height: var(--ds-select-popover-max-height);
 
@@ -513,6 +518,13 @@
     /* spinner */
     --ds-spinner-stroke-width: 2px;
     --ds-spinner-duration: 700ms;
+
+    /* split-layout */
+    --ds-split-layout-aside-w-sm: 280px;
+    --ds-split-layout-aside-w-md: var(--ds-app-shell-detail-w);
+    --ds-split-layout-aside-w-lg: 480px;
+    --ds-split-layout-gap: var(--ds-space-6);
+    --ds-split-layout-sticky-offset: var(--ds-space-4);
 
     /* stack */
     --ds-stack-gap: var(--ds-space-4);

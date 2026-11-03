@@ -9,6 +9,7 @@ import { JSX } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 import { Ref } from 'react';
+import { ToggleButtonGroupProps } from 'react-aria-components';
 import { ToggleButtonProps } from 'react-aria-components';
 
 // @public
@@ -108,6 +109,15 @@ export interface CitationProps extends Omit<ComponentPropsWithRef<'a'>, 'childre
 // @public
 export function ColorOption(input: ColorOptionProps): JSX.Element;
 
+// @public
+export function ColorOptionGroup(input: ColorOptionGroupProps): JSX.Element;
+
+// @public (undocumented)
+export type ColorOptionGroupProps = ColorOptionGroupBaseProps & FieldLabelingProps;
+
+// @public (undocumented)
+export type ColorOptionGroupSelectionMode = 'single' | 'multiple';
+
 // @public (undocumented)
 export interface ColorOptionProps extends Omit<ToggleButtonProps, 'className' | 'style' | 'children' | 'aria-label' | 'aria-labelledby' | 'aria-pressed'> {
     className?: string | undefined;
@@ -127,6 +137,7 @@ export interface LedgerEntry {
     delta: number;
     id: string;
     isDeletable?: boolean | undefined;
+    isEditable?: boolean | undefined;
     sub?: string;
     title: string;
 }
@@ -143,6 +154,7 @@ export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'chil
     messages?: Partial<typeof messages_5.en>;
     negativeTone?: LedgerNegativeTone;
     onDelete?: (entry: LedgerEntry) => void;
+    onEdit?: (entry: LedgerEntry) => void;
 }
 
 // @public (undocumented)

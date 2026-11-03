@@ -140,3 +140,7 @@ const errorId = useId();
 - Every control needs an accessible name: `label`, `aria-label` or `aria-labelledby`. The types enforce it; a development warning covers untyped callers.
 - `Description` and `FieldError` are linked with `aria-describedby`; the order is description, then error.
 - Disabled fields are exempt from contrast requirements; everything else meets 4.5:1 for text and 3:1 for borders.
+
+## Related components
+
+- Used by: ColorOptionGroup
