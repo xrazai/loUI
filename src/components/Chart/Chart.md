@@ -21,33 +21,41 @@ A small responsive bar or line chart for one series, drawn in SVG with no chart 
 ```
 div.root
   div[role=img][tabindex=0]   named by aria-label / aria-labelledby, described by the instructions
-    svg[aria-hidden]          grid + tick labels, bars or line + area, category labels, highlight texts
+    svg[aria-hidden]          grid + tick labels, bars or line + area, reference lines + labels, category labels, highlight texts, note markers
     span                      value label of the active point (aria-hidden)
   span                        visually hidden description + keyboard instructions
   span[role=status]           visually hidden polite live region: "Tue: 58. 2 of 7"
-  table (visually hidden)     caption, headers, one row per point
+  table (visually hidden)     caption, headers, one row per point, one footer row per reference line
 ```
 
 ## Props (key ones)
 
-| Prop                          | Type                    | Default  | Notes                                                                             |
-| ----------------------------- | ----------------------- | -------- | --------------------------------------------------------------------------------- |
-| `data`                        | `{ label, value }[]`    | -        | In display order; the chart never sorts                                           |
-| `aria-label`                  | `string`                | -        | Required (or `aria-labelledby`): what the chart shows                             |
-| `type`                        | `bar \| line`           | `bar`    |                                                                                   |
-| `format`                      | `(value) => string`     | `Intl`   | Axis, label, announcement and table. Default: compact on the axis, full elsewhere |
-| `tone`                        | `ChartTone`             | `accent` | Color of the active bar and of the line                                           |
-| `highlight`                   | `Record<index, string>` |          | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced    |
-| `height`                      | `number \| string`      | `200px`  | Width is always 100% of the container                                             |
-| `description`                 | `string`                |          | Longer description, read before the keyboard instructions                         |
-| `categoryLabel`, `valueLabel` | `string`                |          | Headers of the hidden table ("Day", "Sales")                                      |
-| `messages`                    | `Partial<messages>`     |          | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `empty`     |
+| Prop                          | Type                       | Default   | Notes                                                                                                                                   |
+| ----------------------------- | -------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`                        | `{ label, value }[]`       | -         | In display order; the chart never sorts                                                                                                 |
+| `aria-label`                  | `string`                   | -         | Required (or `aria-labelledby`): what the chart shows                                                                                   |
+| `type`                        | `bar \| line`              | `bar`     |                                                                                                                                         |
+| `format`                      | `(value) => string`        | `Intl`    | Axis, label, announcement and table. Default: compact on the axis, full elsewhere                                                       |
+| `tone`                        | `ChartTone`                | `accent`  | Color of the active bar and of the line                                                                                                 |
+| `highlight`                   | `Record<index, string>`    |           | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced                                                          |
+| `notes`                       | `Record<index, string>`    |           | Long text per point: in the label of the active point, the table and the announcement; diamond marker on the point                      |
+| `referenceLines`              | `{ value, label, kind }[]` |           | Dashed lines across the plot (`kind`: `average` or `target`); the axis widens to include them                                           |
+| `tickEvery`                   | `number`                   | automatic | Show every nth category label. Below 1 or not finite means automatic                                                                    |
+| `height`                      | `number \| string`         | `200px`   | Width is always 100% of the container                                                                                                   |
+| `description`                 | `string`                   |           | Longer description, read before the keyboard instructions                                                                               |
+| `categoryLabel`, `valueLabel` | `string`                   |           | Headers of the hidden table ("Day", "Sales")                                                                                            |
+| `messages`                    | `Partial<messages>`        |           | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `average`, `target`, `referenceLine`, `referenceSummary`, `empty` |
+
+`chartAverage(values)` is exported: the mean of numbers (or of `{ value }` data), ignoring non-finite entries, `0` when empty. Use it for the `average` line: `referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.
 
 `niceScale(min, max, tickCount?)` is exported: a pure helper that returns `{ min, max, step, ticks }` for a round axis. It always includes zero, handles all-zero data (0 to 1), tiny values (`0.00003`), huge values, negatives and non-finite input.
 
 ## Accessibility
 
 - The plot is one `role="img"` with an accessible name and a description; the SVG inside is hidden. The visually hidden `<table>` with a `<caption>` is the text alternative and holds every value (and the highlight texts in a "Note" column).
+- Notes: a point with a `notes` entry gets a small diamond above it (a shape, not a color). Its text is shown under the value in the label of the active point (wrapping, up to `--ds-chart-tooltip-max-w`), read in the announcement after the highlight ("Tue: 58, Today. Free shipping started. 2 of 7") and written in the "Note" column of the table. When a point has both, the cell reads "Today. Free shipping started."; the table gets the Note column as soon as any point has a highlight or a note.
+- Reference lines: dashed across the plot with the label and the formatted value as text at the end side of the line ("Goal 120"). `average` uses long dashes, `target` dash and dot, so the kind never depends on color; the line and the text use `text-2`. Screen readers get them in the description ("Reference lines: Average, Weekly mean: 51.5 and Target, Goal: 120.") and in the footer rows of the table ("Average, Weekly mean" / "51.5"). If the label equals the kind name only the kind is read. Two lines closer than a text line put the second label under its line so they do not overprint.
+- Axis labels: by default category labels are skipped automatically when they would collide; `tickEvery` forces every nth label (1 shows all, even if they touch). The keyboard and the table always reach every point.
 - Keyboard: `Tab` focuses the chart (nothing announced yet). Left/Right (also Up/Down) move to the previous/next point, Home/End to the first/last, Escape clears the active point. The first Right arrow goes to the first point, the first Left arrow to the last. Movement stops at the ends.
 - The active point is announced politely ("Tue: 58, Today. 2 of 7") and drawn as a label above it; hover shows the same label. The label is also in the SVG as text, never color-only.
 - Highlights always carry text and a stronger shape (outline on bars, a ring marker on lines), so they do not depend on color. Active bars get a tone fill and outline.
@@ -64,8 +72,9 @@ div.root
 ## Limits
 
 - One series per chart. For two series use two charts side by side.
-- Categories are spaced evenly (no time scale); labels are skipped when crowded (the table and the keyboard still reach every point).
-- The value axis always includes zero. Up to about 100 ticks are generated at most (usually 4 to 7).
+- Categories are spaced evenly (no time scale); labels are skipped when crowded unless `tickEvery` is set (the table and the keyboard still reach every point).
+- Reference lines are horizontal only; reference line labels are printed at the end side and can cross bars (they carry a background-colored halo).
+- The value axis always includes zero, and reference line values (a target far above the data, for example) widen it. Up to about 100 ticks are generated at most (usually 4 to 7).
 - Geometry (padding, bar width, label spacing) lives in `chartLayout.ts` as SVG units; every color, stroke, radius and font is a token.
 
 ## Example
@@ -77,6 +86,12 @@ div.root
   data={days.map((d) => ({ label: d.day, value: d.totalMinor }))}
   format={(v) => formatCurrency(v, 'USD', locale)}
   highlight={{ 29: 'Today', [bestIndex]: 'Best day' }}
+  notes={{ [bestIndex]: 'Free shipping campaign started this day.' }}
+  referenceLines={[
+    { kind: 'average', label: 'Average', value: chartAverage(days.map((d) => d.totalMinor)) },
+    { kind: 'target', label: 'Goal', value: 500000 },
+  ]}
+  tickEvery={7}
 />
 ```
 

@@ -4,14 +4,34 @@ import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { createValueFormatters } from './a11y';
+import { createValueFormatters, joinList } from './a11y';
 import { ChartDataTable } from './ChartDataTable';
 import { messages } from './Chart.messages';
 import styles from './Chart.module.css';
-import { computeLayout, tooltipPosition } from './chartLayout';
+import {
+  NOTE_MARKER_OFFSET,
+  computeLayout,
+  noteMarkerPath,
+  referenceLabelYs,
+  tooltipPosition,
+} from './chartLayout';
 
 export type ChartType = 'bar' | 'line';
 export type ChartTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+
+export type ChartReferenceKind = 'average' | 'target';
+
+export interface ChartReferenceLine {
+  /** Where the line sits, in the same unit as the data. The value axis grows to include it. */
+  value: number;
+  /** Text printed next to the line ("Average", "Monthly goal"). Also read by screen readers. */
+  label: string;
+  /**
+   * `average` is drawn with long dashes, `target` with dash and dot, so the two never depend on
+   * color. The kind name ("Average" / "Target") is part of the spoken text.
+   */
+  kind: ChartReferenceKind;
+}
 
 export interface ChartDatum {
   /** Category text: shown under the point, in the tooltip and in the data table. Keep it short ("Mon", "Oct 28"). */
@@ -42,6 +62,27 @@ interface ChartBaseProps extends Omit<
    * by screen readers, so the highlight never depends on color. Keep the texts short.
    */
   highlight?: Readonly<Record<number, string>>;
+  /**
+   * Long text about a point by index, for example `{ 12: 'Free shipping started this day.' }`.
+   * Shown under the value in the label of the active point, in the "Note" column of the hidden
+   * table and in the announcement of the point. Points with a note get a small diamond marker
+   * above them (a shape, not a color). Unlike `highlight`, the text is not printed on the
+   * chart, so it may be a full sentence.
+   */
+  notes?: Readonly<Record<number, string>>;
+  /**
+   * Dashed lines across the plot, each with its label printed at the end side of the line.
+   * `average` and `target` differ by dash pattern and by name. Use `chartAverage(values)` for
+   * the average. The lines are listed in the description and in the last rows of the hidden
+   * table. A value outside the data range widens the axis.
+   */
+  referenceLines?: readonly ChartReferenceLine[];
+  /**
+   * Show the label of every nth category (`tickEvery={7}` shows 1st, 8th, 15th...). Default:
+   * automatic, labels are skipped only when they would collide. Values below 1 or not finite
+   * mean automatic. Points still get a keyboard stop and a table row.
+   */
+  tickEvery?: number;
   /** Height of the chart (a number is px, or any CSS length). Default `--ds-chart-height` (200px). The width is always 100% of the container. */
   height?: number | string;
   /** Longer description of what the chart shows. Read after the name, together with the keyboard instructions. */
@@ -96,6 +137,9 @@ export function Chart({
   format,
   tone = 'accent',
   highlight,
+  notes,
+  referenceLines,
+  tickEvery,
   height,
   description,
   categoryLabel,
@@ -138,6 +182,12 @@ export function Chart({
     [format, locale],
   );
 
+  const references = useMemo(
+    () => (referenceLines ?? []).filter((line) => Number.isFinite(line.value)),
+    [referenceLines],
+  );
+  const referenceValues = useMemo(() => references.map((line) => line.value), [references]);
+
   const layout = useMemo(
     () =>
       size && size.width > 0 && size.height > 0
@@ -146,14 +196,29 @@ export function Chart({
             width: size.width,
             height: size.height,
             formatTick,
+            references: referenceValues,
+            ...(tickEvery === undefined ? {} : { tickEvery }),
           })
         : null,
-    [data, size, formatTick],
+    [data, size, formatTick, referenceValues, tickEvery],
   );
 
   const activeIndex = active !== null && active < count ? active : null;
   const activeDatum = activeIndex === null ? undefined : data[activeIndex];
-  const hasNotes = highlight !== undefined && Object.keys(highlight).length > 0;
+  const noteAt = (index: number): string | undefined => notes?.[index] || undefined;
+  /** Highlight text and note of a point, as read by assistive technology. */
+  const spokenNote = (index: number): string | undefined => {
+    const parts = [highlight?.[index], noteAt(index)].filter(Boolean);
+    return parts.length ? parts.join('. ') : undefined;
+  };
+  const hasNotes =
+    (highlight !== undefined && Object.keys(highlight).length > 0) ||
+    (notes !== undefined && Object.values(notes).some(Boolean));
+  const referenceTexts = references.map((line) => ({
+    ...line,
+    text: t.referenceLine(line.kind === 'average' ? t.average : t.target, line.label),
+    formatted: formatValue(line.value),
+  }));
 
   const announcement =
     activeIndex !== null && activeDatum
@@ -162,7 +227,8 @@ export function Chart({
           formatValue(activeDatum.value),
           formatNumber(activeIndex + 1, locale),
           formatNumber(count, locale),
-          highlight?.[activeIndex],
+          // The message adds its own full stop after the note.
+          spokenNote(activeIndex)?.replace(/\.+$/, ''),
         )
       : '';
 
@@ -207,20 +273,39 @@ export function Chart({
       : ({ ...style, '--ds-chart-height': toLength(height) } as CSSProperties);
 
   // Tooltip: value, category and highlight text, above the active point.
-  let tooltip: { text: string; left: number; top: number } | null = null;
+  let tooltip: { text: string; note?: string; left: number; top: number } | null = null;
   if (layout && activeIndex !== null && activeDatum) {
     const text = `${formatValue(activeDatum.value)} · ${activeDatum.label}${
       highlight?.[activeIndex] ? ` · ${highlight[activeIndex] ?? ''}` : ''
     }`;
     const anchorY = Math.min(layout.y(activeDatum.value), layout.baseline);
+    const note = noteAt(activeIndex);
     tooltip = {
       text,
-      ...tooltipPosition(text.length, layout.x(activeIndex), anchorY, size?.width ?? 0),
+      ...(note ? { note } : {}),
+      ...tooltipPosition(
+        text.length,
+        layout.x(activeIndex),
+        anchorY,
+        size?.width ?? 0,
+        note?.length ?? 0,
+      ),
     };
   }
 
   const describedBy = `${descriptionId}-description`;
   const tableCaption = t.tableCaption(ariaLabel);
+  const referenceSummary = referenceTexts.length
+    ? t.referenceSummary(
+        joinList(
+          locale,
+          referenceTexts.map((line) => `${line.text}: ${line.formatted}`),
+        ),
+      )
+    : '';
+  const referenceLabelY = layout
+    ? referenceLabelYs(references.map((line) => layout.y(line.value)))
+    : [];
 
   return (
     <div
@@ -335,6 +420,26 @@ export function Chart({
                   ) : null,
                 )
               : null}
+            {references.map((line, index) => (
+              <g key={`reference-${String(index)}`}>
+                <line
+                  className={styles.reference}
+                  data-kind={line.kind}
+                  x1={layout.left}
+                  x2={layout.right}
+                  y1={layout.y(line.value)}
+                  y2={layout.y(line.value)}
+                />
+                <text
+                  className={styles.referenceLabel}
+                  x={layout.right}
+                  y={referenceLabelY[index] ?? layout.y(line.value)}
+                  textAnchor="end"
+                >
+                  {`${line.label} ${referenceTexts[index]?.formatted ?? ''}`}
+                </text>
+              </g>
+            ))}
             {activeIndex !== null && type === 'line' ? (
               <line
                 className={styles.cursor}
@@ -367,13 +472,29 @@ export function Chart({
                   key={`note-${String(index)}`}
                   className={styles.note}
                   x={layout.x(index)}
-                  y={Math.min(layout.y(datum.value), layout.baseline) - 10}
+                  y={
+                    Math.min(layout.y(datum.value), layout.baseline) -
+                    10 -
+                    (noteAt(index) ? NOTE_MARKER_OFFSET : 0)
+                  }
                   textAnchor="middle"
                 >
                   {note}
                 </text>
               );
             })}
+            {data.map((datum, index) =>
+              noteAt(index) ? (
+                <path
+                  key={`marker-${String(index)}`}
+                  className={styles.noteMarker}
+                  d={noteMarkerPath(
+                    layout.x(index),
+                    Math.min(layout.y(datum.value), layout.baseline) - NOTE_MARKER_OFFSET,
+                  )}
+                />
+              ) : null,
+            )}
           </svg>
         ) : null}
         {layout && count === 0 ? <span className={styles.empty}>{t.empty}</span> : null}
@@ -381,6 +502,7 @@ export function Chart({
           <span
             className={styles.tooltip}
             aria-hidden="true"
+            {...(tooltip.note ? { 'data-note': '' } : {})}
             style={
               {
                 '--ds-chart-tooltip-x': `${String(tooltip.left)}px`,
@@ -388,12 +510,14 @@ export function Chart({
               } as CSSProperties
             }
           >
-            {tooltip.text}
+            {tooltip.note ? <span>{tooltip.text}</span> : tooltip.text}
+            {tooltip.note ? <span className={styles.tooltipNote}>{tooltip.note}</span> : null}
           </span>
         ) : null}
       </div>
       <VisuallyHidden id={describedBy}>
         {description ? `${description} ` : ''}
+        {referenceSummary ? `${referenceSummary} ` : ''}
         {t.instructions(count, formatNumber(count, locale))}
       </VisuallyHidden>
       <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
@@ -408,7 +532,11 @@ export function Chart({
         ]}
         rows={data.map((datum, index) => ({
           header: datum.label,
-          cells: [formatValue(datum.value), ...(hasNotes ? [highlight[index] ?? ''] : [])],
+          cells: [formatValue(datum.value), ...(hasNotes ? [spokenNote(index) ?? ''] : [])],
+        }))}
+        footerRows={referenceTexts.map((line) => ({
+          header: line.text,
+          cells: [line.formatted],
         }))}
       />
     </div>

@@ -1,4 +1,12 @@
 export { Chart } from './Chart';
-export type { ChartDatum, ChartProps, ChartTone, ChartType } from './Chart';
+export type {
+  ChartDatum,
+  ChartProps,
+  ChartReferenceKind,
+  ChartReferenceLine,
+  ChartTone,
+  ChartType,
+} from './Chart';
+export { chartAverage } from './chartAverage';
 export { niceScale } from './niceScale';
 export type { NiceScale } from './niceScale';

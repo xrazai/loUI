@@ -116,9 +116,11 @@ export const Notes: Story = {
     await userEvent.tab();
     await userEvent.keyboard('{ArrowRight}{ArrowRight}{ArrowRight}');
     await expect(canvas.getByRole('status')).toHaveTextContent(
-      'Wed: 31, Store closed for inventory until noon.. 3 of 7',
+      'Wed: 31, Store closed for inventory until noon. 3 of 7',
     );
-    await expect(canvas.getByText('Store closed for inventory until noon.')).toBeInTheDocument();
+    await expect(canvasElement.querySelector('[data-note]')).toHaveTextContent(
+      'Store closed for inventory until noon.',
+    );
   },
 };
 

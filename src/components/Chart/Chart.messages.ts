@@ -54,11 +54,11 @@ export const messages = defineMessages({
     category: 'Categoria',
     value: 'Valor',
     note: 'Observação',
-    average: 'M�dia',
+    average: 'Média',
     target: 'Meta',
     referenceLine: (kind: string, label: string) =>
       label.trim().toLowerCase() === kind.toLowerCase() ? kind : `${kind}, ${label}`,
-    referenceSummary: (items: string) => `Linhas de refer�ncia: ${items}.`,
+    referenceSummary: (items: string) => `Linhas de referência: ${items}.`,
     empty: 'Nenhum dado para mostrar',
   },
 });

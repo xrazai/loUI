@@ -183,7 +183,11 @@ describe('keyboard contract: matrix grid', () => {
     { id: 'gray', label: 'Gray' },
   ];
 
-  function Matrix({ onToggle }: { onToggle?: (row: string, column: string) => void }) {
+  function Matrix({
+    onToggle,
+  }: {
+    onToggle?: (row: string, column: string) => void | PromiseLike<unknown>;
+  }) {
     return (
       <>
         <button type="button">Before</button>
@@ -248,6 +252,25 @@ describe('keyboard contract: matrix grid', () => {
     expect(onToggle).toHaveBeenLastCalledWith('lamp', 'navy');
     await press('{ArrowDown}{ArrowRight}{Enter}');
     expect(onToggle).toHaveBeenLastCalledWith('notebook', 'yellow');
+  });
+
+  it('an async toggle keeps focus on the pending cell and ignores a second Enter (GAP-029)', async () => {
+    let finish!: () => void;
+    const onToggle = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    await renderWithProvider(<Matrix onToggle={onToggle} />);
+    await enter();
+    await press('{Enter}');
+    await expect.poll(activeLabel).toContain('saving');
+    await press('{Enter}');
+    expect(onToggle).toHaveBeenCalledTimes(1);
+    await press('{ArrowRight}');
+    await expect.poll(activeLabel).toContain('Desk lamp · Yellow');
+    finish();
   });
 
   it('Shift+Tab back into the grid returns to the last focused cell (roving tabindex)', async () => {

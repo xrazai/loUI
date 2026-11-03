@@ -71,6 +71,38 @@
     font-weight: var(--ds-weight-medium);
   }
 
+  /* Reference lines: dash pattern and the text label carry the kind, never color alone. */
+  .reference {
+    stroke: var(--ds-text-2);
+    stroke-width: var(--ds-chart-ref-w);
+  }
+
+  .reference[data-kind='average'] {
+    stroke-dasharray: var(--ds-chart-ref-average-dash) var(--ds-chart-ref-average-gap);
+  }
+
+  .reference[data-kind='target'] {
+    stroke-dasharray: var(--ds-chart-ref-target-dash) var(--ds-chart-ref-target-gap)
+      var(--ds-chart-ref-target-dot) var(--ds-chart-ref-target-gap);
+  }
+
+  .referenceLabel {
+    fill: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+
+    /* A halo in the background color keeps the text readable over bars and the line. */
+    paint-order: stroke;
+    stroke: var(--ds-bg);
+    stroke-width: var(--ds-chart-outline-w);
+  }
+
+  .noteMarker {
+    fill: var(--ds-text);
+    stroke: var(--ds-bg);
+    stroke-width: var(--ds-chart-stroke-w);
+  }
+
   /* Bars: gray at rest (3:1 against the surface), strong ink when highlighted, tone when active. */
   .bar {
     fill: var(--ds-line-control);
@@ -138,6 +170,19 @@
     pointer-events: none;
   }
 
+  .tooltip[data-note] {
+    max-inline-size: var(--ds-chart-tooltip-max-w);
+  }
+
+  /* The note wraps under the value line; long text stays inside the label. */
+  .tooltipNote {
+    display: block;
+    margin-block-start: 0;
+    font-weight: var(--ds-weight-regular);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .empty {
     position: absolute;
     inset: 0;
@@ -183,8 +228,22 @@
 
     .tick,
     .category,
-    .note {
+    .note,
+    .referenceLabel {
       fill: canvastext;
+    }
+
+    .reference {
+      stroke: canvastext;
+    }
+
+    .referenceLabel {
+      stroke: canvas;
+    }
+
+    .noteMarker {
+      fill: canvastext;
+      stroke: canvas;
     }
 
     .tooltip {

@@ -26,7 +26,18 @@ const MAX_TICKS = 5;
 const LABEL_MIN_SPACING = 44;
 /** Tooltip estimate: padding on both sides, and distance above the anchor. */
 const TOOLTIP_PADDING = 16;
-const TOOLTIP_OFFSET_Y = 52;
+/** Gap between the bottom edge of the label and the anchor, and the height of one text line plus padding. */
+const TOOLTIP_GAP = 26;
+const TOOLTIP_LINE = 18;
+const TOOLTIP_BLOCK_PADDING = 8;
+/** Widest label, mirrors `--ds-chart-tooltip-max-w`; longer notes wrap onto more lines. */
+const TOOLTIP_MAX_WIDTH = 240;
+/** Half-size of the diamond that marks a point with a note, and its distance above the point. */
+const NOTE_MARKER_SIZE = 4;
+export const NOTE_MARKER_OFFSET = 8;
+/** Distance between a reference line and its text, and the minimum room between two such texts. */
+export const REFERENCE_LABEL_GAP = 4;
+const REFERENCE_LABEL_SPACING = 14;
 
 export interface ChartLayoutInput {
   /** Data values, in order. */
@@ -36,6 +47,10 @@ export interface ChartLayoutInput {
   height: number;
   /** Formats an axis tick; used to reserve room for the widest label. */
   formatTick: (value: number) => string;
+  /** Reference line values: the value axis grows to include them when they lie outside the data. */
+  references?: readonly number[];
+  /** Show every nth category label. Without it (or when invalid) labels are skipped automatically. */
+  tickEvery?: number;
 }
 
 export interface ChartLayout {
@@ -67,13 +82,16 @@ export function computeLayout({
   width,
   height,
   formatTick,
+  references = [],
+  tickEvery,
 }: ChartLayoutInput): ChartLayout {
   const count = values.length;
   const plotHeight = Math.max(1, height - PLOT_PADDING_BOTTOM - PLOT_PADDING_TOP);
   const tickCount = Math.min(MAX_TICKS, Math.max(2, Math.floor(plotHeight / TICK_MIN_SPACING) + 1));
+  const domain = [...values, ...references].filter(Number.isFinite);
   const scale = niceScale(
-    count ? Math.min(...values) : 0,
-    count ? Math.max(...values) : 0,
+    domain.length ? Math.min(...domain) : 0,
+    domain.length ? Math.max(...domain) : 0,
     tickCount,
   );
   const widest = Math.max(1, ...scale.ticks.map((tick) => formatTick(tick).length));
@@ -92,10 +110,13 @@ export function computeLayout({
     bottom,
     band,
     barWidth: Math.min(BAR_MAX_WIDTH, band * BAR_BAND_RATIO),
-    labelStep: Math.max(
-      1,
-      Math.ceil(count / Math.max(1, Math.floor((right - left) / LABEL_MIN_SPACING))),
-    ),
+    labelStep:
+      tickEvery !== undefined && Number.isFinite(tickEvery) && tickEvery >= 1
+        ? Math.floor(tickEvery)
+        : Math.max(
+            1,
+            Math.ceil(count / Math.max(1, Math.floor((right - left) / LABEL_MIN_SPACING))),
+          ),
     baseline: y(0),
     x: (index) => left + band * index + band / 2,
     y,
@@ -103,17 +124,45 @@ export function computeLayout({
   };
 }
 
+/** Path of the small diamond that marks a point with a note, centered on (`x`, `y`). */
+export function noteMarkerPath(x: number, y: number): string {
+  const r = NOTE_MARKER_SIZE;
+  return `M${x.toFixed(1)} ${(y - r).toFixed(1)} L${(x + r).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y + r).toFixed(1)} L${(x - r).toFixed(1)} ${y.toFixed(1)} Z`;
+}
+
+/**
+ * Where each reference line writes its text: just above the line, or just below it when a
+ * previous text is closer than a line of text, so labels of nearby lines do not overprint.
+ * Returns the baseline Y of the text for each entry of `ys` (in order).
+ */
+export function referenceLabelYs(ys: readonly number[]): number[] {
+  const placed: number[] = [];
+  return ys.map((y) => {
+    const above = y - REFERENCE_LABEL_GAP;
+    const crowded = placed.some((other) => Math.abs(other - above) < REFERENCE_LABEL_SPACING);
+    const text = crowded ? y + REFERENCE_LABEL_SPACING : above;
+    placed.push(text);
+    return text;
+  });
+}
+
 /**
  * Where to put the value label of the active point: centered above the anchor, kept inside
- * the box. `characters` is the length of its text.
+ * the box. `characters` is the length of its first line; `noteCharacters` the length of the
+ * note, which wraps below it, pushing the label up so its bottom edge stays above the anchor.
  */
 export function tooltipPosition(
   characters: number,
   anchorX: number,
   anchorY: number,
   boxWidth: number,
+  noteCharacters = 0,
 ): { left: number; top: number } {
-  const estimated = characters * CHAR_WIDTH + TOOLTIP_PADDING;
+  const perLine = Math.max(1, Math.floor((TOOLTIP_MAX_WIDTH - TOOLTIP_PADDING) / CHAR_WIDTH));
+  const widest = Math.max(characters, Math.min(noteCharacters, perLine));
+  const estimated = Math.min(widest * CHAR_WIDTH + TOOLTIP_PADDING, TOOLTIP_MAX_WIDTH);
+  const lines = 1 + (noteCharacters ? Math.ceil(noteCharacters / perLine) : 0);
+  const height = lines * TOOLTIP_LINE + TOOLTIP_BLOCK_PADDING;
   const left = Math.min(Math.max(0, anchorX - estimated / 2), Math.max(0, boxWidth - estimated));
-  return { left, top: Math.max(0, anchorY - TOOLTIP_OFFSET_Y) };
+  return { left, top: Math.max(0, anchorY - TOOLTIP_GAP - height) };
 }

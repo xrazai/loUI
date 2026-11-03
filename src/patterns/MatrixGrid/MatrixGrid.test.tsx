@@ -323,6 +323,173 @@ describe('MatrixGrid', () => {
     });
   });
 
+  describe('async toggle (GAP-029)', () => {
+    function deferred() {
+      let resolve!: () => void;
+      let reject!: (error: unknown) => void;
+      const promise = new Promise<void>((res, rej) => {
+        resolve = res;
+        reject = rej;
+      });
+      return { promise, resolve, reject };
+    }
+
+    it('shows a pending state on the cell, ignores repeat toggles and clears when it resolves', async () => {
+      const pending = deferred();
+      const onToggle = vi.fn(() => pending.promise);
+      const screen = await renderWithProvider(<Example onToggle={onToggle} />);
+      await userEvent.click(cell(screen, 'Backpack · Gray: not linked'));
+      const busy = screen.getByRole('button', { name: 'Backpack · Gray: not linked, saving' });
+      await expect.element(busy).toHaveAttribute('aria-busy', 'true');
+      await userEvent.click(busy);
+      await userEvent.keyboard('{Enter}');
+      expect(onToggle).toHaveBeenCalledTimes(1);
+      // Other cells stay available.
+      await userEvent.click(cell(screen, 'Backpack · Navy: not linked'));
+      expect(onToggle).toHaveBeenCalledTimes(2);
+      pending.resolve();
+      await expect
+        .element(screen.getByRole('button', { name: 'Backpack · Gray: not linked' }))
+        .not.toHaveAttribute('aria-busy');
+    });
+
+    it('keeps the cell as isLinked reports it and calls onToggleError when the promise rejects', async () => {
+      const pending = deferred();
+      const failure = new Error('offline');
+      const onToggleError = vi.fn();
+      const screen = await renderWithProvider(
+        <Example onToggle={() => pending.promise} onToggleError={onToggleError} />,
+      );
+      await userEvent.click(cell(screen, 'Backpack · Gray: not linked'));
+      pending.reject(failure);
+      await expect.poll(() => onToggleError.mock.calls.length).toBe(1);
+      expect(onToggleError).toHaveBeenCalledWith(failure, 'backpack', 'gray');
+      await expect
+        .element(cell(screen, 'Backpack · Gray: not linked'))
+        .not.toHaveAttribute('aria-busy');
+      await expect
+        .element(screen.getByRole('status'))
+        .toHaveTextContent("Couldn't update Backpack · Gray. Try again.");
+    });
+
+    it('lets a consumer revert an optimistic update in onToggleError', async () => {
+      function Optimistic() {
+        const [linked, setLinked] = useState(false);
+        return (
+          <MatrixGrid
+            aria-label="Optimistic"
+            rows={rows.slice(0, 1)}
+            columns={columns.slice(0, 1)}
+            isLinked={() => linked}
+            onToggle={() => {
+              setLinked(true);
+              return Promise.reject(new Error('nope'));
+            }}
+            onToggleError={() => {
+              setLinked(false);
+            }}
+          />
+        );
+      }
+      const screen = await renderWithProvider(<Optimistic />);
+      await userEvent.click(screen.getByRole('button'));
+      await expect
+        .element(screen.getByRole('button', { name: 'Desk lamp · Navy: not linked' }))
+        .toBeVisible();
+    });
+
+    it('keeps synchronous onToggle behavior unchanged (no pending state)', async () => {
+      const screen = await renderWithProvider(<Example />);
+      await userEvent.click(cell(screen, 'Backpack · Gray: not linked'));
+      await expect
+        .element(cell(screen, 'Backpack · Gray: not linked'))
+        .not.toHaveAttribute('aria-busy');
+    });
+
+    it('names the pending cell in pt-BR', async () => {
+      const pending = deferred();
+      const screen = await renderWithProvider(<Example onToggle={() => pending.promise} />, {
+        locale: 'pt-BR',
+      });
+      await userEvent.click(cell(screen, 'Backpack · Gray: não vinculado'));
+      await expect
+        .element(screen.getByRole('button', { name: 'Backpack · Gray: não vinculado, salvando' }))
+        .toBeVisible();
+      pending.resolve();
+    });
+  });
+
+  describe('sticky headers and focus guides (GAP-029)', () => {
+    function Tall(props: Partial<MatrixGridProps>) {
+      const many = Array.from({ length: 30 }, (_, index) => ({
+        id: `r${String(index)}`,
+        label: `Item ${String(index + 1)}`,
+      }));
+      return (
+        <div style={{ inlineSize: 360, blockSize: 300, display: 'flex' }}>
+          <MatrixGrid
+            aria-label="Tall"
+            rows={many}
+            columns={columns}
+            isLinked={() => false}
+            onToggle={() => undefined}
+            cornerLabel="Item"
+            style={{ flex: 1 }}
+            {...props}
+          />
+        </div>
+      );
+    }
+
+    it('keeps the header row and the row header column in view while the region scrolls', async () => {
+      const screen = await renderWithProvider(<Tall />);
+      const region = screen.getByRole('region').element();
+      region.scrollTo({ top: 400, left: 120 });
+      await expect.poll(() => region.scrollTop).toBeGreaterThan(300);
+      const regionBox = region.getBoundingClientRect();
+      const header = screen.getByRole('columnheader', { name: 'Navy' }).element();
+      expect(Math.abs(header.getBoundingClientRect().top - regionBox.top)).toBeLessThan(40);
+      const rowHeader = screen.getByRole('rowheader').first().element();
+      expect(getComputedStyle(rowHeader).position).toBe('sticky');
+      expect(rowHeader.getBoundingClientRect().left).toBeGreaterThanOrEqual(regionBox.left - 1);
+      expect(rowHeader.getBoundingClientRect().left).toBeLessThan(regionBox.left + 30);
+    });
+
+    it('does not hide a focused cell behind the sticky header', async () => {
+      const screen = await renderWithProvider(<Tall />);
+      await userEvent.keyboard('{Tab}{Tab}');
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}{ArrowRight}');
+      for (let i = 0; i < 12; i += 1) await userEvent.keyboard('{ArrowDown}');
+      const focused = document.activeElement as HTMLElement;
+      const header = screen.getByRole('columnheader', { name: 'Navy' }).element();
+      expect(focused.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        header.getBoundingClientRect().bottom - 1,
+      );
+      const rowHeader = screen.getByRole('rowheader').first().element();
+      expect(focused.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+        rowHeader.getBoundingClientRect().right - 1,
+      );
+    });
+
+    it('highlights the row and the column of the focused cell and clears on blur', async () => {
+      const screen = await renderWithProvider(<Example />);
+      await userEvent.keyboard('{Tab}{Tab}{Tab}');
+      await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+      const guided = [...document.querySelectorAll('[data-guide]')].map((node) =>
+        node.getAttribute('role'),
+      );
+      expect(guided.filter((role) => role === 'row')).toHaveLength(1);
+      expect(guided.filter((role) => role === 'gridcell')).toHaveLength(3);
+      expect(guided.filter((role) => role === 'columnheader')).toHaveLength(1);
+      const row = document.activeElement?.closest('[role="row"]');
+      expect(getComputedStyle(row as Element).backgroundColor).not.toBe(
+        getComputedStyle(screen.getByRole('grid').element()).backgroundColor,
+      );
+      await userEvent.tab();
+      await expect.poll(() => document.querySelectorAll('[data-guide]').length).toBe(0);
+    });
+  });
+
   describe('i18n', () => {
     it('names cells, region and hidden header in pt-BR', async () => {
       const screen = await renderWithProvider(<Example />, { locale: 'pt-BR' });

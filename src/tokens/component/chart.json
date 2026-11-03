@@ -51,6 +51,41 @@
       "$value": "{space.1}",
       "$description": "Vertical padding of the value label of the active Chart point (4px)."
     },
+    "ref-w": {
+      "$type": "dimension",
+      "$value": { "value": 1, "unit": "px" },
+      "$description": "Stroke width of a reference line (average or target) in a Chart (1px)."
+    },
+    "ref-average-dash": {
+      "$type": "dimension",
+      "$value": { "value": 6, "unit": "px" },
+      "$description": "Dash length of an average reference line (6px). Long dashes tell it apart from the target line without color."
+    },
+    "ref-average-gap": {
+      "$type": "dimension",
+      "$value": { "value": 4, "unit": "px" },
+      "$description": "Gap between dashes of an average reference line (4px)."
+    },
+    "ref-target-dash": {
+      "$type": "dimension",
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Dash length of a target reference line (10px). Dash, gap, dot, gap: tells it apart from the average line without color."
+    },
+    "ref-target-dot": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Dot length of a target reference line (2px), between its dashes."
+    },
+    "ref-target-gap": {
+      "$type": "dimension",
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Gap around the dot and between dashes of a target reference line (3px)."
+    },
+    "tooltip-max-w": {
+      "$type": "dimension",
+      "$value": { "value": 240, "unit": "px" },
+      "$description": "Widest the active-point label grows before a long note wraps (240px). Keep in sync with chartLayout.ts."
+    },
     "color": {
       "$type": "color",
       "$value": "{color.accent}",

@@ -8,6 +8,7 @@ import { renderWithProvider } from '../../test/render';
 import type { RenderWithProviderOptions } from '../../test/render';
 import { formatCurrency } from '../../utils/currency';
 import { Chart } from './Chart';
+import { chartAverage } from './chartAverage';
 import type { ChartDatum } from './Chart';
 
 const week: ChartDatum[] = [
@@ -291,6 +292,157 @@ describe('Chart', () => {
     });
   });
 
+  describe('notes', () => {
+    const notes = { 1: 'Free shipping started on this day for every order.' };
+
+    it('marks the point with a diamond shape and adds the note to the table', async () => {
+      const screen = await renderChart(<Chart data={week} aria-label="Sales" notes={notes} />);
+      expect(screen.container.querySelectorAll('svg path')).toHaveLength(1);
+      const headers = [...screen.container.querySelectorAll('thead th')].map(
+        (th) => th.textContent,
+      );
+      expect(headers).toEqual(['Category', 'Value', 'Note']);
+      const rows = screen.container.querySelectorAll('tbody tr');
+      expect(rows[1]?.querySelectorAll('td')[1]?.textContent).toBe(notes[1]);
+      expect(rows[0]?.querySelectorAll('td')[1]?.textContent).toBe('');
+    });
+
+    it('joins the highlight and the note in the table and the announcement', async () => {
+      const screen = await renderChart(
+        <Chart data={week} aria-label="Sales" notes={notes} highlight={{ 1: 'Today' }} />,
+      );
+      await userEvent.keyboard('{Tab}{ArrowRight}{ArrowRight}');
+      expect(liveText(screen)).toBe(
+        'Tue: 58, Today. Free shipping started on this day for every order. 2 of 4',
+      );
+      const rows = screen.container.querySelectorAll('tbody tr');
+      expect(rows[1]?.querySelectorAll('td')[1]?.textContent).toBe(`Today. ${notes[1]}`);
+    });
+
+    it('shows the long note under the value in the label of the active point', async () => {
+      const screen = await renderChart(<Chart data={week} aria-label="Sales" notes={notes} />);
+      await userEvent.keyboard('{Tab}{ArrowRight}{ArrowRight}');
+      await expect.element(screen.getByText('58 · Tue')).toBeVisible();
+      await expect.element(screen.getByText(notes[1], { exact: true }).first()).toBeVisible();
+      expect(screen.container.querySelector('[data-note]')).not.toBeNull();
+    });
+
+    it('does not add a marker or a column for empty notes', async () => {
+      const screen = await renderChart(<Chart data={week} aria-label="Sales" notes={{ 1: '' }} />);
+      expect(screen.container.querySelectorAll('svg path')).toHaveLength(0);
+      expect(screen.container.querySelectorAll('thead th')).toHaveLength(2);
+    });
+  });
+
+  describe('reference lines', () => {
+    const average = {
+      kind: 'average' as const,
+      label: 'Weekly mean',
+      value: chartAverage(week),
+    };
+    const target = { kind: 'target' as const, label: 'Goal', value: 120 };
+
+    it('draws dashed lines with different patterns and their labels as text', async () => {
+      const screen = await renderChart(
+        <Chart data={week} aria-label="Sales" referenceLines={[average, target]} />,
+      );
+      const averageLine = screen.container.querySelector('line[data-kind="average"]') as Element;
+      const targetLine = screen.container.querySelector('line[data-kind="target"]') as Element;
+      const dashAverage = getComputedStyle(averageLine).strokeDasharray;
+      const dashTarget = getComputedStyle(targetLine).strokeDasharray;
+      expect(dashAverage).not.toBe('none');
+      expect(dashTarget).not.toBe('none');
+      expect(dashAverage).not.toBe(dashTarget);
+      const texts = [...screen.container.querySelectorAll('svg text')].map((n) => n.textContent);
+      expect(texts).toContain('Weekly mean 51.5');
+      expect(texts).toContain('Goal 120');
+    });
+
+    it('extends the value axis to include a target above the data', async () => {
+      const screen = await renderChart(
+        <Chart data={week} aria-label="Sales" referenceLines={[target]} />,
+      );
+      const ticks = [...screen.container.querySelectorAll('svg text')].map((n) =>
+        Number(n.textContent),
+      );
+      expect(Math.max(...ticks.filter(Number.isFinite))).toBeGreaterThanOrEqual(120);
+    });
+
+    it('lists the lines in the description and in the last rows of the table', async () => {
+      const screen = await renderChart(
+        <Chart data={week} aria-label="Sales" referenceLines={[average, target]} />,
+      );
+      const id = plot(screen).element().getAttribute('aria-describedby') ?? '';
+      expect(document.getElementById(id)?.textContent).toMatch(
+        /^Reference lines: Average, Weekly mean: 51\.5 and Target, Goal: 120\. 4 data points/,
+      );
+      const footer = [...screen.container.querySelectorAll('tfoot tr')].map((tr) => [
+        tr.querySelector('th')?.textContent,
+        tr.querySelector('td')?.textContent,
+      ]);
+      expect(footer).toEqual([
+        ['Average, Weekly mean', '51.5'],
+        ['Target, Goal', '120'],
+      ]);
+    });
+
+    it('uses the kind alone when the label repeats it, and ignores non-finite values', async () => {
+      const screen = await renderChart(
+        <Chart
+          data={week}
+          aria-label="Sales"
+          referenceLines={[
+            { kind: 'average', label: 'Average', value: 50 },
+            { kind: 'target', label: 'Broken', value: Number.NaN },
+          ]}
+        />,
+      );
+      expect(screen.container.querySelectorAll('tfoot tr')).toHaveLength(1);
+      expect(screen.container.querySelector('tfoot th')?.textContent).toBe('Average');
+    });
+
+    it('adds no footer without lines, and uses the format prop and pt-BR names', async () => {
+      const plain = await renderChart(<Chart data={week} aria-label="Sales" />);
+      expect(plain.container.querySelector('tfoot')).toBeNull();
+      await plain.unmount();
+      const screen = await renderChart(
+        <Chart
+          data={week}
+          aria-label="Vendas"
+          format={(value) => `R$ ${String(value)}`}
+          referenceLines={[{ kind: 'target', label: 'Meta do mês', value: 90 }]}
+        />,
+        { locale: 'pt-BR' },
+      );
+      const image = screen.getByRole('img', { name: 'Vendas' });
+      const id = image.element().getAttribute('aria-describedby') ?? '';
+      expect(document.getElementById(id)?.textContent).toMatch(
+        /^Linhas de referência: Meta, Meta do mês: R\$ 90\./,
+      );
+    });
+  });
+
+  describe('tickEvery', () => {
+    const days: ChartDatum[] = Array.from({ length: 14 }, (_, i) => ({
+      label: `D${String(i + 1)}`,
+      value: i + 1,
+    }));
+    const labelsOf = (container: HTMLElement) =>
+      [...container.querySelectorAll('svg text')]
+        .map((n) => n.textContent)
+        .filter((text) => /^D\d+$/.test(text));
+
+    it('shows every nth category label', async () => {
+      const screen = await renderChart(<Chart data={days} aria-label="Sales" tickEvery={5} />);
+      expect(labelsOf(screen.container)).toEqual(['D1', 'D6', 'D11']);
+    });
+
+    it('shows every label with tickEvery 1', async () => {
+      const screen = await renderChart(<Chart data={days} aria-label="Sales" tickEvery={1} />);
+      expect(labelsOf(screen.container)).toHaveLength(14);
+    });
+  });
+
   describe('keyboard and announcements', () => {
     it('is one tab stop and starts with nothing announced', async () => {
       const screen = await renderChart(<Chart data={week} aria-label="Sales" />);
@@ -435,12 +587,30 @@ describe('Chart', () => {
           highlight={{ 0: 'Low' }}
         />,
         <Chart key="empty" data={[]} aria-label="Sales" />,
+        <Chart
+          key="annotated"
+          data={week}
+          aria-label="Sales"
+          notes={{ 2: 'Store closed for inventory.' }}
+          referenceLines={[
+            { kind: 'average', label: 'Average', value: 52 },
+            { kind: 'target', label: 'Goal', value: 100 },
+          ]}
+        />,
       ];
       for (const chart of cases) {
         const screen = await renderChart(chart);
         await expectNoA11yViolations(screen.container);
         await screen.unmount();
       }
+    });
+
+    it('has no axe violations while a point with a note is active', async () => {
+      const screen = await renderChart(
+        <Chart data={week} aria-label="Sales" notes={{ 1: 'A long explanation of this day.' }} />,
+      );
+      await userEvent.keyboard('{Tab}{ArrowRight}{ArrowRight}');
+      await expectNoA11yViolations(screen.container);
     });
 
     it('has no axe violations while a point is active', async () => {
