@@ -10,7 +10,7 @@ In narrow containers the horizontal orientation shows only the markers and a vis
 
 Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.
 
-- Import: `import { Stepper } from '@loui/ds';`
+- Import: `import { Stepper } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stepper/Stepper.tsx`
 - Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, LongLabels, GoBackToCompletedSteps, RightToLeft

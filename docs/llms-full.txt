@@ -28,13 +28,11 @@ Browse every component live in Storybook: <https://xrazai.github.io/loUI/>. AI t
 
 ### Install
 
-Each version is a [GitHub Release](https://github.com/xrazai/loUI/releases) with the package attached (it is not on npm: ADR-0004). Install the version you want by its URL:
-
 ```sh
-pnpm add https://github.com/xrazai/loUI/releases/download/v0.1.0/loui-ds-0.1.0.tgz react react-dom
+pnpm add loui-ds react react-dom
 ```
 
-To upgrade, install the URL of the newer release (read its notes first: before 1.0 a minor version may break). npm and yarn accept the same URL.
+`npm install loui-ds` and `yarn add loui-ds` work too. To upgrade, run `pnpm update loui-ds` and read the [release notes](https://github.com/xrazai/loUI/releases) first: before 1.0 a minor version may break. Every release also attaches the package tarball, if you need to install a version by URL.
 
 `react-aria-components`, `react-stately` and `lucide-react` are regular dependencies of the package; you do not install them yourself.
 
@@ -43,7 +41,7 @@ To upgrade, install the URL of the newer release (read its notes first: before 1
 Import the stylesheet once, at the root of your app, before any component renders:
 
 ```tsx
-import '@loui/ds/styles.css';
+import 'loui-ds/styles.css';
 ```
 
 It contains, in this layer order, `reset`, `tokens`, `base`, `components` and `utilities`. Because everything sits in named cascade layers, your own unlayered CSS always wins over the design system without specificity tricks.
@@ -53,7 +51,7 @@ The stylesheet sets the dark theme on the page (`bg-canvas` on `html`, `bg` and 
 ### 2. Wrap the app in `DSProvider`
 
 ```tsx
-import { DSProvider } from '@loui/ds';
+import { DSProvider } from 'loui-ds';
 
 export function Root({ children }: { children: React.ReactNode }) {
   return <DSProvider locale="en-US">{children}</DSProvider>;
@@ -87,7 +85,7 @@ function Providers({ children }: { children: React.ReactNode }) {
 ### 3. Use components
 
 ```tsx
-import { Alert, Button } from '@loui/ds';
+import { Alert, Button } from 'loui-ds';
 
 export function Example() {
   return (
@@ -107,7 +105,7 @@ Use `onPress`, not `onClick`: it is the React Aria press event and works for mou
 
 ### Fonts
 
-Geist (UI) and Geist Mono (data) are self-hosted and ship inside the package: `styles.css` references `./fonts/*.woff2` relative to itself, and the build copies them to `dist/fonts`. Nothing is fetched from Google Fonts or a CDN at runtime. Your bundler resolves the font files when it processes `@loui/ds/styles.css`; there is nothing to configure. Both families load with `font-display: swap` and a metric-matched fallback so the layout does not shift.
+Geist (UI) and Geist Mono (data) are self-hosted and ship inside the package: `styles.css` references `./fonts/*.woff2` relative to itself, and the build copies them to `dist/fonts`. Nothing is fetched from Google Fonts or a CDN at runtime. Your bundler resolves the font files when it processes `loui-ds/styles.css`; there is nothing to configure. Both families load with `font-display: swap` and a metric-matched fallback so the layout does not shift.
 
 ### Theming
 
@@ -118,7 +116,7 @@ Dark is the only theme. The semantic token layer (`--ds-bg`, `--ds-surface`, `--
 - Components never touch `window` or `document` while rendering or at import time, so they render on the server.
 - IDs come from React `useId`; React Aria needs no `SSRProvider` with React 19.
 - `useMediaQuery` returns its `defaultValue` (`false`) on the server and corrects after hydration. Prefer CSS media queries for styling.
-- Import `@loui/ds/styles.css` in the root layout so the first paint is already styled.
+- Import `loui-ds/styles.css` in the root layout so the first paint is already styled.
 
 ### Framework notes
 
@@ -132,8 +130,8 @@ The package ships a `"use client"` directive **per module**: every file that use
 
 ```tsx
 // app/layout.tsx (Server Component)
-import '@loui/ds/styles.css';
-import { DSProvider, ToastRegion } from '@loui/ds';
+import 'loui-ds/styles.css';
+import { DSProvider, ToastRegion } from 'loui-ds';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -151,7 +149,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```tsx
 // app/page.tsx (Server Component): components are client references and render on the server too
-import { Button, DataTable } from '@loui/ds';
+import { Button, DataTable } from 'loui-ds';
 ```
 
 Rules that follow from the React Server Components model, not from the library:
@@ -223,7 +221,7 @@ The authoritative values are the design tokens (see the Tokens page). The summar
 
 ### Iconography
 
-- The icon set is **Lucide**, 1.5 px stroke, `currentColor`, **bundled** (never fetched from a CDN at runtime). Import icons from `@loui/ds` (`PlusIcon`, `SearchIcon`, ...), not from `lucide-react`.
+- The icon set is **Lucide**, 1.5 px stroke, `currentColor`, **bundled** (never fetched from a CDN at runtime). Import icons from `loui-ds` (`PlusIcon`, `SearchIcon`, ...), not from `lucide-react`.
 - Icons are decorative unless given a label. Icon-only controls use `IconButton`, which requires a `label`.
 - No emoji. No filled or colored icons. Unicode glyphs (`+`, `×`, `⌘`) only inside labelled icon buttons.
 - Outside the sidebar the system is text-first: actions use a label.
@@ -390,7 +388,7 @@ Measured on `examples/vite-app` (Vite 8, production build): an `AppShell` with `
 | -------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------- |
 | `react-dom` + `react` + `scheduler`                      | ~550 kB             | Fixed cost of React 19.                                                                                  |
 | `react-aria` + `react-aria-components` + `react-stately` | ~620 kB             | Behavior layer (ADR-0001): focus, keyboard, overlays, i18n. Includes translated strings for 30+ locales. |
-| `@loui/ds` (components, i18n, utilities)                 | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
+| `loui-ds` (components, i18n, utilities)                 | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
 | `lucide-react`                                           | ~10 kB              | Only the curated icons that are used.                                                                    |
 
 Minified output: **531 kB (163 kB gzip)** without optimization, **489 kB (150 kB gzip)** with the locale plugin below. The design system's own code is under a tenth of the total; the rest is React and React Aria, which every app built on this system needs anyway.
@@ -433,7 +431,7 @@ Saving in the example: 42 kB minified (14 kB gzip). A locale that is stripped fa
 
 ### 2. Import from the package root
 
-Always `import { Button } from '@loui/ds'`. Bundlers drop what you do not use. Do not import from `@loui/ds/dist/...` paths: they are not part of the public API and can duplicate modules.
+Always `import { Button } from 'loui-ds'`. Bundlers drop what you do not use. Do not import from `loui-ds/dist/...` paths: they are not part of the public API and can duplicate modules.
 
 ### 3. Split heavy screens, not components
 
@@ -1243,7 +1241,7 @@ A stack of sections that expand and collapse. Each header is a heading that wrap
 
 - Handoff source: `components/layout/Accordion.jsx` (TODO `CMP-LAY-04`).
 
-- Import: `import { Accordion } from '@loui/ds';`
+- Import: `import { Accordion } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Accordion/Accordion.tsx`
 - Stories (Storybook title `Components/Accordion`): Default, Plain, InitiallyExpanded, KeyboardSingle, Multiple, DisabledItem, HeadingLevel2, Controlled, LongText, RightToLeft, Focused
@@ -1330,7 +1328,7 @@ from a row to its menu button.
 
 A vertical list of records. Each row has an optional leading node, a title, an optional description, a mono meta value and an optional "more actions" menu. Built on React Aria `GridList`, so rows are reachable with the arrow keys and can run an action.
 
-- Import: `import { ActionList } from '@loui/ds';`
+- Import: `import { ActionList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ActionList/ActionList.tsx`
 - Stories (Storybook title `Components/ActionList`): Default, Actionable, KeyboardNavigation, RowMenu, Borderless, WithLeadingAndLongText, DisabledRow, Empty, CustomEmpty, PortugueseBrazil
@@ -1467,11 +1465,11 @@ heading is the only link (or button), and a pseudo-element extends its hit area 
 card. The accessible name is just the agent name; status, description and footer are the
 description. There is no nested interactive element and no `role="button"` on a `div`.
 
-A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `@loui/ds/patterns`.
+A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/AgentCard` (TODO `CMP-AGT-01`).
 
-- Import: `import { AgentCard } from '@loui/ds/patterns';`
+- Import: `import { AgentCard } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/AgentCard/AgentCard.tsx`
 - Stories (Storybook title `Patterns/AgentCard`): Default, Testing, Paused, ComingSoon, AsLink, NothingPending, LongText, WithoutIcon, Grid, RightToLeft
@@ -1589,7 +1587,7 @@ The icon is decorative and a visually hidden prefix names the tone for screen re
 
 An inline message with a tone, an icon, an optional title, one action and an optional dismiss button.
 
-- Import: `import { Alert } from '@loui/ds';`
+- Import: `import { Alert } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Alert/Alert.tsx`
 - Stories (Storybook title `Components/Alert`): Default, Success, Warning, Danger, Urgent, StaticNotice, TitleOnly, TextOnly, WithAction, Dismissible, LongText, AllTones, RightToLeft
@@ -1701,11 +1699,11 @@ It is an `article` named by its heading ("Review buyer_sp"). Send and discard ar
 and ghost buttons on purpose: a screen has many of these cards and only one primary action.
 They act immediately; the consumer shows an Undo toast instead of asking for confirmation.
 
-A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `@loui/ds/patterns`.
+A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ApprovalCard` (TODO `CMP-AGT-02`).
 
-- Import: `import { ApprovalCard } from '@loui/ds/patterns';`
+- Import: `import { ApprovalCard } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ApprovalCard/ApprovalCard.tsx`
 - Stories (Storybook title `Patterns/ApprovalCard`): Default, Review, LowRatingWithFlag, Minimal, LongText, RightToLeft, SendWithUndo
@@ -1849,7 +1847,7 @@ inert, `Escape` and the scrim close it, and focus returns to the toggle. The she
 
 The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
 
-- Import: `import { AppShell } from '@loui/ds';`
+- Import: `import { AppShell } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/AppShell/AppShell.tsx`
 - Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft
@@ -1967,7 +1965,7 @@ inside `AppShell`.
 
 The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
 
-- Import: `import { AppShellNavToggle } from '@loui/ds';`
+- Import: `import { AppShellNavToggle } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/AppShell/AppShell.tsx`
 - Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft
@@ -2061,7 +2059,7 @@ initials.
 
 A circular photo or the initials of a person, in grays. There is no color per person.
 
-- Import: `import { Avatar } from '@loui/ds';`
+- Import: `import { Avatar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Avatar/Avatar.tsx`
 - Stories (Storybook title `Components/Avatar`): Default, Sizes, WithPhoto, BrokenPhoto, Decorative, Shades, Stacked, LongName, RightToLeft
@@ -2144,7 +2142,7 @@ dot only reinforce it.
 
 A pill with a short status label. The text always states the status; the tone and the dot only reinforce it.
 
-- Import: `import { Badge } from '@loui/ds';`
+- Import: `import { Badge } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Badge/Badge.tsx`
 - Stories (Storybook title `Components/Badge`): Default, Accent, Success, Warning, Danger, WithoutDot, AllTones, LongText, RightToLeft
@@ -2225,7 +2223,7 @@ The icon is decorative and a visually hidden prefix names the tone for screen re
 
 A persistent, full-width message for a whole page or section: maintenance, a limited account, an offline mode. It has a tone, an icon, an optional title, one action and an optional dismiss button.
 
-- Import: `import { Banner } from '@loui/ds';`
+- Import: `import { Banner } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Banner/Banner.tsx`
 - Stories (Storybook title `Components/Banner`): Default, Success, Warning, Danger, Urgent, Announced, TitleOnly, TextOnly, Dismissible, LongText, AllTones, RightToLeft
@@ -2355,7 +2353,7 @@ The path from the root to the current page, as an ordered list of links inside a
 
 - Handoff source: `components/layout/Breadcrumb.jsx` (TODO `CMP-LAY-03`).
 
-- Import: `import { Breadcrumb } from '@loui/ds';`
+- Import: `import { Breadcrumb } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Breadcrumb/Breadcrumb.tsx`
 - Stories (Storybook title `Components/Breadcrumb`): Default, SingleItem, KeyboardNavigation, LongTrail, RouterNavigation, Portuguese, RightToLeft, Focused
@@ -2440,7 +2438,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 
 - Handoff source: `components/forms/Button` (CMP-FRM-01).
 
-- Import: `import { Button } from '@loui/ds';`
+- Import: `import { Button } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Button/Button.tsx`
 - Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, LongText, Rtl, KeyboardActivation, Focused, Hovered
@@ -2558,7 +2556,7 @@ ringed and named "Today".
 
 `DatePicker` is a date field (typed segments) with a calendar popover and "Today" / "Clear" buttons. `Calendar` is the standalone month grid. Built on React Aria `DatePicker`, `DateInput`, `DateSegment`, `Calendar`, `CalendarGrid`, `CalendarCell`, `Popover`. Task: CMP-INP-02.
 
-- Import: `import { Calendar } from '@loui/ds';`
+- Import: `import { Calendar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/Calendar.tsx`
 - Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
@@ -2670,7 +2668,7 @@ The component imports `@internationalized/date`, which React Aria already depend
 
 A bordered surface that groups related content. With a `title` it is a labelled region.
 
-- Import: `import { Card } from '@loui/ds';`
+- Import: `import { Card } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Card/Card.tsx`
 - Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt
@@ -2764,7 +2762,7 @@ languages (time reads left to right in charts).
 
 A small responsive bar or line chart for one series, drawn in SVG with no chart library. Grid and axis are quiet (dashed lines, mono labels); the data is reachable by keyboard and by a hidden table.
 
-- Import: `import { Chart } from '@loui/ds';`
+- Import: `import { Chart } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Chart/Chart.tsx`
 - Stories (Storybook title `Components/Chart`): Default, Line, Highlight, LineHighlight, NegativeValues, SmallValues, AllZero, SinglePoint, Empty, Tones, CustomHeight, ManyPoints, KeyboardNavigation, Hover, PortugueseBrazil
@@ -2907,11 +2905,11 @@ and then the full reply once, when it is complete.
 
 Message content is plain text. Pass `renderContent` to render sanitized markdown.
 
-A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `@loui/ds/patterns`.
+A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ChatPanel` (TODO `CMP-AGT-03`; groundwork for `AI-013`).
 
-- Import: `import { ChatPanel } from '@loui/ds/patterns';`
+- Import: `import { ChatPanel } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ChatPanel/ChatPanel.tsx`
 - Stories (Storybook title `Patterns/ChatPanel`): Empty, Conversation, Busy, Streaming, ErrorWithRetry, PrimarySend, LongConversation, LongText, CustomRenderer, RightToLeft, InteractiveStreaming, InteractiveError
@@ -3075,7 +3073,7 @@ State props follow React Aria: `isSelected`, `defaultSelected` and `onChange(isS
 
 A checkbox with a native `<input type="checkbox">`, an 18px box and an optional description, plus a labelled group for several related checkboxes. Built on React Aria `CheckboxField` + `CheckboxButton` (the non-deprecated pair that supports a description and an error outside the label) and `CheckboxGroup`. Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Checkbox } from '@loui/ds';`
+- Import: `import { Checkbox } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Checkbox/Checkbox.tsx`
 - Stories (Storybook title `Components/Checkbox`): Default, Checked, Indeterminate, WithDescription, Required, Invalid, Disabled, ReadOnly, LongLabel, WithoutVisibleLabel, InAGroup, GroupHorizontal, GroupInvalid
@@ -3184,7 +3182,7 @@ one description and error. `value`, `defaultValue` and `onChange(values)` follow
 
 A checkbox with a native `<input type="checkbox">`, an 18px box and an optional description, plus a labelled group for several related checkboxes. Built on React Aria `CheckboxField` + `CheckboxButton` (the non-deprecated pair that supports a description and an error outside the label) and `CheckboxGroup`. Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { CheckboxGroup } from '@loui/ds';`
+- Import: `import { CheckboxGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Checkbox/CheckboxGroup.tsx`
 - Stories (Storybook title `Components/Checkbox`): Default, Checked, Indeterminate, WithDescription, Required, Invalid, Disabled, ReadOnly, LongLabel, WithoutVisibleLabel, InAGroup, GroupHorizontal, GroupInvalid
@@ -3294,7 +3292,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 
 - Handoff source: `components/erp/ChoiceTiles.jsx` (TODO `CMP-PAT-08`).
 
-- Import: `import { ChoiceTiles } from '@loui/ds';`
+- Import: `import { ChoiceTiles } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ChoiceTiles/ChoiceTiles.tsx`
 - Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused
@@ -3404,9 +3402,9 @@ div[role=radiogroup] aria-labelledby=label
 focus to the matching source in the `SourceList`, so it works with a keyboard and a screen
 reader: the name is "Source 2: Title", the visible text is the number.
 
-The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.
 
-- Import: `import { Citation } from '@loui/ds/patterns';`
+- Import: `import { Citation } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/SourceList/SourceList.tsx`
 - Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations
@@ -3493,7 +3491,7 @@ It does not highlight syntax.
 
 Monospace code: inline in a sentence, or a block (`pre` + `code`).
 
-- Import: `import { Code } from '@loui/ds';`
+- Import: `import { Code } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Code/Code.tsx`
 - Stories (Storybook title `Typography/Code`): Default, Block, BlockScrolls, InlineLongToken, RightToLeft
@@ -3578,11 +3576,11 @@ pre > code           block (scrolls sideways, keeps whitespace)
 Why a toggle and not a radio: the handoff uses it to pick several colors (a product's
 available colors). To pick exactly one color, use `ChoiceTiles` or `RadioGroup` instead.
 
-A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `@loui/ds/patterns`.
+A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).
 
-- Import: `import { ColorOption } from '@loui/ds/patterns';`
+- Import: `import { ColorOption } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ColorOption/ColorOption.tsx`
 - Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused
@@ -3686,7 +3684,7 @@ Use it for long lists (10 or more options); for fewer prefer `Select`.
 
 A text input with a filtered list of options in a popover (ARIA combobox pattern). Built on React Aria `ComboBox` (`Input`, `Button`, `Popover`, `ListBox`). Shared field behavior is in [Field](../Field/Field.md). Task: CMP-INP-01.
 
-- Import: `import { Combobox } from '@loui/ds';`
+- Import: `import { Combobox } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
 - Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, SelectWithPointer, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText
@@ -3831,7 +3829,7 @@ it also lists the shortcuts registered through `useHotkeys`.
 
 A modal search box that finds and runs commands from the keyboard. It opens with `Mod+K` (Command K on Apple platforms, Control K elsewhere), filters a grouped list as you type and runs the chosen command. It is the "⌘K for everything" of AGENTS.md section 5.
 
-- Import: `import { CommandPalette } from '@loui/ds';`
+- Import: `import { CommandPalette } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CommandPalette/CommandPalette.tsx`
 - Stories (Storybook title `Components/CommandPalette`): Default, Open, Filtered, Empty, WithRecent, GivenOrder, LongLabels, WithRegisteredHotkeys, Controlled, PortugueseBrazil, RightToLeft
@@ -3986,7 +3984,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 
 - Handoff source: `components/feedback/Dialog` (CMP-FBK-03). Overlay management: ARCH-005.
 
-- Import: `import { ConfirmDialog } from '@loui/ds';`
+- Import: `import { ConfirmDialog } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/ConfirmDialog.tsx`
 - Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
@@ -4118,7 +4116,7 @@ It carries no landmark role; put it inside `main`.
 
 Centers page content and limits its line length: a maximum inline size and a side gutter.
 
-- Import: `import { Container } from '@loui/ds';`
+- Import: `import { Container } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Container/Container.tsx`
 - Stories (Storybook title `Layout/Container`): Default, Small, Medium, Large, Full, NoGutter, Narrow, RightToLeft
@@ -4201,7 +4199,7 @@ The form receives the integer minor units under `name`.
 
 A money field. The value is an **integer in minor units** plus an ISO 4217 `currency` (ADR-0006), never a float. Built on [Input](../Input/Input.md); the formatting comes from `Intl` through `formatCurrency`-style helpers and `parseCurrencyInput` (see `docs/architecture/utilities.md`). Task: CMP-INP-05.
 
-- Import: `import { CurrencyInput } from '@loui/ds';`
+- Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
 - Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
@@ -4262,7 +4260,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 #### When not to use
 
 - Quantities or measures: `NumberField`.
-- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `@loui/ds`.
+- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `loui-ds`.
 
 #### Editing model: digits shift in from the right (decision)
 
@@ -4333,7 +4331,7 @@ lists are alphabetical by default in this design system, so pass sorted rows or 
 
 A table of records with locale-aware sorting, row selection with a bulk action bar, clickable rows, client-side pagination, loading and empty states. Built on React Aria `Table`: a real `<table>` with grid keyboard navigation, `aria-sort` on sortable headers and labelled selection checkboxes.
 
-- Import: `import { DataTable } from '@loui/ds';`
+- Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
 - Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
@@ -4532,7 +4530,7 @@ The form receives the ISO date under `name`. Range selection is not part of this
 
 `DatePicker` is a date field (typed segments) with a calendar popover and "Today" / "Clear" buttons. `Calendar` is the standalone month grid. Built on React Aria `DatePicker`, `DateInput`, `DateSegment`, `Calendar`, `CalendarGrid`, `CalendarCell`, `Popover`. Task: CMP-INP-02.
 
-- Import: `import { DatePicker } from '@loui/ds';`
+- Import: `import { DatePicker } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/DatePicker.tsx`
 - Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar
@@ -4670,7 +4668,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { Description } from '@loui/ds';`
+- Import: `import { Description } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
@@ -4774,7 +4772,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 
 - Handoff source: `components/feedback/Dialog` (CMP-FBK-03). Overlay management: ARCH-005.
 
-- Import: `import { Dialog } from '@loui/ds';`
+- Import: `import { Dialog } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/Dialog.tsx`
 - Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft
@@ -4901,7 +4899,7 @@ separate related things; use a divider where the content changes topic.
 
 A 1px line that separates groups of content. Built on React Aria `Separator`.
 
-- Import: `import { Divider } from '@loui/ds';`
+- Import: `import { Divider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Divider/Divider.tsx`
 - Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Vertical, Weights
@@ -4985,7 +4983,7 @@ A circular meter for one proportion: how much of a whole is used, done or filled
 
 - TODO `GAP-007`.
 
-- Import: `import { DonutMeter } from '@loui/ds';`
+- Import: `import { DonutMeter } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DonutMeter/DonutMeter.tsx`
 - Stories (Storybook title `Components/DonutMeter`): Default, Small, Large, Neutral, Success, Warning, Danger, Empty, Full, CustomRange, CustomCenter, WithoutCenterValue, AriaLabelOnly, LongLabel, Portuguese, RightToLeft
@@ -5093,7 +5091,7 @@ Use `Sheet` instead when the panel is a task that must be finished or dismissed 
 
 A non-modal side panel that sits next to the content, for filters, inspectors and secondary navigation. There is no scrim, the page stays interactive and focus is not trapped. Generic: it lives in the core entry point.
 
-- Import: `import { Drawer } from '@loui/ds';`
+- Import: `import { Drawer } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Drawer/Drawer.tsx`
 - Stories (Storybook title `Components/Drawer`): Default, AtStart, Small, Large, Region, Unpadded, LongContent, Rtl, OpenAndCloseWithKeyboard
@@ -5222,7 +5220,7 @@ A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Du
 
 - Handoff source: `components/erp/DueIndicator.jsx` (TODO `CMP-PAT-07`).
 
-- Import: `import { DueIndicator } from '@loui/ds';`
+- Import: `import { DueIndicator } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DueIndicator/DueIndicator.tsx`
 - Stories (Storybook title `Components/DueIndicator`): Default, Overdue, DueToday, DueTomorrow, Later, Paid, WithoutDate, LongDate, AcrossDaylightSaving, AllTones, Portuguese, RightToLeft
@@ -5307,7 +5305,7 @@ span[data-tone=danger|warning|neutral|success]
 
 A typographic placeholder for a list, table or panel that has nothing to show. It says what happened and what the user can do about it.
 
-- Import: `import { EmptyState } from '@loui/ds';`
+- Import: `import { EmptyState } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/EmptyState/EmptyState.tsx`
 - Stories (Storybook title `Components/EmptyState`): Default, WithActions, Compact, WithoutBorder, WithIcon, TitleOnly, LongText, RightToLeft
@@ -5402,7 +5400,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { FieldError } from '@loui/ds';`
+- Import: `import { FieldError } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
@@ -5496,7 +5494,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { FieldMessages } from '@loui/ds';`
+- Import: `import { FieldMessages } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
@@ -5593,7 +5591,7 @@ description, and disabled propagation. Use it for a set of fields that answer on
 
 A group of related fields under a caption: a real `fieldset` with a `legend`, an optional description and disabled propagation.
 
-- Import: `import { FieldSet } from '@loui/ds';`
+- Import: `import { FieldSet } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/FieldSet/FieldSet.tsx`
 - Stories (Storybook title `Components/FieldSet`): Default, WithDescription, Disabled, WithRadioGroup, LongText, RightToLeft
@@ -5669,7 +5667,7 @@ state: pass `progress` to show a bar per file.
 
 A drop zone with a "Choose files" button and the list of added files. Built on React Aria `DropZone` and `FileTrigger`; progress bars use [Progress](../Progress/Progress.md). The component validates and lists files; it uploads nothing. Task: CMP-INP-03.
 
-- Import: `import { FileUpload } from '@loui/ds';`
+- Import: `import { FileUpload } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/FileUpload/FileUpload.tsx`
 - Stories (Storybook title `Components/FileUpload`): Default, WithFiles, Validation, SingleFile, WithProgress, Disabled, LongFileName
@@ -5809,7 +5807,7 @@ a disabled submit gives no way to learn what is wrong.
 
 A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
 
-- Import: `import { Form } from '@loui/ds';`
+- Import: `import { Form } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Form/Form.tsx`
 - Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft
@@ -5907,7 +5905,7 @@ move focus to the field. It renders nothing while the form is valid. Place it in
 
 A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
 
-- Import: `import { FormErrorSummary } from '@loui/ds';`
+- Import: `import { FormErrorSummary } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Form/Form.tsx`
 - Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft
@@ -5983,7 +5981,7 @@ token keys.
 
 A grid of equal columns: either a fixed number, or as many as fit with a minimum item width.
 
-- Import: `import { Grid } from '@loui/ds';`
+- Import: `import { Grid } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Grid/Grid.tsx`
 - Stories (Storybook title `Layout/Grid`): Default, TwoColumns, AutoFillMedium, AutoFillSmall, AutoFillLarge, NarrowContainer, LongText, RightToLeft
@@ -6062,7 +6060,7 @@ stays correct while the design picks the size.
 
 A heading whose semantic level (`h1` to `h6`) and visual size are separate choices.
 
-- Import: `import { Heading } from '@loui/ds';`
+- Import: `import { Heading } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Heading/Heading.tsx`
 - Stories (Storybook title `Typography/Heading`): Default, Display, Title, HeadingSize, LevelIndependentOfSize, LongText, RightToLeft
@@ -6136,7 +6134,7 @@ An inline SVG icon from the curated Lucide set. It inherits the text color, draw
 - Replaces: the runtime `unpkg.com/lucide-static` CSS-mask loading (ICON-001), text glyphs used as icons (ICON-002) and the ad hoc icon rules (ICON-003).
 - Built on: `lucide-react`, bundled and tree-shakeable. No network access, no CDN.
 
-- Import: `import { Icon } from '@loui/ds';`
+- Import: `import { Icon } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Icon/Icon.tsx`
 - Stories (Storybook title `Components/Icon`): Default, Sizes, WithLabel, InheritsColor, DirectionalRtl, Gallery
@@ -6181,7 +6179,7 @@ A single `<svg>` (24x24 viewBox) with a `currentColor` stroke and no fill. Size 
 
 #### The curated set
 
-Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from '@loui/ds'`.
+Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from 'loui-ds'`.
 
 `iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).
 
@@ -6204,7 +6202,7 @@ arrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, ch
 #### Examples
 
 ```tsx
-import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui/ds';
+import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from 'loui-ds';
 
 <Button leading={<Icon icon={PlusIcon} size="sm" />}>Create order</Button>;
 
@@ -6229,7 +6227,7 @@ A square button that holds one icon and has a required accessible name. Built on
 
 - Handoff source: `components/forms/IconButton` (CMP-FRM-02).
 
-- Import: `import { IconButton } from '@loui/ds';`
+- Import: `import { IconButton } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/IconButton/IconButton.tsx`
 - Stories (Storybook title `Components/IconButton`): Default, Ghost, Variants, Sizes, Disabled, Toolbar, AccessibleName, KeyboardActivation, Focused, Hovered
@@ -6329,7 +6327,7 @@ Direction follows the writing mode, so it mirrors in right-to-left languages.
 
 A horizontal row of children with one consistent gap. It wraps by default, so a row never overflows a narrow screen.
 
-- Import: `import { Inline } from '@loui/ds';`
+- Import: `import { Inline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Inline/Inline.tsx`
 - Stories (Storybook title `Layout/Inline`): Default, LargeGap, JustifyBetween, JustifyEnd, AlignBaseline, Wrapping, NoWrap, AsList, RightToLeft
@@ -6415,7 +6413,7 @@ A two-step confirmation in place: a button that turns into a question with Cance
 
 - Handoff source: `components/feedback/InlineConfirm` (CMP-FBK-07).
 
-- Import: `import { InlineConfirm } from '@loui/ds';`
+- Import: `import { InlineConfirm } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/InlineConfirm/InlineConfirm.tsx`
 - Stories (Storybook title `Components/InlineConfirm`): Default, Asking, EscapeCancels, ConfirmByKeyboard, FocusOnConfirm, Neutral, Small, DefaultPrompt, Disabled
@@ -6519,7 +6517,7 @@ they never break the focus ring (a defect of the handoff).
 
 Single-line text field with a label, helper text and error text wired together. Built on React Aria `TextField` + `Input`; see [Field](../Field/Field.md) for the shared states, spacing and validation timing.
 
-- Import: `import { Input } from '@loui/ds';`
+- Import: `import { Input } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Input/Input.tsx`
 - Stories (Storybook title `Components/Input`): Default, WithDescription, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers
@@ -6650,7 +6648,7 @@ on Apple platforms and as Ctrl elsewhere, and gives screen readers the spoken ke
 
 A keyboard shortcut hint in mono type. It renders a real `<kbd>` element.
 
-- Import: `import { Kbd } from '@loui/ds';`
+- Import: `import { Kbd } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Kbd/Kbd.tsx`
 - Stories (Storybook title `Components/Kbd`): Default, Apple, Windows, SingleKey, Arrows, WithChildren, InText, PortugueseLocale, RightToLeft
@@ -6743,7 +6741,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { Label } from '@loui/ds';`
+- Import: `import { Label } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
@@ -6856,13 +6854,13 @@ optional running balance. The sign is text (`+` / `−`) as well as color. Built
 Amounts are integers in minor units (ADR-0006) formatted with `Intl`: pass `currency` for
 money, `format` for anything else, or neither for plain quantities.
 
-Import it from `@loui/ds/patterns`.
+Import it from `loui-ds/patterns`.
 
-A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `@loui/ds/patterns`.
+A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).
 
-- Import: `import { LedgerList } from '@loui/ds/patterns';`
+- Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
 - Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, Portuguese, RightToLeft, Focused
@@ -6935,7 +6933,7 @@ ul aria-label
 #### Examples
 
 ```tsx
-import { LedgerList } from '@loui/ds/patterns';
+import { LedgerList } from 'loui-ds/patterns';
 
 <LedgerList
   aria-label="Account activity"
@@ -6966,7 +6964,7 @@ label in addition to the pressed state read by screen readers.
 
 A list of the series of a chart: swatch, name and, optionally, a value. With `interactive` each item is a toggle button that hides or shows its series, and the legend reports which ones are hidden so the chart can leave them out.
 
-- Import: `import { Legend } from '@loui/ds';`
+- Import: `import { Legend } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Legend/Legend.tsx`
 - Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft
@@ -7086,7 +7084,7 @@ A link to another page, section or site. Built on React Aria's `Link`: a real `<
 
 - Handoff source: none (the handoff only had underlined `<a>` styles); part of GAP-002.
 
-- Import: `import { Link } from '@loui/ds';`
+- Import: `import { Link } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Link/Link.tsx`
 - Stories (Storybook title `Components/Link`): Default, InText, Standalone, External, Disabled, KeyboardActivation, Focused
@@ -7200,13 +7198,13 @@ cell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.
 Each cell is a button named "{row} · {column}: linked" / "not linked" (messages). The grid
 scrolls horizontally inside a labelled, focusable region.
 
-Import it from `@loui/ds/patterns`.
+Import it from `loui-ds/patterns`.
 
-A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `@loui/ds/patterns`.
+A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/MatrixGrid.jsx` (TODO `CMP-PAT-11`).
 
-- Import: `import { MatrixGrid } from '@loui/ds/patterns';`
+- Import: `import { MatrixGrid } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/MatrixGrid/MatrixGrid.tsx`
 - Stories (Storybook title `Patterns/MatrixGrid`): Default, WithCountAndHint, CheckContrast, WithoutColors, ManyColumns, LongLabels, Empty, KeyboardNavigation, Portuguese, RightToLeft, Focused
@@ -7285,7 +7283,7 @@ div.root
 #### Examples
 
 ```tsx
-import { MatrixGrid } from '@loui/ds/patterns';
+import { MatrixGrid } from 'loui-ds/patterns';
 
 <MatrixGrid
   aria-label="Product colors"
@@ -7320,7 +7318,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { Menu } from '@loui/ds';`
+- Import: `import { Menu } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -7455,7 +7453,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { MenuItem } from '@loui/ds';`
+- Import: `import { MenuItem } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -7577,7 +7575,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { MenuSection } from '@loui/ds';`
+- Import: `import { MenuSection } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -7693,7 +7691,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { MenuSeparator } from '@loui/ds';`
+- Import: `import { MenuSeparator } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -7796,7 +7794,7 @@ progress of a task. Built on React Aria `Meter` (`role="meter"`).
 
 A thin bar (4 px) with a label and a value in mono type. `Progress` shows the progress of a task, determinate or indeterminate (React Aria `ProgressBar`, `role="progressbar"`). `Meter` shows a quantity within a range (React Aria `Meter`, `role="meter"`) and shares the same look.
 
-- Import: `import { Meter } from '@loui/ds';`
+- Import: `import { Meter } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Progress/Progress.tsx`
 - Stories (Storybook title `Components/Progress`): Default, WithoutLabel, ShowValue, Empty, Complete, Warning, Danger, Indeterminate, AllTones, AsMeter, RightToLeft
@@ -7883,7 +7881,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { MoreActionsMenu } from '@loui/ds';`
+- Import: `import { MoreActionsMenu } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -8024,7 +8022,7 @@ One entry of a navigation list: a real link (or a button) with an optional icon 
 
 - Handoff source: `components/navigation/NavItem.jsx` (TODO `CMP-NAV-03`).
 
-- Import: `import { NavItem } from '@loui/ds';`
+- Import: `import { NavItem } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/NavItem/NavItem.tsx`
 - Stories (Storybook title `Components/NavItem`): Default, Active, AsButton, WithoutIcon, WithCount, CountTones, ZeroCountHidden, Disabled, LongLabel, RouterNavigation, PortugueseCount, RightToLeft, Focused
@@ -8161,7 +8159,7 @@ blur or `Enter`; values are clamped to the limits and snapped to `step`.
 
 A number input with minus and plus steppers; the successor of the handoff `Stepper`. Built on React Aria `NumberField` (`Group`, `Input`, two `Button`s in the `decrement` / `increment` slots), styled like [Input](../Input/Input.md). Task: CMP-PAT-06.
 
-- Import: `import { NumberField } from '@loui/ds';`
+- Import: `import { NumberField } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/NumberField/NumberField.tsx`
 - Stories (Storybook title `Components/NumberField`): Default, KeyboardContract, TypingClampsToLimits, WithSuffix, FormattedUnit, WithDescription, Required, Invalid, Disabled, ReadOnly, AtLimit, Sizes, Controlled
@@ -8292,7 +8290,7 @@ Previous and next buttons, numbered page buttons with ellipses and a text that s
 
 - Handoff source: `components/data/Pagination.jsx` (TODO `CMP-DAT-02`).
 
-- Import: `import { Pagination } from '@loui/ds';`
+- Import: `import { Pagination } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Pagination/Pagination.tsx`
 - Stories (Storybook title `Components/Pagination`): Default, WithRange, MiddlePage, LastPage, FewPages, SinglePage, NoResults, KeyboardNavigation, FocusStaysAfterLastPage, Controlled, Portuguese, NarrowContainer, RightToLeft, Focused
@@ -8398,7 +8396,7 @@ A floating surface that opens from a trigger and holds interactive content. Buil
 
 - Handoff source: `components/navigation/Popover` (CMP-NAV-04).
 
-- Import: `import { Popover } from '@loui/ds';`
+- Import: `import { Popover } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Popover/Popover.tsx`
 - Stories (Storybook title `Components/Popover`): Default, Open, WithArrow, AboveTrigger, AlignedToEnd, KeyboardOpenAndRestoreFocus, CloseFromInside
@@ -8491,7 +8489,7 @@ For a measured quantity that is not a task (disk used, quota) use `Meter`.
 
 A thin bar (4 px) with a label and a value in mono type. `Progress` shows the progress of a task, determinate or indeterminate (React Aria `ProgressBar`, `role="progressbar"`). `Meter` shows a quantity within a range (React Aria `Meter`, `role="meter"`) and shares the same look.
 
-- Import: `import { Progress } from '@loui/ds';`
+- Import: `import { Progress } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Progress/Progress.tsx`
 - Stories (Storybook title `Components/Progress`): Default, WithoutLabel, ShowValue, Empty, Complete, Warning, Danger, Indeterminate, AllTones, AsMeter, RightToLeft
@@ -8581,7 +8579,7 @@ gap, and beyond four parts the ramp repeats with a hatch so they never look alik
 
 One bar split into the parts of a whole (payment methods, composition), with a text summary for assistive technology and an optional legend with the percentage and value of each part.
 
-- Import: `import { ProportionBar } from '@loui/ds';`
+- Import: `import { ProportionBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ProportionBar/ProportionBar.tsx`
 - Stories (Storybook title `Components/ProportionBar`): Default, WithLegend, EightParts, ExplicitColors, ZeroPart, AllZero, OneDecimalPercent, LongLabels, PortugueseBrazil
@@ -8697,7 +8695,7 @@ Neutral by default: signal colors are not used for categories.
 
 A labelled set of mutually exclusive options with native radio inputs. Built on React Aria `RadioGroup` + `RadioField` + `RadioButton` (the non-deprecated pair that supports a description per option). Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Radio } from '@loui/ds';`
+- Import: `import { Radio } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RadioGroup/RadioGroup.tsx`
 - Stories (Storybook title `Components/RadioGroup`): Default, WithSelection, Horizontal, WithDescriptions, Required, Invalid, Disabled, DisabledOption, ReadOnly, LongLabels
@@ -8803,7 +8801,7 @@ A group needs a name: pass `label`, `aria-label` or `aria-labelledby`.
 
 A labelled set of mutually exclusive options with native radio inputs. Built on React Aria `RadioGroup` + `RadioField` + `RadioButton` (the non-deprecated pair that supports a description per option). Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { RadioGroup } from '@loui/ds';`
+- Import: `import { RadioGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RadioGroup/RadioGroup.tsx`
 - Stories (Storybook title `Components/RadioGroup`): Default, WithSelection, Horizontal, WithDescriptions, Required, Invalid, Disabled, DisabledOption, ReadOnly, LongLabels
@@ -8915,7 +8913,7 @@ The list renders the items as given; pass `sort` and `limit` for a "top N". Put 
 
 An ordered list of items with a value, a bar relative to the largest value and an optional detail. Rows can be plain or buttons. Meant to sit inside a `Card` without body padding.
 
-- Import: `import { RankList } from '@loui/ds';`
+- Import: `import { RankList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RankList/RankList.tsx`
 - Stories (Storybook title `Components/RankList`): Default, GivenOrder, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil
@@ -9037,7 +9035,7 @@ A read-only star rating, such as a review score. One image with a text alternati
 
 - Handoff source: `components/display/Rating` (TODO `CMP-DSP-06`).
 
-- Import: `import { Rating } from '@loui/ds';`
+- Import: `import { Rating } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Rating/Rating.tsx`
 - Stories (Storybook title `Components/Rating`): Default, HalfStar, Empty, Full, WithValue, Sizes, CustomScale, OutOfRange, RightToLeft
@@ -9130,7 +9128,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { RequiredMark } from '@loui/ds';`
+- Import: `import { RequiredMark } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation
@@ -9236,9 +9234,9 @@ removes it. A polite live region says "Feedback sent" or "Feedback removed" afte
 The first render never announces anything. The buttons show text only for now: thumbs, copy
 and refresh icons are not part of the curated icon set yet.
 
-Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.
+Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `loui-ds/patterns`.
 
-- Import: `import { ResponseFeedback } from '@loui/ds/patterns';`
+- Import: `import { ResponseFeedback } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ResponseFeedback/ResponseFeedback.tsx`
 - Stories (Storybook title `Patterns/ResponseFeedback`): Default, RatedBad, RatingOnly, Regenerating, Disabled, RightToLeft
@@ -9338,7 +9336,7 @@ always required.
 
 A scrolling container with thin, themed scrollbars that stays keyboard accessible.
 
-- Import: `import { ScrollArea } from '@loui/ds';`
+- Import: `import { ScrollArea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ScrollArea/ScrollArea.tsx`
 - Stories (Storybook title `Layout/ScrollArea`): Default, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
@@ -9413,7 +9411,7 @@ Aria `SearchField` (plain) or `ComboBox` (with `suggestions`).
 
 A search box: leading search icon, clear button, optional decorative shortcut hint and optional suggestions with accent-insensitive match highlighting. Built on React Aria `SearchField` (plain) or `ComboBox` (with `suggestions`). Task: CMP-INP-06.
 
-- Import: `import { SearchInput } from '@loui/ds';`
+- Import: `import { SearchInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SearchInput/SearchInput.tsx`
 - Stories (Storybook title `Components/SearchInput`): Default, ClearButton, WithShortcutHint, Landmark, WithSuggestions, AccentInsensitiveHighlight, NoSuggestions, Disabled, VisibleLabel, Sizes
@@ -9555,7 +9553,7 @@ A bar of two to five options where exactly one is selected, like a radio group d
 
 - Handoff source: `components/forms/SegmentedControl.jsx` (TODO `CMP-FRM-09`).
 
-- Import: `import { SegmentedControl } from '@loui/ds';`
+- Import: `import { SegmentedControl } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SegmentedControl/SegmentedControl.tsx`
 - Stories (Storybook title `Components/SegmentedControl`): Default, Small, FullWidth, WithCounts, DisabledOption, DisabledGroup, KeyboardSelection, Controlled, LongLabels, PortugueseCounts, RightToLeft, Focused
@@ -9666,7 +9664,7 @@ Use it for 4 or more options; for 2 to 4 prefer `RadioGroup`.
 
 Single-choice dropdown: a button that opens a listbox in a popover. Built on React Aria `Select` (`Button`, `SelectValue`, `Popover`, `ListBox`). A hidden native `<select>` carries `name` and the value into form submission and autofill. Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Select } from '@loui/ds';`
+- Import: `import { Select } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Select/Select.tsx`
 - Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
@@ -9748,7 +9746,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
 | `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
 
-Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `@loui/ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
+Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 
 #### Anatomy and styling
 
@@ -9806,7 +9804,7 @@ A side panel that slides in from the inline-end edge to view or edit one record 
 
 - Handoff source: `components/erp/Sheet` (CMP-PAT-01).
 
-- Import: `import { Sheet } from '@loui/ds';`
+- Import: `import { Sheet } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sheet/Sheet.tsx`
 - Stories (Storybook title `Components/Sheet`): Default, Open, Medium, Large, CloseButton, LongContent, NotPadded, LongTitle, WithDescription, RightToLeft
@@ -9925,7 +9923,7 @@ default. Place it once, anywhere under the app, and it stays in sync with what i
 
 A dialog that lists the keyboard shortcuts registered on the page, one table per group, with the keys drawn by `Kbd`. It opens with `?` by default.
 
-- Import: `import { ShortcutsHelp } from '@loui/ds';`
+- Import: `import { ShortcutsHelp } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ShortcutsHelp/ShortcutsHelp.tsx`
 - Stories (Storybook title `Components/ShortcutsHelp`): Default, Open, Empty, PortugueseBrazil
@@ -10026,7 +10024,7 @@ The app sidebar: workspace block, navigation sections, optional status card, foo
 
 - Handoff source: `components/layout/Sidebar.jsx` (TODO `CMP-LAY-01`).
 
-- Import: `import { Sidebar } from '@loui/ds';`
+- Import: `import { Sidebar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sidebar/Sidebar.tsx`
 - Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft
@@ -10148,7 +10146,7 @@ DOM as custom properties on `style`, because arbitrary sizes cannot be tokens.
 
 A placeholder in the shape of content that is still loading: a block, a circle, or a few text lines.
 
-- Import: `import { Skeleton } from '@loui/ds';`
+- Import: `import { Skeleton } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Skeleton/Skeleton.tsx`
 - Stories (Storybook title `Components/Skeleton`): Default, Block, Circle, Lines, SingleLine, Pill, BusyRegion, RightToLeft
@@ -10236,7 +10234,7 @@ A link that stays invisible until a keyboard user focuses it, then jumps past th
 
 - Source: TODO `BASE-002` (there was no handoff component).
 
-- Import: `import { SkipLink } from '@loui/ds';`
+- Import: `import { SkipLink } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SkipLink/SkipLink.tsx`
 - Stories (Storybook title `Components/SkipLink`): Default, JumpsToMain, CustomTarget, Portuguese, RightToLeft, Focused
@@ -10319,7 +10317,7 @@ Range selection with two thumbs is not part of this component yet.
 
 Single-value slider: a labelled track with one thumb and a formatted value. Built on React Aria `Slider` (`SliderTrack`, `SliderFill`, `SliderThumb`, `SliderOutput`). The thumb is a real `<input type="range">`, so keyboard, pointer, touch and form submission work natively. Task: CMP-INP-04.
 
-- Import: `import { Slider } from '@loui/ds';`
+- Import: `import { Slider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Slider/Slider.tsx`
 - Stories (Storybook title `Components/Slider`): Default, KeyboardContract, Percent, WithDescription, SteppedByTen, WithoutValue, Disabled, AriaLabelOnly, Controlled, LongLabel
@@ -10427,9 +10425,9 @@ Label with the thing being set ("Discount"), not an instruction. Put the unit in
 Source numbers are the position in `sources`: keep the order stable while the answer streams,
 and append new sources at the end.
 
-The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.
 
-- Import: `import { SourceList } from '@loui/ds/patterns';`
+- Import: `import { SourceList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/SourceList/SourceList.tsx`
 - Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations
@@ -10522,7 +10520,7 @@ A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards a
 
 - TODO `GAP-007`.
 
-- Import: `import { Sparkline } from '@loui/ds';`
+- Import: `import { Sparkline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sparkline/Sparkline.tsx`
 - Stories (Storybook title `Components/Sparkline`): Default, Area, Accent, Success, Warning, Danger, LastValue, MinMax, Larger, IncludeZero, FlatSeries, WithGaps, SinglePoint, Empty, Decorative, NarrowContainer, RightToLeft
@@ -10623,7 +10621,7 @@ An indeterminate loading ring that inherits the text color. Small, quiet, and no
 - Handoff source: `components/feedback/Spinner` (CMP-FBK-06).
 - Built on: a plain element with `role="progressbar"`. A pending `Button` wires it as its busy label through React Aria.
 
-- Import: `import { Spinner } from '@loui/ds';`
+- Import: `import { Spinner } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Spinner/Spinner.tsx`
 - Stories (Storybook title `Components/Spinner`): Default, Sizes, WithLabel, DecorativeWithText, InheritsColor
@@ -10710,7 +10708,7 @@ key, never a pixel value. Children can shrink below their content width (`min-in
 
 A vertical column of children with one consistent gap. The gap is a key of the space scale, never a pixel value.
 
-- Import: `import { Stack } from '@loui/ds';`
+- Import: `import { Stack } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stack/Stack.tsx`
 - Stories (Storybook title `Layout/Stack`): Default, SmallGap, LargeGap, AlignStart, AlignCenter, AlignEnd, AsList, LongText, RightToLeft
@@ -10799,7 +10797,7 @@ not per segment, keeps the keyboard path short and the focus target large.
 
 Stacked bars for parts of a whole per category, horizontal (a row per category) or vertical (a column per category). Each bar has a text summary, a total, and the chart comes with a legend and a hidden data table.
 
-- Import: `import { StackedBar } from '@loui/ds';`
+- Import: `import { StackedBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StackedBar/StackedBar.tsx`
 - Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft
@@ -10964,7 +10962,7 @@ A colored value is never the only signal: `tone` other than `neutral` requires a
 
 An indicator card for the top of a screen: a mono caption, a large mono number, an optional small visual and a short note or trend in words.
 
-- Import: `import { StatCard } from '@loui/ds';`
+- Import: `import { StatCard } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StatCard/StatCard.tsx`
 - Stories (Storybook title `Components/StatCard`): Default, Large, WithAside, WarningTone, DangerTone, SuccessTone, TrendUp, TrendUpIsBad, TrendDownAndFlat, WithProportionBar, LongText, Grid, PortugueseBrazil
@@ -11087,7 +11085,7 @@ A horizontal indicator of progress through a linear status flow (Draft, Packed, 
 
 - Handoff source: `components/erp/StatusSteps.jsx` (TODO `CMP-PAT-05`).
 
-- Import: `import { StatusSteps } from '@loui/ds';`
+- Import: `import { StatusSteps } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StatusSteps/StatusSteps.tsx`
 - Stories (Storybook title `Components/StatusSteps`): Default, FirstStep, Complete, ManySteps, LongLabels, Interactive, Controlled, Portuguese, RightToLeft, Focused
@@ -11193,7 +11191,7 @@ In narrow containers the horizontal orientation shows only the markers and a vis
 
 Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.
 
-- Import: `import { Stepper } from '@loui/ds';`
+- Import: `import { Stepper } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stepper/Stepper.tsx`
 - Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, LongLabels, GoBackToCompletedSteps, RightToLeft
@@ -11312,7 +11310,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { SubMenu } from '@loui/ds';`
+- Import: `import { SubMenu } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions
@@ -11426,7 +11424,7 @@ A dashed chip that proposes a piece of text. Pressing it **inserts** that text i
 
 - Handoff source: `components/forms/SuggestionChip.jsx` (TODO `CMP-FRM-10`).
 
-- Import: `import { SuggestionChip } from '@loui/ds';`
+- Import: `import { SuggestionChip } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SuggestionChip/SuggestionChip.tsx`
 - Stories (Storybook title `Components/SuggestionChip`): Default, Disabled, LongText, InsertsText, RightToLeft, Focused
@@ -11523,7 +11521,7 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 
 - Handoff source: `components/erp/Swatch.jsx` (TODO `CMP-PAT-03`).
 
-- Import: `import { Swatch } from '@loui/ds';`
+- Import: `import { Swatch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Swatch/Swatch.tsx`
 - Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex
@@ -11557,7 +11555,7 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 #### When not to use
 
 - To carry a status: use `Badge` (text plus tone).
-- To pick a color: use `ColorOption` from `@loui/ds/patterns`.
+- To pick a color: use `ColorOption` from `loui-ds/patterns`.
 - For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted.
 
 #### Anatomy
@@ -11593,7 +11591,7 @@ span[aria-hidden]                        (decorative)
 #### Related components
 
 - Instead, see Badge: To carry a status: use `Badge` (text plus tone).
-- Instead, see ColorOption: To pick a color: use `ColorOption` from `@loui/ds/patterns`.
+- Instead, see ColorOption: To pick a color: use `ColorOption` from `loui-ds/patterns`.
 - Used by: ApprovalCard, ColorOption, MatrixGrid, RankList
 
 ### Switch
@@ -11606,7 +11604,7 @@ For a choice that is confirmed later with a Save button, prefer `Checkbox`.
 
 An on/off setting that takes effect immediately. A native checkbox with `role="switch"`, a 36x20 track and a 16px knob. Built on React Aria `SwitchField` + `SwitchButton` (the non-deprecated pair that supports a description and an error outside the label). Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Switch } from '@loui/ds';`
+- Import: `import { Switch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Switch/Switch.tsx`
 - Stories (Storybook title `Components/Switch`): Default, On, WithDescription, LabelAtEnd, Disabled, ReadOnly, Required, Invalid, LongLabel, WithoutVisibleLabel
@@ -11708,7 +11706,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 - Handoff source: `components/navigation/Tabs.jsx` (TODO `CMP-NAV-01`).
 
-- Import: `import { Tab } from '@loui/ds';`
+- Import: `import { Tab } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tabs/Tabs.tsx`
 - Stories (Storybook title `Components/Tabs`): Default, ArrowKeys, FocusMovesIntoPanel, ManualActivation, Counts, ShortcutHints, DisabledTab, Controlled, LongLabels, RightToLeft, Focused
@@ -11814,7 +11812,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 - Handoff source: `components/navigation/Tabs.jsx` (TODO `CMP-NAV-01`).
 
-- Import: `import { TabList } from '@loui/ds';`
+- Import: `import { TabList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tabs/Tabs.tsx`
 - Stories (Storybook title `Components/Tabs`): Default, ArrowKeys, FocusMovesIntoPanel, ManualActivation, Counts, ShortcutHints, DisabledTab, Controlled, LongLabels, RightToLeft, Focused
@@ -11915,7 +11913,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 - Handoff source: `components/navigation/Tabs.jsx` (TODO `CMP-NAV-01`).
 
-- Import: `import { TabPanel } from '@loui/ds';`
+- Import: `import { TabPanel } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tabs/Tabs.tsx`
 - Stories (Storybook title `Components/Tabs`): Default, ArrowKeys, FocusMovesIntoPanel, ManualActivation, Counts, ShortcutHints, DisabledTab, Controlled, LongLabels, RightToLeft, Focused
@@ -12019,7 +12017,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 - Handoff source: `components/navigation/Tabs.jsx` (TODO `CMP-NAV-01`).
 
-- Import: `import { Tabs } from '@loui/ds';`
+- Import: `import { Tabs } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tabs/Tabs.tsx`
 - Stories (Storybook title `Components/Tabs`): Default, ArrowKeys, FocusMovesIntoPanel, ManualActivation, Counts, ShortcutHints, DisabledTab, Controlled, LongLabels, RightToLeft, Focused
@@ -12121,7 +12119,7 @@ removed with Backspace or Delete.
 
 A mono outlined label for versions, SKUs and filters. `Tag` is static text on its own (with an optional remove button); inside a `TagGroup` it is an item with keyboard navigation, selection and removal. `TagGroup` is built on React Aria `TagGroup`, `TagList` and `Tag`.
 
-- Import: `import { Tag } from '@loui/ds';`
+- Import: `import { Tag } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tag/Tag.tsx`
 - Stories (Storybook title `Components/Tag`): Default, Removable, Disabled, LongText, RightToLeft, RemovableGroupStory, GroupStatic, GroupSelectable, GroupWithDisabledTag, GroupEmpty
@@ -12218,7 +12216,7 @@ Built on React Aria `TagGroup`.
 
 A mono outlined label for versions, SKUs and filters. `Tag` is static text on its own (with an optional remove button); inside a `TagGroup` it is an item with keyboard navigation, selection and removal. `TagGroup` is built on React Aria `TagGroup`, `TagList` and `Tag`.
 
-- Import: `import { TagGroup } from '@loui/ds';`
+- Import: `import { TagGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tag/Tag.tsx`
 - Stories (Storybook title `Components/Tag`): Default, Removable, Disabled, LongText, RightToLeft, RemovableGroupStory, GroupStatic, GroupSelectable, GroupWithDisabledTag, GroupEmpty
@@ -12324,7 +12322,7 @@ A text field that turns what you type into removable tags: `Enter` or a comma ad
 
 - TODO `GAP-005`.
 
-- Import: `import { TagInput } from '@loui/ds';`
+- Import: `import { TagInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/TagInput/TagInput.tsx`
 - Stories (Storybook title `Components/TagInput`): Default, AddWithKeyboard, WithTags, BackspaceRemovesLast, RemoveWithKeyboard, Duplicate, MaxTags, Validation, Invalid, Required, Disabled, ReadOnly, Small, Large, ManyTagsWrap, LongTag, SemicolonDelimiter, Controlled, InForm, Portuguese, RightToLeft, Focused
@@ -12482,7 +12480,7 @@ face; the element (`as`) carries the meaning. Use `Heading` for headings and `Co
 
 Body text on the type scale, with a tone, an optional mono face and truncation.
 
-- Import: `import { Text } from '@loui/ds';`
+- Import: `import { Text } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Text/Text.tsx`
 - Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Mono, AsParagraph, Truncated, LongText, RightToLeft
@@ -12561,7 +12559,7 @@ span (or the element in `as`)
 
 Multi-line text field. Same contract as [Input](../Input/Input.md) (label, description, error, states, validation timing from [Field](../Field/Field.md)), plus an aside, auto-growing height and a character count. Built on React Aria `TextField` + `TextArea`.
 
-- Import: `import { Textarea } from '@loui/ds';`
+- Import: `import { Textarea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Textarea/Textarea.tsx`
 - Stories (Storybook title `Components/Textarea`): Default, WithDescription, WithAside, Required, Invalid, Disabled, ReadOnly, AutoGrow, WithCharacterCount, NoResize, LongLabel, Focused
@@ -12681,7 +12679,7 @@ Newest events come first by default, the order for dated records.
 
 A chronological list of events: when it happened, what happened, who did it, and an optional detail and tone marker. It is a semantic ordered list, newest event first by default.
 
-- Import: `import { Timeline } from '@loui/ds';`
+- Import: `import { Timeline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Timeline/Timeline.tsx`
 - Stories (Storybook title `Components/Timeline`): Default, OldestFirst, Tones, DateOnly, LongText, SingleEvent, Empty, RightToLeft
@@ -12791,7 +12789,7 @@ A short, temporary message about something that just happened, with an optional 
 
 - Handoff source: `components/feedback/Toast` (CMP-FBK-02). Undo recipe: GAP-008 groundwork.
 
-- Import: `import { ToastRegion } from '@loui/ds';`
+- Import: `import { ToastRegion } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Toast/Toast.tsx`
 - Stories (Storybook title `Components/Toast`): AllTones, WithAction, LongMessage, UndoPattern, PausesOnHoverAndFocus, KeyboardRegion
@@ -12852,7 +12850,7 @@ ToastRegion          role=region, aria-label "Toast notifications", landmark (F6
 <ToastRegion />;
 
 // anywhere
-import { toast } from '@loui/ds';
+import { toast } from 'loui-ds';
 toast('Draft saved'); // info
 toast.success('Order #1051 created');
 toast.warning('Stock is low for 2 items');
@@ -12935,7 +12933,7 @@ A button that stays pressed: it switches one setting on or off (bold text, a fil
 
 - TODO `GAP-005`.
 
-- Import: `import { Toggle } from '@loui/ds';`
+- Import: `import { Toggle } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Toggle/Toggle.tsx`
 - Stories (Storybook title `Components/Toggle`): Default, Pressed, Ghost, GhostPressed, Small, Large, WithLeadingIcon, IconOnly, IconOnlyWithTooltip, Disabled, DisabledPressed, KeyboardToggle, Controlled, LongLabel, RightToLeft, Focused
@@ -13052,7 +13050,7 @@ A row (or column) of related `Toggle`s that share one value: the list of pressed
 
 - TODO `GAP-005`.
 
-- Import: `import { ToggleGroup } from '@loui/ds';`
+- Import: `import { ToggleGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ToggleGroup/ToggleGroup.tsx`
 - Stories (Storybook title `Components/ToggleGroup`): Default, Preselected, Ghost, Small, Large, Vertical, IconOnly, SingleSelection, DisabledToggle, DisabledGroup, KeyboardSelection, Controlled, Wrapping, RightToLeft, Focused
@@ -13157,9 +13155,9 @@ div[role=toolbar] aria-label       (or role=radiogroup when single)
 > The steps of a multi-step agent run as an ordered list of `ToolCallStep`. Use it under the
 message the run belongs to; each step opens its own details.
 
-One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.
 
-- Import: `import { ToolCallList } from '@loui/ds/patterns';`
+- Import: `import { ToolCallList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ToolCallStep/ToolCallList.tsx`
 - Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun
@@ -13267,9 +13265,9 @@ With `input` or `output` the header is a button that opens the details (`aria-ex
 plain text. The status is text plus an icon, never color alone. When a running step finishes,
 a polite live region says so once; a step that is already finished on first render is silent.
 
-One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.
 
-- Import: `import { ToolCallStep } from '@loui/ds/patterns';`
+- Import: `import { ToolCallStep } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ToolCallStep/ToolCallStep.tsx`
 - Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun
@@ -13387,7 +13385,7 @@ A short, ink-style hint for a control. Built on React Aria `TooltipTrigger` and 
 
 - Handoff source: `components/feedback/Tooltip` (CMP-FBK-04).
 
-- Import: `import { Tooltip } from '@loui/ds';`
+- Import: `import { Tooltip } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tooltip/Tooltip.tsx`
 - Stories (Storybook title `Components/Tooltip`): Default, Open, WithShortcut, Bottom, Start, End, LongText, OnIconButton, Disabled
@@ -13473,7 +13471,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 - Handoff source: `components/layout/TopBar.jsx` (TODO `CMP-LAY-02`).
 
-- Import: `import { TopBar } from '@loui/ds';`
+- Import: `import { TopBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/TopBar/TopBar.tsx`
 - Stories (Storybook title `Components/TopBar`): Default, WithSubtitle, WithPrimaryAction, WithContent, WithBreadcrumb, HeadingLevel2, LongTitle, RightToLeft
@@ -13556,7 +13554,7 @@ for a few steps shown once; do not use it to hold documentation.
 
 Step-by-step onboarding hints anchored to elements of the page. Each step is a non-modal popover (React Aria `Popover` with `isNonModal`) with a title, a short text, a "Step 2 of 5" counter and Skip, Back and Next or Done buttons. Generic: it lives in the core entry point.
 
-- Import: `import { Tour } from '@loui/ds';`
+- Import: `import { Tour } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tour/Tour.tsx`
 - Stories (Storybook title `Components/Tour`): Default, FirstStep, MiddleStep, LastStep, AboveTarget, KeyboardOnly
@@ -13672,7 +13670,7 @@ Use it for text alternatives that sighted users do not need.
 
 Hides content visually while keeping it in the accessibility tree. It renders a `span` (or the element given by `as`) with the standard "screen reader only" clipping, so the text is read aloud and found by assistive technology but takes no space on screen.
 
-- Import: `import { VisuallyHidden } from '@loui/ds';`
+- Import: `import { VisuallyHidden } from 'loui-ds';`
 - Status: stable
 - Source: `src/components/VisuallyHidden/VisuallyHidden.tsx`
 - Stories (Storybook title `Primitives/VisuallyHidden`): Default, AsHeading
@@ -13738,7 +13736,7 @@ span.root   (or as="h2", "div", ...)
 
 ## Hooks and utilities
 
-> Hooks, locale-aware utilities and message helpers exported from `@loui/ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).
+> Hooks, locale-aware utilities and message helpers exported from `loui-ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).
 
 ### Hooks
 
@@ -14312,7 +14310,7 @@ Status: experimental
 
 A queue of replies written by an agent that wait for a person to approve them before anything reaches a customer. Tabs split "To approve" from "Sent"; Send and Discard act at once and offer Undo.
 
-Components: `ApprovalCard` (from `@loui/ds/patterns`), `Tabs`, `EmptyState`, `Badge`, `Toast` (through `useUndoable`).
+Components: `ApprovalCard` (from `loui-ds/patterns`), `Tabs`, `EmptyState`, `Badge`, `Toast` (through `useUndoable`).
 
 #### When to use
 
@@ -14357,8 +14355,8 @@ import {
   Tabs,
   Text,
   useUndoable,
-} from '@loui/ds';
-import { ApprovalCard } from '@loui/ds/patterns';
+} from 'loui-ds';
+import { ApprovalCard } from 'loui-ds/patterns';
 
 type State = 'pending' | 'sent' | 'discarded';
 
@@ -14568,8 +14566,8 @@ import {
   Text,
   toast,
   useHotkeys,
-} from '@loui/ds';
-import type { Command } from '@loui/ds';
+} from 'loui-ds';
+import type { Command } from 'loui-ds';
 
 type Page = 'orders' | 'customers' | 'invoices';
 
@@ -14737,7 +14735,7 @@ import {
   Stack,
   useDSLocale,
   useUndoable,
-} from '@loui/ds';
+} from 'loui-ds';
 
 export interface Order {
   id: string;
@@ -14908,7 +14906,7 @@ import {
   Textarea,
   toast,
   useUndoable,
-} from '@loui/ds';
+} from 'loui-ds';
 
 type Status = 'open' | 'shipped';
 
@@ -15127,8 +15125,8 @@ import {
   Stack,
   useDSLocale,
   useUndoable,
-} from '@loui/ds';
-import type { BadgeTone } from '@loui/ds';
+} from 'loui-ds';
+import type { BadgeTone } from 'loui-ds';
 
 type Status = 'open' | 'shipped' | 'archived';
 
@@ -15331,7 +15329,7 @@ Components: `Form`, `Input`, `Select`, `FieldSet`, `Button`, `Text`.
 ```tsx
 import { useState } from 'react';
 import type { SyntheticEvent } from 'react';
-import { Button, FieldSet, Form, Heading, Inline, Input, Select, Stack, Text } from '@loui/ds';
+import { Button, FieldSet, Form, Heading, Inline, Input, Select, Stack, Text } from 'loui-ds';
 
 export interface CustomerValues {
   name: string;
@@ -15466,7 +15464,7 @@ Status: experimental
 
 Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. A small subset is parsed into React elements: no markdown library, no `dangerouslySetInnerHTML`, no HTML string anywhere.
 
-Components: `ChatPanel` (from `@loui/ds/patterns`), `Code`, `Link`, `Stack`, `Inline`, `Text`.
+Components: `ChatPanel` (from `loui-ds/patterns`), `Code`, `Link`, `Stack`, `Inline`, `Text`.
 
 #### When to use
 
@@ -15501,9 +15499,9 @@ Components: `ChatPanel` (from `@loui/ds/patterns`), `Code`, `Link`, `Stack`, `In
 ```tsx
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Code, Inline, Link, Stack, Text } from '@loui/ds';
-import { ChatPanel } from '@loui/ds/patterns';
-import type { ChatMessage } from '@loui/ds/patterns';
+import { Code, Inline, Link, Stack, Text } from 'loui-ds';
+import { ChatPanel } from 'loui-ds/patterns';
+import type { ChatMessage } from 'loui-ds/patterns';
 
 /**
  * A small markdown subset, rendered as React elements. There is no HTML string anywhere, so
@@ -15747,7 +15745,7 @@ import {
   toast,
   TopBar,
   useHotkeys,
-} from '@loui/ds';
+} from 'loui-ds';
 
 export interface Settings {
   orderShipped: boolean;
@@ -15946,7 +15944,7 @@ Two ways to persist:
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Badge, Button, Heading, Inline, Stack, Text, useUndoable } from '@loui/ds';
+import { Badge, Button, Heading, Inline, Stack, Text, useUndoable } from 'loui-ds';
 
 export interface Order {
   id: string;

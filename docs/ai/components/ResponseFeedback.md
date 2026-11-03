@@ -8,9 +8,9 @@ removes it. A polite live region says "Feedback sent" or "Feedback removed" afte
 The first render never announces anything. The buttons show text only for now: thumbs, copy
 and refresh icons are not part of the curated icon set yet.
 
-Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.
+Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `loui-ds/patterns`.
 
-- Import: `import { ResponseFeedback } from '@loui/ds/patterns';`
+- Import: `import { ResponseFeedback } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ResponseFeedback/ResponseFeedback.tsx`
 - Stories (Storybook title `Patterns/ResponseFeedback`): Default, RatedBad, RatingOnly, Regenerating, Disabled, RightToLeft

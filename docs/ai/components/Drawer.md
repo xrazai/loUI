@@ -12,7 +12,7 @@ Use `Sheet` instead when the panel is a task that must be finished or dismissed 
 
 A non-modal side panel that sits next to the content, for filters, inspectors and secondary navigation. There is no scrim, the page stays interactive and focus is not trapped. Generic: it lives in the core entry point.
 
-- Import: `import { Drawer } from '@loui/ds';`
+- Import: `import { Drawer } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Drawer/Drawer.tsx`
 - Stories (Storybook title `Components/Drawer`): Default, AtStart, Small, Large, Region, Unpadded, LongContent, Rtl, OpenAndCloseWithKeyboard

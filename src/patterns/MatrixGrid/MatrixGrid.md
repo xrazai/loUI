@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `@loui/ds/patterns`.
+A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/MatrixGrid.jsx` (TODO `CMP-PAT-11`).
 
@@ -61,7 +61,7 @@ div.root
 ## Examples
 
 ```tsx
-import { MatrixGrid } from '@loui/ds/patterns';
+import { MatrixGrid } from 'loui-ds/patterns';
 
 <MatrixGrid
   aria-label="Product colors"

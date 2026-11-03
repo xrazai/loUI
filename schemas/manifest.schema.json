@@ -192,7 +192,7 @@
       "properties": {
         "name": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },
         "kind": { "const": "component" },
-        "entryPoint": { "enum": ["@loui/ds", "@loui/ds/patterns"] },
+        "entryPoint": { "enum": ["loui-ds", "loui-ds/patterns"] },
         "importStatement": { "type": "string" },
         "folder": { "type": "string" },
         "sourceFile": { "type": "string" },

@@ -30,7 +30,7 @@ function withDeprecatedProps(): DsData {
 
 const data = withDeprecatedProps();
 const wrap = (jsx: string) =>
-  `import { Button } from '@loui/ds';\nexport const A = () => (${jsx});\n`;
+  `import { Button } from 'loui-ds';\nexport const A = () => (${jsx});\n`;
 
 describe('deprecated props (AI-016)', () => {
   it('validate_snippet warns about a deprecated prop and includes the migration hint', async () => {

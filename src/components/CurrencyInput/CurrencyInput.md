@@ -9,7 +9,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 ## When not to use
 
 - Quantities or measures: `NumberField`.
-- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `@loui/ds`.
+- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `loui-ds`.
 
 ## Editing model: digits shift in from the right (decision)
 

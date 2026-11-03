@@ -13,7 +13,7 @@ for a few steps shown once; do not use it to hold documentation.
 
 Step-by-step onboarding hints anchored to elements of the page. Each step is a non-modal popover (React Aria `Popover` with `isNonModal`) with a title, a short text, a "Step 2 of 5" counter and Skip, Back and Next or Done buttons. Generic: it lives in the core entry point.
 
-- Import: `import { Tour } from '@loui/ds';`
+- Import: `import { Tour } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tour/Tour.tsx`
 - Stories (Storybook title `Components/Tour`): Default, FirstStep, MiddleStep, LastStep, AboveTarget, KeyboardOnly

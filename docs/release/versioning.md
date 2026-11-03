@@ -1,9 +1,9 @@
 # Versioning policy
 
-`@loui/ds` follows [Semantic Versioning 2.0](https://semver.org/). For a design system, "the API" is more than TypeScript signatures. The public surface is:
+`loui-ds` follows [Semantic Versioning 2.0](https://semver.org/). For a design system, "the API" is more than TypeScript signatures. The public surface is:
 
-- the exports of `@loui/ds` and `@loui/ds/patterns` (names, props, prop types, defaults, events, and the `data-*` state attributes documented in component pages);
-- the files `@loui/ds/styles.css`, `tokens.json`, `manifest.json`, `llms.txt` and the `exports` map itself;
+- the exports of `loui-ds` and `loui-ds/patterns` (names, props, prop types, defaults, events, and the `data-*` state attributes documented in component pages);
+- the files `loui-ds/styles.css`, `tokens.json`, `manifest.json`, `llms.txt` and the `exports` map itself;
 - **design tokens**: the CSS custom properties `--ds-*` of the primitive and semantic layers, and the `data-theme` scopes;
 - documented behavior: keyboard contract, focus management, announced text (message catalogs) and accessibility conformance.
 

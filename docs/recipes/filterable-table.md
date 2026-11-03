@@ -52,8 +52,8 @@ import {
   Stack,
   useDSLocale,
   useUndoable,
-} from '@loui/ds';
-import type { BadgeTone } from '@loui/ds';
+} from 'loui-ds';
+import type { BadgeTone } from 'loui-ds';
 
 type Status = 'open' | 'shipped' | 'archived';
 

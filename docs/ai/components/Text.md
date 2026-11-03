@@ -5,7 +5,7 @@
 
 Body text on the type scale, with a tone, an optional mono face and truncation.
 
-- Import: `import { Text } from '@loui/ds';`
+- Import: `import { Text } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Text/Text.tsx`
 - Stories (Storybook title `Typography/Text`): Default, Small, Label, Meta_, Caption, Secondary, Tertiary, Mono, AsParagraph, Truncated, LongText, RightToLeft

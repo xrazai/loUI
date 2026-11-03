@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `@loui/ds/patterns`.
+A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ApprovalCard` (TODO `CMP-AGT-02`).
 

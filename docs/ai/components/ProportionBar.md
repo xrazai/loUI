@@ -9,7 +9,7 @@ gap, and beyond four parts the ramp repeats with a hatch so they never look alik
 
 One bar split into the parts of a whole (payment methods, composition), with a text summary for assistive technology and an optional legend with the percentage and value of each part.
 
-- Import: `import { ProportionBar } from '@loui/ds';`
+- Import: `import { ProportionBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ProportionBar/ProportionBar.tsx`
 - Stories (Storybook title `Components/ProportionBar`): Default, WithLegend, EightParts, ExplicitColors, ZeroPart, AllZero, OneDecimalPercent, LongLabels, PortugueseBrazil

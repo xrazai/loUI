@@ -1,15 +1,5 @@
-import {
-  AppShell,
-  Button,
-  DataTable,
-  Dialog,
-  Input,
-  Sidebar,
-  Stack,
-  TopBar,
-  toast,
-} from '@loui/ds';
-import type { DataTableColumn } from '@loui/ds';
+import { AppShell, Button, DataTable, Dialog, Input, Sidebar, Stack, TopBar, toast } from 'loui-ds';
+import type { DataTableColumn } from 'loui-ds';
 import { useState } from 'react';
 
 interface Order {

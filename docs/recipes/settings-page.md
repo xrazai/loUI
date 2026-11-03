@@ -54,7 +54,7 @@ import {
   toast,
   TopBar,
   useHotkeys,
-} from '@loui/ds';
+} from 'loui-ds';
 
 export interface Settings {
   orderShipped: boolean;

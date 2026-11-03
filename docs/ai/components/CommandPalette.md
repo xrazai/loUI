@@ -11,7 +11,7 @@ it also lists the shortcuts registered through `useHotkeys`.
 
 A modal search box that finds and runs commands from the keyboard. It opens with `Mod+K` (Command K on Apple platforms, Control K elsewhere), filters a grouped list as you type and runs the chosen command. It is the "⌘K for everything" of AGENTS.md section 5.
 
-- Import: `import { CommandPalette } from '@loui/ds';`
+- Import: `import { CommandPalette } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CommandPalette/CommandPalette.tsx`
 - Stories (Storybook title `Components/CommandPalette`): Default, Open, Filtered, Empty, WithRecent, GivenOrder, LongLabels, WithRegisteredHotkeys, Controlled, PortugueseBrazil, RightToLeft

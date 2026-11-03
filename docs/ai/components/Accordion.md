@@ -11,7 +11,7 @@ A stack of sections that expand and collapse. Each header is a heading that wrap
 
 - Handoff source: `components/layout/Accordion.jsx` (TODO `CMP-LAY-04`).
 
-- Import: `import { Accordion } from '@loui/ds';`
+- Import: `import { Accordion } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Accordion/Accordion.tsx`
 - Stories (Storybook title `Components/Accordion`): Default, Plain, InitiallyExpanded, KeyboardSingle, Multiple, DisabledItem, HeadingLevel2, Controlled, LongText, RightToLeft, Focused

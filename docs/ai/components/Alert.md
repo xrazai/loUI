@@ -5,7 +5,7 @@
 
 An inline message with a tone, an icon, an optional title, one action and an optional dismiss button.
 
-- Import: `import { Alert } from '@loui/ds';`
+- Import: `import { Alert } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Alert/Alert.tsx`
 - Stories (Storybook title `Components/Alert`): Default, Success, Warning, Danger, Urgent, StaticNotice, TitleOnly, TextOnly, WithAction, Dismissible, LongText, AllTones, RightToLeft

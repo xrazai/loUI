@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `@loui/ds/patterns`.
+A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ChatPanel` (TODO `CMP-AGT-03`; groundwork for `AI-013`).
 

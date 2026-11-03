@@ -25,7 +25,7 @@ function matches(source, sources) {
 
 export default createRule('allowed-icons', {
   description:
-    'Warn about direct lucide-react imports in app code; icons come from the curated set exported by @loui/ds.',
+    'Warn about direct lucide-react imports in app code; icons come from the curated set exported by loui-ds.',
   messages: {
     useCurated:
       'Import {{curated}} from "{{from}}" instead of {{name}} from lucide-react. Only the curated icon set is part of the design system (ICON-003).',
@@ -45,7 +45,7 @@ export default createRule('allowed-icons', {
         },
         from: {
           type: 'string',
-          description: 'Module the curated icons come from. Default "@loui/ds".',
+          description: 'Module the curated icons come from. Default "loui-ds".',
         },
         allow: {
           type: 'array',
@@ -56,7 +56,7 @@ export default createRule('allowed-icons', {
       additionalProperties: false,
     },
   ],
-  defaultOptions: [{ sources: ['lucide-react'], from: '@loui/ds', allow: [] }],
+  defaultOptions: [{ sources: ['lucide-react'], from: 'loui-ds', allow: [] }],
   create(context, options) {
     const ds = getDsResolver(context);
     const allow = new Set(options.allow);

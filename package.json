@@ -1,9 +1,26 @@
 {
-  "name": "@loui/ds",
+  "name": "loui-ds",
   "version": "0.1.0",
-  "private": true,
   "description": "Loui DS: a dark, minimal, functional React design system.",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "author": "xraz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xrazai/loUI.git"
+  },
+  "homepage": "https://xrazai.github.io/loUI/",
+  "bugs": {
+    "url": "https://github.com/xrazai/loUI/issues"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "react-aria",
+    "components",
+    "dark",
+    "accessibility",
+    "design-tokens"
+  ],
   "type": "module",
   "packageManager": "pnpm@12.16.1",
   "engines": {
@@ -134,5 +151,9 @@
     "vite": "~8.3.5",
     "vitest": "~5.0.5",
     "vitest-browser-react": "^2.3.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

@@ -9,7 +9,7 @@ Use it for 4 or more options; for 2 to 4 prefer `RadioGroup`.
 
 Single-choice dropdown: a button that opens a listbox in a popover. Built on React Aria `Select` (`Button`, `SelectValue`, `Popover`, `ListBox`). A hidden native `<select>` carries `name` and the value into form submission and autofill. Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Select } from '@loui/ds';`
+- Import: `import { Select } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Select/Select.tsx`
 - Stories (Storybook title `Components/Select`): Default, KeyboardAndTypeahead, EscapeClosesAndRestoresFocus, Open, WithSelection, WithDescription, Required, Invalid, Disabled, Sizes, DisabledOptions, Sections, LongLabels
@@ -91,7 +91,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
 | `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
 
-Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `@loui/ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
+Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 
 ## Anatomy and styling
 

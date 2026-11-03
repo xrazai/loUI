@@ -8,7 +8,7 @@ The list renders the items as given; pass `sort` and `limit` for a "top N". Put 
 
 An ordered list of items with a value, a bar relative to the largest value and an optional detail. Rows can be plain or buttons. Meant to sit inside a `Card` without body padding.
 
-- Import: `import { RankList } from '@loui/ds';`
+- Import: `import { RankList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RankList/RankList.tsx`
 - Stories (Storybook title `Components/RankList`): Default, GivenOrder, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil

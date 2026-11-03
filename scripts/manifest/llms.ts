@@ -183,7 +183,7 @@ export function renderComponentPage(c: ManifestComponent): string {
 export function renderFunctionsPage(manifest: Manifest): string {
   const out: string[] = ['# Hooks and utilities', ''];
   out.push(
-    '> Hooks, locale-aware utilities and message helpers exported from `@loui/ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).',
+    '> Hooks, locale-aware utilities and message helpers exported from `loui-ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).',
     '',
   );
   const render = (title: string, list: ManifestFunction[]) => {

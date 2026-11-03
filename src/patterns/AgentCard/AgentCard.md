@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `@loui/ds/patterns`.
+A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/AgentCard` (TODO `CMP-AGT-01`).
 

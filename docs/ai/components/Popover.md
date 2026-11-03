@@ -11,7 +11,7 @@ A floating surface that opens from a trigger and holds interactive content. Buil
 
 - Handoff source: `components/navigation/Popover` (CMP-NAV-04).
 
-- Import: `import { Popover } from '@loui/ds';`
+- Import: `import { Popover } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Popover/Popover.tsx`
 - Stories (Storybook title `Components/Popover`): Default, Open, WithArrow, AboveTrigger, AlignedToEnd, KeyboardOpenAndRestoreFocus, CloseFromInside

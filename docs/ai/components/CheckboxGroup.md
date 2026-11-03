@@ -5,7 +5,7 @@
 
 A checkbox with a native `<input type="checkbox">`, an 18px box and an optional description, plus a labelled group for several related checkboxes. Built on React Aria `CheckboxField` + `CheckboxButton` (the non-deprecated pair that supports a description and an error outside the label) and `CheckboxGroup`. Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { CheckboxGroup } from '@loui/ds';`
+- Import: `import { CheckboxGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Checkbox/CheckboxGroup.tsx`
 - Stories (Storybook title `Components/Checkbox`): Default, Checked, Indeterminate, WithDescription, Required, Invalid, Disabled, ReadOnly, LongLabel, WithoutVisibleLabel, InAGroup, GroupHorizontal, GroupInvalid

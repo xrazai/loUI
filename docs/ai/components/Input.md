@@ -8,7 +8,7 @@ they never break the focus ring (a defect of the handoff).
 
 Single-line text field with a label, helper text and error text wired together. Built on React Aria `TextField` + `Input`; see [Field](../Field/Field.md) for the shared states, spacing and validation timing.
 
-- Import: `import { Input } from '@loui/ds';`
+- Import: `import { Input } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Input/Input.tsx`
 - Stories (Storybook title `Components/Input`): Default, WithDescription, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers

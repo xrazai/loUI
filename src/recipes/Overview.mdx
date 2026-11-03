@@ -24,7 +24,7 @@ Every recipe assumes one `ToastRegion` near the root of the app, inside `DSProvi
 
 ## How they stay true
 
-- Each recipe imports only what the package exports (`@loui/ds`, `@loui/ds/patterns`); the doc shows those imports.
+- Each recipe imports only what the package exports (`loui-ds`, `loui-ds/patterns`); the doc shows those imports.
 - `docs/recipes/*.md` embeds the recipe's `.tsx` file between two markers. `pnpm exec tsx src/recipes/sync.ts` rewrites the block and `src/recipes/docs.test.ts` fails when it is stale.
 - The tests run the keyboard flow and axe on every state, with fake timers where the Undo window matters.
 

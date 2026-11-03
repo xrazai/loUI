@@ -11,7 +11,7 @@ A link that stays invisible until a keyboard user focuses it, then jumps past th
 
 - Source: TODO `BASE-002` (there was no handoff component).
 
-- Import: `import { SkipLink } from '@loui/ds';`
+- Import: `import { SkipLink } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SkipLink/SkipLink.tsx`
 - Stories (Storybook title `Components/SkipLink`): Default, JumpsToMain, CustomTarget, Portuguese, RightToLeft, Focused

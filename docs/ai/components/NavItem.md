@@ -8,7 +8,7 @@ One entry of a navigation list: a real link (or a button) with an optional icon 
 
 - Handoff source: `components/navigation/NavItem.jsx` (TODO `CMP-NAV-03`).
 
-- Import: `import { NavItem } from '@loui/ds';`
+- Import: `import { NavItem } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/NavItem/NavItem.tsx`
 - Stories (Storybook title `Components/NavItem`): Default, Active, AsButton, WithoutIcon, WithCount, CountTones, ZeroCountHidden, Disabled, LongLabel, RouterNavigation, PortugueseCount, RightToLeft, Focused

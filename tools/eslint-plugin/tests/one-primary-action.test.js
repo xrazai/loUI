@@ -74,7 +74,7 @@ createTester().run('one-primary-action', rule, {
     },
     {
       ...tsx,
-      code: `import * as DS from '@loui/ds';\nconst A = () => <div><DS.Button variant="primary">A</DS.Button><DS.Button variant="primary">B</DS.Button></div>;`,
+      code: `import * as DS from 'loui-ds';\nconst A = () => <div><DS.Button variant="primary">A</DS.Button><DS.Button variant="primary">B</DS.Button></div>;`,
       errors: 1,
     },
     {

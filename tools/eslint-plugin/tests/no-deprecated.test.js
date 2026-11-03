@@ -17,7 +17,7 @@ createTester().run('no-deprecated', rule, {
     },
     {
       ...tsx,
-      code: `import { OldBanner as Banner } from '@loui/ds';\nconst a = <Banner />;`,
+      code: `import { OldBanner as Banner } from 'loui-ds';\nconst a = <Banner />;`,
       errors: 1,
     },
     {
@@ -60,8 +60,8 @@ createTester().run('no-deprecated (no manifest)', rule, {
   valid: [
     {
       ...tsx,
-      code: `import { OldBanner } from '@loui/ds';\nconst a = <OldBanner />;`,
-      settings: { loui: { manifest: { components: [] }, packages: ['@loui/ds'] } },
+      code: `import { OldBanner } from 'loui-ds';\nconst a = <OldBanner />;`,
+      settings: { loui: { manifest: { components: [] }, packages: ['loui-ds'] } },
     },
   ],
   invalid: [],

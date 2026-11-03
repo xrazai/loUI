@@ -3,7 +3,7 @@ import { createTester, tsx } from './helpers.js';
 
 createTester().run('allowed-icons', rule, {
   valid: [
-    { ...tsx, code: `import { PlusIcon } from '@loui/ds';` },
+    { ...tsx, code: `import { PlusIcon } from 'loui-ds';` },
     { ...tsx, code: `import type { LucideIcon } from 'lucide-react';` },
     { ...tsx, code: `import { type LucideIcon } from 'lucide-react';` },
     { ...tsx, code: `import { Plus } from 'lucide-react';`, options: [{ allow: ['Plus'] }] },
@@ -14,7 +14,7 @@ createTester().run('allowed-icons', rule, {
       ...tsx,
       code: `import { Plus } from 'lucide-react';`,
       errors: [
-        { messageId: 'useCurated', data: { name: 'Plus', curated: 'PlusIcon', from: '@loui/ds' } },
+        { messageId: 'useCurated', data: { name: 'Plus', curated: 'PlusIcon', from: 'loui-ds' } },
       ],
     },
     {
@@ -30,7 +30,7 @@ createTester().run('allowed-icons', rule, {
     {
       ...tsx,
       code: `import { Truck } from 'lucide-react';`,
-      errors: [{ messageId: 'notCurated', data: { name: 'Truck', curated: '', from: '@loui/ds' } }],
+      errors: [{ messageId: 'notCurated', data: { name: 'Truck', curated: '', from: 'loui-ds' } }],
     },
     {
       ...tsx,

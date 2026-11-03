@@ -48,7 +48,7 @@ describe('plugin', () => {
       ],
     });
     const [result] = await eslint.lintText(
-      `import { Button, IconButton } from '@loui/ds';
+      `import { Button, IconButton } from 'loui-ds';
        import { Plus } from 'lucide-react';
        export const A = () => (
          <div style={{ color: '#fff', gap: 8 }}>

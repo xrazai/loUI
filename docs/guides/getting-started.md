@@ -10,13 +10,11 @@ Browse every component live in Storybook: <https://xrazai.github.io/loUI/>. AI t
 
 ## Install
 
-Each version is a [GitHub Release](https://github.com/xrazai/loUI/releases) with the package attached (it is not on npm: ADR-0004). Install the version you want by its URL:
-
 ```sh
-pnpm add https://github.com/xrazai/loUI/releases/download/v0.1.0/loui-ds-0.1.0.tgz react react-dom
+pnpm add loui-ds react react-dom
 ```
 
-To upgrade, install the URL of the newer release (read its notes first: before 1.0 a minor version may break). npm and yarn accept the same URL.
+`npm install loui-ds` and `yarn add loui-ds` work too. To upgrade, run `pnpm update loui-ds` and read the [release notes](https://github.com/xrazai/loUI/releases) first: before 1.0 a minor version may break. Every release also attaches the package tarball, if you need to install a version by URL.
 
 `react-aria-components`, `react-stately` and `lucide-react` are regular dependencies of the package; you do not install them yourself.
 
@@ -25,7 +23,7 @@ To upgrade, install the URL of the newer release (read its notes first: before 1
 Import the stylesheet once, at the root of your app, before any component renders:
 
 ```tsx
-import '@loui/ds/styles.css';
+import 'loui-ds/styles.css';
 ```
 
 It contains, in this layer order, `reset`, `tokens`, `base`, `components` and `utilities`. Because everything sits in named cascade layers, your own unlayered CSS always wins over the design system without specificity tricks.
@@ -35,7 +33,7 @@ The stylesheet sets the dark theme on the page (`bg-canvas` on `html`, `bg` and 
 ## 2. Wrap the app in `DSProvider`
 
 ```tsx
-import { DSProvider } from '@loui/ds';
+import { DSProvider } from 'loui-ds';
 
 export function Root({ children }: { children: React.ReactNode }) {
   return <DSProvider locale="en-US">{children}</DSProvider>;
@@ -69,7 +67,7 @@ function Providers({ children }: { children: React.ReactNode }) {
 ## 3. Use components
 
 ```tsx
-import { Alert, Button } from '@loui/ds';
+import { Alert, Button } from 'loui-ds';
 
 export function Example() {
   return (
@@ -89,7 +87,7 @@ Use `onPress`, not `onClick`: it is the React Aria press event and works for mou
 
 ## Fonts
 
-Geist (UI) and Geist Mono (data) are self-hosted and ship inside the package: `styles.css` references `./fonts/*.woff2` relative to itself, and the build copies them to `dist/fonts`. Nothing is fetched from Google Fonts or a CDN at runtime. Your bundler resolves the font files when it processes `@loui/ds/styles.css`; there is nothing to configure. Both families load with `font-display: swap` and a metric-matched fallback so the layout does not shift.
+Geist (UI) and Geist Mono (data) are self-hosted and ship inside the package: `styles.css` references `./fonts/*.woff2` relative to itself, and the build copies them to `dist/fonts`. Nothing is fetched from Google Fonts or a CDN at runtime. Your bundler resolves the font files when it processes `loui-ds/styles.css`; there is nothing to configure. Both families load with `font-display: swap` and a metric-matched fallback so the layout does not shift.
 
 ## Theming
 
@@ -100,7 +98,7 @@ Dark is the only theme. The semantic token layer (`--ds-bg`, `--ds-surface`, `--
 - Components never touch `window` or `document` while rendering or at import time, so they render on the server.
 - IDs come from React `useId`; React Aria needs no `SSRProvider` with React 19.
 - `useMediaQuery` returns its `defaultValue` (`false`) on the server and corrects after hydration. Prefer CSS media queries for styling.
-- Import `@loui/ds/styles.css` in the root layout so the first paint is already styled.
+- Import `loui-ds/styles.css` in the root layout so the first paint is already styled.
 
 ## Framework notes
 
@@ -114,8 +112,8 @@ The package ships a `"use client"` directive **per module**: every file that use
 
 ```tsx
 // app/layout.tsx (Server Component)
-import '@loui/ds/styles.css';
-import { DSProvider, ToastRegion } from '@loui/ds';
+import 'loui-ds/styles.css';
+import { DSProvider, ToastRegion } from 'loui-ds';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -133,7 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```tsx
 // app/page.tsx (Server Component): components are client references and render on the server too
-import { Button, DataTable } from '@loui/ds';
+import { Button, DataTable } from 'loui-ds';
 ```
 
 Rules that follow from the React Server Components model, not from the library:

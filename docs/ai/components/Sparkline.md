@@ -12,7 +12,7 @@ A tiny trend line (or area) without axes, drawn in SVG, for tables, stat cards a
 
 - TODO `GAP-007`.
 
-- Import: `import { Sparkline } from '@loui/ds';`
+- Import: `import { Sparkline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sparkline/Sparkline.tsx`
 - Stories (Storybook title `Components/Sparkline`): Default, Area, Accent, Success, Warning, Danger, LastValue, MinMax, Larger, IncludeZero, FlatSeries, WithGaps, SinglePoint, Empty, Decorative, NarrowContainer, RightToLeft

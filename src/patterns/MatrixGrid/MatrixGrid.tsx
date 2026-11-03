@@ -77,7 +77,7 @@ function clamp(value: number, max: number): number {
  * Each cell is a button named "{row} · {column}: linked" / "not linked" (messages). The grid
  * scrolls horizontally inside a labelled, focusable region.
  *
- * Import it from `@loui/ds/patterns`.
+ * Import it from `loui-ds/patterns`.
  */
 export function MatrixGrid({
   rows,

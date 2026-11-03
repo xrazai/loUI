@@ -11,7 +11,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 - Handoff source: `components/navigation/Tabs.jsx` (TODO `CMP-NAV-01`).
 
-- Import: `import { Tabs } from '@loui/ds';`
+- Import: `import { Tabs } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tabs/Tabs.tsx`
 - Stories (Storybook title `Components/Tabs`): Default, ArrowKeys, FocusMovesIntoPanel, ManualActivation, Counts, ShortcutHints, DisabledTab, Controlled, LongLabels, RightToLeft, Focused

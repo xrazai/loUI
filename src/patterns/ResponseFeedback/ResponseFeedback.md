@@ -2,7 +2,7 @@
 
 Status: experimental
 
-Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.
+Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `loui-ds/patterns`.
 
 ## When to use
 

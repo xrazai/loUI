@@ -1,6 +1,6 @@
 # eslint-plugin-loui
 
-ESLint rules that turn the Loui DS design rules ([AGENTS.md](../../AGENTS.md) sections 2, 6, 8, 9 and 13) into executable checks for **app code** that uses `@loui/ds`. Flat config, ESLint 9 or 10, plain ESM with no build step. TSX needs a TypeScript parser (`typescript-eslint`). Task: AI-007.
+ESLint rules that turn the Loui DS design rules ([AGENTS.md](../../AGENTS.md) sections 2, 6, 8, 9 and 13) into executable checks for **app code** that uses `loui-ds`. Flat config, ESLint 9 or 10, plain ESM with no build step. TSX needs a TypeScript parser (`typescript-eslint`). Task: AI-007.
 
 The rules are heuristics on purpose: they only read what is statically visible (string literals, object literals, JSX attributes) and stay silent on anything dynamic. A rule that cannot be sure does not report.
 
@@ -38,12 +38,12 @@ Or pick rules one by one:
 
 Rules read two files from the design system package at lint time. Both are optional; when a file is missing the rules that need it have nothing to check and never crash.
 
-| Data                                                  | Used by                                        | Looked up in this order                                                                                                                                         |
-| ----------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `manifest.json` (components, props, status, icon set) | `no-deprecated`, `allowed-icons`, DS detection | `settings.loui.manifest` (object), `settings.loui.manifestPath`, `@loui/ds/package.json` then `dist/manifest.json`, then `docs/manifest.json` up from cwd       |
-| `content-rules.json` (microcopy rules)                | `content-rules`                                | `settings.loui.contentRules` (object), `settings.loui.contentRulesPath`, `@loui/ds` `dist/ai/content-rules.json`, then `docs/ai/content-rules.json` up from cwd |
+| Data                                                  | Used by                                        | Looked up in this order                                                                                                                                        |
+| ----------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `manifest.json` (components, props, status, icon set) | `no-deprecated`, `allowed-icons`, DS detection | `settings.loui.manifest` (object), `settings.loui.manifestPath`, `loui-ds/package.json` then `dist/manifest.json`, then `docs/manifest.json` up from cwd       |
+| `content-rules.json` (microcopy rules)                | `content-rules`                                | `settings.loui.contentRules` (object), `settings.loui.contentRulesPath`, `loui-ds` `dist/ai/content-rules.json`, then `docs/ai/content-rules.json` up from cwd |
 
-`settings.loui.packages` (default `["@loui/ds"]`) lists the module names whose exports count as design system components. An element is a design system component when its name is imported from one of those packages (also as `import * as DS`, `<DS.Button>`), or from a relative path under a name that exists in the manifest (how the DS repo's own stories import).
+`settings.loui.packages` (default `["loui-ds"]`) lists the module names whose exports count as design system components. An element is a design system component when its name is imported from one of those packages (also as `import * as DS`, `<DS.Button>`), or from a relative path under a name that exists in the manifest (how the DS repo's own stories import).
 
 ---
 
@@ -135,7 +135,7 @@ Options: `deprecatedComponents: { [name]: hint }`, `deprecatedProps: { "Componen
 
 ## allowed-icons
 
-Warns on any import from `lucide-react`. Icons come from the curated set exported by `@loui/ds` (`PlusIcon`, `XIcon`, ...). When the imported name has a curated equivalent the message names it (`Plus` and `PlusIcon` both map to `PlusIcon`; `LoaderCircle`, `Loader2`, `AlertCircle`, `MoreHorizontal` and a few other legacy names are aliased). Type-only imports are ignored.
+Warns on any import from `lucide-react`. Icons come from the curated set exported by `loui-ds` (`PlusIcon`, `XIcon`, ...). When the imported name has a curated equivalent the message names it (`Plus` and `PlusIcon` both map to `PlusIcon`; `LoaderCircle`, `Loader2`, `AlertCircle`, `MoreHorizontal` and a few other legacy names are aliased). Type-only imports are ignored.
 
 Why: ICON-003 and AGENTS.md section 13: the icon set is curated, listed in the manifest, and tree-shaken from one place.
 
@@ -144,10 +144,10 @@ Why: ICON-003 and AGENTS.md section 13: the icon set is curated, listed in the m
 import { Plus, Truck } from 'lucide-react';
 
 // valid
-import { PlusIcon } from '@loui/ds';
+import { PlusIcon } from 'loui-ds';
 ```
 
-Options: `sources: string[]` (default `["lucide-react"]`), `from: string` (default `"@loui/ds"`, used in messages), `allow: string[]`. Turn the rule off for the files that define the curated set itself.
+Options: `sources: string[]` (default `["lucide-react"]`), `from: string` (default `"loui-ds"`, used in messages), `allow: string[]`. Turn the rule off for the files that define the curated set itself.
 
 ## content-rules
 

@@ -7,7 +7,7 @@
 
 A chronological list of events: when it happened, what happened, who did it, and an optional detail and tone marker. It is a semantic ordered list, newest event first by default.
 
-- Import: `import { Timeline } from '@loui/ds';`
+- Import: `import { Timeline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Timeline/Timeline.tsx`
 - Stories (Storybook title `Components/Timeline`): Default, OldestFirst, Tones, DateOnly, LongText, SingleEvent, Empty, RightToLeft

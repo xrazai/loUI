@@ -8,7 +8,7 @@
 
 A drop zone with a "Choose files" button and the list of added files. Built on React Aria `DropZone` and `FileTrigger`; progress bars use [Progress](../Progress/Progress.md). The component validates and lists files; it uploads nothing. Task: CMP-INP-03.
 
-- Import: `import { FileUpload } from '@loui/ds';`
+- Import: `import { FileUpload } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/FileUpload/FileUpload.tsx`
 - Stories (Storybook title `Components/FileUpload`): Default, WithFiles, Validation, SingleFile, WithProgress, Disabled, LongFileName

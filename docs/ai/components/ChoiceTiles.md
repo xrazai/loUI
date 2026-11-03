@@ -13,7 +13,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 
 - Handoff source: `components/erp/ChoiceTiles.jsx` (TODO `CMP-PAT-08`).
 
-- Import: `import { ChoiceTiles } from '@loui/ds';`
+- Import: `import { ChoiceTiles } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ChoiceTiles/ChoiceTiles.tsx`
 - Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused

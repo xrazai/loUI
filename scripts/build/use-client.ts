@@ -5,7 +5,7 @@ import type { Plugin } from 'rolldown';
  * (ARCH-010). The library is built unbundled (one output file per source module), so the
  * directive is per file: components and hooks are client modules, while the barrel
  * (`index.js`) and pure helpers stay directive-free. A React Server Component can then
- * `import { Button } from '@loui/ds'` and gets a client reference; no consumer wrapper is needed.
+ * `import { Button } from 'loui-ds'` and gets a client reference; no consumer wrapper is needed.
  *
  * A module needs the directive when its emitted code imports React Aria / React Stately, uses a
  * React API that does not exist in the server build of React (hooks, context, `memo`...), or

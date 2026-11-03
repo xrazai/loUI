@@ -8,7 +8,7 @@ Shared building blocks that make every form control (`Input`, `Textarea`, `Selec
 
 Most code never imports from `Field` directly: use the ready-made controls. Use the pieces when you compose a field that has no ready-made component yet (for example a custom picker built on a React Aria field).
 
-- Import: `import { RequiredMark } from '@loui/ds';`
+- Import: `import { RequiredMark } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Field/Field.tsx`
 - Stories (Storybook title `Components/Field`): Anatomy, ErrorsAfterSaveAttempt, RealtimeValidation

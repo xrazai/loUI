@@ -31,8 +31,8 @@ body:
     attributes:
       label: Entry point
       options:
-        - '@loui/ds (core)'
-        - '@loui/ds/patterns (domain pattern)'
+        - 'loui-ds (core)'
+        - 'loui-ds/patterns (domain pattern)'
         - Not sure
     validations:
       required: true

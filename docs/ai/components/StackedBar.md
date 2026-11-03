@@ -15,7 +15,7 @@ not per segment, keeps the keyboard path short and the focus target large.
 
 Stacked bars for parts of a whole per category, horizontal (a row per category) or vertical (a column per category). Each bar has a text summary, a total, and the chart comes with a legend and a hidden data table.
 
-- Import: `import { StackedBar } from '@loui/ds';`
+- Import: `import { StackedBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StackedBar/StackedBar.tsx`
 - Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft

@@ -5,7 +5,7 @@
 
 Hides content visually while keeping it in the accessibility tree. It renders a `span` (or the element given by `as`) with the standard "screen reader only" clipping, so the text is read aloud and found by assistive technology but takes no space on screen.
 
-- Import: `import { VisuallyHidden } from '@loui/ds';`
+- Import: `import { VisuallyHidden } from 'loui-ds';`
 - Status: stable
 - Source: `src/components/VisuallyHidden/VisuallyHidden.tsx`
 - Stories (Storybook title `Primitives/VisuallyHidden`): Default, AsHeading

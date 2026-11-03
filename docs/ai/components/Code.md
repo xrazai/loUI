@@ -6,7 +6,7 @@
 
 Monospace code: inline in a sentence, or a block (`pre` + `code`).
 
-- Import: `import { Code } from '@loui/ds';`
+- Import: `import { Code } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Code/Code.tsx`
 - Stories (Storybook title `Typography/Code`): Default, Block, BlockScrolls, InlineLongToken, RightToLeft

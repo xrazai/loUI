@@ -5,7 +5,7 @@
 
 A thin bar (4 px) with a label and a value in mono type. `Progress` shows the progress of a task, determinate or indeterminate (React Aria `ProgressBar`, `role="progressbar"`). `Meter` shows a quantity within a range (React Aria `Meter`, `role="meter"`) and shares the same look.
 
-- Import: `import { Meter } from '@loui/ds';`
+- Import: `import { Meter } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Progress/Progress.tsx`
 - Stories (Storybook title `Components/Progress`): Default, WithoutLabel, ShowValue, Empty, Complete, Warning, Danger, Indeterminate, AllTones, AsMeter, RightToLeft

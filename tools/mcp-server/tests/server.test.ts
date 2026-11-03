@@ -75,7 +75,7 @@ describe('list_components', () => {
     }>('list_components');
     expect(out.count).toBe(data.manifest.components.length);
     const button = out.items.find((i) => i.name === 'Button');
-    expect(button?.entryPoint).toBe('@loui/ds');
+    expect(button?.entryPoint).toBe('loui-ds');
     expect(button?.description.length).toBeGreaterThan(5);
     expect(text).toContain('Button');
   });
@@ -207,7 +207,7 @@ describe('get_recipe', () => {
 describe('validate_snippet', () => {
   it('accepts a clean snippet', async () => {
     const out = await validate(`
-import { Button, IconButton, PlusIcon } from '@loui/ds';
+import { Button, IconButton, PlusIcon } from 'loui-ds';
 export function Toolbar() {
   return (
     <div>
@@ -221,7 +221,7 @@ export function Toolbar() {
   });
 
   it('catches a raw color with line and column', async () => {
-    const out = await validate(`import { Button } from '@loui/ds';
+    const out = await validate(`import { Button } from 'loui-ds';
 export const A = () => <div style={{ color: '#ff0000' }}><Button>Save</Button></div>;`);
     const f = out.findings.find((x) => x.ruleId === 'loui/no-raw-colors');
     expect(f).toBeDefined();
@@ -232,7 +232,7 @@ export const A = () => <div style={{ color: '#ff0000' }}><Button>Save</Button></
   });
 
   it('catches a missing IconButton label', async () => {
-    const out = await validate(`import { IconButton, PlusIcon } from '@loui/ds';
+    const out = await validate(`import { IconButton, PlusIcon } from 'loui-ds';
 export const A = () => <IconButton icon={PlusIcon} />;`);
     const ids = out.findings.map((f) => f.ruleId);
     expect(ids).toContain('loui/icon-button-label');
@@ -242,7 +242,7 @@ export const A = () => <IconButton icon={PlusIcon} />;`);
   });
 
   it('catches an unknown component import and suggests a name', async () => {
-    const out = await validate(`import { Buton } from '@loui/ds';
+    const out = await validate(`import { Buton } from 'loui-ds';
 export const A = () => <Buton>Save</Buton>;`);
     const f = out.findings.find((x) => x.ruleId === 'loui-mcp/unknown-export');
     expect(f?.message).toContain('Buton');
@@ -256,20 +256,20 @@ export const A = () => <Buton>Save</Buton>;`);
   });
 
   it('catches a namespace-imported component that does not exist', async () => {
-    const out = await validate(`import * as DS from '@loui/ds';
+    const out = await validate(`import * as DS from 'loui-ds';
 export const A = () => <DS.Fancy />;`);
     expect(out.findings.map((f) => f.ruleId)).toContain('loui-mcp/unknown-export');
   });
 
   it('catches a literal prop value that is not allowed', async () => {
-    const out = await validate(`import { Button } from '@loui/ds';
+    const out = await validate(`import { Button } from 'loui-ds';
 export const A = () => <Button variant="huge">Save</Button>;`);
     const f = out.findings.find((x) => x.ruleId === 'loui-mcp/invalid-prop-value');
     expect(f?.message).toContain('primary');
   });
 
   it('does not report required props when props are spread', async () => {
-    const out = await validate(`import { IconButton } from '@loui/ds';
+    const out = await validate(`import { IconButton } from 'loui-ds';
 export const A = (p: object) => <IconButton {...p} />;`);
     expect(out.findings.map((f) => f.ruleId)).not.toContain('loui-mcp/missing-required-prop');
   });

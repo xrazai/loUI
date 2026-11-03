@@ -6,9 +6,9 @@
 Source numbers are the position in `sources`: keep the order stable while the answer streams,
 and append new sources at the end.
 
-The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.
 
-- Import: `import { SourceList } from '@loui/ds/patterns';`
+- Import: `import { SourceList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/SourceList/SourceList.tsx`
 - Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations

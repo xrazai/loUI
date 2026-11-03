@@ -12,7 +12,7 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 
 - Handoff source: `components/erp/Swatch.jsx` (TODO `CMP-PAT-03`).
 
-- Import: `import { Swatch } from '@loui/ds';`
+- Import: `import { Swatch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Swatch/Swatch.tsx`
 - Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex
@@ -46,7 +46,7 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 ## When not to use
 
 - To carry a status: use `Badge` (text plus tone).
-- To pick a color: use `ColorOption` from `@loui/ds/patterns`.
+- To pick a color: use `ColorOption` from `loui-ds/patterns`.
 - For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted.
 
 ## Anatomy
@@ -82,5 +82,5 @@ span[aria-hidden]                        (decorative)
 ## Related components
 
 - Instead, see Badge: To carry a status: use `Badge` (text plus tone).
-- Instead, see ColorOption: To pick a color: use `ColorOption` from `@loui/ds/patterns`.
+- Instead, see ColorOption: To pick a color: use `ColorOption` from `loui-ds/patterns`.
 - Used by: ApprovalCard, ColorOption, MatrixGrid, RankList

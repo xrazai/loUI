@@ -12,7 +12,7 @@ Previous and next buttons, numbered page buttons with ellipses and a text that s
 
 - Handoff source: `components/data/Pagination.jsx` (TODO `CMP-DAT-02`).
 
-- Import: `import { Pagination } from '@loui/ds';`
+- Import: `import { Pagination } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Pagination/Pagination.tsx`
 - Stories (Storybook title `Components/Pagination`): Default, WithRange, MiddlePage, LastPage, FewPages, SinglePage, NoResults, KeyboardNavigation, FocusStaysAfterLastPage, Controlled, Portuguese, NarrowContainer, RightToLeft, Focused

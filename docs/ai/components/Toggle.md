@@ -12,7 +12,7 @@ A button that stays pressed: it switches one setting on or off (bold text, a fil
 
 - TODO `GAP-005`.
 
-- Import: `import { Toggle } from '@loui/ds';`
+- Import: `import { Toggle } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Toggle/Toggle.tsx`
 - Stories (Storybook title `Components/Toggle`): Default, Pressed, Ghost, GhostPressed, Small, Large, WithLeadingIcon, IconOnly, IconOnlyWithTooltip, Disabled, DisabledPressed, KeyboardToggle, Controlled, LongLabel, RightToLeft, Focused

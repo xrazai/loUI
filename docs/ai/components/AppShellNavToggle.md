@@ -6,7 +6,7 @@
 
 The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
 
-- Import: `import { AppShellNavToggle } from '@loui/ds';`
+- Import: `import { AppShellNavToggle } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/AppShell/AppShell.tsx`
 - Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft

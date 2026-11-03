@@ -509,7 +509,7 @@ export function createServer(data: DsData): McpServer {
     {
       title: 'Validate TSX snippet',
       description:
-        'Checks a TSX snippet against the design system: runs eslint-plugin-loui (raw colors and spacing, one primary action, icon button labels, deprecated APIs, icons, microcopy, inline styles) and verifies that every @loui/ds import exists, required props are present and literal prop values are allowed. Returns findings with line, column and a fix hint. Run it on all generated UI code.',
+        'Checks a TSX snippet against the design system: runs eslint-plugin-loui (raw colors and spacing, one primary action, icon button labels, deprecated APIs, icons, microcopy, inline styles) and verifies that every loui-ds import exists, required props are present and literal prop values are allowed. Returns findings with line, column and a fix hint. Run it on all generated UI code.',
       inputSchema: {
         code: z.string().min(1).describe('TSX source of the snippet or file.'),
         filename: z

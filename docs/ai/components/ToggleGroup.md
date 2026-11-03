@@ -17,7 +17,7 @@ A row (or column) of related `Toggle`s that share one value: the list of pressed
 
 - TODO `GAP-005`.
 
-- Import: `import { ToggleGroup } from '@loui/ds';`
+- Import: `import { ToggleGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ToggleGroup/ToggleGroup.tsx`
 - Stories (Storybook title `Components/ToggleGroup`): Default, Preselected, Ghost, Small, Large, Vertical, IconOnly, SingleSelection, DisabledToggle, DisabledGroup, KeyboardSelection, Controlled, Wrapping, RightToLeft, Focused

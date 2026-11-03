@@ -51,7 +51,7 @@ Two ways to persist:
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Badge, Button, Heading, Inline, Stack, Text, useUndoable } from '@loui/ds';
+import { Badge, Button, Heading, Inline, Stack, Text, useUndoable } from 'loui-ds';
 
 export interface Order {
   id: string;

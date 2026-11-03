@@ -11,7 +11,7 @@ A dashed chip that proposes a piece of text. Pressing it **inserts** that text i
 
 - Handoff source: `components/forms/SuggestionChip.jsx` (TODO `CMP-FRM-10`).
 
-- Import: `import { SuggestionChip } from '@loui/ds';`
+- Import: `import { SuggestionChip } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SuggestionChip/SuggestionChip.tsx`
 - Stories (Storybook title `Components/SuggestionChip`): Default, Disabled, LongText, InsertsText, RightToLeft, Focused

@@ -44,7 +44,7 @@ The endpoint path can be changed in `.storybook/main.ts` with `{ name: '@storybo
 - **Dev server only.** `/mcp` exists only while `storybook dev` runs. `storybook build` does not publish an MCP server; check `storybook-static/manifests/components.json` for the static manifest.
 - **It documents what has stories.** Only components with a `*.stories.tsx` appear (sub-components such as `Meter` and `TagGroup` are covered by their group's page). Our own `manifest.json` lists every export, including hooks and utilities, which Storybook MCP does not.
 - **It does not read our `.md` docs.** Storybook MCP uses TSDoc, react-docgen and stories. The "when to use / when not to use / accessibility / keyboard" notes and the lifecycle `Status:` live in `<Name>.md` and are exposed only through `manifest.json` and `llms.txt`. Copy the important rules into the TSDoc or story descriptions if you want agents using only Storybook MCP to see them.
-- **Snippet imports.** Story snippets returned by `docs-show` include imports copied from the story file, so they may show relative imports such as `'../Icon'` next to `'@loui/ds'`. Agents should import from `@loui/ds`.
+- **Snippet imports.** Story snippets returned by `docs-show` include imports copied from the story file, so they may show relative imports such as `'../Icon'` next to `'loui-ds'`. Agents should import from `loui-ds`.
 - **Telemetry.** `core.disableTelemetry` is `true` in `.storybook/main.ts`.
 - **Local only.** The server has no authentication. Do not expose the Storybook dev server beyond localhost.
 

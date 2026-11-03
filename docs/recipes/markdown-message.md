@@ -4,7 +4,7 @@ Status: experimental
 
 Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. A small subset is parsed into React elements: no markdown library, no `dangerouslySetInnerHTML`, no HTML string anywhere.
 
-Components: `ChatPanel` (from `@loui/ds/patterns`), `Code`, `Link`, `Stack`, `Inline`, `Text`.
+Components: `ChatPanel` (from `loui-ds/patterns`), `Code`, `Link`, `Stack`, `Inline`, `Text`.
 
 ## When to use
 
@@ -39,9 +39,9 @@ Components: `ChatPanel` (from `@loui/ds/patterns`), `Code`, `Link`, `Stack`, `In
 ```tsx
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Code, Inline, Link, Stack, Text } from '@loui/ds';
-import { ChatPanel } from '@loui/ds/patterns';
-import type { ChatMessage } from '@loui/ds/patterns';
+import { Code, Inline, Link, Stack, Text } from 'loui-ds';
+import { ChatPanel } from 'loui-ds/patterns';
+import type { ChatMessage } from 'loui-ds/patterns';
 
 /**
  * A small markdown subset, rendered as React elements. There is no HTML string anywhere, so

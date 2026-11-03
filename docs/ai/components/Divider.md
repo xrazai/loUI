@@ -6,7 +6,7 @@
 
 A 1px line that separates groups of content. Built on React Aria `Separator`.
 
-- Import: `import { Divider } from '@loui/ds';`
+- Import: `import { Divider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Divider/Divider.tsx`
 - Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Vertical, Weights

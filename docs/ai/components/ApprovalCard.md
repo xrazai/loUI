@@ -7,11 +7,11 @@ It is an `article` named by its heading ("Review buyer_sp"). Send and discard ar
 and ghost buttons on purpose: a screen has many of these cards and only one primary action.
 They act immediately; the consumer shows an Undo toast instead of asking for confirmation.
 
-A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `@loui/ds/patterns`.
+A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ApprovalCard` (TODO `CMP-AGT-02`).
 
-- Import: `import { ApprovalCard } from '@loui/ds/patterns';`
+- Import: `import { ApprovalCard } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ApprovalCard/ApprovalCard.tsx`
 - Stories (Storybook title `Patterns/ApprovalCard`): Default, Review, LowRatingWithFlag, Minimal, LongText, RightToLeft, SendWithUndo

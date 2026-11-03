@@ -13,7 +13,7 @@ import * as renameProp from './transforms/rename-prop';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 
-const input = `import { Button as Btn, Card } from '@loui/ds';
+const input = `import { Button as Btn, Card } from 'loui-ds';
 import { Button } from 'other-lib';
 
 export function Screen() {
@@ -45,7 +45,7 @@ describe('rename-prop (AI-011)', () => {
   });
 
   it('leaves files without the component alone', () => {
-    const source = `import { Card } from '@loui/ds';\nexport const a = <Card legacyTone="x" />;\n`;
+    const source = `import { Card } from 'loui-ds';\nexport const a = <Card legacyTone="x" />;\n`;
     expect(applyTransform(renameProp, options, { path: 'a.tsx', source })).toBe('');
   });
 
@@ -70,7 +70,7 @@ describe('apply-deprecations', () => {
   });
 
   it('applies rename hints from the manifest and skips hints it cannot apply', () => {
-    const source = `import { Button } from '@loui/ds';\nexport const a = <Button legacyTone="x" oldSize="s" />;\n`;
+    const source = `import { Button } from 'loui-ds';\nexport const a = <Button legacyTone="x" oldSize="s" />;\n`;
     const output = applyTransform(applyDeprecations, { deprecations }, { path: 'a.tsx', source });
     expect(output).toContain('<Button variant="x" oldSize="s" />');
   });

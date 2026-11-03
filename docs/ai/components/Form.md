@@ -9,7 +9,7 @@ a disabled submit gives no way to learn what is wrong.
 
 A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
 
-- Import: `import { Form } from '@loui/ds';`
+- Import: `import { Form } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Form/Form.tsx`
 - Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft

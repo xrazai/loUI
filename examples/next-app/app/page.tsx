@@ -1,4 +1,4 @@
-import { AppShell, Button, DataTable, Dialog, Input, Sidebar, Stack, TopBar } from '@loui/ds';
+import { AppShell, Button, DataTable, Dialog, Input, Sidebar, Stack, TopBar } from 'loui-ds';
 import { CreateOrderButton } from './CreateOrderButton';
 
 const columns = [

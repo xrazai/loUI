@@ -1,6 +1,6 @@
 # Codemods
 
-jscodeshift transforms that migrate code that uses `@loui/ds`. Policy (when a codemod is required, how deprecations are written): [docs/release/codemods.md](../../docs/release/codemods.md).
+jscodeshift transforms that migrate code that uses `loui-ds`. Policy (when a codemod is required, how deprecations are written): [docs/release/codemods.md](../../docs/release/codemods.md).
 
 ## Run
 
@@ -20,7 +20,7 @@ pnpm codemod <name> <path...> [--dry] [--print] [--option=value ...]
 | `rename-prop`        | Renames a prop on one design system component. The sample transform, and the building block of the others.                     | `--component`, `--from`, `--to`                                      |
 | `apply-deprecations` | Reads the `deprecated` hints of `manifest.json` and renames every prop whose hint is a plain rename. Other hints are reported. | `--manifest` (default: installed package, then `docs/manifest.json`) |
 
-Both only touch components imported from `@loui/ds` or `@loui/ds/patterns` (aliases are followed) and leave an element alone, with a report, when it already has the target prop. Namespace imports (`DS.Button`) are not handled yet.
+Both only touch components imported from `loui-ds` or `loui-ds/patterns` (aliases are followed) and leave an element alone, with a report, when it already has the target prop. Namespace imports (`DS.Button`) are not handled yet.
 
 ## Add a codemod
 

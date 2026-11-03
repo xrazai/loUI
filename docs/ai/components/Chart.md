@@ -13,7 +13,7 @@ languages (time reads left to right in charts).
 
 A small responsive bar or line chart for one series, drawn in SVG with no chart library. Grid and axis are quiet (dashed lines, mono labels); the data is reachable by keyboard and by a hidden table.
 
-- Import: `import { Chart } from '@loui/ds';`
+- Import: `import { Chart } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Chart/Chart.tsx`
 - Stories (Storybook title `Components/Chart`): Default, Line, Highlight, LineHighlight, NegativeValues, SmallValues, AllZero, SinglePoint, Empty, Tones, CustomHeight, ManyPoints, KeyboardNavigation, Hover, PortugueseBrazil

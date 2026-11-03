@@ -4,7 +4,7 @@
 
 A labelled set of mutually exclusive options with native radio inputs. Built on React Aria `RadioGroup` + `RadioField` + `RadioButton` (the non-deprecated pair that supports a description per option). Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Radio } from '@loui/ds';`
+- Import: `import { Radio } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RadioGroup/RadioGroup.tsx`
 - Stories (Storybook title `Components/RadioGroup`): Default, WithSelection, Horizontal, WithDescriptions, Required, Invalid, Disabled, DisabledOption, ReadOnly, LongLabels

@@ -5,7 +5,7 @@
 
 A pill with a short status label. The text always states the status; the tone and the dot only reinforce it.
 
-- Import: `import { Badge } from '@loui/ds';`
+- Import: `import { Badge } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Badge/Badge.tsx`
 - Stories (Storybook title `Components/Badge`): Default, Accent, Success, Warning, Danger, WithoutDot, AllTones, LongText, RightToLeft

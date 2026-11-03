@@ -7,7 +7,7 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
-    "@loui/ds": "file:../../.pack/loui-ds.tgz",
+    "loui-ds": "file:../../.pack/loui-ds.tgz",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, toast } from '@loui/ds';
+import { Button, toast } from 'loui-ds';
 
 // Event handlers are functions, so this part has to be a Client Component.
 export function CreateOrderButton() {

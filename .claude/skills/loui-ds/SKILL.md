@@ -1,6 +1,6 @@
 ---
 name: loui-ds
-description: Build product UI with Loui DS (@loui/ds), the dark minimal React design system. Use when the user asks to build, change or review UI "with Loui DS", "with the design system", or any screen, form, table, dialog, dashboard or page that should use @loui/ds components and tokens. Covers which sources to read, the design rules, content and accessibility must-haves, and validating generated code.
+description: Build product UI with Loui DS (loui-ds), the dark minimal React design system. Use when the user asks to build, change or review UI "with Loui DS", "with the design system", or any screen, form, table, dialog, dashboard or page that should use loui-ds components and tokens. Covers which sources to read, the design rules, content and accessibility must-haves, and validating generated code.
 ---
 
 # Building UI with Loui DS
@@ -17,7 +17,7 @@ Do not write from memory. Pick one:
   - `search_tokens` for CSS variables and allowed text/surface pairings.
   - `get_guidelines` (principles, content, accessibility, getting-started, using-with-ai).
   - `get_recipe` for a tested composition; `validate_snippet` to check your code.
-- **No MCP?** Read `docs/llms.txt` (index and rules), then `docs/ai/components/<Name>.md`, `docs/manifest.json` and `docs/tokens.json`. `docs/llms-full.txt` has everything in one file. Published copies: `@loui/ds/llms.txt`, `@loui/ds/manifest.json`, `@loui/ds/tokens.json`.
+- **No MCP?** Read `docs/llms.txt` (index and rules), then `docs/ai/components/<Name>.md`, `docs/manifest.json` and `docs/tokens.json`. `docs/llms-full.txt` has everything in one file. Published copies: `loui-ds/llms.txt`, `loui-ds/manifest.json`, `loui-ds/tokens.json`.
 - Repo rules for contributors: `AGENTS.md`. For users of the package, the guides in `docs/guides/` are the source.
 
 ## 2. The three rules
@@ -33,7 +33,7 @@ Also: no gradients, no emoji, no custom colors. Color never carries meaning alon
 1. Prefer a **recipe** (`get_recipe`, `docs/recipes/`) or a story/example from `get_component` over inventing markup. If there is no recipe, compose from component examples.
 2. Choose components from `list_components`. Read `whenNotToUse` and `related.alternatives` before settling.
 3. Skip `deprecated` components. Do not use `experimental` ones in generated code unless the user asks or no stable option exists; say so when you do.
-4. Import from `@loui/ds` (or `@loui/ds/patterns`) exactly as `importStatement` shows. Load `@loui/ds/styles.css` once.
+4. Import from `loui-ds` (or `loui-ds/patterns`) exactly as `importStatement` shows. Load `loui-ds/styles.css` once.
 5. Write the code, then run **`validate_snippet`** on it and fix every error. Treat warnings as defects unless you can justify them. In a project that has `eslint-plugin-loui`, also run ESLint (`pnpm lint`).
 6. Run the project's typecheck and tests.
 

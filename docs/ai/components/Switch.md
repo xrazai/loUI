@@ -8,7 +8,7 @@ For a choice that is confirmed later with a Save button, prefer `Checkbox`.
 
 An on/off setting that takes effect immediately. A native checkbox with `role="switch"`, a 36x20 track and a 16px knob. Built on React Aria `SwitchField` + `SwitchButton` (the non-deprecated pair that supports a description and an error outside the label). Shared field behavior is in [Field](../Field/Field.md).
 
-- Import: `import { Switch } from '@loui/ds';`
+- Import: `import { Switch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Switch/Switch.tsx`
 - Stories (Storybook title `Components/Switch`): Default, On, WithDescription, LabelAtEnd, Disabled, ReadOnly, Required, Invalid, LongLabel, WithoutVisibleLabel

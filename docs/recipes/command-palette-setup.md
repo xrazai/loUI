@@ -51,8 +51,8 @@ import {
   Text,
   toast,
   useHotkeys,
-} from '@loui/ds';
-import type { Command } from '@loui/ds';
+} from 'loui-ds';
+import type { Command } from 'loui-ds';
 
 type Page = 'orders' | 'customers' | 'invoices';
 

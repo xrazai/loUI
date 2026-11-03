@@ -5,7 +5,7 @@
 
 A bordered surface that groups related content. With a `title` it is a labelled region.
 
-- Import: `import { Card } from '@loui/ds';`
+- Import: `import { Card } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Card/Card.tsx`
 - Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt

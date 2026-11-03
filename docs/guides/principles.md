@@ -50,7 +50,7 @@ The authoritative values are the design tokens (see the Tokens page). The summar
 
 ## Iconography
 
-- The icon set is **Lucide**, 1.5 px stroke, `currentColor`, **bundled** (never fetched from a CDN at runtime). Import icons from `@loui/ds` (`PlusIcon`, `SearchIcon`, ...), not from `lucide-react`.
+- The icon set is **Lucide**, 1.5 px stroke, `currentColor`, **bundled** (never fetched from a CDN at runtime). Import icons from `loui-ds` (`PlusIcon`, `SearchIcon`, ...), not from `lucide-react`.
 - Icons are decorative unless given a label. Icon-only controls use `IconButton`, which requires a `label`.
 - No emoji. No filled or colored icons. Unicode glyphs (`+`, `×`, `⌘`) only inside labelled icon buttons.
 - Outside the sidebar the system is text-first: actions use a label.

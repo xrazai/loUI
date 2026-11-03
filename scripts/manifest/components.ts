@@ -630,17 +630,17 @@ export async function buildManifest(root: string, options: BuildOptions = {}): P
     entryPoints: [
       {
         path: '.',
-        importPath: '@loui/ds',
+        importPath: 'loui-ds',
         description: 'Core components, hooks, i18n and utilities.',
       },
       {
         path: './patterns',
-        importPath: '@loui/ds/patterns',
+        importPath: 'loui-ds/patterns',
         description: 'Domain patterns (generic names). Empty until patterns land.',
       },
       {
         path: './styles.css',
-        importPath: '@loui/ds/styles.css',
+        importPath: 'loui-ds/styles.css',
         description: 'Layered CSS: tokens (--ds-*), base and every component.',
       },
     ],
@@ -662,7 +662,7 @@ export async function buildManifest(root: string, options: BuildOptions = {}): P
     hooks,
     utilities,
     icons: {
-      entryPoint: '@loui/ds',
+      entryPoint: 'loui-ds',
       source: 'lucide-react',
       description:
         'Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.',

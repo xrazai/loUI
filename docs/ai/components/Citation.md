@@ -4,9 +4,9 @@
 > focus to the matching source in the `SourceList`, so it works with a keyboard and a screen
 > reader: the name is "Source 2: Title", the visible text is the number.
 
-The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.
+The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.
 
-- Import: `import { Citation } from '@loui/ds/patterns';`
+- Import: `import { Citation } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/SourceList/SourceList.tsx`
 - Stories (Storybook title `Patterns/SourceList`): Default, LongText, RightToLeft, WithCitations

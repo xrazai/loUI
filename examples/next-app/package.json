@@ -6,7 +6,7 @@
     "build": "next build"
   },
   "dependencies": {
-    "@loui/ds": "file:../../.pack/loui-ds.tgz",
+    "loui-ds": "file:../../.pack/loui-ds.tgz",
     "next": "16.4.3",
     "react": "19.3.1",
     "react-dom": "19.3.1"

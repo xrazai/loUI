@@ -5,7 +5,7 @@
 
 A keyboard shortcut hint in mono type. It renders a real `<kbd>` element.
 
-- Import: `import { Kbd } from '@loui/ds';`
+- Import: `import { Kbd } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Kbd/Kbd.tsx`
 - Stories (Storybook title `Components/Kbd`): Default, Apple, Windows, SingleKey, Arrows, WithChildren, InText, PortugueseLocale, RightToLeft

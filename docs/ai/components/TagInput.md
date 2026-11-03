@@ -17,7 +17,7 @@ A text field that turns what you type into removable tags: `Enter` or a comma ad
 
 - TODO `GAP-005`.
 
-- Import: `import { TagInput } from '@loui/ds';`
+- Import: `import { TagInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/TagInput/TagInput.tsx`
 - Stories (Storybook title `Components/TagInput`): Default, AddWithKeyboard, WithTags, BackspaceRemovesLast, RemoveWithKeyboard, Duplicate, MaxTags, Validation, Invalid, Required, Disabled, ReadOnly, Small, Large, ManyTagsWrap, LongTag, SemicolonDelimiter, Controlled, InForm, Portuguese, RightToLeft, Focused

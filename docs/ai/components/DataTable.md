@@ -12,7 +12,7 @@ lists are alphabetical by default in this design system, so pass sorted rows or 
 
 A table of records with locale-aware sorting, row selection with a bulk action bar, clickable rows, client-side pagination, loading and empty states. Built on React Aria `Table`: a real `<table>` with grid keyboard navigation, `aria-sort` on sortable headers and labelled selection checkboxes.
 
-- Import: `import { DataTable } from '@loui/ds';`
+- Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
 - Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil

@@ -6,14 +6,14 @@ It was designed for low-friction, focus-first use: one main action per screen, t
 
 ## What is in the package
 
-| Piece                | Import                                      | What it is                                                                               |
-| -------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Components           | `import { Button } from '@loui/ds'`         | Accessible React components built on React Aria Components, styled with CSS Modules.     |
-| Hooks and utilities  | `import { formatCurrency } from '@loui/ds'` | Locale-aware formatting, sorting, search, color contrast, `useHotkey`, `useMediaQuery`.  |
-| Internationalization | `import { DSProvider } from '@loui/ds'`     | English by default, `pt-BR` included, every built-in string overridable.                 |
-| Styles and tokens    | `import '@loui/ds/styles.css'`              | Layered CSS with every design token as a `--ds-*` custom property.                       |
-| Patterns             | `import { ... } from '@loui/ds/patterns'`   | Domain compositions with generic names. Empty until the pattern migration lands.         |
-| AI interface         | `manifest.json`, `tokens.json`, `llms.txt`  | Machine-readable component and token reference. See [Using with AI](./using-with-ai.md). |
+| Piece                | Import                                     | What it is                                                                               |
+| -------------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Components           | `import { Button } from 'loui-ds'`         | Accessible React components built on React Aria Components, styled with CSS Modules.     |
+| Hooks and utilities  | `import { formatCurrency } from 'loui-ds'` | Locale-aware formatting, sorting, search, color contrast, `useHotkey`, `useMediaQuery`.  |
+| Internationalization | `import { DSProvider } from 'loui-ds'`     | English by default, `pt-BR` included, every built-in string overridable.                 |
+| Styles and tokens    | `import 'loui-ds/styles.css'`              | Layered CSS with every design token as a `--ds-*` custom property.                       |
+| Patterns             | `import { ... } from 'loui-ds/patterns'`   | Domain compositions with generic names. Empty until the pattern migration lands.         |
+| AI interface         | `manifest.json`, `tokens.json`, `llms.txt` | Machine-readable component and token reference. See [Using with AI](./using-with-ai.md). |
 
 ## How it is built
 

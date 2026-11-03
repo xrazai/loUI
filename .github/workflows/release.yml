@@ -1,13 +1,13 @@
 # Release (docs/release/README.md): pushing a tag `v<version>` builds the library, verifies the
-# package and publishes a GitHub Release with the installable tarball attached. Consumers install it
-# with `pnpm add https://github.com/xrazai/loUI/releases/download/v<version>/loui-ds-<version>.tgz`.
-# Nothing is published to npm (ADR-0004: private, unlicensed until the owner decides).
+# package, creates a GitHub Release with the tarball attached and publishes `loui-ds` to npm with
+# provenance (ADR-0004: MIT, public). npm needs the `NPM_TOKEN` repository secret.
 name: Release
 on:
   push:
     tags: ['v*']
 permissions:
   contents: write
+  id-token: write # npm provenance
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -19,6 +19,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
+          registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
       - name: Tag matches package.json
         run: |
@@ -45,7 +46,7 @@ jobs:
             echo "## Install"
             echo
             echo '```sh'
-            echo "pnpm add https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/loui-ds-${VERSION}.tgz"
+            echo "pnpm add loui-ds@${VERSION} react react-dom"
             echo '```'
           } >> .release/notes.md
           cat .release/notes.md
@@ -57,3 +58,12 @@ jobs:
             --title "Loui DS $GITHUB_REF_NAME" \
             --notes-file .release/notes.md \
             ${{ contains(github.ref_name, '-') && '--prerelease' || '' }}
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "The NPM_TOKEN secret is missing: add it in Settings > Secrets and variables > Actions." >&2
+            exit 1
+          fi
+          npm publish .release/loui-ds-${VERSION}.tgz --access public --provenance ${{ contains(github.ref_name, '-') && '--tag next' || '' }}

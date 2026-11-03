@@ -3,9 +3,9 @@
 > The steps of a multi-step agent run as an ordered list of `ToolCallStep`. Use it under the
 > message the run belongs to; each step opens its own details.
 
-One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.
 
-- Import: `import { ToolCallList } from '@loui/ds/patterns';`
+- Import: `import { ToolCallList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ToolCallStep/ToolCallList.tsx`
 - Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun

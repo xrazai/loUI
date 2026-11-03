@@ -1,5 +1,5 @@
 /**
- * Domain patterns entry point (`@loui/ds/patterns`, ADR-0008).
+ * Domain patterns entry point (`loui-ds/patterns`, ADR-0008).
  * Compositions with a narrower purpose than core components; names stay generic.
  */
 export { AgentCard } from './AgentCard';

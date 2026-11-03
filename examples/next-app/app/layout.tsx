@@ -1,5 +1,5 @@
-import '@loui/ds/styles.css';
-import { DSProvider, ToastRegion } from '@loui/ds';
+import 'loui-ds/styles.css';
+import { DSProvider, ToastRegion } from 'loui-ds';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 

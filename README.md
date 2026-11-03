@@ -1,10 +1,10 @@
 # Loui DS
 
-A dark, minimal, functional React design system for internal tools, dashboards and apps. Design tokens, accessible components built on [React Aria Components](https://react-aria.adobe.com/), and AI-ready documentation, in one package: `@loui/ds`.
+A dark, minimal, functional React design system for internal tools, dashboards and apps. Design tokens, accessible components built on [React Aria Components](https://react-aria.adobe.com/), and AI-ready documentation, in one package: `loui-ds`.
 
 **Live Storybook:** <https://xrazai.github.io/loUI/> · **For AI agents:** [llms.txt](https://xrazai.github.io/loUI/llms.txt), [llms-full.txt](https://xrazai.github.io/loUI/llms-full.txt), [manifest.json](https://xrazai.github.io/loUI/manifest.json), [tokens.json](https://xrazai.github.io/loUI/tokens.json)
 
-> Status: pre-release (`0.0.0`, private, unlicensed). All components are `experimental`; APIs can still change.
+> Status: pre-1.0, published on npm under the MIT license. All components are `experimental`; APIs can still change.
 
 ## Highlights
 
@@ -16,21 +16,19 @@ A dark, minimal, functional React design system for internal tools, dashboards a
 
 ## Install
 
-Each version is a [GitHub Release](https://github.com/xrazai/loUI/releases) with the package attached (it is not on npm: ADR-0004). Install the version you want by its URL:
-
 ```sh
-pnpm add https://github.com/xrazai/loUI/releases/download/v0.1.0/loui-ds-0.1.0.tgz react react-dom
+pnpm add loui-ds react react-dom
 ```
 
-To upgrade, install the URL of the newer release (read its notes first: before 1.0 a minor version may break). npm and yarn accept the same URL.
+`npm install loui-ds` and `yarn add loui-ds` work too. To upgrade, run `pnpm update loui-ds` and read the [release notes](https://github.com/xrazai/loUI/releases) first: before 1.0 a minor version may break. Every release also attaches the package tarball, if you need to install a version by URL.
 
 Requires React 19 and Node 24 or later for tooling.
 
 ## Quick start
 
 ```tsx
-import '@loui/ds/styles.css';
-import { Alert, Button, DSProvider } from '@loui/ds';
+import 'loui-ds/styles.css';
+import { Alert, Button, DSProvider } from 'loui-ds';
 
 export function App() {
   return (
@@ -120,4 +118,4 @@ scripts/               token and manifest tooling
 
 ## License
 
-UNLICENSED for now (ADR-0004). The owner decides before any publication.
+[MIT](LICENSE). The bundled Geist fonts are under the SIL Open Font License ([src/styles/fonts/LICENSE.txt](src/styles/fonts/LICENSE.txt)).

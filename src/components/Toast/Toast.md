@@ -36,7 +36,7 @@ ToastRegion          role=region, aria-label "Toast notifications", landmark (F6
 <ToastRegion />;
 
 // anywhere
-import { toast } from '@loui/ds';
+import { toast } from 'loui-ds';
 toast('Draft saved'); // info
 toast.success('Order #1051 created');
 toast.warning('Stock is low for 2 items');

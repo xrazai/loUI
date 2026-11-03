@@ -1,5 +1,5 @@
 {
-  "name": "@loui/ds-mcp",
+  "name": "loui-ds-mcp",
   "version": "0.0.0",
   "private": true,
   "description": "MCP server that exposes the Loui DS manifest, tokens, guides and a snippet validator to AI agents.",

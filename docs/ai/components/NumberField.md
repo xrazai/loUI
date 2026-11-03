@@ -13,7 +13,7 @@
 
 A number input with minus and plus steppers; the successor of the handoff `Stepper`. Built on React Aria `NumberField` (`Group`, `Input`, two `Button`s in the `decrement` / `increment` slots), styled like [Input](../Input/Input.md). Task: CMP-PAT-06.
 
-- Import: `import { NumberField } from '@loui/ds';`
+- Import: `import { NumberField } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/NumberField/NumberField.tsx`
 - Stories (Storybook title `Components/NumberField`): Default, KeyboardContract, TypingClampsToLimits, WithSuffix, FormattedUnit, WithDescription, Required, Invalid, Disabled, ReadOnly, AtLimit, Sizes, Controlled

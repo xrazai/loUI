@@ -8,7 +8,7 @@ import path from 'node:path';
  *
  * 1. inline object in `settings.loui` (`manifest` / `contentRules`), used by tests and tools;
  * 2. explicit path in `settings.loui` (`manifestPath` / `contentRulesPath`), relative to cwd;
- * 3. the installed `@loui/ds` package (`dist/manifest.json`, `dist/ai/content-rules.json`);
+ * 3. the installed `loui-ds` package (`dist/manifest.json`, `dist/ai/content-rules.json`);
  * 4. a walk up from cwd looking for `docs/manifest.json` / `docs/ai/content-rules.json`
  *    (this is how the design system repo itself is linted).
  *
@@ -28,7 +28,7 @@ function readJson(file) {
 function packageRoot(cwd) {
   try {
     const require = createRequire(path.join(cwd, 'noop.js'));
-    return path.dirname(require.resolve('@loui/ds/package.json'));
+    return path.dirname(require.resolve('loui-ds/package.json'));
   } catch {
     return null;
   }

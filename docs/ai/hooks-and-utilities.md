@@ -1,6 +1,6 @@
 # Hooks and utilities
 
-> Hooks, locale-aware utilities and message helpers exported from `@loui/ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).
+> Hooks, locale-aware utilities and message helpers exported from `loui-ds`. Money is an integer in minor units with an ISO 4217 code (ADR-0006).
 
 ## Hooks
 

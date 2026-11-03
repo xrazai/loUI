@@ -58,7 +58,7 @@ export function ds(
   code,
   names = 'Button, IconButton, Icon, Card, Dialog, Alert, OldBanner, MenuItem, SubMenu, Swatch, Tab, Input',
 ) {
-  return `import { ${names} } from '@loui/ds';\n${code}`;
+  return `import { ${names} } from 'loui-ds';\n${code}`;
 }
 
 export const tsx = { filename: 'App.tsx' };

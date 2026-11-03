@@ -1,7 +1,7 @@
 import { loadManifest } from './manifest.js';
 import { localName } from './ast.js';
 
-const DEFAULT_PACKAGES = ['@loui/ds'];
+const DEFAULT_PACKAGES = ['loui-ds'];
 
 function isDsSource(source, packages) {
   return packages.some((p) => source === p || source.startsWith(`${p}/`));
@@ -12,10 +12,10 @@ const resolvers = new WeakMap();
 /**
  * Resolves JSX element names to design system component names.
  *
- * An element belongs to the design system when its identifier is imported from `@loui/ds` (or
- * `@loui/ds/*`; configurable with `settings.loui.packages`), or from a relative path under a name
+ * An element belongs to the design system when its identifier is imported from `loui-ds` (or
+ * `loui-ds/*`; configurable with `settings.loui.packages`), or from a relative path under a name
  * that exists in the manifest (that is how the DS repo's own stories import components).
- * Namespace imports (`import * as DS from '@loui/ds'`, `<DS.Button>`) are supported.
+ * Namespace imports (`import * as DS from 'loui-ds'`, `<DS.Button>`) are supported.
  */
 export function getDsResolver(context) {
   const sourceCode = context.sourceCode;

@@ -43,7 +43,7 @@ interface N {
   parent?: N;
 }
 
-const PACKAGE_RE = /^@loui\/ds(\/patterns)?$/;
+const PACKAGE_RE = /^loui-ds(\/patterns)?$/;
 
 const FIXES: Record<string, string> = {
   'loui/no-raw-colors':
@@ -63,9 +63,9 @@ const FIXES: Record<string, string> = {
   'loui/no-inline-style-visual':
     'Remove visual inline styles (colors, borders, shadows, radius). Use component props and tokens; only layout values may be inline.',
   'loui-mcp/unknown-export':
-    'This name is not exported by @loui/ds. Call list_components to find the right one and copy its import statement.',
+    'This name is not exported by loui-ds. Call list_components to find the right one and copy its import statement.',
   'loui-mcp/missing-import':
-    'Import the component from @loui/ds (get_component returns the exact import statement).',
+    'Import the component from loui-ds (get_component returns the exact import statement).',
   'loui-mcp/missing-required-prop':
     'Add the required prop. get_component lists every prop with its type and description.',
   'loui-mcp/invalid-prop-value':
@@ -171,7 +171,7 @@ function createUsageRule(manifest: Manifest, entries: ManifestEntry[]): Rule.Rul
             const prop = nameOf(nameNode.property);
             if (objectName && prop && locals.get(objectName) === '*') {
               if (!exported.has(prop)) {
-                unknown(nameNode, prop, '@loui/ds');
+                unknown(nameNode, prop, 'loui-ds');
                 return;
               }
               exportName = prop;

@@ -12,7 +12,7 @@ A side panel that slides in from the inline-end edge to view or edit one record 
 
 - Handoff source: `components/erp/Sheet` (CMP-PAT-01).
 
-- Import: `import { Sheet } from '@loui/ds';`
+- Import: `import { Sheet } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sheet/Sheet.tsx`
 - Stories (Storybook title `Components/Sheet`): Default, Open, Medium, Large, CloseButton, LongContent, NotPadded, LongTitle, WithDescription, RightToLeft

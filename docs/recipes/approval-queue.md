@@ -4,7 +4,7 @@ Status: experimental
 
 A queue of replies written by an agent that wait for a person to approve them before anything reaches a customer. Tabs split "To approve" from "Sent"; Send and Discard act at once and offer Undo.
 
-Components: `ApprovalCard` (from `@loui/ds/patterns`), `Tabs`, `EmptyState`, `Badge`, `Toast` (through `useUndoable`).
+Components: `ApprovalCard` (from `loui-ds/patterns`), `Tabs`, `EmptyState`, `Badge`, `Toast` (through `useUndoable`).
 
 ## When to use
 
@@ -49,8 +49,8 @@ import {
   Tabs,
   Text,
   useUndoable,
-} from '@loui/ds';
-import { ApprovalCard } from '@loui/ds/patterns';
+} from 'loui-ds';
+import { ApprovalCard } from 'loui-ds/patterns';
 
 type State = 'pending' | 'sent' | 'discarded';
 

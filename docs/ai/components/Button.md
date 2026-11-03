@@ -10,7 +10,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 
 - Handoff source: `components/forms/Button` (CMP-FRM-01).
 
-- Import: `import { Button } from '@loui/ds';`
+- Import: `import { Button } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Button/Button.tsx`
 - Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, LongText, Rtl, KeyboardActivation, Focused, Hovered

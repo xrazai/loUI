@@ -10,7 +10,7 @@ A colored value is never the only signal: `tone` other than `neutral` requires a
 
 An indicator card for the top of a screen: a mono caption, a large mono number, an optional small visual and a short note or trend in words.
 
-- Import: `import { StatCard } from '@loui/ds';`
+- Import: `import { StatCard } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StatCard/StatCard.tsx`
 - Stories (Storybook title `Components/StatCard`): Default, Large, WithAside, WarningTone, DangerTone, SuccessTone, TrendUp, TrendUpIsBad, TrendDownAndFlat, WithProportionBar, LongText, Grid, PortugueseBrazil

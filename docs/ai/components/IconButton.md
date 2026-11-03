@@ -9,7 +9,7 @@ A square button that holds one icon and has a required accessible name. Built on
 
 - Handoff source: `components/forms/IconButton` (CMP-FRM-02).
 
-- Import: `import { IconButton } from '@loui/ds';`
+- Import: `import { IconButton } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/IconButton/IconButton.tsx`
 - Stories (Storybook title `Components/IconButton`): Default, Ghost, Variants, Sizes, Disabled, Toolbar, AccessibleName, KeyboardActivation, Focused, Hovered

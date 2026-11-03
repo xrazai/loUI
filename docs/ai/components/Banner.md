@@ -6,7 +6,7 @@
 
 A persistent, full-width message for a whole page or section: maintenance, a limited account, an offline mode. It has a tone, an icon, an optional title, one action and an optional dismiss button.
 
-- Import: `import { Banner } from '@loui/ds';`
+- Import: `import { Banner } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Banner/Banner.tsx`
 - Stories (Storybook title `Components/Banner`): Default, Success, Warning, Danger, Urgent, Announced, TitleOnly, TextOnly, Dismissible, LongText, AllTones, RightToLeft

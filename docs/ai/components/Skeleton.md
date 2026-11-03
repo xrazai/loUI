@@ -9,7 +9,7 @@ DOM as custom properties on `style`, because arbitrary sizes cannot be tokens.
 
 A placeholder in the shape of content that is still loading: a block, a circle, or a few text lines.
 
-- Import: `import { Skeleton } from '@loui/ds';`
+- Import: `import { Skeleton } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Skeleton/Skeleton.tsx`
 - Stories (Storybook title `Components/Skeleton`): Default, Block, Circle, Lines, SingleLine, Pill, BusyRegion, RightToLeft

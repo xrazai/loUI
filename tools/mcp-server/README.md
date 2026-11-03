@@ -1,4 +1,4 @@
-# @loui/ds-mcp
+# loui-ds-mcp
 
 A stdio [Model Context Protocol](https://modelcontextprotocol.io) server that gives AI agents exact, current knowledge of Loui DS: components and props, tokens, guides, recipes, and a snippet validator. Task: AI-008. Built on `@modelcontextprotocol/sdk` 1.32 (`McpServer`, `registerTool` with zod input and output schemas, `registerResource`).
 
@@ -13,11 +13,11 @@ node tools/mcp-server/src/cli.ts            # from the repo root
 node tools/mcp-server/src/cli.ts --root path/to/dir-with-manifest.json
 ```
 
-`pnpm --filter @loui/ds-mcp build` (tsdown) emits `dist/cli.js`, the `loui-ds-mcp` bin, for use outside the repository, where Node refuses to strip types under `node_modules`.
+`pnpm --filter loui-ds-mcp build` (tsdown) emits `dist/cli.js`, the `loui-ds-mcp` bin, for use outside the repository, where Node refuses to strip types under `node_modules`.
 
 ### Where the data comes from
 
-In order: `--root <dir>` or `LOUI_DS_ROOT` (an explicit root that is wrong fails loudly), the installed `@loui/ds` package (`dist/`, then `docs/`), then the `docs/` folder found walking up from the working directory (the repository). The directory must contain `manifest.json`; the other files are optional.
+In order: `--root <dir>` or `LOUI_DS_ROOT` (an explicit root that is wrong fails loudly), the installed `loui-ds` package (`dist/`, then `docs/`), then the `docs/` folder found walking up from the working directory (the repository). The directory must contain `manifest.json`; the other files are optional.
 
 ## Connect
 
@@ -61,7 +61,7 @@ All tools are read-only. Each returns concise text plus `structuredContent` that
 
 `validate_snippet` runs ESLint in memory (typescript-eslint parser, TSX) with `eslint-plugin-loui` `recommended`, and adds four manifest checks under the `loui-mcp/` prefix:
 
-- `unknown-export`: an imported `@loui/ds` name that does not exist (with did-you-mean), also for `<DS.Name>`.
+- `unknown-export`: an imported `loui-ds` name that does not exist (with did-you-mean), also for `<DS.Name>`.
 - `missing-import`: a manifest component used in JSX without an import.
 - `missing-required-prop`: a prop the manifest marks required is absent (skipped when the element spreads props).
 - `invalid-prop-value`: a literal value outside the prop's allowed values, such as `variant="huge"`.
@@ -84,7 +84,7 @@ Nothing is copied: the server loads the files on start. After changing component
 ## Development
 
 ```sh
-pnpm --filter @loui/ds-mcp test    # tsc --noEmit, then Vitest
+pnpm --filter loui-ds-mcp test    # tsc --noEmit, then Vitest
 pnpm test:tools                    # every package in tools/
 ```
 

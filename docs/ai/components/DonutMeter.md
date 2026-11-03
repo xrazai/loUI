@@ -13,7 +13,7 @@ A circular meter for one proportion: how much of a whole is used, done or filled
 
 - TODO `GAP-007`.
 
-- Import: `import { DonutMeter } from '@loui/ds';`
+- Import: `import { DonutMeter } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DonutMeter/DonutMeter.tsx`
 - Stories (Storybook title `Components/DonutMeter`): Default, Small, Large, Neutral, Success, Warning, Danger, Empty, Full, CustomRange, CustomCenter, WithoutCenterValue, AriaLabelOnly, LongLabel, Portuguese, RightToLeft

@@ -30,7 +30,7 @@ createTester().run('no-inline-style-visual', rule, {
     { ...tsx, code: ds(`const a = <Card style={{ 'background-color': 'x' }} />;`), errors: 1 },
     {
       ...tsx,
-      code: `import * as DS from '@loui/ds';\nconst a = <DS.Card style={{ margin: 0 }} />;`,
+      code: `import * as DS from 'loui-ds';\nconst a = <DS.Card style={{ margin: 0 }} />;`,
       errors: 1,
     },
     {

@@ -11,7 +11,7 @@ An indeterminate loading ring that inherits the text color. Small, quiet, and no
 - Handoff source: `components/feedback/Spinner` (CMP-FBK-06).
 - Built on: a plain element with `role="progressbar"`. A pending `Button` wires it as its busy label through React Aria.
 
-- Import: `import { Spinner } from '@loui/ds';`
+- Import: `import { Spinner } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Spinner/Spinner.tsx`
 - Stories (Storybook title `Components/Spinner`): Default, Sizes, WithLabel, DecorativeWithText, InheritsColor

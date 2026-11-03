@@ -71,7 +71,7 @@ const MINUS = '−';
  * Amounts are integers in minor units (ADR-0006) formatted with `Intl`: pass `currency` for
  * money, `format` for anything else, or neither for plain quantities.
  *
- * Import it from `@loui/ds/patterns`.
+ * Import it from `loui-ds/patterns`.
  */
 export function LedgerList({
   entries,

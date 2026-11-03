@@ -4,7 +4,7 @@
 
 Multi-line text field. Same contract as [Input](../Input/Input.md) (label, description, error, states, validation timing from [Field](../Field/Field.md)), plus an aside, auto-growing height and a character count. Built on React Aria `TextField` + `TextArea`.
 
-- Import: `import { Textarea } from '@loui/ds';`
+- Import: `import { Textarea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Textarea/Textarea.tsx`
 - Stories (Storybook title `Components/Textarea`): Default, WithDescription, WithAside, Required, Invalid, Disabled, ReadOnly, AutoGrow, WithCharacterCount, NoResize, LongLabel, Focused

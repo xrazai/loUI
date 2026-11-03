@@ -7,7 +7,7 @@
 
 A vertical list of records. Each row has an optional leading node, a title, an optional description, a mono meta value and an optional "more actions" menu. Built on React Aria `GridList`, so rows are reachable with the arrow keys and can run an action.
 
-- Import: `import { ActionList } from '@loui/ds';`
+- Import: `import { ActionList } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ActionList/ActionList.tsx`
 - Stories (Storybook title `Components/ActionList`): Default, Actionable, KeyboardNavigation, RowMenu, Borderless, WithLeadingAndLongText, DisabledRow, Empty, CustomEmpty, PortugueseBrazil

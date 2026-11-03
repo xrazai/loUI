@@ -6,7 +6,7 @@
 
 A mono outlined label for versions, SKUs and filters. `Tag` is static text on its own (with an optional remove button); inside a `TagGroup` it is an item with keyboard navigation, selection and removal. `TagGroup` is built on React Aria `TagGroup`, `TagList` and `Tag`.
 
-- Import: `import { TagGroup } from '@loui/ds';`
+- Import: `import { TagGroup } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tag/Tag.tsx`
 - Stories (Storybook title `Components/Tag`): Default, Removable, Disabled, LongText, RightToLeft, RemovableGroupStory, GroupStatic, GroupSelectable, GroupWithDisabledTag, GroupEmpty

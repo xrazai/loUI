@@ -11,7 +11,7 @@ export type ExportKind =
 export interface PublicExport {
   name: string;
   kind: ExportKind;
-  /** `@loui/ds` or `@loui/ds/patterns`. */
+  /** `loui-ds` or `loui-ds/patterns`. */
   entryPoint: string;
   /** Repository-relative, forward-slash path of the declaring file. */
   sourceFile: string;
@@ -30,8 +30,8 @@ export interface Analysis {
 }
 
 const ENTRIES = [
-  { file: 'src/index.ts', entryPoint: '@loui/ds' },
-  { file: 'src/patterns/index.ts', entryPoint: '@loui/ds/patterns' },
+  { file: 'src/index.ts', entryPoint: 'loui-ds' },
+  { file: 'src/patterns/index.ts', entryPoint: 'loui-ds/patterns' },
 ] as const;
 
 export function toRelative(root: string, file: string): string {

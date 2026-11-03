@@ -4,8 +4,8 @@ import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 /**
- * SSR smoke test (TEST-008, ADR-0009): every component exported from `@loui/ds` and
- * `@loui/ds/patterns` imports in Node (no `window`, no `document`) and renders to a string
+ * SSR smoke test (TEST-008, ADR-0009): every component exported from `loui-ds` and
+ * `loui-ds/patterns` imports in Node (no `window`, no `document`) and renders to a string
  * inside `DSProvider` without throwing.
  *
  * It runs in the node-environment `unit` project. CSS Modules resolve to class-name proxies
@@ -408,7 +408,7 @@ const CASES: Record<string, () => ReactElement> = {
   ),
   TopBar: () => <TopBar title="Orders" />,
   VisuallyHidden: () => <VisuallyHidden>Close dialog</VisuallyHidden>,
-  // Patterns (`@loui/ds/patterns`)
+  // Patterns (`loui-ds/patterns`)
   AgentCard: () => <AgentCard name="Marketplace agent" />,
   ApprovalCard: () => <ApprovalCard message="Where is my order?" />,
   ChatPanel: () => (

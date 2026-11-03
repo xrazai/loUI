@@ -5,7 +5,7 @@
 
 A vertical column of children with one consistent gap. The gap is a key of the space scale, never a pixel value.
 
-- Import: `import { Stack } from '@loui/ds';`
+- Import: `import { Stack } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stack/Stack.tsx`
 - Stories (Storybook title `Layout/Stack`): Default, SmallGap, LargeGap, AlignStart, AlignCenter, AlignEnd, AsList, LongText, RightToLeft

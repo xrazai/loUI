@@ -3,7 +3,7 @@
  *
  *   pnpm codemod rename-prop src --component=Button --from=legacyTone --to=variant
  *
- * Only elements whose component is imported from `@loui/ds` or `@loui/ds/patterns` (also under
+ * Only elements whose component is imported from `loui-ds` or `loui-ds/patterns` (also under
  * an alias, `import { Button as B }`) are touched. A prop is left alone, and a warning is
  * reported, when the element already has the target prop. Namespace imports (`DS.Button`) are not
  * handled.
@@ -12,7 +12,7 @@ import type { API, FileInfo, Options } from 'jscodeshift';
 
 export const parser = 'tsx';
 
-export const PACKAGES = ['@loui/ds', '@loui/ds/patterns'];
+export const PACKAGES = ['loui-ds', 'loui-ds/patterns'];
 
 type J = API['jscodeshift'];
 type Root = ReturnType<J>;

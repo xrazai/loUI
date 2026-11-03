@@ -10,11 +10,11 @@ and then the full reply once, when it is complete.
 
 Message content is plain text. Pass `renderContent` to render sanitized markdown.
 
-A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `@loui/ds/patterns`.
+A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/ChatPanel` (TODO `CMP-AGT-03`; groundwork for `AI-013`).
 
-- Import: `import { ChatPanel } from '@loui/ds/patterns';`
+- Import: `import { ChatPanel } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ChatPanel/ChatPanel.tsx`
 - Stories (Storybook title `Patterns/ChatPanel`): Empty, Conversation, Busy, Streaming, ErrorWithRetry, PrimarySend, LongConversation, LongText, CustomRenderer, RightToLeft, InteractiveStreaming, InteractiveError

@@ -5,7 +5,7 @@
 
 A typographic placeholder for a list, table or panel that has nothing to show. It says what happened and what the user can do about it.
 
-- Import: `import { EmptyState } from '@loui/ds';`
+- Import: `import { EmptyState } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/EmptyState/EmptyState.tsx`
 - Stories (Storybook title `Components/EmptyState`): Default, WithActions, Compact, WithoutBorder, WithIcon, TitleOnly, LongText, RightToLeft

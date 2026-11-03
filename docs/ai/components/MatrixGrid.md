@@ -8,13 +8,13 @@
 Each cell is a button named "{row} · {column}: linked" / "not linked" (messages). The grid
 scrolls horizontally inside a labelled, focusable region.
 
-Import it from `@loui/ds/patterns`.
+Import it from `loui-ds/patterns`.
 
-A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `@loui/ds/patterns`.
+A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/MatrixGrid.jsx` (TODO `CMP-PAT-11`).
 
-- Import: `import { MatrixGrid } from '@loui/ds/patterns';`
+- Import: `import { MatrixGrid } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/MatrixGrid/MatrixGrid.tsx`
 - Stories (Storybook title `Patterns/MatrixGrid`): Default, WithCountAndHint, CheckContrast, WithoutColors, ManyColumns, LongLabels, Empty, KeyboardNavigation, Portuguese, RightToLeft, Focused
@@ -93,7 +93,7 @@ div.root
 ## Examples
 
 ```tsx
-import { MatrixGrid } from '@loui/ds/patterns';
+import { MatrixGrid } from 'loui-ds/patterns';
 
 <MatrixGrid
   aria-label="Product colors"

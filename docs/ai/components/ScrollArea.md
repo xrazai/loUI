@@ -10,7 +10,7 @@ always required.
 
 A scrolling container with thin, themed scrollbars that stays keyboard accessible.
 
-- Import: `import { ScrollArea } from '@loui/ds';`
+- Import: `import { ScrollArea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ScrollArea/ScrollArea.tsx`
 - Stories (Storybook title `Layout/ScrollArea`): Default, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft

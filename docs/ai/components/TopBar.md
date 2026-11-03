@@ -8,7 +8,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 - Handoff source: `components/layout/TopBar.jsx` (TODO `CMP-LAY-02`).
 
-- Import: `import { TopBar } from '@loui/ds';`
+- Import: `import { TopBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/TopBar/TopBar.tsx`
 - Stories (Storybook title `Components/TopBar`): Default, WithSubtitle, WithPrimaryAction, WithContent, WithBreadcrumb, HeadingLevel2, LongTitle, RightToLeft

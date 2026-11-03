@@ -2,24 +2,24 @@
   "$schema": "https://loui.dev/schemas/manifest.schema.json",
   "schemaVersion": 1,
   "package": {
-    "name": "@loui/ds",
+    "name": "loui-ds",
     "version": "0.1.0"
   },
   "generator": "scripts/manifest/build.ts",
   "entryPoints": [
     {
       "path": ".",
-      "importPath": "@loui/ds",
+      "importPath": "loui-ds",
       "description": "Core components, hooks, i18n and utilities."
     },
     {
       "path": "./patterns",
-      "importPath": "@loui/ds/patterns",
+      "importPath": "loui-ds/patterns",
       "description": "Domain patterns (generic names). Empty until patterns land."
     },
     {
       "path": "./styles.css",
-      "importPath": "@loui/ds/styles.css",
+      "importPath": "loui-ds/styles.css",
       "description": "Layered CSS: tokens (--ds-*), base and every component."
     }
   ],
@@ -34,8 +34,8 @@
     {
       "name": "Accordion",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Accordion } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Accordion } from 'loui-ds';",
       "folder": "src/components/Accordion",
       "sourceFile": "src/components/Accordion/Accordion.tsx",
       "status": "experimental",
@@ -299,8 +299,8 @@
     {
       "name": "ActionList",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ActionList } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ActionList } from 'loui-ds';",
       "folder": "src/components/ActionList",
       "sourceFile": "src/components/ActionList/ActionList.tsx",
       "status": "experimental",
@@ -676,8 +676,8 @@
     {
       "name": "AgentCard",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { AgentCard } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { AgentCard } from 'loui-ds/patterns';",
       "folder": "src/patterns/AgentCard",
       "sourceFile": "src/patterns/AgentCard/AgentCard.tsx",
       "status": "experimental",
@@ -921,7 +921,7 @@
       },
       "docs": {
         "path": "src/patterns/AgentCard/AgentCard.md",
-        "summary": "A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/agents/AgentCard` (TODO `CMP-AGT-01`).",
+        "summary": "A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/agents/AgentCard` (TODO `CMP-AGT-01`).",
         "whenToUse": [
           "A grid of agents (or automations) on an overview page, each leading to its own screen.",
           "To make \"what needs me\" visible: the accent number is the only call for attention on the card."
@@ -998,8 +998,8 @@
     {
       "name": "Alert",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Alert } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Alert } from 'loui-ds';",
       "folder": "src/components/Alert",
       "sourceFile": "src/components/Alert/Alert.tsx",
       "status": "experimental",
@@ -1304,8 +1304,8 @@
     {
       "name": "ApprovalCard",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ApprovalCard } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ApprovalCard } from 'loui-ds/patterns';",
       "folder": "src/patterns/ApprovalCard",
       "sourceFile": "src/patterns/ApprovalCard/ApprovalCard.tsx",
       "status": "experimental",
@@ -1564,7 +1564,7 @@
       },
       "docs": {
         "path": "src/patterns/ApprovalCard/ApprovalCard.md",
-        "summary": "A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/agents/ApprovalCard` (TODO `CMP-AGT-02`).",
+        "summary": "A reply waiting for approval: the original message, an editable draft written by an agent, an optional warning and two actions, send and discard. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/agents/ApprovalCard` (TODO `CMP-AGT-02`).",
         "whenToUse": [
           "An approval queue: replies, messages or changes an agent prepared that go to a customer or touch money.",
           "Any \"review the draft, edit it, send or discard it\" step with many items on one screen."
@@ -1641,8 +1641,8 @@
     {
       "name": "AppShell",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { AppShell } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { AppShell } from 'loui-ds';",
       "folder": "src/components/AppShell",
       "sourceFile": "src/components/AppShell/AppShell.tsx",
       "status": "experimental",
@@ -1938,8 +1938,8 @@
     {
       "name": "AppShellNavToggle",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { AppShellNavToggle } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { AppShellNavToggle } from 'loui-ds';",
       "folder": "src/components/AppShell",
       "sourceFile": "src/components/AppShell/AppShell.tsx",
       "status": "experimental",
@@ -2116,8 +2116,8 @@
     {
       "name": "Avatar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Avatar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Avatar } from 'loui-ds';",
       "folder": "src/components/Avatar",
       "sourceFile": "src/components/Avatar/Avatar.tsx",
       "status": "experimental",
@@ -2337,8 +2337,8 @@
     {
       "name": "Badge",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Badge } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Badge } from 'loui-ds';",
       "folder": "src/components/Badge",
       "sourceFile": "src/components/Badge/Badge.tsx",
       "status": "experimental",
@@ -2556,8 +2556,8 @@
     {
       "name": "Banner",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Banner } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Banner } from 'loui-ds';",
       "folder": "src/components/Banner",
       "sourceFile": "src/components/Banner/Banner.tsx",
       "status": "experimental",
@@ -2855,8 +2855,8 @@
     {
       "name": "Breadcrumb",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Breadcrumb } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Breadcrumb } from 'loui-ds';",
       "folder": "src/components/Breadcrumb",
       "sourceFile": "src/components/Breadcrumb/Breadcrumb.tsx",
       "status": "experimental",
@@ -3058,8 +3058,8 @@
     {
       "name": "Button",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Button } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Button } from 'loui-ds';",
       "folder": "src/components/Button",
       "sourceFile": "src/components/Button/Button.tsx",
       "status": "experimental",
@@ -3694,8 +3694,8 @@
     {
       "name": "Calendar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Calendar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Calendar } from 'loui-ds';",
       "folder": "src/components/DatePicker",
       "sourceFile": "src/components/DatePicker/Calendar.tsx",
       "status": "experimental",
@@ -3995,8 +3995,8 @@
     {
       "name": "Card",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Card } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Card } from 'loui-ds';",
       "folder": "src/components/Card",
       "sourceFile": "src/components/Card/Card.tsx",
       "status": "experimental",
@@ -4228,8 +4228,8 @@
     {
       "name": "Chart",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Chart } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Chart } from 'loui-ds';",
       "folder": "src/components/Chart",
       "sourceFile": "src/components/Chart/Chart.tsx",
       "status": "experimental",
@@ -4613,8 +4613,8 @@
     {
       "name": "ChatPanel",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ChatPanel } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ChatPanel } from 'loui-ds/patterns';",
       "folder": "src/patterns/ChatPanel",
       "sourceFile": "src/patterns/ChatPanel/ChatPanel.tsx",
       "status": "experimental",
@@ -4956,7 +4956,7 @@
       },
       "docs": {
         "path": "src/patterns/ChatPanel/ChatPanel.md",
-        "summary": "A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/agents/ChatPanel` (TODO `CMP-AGT-03`; groundwork for `AI-013`).",
+        "summary": "A chat panel for talking to an agent: header with a Clear action, a message log, suggested prompts when empty, and a composer. It supports streaming replies, Stop and Retry. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/agents/ChatPanel` (TODO `CMP-AGT-03`; groundwork for `AI-013`).",
         "whenToUse": [
           "A side panel where the owner tests an agent, asks why it did something or asks for an adjustment.",
           "Any short, owner-facing conversation with an assistant."
@@ -5047,8 +5047,8 @@
     {
       "name": "Checkbox",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Checkbox } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Checkbox } from 'loui-ds';",
       "folder": "src/components/Checkbox",
       "sourceFile": "src/components/Checkbox/Checkbox.tsx",
       "status": "experimental",
@@ -5604,8 +5604,8 @@
     {
       "name": "CheckboxGroup",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { CheckboxGroup } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { CheckboxGroup } from 'loui-ds';",
       "folder": "src/components/Checkbox",
       "sourceFile": "src/components/Checkbox/CheckboxGroup.tsx",
       "status": "experimental",
@@ -6041,8 +6041,8 @@
     {
       "name": "ChoiceTiles",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ChoiceTiles } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ChoiceTiles } from 'loui-ds';",
       "folder": "src/components/ChoiceTiles",
       "sourceFile": "src/components/ChoiceTiles/ChoiceTiles.tsx",
       "status": "experimental",
@@ -6533,8 +6533,8 @@
     {
       "name": "Citation",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { Citation } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { Citation } from 'loui-ds/patterns';",
       "folder": "src/patterns/SourceList",
       "sourceFile": "src/patterns/SourceList/SourceList.tsx",
       "status": "experimental",
@@ -6685,7 +6685,7 @@
       },
       "docs": {
         "path": "src/patterns/SourceList/SourceList.md",
-        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.",
+        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.",
         "whenToUse": [
           "An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
         ],
@@ -6747,8 +6747,8 @@
     {
       "name": "Code",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Code } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Code } from 'loui-ds';",
       "folder": "src/components/Code",
       "sourceFile": "src/components/Code/Code.tsx",
       "status": "experimental",
@@ -6944,8 +6944,8 @@
     {
       "name": "ColorOption",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ColorOption } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ColorOption } from 'loui-ds/patterns';",
       "folder": "src/patterns/ColorOption",
       "sourceFile": "src/patterns/ColorOption/ColorOption.tsx",
       "status": "experimental",
@@ -7348,7 +7348,7 @@
       },
       "docs": {
         "path": "src/patterns/ColorOption/ColorOption.md",
-        "summary": "A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).",
+        "summary": "A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).",
         "whenToUse": [
           "Choose any number of colors from a list: the colors available for an item, the colors to filter by.",
           "When the color name must be visible next to the swatch."
@@ -7432,8 +7432,8 @@
     {
       "name": "Combobox",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Combobox } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Combobox } from 'loui-ds';",
       "folder": "src/components/Combobox",
       "sourceFile": "src/components/Combobox/Combobox.tsx",
       "status": "experimental",
@@ -8044,8 +8044,8 @@
     {
       "name": "CommandPalette",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { CommandPalette } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { CommandPalette } from 'loui-ds';",
       "folder": "src/components/CommandPalette",
       "sourceFile": "src/components/CommandPalette/CommandPalette.tsx",
       "status": "experimental",
@@ -8422,8 +8422,8 @@
     {
       "name": "ConfirmDialog",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ConfirmDialog } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ConfirmDialog } from 'loui-ds';",
       "folder": "src/components/Dialog",
       "sourceFile": "src/components/Dialog/ConfirmDialog.tsx",
       "status": "experimental",
@@ -8780,8 +8780,8 @@
     {
       "name": "Container",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Container } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Container } from 'loui-ds';",
       "folder": "src/components/Container",
       "sourceFile": "src/components/Container/Container.tsx",
       "status": "experimental",
@@ -8994,8 +8994,8 @@
     {
       "name": "CurrencyInput",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { CurrencyInput } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { CurrencyInput } from 'loui-ds';",
       "folder": "src/components/CurrencyInput",
       "sourceFile": "src/components/CurrencyInput/CurrencyInput.tsx",
       "status": "experimental",
@@ -9528,7 +9528,7 @@
         ],
         "whenNotToUse": [
           "Quantities or measures: `NumberField`.",
-          "Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `@loui/ds`."
+          "Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `loui-ds`."
         ],
         "keyboard": [],
         "examples": [],
@@ -9541,7 +9541,7 @@
           {
             "id": "when-not-to-use",
             "heading": "When not to use",
-            "content": "- Quantities or measures: `NumberField`.\n- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `@loui/ds`."
+            "content": "- Quantities or measures: `NumberField`.\n- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `loui-ds`."
           },
           {
             "id": "editing-model-digits-shift-in-from-the-right-decision",
@@ -9594,8 +9594,8 @@
     {
       "name": "DataTable",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DataTable } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DataTable } from 'loui-ds';",
       "folder": "src/components/DataTable",
       "sourceFile": "src/components/DataTable/DataTable.tsx",
       "status": "experimental",
@@ -10103,8 +10103,8 @@
     {
       "name": "DatePicker",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DatePicker } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DatePicker } from 'loui-ds';",
       "folder": "src/components/DatePicker",
       "sourceFile": "src/components/DatePicker/DatePicker.tsx",
       "status": "experimental",
@@ -10665,8 +10665,8 @@
     {
       "name": "Description",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Description } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Description } from 'loui-ds';",
       "folder": "src/components/Field",
       "sourceFile": "src/components/Field/Field.tsx",
       "status": "experimental",
@@ -10799,8 +10799,8 @@
     {
       "name": "Dialog",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Dialog } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Dialog } from 'loui-ds';",
       "folder": "src/components/Dialog",
       "sourceFile": "src/components/Dialog/Dialog.tsx",
       "status": "experimental",
@@ -11122,8 +11122,8 @@
     {
       "name": "Divider",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Divider } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Divider } from 'loui-ds';",
       "folder": "src/components/Divider",
       "sourceFile": "src/components/Divider/Divider.tsx",
       "status": "experimental",
@@ -11327,8 +11327,8 @@
     {
       "name": "DonutMeter",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DonutMeter } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DonutMeter } from 'loui-ds';",
       "folder": "src/components/DonutMeter",
       "sourceFile": "src/components/DonutMeter/DonutMeter.tsx",
       "status": "experimental",
@@ -11676,8 +11676,8 @@
     {
       "name": "Drawer",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Drawer } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Drawer } from 'loui-ds';",
       "folder": "src/components/Drawer",
       "sourceFile": "src/components/Drawer/Drawer.tsx",
       "status": "experimental",
@@ -11958,8 +11958,8 @@
     {
       "name": "DueIndicator",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DueIndicator } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DueIndicator } from 'loui-ds';",
       "folder": "src/components/DueIndicator",
       "sourceFile": "src/components/DueIndicator/DueIndicator.tsx",
       "status": "experimental",
@@ -12220,8 +12220,8 @@
     {
       "name": "EmptyState",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { EmptyState } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { EmptyState } from 'loui-ds';",
       "folder": "src/components/EmptyState",
       "sourceFile": "src/components/EmptyState/EmptyState.tsx",
       "status": "experimental",
@@ -12457,8 +12457,8 @@
     {
       "name": "FieldError",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { FieldError } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { FieldError } from 'loui-ds';",
       "folder": "src/components/Field",
       "sourceFile": "src/components/Field/Field.tsx",
       "status": "experimental",
@@ -12591,8 +12591,8 @@
     {
       "name": "FieldMessages",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { FieldMessages } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { FieldMessages } from 'loui-ds';",
       "folder": "src/components/Field",
       "sourceFile": "src/components/Field/Field.tsx",
       "status": "experimental",
@@ -12733,8 +12733,8 @@
     {
       "name": "FieldSet",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { FieldSet } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { FieldSet } from 'loui-ds';",
       "folder": "src/components/FieldSet",
       "sourceFile": "src/components/FieldSet/FieldSet.tsx",
       "status": "experimental",
@@ -12927,8 +12927,8 @@
     {
       "name": "FileUpload",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { FileUpload } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { FileUpload } from 'loui-ds';",
       "folder": "src/components/FileUpload",
       "sourceFile": "src/components/FileUpload/FileUpload.tsx",
       "status": "experimental",
@@ -13288,8 +13288,8 @@
     {
       "name": "Form",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Form } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Form } from 'loui-ds';",
       "folder": "src/components/Form",
       "sourceFile": "src/components/Form/Form.tsx",
       "status": "experimental",
@@ -13610,8 +13610,8 @@
     {
       "name": "FormErrorSummary",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { FormErrorSummary } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { FormErrorSummary } from 'loui-ds';",
       "folder": "src/components/Form",
       "sourceFile": "src/components/Form/Form.tsx",
       "status": "experimental",
@@ -13768,8 +13768,8 @@
     {
       "name": "Grid",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Grid } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Grid } from 'loui-ds';",
       "folder": "src/components/Grid",
       "sourceFile": "src/components/Grid/Grid.tsx",
       "status": "experimental",
@@ -13990,8 +13990,8 @@
     {
       "name": "Heading",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Heading } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Heading } from 'loui-ds';",
       "folder": "src/components/Heading",
       "sourceFile": "src/components/Heading/Heading.tsx",
       "status": "experimental",
@@ -14184,8 +14184,8 @@
     {
       "name": "Icon",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Icon } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Icon } from 'loui-ds';",
       "folder": "src/components/Icon",
       "sourceFile": "src/components/Icon/Icon.tsx",
       "status": "experimental",
@@ -14318,7 +14318,7 @@
         ],
         "keyboard": [],
         "examples": [
-          "import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui/ds';\n\n<Button leading={<Icon icon={PlusIcon} size=\"sm\" />}>Create order</Button>;\n\n<Icon icon={CircleCheckIcon} label=\"Paid\" />;\n\n<Icon icon={ChevronRightIcon} directional />;"
+          "import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from 'loui-ds';\n\n<Button leading={<Icon icon={PlusIcon} size=\"sm\" />}>Create order</Button>;\n\n<Icon icon={CircleCheckIcon} label=\"Paid\" />;\n\n<Icon icon={ChevronRightIcon} directional />;"
         ],
         "sections": [
           {
@@ -14344,7 +14344,7 @@
           {
             "id": "the-curated-set",
             "heading": "The curated set",
-            "content": "Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from '@loui/ds'`.\n\n`iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).\n\narrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, ellipsis, external-link, info, loader, minus, plus, search, star, triangle-alert, x."
+            "content": "Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from 'loui-ds'`.\n\n`iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).\n\narrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, ellipsis, external-link, info, loader, minus, plus, search, star, triangle-alert, x."
           },
           {
             "id": "accessibility",
@@ -14359,7 +14359,7 @@
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\nimport { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui/ds';\n\n<Button leading={<Icon icon={PlusIcon} size=\"sm\" />}>Create order</Button>;\n\n<Icon icon={CircleCheckIcon} label=\"Paid\" />;\n\n<Icon icon={ChevronRightIcon} directional />;\n```"
+            "content": "```tsx\nimport { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from 'loui-ds';\n\n<Button leading={<Icon icon={PlusIcon} size=\"sm\" />}>Create order</Button>;\n\n<Icon icon={CircleCheckIcon} label=\"Paid\" />;\n\n<Icon icon={ChevronRightIcon} directional />;\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -14418,8 +14418,8 @@
     {
       "name": "IconButton",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { IconButton } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { IconButton } from 'loui-ds';",
       "folder": "src/components/IconButton",
       "sourceFile": "src/components/IconButton/IconButton.tsx",
       "status": "experimental",
@@ -14952,8 +14952,8 @@
     {
       "name": "Inline",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Inline } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Inline } from 'loui-ds';",
       "folder": "src/components/Inline",
       "sourceFile": "src/components/Inline/Inline.tsx",
       "status": "experimental",
@@ -15178,8 +15178,8 @@
     {
       "name": "InlineConfirm",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { InlineConfirm } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { InlineConfirm } from 'loui-ds';",
       "folder": "src/components/InlineConfirm",
       "sourceFile": "src/components/InlineConfirm/InlineConfirm.tsx",
       "status": "experimental",
@@ -15438,8 +15438,8 @@
     {
       "name": "Input",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Input } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Input } from 'loui-ds';",
       "folder": "src/components/Input",
       "sourceFile": "src/components/Input/Input.tsx",
       "status": "experimental",
@@ -16092,8 +16092,8 @@
     {
       "name": "Kbd",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Kbd } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Kbd } from 'loui-ds';",
       "folder": "src/components/Kbd",
       "sourceFile": "src/components/Kbd/Kbd.tsx",
       "status": "experimental",
@@ -16322,8 +16322,8 @@
     {
       "name": "Label",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Label } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Label } from 'loui-ds';",
       "folder": "src/components/Field",
       "sourceFile": "src/components/Field/Field.tsx",
       "status": "experimental",
@@ -16539,13 +16539,13 @@
     {
       "name": "LedgerList",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { LedgerList } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { LedgerList } from 'loui-ds/patterns';",
       "folder": "src/patterns/LedgerList",
       "sourceFile": "src/patterns/LedgerList/LedgerList.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "A list of signed ledger entries: date, title, optional sub line, a signed amount and an\noptional running balance. The sign is text (`+` / `−`) as well as color. Built as a `ul`.\n\nAmounts are integers in minor units (ADR-0006) formatted with `Intl`: pass `currency` for\nmoney, `format` for anything else, or neither for plain quantities.\n\nImport it from `@loui/ds/patterns`.",
+      "description": "A list of signed ledger entries: date, title, optional sub line, a signed amount and an\noptional running balance. The sign is text (`+` / `−`) as well as color. Built as a `ul`.\n\nAmounts are integers in minor units (ADR-0006) formatted with `Intl`: pass `currency` for\nmoney, `format` for anything else, or neither for plain quantities.\n\nImport it from `loui-ds/patterns`.",
       "props": [
         {
           "name": "entries",
@@ -16746,7 +16746,7 @@
       },
       "docs": {
         "path": "src/patterns/LedgerList/LedgerList.md",
-        "summary": "A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).",
+        "summary": "A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).",
         "whenToUse": [
           "A short history of changes to a balance or a quantity: account activity, wallet movements, stock adjustments.",
           "When the running balance after each entry matters."
@@ -16757,7 +16757,7 @@
         ],
         "keyboard": [],
         "examples": [
-          "import { LedgerList } from '@loui/ds/patterns';\n\n<LedgerList\n  aria-label=\"Account activity\"\n  currency=\"USD\"\n  entries={[\n    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },\n    { id: '1', date: '2026-03-01', title: 'Service fee', delta: -1000, balance: 10000 },\n  ]}\n  onDelete={askToDelete}\n/>;"
+          "import { LedgerList } from 'loui-ds/patterns';\n\n<LedgerList\n  aria-label=\"Account activity\"\n  currency=\"USD\"\n  entries={[\n    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },\n    { id: '1', date: '2026-03-01', title: 'Service fee', delta: -1000, balance: 10000 },\n  ]}\n  onDelete={askToDelete}\n/>;"
         ],
         "sections": [
           {
@@ -16793,7 +16793,7 @@
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\nimport { LedgerList } from '@loui/ds/patterns';\n\n<LedgerList\n  aria-label=\"Account activity\"\n  currency=\"USD\"\n  entries={[\n    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },\n    { id: '1', date: '2026-03-01', title: 'Service fee', delta: -1000, balance: 10000 },\n  ]}\n  onDelete={askToDelete}\n/>;\n```"
+            "content": "```tsx\nimport { LedgerList } from 'loui-ds/patterns';\n\n<LedgerList\n  aria-label=\"Account activity\"\n  currency=\"USD\"\n  entries={[\n    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },\n    { id: '1', date: '2026-03-01', title: 'Service fee', delta: -1000, balance: 10000 },\n  ]}\n  onDelete={askToDelete}\n/>;\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -16816,8 +16816,8 @@
     {
       "name": "Legend",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Legend } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Legend } from 'loui-ds';",
       "folder": "src/components/Legend",
       "sourceFile": "src/components/Legend/Legend.tsx",
       "status": "experimental",
@@ -17099,8 +17099,8 @@
     {
       "name": "Link",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Link } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Link } from 'loui-ds';",
       "folder": "src/components/Link",
       "sourceFile": "src/components/Link/Link.tsx",
       "status": "experimental",
@@ -17555,13 +17555,13 @@
     {
       "name": "MatrixGrid",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { MatrixGrid } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { MatrixGrid } from 'loui-ds/patterns';",
       "folder": "src/patterns/MatrixGrid",
       "sourceFile": "src/patterns/MatrixGrid/MatrixGrid.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "A matrix of toggle cells: rows by columns, each cell linking or unlinking one row with one\ncolumn. It is an ARIA `grid` with roving focus: the grid is one tab stop, the arrow keys move\nbetween cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last\ncell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.\n\nEach cell is a button named \"{row} · {column}: linked\" / \"not linked\" (messages). The grid\nscrolls horizontally inside a labelled, focusable region.\n\nImport it from `@loui/ds/patterns`.",
+      "description": "A matrix of toggle cells: rows by columns, each cell linking or unlinking one row with one\ncolumn. It is an ARIA `grid` with roving focus: the grid is one tab stop, the arrow keys move\nbetween cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last\ncell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.\n\nEach cell is a button named \"{row} · {column}: linked\" / \"not linked\" (messages). The grid\nscrolls horizontally inside a labelled, focusable region.\n\nImport it from `loui-ds/patterns`.",
       "props": [
         {
           "name": "aria-label",
@@ -17785,7 +17785,7 @@
       },
       "docs": {
         "path": "src/patterns/MatrixGrid/MatrixGrid.md",
-        "summary": "A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `@loui/ds/patterns`.\n\n- Handoff source: `components/erp/MatrixGrid.jsx` (TODO `CMP-PAT-11`).",
+        "summary": "A rows-by-columns matrix of toggle cells, where each cell links or unlinks one row with one column (for example which colors a product comes in). It is an ARIA `grid` with roving focus and full arrow-key navigation. Import it from `loui-ds/patterns`.\n\n- Handoff source: `components/erp/MatrixGrid.jsx` (TODO `CMP-PAT-11`).",
         "whenToUse": [
           "Editing many-to-many relations where seeing the whole matrix helps (items by options, users by roles, products by regions).",
           "When every cell is a quick on/off decision."
@@ -17799,7 +17799,7 @@
           "Keyboard: the grid is one tab stop (roving tabindex; the scroll region is the stop before it). `←` `→` `↑` `↓` move one cell (horizontal arrows follow the reading direction and stop at the edges); `Home` / `End` go to the first / last cell of the row; `Ctrl+Home` / `Ctrl+End` to the first / last cell of the grid; `Space` and `Enter` toggle."
         ],
         "examples": [
-          "import { MatrixGrid } from '@loui/ds/patterns';\n\n<MatrixGrid\n  aria-label=\"Product colors\"\n  cornerLabel=\"Product\"\n  countLabel=\"Linked\"\n  rows={products}\n  columns={[{ id: 'navy', label: 'Navy', color: '#1f3a93' }]}\n  isLinked={(productId, colorId) => links.has(`${productId}:${colorId}`)}\n  onToggle={toggleLink}\n  hint=\"Select a cell to link or unlink a color.\"\n/>;"
+          "import { MatrixGrid } from 'loui-ds/patterns';\n\n<MatrixGrid\n  aria-label=\"Product colors\"\n  cornerLabel=\"Product\"\n  countLabel=\"Linked\"\n  rows={products}\n  columns={[{ id: 'navy', label: 'Navy', color: '#1f3a93' }]}\n  isLinked={(productId, colorId) => links.has(`${productId}:${colorId}`)}\n  onToggle={toggleLink}\n  hint=\"Select a cell to link or unlink a color.\"\n/>;"
         ],
         "sections": [
           {
@@ -17835,7 +17835,7 @@
           {
             "id": "examples",
             "heading": "Examples",
-            "content": "```tsx\nimport { MatrixGrid } from '@loui/ds/patterns';\n\n<MatrixGrid\n  aria-label=\"Product colors\"\n  cornerLabel=\"Product\"\n  countLabel=\"Linked\"\n  rows={products}\n  columns={[{ id: 'navy', label: 'Navy', color: '#1f3a93' }]}\n  isLinked={(productId, colorId) => links.has(`${productId}:${colorId}`)}\n  onToggle={toggleLink}\n  hint=\"Select a cell to link or unlink a color.\"\n/>;\n```"
+            "content": "```tsx\nimport { MatrixGrid } from 'loui-ds/patterns';\n\n<MatrixGrid\n  aria-label=\"Product colors\"\n  cornerLabel=\"Product\"\n  countLabel=\"Linked\"\n  rows={products}\n  columns={[{ id: 'navy', label: 'Navy', color: '#1f3a93' }]}\n  isLinked={(productId, colorId) => links.has(`${productId}:${colorId}`)}\n  onToggle={toggleLink}\n  hint=\"Select a cell to link or unlink a color.\"\n/>;\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -17866,8 +17866,8 @@
     {
       "name": "Menu",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Menu } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Menu } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -18345,8 +18345,8 @@
     {
       "name": "MenuItem",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { MenuItem } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { MenuItem } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -18767,8 +18767,8 @@
     {
       "name": "MenuSection",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { MenuSection } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { MenuSection } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -19099,8 +19099,8 @@
     {
       "name": "MenuSeparator",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { MenuSeparator } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { MenuSeparator } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -19303,8 +19303,8 @@
     {
       "name": "Meter",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Meter } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Meter } from 'loui-ds';",
       "folder": "src/components/Progress",
       "sourceFile": "src/components/Progress/Progress.tsx",
       "status": "experimental",
@@ -19597,8 +19597,8 @@
     {
       "name": "MoreActionsMenu",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { MoreActionsMenu } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { MoreActionsMenu } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -20086,8 +20086,8 @@
     {
       "name": "NavItem",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { NavItem } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { NavItem } from 'loui-ds';",
       "folder": "src/components/NavItem",
       "sourceFile": "src/components/NavItem/NavItem.tsx",
       "status": "experimental",
@@ -20619,8 +20619,8 @@
     {
       "name": "NumberField",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { NumberField } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { NumberField } from 'loui-ds';",
       "folder": "src/components/NumberField",
       "sourceFile": "src/components/NumberField/NumberField.tsx",
       "status": "experimental",
@@ -21210,8 +21210,8 @@
     {
       "name": "Pagination",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Pagination } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Pagination } from 'loui-ds';",
       "folder": "src/components/Pagination",
       "sourceFile": "src/components/Pagination/Pagination.tsx",
       "status": "experimental",
@@ -21519,8 +21519,8 @@
     {
       "name": "Popover",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Popover } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Popover } from 'loui-ds';",
       "folder": "src/components/Popover",
       "sourceFile": "src/components/Popover/Popover.tsx",
       "status": "experimental",
@@ -21772,8 +21772,8 @@
     {
       "name": "Progress",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Progress } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Progress } from 'loui-ds';",
       "folder": "src/components/Progress",
       "sourceFile": "src/components/Progress/Progress.tsx",
       "status": "experimental",
@@ -22079,8 +22079,8 @@
     {
       "name": "ProportionBar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ProportionBar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ProportionBar } from 'loui-ds';",
       "folder": "src/components/ProportionBar",
       "sourceFile": "src/components/ProportionBar/ProportionBar.tsx",
       "status": "experimental",
@@ -22346,8 +22346,8 @@
     {
       "name": "Radio",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Radio } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Radio } from 'loui-ds';",
       "folder": "src/components/RadioGroup",
       "sourceFile": "src/components/RadioGroup/RadioGroup.tsx",
       "status": "experimental",
@@ -22736,8 +22736,8 @@
     {
       "name": "RadioGroup",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { RadioGroup } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { RadioGroup } from 'loui-ds';",
       "folder": "src/components/RadioGroup",
       "sourceFile": "src/components/RadioGroup/RadioGroup.tsx",
       "status": "experimental",
@@ -23160,8 +23160,8 @@
     {
       "name": "RankList",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { RankList } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { RankList } from 'loui-ds';",
       "folder": "src/components/RankList",
       "sourceFile": "src/components/RankList/RankList.tsx",
       "status": "experimental",
@@ -23432,8 +23432,8 @@
     {
       "name": "Rating",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Rating } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Rating } from 'loui-ds';",
       "folder": "src/components/Rating",
       "sourceFile": "src/components/Rating/Rating.tsx",
       "status": "experimental",
@@ -23670,8 +23670,8 @@
     {
       "name": "RequiredMark",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { RequiredMark } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { RequiredMark } from 'loui-ds';",
       "folder": "src/components/Field",
       "sourceFile": "src/components/Field/Field.tsx",
       "status": "experimental",
@@ -23804,8 +23804,8 @@
     {
       "name": "ResponseFeedback",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ResponseFeedback } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ResponseFeedback } from 'loui-ds/patterns';",
       "folder": "src/patterns/ResponseFeedback",
       "sourceFile": "src/patterns/ResponseFeedback/ResponseFeedback.tsx",
       "status": "experimental",
@@ -23986,7 +23986,7 @@
       },
       "docs": {
         "path": "src/patterns/ResponseFeedback/ResponseFeedback.md",
-        "summary": "Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `@loui/ds/patterns`.",
+        "summary": "Feedback and follow-up actions under an assistant response: good and bad response toggles, then optional Copy and Regenerate. Import it from `loui-ds/patterns`.",
         "whenToUse": [
           "Under each assistant response in a `ChatPanel`, to learn which answers help."
         ],
@@ -24055,8 +24055,8 @@
     {
       "name": "ScrollArea",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ScrollArea } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ScrollArea } from 'loui-ds';",
       "folder": "src/components/ScrollArea",
       "sourceFile": "src/components/ScrollArea/ScrollArea.tsx",
       "status": "experimental",
@@ -24233,8 +24233,8 @@
     {
       "name": "SearchInput",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SearchInput } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SearchInput } from 'loui-ds';",
       "folder": "src/components/SearchInput",
       "sourceFile": "src/components/SearchInput/SearchInput.tsx",
       "status": "experimental",
@@ -24881,8 +24881,8 @@
     {
       "name": "SegmentedControl",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SegmentedControl } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SegmentedControl } from 'loui-ds';",
       "folder": "src/components/SegmentedControl",
       "sourceFile": "src/components/SegmentedControl/SegmentedControl.tsx",
       "status": "experimental",
@@ -25210,8 +25210,8 @@
     {
       "name": "Select",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Select } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Select } from 'loui-ds';",
       "folder": "src/components/Select",
       "sourceFile": "src/components/Select/Select.tsx",
       "status": "experimental",
@@ -25707,7 +25707,7 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                            | Notes                                                                                               |\n| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |\n| `label`, `description`, `errorMessage`          | As in `Input`.                                                                                      |\n| `options`                                       | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |\n| `value` / `defaultValue` / `onChange(value)`    | The selected option `value`; `null` means nothing selected. `onChange` receives `string \\| null`.   |\n| `placeholder`                                   | Trigger text while empty. Default from messages: \"Select an option\" (pt-BR \"Selecione uma opção\").  |\n| `size`                                          | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |\n| `name`, `isRequired`, `isInvalid`, `isDisabled` | Standard. `name` is submitted through the hidden `<select>`.                                        |\n| `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |\n| `messages`                                      | `placeholder`, `requiredMark`.                                                                      |\n\nOption order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `@loui/ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps)."
+            "content": "| Prop                                            | Notes                                                                                               |\n| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |\n| `label`, `description`, `errorMessage`          | As in `Input`.                                                                                      |\n| `options`                                       | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |\n| `value` / `defaultValue` / `onChange(value)`    | The selected option `value`; `null` means nothing selected. `onChange` receives `string \\| null`.   |\n| `placeholder`                                   | Trigger text while empty. Default from messages: \"Select an option\" (pt-BR \"Selecione uma opção\").  |\n| `size`                                          | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |\n| `name`, `isRequired`, `isInvalid`, `isDisabled` | Standard. `name` is submitted through the hidden `<select>`.                                        |\n| `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |\n| `messages`                                      | `placeholder`, `requiredMark`.                                                                      |\n\nOption order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps)."
           },
           {
             "id": "anatomy-and-styling",
@@ -25749,8 +25749,8 @@
     {
       "name": "Sheet",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Sheet } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Sheet } from 'loui-ds';",
       "folder": "src/components/Sheet",
       "sourceFile": "src/components/Sheet/Sheet.tsx",
       "status": "experimental",
@@ -26059,8 +26059,8 @@
     {
       "name": "ShortcutsHelp",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ShortcutsHelp } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ShortcutsHelp } from 'loui-ds';",
       "folder": "src/components/ShortcutsHelp",
       "sourceFile": "src/components/ShortcutsHelp/ShortcutsHelp.tsx",
       "status": "experimental",
@@ -26292,8 +26292,8 @@
     {
       "name": "Sidebar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Sidebar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Sidebar } from 'loui-ds';",
       "folder": "src/components/Sidebar",
       "sourceFile": "src/components/Sidebar/Sidebar.tsx",
       "status": "experimental",
@@ -26568,8 +26568,8 @@
     {
       "name": "Skeleton",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Skeleton } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Skeleton } from 'loui-ds';",
       "folder": "src/components/Skeleton",
       "sourceFile": "src/components/Skeleton/Skeleton.tsx",
       "status": "experimental",
@@ -26776,8 +26776,8 @@
     {
       "name": "SkipLink",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SkipLink } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SkipLink } from 'loui-ds';",
       "folder": "src/components/SkipLink",
       "sourceFile": "src/components/SkipLink/SkipLink.tsx",
       "status": "experimental",
@@ -26972,8 +26972,8 @@
     {
       "name": "Slider",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Slider } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Slider } from 'loui-ds';",
       "folder": "src/components/Slider",
       "sourceFile": "src/components/Slider/Slider.tsx",
       "status": "experimental",
@@ -27314,8 +27314,8 @@
     {
       "name": "SourceList",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { SourceList } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { SourceList } from 'loui-ds/patterns';",
       "folder": "src/patterns/SourceList",
       "sourceFile": "src/patterns/SourceList/SourceList.tsx",
       "status": "experimental",
@@ -27462,7 +27462,7 @@
       },
       "docs": {
         "path": "src/patterns/SourceList/SourceList.md",
-        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `@loui/ds/patterns`.",
+        "summary": "The numbered list of sources an answer is based on (`SourceList`) and the inline markers that point to it (`Citation`). Import both from `loui-ds/patterns`.",
         "whenToUse": [
           "An assistant answer that rests on documents, pages or records, and the owner should be able to check them."
         ],
@@ -27524,8 +27524,8 @@
     {
       "name": "Sparkline",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Sparkline } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Sparkline } from 'loui-ds';",
       "folder": "src/components/Sparkline",
       "sourceFile": "src/components/Sparkline/Sparkline.tsx",
       "status": "experimental",
@@ -27836,8 +27836,8 @@
     {
       "name": "Spinner",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Spinner } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Spinner } from 'loui-ds';",
       "folder": "src/components/Spinner",
       "sourceFile": "src/components/Spinner/Spinner.tsx",
       "status": "experimental",
@@ -28038,8 +28038,8 @@
     {
       "name": "Stack",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Stack } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Stack } from 'loui-ds';",
       "folder": "src/components/Stack",
       "sourceFile": "src/components/Stack/Stack.tsx",
       "status": "experimental",
@@ -28249,8 +28249,8 @@
     {
       "name": "StackedBar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { StackedBar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { StackedBar } from 'loui-ds';",
       "folder": "src/components/StackedBar",
       "sourceFile": "src/components/StackedBar/StackedBar.tsx",
       "status": "experimental",
@@ -28673,8 +28673,8 @@
     {
       "name": "StatCard",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { StatCard } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { StatCard } from 'loui-ds';",
       "folder": "src/components/StatCard",
       "sourceFile": "src/components/StatCard/StatCard.tsx",
       "status": "experimental",
@@ -28994,8 +28994,8 @@
     {
       "name": "StatusSteps",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { StatusSteps } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { StatusSteps } from 'loui-ds';",
       "folder": "src/components/StatusSteps",
       "sourceFile": "src/components/StatusSteps/StatusSteps.tsx",
       "status": "experimental",
@@ -29279,8 +29279,8 @@
     {
       "name": "Stepper",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Stepper } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Stepper } from 'loui-ds';",
       "folder": "src/components/Stepper",
       "sourceFile": "src/components/Stepper/Stepper.tsx",
       "status": "experimental",
@@ -29568,8 +29568,8 @@
     {
       "name": "SubMenu",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SubMenu } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SubMenu } from 'loui-ds';",
       "folder": "src/components/Menu",
       "sourceFile": "src/components/Menu/Menu.tsx",
       "status": "experimental",
@@ -29802,8 +29802,8 @@
     {
       "name": "SuggestionChip",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SuggestionChip } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SuggestionChip } from 'loui-ds';",
       "folder": "src/components/SuggestionChip",
       "sourceFile": "src/components/SuggestionChip/SuggestionChip.tsx",
       "status": "experimental",
@@ -30286,8 +30286,8 @@
     {
       "name": "Swatch",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Swatch } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Swatch } from 'loui-ds';",
       "folder": "src/components/Swatch",
       "sourceFile": "src/components/Swatch/Swatch.tsx",
       "status": "experimental",
@@ -30407,7 +30407,7 @@
         ],
         "whenNotToUse": [
           "To carry a status: use `Badge` (text plus tone).",
-          "To pick a color: use `ColorOption` from `@loui/ds/patterns`.",
+          "To pick a color: use `ColorOption` from `loui-ds/patterns`.",
           "For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted."
         ],
         "keyboard": [],
@@ -30423,7 +30423,7 @@
           {
             "id": "when-not-to-use",
             "heading": "When not to use",
-            "content": "- To carry a status: use `Badge` (text plus tone).\n- To pick a color: use `ColorOption` from `@loui/ds/patterns`.\n- For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted."
+            "content": "- To carry a status: use `Badge` (text plus tone).\n- To pick a color: use `ColorOption` from `loui-ds/patterns`.\n- For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted."
           },
           {
             "id": "anatomy",
@@ -30465,7 +30465,7 @@
           },
           {
             "name": "ColorOption",
-            "reason": "To pick a color: use `ColorOption` from `@loui/ds/patterns`."
+            "reason": "To pick a color: use `ColorOption` from `loui-ds/patterns`."
           }
         ],
         "uses": [],
@@ -30475,8 +30475,8 @@
     {
       "name": "Switch",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Switch } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Switch } from 'loui-ds';",
       "folder": "src/components/Switch",
       "sourceFile": "src/components/Switch/Switch.tsx",
       "status": "experimental",
@@ -31010,8 +31010,8 @@
     {
       "name": "Tab",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Tab } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Tab } from 'loui-ds';",
       "folder": "src/components/Tabs",
       "sourceFile": "src/components/Tabs/Tabs.tsx",
       "status": "experimental",
@@ -31455,8 +31455,8 @@
     {
       "name": "TabList",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TabList } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TabList } from 'loui-ds';",
       "folder": "src/components/Tabs",
       "sourceFile": "src/components/Tabs/Tabs.tsx",
       "status": "experimental",
@@ -31754,8 +31754,8 @@
     {
       "name": "TabPanel",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TabPanel } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TabPanel } from 'loui-ds';",
       "folder": "src/components/Tabs",
       "sourceFile": "src/components/Tabs/Tabs.tsx",
       "status": "experimental",
@@ -32053,8 +32053,8 @@
     {
       "name": "Tabs",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Tabs } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Tabs } from 'loui-ds';",
       "folder": "src/components/Tabs",
       "sourceFile": "src/components/Tabs/Tabs.tsx",
       "status": "experimental",
@@ -32406,8 +32406,8 @@
     {
       "name": "Tag",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Tag } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Tag } from 'loui-ds';",
       "folder": "src/components/Tag",
       "sourceFile": "src/components/Tag/Tag.tsx",
       "status": "experimental",
@@ -32663,8 +32663,8 @@
     {
       "name": "TagGroup",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TagGroup } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TagGroup } from 'loui-ds';",
       "folder": "src/components/Tag",
       "sourceFile": "src/components/Tag/Tag.tsx",
       "status": "experimental",
@@ -33012,8 +33012,8 @@
     {
       "name": "TagInput",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TagInput } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TagInput } from 'loui-ds';",
       "folder": "src/components/TagInput",
       "sourceFile": "src/components/TagInput/TagInput.tsx",
       "status": "experimental",
@@ -33751,8 +33751,8 @@
     {
       "name": "Text",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Text } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Text } from 'loui-ds';",
       "folder": "src/components/Text",
       "sourceFile": "src/components/Text/Text.tsx",
       "status": "experimental",
@@ -34021,8 +34021,8 @@
     {
       "name": "Textarea",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Textarea } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Textarea } from 'loui-ds';",
       "folder": "src/components/Textarea",
       "sourceFile": "src/components/Textarea/Textarea.tsx",
       "status": "experimental",
@@ -34677,8 +34677,8 @@
     {
       "name": "Timeline",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Timeline } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Timeline } from 'loui-ds';",
       "folder": "src/components/Timeline",
       "sourceFile": "src/components/Timeline/Timeline.tsx",
       "status": "experimental",
@@ -34949,8 +34949,8 @@
     {
       "name": "ToastRegion",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ToastRegion } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ToastRegion } from 'loui-ds';",
       "folder": "src/components/Toast",
       "sourceFile": "src/components/Toast/Toast.tsx",
       "status": "experimental",
@@ -35126,7 +35126,7 @@
           {
             "id": "api",
             "heading": "API",
-            "content": "```tsx\n// once, near the root, inside DSProvider\n<ToastRegion />;\n\n// anywhere\nimport { toast } from '@loui/ds';\ntoast('Draft saved'); // info\ntoast.success('Order #1051 created');\ntoast.warning('Stock is low for 2 items');\ntoast.danger('Payment failed', { timeout: null }); // stays until dismissed\ntoast.success('3 items archived', { action: { label: 'Undo', onPress: restore } });\n```\n\n| Option    | Type                                   | Default | Notes                                                   |\n| --------- | -------------------------------------- | ------- | ------------------------------------------------------- |\n| `tone`    | `info \\| success \\| warning \\| danger` | `info`  | Feedback components use `info`, not `neutral`/`accent`. |\n| `action`  | `{ label, onPress }`                   |         | One action. The toast closes after `onPress`.           |\n| `timeout` | `number \\| null`                       | `5000`  | Milliseconds. `null` = until dismissed.                 |\n| `onClose` | `() => void`                           |         | Timeout, dismiss or action.                             |\n\n`toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait."
+            "content": "```tsx\n// once, near the root, inside DSProvider\n<ToastRegion />;\n\n// anywhere\nimport { toast } from 'loui-ds';\ntoast('Draft saved'); // info\ntoast.success('Order #1051 created');\ntoast.warning('Stock is low for 2 items');\ntoast.danger('Payment failed', { timeout: null }); // stays until dismissed\ntoast.success('3 items archived', { action: { label: 'Undo', onPress: restore } });\n```\n\n| Option    | Type                                   | Default | Notes                                                   |\n| --------- | -------------------------------------- | ------- | ------------------------------------------------------- |\n| `tone`    | `info \\| success \\| warning \\| danger` | `info`  | Feedback components use `info`, not `neutral`/`accent`. |\n| `action`  | `{ label, onPress }`                   |         | One action. The toast closes after `onPress`.           |\n| `timeout` | `number \\| null`                       | `5000`  | Milliseconds. `null` = until dismissed.                 |\n| `onClose` | `() => void`                           |         | Timeout, dismiss or action.                             |\n\n`toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait."
           },
           {
             "id": "default-timeout-5000-ms",
@@ -35173,8 +35173,8 @@
     {
       "name": "Toggle",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Toggle } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Toggle } from 'loui-ds';",
       "folder": "src/components/Toggle",
       "sourceFile": "src/components/Toggle/Toggle.tsx",
       "status": "experimental",
@@ -35708,8 +35708,8 @@
     {
       "name": "ToggleGroup",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { ToggleGroup } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { ToggleGroup } from 'loui-ds';",
       "folder": "src/components/ToggleGroup",
       "sourceFile": "src/components/ToggleGroup/ToggleGroup.tsx",
       "status": "experimental",
@@ -36023,8 +36023,8 @@
     {
       "name": "ToolCallList",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ToolCallList } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ToolCallList } from 'loui-ds/patterns';",
       "folder": "src/patterns/ToolCallStep",
       "sourceFile": "src/patterns/ToolCallStep/ToolCallList.tsx",
       "status": "experimental",
@@ -36225,7 +36225,7 @@
       },
       "docs": {
         "path": "src/patterns/ToolCallStep/ToolCallStep.md",
-        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.",
+        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.",
         "whenToUse": [
           "Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").",
           "A run log where the owner wants to check why the agent answered as it did."
@@ -36303,8 +36303,8 @@
     {
       "name": "ToolCallStep",
       "kind": "component",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { ToolCallStep } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { ToolCallStep } from 'loui-ds/patterns';",
       "folder": "src/patterns/ToolCallStep",
       "sourceFile": "src/patterns/ToolCallStep/ToolCallStep.tsx",
       "status": "experimental",
@@ -36545,7 +36545,7 @@
       },
       "docs": {
         "path": "src/patterns/ToolCallStep/ToolCallStep.md",
-        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.",
+        "summary": "One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.",
         "whenToUse": [
           "Under an assistant message, to show what the agent did before it answered (\"search_orders\", \"draft_reply\").",
           "A run log where the owner wants to check why the agent answered as it did."
@@ -36623,8 +36623,8 @@
     {
       "name": "Tooltip",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Tooltip } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Tooltip } from 'loui-ds';",
       "folder": "src/components/Tooltip",
       "sourceFile": "src/components/Tooltip/Tooltip.tsx",
       "status": "experimental",
@@ -36859,8 +36859,8 @@
     {
       "name": "TopBar",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TopBar } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TopBar } from 'loui-ds';",
       "folder": "src/components/TopBar",
       "sourceFile": "src/components/TopBar/TopBar.tsx",
       "status": "experimental",
@@ -37069,8 +37069,8 @@
     {
       "name": "Tour",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { Tour } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { Tour } from 'loui-ds';",
       "folder": "src/components/Tour",
       "sourceFile": "src/components/Tour/Tour.tsx",
       "status": "experimental",
@@ -37375,8 +37375,8 @@
     {
       "name": "VisuallyHidden",
       "kind": "component",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { VisuallyHidden } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { VisuallyHidden } from 'loui-ds';",
       "folder": "src/components/VisuallyHidden",
       "sourceFile": "src/components/VisuallyHidden/VisuallyHidden.tsx",
       "status": "stable",
@@ -37602,8 +37602,8 @@
     {
       "name": "DSProvider",
       "kind": "provider",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DSProvider } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DSProvider } from 'loui-ds';",
       "sourceFile": "src/providers/DSProvider.tsx",
       "status": "experimental",
       "description": "Root provider of Loui DS. Supplies the locale (also to RAC through its\n`I18nProvider`), message overrides and optional client-side routing.",
@@ -37647,8 +37647,8 @@
     {
       "name": "useControllableState",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useControllableState } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useControllableState } from 'loui-ds';",
       "sourceFile": "src/hooks/useControllableState.ts",
       "description": "Controlled/uncontrolled state for the `value` / `defaultValue` / `onValueChange`\nconvention (AGENTS.md section 9). Thin wrapper over react-stately's `useControlledState`,\nwhich also warns in development when a component switches between modes.\n\n```tsx\nconst [value, setValue] = useControllableState({ value: props.value, defaultValue: props.defaultValue ?? '', onChange: props.onValueChange });\n```",
       "signature": "useControllableState<T>({ value, defaultValue, onChange, }: UseControllableStateOptions<T>): [T, (value: T) => void]",
@@ -37665,8 +37665,8 @@
     {
       "name": "useDSLocale",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useDSLocale } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useDSLocale } from 'loui-ds';",
       "sourceFile": "src/i18n/useMessages.ts",
       "description": "Returns the active locale (BCP 47 tag) set by `DSProvider`; `en-US` without a provider.",
       "signature": "useDSLocale(): string",
@@ -37677,8 +37677,8 @@
     {
       "name": "useHotkey",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useHotkey } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useHotkey } from 'loui-ds';",
       "sourceFile": "src/hooks/useHotkey.ts",
       "description": "Runs `handler` when a single key combo is pressed.\n\n- `combo`: modifiers joined with `+` and one key, e.g. `Mod+K`, `Shift+/`, `Alt+N`, `Escape`.\n  `Mod` is Command on macOS and Control elsewhere.\n- Ignores events from editable fields (unless `allowInEditable`), IME composition,\n  key auto-repeat (unless `allowRepeat`) and events another handler already prevented.\n\nThis is deliberately small. A shortcut registry with conflict detection and a help\noverlay is a separate task (GAP-004).",
       "signature": "useHotkey(combo: string, handler: (event: KeyboardEvent) => void, { enabled, scope, allowInEditable, allowRepeat, preventDefault, platform, }?: UseHotkeyOptions): void",
@@ -37705,8 +37705,8 @@
     {
       "name": "useHotkeys",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useHotkeys } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useHotkeys } from 'loui-ds';",
       "sourceFile": "src/hooks/useHotkeys.ts",
       "description": "Registers keyboard shortcuts in the registry (see `HotkeyProvider`) for as long as the\ncomponent is mounted.\n\n- `keys`: `Mod+K`, `F2`, `N`, `1`, `Shift+/`, `Escape`. `Mod` is Command on macOS and Control\n  elsewhere.\n- Ignores editable fields (`allowInEditable`), IME composition, auto-repeat (`allowRepeat`),\n  events another handler already prevented and, for page-level shortcuts, focus inside an open\n  dialog or menu (`allowInOverlay`).\n- Only one named scope is active at a time (`useHotkeyScope`); shortcuts of other scopes wait.\n- In development, registering the same combo twice in one scope logs a warning; the most\n  recent registration wins.\n- `description` and `group` make a shortcut appear in `useRegisteredHotkeys`, the\n  command palette and `ShortcutsHelp`.\n\nHandlers may close over props and state: the latest handler always runs. The array can be\ncreated inline on each render.",
       "signature": "useHotkeys(definitions: readonly HotkeyDefinition[]): void",
@@ -37723,8 +37723,8 @@
     {
       "name": "useHotkeyScope",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useHotkeyScope } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useHotkeyScope } from 'loui-ds';",
       "sourceFile": "src/hooks/useHotkeys.ts",
       "description": "Makes `name` the active scope while the component is mounted (and `isActive`): shortcuts\nregistered with `scope: name` fire and `global` ones stop, until the component unmounts.\nScopes stack: the most recently mounted one wins. Use it in the body of a panel, a wizard or\nan editor that has its own shortcuts. Dialogs do not need it for page shortcuts: those are\nalready ignored while focus is inside an open dialog.",
       "signature": "useHotkeyScope(name: string, { isActive }?: UseHotkeyScopeOptions): void",
@@ -37746,8 +37746,8 @@
     {
       "name": "useMediaQuery",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useMediaQuery } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useMediaQuery } from 'loui-ds';",
       "sourceFile": "src/hooks/useMediaQuery.ts",
       "description": "Subscribes to a CSS media query. SSR-safe: on the server (and during hydration)\nit returns `defaultValue` (`false` unless given), then the real value after hydration.\n\nPrefer CSS media queries for styling; use this only when behavior (not appearance) depends on the query.",
       "signature": "useMediaQuery(query: string, defaultValue?: boolean): boolean",
@@ -37769,8 +37769,8 @@
     {
       "name": "useMessages",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useMessages } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useMessages } from 'loui-ds';",
       "sourceFile": "src/i18n/useMessages.ts",
       "description": "Returns a component's messages for the active locale.",
       "signature": "useMessages<M extends MessageSet>(componentKey: string, catalog: MessageCatalog<M>, overrides?: MessageOverrides): M",
@@ -37797,8 +37797,8 @@
     {
       "name": "usePrefersReducedMotion",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { usePrefersReducedMotion } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { usePrefersReducedMotion } from 'loui-ds';",
       "sourceFile": "src/hooks/usePrefersReducedMotion.ts",
       "description": "True when the user asks the OS for reduced motion (`prefers-reduced-motion: reduce`).",
       "signature": "usePrefersReducedMotion(): boolean",
@@ -37809,8 +37809,8 @@
     {
       "name": "useRegisteredHotkeys",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useRegisteredHotkeys } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useRegisteredHotkeys } from 'loui-ds';",
       "sourceFile": "src/hooks/useHotkeys.ts",
       "description": "The shortcuts that have a `description`, in registration order, for a help dialog or a\ncommand list. By default only those that can fire now (active scope). Updates when\nshortcuts mount, unmount or the active scope changes. Empty during server rendering.",
       "signature": "useRegisteredHotkeys({ includeInactive, }?: UseRegisteredHotkeysOptions): readonly RegisteredHotkey[]",
@@ -37827,8 +37827,8 @@
     {
       "name": "useToast",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useToast } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useToast } from 'loui-ds';",
       "sourceFile": "src/components/Toast/queue.ts",
       "description": "Hook form of `toast`, for components that prefer a hook. It returns the same stable object,\nso it is safe in dependency arrays.",
       "signature": "useToast(): ToastApi",
@@ -37839,8 +37839,8 @@
     {
       "name": "useUndoable",
       "kind": "hook",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { useUndoable } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { useUndoable } from 'loui-ds';",
       "sourceFile": "src/hooks/useUndoable.ts",
       "description": "Undo, don't confirm (AGENTS.md section 5): applies a reversible action immediately, shows a\ntoast with an **Undo** button, then either reverts it (Undo) or commits it (the toast times\nout or is dismissed).\n\n- `apply` runs now; the screen updates at once.\n- Undo calls `revert`. Closing or timing out calls the optional async `commit`; if that\n  fails, the change is reverted and an error toast stays until dismissed.\n- The timer lives in the toast, so it pauses on hover and focus (WCAG 2.2.1) and the commit\n  waits for it. A pending commit still runs if the component that started it unmounts.\n- Mount one `ToastRegion` near the app root.\n\nUse it for reversible actions (archive, mark as done, change status). Deleting still asks\nfor a confirmation first (`ConfirmDialog`); the Undo toast follows it.\n\nDeferring the commit means a closed tab loses a pending change. When that matters, persist in\n`apply` and make `revert` send the inverse change instead (omit `commit`).",
       "signature": "useUndoable({ toast, messages: overrides, }?: UseUndoableOptions): UseUndoableResult",
@@ -37859,8 +37859,8 @@
     {
       "name": "compareText",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { compareText } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { compareText } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "Compares two strings alphabetically for `locale`; usable as an `Array.prototype.sort` comparator.",
       "signature": "compareText(a: string, b: string, locale: string): number",
@@ -37887,8 +37887,8 @@
     {
       "name": "contrastRatio",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { contrastRatio } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { contrastRatio } from 'loui-ds';",
       "sourceFile": "src/utils/color.ts",
       "description": "WCAG contrast ratio between two hex colors, from `1` (identical) to `21` (black on white). Order does not matter.",
       "signature": "contrastRatio(a: string, b: string): number",
@@ -37910,8 +37910,8 @@
     {
       "name": "createTextCollator",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { createTextCollator } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { createTextCollator } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "Collator for alphabetical order as the product requires (AGENTS.md section 5, rule 5b):\naccent- and case-insensitive (`sensitivity: 'base'`) with natural number order\n(`numeric: true`, so `Item 2` sorts before `Item 10`). The instance is shared\nand cached per locale; do not mutate it.",
       "signature": "createTextCollator(locale: string): Intl.Collator",
@@ -37928,8 +37928,8 @@
     {
       "name": "createToastApi",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { createToastApi } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { createToastApi } from 'loui-ds';",
       "sourceFile": "src/components/Toast/queue.ts",
       "description": "Builds the `toast()` function for a queue.",
       "signature": "createToastApi(queue: ToastQueue): ToastApi",
@@ -37946,8 +37946,8 @@
     {
       "name": "createToastQueue",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { createToastQueue } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { createToastQueue } from 'loui-ds';",
       "sourceFile": "src/components/Toast/queue.ts",
       "description": "Creates an independent queue, for tests or for a second region. Most apps use `toast`.",
       "signature": "createToastQueue(): ToastQueue",
@@ -37958,8 +37958,8 @@
     {
       "name": "daysBetween",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { daysBetween } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { daysBetween } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "Whole days from `isoA` to `isoB` (positive when `isoB` is later). Uses UTC\ndate math, so daylight-saving changes cannot produce 23- or 25-hour \"days\".\nInvalid input throws in development and returns `NaN` in production.",
       "signature": "daysBetween(isoA: ISODate, isoB: ISODate): number",
@@ -37981,8 +37981,8 @@
     {
       "name": "DEFAULT_LOCALE",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DEFAULT_LOCALE } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DEFAULT_LOCALE } from 'loui-ds';",
       "sourceFile": "src/i18n/locales.ts",
       "description": "Default locale.",
       "signature": "\"en-US\" | \"pt-BR\"",
@@ -37993,8 +37993,8 @@
     {
       "name": "DEFAULT_TOAST_TIMEOUT",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { DEFAULT_TOAST_TIMEOUT } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { DEFAULT_TOAST_TIMEOUT } from 'loui-ds';",
       "sourceFile": "src/components/Toast/queue.ts",
       "description": "Default time a toast stays on screen, in milliseconds. The handoff used 3.6 s, which is too\nshort to read a sentence and press Undo (WCAG 2.2.1 Timing Adjustable); 5 s plus pause on\nhover and focus lets keyboard and slow readers finish.",
       "signature": "5000",
@@ -38005,8 +38005,8 @@
     {
       "name": "defineMessages",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { defineMessages } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { defineMessages } from 'loui-ds';",
       "sourceFile": "src/i18n/messages.ts",
       "description": "Declares a component's catalog. Identity function that type-checks that\n`pt-BR` has exactly the same keys and signatures as `en`.",
       "signature": "defineMessages<M extends MessageSet>(catalog: { readonly en: M; readonly \"pt-BR\": NoInfer<M>; readonly [locale: string]: NoInfer<M> | undefined; }): MessageCatalog<M>",
@@ -38023,8 +38023,8 @@
     {
       "name": "dueStatus",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { dueStatus } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { dueStatus } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "Urgency of a due date: overdue (`< 0` days) is `danger`, due within a week\n(`0` to `7`) is `warning`, later is `neutral`. The visible text always comes\nfrom messages (color is never the only signal, AGENTS.md section 5).",
       "signature": "dueStatus(dueISO: ISODate, todayISO: ISODate): DueStatus",
@@ -38046,8 +38046,8 @@
     {
       "name": "formatCurrency",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { formatCurrency } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { formatCurrency } from 'loui-ds';",
       "sourceFile": "src/utils/currency.ts",
       "description": "Formats money held as an integer in minor units (ADR-0006):\n`formatCurrency(123456, 'USD', 'en-US')` is `$1,234.56`.\n\nThe amount is passed to `Intl` as an exact decimal string, so there is no\nfloating-point drift. Non-integer or unsafe amounts throw in development\n(a sign of a unit bug at the call site) and are rounded in production.",
       "signature": "formatCurrency(minorUnits: number, currency: string, locale: string, options?: FormatCurrencyOptions): string",
@@ -38079,8 +38079,8 @@
     {
       "name": "formatDate",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { formatDate } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { formatDate } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "Formats an ISO date for `locale`. Formatting happens in UTC, so the day never\nshifts with the viewer's time zone. Invalid input throws in development and\nis returned unchanged in production.\n\n`formatDate('2026-10-31', 'en-US', 'medium')` is `Oct 31, 2026`.",
       "signature": "formatDate(iso: ISODate, locale: string, style?: DateStyle): string",
@@ -38107,8 +38107,8 @@
     {
       "name": "formatNumber",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { formatNumber } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { formatNumber } from 'loui-ds';",
       "sourceFile": "src/utils/number.ts",
       "description": "Formats a decimal number for `locale` (`1234.5` becomes `1,234.5` in `en-US`).",
       "signature": "formatNumber(value: number, locale: string, options?: FormatNumberOptions): string",
@@ -38135,8 +38135,8 @@
     {
       "name": "formatPercent",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { formatPercent } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { formatPercent } from 'loui-ds';",
       "sourceFile": "src/utils/number.ts",
       "description": "Formats a ratio as a percentage: `0.256` becomes `26%` in `en-US`.\nPass `maximumFractionDigits` for more precision.",
       "signature": "formatPercent(ratio: number, locale: string, options?: Omit<FormatNumberOptions, \"unit\" | \"unitDisplay\">): string",
@@ -38163,8 +38163,8 @@
     {
       "name": "formatRelativeDays",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { formatRelativeDays } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { formatRelativeDays } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "Relative day label from `Intl.RelativeTimeFormat` with `numeric: 'auto'`:\n`-1` is `yesterday`, `0` is `today`, `1` is `tomorrow`, `3` is `in 3 days`.\n`days` must be an integer (throws in development, rounded in production).",
       "signature": "formatRelativeDays(days: number, locale: string): string",
@@ -38186,8 +38186,8 @@
     {
       "name": "getCurrencyDigits",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { getCurrencyDigits } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { getCurrencyDigits } from 'loui-ds';",
       "sourceFile": "src/utils/currency.ts",
       "description": "Number of minor-unit digits of a currency (2 for USD/BRL, 0 for JPY, 3 for KWD),\nread from `Intl` so we never keep our own table.",
       "signature": "getCurrencyDigits(currency: string, locale: string): number",
@@ -38209,8 +38209,8 @@
     {
       "name": "getInitials",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { getInitials } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { getInitials } from 'loui-ds';",
       "sourceFile": "src/components/Avatar/getInitials.ts",
       "description": "Initials of a person's name: the first letter of the first and of the last word\n(`Ana Maria da Silva` gives `AS`), or one letter for a single word. Uses `Intl.Segmenter`,\nso combined characters stay whole, and upper-cases with the locale rules (`i` in `tr`).",
       "signature": "getInitials(name: string, locale: string): string",
@@ -38232,8 +38232,8 @@
     {
       "name": "getItemRange",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { getItemRange } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { getItemRange } from 'loui-ds';",
       "sourceFile": "src/components/Pagination/pageItems.ts",
       "description": "The 1-based range of items on `page`, or `null` when there are no items.",
       "signature": "getItemRange(page: number, pageSize: number, total: number): { from: number; to: number; } | null",
@@ -38260,8 +38260,8 @@
     {
       "name": "getPageCount",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { getPageCount } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { getPageCount } from 'loui-ds';",
       "sourceFile": "src/components/Pagination/pageItems.ts",
       "description": "Number of pages for `total` items shown `pageSize` at a time (at least 1).",
       "signature": "getPageCount(total: number, pageSize: number): number",
@@ -38283,8 +38283,8 @@
     {
       "name": "getPageItems",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { getPageItems } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { getPageItems } from 'loui-ds';",
       "sourceFile": "src/components/Pagination/pageItems.ts",
       "description": "Which page buttons to show, with ellipses for the pages that are left out.\n\nUp to 7 pages all of them are listed. Beyond that the first page, the last page, the current\npage and its two neighbours are listed, and a gap between two of them becomes an ellipsis.\nA gap that hides exactly one page shows that page instead (an ellipsis for a single page\nwould be wider than the page it hides). `current` is clamped into `1..pageCount`; a\n`pageCount` below 1 is treated as 1.\n\n```\ngetPageItems(1, 10)  // 1 2 3 4 5 6 7 8 9 10 collapses to: 1 2 … 10\ngetPageItems(5, 10)  // 1 … 4 5 6 … 10\n```",
       "signature": "getPageItems(current: number, pageCount: number): PageItem[]",
@@ -38306,8 +38306,8 @@
     {
       "name": "getSourceElementId",
       "kind": "utility",
-      "entryPoint": "@loui/ds/patterns",
-      "importStatement": "import { getSourceElementId } from '@loui/ds/patterns';",
+      "entryPoint": "loui-ds/patterns",
+      "importStatement": "import { getSourceElementId } from 'loui-ds/patterns';",
       "sourceFile": "src/patterns/SourceList/SourceList.tsx",
       "description": "The DOM id of one source of a list. `Citation` builds the same id from `listId` and `sourceId`.",
       "signature": "getSourceElementId(listId: string, sourceId: string): string",
@@ -38329,8 +38329,8 @@
     {
       "name": "highlightMatch",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { highlightMatch } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { highlightMatch } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "Splits `text` into matched and unmatched segments for highlighting, ignoring case\nand accents. The segments always concatenate back to `text` exactly, and a match\nkeeps any combining marks attached to its last letter. All occurrences are returned.\n\n`highlightMatch('Crème brûlée', 'creme')` gives `[{ text: 'Crème', match: true }, { text: ' brûlée', match: false }]`.",
       "signature": "highlightMatch(text: string, query: string): HighlightSegment[]",
@@ -38352,8 +38352,8 @@
     {
       "name": "hotkeyKeys",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { hotkeyKeys } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { hotkeyKeys } from 'loui-ds';",
       "sourceFile": "src/hooks/hotkey.ts",
       "description": "The parts of a combo in display order, ready for `Kbd`'s `keys`: `'Mod+K'` gives\n`['Mod', 'K']`, `'Shift+/'` gives `['Shift', '/']`. Returns `[]` for a malformed combo (never throws).",
       "signature": "hotkeyKeys(combo: string): string[]",
@@ -38370,8 +38370,8 @@
     {
       "name": "HotkeyProvider",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { HotkeyProvider } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { HotkeyProvider } from 'loui-ds';",
       "sourceFile": "src/hooks/HotkeyProvider.tsx",
       "description": "Optional root provider for the shortcut registry. Without it `useHotkeys` uses one shared\nregistry for the whole page, which is enough for most apps; add the provider to isolate the\nshortcuts of a subtree (micro frontends, tests, Storybook) or to pin the platform.\n\nPlace it inside `DSProvider` and above the `CommandPalette` and `ShortcutsHelp` it feeds.",
       "signature": "HotkeyProvider({ children, platform }: HotkeyProviderProps): React.JSX.Element",
@@ -38388,8 +38388,8 @@
     {
       "name": "HotkeyRegistry",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { HotkeyRegistry } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { HotkeyRegistry } from 'loui-ds';",
       "sourceFile": "src/hooks/hotkeyRegistry.ts",
       "description": "The store behind `HotkeyProvider`, `useHotkeys` and `useRegisteredHotkeys`. One `keydown`\nlistener on `document` is attached while at least one shortcut is registered. Framework\nindependent so it can be tested without React.",
       "signature": "typeof HotkeyRegistry",
@@ -38400,8 +38400,8 @@
     {
       "name": "iconNames",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { iconNames } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { iconNames } from 'loui-ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "Kebab-case names of the curated set with the use each icon is meant for. Source of the\nallow-list in the component manifest; keep it in sync with the exports above (tested).",
       "signature": "{ readonly 'arrow-down': \"Descending sort, move down\"; readonly 'arrow-left': \"Back, previous page\"; readonly 'arrow-right': \"Forward, next step\"; readonly 'arrow-up': \"Ascending sort, move up\"; readonly calendar: \"Date fields and date pickers\"; readonly check: \"Done, selected, checkbox mark\"; readonly 'chevron-down': \"Collapsed disclosure, select trigger, menu button\"; readonly 'chevron-left': \"Previous month or page (use the directional prop so it mirrors in RTL)\"; readonly 'chevron-right': \"Next month or page, submenu, breadcrumb separator (directional)\"; readonly 'chevron-up': \"Expanded disclosure\"; readonly 'chevrons-up-down': \"Sortable column, select trigger with many options\"; readonly 'circle-alert': \"Error and danger status\"; readonly 'circle-check': \"Success status\"; readonly 'circle-x': \"Failed status, clear input\"; readonly ellipsis: \"More actions (overflow menu)\"; readonly 'external-link': \"Link that opens in a new tab\"; readonly info: \"Neutral information status\"; readonly loader: \"Loading glyph (static); animated loading uses Spinner\"; readonly message: \"Messages, chat and comments, for example a conversational agent\"; readonly menu: \"Opens the navigation menu (hamburger), for example the app shell nav toggle\"; readonly minus: \"Remove one, indeterminate checkbox\"; readonly plus: \"Add, create\"; readonly search: \"Search fields\"; readonly star: \"Rating, favorite\"; readonly 'triangle-alert': \"Warning status\"; readonly copy: \"Copy to the clipboard\"; readonly refresh: \"Regenerate, reload, sync again\"; readonly 'thumbs-down': \"Negative feedback on a response\"; readonly 'thumbs-up': \"Positive feedback on a response\"; readonly x: \"Close, dismiss, remove\"; }",
@@ -38412,8 +38412,8 @@
     {
       "name": "iconSet",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { iconSet } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { iconSet } from 'loui-ds';",
       "sourceFile": "src/components/Icon/icons.ts",
       "description": "The curated set by kebab-case name, for tooling and name-driven rendering.",
       "signature": "{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }",
@@ -38424,8 +38424,8 @@
     {
       "name": "isISODate",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { isISODate } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { isISODate } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "True if `value` is a real calendar date written as `YYYY-MM-DD`.",
       "signature": "isISODate(value: string): value is ISODate",
@@ -38442,8 +38442,8 @@
     {
       "name": "matchesSearch",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { matchesSearch } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { matchesSearch } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "True when `text` contains `query`, ignoring case and accents. An empty query matches everything.",
       "signature": "matchesSearch(text: string, query: string): boolean",
@@ -38465,8 +38465,8 @@
     {
       "name": "niceScale",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { niceScale } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { niceScale } from 'loui-ds';",
       "sourceFile": "src/components/Chart/niceScale.ts",
       "description": "Computes a \"nice\" value axis for data between `minValue` and `maxValue`.\n\nThe axis always includes zero (bars grow from it), so an all-positive data set starts at 0,\nan all-negative one ends at 0, and mixed data spans both sides. The step is a round number\n(1, 2, 2.5, 5 or 10 times a power of ten) and the ends are multiples of it, aiming for about\n`tickCount` ticks. It handles zero data (axis 0 to 1), tiny values (`0.00003`), huge values\nand non-finite input (treated as 0).\n\n```ts\nniceScale(0, 42).ticks; // [0, 10, 20, 30, 40, 50]\nniceScale(-3, 8).ticks; // [-5, -2.5, 0, 2.5, 5, 7.5, 10]\n```",
       "signature": "niceScale(minValue: number, maxValue: number, tickCount?: number): NiceScale",
@@ -38493,8 +38493,8 @@
     {
       "name": "normalizeSearch",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { normalizeSearch } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { normalizeSearch } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "Normalizes text for accent- and case-insensitive search: `Café` and `cafe` both\nbecome `cafe`. Works per code point so it stays index-aligned with `highlightMatch`.",
       "signature": "normalizeSearch(text: string): string",
@@ -38511,8 +38511,8 @@
     {
       "name": "parseCurrencyInput",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { parseCurrencyInput } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { parseCurrencyInput } from 'loui-ds';",
       "sourceFile": "src/utils/currency.ts",
       "description": "Parses what the user typed in a currency field into integer minor units, using\nthe digits-only typing model: every digit shifts in from the right, and any\nother character (separators, symbols, spaces, a sign) is ignored. Typing\n`1`, `2`, `3` into a USD field yields `1`, `12`, `123`, shown as `$0.01`,\n`$0.12`, `$1.23`. Digits of the locale's numbering system (e.g. Arabic-Indic)\nand full-width digits count as digits. Empty input is `0`. Input longer than\n15 digits is cut, so the result is always a safe integer.\n\n`currency` is validated through `Intl` (throws `RangeError` for an invalid code).\nPasting `12` into a USD field means `$0.12` by this model; callers that want\nto accept pasted decimals must handle paste before calling this function.",
       "signature": "parseCurrencyInput(text: string, currency: string, locale: string): number",
@@ -38539,8 +38539,8 @@
     {
       "name": "plural",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { plural } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { plural } from 'loui-ds';",
       "sourceFile": "src/i18n/plural.ts",
       "description": "Picks a plural form for `count` using `Intl.PluralRules`.\nCall it from catalog functions, passing that catalog's own locale:\n`selected: (n: number) => plural('en', n, { one: '1 selected', other: `${n} selected` })`.",
       "signature": "plural(locale: string, count: number, forms: PluralForms): string",
@@ -38567,8 +38567,8 @@
     {
       "name": "readableTextOn",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { readableTextOn } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { readableTextOn } from 'loui-ds';",
       "sourceFile": "src/utils/color.ts",
       "description": "Which text color is more readable on a background color: `'light'` (white-ish\ntext, for dark backgrounds) or `'dark'`. Picks whichever of white or black has\nthe higher WCAG contrast, replacing the handoff's 0.299/0.587/0.114 shortcut.",
       "signature": "readableTextOn(backgroundHex: string): \"light\" | \"dark\"",
@@ -38585,8 +38585,8 @@
     {
       "name": "relativeLuminance",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { relativeLuminance } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { relativeLuminance } from 'loui-ds';",
       "sourceFile": "src/utils/color.ts",
       "description": "WCAG 2.x relative luminance of a hex color: `0` (black) to `1` (white).\nAccepts `#rgb` and `#rrggbb`. Invalid colors throw in development and count as black in production.",
       "signature": "relativeLuminance(hex: string): number",
@@ -38603,8 +38603,8 @@
     {
       "name": "sortByText",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { sortByText } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { sortByText } from 'loui-ds';",
       "sourceFile": "src/utils/text.ts",
       "description": "Returns a new array sorted alphabetically by `getText(item)`. Stable: items whose\ntext compares equal (for example `Ana` and `ana`, or `é` and `e`) keep their input order.",
       "signature": "sortByText<T>(items: readonly T[], getText: (item: T) => string, locale: string): T[]",
@@ -38631,8 +38631,8 @@
     {
       "name": "SUPPORTED_LOCALES",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { SUPPORTED_LOCALES } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { SUPPORTED_LOCALES } from 'loui-ds';",
       "sourceFile": "src/i18n/locales.ts",
       "description": "Locales that ship with built-in message catalogs (ADR-0005).",
       "signature": "readonly [\"en-US\", \"pt-BR\"]",
@@ -38643,8 +38643,8 @@
     {
       "name": "toast",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { toast } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { toast } from 'loui-ds';",
       "sourceFile": "src/components/Toast/queue.ts",
       "description": "Shows a toast in the default queue. Mount one `ToastRegion` near the app root.",
       "signature": "toast(message: ReactNode, options?: ToastOptions): string",
@@ -38666,8 +38666,8 @@
     {
       "name": "toISODate",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { toISODate } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { toISODate } from 'loui-ds';",
       "sourceFile": "src/utils/date.ts",
       "description": "Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the\nuser sees on their clock). Pass `{ utc: true }` to use the UTC day instead.\nInvalid dates and years outside 0000-9999 throw in development and give `''` in production.",
       "signature": "toISODate(date: Date, options?: { utc?: boolean; }): ISODate",
@@ -38689,8 +38689,8 @@
     {
       "name": "TOOLTIP_DELAY",
       "kind": "constant",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { TOOLTIP_DELAY } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { TOOLTIP_DELAY } from 'loui-ds';",
       "sourceFile": "src/components/Tooltip/Tooltip.tsx",
       "description": "Default time in milliseconds the pointer must rest on the trigger before the tooltip opens.",
       "signature": "500",
@@ -38701,8 +38701,8 @@
     {
       "name": "warnDeprecated",
       "kind": "utility",
-      "entryPoint": "@loui/ds",
-      "importStatement": "import { warnDeprecated } from '@loui/ds';",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { warnDeprecated } from 'loui-ds';",
       "sourceFile": "src/utils/meta.ts",
       "description": "Logs a deprecation warning once per `name`. Development only: a no-op in\nproduction builds and on the server-side of production. Call it from the\ndeprecated component's body or module, passing what to use instead.\n\n`warnDeprecated('OldButton', 'Use Button with variant=\"ghost\" instead.')`",
       "signature": "warnDeprecated(name: string, message: string): void",
@@ -38723,7 +38723,7 @@
     }
   ],
   "icons": {
-    "entryPoint": "@loui/ds",
+    "entryPoint": "loui-ds",
     "source": "lucide-react",
     "description": "Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.",
     "names": [

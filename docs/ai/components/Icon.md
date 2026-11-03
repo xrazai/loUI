@@ -8,7 +8,7 @@ An inline SVG icon from the curated Lucide set. It inherits the text color, draw
 - Replaces: the runtime `unpkg.com/lucide-static` CSS-mask loading (ICON-001), text glyphs used as icons (ICON-002) and the ad hoc icon rules (ICON-003).
 - Built on: `lucide-react`, bundled and tree-shakeable. No network access, no CDN.
 
-- Import: `import { Icon } from '@loui/ds';`
+- Import: `import { Icon } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Icon/Icon.tsx`
 - Stories (Storybook title `Components/Icon`): Default, Sizes, WithLabel, InheritsColor, DirectionalRtl, Gallery
@@ -53,7 +53,7 @@ A single `<svg>` (24x24 viewBox) with a `currentColor` stroke and no fill. Size 
 
 ## The curated set
 
-Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from '@loui/ds'`.
+Import icons from the package, not from `lucide-react`: `import { Icon, SearchIcon } from 'loui-ds'`.
 
 `iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).
 
@@ -76,7 +76,7 @@ arrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, ch
 ## Examples
 
 ```tsx
-import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from '@loui/ds';
+import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from 'loui-ds';
 
 <Button leading={<Icon icon={PlusIcon} size="sm" />}>Create order</Button>;
 

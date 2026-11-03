@@ -12,7 +12,7 @@ The form receives the integer minor units under `name`.
 
 A money field. The value is an **integer in minor units** plus an ISO 4217 `currency` (ADR-0006), never a float. Built on [Input](../Input/Input.md); the formatting comes from `Intl` through `formatCurrency`-style helpers and `parseCurrencyInput` (see `docs/architecture/utilities.md`). Task: CMP-INP-05.
 
-- Import: `import { CurrencyInput } from '@loui/ds';`
+- Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
 - Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
@@ -73,7 +73,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 ## When not to use
 
 - Quantities or measures: `NumberField`.
-- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `@loui/ds`.
+- Showing an amount (not editing it): `formatCurrency(minorUnits, currency, locale)` from `loui-ds`.
 
 ## Editing model: digits shift in from the right (decision)
 

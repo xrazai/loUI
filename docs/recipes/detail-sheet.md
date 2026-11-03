@@ -50,7 +50,7 @@ import {
   Textarea,
   toast,
   useUndoable,
-} from '@loui/ds';
+} from 'loui-ds';
 
 type Status = 'open' | 'shipped';
 

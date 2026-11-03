@@ -8,7 +8,7 @@
 
 A search box: leading search icon, clear button, optional decorative shortcut hint and optional suggestions with accent-insensitive match highlighting. Built on React Aria `SearchField` (plain) or `ComboBox` (with `suggestions`). Task: CMP-INP-06.
 
-- Import: `import { SearchInput } from '@loui/ds';`
+- Import: `import { SearchInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SearchInput/SearchInput.tsx`
 - Stories (Storybook title `Components/SearchInput`): Default, ClearButton, WithShortcutHint, Landmark, WithSuggestions, AccentInsensitiveHighlight, NoSuggestions, Disabled, VisibleLabel, Sizes

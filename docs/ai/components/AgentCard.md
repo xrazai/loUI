@@ -8,11 +8,11 @@ heading is the only link (or button), and a pseudo-element extends its hit area 
 card. The accessible name is just the agent name; status, description and footer are the
 description. There is no nested interactive element and no `role="button"` on a `div`.
 
-A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `@loui/ds/patterns`.
+A card that represents one AI agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. The whole card opens the agent. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/agents/AgentCard` (TODO `CMP-AGT-01`).
 
-- Import: `import { AgentCard } from '@loui/ds/patterns';`
+- Import: `import { AgentCard } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/AgentCard/AgentCard.tsx`
 - Stories (Storybook title `Patterns/AgentCard`): Default, Testing, Paused, ComingSoon, AsLink, NothingPending, LongText, WithoutIcon, Grid, RightToLeft

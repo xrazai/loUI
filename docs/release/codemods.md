@@ -22,7 +22,7 @@ Policy for breaking changes and deprecations (AI-011). Companion to the [version
    - the MCP server shows it in `get_component` (`DEPRECATED: Use tone instead.`) and `validate_snippet` reports the warning to the agent that wrote the code;
    - `pnpm codemod apply-deprecations <paths>` renames every deprecated prop whose hint is a plain rename.
 4. **Deprecate first, remove later.** Follow the [deprecation window](./versioning.md#deprecation-window): the deprecation ships in a minor together with its hint; removal ships in a major (pre-1.0: a "Breaking" minor) together with a codemod. When removal needs more than a rename, write a dedicated transform and keep `apply-deprecations` for the plain renames.
-5. **Codemods are idempotent and conservative.** Running twice changes nothing the second time. A transform edits only elements of components imported from `@loui/ds` or `@loui/ds/patterns`, leaves code it cannot prove safe (for example an element that already has the target prop) untouched and reports it for manual review. It never reformats unrelated code.
+5. **Codemods are idempotent and conservative.** Running twice changes nothing the second time. A transform edits only elements of components imported from `loui-ds` or `loui-ds/patterns`, leaves code it cannot prove safe (for example an element that already has the target prop) untouched and reports it for manual review. It never reformats unrelated code.
 6. **Codemods stay for the life of the major.** A transform is kept until the next major after the one that required it, so consumers can skip a release.
 
 ## Checklist for a breaking change

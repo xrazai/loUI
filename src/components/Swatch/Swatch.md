@@ -14,7 +14,7 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 ## When not to use
 
 - To carry a status: use `Badge` (text plus tone).
-- To pick a color: use `ColorOption` from `@loui/ds/patterns`.
+- To pick a color: use `ColorOption` from `loui-ds/patterns`.
 - For arbitrary CSS colors (`rgb()`, names): only `#rgb` and `#rrggbb` are accepted.
 
 ## Anatomy

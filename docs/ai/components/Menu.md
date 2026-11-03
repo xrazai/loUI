@@ -12,7 +12,7 @@ A menu of commands that opens from a trigger. Built on React Aria `MenuTrigger`,
 
 - Handoff source: `components/navigation/Menu` (CMP-NAV-02).
 
-- Import: `import { Menu } from '@loui/ds';`
+- Import: `import { Menu } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Menu/Menu.tsx`
 - Stories (Storybook title `Components/Menu`): Default, EscapeRestoresFocus, TypeaheadAndHomeEnd, Open, CheckboxItems, RadioItems, WithSections, WithSubmenu, LongLabels, MoreActions

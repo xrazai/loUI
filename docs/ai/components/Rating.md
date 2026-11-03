@@ -10,7 +10,7 @@ A read-only star rating, such as a review score. One image with a text alternati
 
 - Handoff source: `components/display/Rating` (TODO `CMP-DSP-06`).
 
-- Import: `import { Rating } from '@loui/ds';`
+- Import: `import { Rating } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Rating/Rating.tsx`
 - Stories (Storybook title `Components/Rating`): Default, HalfStar, Empty, Full, WithValue, Sizes, CustomScale, OutOfRange, RightToLeft

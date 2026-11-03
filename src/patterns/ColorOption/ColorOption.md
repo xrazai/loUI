@@ -2,7 +2,7 @@
 
 Status: experimental
 
-A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `@loui/ds/patterns`.
+A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).
 

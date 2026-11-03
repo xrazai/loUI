@@ -51,7 +51,7 @@ import {
   Stack,
   useDSLocale,
   useUndoable,
-} from '@loui/ds';
+} from 'loui-ds';
 
 export interface Order {
   id: string;

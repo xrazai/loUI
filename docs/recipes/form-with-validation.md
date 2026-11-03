@@ -38,7 +38,7 @@ Components: `Form`, `Input`, `Select`, `FieldSet`, `Button`, `Text`.
 ```tsx
 import { useState } from 'react';
 import type { SyntheticEvent } from 'react';
-import { Button, FieldSet, Form, Heading, Inline, Input, Select, Stack, Text } from '@loui/ds';
+import { Button, FieldSet, Form, Heading, Inline, Input, Select, Stack, Text } from 'loui-ds';
 
 export interface CustomerValues {
   name: string;

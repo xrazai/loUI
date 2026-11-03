@@ -8,11 +8,11 @@
 Why a toggle and not a radio: the handoff uses it to pick several colors (a product's
 available colors). To pick exactly one color, use `ChoiceTiles` or `RadioGroup` instead.
 
-A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `@loui/ds/patterns`.
+A selectable option that shows a color swatch and the color's name, with an optional short mark. It is a toggle button: each option is chosen on its own. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/ColorOption.jsx` (TODO `CMP-PAT-04`).
 
-- Import: `import { ColorOption } from '@loui/ds/patterns';`
+- Import: `import { ColorOption } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ColorOption/ColorOption.tsx`
 - Stories (Storybook title `Patterns/ColorOption`): Default, Selected, WithMark, SelectedWithMark, Disabled, DisabledSelected, LongLabel, LightColor, DarkColor, InAGroup, KeyboardToggle, RightToLeft, Focused

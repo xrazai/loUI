@@ -12,7 +12,7 @@ A due date with a status in words and a tone dot: "Mar 9 Overdue by 3 days", "Du
 
 - Handoff source: `components/erp/DueIndicator.jsx` (TODO `CMP-PAT-07`).
 
-- Import: `import { DueIndicator } from '@loui/ds';`
+- Import: `import { DueIndicator } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DueIndicator/DueIndicator.tsx`
 - Stories (Storybook title `Components/DueIndicator`): Default, Overdue, DueToday, DueTomorrow, Later, Paid, WithoutDate, LongDate, AcrossDaylightSaving, AllTones, Portuguese, RightToLeft

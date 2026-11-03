@@ -45,7 +45,7 @@ function isDocsRoot(dir: string): boolean {
 
 /**
  * Finds the directory that holds `manifest.json`. Order: explicit option, `LOUI_DS_ROOT`, an
- * installed `@loui/ds` package (`dist/`, then `docs/`), then `docs/` found walking up from the
+ * installed `loui-ds` package (`dist/`, then `docs/`), then `docs/` found walking up from the
  * working directory and from this file (the monorepo case).
  */
 export function resolveRoot(options: LoadOptions = {}): string {
@@ -60,10 +60,10 @@ export function resolveRoot(options: LoadOptions = {}): string {
   }
   try {
     const require = createRequire(path.join(process.cwd(), 'noop.js'));
-    const pkgDir = path.dirname(require.resolve('@loui/ds/package.json'));
+    const pkgDir = path.dirname(require.resolve('loui-ds/package.json'));
     candidates.push(path.join(pkgDir, 'dist'), path.join(pkgDir, 'docs'));
   } catch {
-    // @loui/ds is not installed here; fall through to the repository layout.
+    // loui-ds is not installed here; fall through to the repository layout.
   }
   for (const start of [process.cwd(), path.dirname(fileURLToPath(import.meta.url))]) {
     let dir = start;

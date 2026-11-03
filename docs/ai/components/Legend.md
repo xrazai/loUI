@@ -11,7 +11,7 @@ label in addition to the pressed state read by screen readers.
 
 A list of the series of a chart: swatch, name and, optionally, a value. With `interactive` each item is a toggle button that hides or shows its series, and the legend reports which ones are hidden so the chart can leave them out.
 
-- Import: `import { Legend } from '@loui/ds';`
+- Import: `import { Legend } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Legend/Legend.tsx`
 - Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft

@@ -6,7 +6,7 @@
 
 A grid of equal columns: either a fixed number, or as many as fit with a minimum item width.
 
-- Import: `import { Grid } from '@loui/ds';`
+- Import: `import { Grid } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Grid/Grid.tsx`
 - Stories (Storybook title `Layout/Grid`): Default, TwoColumns, AutoFillMedium, AutoFillSmall, AutoFillLarge, NarrowContainer, LongText, RightToLeft

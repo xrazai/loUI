@@ -1,4 +1,4 @@
-# Workspace: the root package is @loui/ds; tools/* hold companion packages
+# Workspace: the root package is loui-ds; tools/* hold companion packages
 # (ESLint plugin, MCP server).
 packages:
   - '.'

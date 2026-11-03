@@ -12,7 +12,7 @@ A modal dialog, and `ConfirmDialog` for destructive confirmations. Built on Reac
 
 - Handoff source: `components/feedback/Dialog` (CMP-FBK-03). Overlay management: ARCH-005.
 
-- Import: `import { Dialog } from '@loui/ds';`
+- Import: `import { Dialog } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Dialog/Dialog.tsx`
 - Stories (Storybook title `Components/ConfirmDialog`): Default, ConfirmByKeyboard, EscapeCancels, ConfirmFlow, Open, Neutral, Pending, WithDetails, Default, Open, Medium, Large, WithoutBody, LongContent, LongTitle, InsideSheet, RightToLeft

@@ -13,7 +13,7 @@ A two-step confirmation in place: a button that turns into a question with Cance
 
 - Handoff source: `components/feedback/InlineConfirm` (CMP-FBK-07).
 
-- Import: `import { InlineConfirm } from '@loui/ds';`
+- Import: `import { InlineConfirm } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/InlineConfirm/InlineConfirm.tsx`
 - Stories (Storybook title `Components/InlineConfirm`): Default, Asking, EscapeCancels, ConfirmByKeyboard, FocusOnConfirm, Neutral, Small, DefaultPrompt, Disabled

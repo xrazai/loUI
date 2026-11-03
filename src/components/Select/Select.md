@@ -25,7 +25,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 | `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
 | `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
 
-Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `@loui/ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
+Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 
 ## Anatomy and styling
 

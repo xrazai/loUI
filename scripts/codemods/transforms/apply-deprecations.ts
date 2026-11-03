@@ -2,7 +2,7 @@
  * Applies the migration hints of deprecated props (AI-011 / AI-016).
  *
  *   pnpm codemod apply-deprecations src
- *   pnpm codemod apply-deprecations src --manifest=node_modules/@loui/ds/dist/manifest.json
+ *   pnpm codemod apply-deprecations src --manifest=node_modules/loui-ds/dist/manifest.json
  *
  * Reads `manifest.json`, finds every prop with a `deprecated` hint that names one replacement
  * (`Use variant.`, see hint.ts) and renames it on the matching components. Hints that are not
@@ -24,7 +24,7 @@ interface ManifestLike {
 function findManifest(explicit: string | undefined): string {
   if (explicit) return path.resolve(explicit);
   for (let dir = process.cwd(); ; dir = path.dirname(dir)) {
-    for (const candidate of ['node_modules/@loui/ds/dist/manifest.json', 'docs/manifest.json']) {
+    for (const candidate of ['node_modules/loui-ds/dist/manifest.json', 'docs/manifest.json']) {
       const file = path.join(dir, candidate);
       if (existsSync(file)) return file;
     }

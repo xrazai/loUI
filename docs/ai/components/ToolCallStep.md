@@ -8,9 +8,9 @@ With `input` or `output` the header is a button that opens the details (`aria-ex
 plain text. The status is text plus an icon, never color alone. When a running step finishes,
 a polite live region says so once; a step that is already finished on first render is silent.
 
-One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `@loui/ds/patterns`.
+One step of an agent run: the tool it called, whether it is running, succeeded or failed, how long it took and, on request, what went in and out. `ToolCallList` shows a multi-step run. Import both from `loui-ds/patterns`.
 
-- Import: `import { ToolCallStep } from '@loui/ds/patterns';`
+- Import: `import { ToolCallStep } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ToolCallStep/ToolCallStep.tsx`
 - Stories (Storybook title `Patterns/ToolCallStep`): Default, Running, Failed, Expanded, WithoutDetails, LongName, RightToLeft, MultiStepRun

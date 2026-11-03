@@ -11,7 +11,7 @@ A horizontal indicator of progress through a linear status flow (Draft, Packed, 
 
 - Handoff source: `components/erp/StatusSteps.jsx` (TODO `CMP-PAT-05`).
 
-- Import: `import { StatusSteps } from '@loui/ds';`
+- Import: `import { StatusSteps } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StatusSteps/StatusSteps.tsx`
 - Stories (Storybook title `Components/StatusSteps`): Default, FirstStep, Complete, ManySteps, LongLabels, Interactive, Controlled, Portuguese, RightToLeft, Focused

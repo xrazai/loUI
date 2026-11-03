@@ -10,7 +10,7 @@ A short, ink-style hint for a control. Built on React Aria `TooltipTrigger` and 
 
 - Handoff source: `components/feedback/Tooltip` (CMP-FBK-04).
 
-- Import: `import { Tooltip } from '@loui/ds';`
+- Import: `import { Tooltip } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Tooltip/Tooltip.tsx`
 - Stories (Storybook title `Components/Tooltip`): Default, Open, WithShortcut, Bottom, Start, End, LongText, OnIconButton, Disabled

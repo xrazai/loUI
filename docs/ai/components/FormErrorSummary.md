@@ -7,7 +7,7 @@
 
 A form built on React Aria `Form`: native validation by default, server errors, a consistent vertical rhythm and an optional error summary.
 
-- Import: `import { FormErrorSummary } from '@loui/ds';`
+- Import: `import { FormErrorSummary } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Form/Form.tsx`
 - Stories (Storybook title `Components/Form`): Default, WithErrorSummary, ServerErrors, ServerRoundTrip, WithFieldSets, AriaValidation, LongText, RightToLeft

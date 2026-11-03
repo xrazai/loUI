@@ -32,9 +32,9 @@ describe('recipe docs', () => {
       expect(rewriteImports(source)).toBe(
         [
           "import { useState } from 'react';",
-          "import { Button, useUndoable } from '@loui/ds';",
-          "import type { BadgeTone } from '@loui/ds';",
-          "import { ApprovalCard } from '@loui/ds/patterns';",
+          "import { Button, useUndoable } from 'loui-ds';",
+          "import type { BadgeTone } from 'loui-ds';",
+          "import { ApprovalCard } from 'loui-ds/patterns';",
           '',
           'export const x = 1;',
           '',

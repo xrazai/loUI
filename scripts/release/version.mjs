@@ -39,7 +39,7 @@ try {
   const generated = existsSync(taskLog) ? readFileSync(taskLog, 'utf8') : '';
   if (existsSync(aside)) renameSync(aside, taskLog);
   if (status === 0 && generated) {
-    // Drop the "# @loui/ds" title Changesets adds; keep the "## x.y.z" sections.
+    // Drop the "# loui-ds" title Changesets adds; keep the "## x.y.z" sections.
     const sections = generated.replace(/^# .*\n+/, '').trim();
     const previous = existsSync(releaseNotes)
       ? readFileSync(releaseNotes, 'utf8').replace(/^# Release notes[\s\S]*?\n(?=## )/, '')

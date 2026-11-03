@@ -9,7 +9,7 @@ The path from the root to the current page, as an ordered list of links inside a
 
 - Handoff source: `components/layout/Breadcrumb.jsx` (TODO `CMP-LAY-03`).
 
-- Import: `import { Breadcrumb } from '@loui/ds';`
+- Import: `import { Breadcrumb } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Breadcrumb/Breadcrumb.tsx`
 - Stories (Storybook title `Components/Breadcrumb`): Default, SingleItem, KeyboardNavigation, LongTrail, RouterNavigation, Portuguese, RightToLeft, Focused

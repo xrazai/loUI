@@ -5,7 +5,7 @@
 
 A heading whose semantic level (`h1` to `h6`) and visual size are separate choices.
 
-- Import: `import { Heading } from '@loui/ds';`
+- Import: `import { Heading } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Heading/Heading.tsx`
 - Stories (Storybook title `Typography/Heading`): Default, Display, Title, HeadingSize, LevelIndependentOfSize, LongText, RightToLeft

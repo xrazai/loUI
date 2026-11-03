@@ -11,7 +11,7 @@ A bar of two to five options where exactly one is selected, like a radio group d
 
 - Handoff source: `components/forms/SegmentedControl.jsx` (TODO `CMP-FRM-09`).
 
-- Import: `import { SegmentedControl } from '@loui/ds';`
+- Import: `import { SegmentedControl } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SegmentedControl/SegmentedControl.tsx`
 - Stories (Storybook title `Components/SegmentedControl`): Default, Small, FullWidth, WithCounts, DisabledOption, DisabledGroup, KeyboardSelection, Controlled, LongLabels, PortugueseCounts, RightToLeft, Focused

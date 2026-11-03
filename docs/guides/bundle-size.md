@@ -10,7 +10,7 @@ Measured on `examples/vite-app` (Vite 8, production build): an `AppShell` with `
 | -------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------- |
 | `react-dom` + `react` + `scheduler`                      | ~550 kB             | Fixed cost of React 19.                                                                                  |
 | `react-aria` + `react-aria-components` + `react-stately` | ~620 kB             | Behavior layer (ADR-0001): focus, keyboard, overlays, i18n. Includes translated strings for 30+ locales. |
-| `@loui/ds` (components, i18n, utilities)                 | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
+| `loui-ds` (components, i18n, utilities)                  | ~90 kB              | Only the components the app imports; the package is tree-shakable (`sideEffects` lists CSS only).        |
 | `lucide-react`                                           | ~10 kB              | Only the curated icons that are used.                                                                    |
 
 Minified output: **531 kB (163 kB gzip)** without optimization, **489 kB (150 kB gzip)** with the locale plugin below. The design system's own code is under a tenth of the total; the rest is React and React Aria, which every app built on this system needs anyway.
@@ -53,7 +53,7 @@ Saving in the example: 42 kB minified (14 kB gzip). A locale that is stripped fa
 
 ## 2. Import from the package root
 
-Always `import { Button } from '@loui/ds'`. Bundlers drop what you do not use. Do not import from `@loui/ds/dist/...` paths: they are not part of the public API and can duplicate modules.
+Always `import { Button } from 'loui-ds'`. Bundlers drop what you do not use. Do not import from `loui-ds/dist/...` paths: they are not part of the public API and can duplicate modules.
 
 ## 3. Split heavy screens, not components
 

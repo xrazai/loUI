@@ -8,7 +8,7 @@ A link to another page, section or site. Built on React Aria's `Link`: a real `<
 
 - Handoff source: none (the handoff only had underlined `<a>` styles); part of GAP-002.
 
-- Import: `import { Link } from '@loui/ds';`
+- Import: `import { Link } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Link/Link.tsx`
 - Stories (Storybook title `Components/Link`): Default, InText, Standalone, External, Disabled, KeyboardActivation, Focused

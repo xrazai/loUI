@@ -11,7 +11,7 @@ A short, temporary message about something that just happened, with an optional 
 
 - Handoff source: `components/feedback/Toast` (CMP-FBK-02). Undo recipe: GAP-008 groundwork.
 
-- Import: `import { ToastRegion } from '@loui/ds';`
+- Import: `import { ToastRegion } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Toast/Toast.tsx`
 - Stories (Storybook title `Components/Toast`): AllTones, WithAction, LongMessage, UndoPattern, PausesOnHoverAndFocus, KeyboardRegion
@@ -72,7 +72,7 @@ ToastRegion          role=region, aria-label "Toast notifications", landmark (F6
 <ToastRegion />;
 
 // anywhere
-import { toast } from '@loui/ds';
+import { toast } from 'loui-ds';
 toast('Draft saved'); // info
 toast.success('Order #1051 created');
 toast.warning('Stock is low for 2 items');

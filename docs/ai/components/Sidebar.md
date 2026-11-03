@@ -12,7 +12,7 @@ The app sidebar: workspace block, navigation sections, optional status card, foo
 
 - Handoff source: `components/layout/Sidebar.jsx` (TODO `CMP-LAY-01`).
 
-- Import: `import { Sidebar } from '@loui/ds';`
+- Import: `import { Sidebar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Sidebar/Sidebar.tsx`
 - Stories (Storybook title `Components/Sidebar`): Default, Complete, StatusTones, WithoutCaptions, FocusOrder, Controlled, ManyItems, LongText, Portuguese, RightToLeft

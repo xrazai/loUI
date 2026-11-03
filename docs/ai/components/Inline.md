@@ -5,7 +5,7 @@
 
 A horizontal row of children with one consistent gap. It wraps by default, so a row never overflows a narrow screen.
 
-- Import: `import { Inline } from '@loui/ds';`
+- Import: `import { Inline } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Inline/Inline.tsx`
 - Stories (Storybook title `Layout/Inline`): Default, LargeGap, JustifyBetween, JustifyEnd, AlignBaseline, Wrapping, NoWrap, AsList, RightToLeft

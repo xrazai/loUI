@@ -39,10 +39,10 @@ export function toKebab(name: string): string {
  * that cannot be pasted.
  */
 const PACKAGE_IMPORTS: Readonly<Record<string, string>> = {
-  '../../index': '@loui/ds',
+  '../../index': 'loui-ds',
   // useUndoable lives in src/hooks and is exported from the package root.
-  '../../hooks/useUndoable': '@loui/ds',
-  '../../patterns': '@loui/ds/patterns',
+  '../../hooks/useUndoable': 'loui-ds',
+  '../../patterns': 'loui-ds/patterns',
 };
 
 interface ImportStatement {

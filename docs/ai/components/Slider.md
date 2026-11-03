@@ -9,7 +9,7 @@ Range selection with two thumbs is not part of this component yet.
 
 Single-value slider: a labelled track with one thumb and a formatted value. Built on React Aria `Slider` (`SliderTrack`, `SliderFill`, `SliderThumb`, `SliderOutput`). The thumb is a real `<input type="range">`, so keyboard, pointer, touch and form submission work natively. Task: CMP-INP-04.
 
-- Import: `import { Slider } from '@loui/ds';`
+- Import: `import { Slider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Slider/Slider.tsx`
 - Stories (Storybook title `Components/Slider`): Default, KeyboardContract, Percent, WithDescription, SteppedByTen, WithoutValue, Disabled, AriaLabelOnly, Controlled, LongLabel

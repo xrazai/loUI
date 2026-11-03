@@ -6,7 +6,7 @@
 
 A dialog that lists the keyboard shortcuts registered on the page, one table per group, with the keys drawn by `Kbd`. It opens with `?` by default.
 
-- Import: `import { ShortcutsHelp } from '@loui/ds';`
+- Import: `import { ShortcutsHelp } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ShortcutsHelp/ShortcutsHelp.tsx`
 - Stories (Storybook title `Components/ShortcutsHelp`): Default, Open, Empty, PortugueseBrazil

@@ -5,7 +5,7 @@
 
 Centers page content and limits its line length: a maximum inline size and a side gutter.
 
-- Import: `import { Container } from '@loui/ds';`
+- Import: `import { Container } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Container/Container.tsx`
 - Stories (Storybook title `Layout/Container`): Default, Small, Medium, Large, Full, NoGutter, Narrow, RightToLeft

@@ -1,6 +1,6 @@
 # Release process
 
-Loui DS (`@loui/ds`) is **private** (ADR-0004): nothing is published to a registry yet. Versions are still cut and tagged so consumers (and the examples) can depend on a known state, and the process below is what a future publish will reuse.
+Loui DS is published on npm as `loui-ds` under the MIT license (ADR-0004, amended 2026-11-03). Pushing a version tag publishes it; nothing is published from a laptop.
 
 | Document                                      | Content                                                                                              |
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -25,8 +25,8 @@ The root package is listed in `pnpm-workspace.yaml` (`'.'`) because Changesets o
 2. **Before a release** run `pnpm check:ci`, `pnpm examples:verify`, `pnpm publint`, `pnpm attw` and `pnpm size` (CI runs them on every pull request). `pnpm api:check` is part of `check:ci`: an API change must come with an updated `api/*.api.md` (`pnpm api:update`) that a reviewer has read.
 3. **Cut the version:** `pnpm changeset:version` on a branch. Review `package.json`, `docs/release/CHANGELOG.md` and the root `CHANGELOG.md`, then merge.
 4. **Tag:** `git tag v<version>` on the merge commit and `git push origin v<version>` (`privatePackages.tag` is `false` in `.changeset/config.json`; tag by hand).
-5. **GitHub Release (automatic):** the tag starts `.github/workflows/release.yml`. It checks that the tag matches `package.json`, builds, runs `publint`, `attw` and `size`, packs `loui-ds-<version>.tgz` and creates the Release with the notes of that version from `docs/release/CHANGELOG.md` plus the install command. Tags with a hyphen (`v1.0.0-next.0`) become pre-releases. Consumers install with `pnpm add https://github.com/xrazai/loUI/releases/download/v<version>/loui-ds-<version>.tgz`.
-6. **npm:** not enabled. When the owner decides to publish (revisit ADR-0004 first: license and `private`), add `pnpm publish --provenance` with a registry token to the release workflow and set `access` in `.changeset/config.json`.
+5. **GitHub Release (automatic):** the tag starts `.github/workflows/release.yml`. It checks that the tag matches `package.json`, builds, runs `publint`, `attw` and `size`, packs `loui-ds-<version>.tgz`, publishes it to npm with provenance (`NPM_TOKEN` secret) and creates the Release with the notes of that version from `docs/release/CHANGELOG.md` plus the install command. Tags with a hyphen (`v1.0.0-next.0`) become pre-releases. Consumers install with `pnpm add loui-ds`.
+6. **npm token:** the workflow needs the repository secret `NPM_TOKEN`, a granular npm access token with read and write permission on `loui-ds` (after the first publish, restrict it to that package). When it expires, create a new one and replace the secret; until then tags still create the GitHub Release but the npm step fails.
 
 ## Pre-1.0 channel
 

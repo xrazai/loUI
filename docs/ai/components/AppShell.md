@@ -15,7 +15,7 @@ inert, `Escape` and the scrim close it, and focus returns to the toggle. The she
 
 The application layout: a sidebar, and a main column with a top bar above a scrollable content region. It includes the skip link and the landmarks.
 
-- Import: `import { AppShell } from '@loui/ds';`
+- Import: `import { AppShell } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/AppShell/AppShell.tsx`
 - Stories (Storybook title `Layout/AppShell`): Default, WithDetail, WithoutSidebar, Unpadded, LongContent, NarrowClosed, NarrowOpen, Narrow320, RightToLeft

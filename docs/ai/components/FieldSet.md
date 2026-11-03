@@ -6,7 +6,7 @@
 
 A group of related fields under a caption: a real `fieldset` with a `legend`, an optional description and disabled propagation.
 
-- Import: `import { FieldSet } from '@loui/ds';`
+- Import: `import { FieldSet } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/FieldSet/FieldSet.tsx`
 - Stories (Storybook title `Components/FieldSet`): Default, WithDescription, Disabled, WithRadioGroup, LongText, RightToLeft

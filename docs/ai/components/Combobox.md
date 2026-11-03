@@ -14,7 +14,7 @@ Use it for long lists (10 or more options); for fewer prefer `Select`.
 
 A text input with a filtered list of options in a popover (ARIA combobox pattern). Built on React Aria `ComboBox` (`Input`, `Button`, `Popover`, `ListBox`). Shared field behavior is in [Field](../Field/Field.md). Task: CMP-INP-01.
 
-- Import: `import { Combobox } from '@loui/ds';`
+- Import: `import { Combobox } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Combobox/Combobox.tsx`
 - Stories (Storybook title `Components/Combobox`): Default, Open, KeyboardContract, WithDescriptionAndMeta, SelectWithPointer, WithSelection, Sections, DisabledOption, NoResults, CustomValue, Loading, AsyncFromServer, Required, Invalid, Disabled, ReadOnly, Sizes, LongText

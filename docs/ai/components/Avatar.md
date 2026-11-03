@@ -6,7 +6,7 @@
 
 A circular photo or the initials of a person, in grays. There is no color per person.
 
-- Import: `import { Avatar } from '@loui/ds';`
+- Import: `import { Avatar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Avatar/Avatar.tsx`
 - Stories (Storybook title `Components/Avatar`): Default, Sizes, WithPhoto, BrokenPhoto, Decorative, Shades, Stacked, LongName, RightToLeft

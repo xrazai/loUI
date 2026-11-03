@@ -10,7 +10,7 @@ ringed and named "Today".
 
 `DatePicker` is a date field (typed segments) with a calendar popover and "Today" / "Clear" buttons. `Calendar` is the standalone month grid. Built on React Aria `DatePicker`, `DateInput`, `DateSegment`, `Calendar`, `CalendarGrid`, `CalendarCell`, `Popover`. Task: CMP-INP-02.
 
-- Import: `import { Calendar } from '@loui/ds';`
+- Import: `import { Calendar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DatePicker/Calendar.tsx`
 - Stories (Storybook title `Components/DatePicker`): Default, CalendarKeyboard, Open, PickDate, EscapeRestoresFocus, WithValue, MinAndMax, Required, Invalid, Disabled, ReadOnly, Brazilian, Sizes, StandaloneCalendar

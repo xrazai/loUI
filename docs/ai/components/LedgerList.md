@@ -6,13 +6,13 @@
 Amounts are integers in minor units (ADR-0006) formatted with `Intl`: pass `currency` for
 money, `format` for anything else, or neither for plain quantities.
 
-Import it from `@loui/ds/patterns`.
+Import it from `loui-ds/patterns`.
 
-A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `@loui/ds/patterns`.
+A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).
 
-- Import: `import { LedgerList } from '@loui/ds/patterns';`
+- Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
 - Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, Portuguese, RightToLeft, Focused
@@ -85,7 +85,7 @@ ul aria-label
 ## Examples
 
 ```tsx
-import { LedgerList } from '@loui/ds/patterns';
+import { LedgerList } from 'loui-ds/patterns';
 
 <LedgerList
   aria-label="Account activity"
