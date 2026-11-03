@@ -102,8 +102,24 @@ So plan on about five minutes between the tag and an installable version. npm pr
 ### In the app, after the release
 
 1. Change the version in `package.json` (and in `pnpm-workspace.yaml` if the app lists `loui-ds` under `minimumReleaseAgeExclude`), then run `pnpm install`.
-2. Read the release notes in `node_modules/loui-ds/docs/release/CHANGELOG.md`, or `docs/release/CHANGELOG.md` in the repository.
+2. Read the release notes on the GitHub Release (`gh release view v0.3.0 --repo xrazai/loUI`) or in `docs/release/CHANGELOG.md` of the repository. The npm package ships only `dist/`, so the notes are not inside `node_modules`.
 3. Remove workarounds for the fixed items and run the app's type-check.
+
+### Tracking what changed automatically (`changes.json`)
+
+From the first release after 0.3.0 the package ships `loui-ds/changes.json` (schema `schemas/changes.schema.json`, generated from the task log and the backlog at build time). It lists, newest first, every release with its entries (`id` such as `GAP-014`, `kind`, `summary`, the `components` it names, and `internal` for repository-only work), the entries not yet released, and the gaps still `open`. An app that keeps its own notes with the same ids can compare them with the installed version without reading prose:
+
+```js
+import changes from 'loui-ds/changes.json' with { type: 'json' };
+
+const resolved = changes.releases
+  .filter((release) => release.version > lastSyncedVersion) // compare with a semver library
+  .flatMap((release) => release.entries.filter((entry) => !entry.internal));
+```
+
+Verified on 2026-11-03 against a packed tarball in a clean project: both `require('loui-ds/changes.json')` and an ESM `import ... with { type: 'json' }` resolve, and the 0.3.0 entries list `GAP-014`, `021`, `023`, `032`, `033` and `035`. Version 0.3.0 itself was published before the file existed, so for it use the GitHub Release.
+
+The ERP repository keeps this loop in `docs/ds-issues/` (an index with one row per gap, the state and the file holding the workaround) and a `/ds-sync` command that does the comparison, removes resolved workarounds one by one, and moves the rows to `resolvidos.md`. Any app can copy that setup: the contract is "notes carry the design system's task id".
 
 `minimumReleaseAgeExclude`: in a clean project with the same exclusion list, `pnpm add loui-ds@0.3.0` and `pnpm install` with `"loui-ds": "0.3.0"` both worked about five minutes after publishing, with pnpm 12.16.1 defaults. The exclusion was therefore not needed there. If your pnpm version or an organisation-wide `minimumReleaseAge` rejects a fresh version, add a version-less `- loui-ds` entry once instead of editing the pinned version on every release.
 

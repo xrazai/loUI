@@ -5,6 +5,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import * as prettier from 'prettier';
+import { buildChanges } from './changes';
 import { buildManifest } from './components';
 import type { BuildOptions } from './components';
 import {
@@ -94,6 +95,25 @@ export async function generate(root: string, options: BuildOptions = {}): Promis
     for (const file of readdirSync(schemas).filter((f) => f.endsWith('.json'))) {
       distOnly.set(`schemas/${file}`, readFileSync(path.join(schemas, file), 'utf8'));
     }
+  }
+  const changelog = path.join(root, 'CHANGELOG.md');
+  const todo = path.join(root, 'TODO.md');
+  if (existsSync(changelog) && existsSync(todo)) {
+    const pkg = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')) as {
+      name: string;
+      version: string;
+    };
+    const changes = buildChanges({
+      packageName: pkg.name,
+      version: pkg.version,
+      changelog: readFileSync(changelog, 'utf8'),
+      todo: readFileSync(todo, 'utf8'),
+      componentNames: new Set(manifest.components.map((c) => c.name)),
+    });
+    distOnly.set(
+      'changes.json',
+      await pretty(root, 'changes.json', JSON.stringify(changes, null, 2)),
+    );
   }
   return { manifest, tokens, guides, common, distOnly };
 }

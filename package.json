@@ -49,6 +49,7 @@
     "./tokens.json": "./dist/tokens.json",
     "./llms.txt": "./dist/llms.txt",
     "./llms-full.txt": "./dist/llms-full.txt",
+    "./changes.json": "./dist/changes.json",
     "./package.json": "./package.json"
   },
   "scripts": {
