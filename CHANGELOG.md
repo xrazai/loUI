@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-11-03
 ### Changed
 
 - **REL-008** (2026-11-03) Open-sourced under the MIT license (`LICENSE`) and renamed the package from `@loui/ds` to the public npm name `loui-ds` (the `@loui` npm scope belongs to someone else); the MCP workspace package is now `loui-ds-mcp`. ADR-0004 amended. `.github/workflows/release.yml` now also publishes to npm with provenance using the `NPM_TOKEN` secret; install docs say `pnpm add loui-ds`. Ships as 0.2.0 because the rename breaks imports.
