@@ -9,7 +9,7 @@
 import { composeStories, setProjectAnnotations } from '@storybook/react-vite';
 import type { ReactElement } from 'react';
 import { render } from 'vitest-browser-react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import * as previewAnnotations from '../../.storybook/preview';
 import { toast } from '../../src/components/Toast';
@@ -35,10 +35,19 @@ const DEFAULT_WIDTH = 384;
 
 // The toast queue is a module-level singleton and composed stories do not run `beforeEach`:
 // without this a toast raised by one story is captured in the next one.
+//
+// The clock is frozen too (TEST-023): the calendar's "today" marker and the DatePicker "Today"
+// button read the real date, so a baseline would change every day. Only `Date` is faked; timers,
+// animation frames and `performance.now` stay real so rendering and font loading are unaffected.
+/** Local noon on this day, so the frozen date is the same in every time zone. */
+const FROZEN_NOW = new Date(2026, 9, 15, 12, 0, 0);
+
 beforeEach(() => {
   toast.clear();
+  vi.useFakeTimers({ toFake: ['Date'], now: FROZEN_NOW });
 });
 afterEach(() => {
+  vi.useRealTimers();
   toast.clear();
 });
 

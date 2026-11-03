@@ -8,9 +8,10 @@ One test file, `stories.visual.test.tsx`, screenshots **every story** and compar
 2. `composeStories` (from `@storybook/react-vite`) turns each story into a component, with the project annotations of `.storybook/preview.ts` applied.
 3. Each story renders inside `DSProvider`, in a fixed-width frame (default 384 px) on the `--ds-bg` surface.
 4. The toast queue is cleared before and after every test (composed stories do not run `beforeEach`, and the queue is a singleton), so a toast never leaks into the next capture.
-5. The test waits for `document.fonts.ready`, plus one animation frame, so Geist is loaded before capture.
-6. A stylesheet disables animations and transitions and hides the caret, so spinners and transitions are static and deterministic.
-7. The frame is captured with `toMatchScreenshot(storyId)` (pixelmatch, threshold 0.2, at most 0.2% of pixels may differ) and the pointer is moved away so hover never leaks into the next story.
+5. `Date` is frozen to 2026-10-15 12:00 local time (TEST-023) so the calendar's "today" marker and the DatePicker "Today" button never depend on the real date. Only `Date` is faked; timers and animation frames stay real. Stories needing another "today" should take it as a prop.
+6. The test waits for `document.fonts.ready`, plus one animation frame, so Geist is loaded before capture.
+7. A stylesheet disables animations and transitions and hides the caret, so spinners and transitions are static and deterministic.
+8. The frame is captured with `toMatchScreenshot(storyId)` (pixelmatch, threshold 0.2, at most 0.2% of pixels may differ) and the pointer is moved away so hover never leaks into the next story.
 
 Baselines live next to the test: `tests/visual/__screenshots__/stories.visual.test.tsx/<story-id>-chromium-<platform>.png`.
 
