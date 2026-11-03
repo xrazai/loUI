@@ -16,11 +16,15 @@ A dark, minimal, functional React design system for internal tools, dashboards a
 
 ## Install
 
+Each version is a [GitHub Release](https://github.com/xrazai/loUI/releases) with the package attached (it is not on npm: ADR-0004). Install the version you want by its URL:
+
 ```sh
-pnpm add @loui/ds react react-dom
+pnpm add https://github.com/xrazai/loUI/releases/download/v0.1.0/loui-ds-0.1.0.tgz react react-dom
 ```
 
-The package is private; install it from your private registry or workspace. Requires React 19 and Node 24 or later for tooling.
+To upgrade, install the URL of the newer release (read its notes first: before 1.0 a minor version may break). npm and yarn accept the same URL.
+
+Requires React 19 and Node 24 or later for tooling.
 
 ## Quick start
 

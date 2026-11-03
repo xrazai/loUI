@@ -1,0 +1,59 @@
+# Release (docs/release/README.md): pushing a tag `v<version>` builds the library, verifies the
+# package and publishes a GitHub Release with the installable tarball attached. Consumers install it
+# with `pnpm add https://github.com/xrazai/loUI/releases/download/v<version>/loui-ds-<version>.tgz`.
+# Nothing is published to npm (ADR-0004: private, unlicensed until the owner decides).
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Tag matches package.json
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+      - run: pnpm build
+      - run: pnpm publint
+      - run: pnpm attw
+      - run: pnpm size
+      - name: Pack
+        run: |
+          mkdir -p .release
+          pnpm pack --pack-destination .release
+          ls -l .release
+      - name: Release notes for this version
+        run: |
+          awk -v v="## $VERSION" '$0==v {on=1; next} /^## / && on {exit} on' docs/release/CHANGELOG.md > .release/notes.md
+          {
+            echo
+            echo "## Install"
+            echo
+            echo '```sh'
+            echo "pnpm add https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/loui-ds-${VERSION}.tgz"
+            echo '```'
+          } >> .release/notes.md
+          cat .release/notes.md
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" .release/*.tgz \
+            --title "Loui DS $GITHUB_REF_NAME" \
+            --notes-file .release/notes.md \
+            ${{ contains(github.ref_name, '-') && '--prerelease' || '' }}

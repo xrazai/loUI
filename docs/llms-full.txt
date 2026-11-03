@@ -28,11 +28,13 @@ Browse every component live in Storybook: <https://xrazai.github.io/loUI/>. AI t
 
 ### Install
 
-`@loui/ds` is private and unlicensed for now (ADR-0004). Install it from your private registry or workspace:
+Each version is a [GitHub Release](https://github.com/xrazai/loUI/releases) with the package attached (it is not on npm: ADR-0004). Install the version you want by its URL:
 
 ```sh
-pnpm add @loui/ds react react-dom
+pnpm add https://github.com/xrazai/loUI/releases/download/v0.1.0/loui-ds-0.1.0.tgz react react-dom
 ```
+
+To upgrade, install the URL of the newer release (read its notes first: before 1.0 a minor version may break). npm and yarn accept the same URL.
 
 `react-aria-components`, `react-stately` and `lucide-react` are regular dependencies of the package; you do not install them yourself.
 

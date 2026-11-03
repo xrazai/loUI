@@ -6,6 +6,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-03
 ### Added
 
 - **SETUP-005** (2026-11-03) Branch protection on `main`: required checks `static`, `test (1)`–`test (4)` and `package`; no force pushes or deletion; admins are not enforced, so the owner can still push directly. CI was split into parallel jobs (static checks, 4 browser/Storybook test shards with cached Playwright browsers, package + examples): the gate went from ~8.5 to ~3 minutes. Visual regression is Windows-first (local `pnpm test:visual`); the Linux `visual` job runs only on demand.

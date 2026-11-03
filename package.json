@@ -1,6 +1,6 @@
 {
   "name": "@loui/ds",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Loui DS: a dark, minimal, functional React design system.",
   "license": "UNLICENSED",
@@ -69,7 +69,7 @@
     "api:update": "node scripts/api/run.mjs --update",
     "test:treeshake": "node scripts/build/treeshake.mjs",
     "examples:verify": "node scripts/examples/verify.mjs",
-    "changeset:version": "changeset version"
+    "changeset:version": "node scripts/release/version.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

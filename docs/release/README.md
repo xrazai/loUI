@@ -2,13 +2,13 @@
 
 Loui DS (`@loui/ds`) is **private** (ADR-0004): nothing is published to a registry yet. Versions are still cut and tagged so consumers (and the examples) can depend on a known state, and the process below is what a future publish will reuse.
 
-| Document                              | Content                                                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [Versioning policy](./versioning.md)  | Semver for a design system: what is major, minor, patch; deprecation window; support.                |
-| [Component lifecycle](./lifecycle.md) | proposal, experimental, stable, deprecated, removed; graduation checklist.                           |
-| [Codemods and migration hints](./codemods.md) | Every breaking change ships a codemod; deprecations carry a machine-readable migration hint. |
-| [Figma workflow](../figma/README.md) | Tokens Studio sync, component naming parity, Code Connect (optional). |
-| [CHANGELOG.md](./CHANGELOG.md)        | Consumer-facing release notes, generated from changesets (created by the first `changeset:version`). |
+| Document                                      | Content                                                                                              |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Versioning policy](./versioning.md)          | Semver for a design system: what is major, minor, patch; deprecation window; support.                |
+| [Component lifecycle](./lifecycle.md)         | proposal, experimental, stable, deprecated, removed; graduation checklist.                           |
+| [Codemods and migration hints](./codemods.md) | Every breaking change ships a codemod; deprecations carry a machine-readable migration hint.         |
+| [Figma workflow](../figma/README.md)          | Tokens Studio sync, component naming parity, Code Connect (optional).                                |
+| [CHANGELOG.md](./CHANGELOG.md)                | Consumer-facing release notes, generated from changesets (created by the first `changeset:version`). |
 
 ## Two changelogs, on purpose
 
@@ -24,8 +24,9 @@ The root package is listed in `pnpm-workspace.yaml` (`'.'`) because Changesets o
 1. **With every user-visible change** (anything in `src/`, tokens, `exports`, docs consumers rely on), run `pnpm changeset`, pick the bump per the [versioning policy](./versioning.md) and write one or two sentences for a consumer: what changed and what to do. Commit the generated `.changeset/*.md` with the change. Pure internal work (tests, CI, refactors without API or visual effect) needs no changeset.
 2. **Before a release** run `pnpm check:ci`, `pnpm examples:verify`, `pnpm publint`, `pnpm attw` and `pnpm size` (CI runs them on every pull request). `pnpm api:check` is part of `check:ci`: an API change must come with an updated `api/*.api.md` (`pnpm api:update`) that a reviewer has read.
 3. **Cut the version:** `pnpm changeset:version` on a branch. Review `package.json`, `docs/release/CHANGELOG.md` and the root `CHANGELOG.md`, then merge.
-4. **Tag:** `git tag v<version>` on the merge commit (`privatePackages.tag` is `false` in `.changeset/config.json`; tag by hand).
-5. **Publish:** not enabled. When the owner decides to publish (revisit ADR-0004 first: license and `private`), publish from CI with `pnpm publish --provenance` and a registry token, and set `access` in `.changeset/config.json` accordingly. Until then consumers install from a tarball (`pnpm pack`) or a git ref.
+4. **Tag:** `git tag v<version>` on the merge commit and `git push origin v<version>` (`privatePackages.tag` is `false` in `.changeset/config.json`; tag by hand).
+5. **GitHub Release (automatic):** the tag starts `.github/workflows/release.yml`. It checks that the tag matches `package.json`, builds, runs `publint`, `attw` and `size`, packs `loui-ds-<version>.tgz` and creates the Release with the notes of that version from `docs/release/CHANGELOG.md` plus the install command. Tags with a hyphen (`v1.0.0-next.0`) become pre-releases. Consumers install with `pnpm add https://github.com/xrazai/loUI/releases/download/v<version>/loui-ds-<version>.tgz`.
+6. **npm:** not enabled. When the owner decides to publish (revisit ADR-0004 first: license and `private`), add `pnpm publish --provenance` with a registry token to the release workflow and set `access` in `.changeset/config.json`.
 
 ## Pre-1.0 channel
 
