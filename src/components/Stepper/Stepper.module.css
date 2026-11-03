@@ -101,7 +101,17 @@
     font-size: var(--ds-fs-meta);
     font-weight: var(--ds-weight-medium);
     line-height: var(--ds-lh-meta);
-    overflow-wrap: anywhere;
+
+    /* Never break inside a word: a label that does not fit is clipped after two lines. */
+    overflow: hidden;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: manual;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 
   .step[data-state='complete'] .label,
@@ -197,6 +207,73 @@
     }
 
     .root[data-orientation='horizontal'] .label {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  /*
+   * The breakpoint grows with the step count so each label keeps room for whole words:
+   * data-count is "6" for 6 steps, "7" for 7 or 8 steps and "9" for 9 or more.
+   */
+  @container (max-width: 600px) {
+    .root[data-orientation='horizontal'][data-count='6'] .summary {
+      display: block;
+    }
+
+    .root[data-orientation='horizontal'][data-count='6'] .content {
+      padding-inline: 0;
+    }
+
+    .root[data-orientation='horizontal'][data-count='6'] .label {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @container (max-width: 720px) {
+    .root[data-orientation='horizontal'][data-count='7'] .summary {
+      display: block;
+    }
+
+    .root[data-orientation='horizontal'][data-count='7'] .content {
+      padding-inline: 0;
+    }
+
+    .root[data-orientation='horizontal'][data-count='7'] .label {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @container (max-width: 800px) {
+    .root[data-orientation='horizontal'][data-count='9'] .summary {
+      display: block;
+    }
+
+    .root[data-orientation='horizontal'][data-count='9'] .content {
+      padding-inline: 0;
+    }
+
+    .root[data-orientation='horizontal'][data-count='9'] .label {
       position: absolute;
       inline-size: 1px;
       block-size: 1px;

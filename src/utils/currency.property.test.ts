@@ -1,6 +1,11 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { formatCurrency, getCurrencyDigits, parseCurrencyInput } from './currency';
+import {
+  formatCurrency,
+  getCurrencyDigits,
+  parseCurrencyAmount,
+  parseCurrencyInput,
+} from './currency';
 
 const CASES = [
   { currency: 'USD', locale: 'en-US' },
@@ -107,6 +112,52 @@ describe('parseCurrencyInput (properties)', () => {
           expect(parseCurrencyInput(digits, 'USD', 'en-US')).toBe(expected);
         },
       ),
+    );
+  });
+});
+
+describe('parseCurrencyAmount (properties)', () => {
+  const roundTripCases = fc.constantFrom(
+    ...(['USD', 'BRL', 'JPY', 'KWD'] as const).flatMap((currency) =>
+      (['en-US', 'pt-BR'] as const).map((locale) => ({ currency, locale })),
+    ),
+  );
+
+  it('round-trips: parsing the formatted amount gives the amount back', () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 0, max: MAX_PARSEABLE }),
+        roundTripCases,
+        (amount, { currency, locale }) => {
+          const shown = formatCurrency(amount, currency, locale);
+          expect(parseCurrencyAmount(shown, currency, locale)).toBe(amount);
+        },
+      ),
+    );
+  });
+
+  it('whole units without a mark are multiplied by the minor unit, exactly', () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 0, max: 10 ** 9 }),
+        roundTripCases,
+        (whole, { currency, locale }) => {
+          const digits = getCurrencyDigits(currency, locale);
+          expect(parseCurrencyAmount(String(whole), currency, locale)).toBe(
+            Number(`${whole}${'0'.repeat(digits)}`),
+          );
+        },
+      ),
+    );
+  });
+
+  it('always returns a non-negative safe integer', () => {
+    fc.assert(
+      fc.property(fc.string({ maxLength: 40 }), roundTripCases, (text, { currency, locale }) => {
+        const value = parseCurrencyAmount(text, currency, locale);
+        expect(Number.isSafeInteger(value)).toBe(true);
+        expect(value).toBeGreaterThanOrEqual(0);
+      }),
     );
   });
 });

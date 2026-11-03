@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    container-type: inline-size;
     font-family: var(--ds-font-sans);
   }
 
@@ -135,6 +136,50 @@
     grid-area: actions;
     display: flex;
     justify-content: flex-end;
+  }
+
+  /*
+   * Narrow list (the root is the container, as in ActionList): the date moves under the title as
+   * a meta line and the padding shrinks, so the title keeps a readable width next to the amount
+   * and the fixed actions column. CSS only: the reading order does not change.
+   */
+  @container (max-width: 480px) {
+    .root .entry,
+    .root[data-dated] .entry {
+      grid-template-areas:
+        'text amounts'
+        'date amounts';
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: 0;
+      padding-inline: var(--ds-space-4);
+    }
+
+    .root[data-actions] .entry {
+      grid-template-areas:
+        'text amounts actions'
+        'date amounts actions';
+      grid-template-columns: minmax(0, 1fr) auto var(--ds-control-h-sm);
+      padding-inline-end: var(--ds-space-3);
+    }
+
+    .root[data-actions='2'] .entry {
+      grid-template-columns: minmax(0, 1fr) auto calc(var(--ds-control-h-sm) * 2);
+    }
+
+    .root[data-dated][data-actions] .entry {
+      grid-template-areas:
+        'text amounts actions'
+        'date amounts actions';
+      grid-template-columns: minmax(0, 1fr) auto var(--ds-control-h-sm);
+    }
+
+    .root[data-dated][data-actions='2'] .entry {
+      grid-template-columns: minmax(0, 1fr) auto calc(var(--ds-control-h-sm) * 2);
+    }
+
+    .date {
+      align-self: start;
+    }
   }
 
   @media (forced-colors: active) {

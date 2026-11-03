@@ -115,6 +115,19 @@ export const LongText: Story = {
   ],
 };
 
+/** 384 px with date, amount, balance, edit and delete: the date moves under the title. */
+export const NarrowEditableAndDeletable: Story = {
+  args: { onEdit: fn(), onDelete: fn() },
+  parameters: { visual: { width: 384 } },
+  decorators: [
+    (Story) => (
+      <StoryFrame maxWidth={384}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+};
+
 export const Empty: Story = { args: { entries: [] } };
 
 function DeletableExample() {

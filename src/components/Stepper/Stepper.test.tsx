@@ -205,6 +205,52 @@ describe('Stepper', () => {
     });
   });
 
+  describe('long labels (GAP-047)', () => {
+    const longLabels = [
+      'Identidade',
+      'Autonomia',
+      'Conhecimento',
+      'Integrações',
+      'Aprovações',
+      'Notificações',
+      'Segurança',
+      'Revisão',
+      'Publicação',
+    ].map((label, index) => ({ id: `l${String(index)}`, label }));
+
+    it('switches to the compact form for nine steps at 700 px', async () => {
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 700 }}>
+          <Stepper aria-label="New agent steps" steps={longLabels} current={2} />
+        </div>,
+      );
+      const summary = screen.container.querySelector('p');
+      expect(getComputedStyle(summary as Element).display).toBe('block');
+    });
+
+    it('never breaks a word across lines when the labels are visible', async () => {
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 900 }}>
+          <Stepper aria-label="New agent steps" steps={longLabels} current={2} />
+        </div>,
+      );
+      const labels = Array.from(
+        screen.container.querySelectorAll<HTMLElement>('li span[class*="label"]'),
+      );
+      expect(labels).toHaveLength(9);
+      for (const label of labels) {
+        const style = getComputedStyle(label);
+        expect(style.overflowWrap).toBe('normal');
+        expect(style.wordBreak).toBe('normal');
+        // A word wider than the label would overflow (and be clipped), never wrap.
+        expect(label.scrollWidth).toBeLessThanOrEqual(label.clientWidth);
+        // One word per label: a single line means no mid-word break.
+        const lineHeight = Number.parseFloat(style.lineHeight);
+        expect(label.getBoundingClientRect().height).toBeLessThanOrEqual(lineHeight * 1.5);
+      }
+    });
+  });
+
   describe('messages', () => {
     it('uses the pt-BR catalog', async () => {
       const screen = await renderWithProvider(<Example />, { locale: 'pt-BR' });

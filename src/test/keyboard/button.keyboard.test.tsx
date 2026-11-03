@@ -5,6 +5,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { Button } from '../../components/Button';
+import { AddCard } from '../../components/AddCard';
+import { CardLink } from '../../components/CardLink';
 import { Checkbox } from '../../components/Checkbox';
 import { Link } from '../../components/Link';
 import { Switch } from '../../components/Switch';
@@ -66,6 +68,83 @@ describe('keyboard contract: button and link', () => {
     );
     await userEvent.tab();
     expect(await tabOrder(1)).toEqual(['Pricing details']);
+    await press(' ');
+    expect(onPress).not.toHaveBeenCalled();
+    await press('{Enter}');
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('keyboard contract: interactive cards', () => {
+  it('a CardLink button is one Tab stop; Enter and Space activate it', async () => {
+    const onPress = vi.fn();
+    await renderWithProvider(
+      <Around>
+        <CardLink title="Import data" description="Upload a CSV file." onPress={onPress} />
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(2)).toEqual(['Import data', 'After']);
+    await userEvent.tab({ shift: true });
+    await expectFocus('Import data');
+    await press('{Enter}');
+    expect(onPress).toHaveBeenCalledTimes(1);
+    await press(' ');
+    expect(onPress).toHaveBeenCalledTimes(2);
+  });
+
+  it('a CardLink link is one Tab stop; Enter activates it, Space does not', async () => {
+    const onPress = vi.fn();
+    await renderWithProvider(
+      <Around>
+        <CardLink title="Billing" description="Plans." href="#billing" onPress={onPress} />
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(1)).toEqual(['Billing']);
+    await press(' ');
+    expect(onPress).not.toHaveBeenCalled();
+    await press('{Enter}');
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('a disabled CardLink is skipped by Tab', async () => {
+    await renderWithProvider(
+      <Around>
+        <CardLink title="Billing" href="#billing" isDisabled />
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(1)).toEqual(['After']);
+  });
+
+  it('an AddCard button is one Tab stop; Enter and Space activate it', async () => {
+    const onPress = vi.fn();
+    await renderWithProvider(
+      <Around>
+        <AddCard onPress={onPress}>Create agent</AddCard>
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(2)).toEqual(['Create agent', 'After']);
+    await userEvent.tab({ shift: true });
+    await expectFocus('Create agent');
+    await press('{Enter}');
+    await press(' ');
+    expect(onPress).toHaveBeenCalledTimes(2);
+  });
+
+  it('an AddCard link activates with Enter but not with Space', async () => {
+    const onPress = vi.fn();
+    await renderWithProvider(
+      <Around>
+        <AddCard href="#new" onPress={onPress}>
+          Create agent
+        </AddCard>
+      </Around>,
+    );
+    await userEvent.tab();
+    expect(await tabOrder(1)).toEqual(['Create agent']);
     await press(' ');
     expect(onPress).not.toHaveBeenCalled();
     await press('{Enter}');

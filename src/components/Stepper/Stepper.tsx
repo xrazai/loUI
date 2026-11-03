@@ -64,7 +64,9 @@ export type StepperProps = LabelledByText | LabelledByElement;
  * decorative. Completed steps can be buttons with `onStepPress`.
  *
  * In narrow containers the horizontal orientation shows only the markers and a visible summary
- * ("Step 3 of 9"), so nine steps fit in 320 px.
+ * ("Step 3 of 9"), so nine steps fit in 320 px. The width at which this happens grows with the step count
+ * (6, 7 to 8 and 9 or more steps switch at 600, 720 and 800 px), and a label that does not fit
+ * is clipped after two lines instead of breaking inside a word.
  */
 export function Stepper({
   steps,
@@ -82,7 +84,14 @@ export function Stepper({
   const locale = useDSLocale();
   const active = steps[current];
   return (
-    <div {...rest} className={classNames(styles.root, className)} data-orientation={orientation}>
+    <div
+      {...rest}
+      className={classNames(styles.root, className)}
+      data-orientation={orientation}
+      data-count={
+        steps.length >= 9 ? '9' : steps.length >= 7 ? '7' : steps.length === 6 ? '6' : undefined
+      }
+    >
       {active ? (
         <p className={styles.summary} aria-hidden="true">
           {t.summary(formatNumber(current + 1, locale), formatNumber(steps.length, locale))}

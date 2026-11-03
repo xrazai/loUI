@@ -123,3 +123,7 @@ A drawer that mixes a fixed opening balance with deletable payments, where `askT
 - "saldo" and "Excluir lançamento" were hard-coded Portuguese; they are messages (`en`, `pt-BR`), and the delete label includes the entry title.
 - `negativeTone` defaults to `danger` (the handoff defaulted to `success`, which is product specific) and takes `neutral | success | warning | danger`.
 - The edit and delete buttons are the shared `IconButton` (focus ring, 32px target) instead of a styled `×` glyph; layout values are tokens (`--ds-ledger-list-*`).
+
+## Narrow containers
+
+The list is a size container. At 480 px or less the date moves under the title as a meta line, the padding shrinks and the amount, balance and actions columns stay fixed, so titles keep a readable width. The DOM and reading order do not change.

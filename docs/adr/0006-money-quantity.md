@@ -21,3 +21,7 @@ Money is an integer in minor units plus an ISO 4217 currency code. Quantities fo
 
 - Decimal strings: need parsing everywhere.
 - Floats: unsafe for money.
+
+## Amendment 2026-11-03
+
+`CurrencyInput` gained an opt-in `entryMode="amount"` (whole-unit typing: `200` is 200.00, the decimal mark starts the fraction). The state is still an **integer in minor units** plus an ISO 4217 code: the text is parsed with string manipulation (`parseCurrencyAmount`), never through a float. `onChange`, `name` submission and the stored value are unchanged; the default `cents` mode is unchanged.

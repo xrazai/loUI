@@ -84,6 +84,44 @@ export const NineStepsWide: Story = {
   ],
 };
 
+const LONG_NINE_STEPS = [
+  'Identidade',
+  'Autonomia',
+  'Conhecimento',
+  'Integrações',
+  'Aprovações',
+  'Notificações',
+  'Segurança',
+  'Revisão',
+  'Publicação',
+].map((label, index) => ({ id: `long-${String(index)}`, label }));
+
+/** Nine long labels at 700 px: too tight for words, so the compact "Step 3 of 9" form is used. */
+export const NineLongLabels700: Story = {
+  args: { steps: LONG_NINE_STEPS, current: 2, 'aria-label': 'New agent steps' },
+  parameters: { visual: { width: 700 } },
+  decorators: [
+    (Story) => (
+      <StoryFrame maxWidth={700}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+};
+
+/** Nine long labels at 900 px: labels stay on whole words, clipped after two lines when needed. */
+export const NineLongLabels900: Story = {
+  args: { steps: LONG_NINE_STEPS, current: 2, 'aria-label': 'New agent steps' },
+  parameters: { visual: { width: 900 } },
+  decorators: [
+    (Story) => (
+      <StoryFrame maxWidth={900}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+};
+
 export const LongLabels: Story = {
   args: {
     orientation: 'vertical',

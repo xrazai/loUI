@@ -381,13 +381,13 @@ describe('LedgerList', () => {
 
     it('drops the date column when no entry has a date', async () => {
       const screen = await renderWithProvider(
-        <>
+        <div style={{ inlineSize: 640 }}>
           <Example
             aria-label="Dated"
             entries={[{ id: 'a', date: '2026-03-12', title: 'Dated', delta: 100 }]}
           />
           <Example aria-label="Plain" entries={undated.slice(0, 1)} />
-        </>,
+        </div>,
       );
       const itemOf = (name: string) =>
         screen.getByRole('list', { name }).getByRole('listitem').element() as HTMLElement;
@@ -474,6 +474,36 @@ describe('LedgerList', () => {
       );
       await userEvent.keyboard('{Tab}');
       await expectNoA11yViolations(screen.container);
+    });
+  });
+  describe('narrow container (GAP-055)', () => {
+    it('keeps the title readable and the amounts aligned at 384 px', async () => {
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 384 }} data-testid="frame">
+          <Example onEdit={() => undefined} onDelete={() => undefined} />
+        </div>,
+      );
+      const items = screen.getByRole('listitem').elements() as HTMLElement[];
+      const titleOf = (item: HTMLElement) =>
+        item.querySelector<HTMLElement>('[class*="title"]') as HTMLElement;
+      const rowWidth = items[2]?.getBoundingClientRect().width ?? 0;
+      const opening = titleOf(items[2] as HTMLElement);
+      expect(opening.scrollWidth).toBeLessThanOrEqual(opening.clientWidth);
+      for (const item of items) {
+        expect(titleOf(item).getBoundingClientRect().width).toBeGreaterThanOrEqual(rowWidth * 0.4);
+      }
+      // Amounts share the same right edge on every row.
+      const rights = items.map(
+        (item) =>
+          (item.querySelector('[data-part="amount"]') as HTMLElement).getBoundingClientRect().right,
+      );
+      expect(new Set(rights.map((value) => Math.round(value))).size).toBe(1);
+      // The date sits under the title, and the DOM order is unchanged.
+      const date = items[0]?.querySelector('time') as HTMLElement;
+      expect(date.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        titleOf(items[0] as HTMLElement).getBoundingClientRect().bottom - 1,
+      );
+      expect(items[0]?.firstElementChild?.tagName).toBe('TIME');
     });
   });
 });

@@ -61,7 +61,7 @@ Other `div` attributes and `ref` go to the root.
 - Markers, connectors and the "Step 3 of 9" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.
 - Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.
 - Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.
-- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
+- Reflow: labels never break inside a word; one that does not fit is clipped after two lines. The container width below which the horizontal stepper collapses grows with the step count: 480 px, 600 px for 6 steps, 720 px for 7 or 8 steps and 800 px for 9 or more. Below that width the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
 - Forced colors: markers and connectors use system colors; the state text still names every step.
 
 ## Content rules

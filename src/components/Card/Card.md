@@ -14,6 +14,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - To wrap a whole page: use the page layout.
 - For content that interrupts the user: use `Dialog` or `Alert`.
 - Do not nest a Card inside a Card; use a divider instead.
+- For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
 
 ## Anatomy
 

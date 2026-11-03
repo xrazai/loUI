@@ -218,3 +218,43 @@ export const FullWidthInRow: Story = {
     </Inline>
   ),
 };
+
+/** Amount mode types whole units: `200` is 200.00 and the decimal mark starts the fraction. */
+export const AmountMode: Story = {
+  args: { entryMode: 'amount', label: 'Price', placeholder: '$0.00' },
+  play: async ({ canvasElement }) => {
+    const field = within(canvasElement).getByRole('textbox');
+    await userEvent.click(field);
+    await userEvent.keyboard('200.5');
+    await expect(field).toHaveValue('200.5');
+    await userEvent.tab();
+    await expect(field).toHaveValue('$200.50');
+  },
+};
+
+export const AmountModeBrazilian: Story = {
+  args: { entryMode: 'amount', currency: 'BRL', label: 'Preço por metro', defaultValue: 124000 },
+  decorators: [
+    (Story) => (
+      <DSProvider locale="pt-BR">
+        <Story />
+      </DSProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const field = within(canvasElement).getByRole('textbox');
+    await userEvent.click(field);
+    await userEvent.keyboard('1.234,5');
+    await expect(field).toHaveValue('1.234,5');
+  },
+};
+
+export const AmountModeYen: Story = {
+  args: { entryMode: 'amount', currency: 'JPY', label: 'Yen (0 digits)', placeholder: '¥0' },
+  play: async ({ canvasElement }) => {
+    const field = within(canvasElement).getByRole('textbox');
+    await userEvent.click(field);
+    await userEvent.keyboard('1500.');
+    await expect(field).toHaveValue('1500');
+  },
+};

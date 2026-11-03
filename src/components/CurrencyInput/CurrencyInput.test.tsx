@@ -455,3 +455,111 @@ describe('CurrencyInput fullWidth', () => {
     );
   });
 });
+
+describe('CurrencyInput amount entry mode', () => {
+  async function typeInto(props: Partial<CurrencyInputProps>, text: string, locale = 'en-US') {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(
+      <Price entryMode="amount" onChange={onChange} {...props} />,
+      { locale },
+    );
+    const field = screen.getByRole('textbox');
+    await userEvent.click(field);
+    await userEvent.keyboard(text);
+    return { field, onChange, screen };
+  }
+
+  it('reads digits as whole units and formats on blur', async () => {
+    const { field, onChange } = await typeInto({ currency: 'BRL' }, '200', 'pt-BR');
+    expect(onChange).toHaveBeenLastCalledWith(20000);
+    await expect.element(field).toHaveValue('200');
+    await userEvent.tab();
+    expect((field.element() as HTMLInputElement).value.replace(/\s/g, ' ')).toBe('R$ 200,00');
+  });
+
+  it('keeps what is typed readable mid-typing', async () => {
+    const { field } = await typeInto({ currency: 'BRL' }, '200,', 'pt-BR');
+    await expect.element(field).toHaveValue('200,');
+    await userEvent.keyboard('5');
+    await expect.element(field).toHaveValue('200,5');
+  });
+
+  it('parses decimals per locale: "12,5" pt-BR, "12.50" en-US, "1.234,56" pt-BR', async () => {
+    const a = await typeInto({ currency: 'BRL' }, '12,5', 'pt-BR');
+    expect(a.onChange).toHaveBeenLastCalledWith(1250);
+  });
+
+  it('parses "12.50" in en-US', async () => {
+    const { onChange } = await typeInto({}, '12.50');
+    expect(onChange).toHaveBeenLastCalledWith(1250);
+  });
+
+  it('parses grouped "1.234,56" in pt-BR', async () => {
+    const { onChange } = await typeInto({ currency: 'BRL' }, '1.234,56', 'pt-BR');
+    expect(onChange).toHaveBeenLastCalledWith(123456);
+  });
+
+  it('JPY has no fraction', async () => {
+    const { onChange, field } = await typeInto({ currency: 'JPY' }, '1500');
+    expect(onChange).toHaveBeenLastCalledWith(1500);
+    await userEvent.keyboard('.');
+    await expect.element(field).toHaveValue('1500');
+  });
+
+  it('ignores fraction digits beyond the currency and a second decimal mark', async () => {
+    const { onChange, field } = await typeInto({}, '12.567');
+    await expect.element(field).toHaveValue('12.56');
+    expect(onChange).toHaveBeenLastCalledWith(1256);
+    await userEvent.keyboard('.');
+    await expect.element(field).toHaveValue('12.56');
+  });
+
+  it('respects maxDigits, fraction digits included', async () => {
+    const { onChange, field } = await typeInto({ maxDigits: 5 }, '1234.567');
+    await expect.element(field).toHaveValue('1234.5');
+    expect(onChange).toHaveBeenLastCalledWith(123450);
+  });
+
+  it('Backspace edits the text and select all + Delete gives null', async () => {
+    const { onChange, field } = await typeInto({}, '12.5');
+    await userEvent.keyboard('{Backspace}');
+    await expect.element(field).toHaveValue('12.');
+    expect(onChange).toHaveBeenLastCalledWith(1200);
+    await userEvent.keyboard('{Control>}a{/Control}{Delete}');
+    await expect.element(field).toHaveValue('');
+    expect(onChange).toHaveBeenLastCalledWith(null);
+  });
+
+  it('selects the amount on focus so typing replaces it', async () => {
+    const { field, onChange } = await typeInto({ defaultValue: 123456 }, '7');
+    await expect.element(field).toHaveValue('7');
+    expect(onChange).toHaveBeenLastCalledWith(700);
+  });
+
+  it('pastes with the smart paste', async () => {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(<Price entryMode="amount" onChange={onChange} />);
+    const field = screen.getByRole('textbox');
+    await userEvent.click(field);
+    await paste(field.element(), '1,234.50');
+    expect(onChange).toHaveBeenLastCalledWith(123450);
+    await expect.element(field).toHaveValue('1234.50');
+  });
+
+  it('supports negative amounts and submits integer minor units', async () => {
+    const { field, screen } = await typeInto({ allowNegative: true, name: 'adj' }, '-3.5');
+    await expect.element(field).toHaveValue('-3.5');
+    const hidden = screen.container.querySelector('input[type="hidden"]') as HTMLInputElement;
+    expect(hidden.value).toBe('-350');
+  });
+
+  it('keeps cents mode as the default', async () => {
+    const { onChange } = await typeInto({ entryMode: 'cents' }, '200');
+    expect(onChange).toHaveBeenLastCalledWith(200);
+  });
+
+  it('has no axe violations while editing', async () => {
+    const { screen } = await typeInto({ placeholder: '$0.00' }, '12.5');
+    await expectNoA11yViolations(screen.container);
+  });
+});

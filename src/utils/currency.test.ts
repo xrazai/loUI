@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { formatCurrency, getCurrencyDigits, parseCurrencyInput } from './currency';
+import {
+  formatCurrency,
+  getCurrencyDigits,
+  parseCurrencyAmount,
+  parseCurrencyInput,
+} from './currency';
 
 const NBSP = ' ';
 
@@ -140,5 +145,53 @@ describe('parseCurrencyInput (digits-only typing model)', () => {
   it('is independent of the currency exponent', () => {
     expect(parseCurrencyInput('123', 'JPY', 'ja-JP')).toBe(123);
     expect(parseCurrencyInput('123', 'KWD', 'en-US')).toBe(123);
+  });
+});
+
+describe('parseCurrencyAmount (whole-unit typing)', () => {
+  it('reads digits as whole units', () => {
+    expect(parseCurrencyAmount('200', 'BRL', 'pt-BR')).toBe(20000);
+    expect(parseCurrencyAmount('200', 'USD', 'en-US')).toBe(20000);
+    expect(parseCurrencyAmount('', 'USD', 'en-US')).toBe(0);
+    expect(parseCurrencyAmount('abc', 'USD', 'en-US')).toBe(0);
+  });
+
+  it('starts the fraction at the locale decimal mark, and at the other mark when it fits', () => {
+    expect(parseCurrencyAmount('12,5', 'BRL', 'pt-BR')).toBe(1250);
+    expect(parseCurrencyAmount('12.5', 'BRL', 'pt-BR')).toBe(1250);
+    expect(parseCurrencyAmount('12.50', 'USD', 'en-US')).toBe(1250);
+    expect(parseCurrencyAmount('12,50', 'USD', 'en-US')).toBe(1250);
+    expect(parseCurrencyAmount('200,', 'BRL', 'pt-BR')).toBe(20000);
+    expect(parseCurrencyAmount(',5', 'BRL', 'pt-BR')).toBe(50);
+  });
+
+  it('treats a mark followed by more digits than the currency has as grouping', () => {
+    expect(parseCurrencyAmount('1.234,56', 'BRL', 'pt-BR')).toBe(123456);
+    expect(parseCurrencyAmount('1,234.56', 'USD', 'en-US')).toBe(123456);
+    expect(parseCurrencyAmount('1,234', 'USD', 'en-US')).toBe(123400);
+    expect(parseCurrencyAmount('1.234', 'BRL', 'pt-BR')).toBe(123400);
+    expect(parseCurrencyAmount('1.234.567', 'USD', 'en-US')).toBe(123456700);
+  });
+
+  it('cuts extra fraction digits after the locale decimal mark', () => {
+    expect(parseCurrencyAmount('12,567', 'BRL', 'pt-BR')).toBe(1256);
+    expect(parseCurrencyAmount('12.567', 'USD', 'en-US')).toBe(1256);
+  });
+
+  it('handles 0 and 3 digit currencies', () => {
+    expect(parseCurrencyAmount('1500', 'JPY', 'en-US')).toBe(1500);
+    expect(parseCurrencyAmount('1,500', 'JPY', 'en-US')).toBe(1500);
+    expect(parseCurrencyAmount('1.500', 'JPY', 'pt-BR')).toBe(1500);
+    expect(parseCurrencyAmount('1.5', 'KWD', 'en-US')).toBe(1500);
+    expect(parseCurrencyAmount('1.234', 'KWD', 'en-US')).toBe(1234);
+    expect(parseCurrencyAmount('1.234', 'KWD', 'pt-BR')).toBe(1234000);
+    expect(parseCurrencyAmount('1.234,567', 'KWD', 'pt-BR')).toBe(1234567);
+  });
+
+  it('ignores symbols, spaces and signs, understands other digits, and is a safe integer', () => {
+    expect(parseCurrencyAmount('R$ 1.234,50', 'BRL', 'pt-BR')).toBe(123450);
+    expect(parseCurrencyAmount('-$5', 'USD', 'en-US')).toBe(500);
+    expect(parseCurrencyAmount('９９', 'USD', 'en-US')).toBe(9900);
+    expect(parseCurrencyAmount('9'.repeat(30), 'USD', 'en-US')).toBe(10 ** 15 - 1);
   });
 });

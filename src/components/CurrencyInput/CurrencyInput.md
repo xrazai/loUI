@@ -21,6 +21,24 @@ Two models were considered:
 
 **Decision: digits-only typing**, with a smarter **paste** (below). The trade-off: a person who types `12.5` gets `$1.25`, not `$12.50`. That is the point of the model (type `1250`), the field always shows what it will submit, and paste covers the decimal-writing habit.
 
+## Typing modes
+
+`entryMode` chooses how typed digits are read. Both modes keep the value an integer in minor units, call `onChange` with integers or `null`, accept the same smart paste, and honor `maxDigits` and `allowNegative`.
+
+|                     | `cents` (default)                                                    | `amount`                                                                                 |
+| ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Typing `200` in USD | `$2.00`                                                              | `$200.00`                                                                                |
+| Model               | Digits shift in from the right; separators ignored; caret at the end | Digits are whole units; a decimal mark starts the fraction                               |
+| Use for             | Cash-register style, fast numeric-keypad entry, POS                  | People who think in whole units, prices like "200", forms where users type decimal marks |
+
+**Amount mode rules** (`parseCurrencyAmount`, string manipulation only, no floats):
+
+- Digits are whole units until a decimal mark. The mark is the **last** `.` or `,` (or the locale's own decimal mark) when it is the only one of its kind and either it is the locale's decimal mark or it is followed by at most as many digits as the currency has (2 for USD/BRL, 3 for KWD). A mark followed by more digits is grouping and ignored, so users can mix habits: `12.5` and `12,5` both mean 12.50; `1,234.56` (en-US) and `1.234,56` (pt-BR) both mean 1234.56; `1,234` in USD is 1234.00.
+- At most as many fraction digits as the currency has. After the locale's decimal mark, extra digits are ignored while typing (`12.567` stays `12.56`), and a second locale decimal mark is ignored. JPY (0 digits) has no fraction: marks are ignored.
+- Examples en-US USD: `200` is 20000, `12.5` is 1250, `12,50` is 1250. pt-BR BRL: `200` is 20000, `12,5` is 1250, `1.234,56` is 123456. JPY: `1500` is 1500. KWD en-US: `1.5` is 1500.
+- Limitation: a foreign mark followed by a full fraction and one more digit is regrouped (en-US `12,50` then `7` becomes 12507), the same reading as paste.
+- While focused the box edits **plain text** (no symbol) with normal caret editing, and keeps what you typed readable: `200,` stays `200,`. The existing amount is selected on focus so typing replaces it. On blur the box shows the full currency format (`R$ 200,00`). `Backspace` edits the text, select all + `Delete` gives `null`, and a lone `-` (with `allowNegative`) is negative zero as in `cents` mode. The mobile keyboard is `decimal` (`text` with `allowNegative`).
+
 ## Behavior
 
 - `value` / `defaultValue` / `onChange` are **integer minor units** or `null` (empty, which is not `0`). `onChange` receives `null` when the field is emptied (select all, then `Delete`).
@@ -38,6 +56,7 @@ Two models were considered:
 | `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |
 | `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units.                                                                   |
 | `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |
+| `entryMode`                                                                                                                            | `'cents'` (default) or `'amount'`. See "Typing modes".                                             |
 | `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |
 | `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |
 | `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |
