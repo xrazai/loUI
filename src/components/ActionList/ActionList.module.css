@@ -1,4 +1,8 @@
 @layer components {
+  .scope {
+    display: contents;
+  }
+
   .root {
     box-sizing: border-box;
     min-inline-size: 0;
@@ -43,6 +47,12 @@
     outline-offset: -2px;
   }
 
+  .selection {
+    display: flex;
+    flex: none;
+    align-items: center;
+  }
+
   .leading {
     display: flex;
     flex: none;
@@ -66,6 +76,11 @@
     white-space: nowrap;
   }
 
+  .item[data-done] .title {
+    color: var(--ds-text-3);
+    text-decoration: line-through;
+  }
+
   .description {
     overflow: hidden;
     color: var(--ds-text-2);
@@ -76,7 +91,10 @@
   }
 
   .meta {
+    display: flex;
     flex: none;
+    align-items: center;
+    gap: var(--ds-space-2);
     color: var(--ds-text-2);
     font-family: var(--ds-font-mono);
     font-size: var(--ds-fs-label);

@@ -6,6 +6,8 @@
  */
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { ActionList } from '../../components/ActionList';
+import { createDocuments } from '../../components/ActionList/ActionList.fixtures';
 import { DataTable } from '../../components/DataTable';
 import { orderColumns, orders } from '../../components/DataTable/DataTable.fixtures';
 import type { Order } from '../../components/DataTable/DataTable.fixtures';
@@ -131,6 +133,41 @@ describe('keyboard contract: data table selection and row action', () => {
     await expect.poll(() => document.activeElement?.textContent).toContain('Émile Studio');
     await press('{ArrowUp}');
     await expect.poll(() => document.activeElement?.textContent).toContain('Zeta Supplies');
+  });
+});
+
+describe('keyboard contract: action list with checkboxes and row action', () => {
+  it('Space toggles the row checkbox and Enter runs the row action', async () => {
+    const onSelectionChange = vi.fn();
+    const onAction = vi.fn();
+    const items = createDocuments();
+    const screen = await renderWithProvider(
+      <ActionList
+        items={items}
+        aria-label="Files"
+        selectionMode="multiple"
+        onSelectionChange={onSelectionChange}
+        onAction={onAction}
+      />,
+    );
+    await userEvent.tab();
+    await press(' ');
+    expect([...(onSelectionChange.mock.lastCall?.[0] as Set<string>)]).toEqual(['contract']);
+    expect(onAction).not.toHaveBeenCalled();
+    await press('{Enter}');
+    expect(onAction).toHaveBeenLastCalledWith(items[0]);
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+    const box = screen.getByRole('checkbox', { name: 'Select Contract with Alfa Confecções' });
+    expect((box.element() as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('every checkbox has an accessible name from its row', async () => {
+    const screen = await renderWithProvider(
+      <ActionList items={createDocuments()} aria-label="Files" selectionMode="multiple" />,
+    );
+    for (const name of ['Contract with Alfa Confecções', 'Price list 2026', 'Supplier notes']) {
+      expect(screen.getByRole('checkbox', { name: `Select ${name}` }).elements()).toHaveLength(1);
+    }
   });
 });
 

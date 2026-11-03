@@ -8,6 +8,12 @@ import { createDocuments } from './ActionList.fixtures';
 
 const items = createDocuments();
 
+/** The checkbox input is visually hidden: click the label that wraps it, like a pointer user. */
+function checkboxLabel(screen: Awaited<ReturnType<typeof renderWithProvider>>, name: string) {
+  const input = screen.getByRole('checkbox', { name }).element();
+  return input.closest('label') as HTMLLabelElement;
+}
+
 describe('ActionList', () => {
   describe('structure', () => {
     it('renders a named grid of rows with title, description and meta', async () => {
@@ -158,6 +164,176 @@ describe('ActionList', () => {
     it('has no menu button for rows without actions', async () => {
       const screen = await renderWithProvider(<ActionList items={items} aria-label="Files" />);
       expect(screen.getByRole('button').elements()).toHaveLength(2);
+    });
+  });
+
+  describe('selection (checkbox rows)', () => {
+    it('renders a named checkbox per row and none by default', async () => {
+      const plain = await renderWithProvider(<ActionList items={items} aria-label="Files" />);
+      expect(plain.getByRole('checkbox').elements()).toHaveLength(0);
+      await plain.unmount();
+      const screen = await renderWithProvider(
+        <ActionList items={items} aria-label="Files" selectionMode="multiple" />,
+      );
+      expect(screen.getByRole('checkbox').elements()).toHaveLength(3);
+      await expect
+        .element(screen.getByRole('checkbox', { name: 'Select Price list 2026' }))
+        .toBeVisible();
+    });
+
+    it('toggles with Space and with a click, reporting the keys', async () => {
+      const onSelectionChange = vi.fn();
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          onSelectionChange={onSelectionChange}
+        />,
+      );
+      await userEvent.keyboard('{Tab}');
+      await userEvent.keyboard(' ');
+      expect([...(onSelectionChange.mock.lastCall?.[0] as Set<string>)]).toEqual(['contract']);
+      await userEvent.click(checkboxLabel(screen, 'Select Price list 2026'));
+      expect([...(onSelectionChange.mock.lastCall?.[0] as Set<string>)]).toEqual([
+        'contract',
+        'price-list',
+      ]);
+    });
+
+    it('supports defaultSelectedKeys and controlled selectedKeys', async () => {
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          defaultSelectedKeys={['notes']}
+        />,
+      );
+      const box = screen.getByRole('checkbox', { name: 'Select Supplier notes' }).element();
+      expect((box as HTMLInputElement).checked).toBe(true);
+      await screen.unmount();
+      const controlled = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          selectedKeys={new Set(['contract'])}
+        />,
+      );
+      const first = controlled.getByRole('checkbox', {
+        name: 'Select Contract with Alfa Confecções',
+      });
+      expect((first.element() as HTMLInputElement).checked).toBe(true);
+    });
+
+    it('keeps Enter and click on the row for the action, with a checkbox and a menu', async () => {
+      const onAction = vi.fn();
+      const onSelectionChange = vi.fn();
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          onAction={onAction}
+          onSelectionChange={onSelectionChange}
+        />,
+      );
+      await userEvent.click(screen.getByText('Price list 2026'));
+      expect(onAction).toHaveBeenLastCalledWith(items[1]);
+      expect(onSelectionChange).not.toHaveBeenCalled();
+      await userEvent.click(checkboxLabel(screen, 'Select Price list 2026'));
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onSelectionChange).toHaveBeenCalledTimes(1);
+      screen.getByRole('row').first().element().focus();
+      await userEvent.keyboard('{Enter}');
+      expect(onAction).toHaveBeenLastCalledWith(items[0]);
+      expect(onSelectionChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('still runs the row action on click while rows are selected', async () => {
+      const onAction = vi.fn();
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          defaultSelectedKeys={['contract']}
+          onAction={onAction}
+        />,
+      );
+      await userEvent.click(screen.getByText('Supplier notes'));
+      expect(onAction).toHaveBeenLastCalledWith(items[2]);
+      const first = screen.getByRole('checkbox', { name: 'Select Contract with Alfa Confecções' });
+      expect((first.element() as HTMLInputElement).checked).toBe(true);
+      const third = screen.getByRole('checkbox', { name: 'Select Supplier notes' });
+      expect((third.element() as HTMLInputElement).checked).toBe(false);
+    });
+
+    it('disables the checkbox of a disabled row', async () => {
+      const disabled = items.map((item, index) =>
+        index === 1 ? { ...item, isDisabled: true } : item,
+      );
+      const screen = await renderWithProvider(
+        <ActionList items={disabled} aria-label="Files" selectionMode="multiple" />,
+      );
+      const box = screen.getByRole('checkbox', { name: 'Select Price list 2026' }).element();
+      expect((box as HTMLInputElement).disabled).toBe(true);
+    });
+
+    it('translates the checkbox name to pt-BR', async () => {
+      const screen = await renderWithProvider(
+        <ActionList items={items} aria-label="Arquivos" selectionMode="multiple" />,
+        { locale: 'pt-BR' },
+      );
+      await expect
+        .element(screen.getByRole('checkbox', { name: 'Selecionar Price list 2026' }))
+        .toBeVisible();
+    });
+
+    it('has no axe violations with checkboxes, actions and done rows', async () => {
+      const rows = items.map((item, index) => (index === 0 ? { ...item, isDone: true } : item));
+      const screen = await renderWithProvider(
+        <ActionList
+          items={rows}
+          aria-label="Files"
+          selectionMode="multiple"
+          defaultSelectedKeys={['contract']}
+          onAction={vi.fn()}
+        />,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
+  });
+
+  describe('done rows', () => {
+    it('strikes through the title and adds hidden "Done" text', async () => {
+      const rows = items.map((item, index) => (index === 0 ? { ...item, isDone: true } : item));
+      const screen = await renderWithProvider(<ActionList items={rows} aria-label="Files" />);
+      const row = screen.getByRole('row').first().element();
+      expect(row.textContent).toContain('Done');
+      expect(screen.getByRole('row').nth(1).element().textContent).not.toContain('Done');
+      const title = row.querySelector('[class*="title"]') as HTMLElement;
+      expect(getComputedStyle(title).textDecorationLine).toBe('line-through');
+    });
+
+    it('translates the hidden text to pt-BR and accepts an override', async () => {
+      const rows = items.map((item, index) => (index === 0 ? { ...item, isDone: true } : item));
+      const pt = await renderWithProvider(<ActionList items={rows} aria-label="Arquivos" />, {
+        locale: 'pt-BR',
+      });
+      expect(pt.getByRole('row').first().element().textContent).toContain('Concluído');
+      await pt.unmount();
+      const custom = await renderWithProvider(
+        <ActionList items={rows} aria-label="Files" messages={{ done: 'Completed' }} />,
+      );
+      expect(custom.getByRole('row').first().element().textContent).toContain('Completed');
+    });
+
+    it('has no axe violations', async () => {
+      const rows = items.map((item) => ({ ...item, isDone: true }));
+      const screen = await renderWithProvider(<ActionList items={rows} aria-label="Files" />);
+      await expectNoA11yViolations(screen.container);
     });
   });
 
