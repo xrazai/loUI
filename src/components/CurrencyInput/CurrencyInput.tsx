@@ -75,10 +75,15 @@ interface CurrencyInputBaseProps extends Omit<
   descriptionTone?: FieldMessageTone | undefined;
   /** Error text, shown while the field is invalid and the error is displayed. See `Input`. */
   errorMessage?: FieldErrorMessage;
-  /** Text shown while the field is empty. */
+  /** Text shown while the field is empty (`value` is `null`), until the first digit is typed. */
   placeholder?: string | undefined;
   /** Control height: `sm` 32px, `md` 40px (default), `lg` 48px. */
   size?: InputSize | undefined;
+  /**
+   * Take the free space of a flex row (an `Inline`): the field grows to fill it and can shrink
+   * below its content width. Off by default. In a block context the field already spans the width.
+   */
+  fullWidth?: boolean | undefined;
   /** Class name for the field root. */
   className?: string | undefined;
   /** Class name for the `<input>` element. */

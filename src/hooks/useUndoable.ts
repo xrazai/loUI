@@ -2,6 +2,11 @@ import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { toast as defaultToast } from '../components/Toast';
 import type { ToastApi, ToastTone } from '../components/Toast';
+import {
+  closeGroupToast,
+  rememberGroupToast,
+  trackGroupToast,
+} from '../components/Toast/undoToast';
 import { useMessages } from '../i18n';
 import { messages } from './useUndoable.messages';
 
@@ -34,6 +39,15 @@ export interface UndoableAction {
   tone?: Exclude<ToastTone, 'danger'> | undefined;
   /** Milliseconds the Undo stays available. Default 5000. The timer pauses on hover and focus. */
   timeout?: number | undefined;
+  /**
+   * Replaces the previous undo toast of the same group instead of stacking one more: the earlier
+   * action is committed now (its toast closes) and the new toast offers Undo for this action
+   * only. Use it for quick repeated actions of one kind, such as four toggles in a grid. It does
+   * not offer "Undo 4 changes": the changes can be on different records and made in any order,
+   * so a single Undo could not safely reverse them all. Actions with different keys (or none)
+   * still stack. Groups are per toast queue.
+   */
+  groupKey?: string | undefined;
 }
 
 export interface UndoableHandle {
@@ -95,6 +109,7 @@ export function useUndoable({
         onCommit,
         tone = 'success',
         timeout,
+        groupKey,
       } = action;
       let settled = false;
 
@@ -135,12 +150,18 @@ export function useUndoable({
         })();
       };
 
+      // The previous action of the group becomes final first, then this one is applied on top.
+      if (groupKey !== undefined) closeGroupToast(toast, groupKey);
       apply();
-      const key = toast[tone](message, {
+      const key: string = toast[tone](message, {
         action: { label: undoLabel, onPress: undo },
-        onClose: settleByClose,
+        onClose:
+          groupKey === undefined
+            ? settleByClose
+            : trackGroupToast(toast, groupKey, () => key, settleByClose),
         ...(timeout === undefined ? {} : { timeout }),
       });
+      if (groupKey !== undefined) rememberGroupToast(toast, groupKey, key);
       return {
         key,
         undo: () => {

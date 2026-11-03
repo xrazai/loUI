@@ -306,3 +306,93 @@ function Probeless({ api }: { api: ReturnType<typeof createToastApi> }) {
     </button>
   );
 }
+
+describe('useUndoable groupKey (GAP-053)', () => {
+  function Toggles({
+    api,
+    groupKey,
+    log,
+  }: {
+    api: ReturnType<typeof createToastApi>;
+    groupKey?: (n: number) => string | undefined;
+    log: string[];
+  }) {
+    const undoable = useUndoable({ toast: api });
+    return (
+      <>
+        {[1, 2, 3, 4].map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => {
+              const key = groupKey?.(n);
+              undoable.run({
+                message: `Toggled ${String(n)}`,
+                apply: () => {
+                  log.push(`apply ${String(n)}`);
+                },
+                revert: () => {
+                  log.push(`revert ${String(n)}`);
+                },
+                commit: () => {
+                  log.push(`commit ${String(n)}`);
+                },
+                ...(key === undefined ? {} : { groupKey: key }),
+              });
+            }}
+          >
+            {`Toggle ${String(n)}`}
+          </button>
+        ))}
+      </>
+    );
+  }
+
+  it('keeps one toast for four rapid actions with the same key, committing the first three', async () => {
+    const { queue, api } = setup();
+    const log: string[] = [];
+    const screen = await renderWithProvider(
+      <Toggles api={api} groupKey={() => 'toggle'} log={log} />,
+    );
+    for (const n of [1, 2, 3, 4]) {
+      await userEvent.click(screen.getByRole('button', { name: `Toggle ${String(n)}` }));
+    }
+    await expect
+      .poll(() => log.filter((l) => l.startsWith('commit')))
+      .toEqual(['commit 1', 'commit 2', 'commit 3']);
+    expect(queue.visibleToasts).toHaveLength(1);
+    expect(queue.visibleToasts[0]?.content.message).toBe('Toggled 4');
+    // Undo reverts only the last action.
+    queue.visibleToasts[0]?.content.action?.onPress();
+    await expect.poll(() => log.includes('revert 4')).toBe(true);
+    expect(log.filter((l) => l.startsWith('revert'))).toEqual(['revert 4']);
+    expect(log).not.toContain('commit 4');
+  });
+
+  it('still stacks actions with different keys or no key', async () => {
+    const { queue, api } = setup();
+    const log: string[] = [];
+    const screen = await renderWithProvider(
+      <Toggles api={api} groupKey={(n) => (n === 4 ? undefined : `row-${String(n)}`)} log={log} />,
+    );
+    for (const n of [1, 2, 3, 4]) {
+      await userEvent.click(screen.getByRole('button', { name: `Toggle ${String(n)}` }));
+    }
+    expect(queue.visibleToasts).toHaveLength(4);
+    expect(log.filter((l) => l.startsWith('commit'))).toEqual([]);
+  });
+
+  it('starts a fresh group after the previous toast closed on its own', async () => {
+    const { queue, api } = setup();
+    const log: string[] = [];
+    const screen = await renderWithProvider(
+      <Toggles api={api} groupKey={() => 'toggle'} log={log} />,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle 1' }));
+    const first = queue.visibleToasts[0];
+    if (first) api.close(first.key);
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle 2' }));
+    expect(queue.visibleToasts).toHaveLength(1);
+    expect(log.filter((l) => l === 'commit 1')).toHaveLength(1);
+  });
+});

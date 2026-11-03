@@ -32,20 +32,37 @@ Two models were considered:
 
 ## Props (key ones)
 
-| Prop                                                                                                                                   | Notes                            |
-| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `currency`                                                                                                                             | Required ISO 4217 code.          |
-| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units. |
-| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |
-| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |
-| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
-| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |
+| Prop                                                                                                                                   | Notes                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |
+| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units.                                                                   |
+| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |
+| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |
+| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |
+| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |
+| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |
 
 ## Accessibility and keyboard
 
 A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).
 
 Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
+
+## Events: `onKeyDown`, `onFocus`, `onBlur`
+
+These come from the underlying text field and are **composed** with the internal handlers, never replaced:
+
+- `onKeyDown`: runs for every key. A key your handler does not `preventDefault()` keeps bubbling to `useHotkeys` shortcuts and still types a digit. Call `preventDefault()` for the keys you take (`Enter`, `Escape`).
+- `onFocus`: your handler runs first, then the caret moves to the end of the text.
+- `onBlur`: your handler runs after the field resets a lone `-` (negative zero). `onChange` has already delivered the last typed value, so a blur handler may confirm it.
+
+Inline price editing (`Enter` confirms, `Escape` cancels, blur confirms) is the recipe `inline-price-edit`.
+
+## Placeholder
+
+While `value` is `null` the box is empty and shows `placeholder` in `--ds-text-3`, focused or not. It disappears with the first digit and returns when the field is emptied again (select all, then `Delete`). `0` is a value, not empty: it shows `$0.00`. Use the placeholder for a hint such as an inherited price, never as the label.
 
 ## Content rules
 

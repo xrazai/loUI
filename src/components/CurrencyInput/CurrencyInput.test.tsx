@@ -5,6 +5,7 @@ import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { borderContrast } from '../Field/field.testing';
 import { resetMissingNameWarnings } from '../Field/labeling';
+import { Inline } from '../Inline';
 import { CurrencyInput } from './CurrencyInput';
 import type { CurrencyInputProps } from './CurrencyInput';
 
@@ -333,5 +334,124 @@ describe('CurrencyInput', () => {
       );
       await expectNoA11yViolations(screen.container);
     });
+  });
+});
+
+describe('CurrencyInput events and placeholder', () => {
+  it('shows the placeholder while null, focused or not, in the tertiary text colour', async () => {
+    const screen = await renderWithProvider(<Price placeholder="$49.90" />);
+    const field = screen.getByRole('textbox');
+    const element = field.element() as HTMLInputElement;
+    await expect.element(field).toHaveValue('');
+    expect(element.matches(':placeholder-shown')).toBe(true);
+    const color = getComputedStyle(element, '::placeholder').color;
+    expect(color).not.toBe(getComputedStyle(element).color);
+    await userEvent.click(element);
+    expect(element.matches(':placeholder-shown')).toBe(true);
+    await userEvent.keyboard('1');
+    await expect.element(field).toHaveValue('$0.01');
+    expect(element.matches(':placeholder-shown')).toBe(false);
+  });
+
+  it('shows the placeholder again when the field is emptied', async () => {
+    const screen = await renderWithProvider(<Price placeholder="$49.90" defaultValue={500} />);
+    const element = screen.getByRole('textbox').element() as HTMLInputElement;
+    expect(element.matches(':placeholder-shown')).toBe(false);
+    await userEvent.click(element);
+    await userEvent.keyboard('{Control>}a{/Control}{Delete}');
+    expect(element.matches(':placeholder-shown')).toBe(true);
+  });
+
+  it('hides the placeholder for 0, which is a value', async () => {
+    const screen = await renderWithProvider(<Price placeholder="$49.90" value={0} />);
+    const element = screen.getByRole('textbox').element() as HTMLInputElement;
+    expect(element.value).toBe('$0.00');
+    expect(element.matches(':placeholder-shown')).toBe(false);
+  });
+
+  it('calls onFocus, onBlur and onKeyDown, and keeps typing and the caret working', async () => {
+    const onFocus = vi.fn();
+    const onBlur = vi.fn();
+    const onKeyDown = vi.fn();
+    const screen = await renderWithProvider(
+      <Price onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown} defaultValue={100} />,
+    );
+    const element = screen.getByRole('textbox').element() as HTMLInputElement;
+    await userEvent.click(element);
+    expect(onFocus).toHaveBeenCalledTimes(1);
+    expect(element.selectionStart).toBe(element.value.length);
+    await userEvent.keyboard('5');
+    expect(onKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: '5' }));
+    expect(element.value).toBe('$10.05');
+    await userEvent.tab();
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
+
+  it('delivers the last typed value to onChange before onBlur runs', async () => {
+    const order: string[] = [];
+    const screen = await renderWithProvider(
+      <Price
+        onChange={(value) => order.push(`change:${String(value)}`)}
+        onBlur={() => order.push('blur')}
+      />,
+    );
+    await userEvent.click(screen.getByRole('textbox'));
+    await userEvent.keyboard('12');
+    await userEvent.tab();
+    expect(order).toEqual(['change:1', 'change:12', 'blur']);
+  });
+
+  it('stops a key the handler prevented, and lets every other key keep bubbling', async () => {
+    const onKeyDown = vi.fn((event: { key: string; preventDefault: () => void }) => {
+      if (event.key === 'Enter') event.preventDefault();
+    });
+    const outer = vi.fn();
+    const screen = await renderWithProvider(
+      // eslint-disable-next-line jsx-a11y-x/no-static-element-interactions -- observes bubbling only
+      <div
+        onKeyDown={(event) => {
+          outer(event.key);
+        }}
+      >
+        <Price onKeyDown={onKeyDown} />
+      </div>,
+    );
+    await userEvent.click(screen.getByRole('textbox'));
+    await userEvent.keyboard('7{Enter}');
+    expect(outer).toHaveBeenCalledWith('7');
+    expect(outer).not.toHaveBeenCalledWith('Enter');
+  });
+});
+
+describe('CurrencyInput fullWidth', () => {
+  async function renderRow(props: { fullWidth?: boolean }) {
+    return renderWithProvider(
+      <div style={{ inlineSize: 700 }}>
+        <Inline gap={2} wrap={false}>
+          <Price {...props} />
+          <button type="button">Apply</button>
+        </Inline>
+      </div>,
+    );
+  }
+
+  it('takes the free space of an Inline row, and not by default', async () => {
+    const rowOf = (screen: { container: Element }) =>
+      (screen.container.firstElementChild as HTMLElement).firstElementChild as HTMLElement;
+    const plain = await renderRow({});
+    const plainField = rowOf(plain).children[0] as HTMLElement;
+    expect(plainField.hasAttribute('data-full-width')).toBe(false);
+    const plainWidth = plainField.getBoundingClientRect().width;
+    await plain.unmount();
+    const full = await renderRow({ fullWidth: true });
+    const row = rowOf(full);
+    const field = row.querySelector('[data-full-width]') as HTMLElement;
+    const button = row.lastElementChild as HTMLElement;
+    expect(field.getAttribute('data-full-width')).toBe('true');
+    expect(field.getBoundingClientRect().width).toBeGreaterThanOrEqual(plainWidth);
+    expect(button.getBoundingClientRect().right).toBeCloseTo(700, 0);
+    expect(field.getBoundingClientRect().right).toBeLessThanOrEqual(
+      button.getBoundingClientRect().left + 0.5,
+    );
   });
 });

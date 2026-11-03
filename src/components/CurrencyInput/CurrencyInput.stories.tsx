@@ -6,6 +6,8 @@ import { DSProvider } from '../../providers/DSProvider';
 import { CurrencyInput } from './CurrencyInput';
 import type { CurrencyInputProps } from './CurrencyInput';
 import { StoryFrame } from '../../test/StoryFrame';
+import { Button } from '../Button';
+import { Inline } from '../Inline';
 
 const meta = {
   title: 'Components/CurrencyInput',
@@ -194,4 +196,25 @@ export const Controlled: Story = {
     await expect(canvas.getByTestId('mirror')).toHaveTextContent('2501');
     await expect(canvas.getByRole('textbox')).toHaveValue('$25.01');
   },
+};
+
+/** The placeholder shows while the value is `null`, also when focused, until a digit is typed. */
+export const WithPlaceholder: Story = {
+  args: { placeholder: '$49.90' },
+  play: async ({ canvasElement }) => {
+    const field = within(canvasElement).getByRole('textbox');
+    await expect(field).toHaveValue('');
+    await expect(field).toHaveAttribute('placeholder', '$49.90');
+  },
+};
+
+/** In an `Inline` row the field takes the free space next to the button. */
+export const FullWidthInRow: Story = {
+  args: { fullWidth: true },
+  render: (args) => (
+    <Inline gap={2} align="end" wrap={false}>
+      <CurrencyInput {...args} />
+      <Button variant="primary">Apply</Button>
+    </Inline>
+  ),
 };

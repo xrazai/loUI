@@ -18,6 +18,45 @@ export function registerUndoLabel(queue: ToastQueue, label: string): () => void 
   };
 }
 
+/** Key of the open toast of each group, per toast API (GAP-053). */
+const openGroups = new WeakMap<ToastApi, Map<string, string>>();
+
+/**
+ * Internal: closes the open toast of `groupKey` on `api`, if any. Closing runs its `onClose`, so
+ * a deferred commit behind it settles before the caller applies the next action.
+ */
+export function closeGroupToast(api: ToastApi, groupKey: string): void {
+  const previous = openGroups.get(api)?.get(groupKey);
+  if (previous !== undefined) api.close(previous);
+}
+
+/**
+ * Internal: records `key` as the open toast of `groupKey` and returns the `onClose` to give the
+ * toast: it forgets the key (only if it is still the current one) and then calls `onClose`.
+ */
+export function trackGroupToast(
+  api: ToastApi,
+  groupKey: string,
+  getKey: () => string | undefined,
+  onClose?: () => void,
+): () => void {
+  return () => {
+    const groups = openGroups.get(api);
+    if (groups?.get(groupKey) === getKey()) groups?.delete(groupKey);
+    onClose?.();
+  };
+}
+
+/** Internal: stores the key of the toast just created for `groupKey`. */
+export function rememberGroupToast(api: ToastApi, groupKey: string, key: string): void {
+  let groups = openGroups.get(api);
+  if (!groups) {
+    groups = new Map();
+    openGroups.set(api, groups);
+  }
+  groups.set(groupKey, key);
+}
+
 export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'action'> {
   /** Reverses the change. Called when the user presses Undo; the toast closes afterwards. */
   onUndo: () => void;
@@ -32,6 +71,14 @@ export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'actio
   locale?: string;
   /** Per-call override of the Toast messages; only `undo` is used. Wins over `locale`. */
   messages?: Partial<typeof messages.en>;
+  /**
+   * Replaces the previous undo toast of the same group instead of stacking a new one. The
+   * previous toast closes (its `onClose` runs, so that change is final) and this one offers Undo
+   * for the latest change only. Use it for quick repeated actions of one kind, such as toggles in
+   * a grid. It does not merge changes into "Undo 4 changes": they can be made in any order on
+   * different records, so one Undo could not safely reverse them all.
+   */
+  groupKey?: string;
 }
 
 function resolveUndoLabel(
@@ -65,10 +112,18 @@ export function toastWithUndo(message: ReactNode, options: ToastWithUndoOptions)
     toast = defaultToast,
     locale,
     messages: overrides,
+    groupKey,
+    onClose,
     ...rest
   } = options;
-  return toast[tone](message, {
+  if (groupKey !== undefined) closeGroupToast(toast, groupKey);
+  const closeHandler =
+    groupKey === undefined ? onClose : trackGroupToast(toast, groupKey, () => key, onClose);
+  const key: string = toast[tone](message, {
     ...rest,
+    ...(closeHandler ? { onClose: closeHandler } : {}),
     action: { label: resolveUndoLabel(toast, locale, overrides), onPress: onUndo },
   });
+  if (groupKey !== undefined) rememberGroupToast(toast, groupKey, key);
+  return key;
 }
