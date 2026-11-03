@@ -1,13 +1,14 @@
 # Release (docs/release/README.md): pushing a tag `v<version>` builds the library, verifies the
 # package, creates a GitHub Release with the tarball attached and publishes `loui-ds` to npm with
-# provenance (ADR-0004: MIT, public). npm needs the `NPM_TOKEN` repository secret.
+# provenance (ADR-0004: MIT, public). npm authenticates the workflow with Trusted Publishing
+# (OIDC, configured on npmjs.com for xrazai/loUI + release.yml): no npm token is stored anywhere.
 name: Release
 on:
   push:
     tags: ['v*']
 permissions:
   contents: write
-  id-token: write # npm provenance
+  id-token: write # npm Trusted Publishing (OIDC) and provenance
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -59,11 +60,7 @@ jobs:
             --notes-file .release/notes.md \
             ${{ contains(github.ref_name, '-') && '--prerelease' || '' }}
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # Trusted Publishing needs npm 11.5.1 or later (Node 24 ships it).
         run: |
-          if [ -z "$NODE_AUTH_TOKEN" ]; then
-            echo "The NPM_TOKEN secret is missing: add it in Settings > Secrets and variables > Actions." >&2
-            exit 1
-          fi
+          npm --version
           npm publish .release/loui-ds-${VERSION}.tgz --access public --provenance ${{ contains(github.ref_name, '-') && '--tag next' || '' }}
