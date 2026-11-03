@@ -1,0 +1,25 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "tool-call-step": {
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Horizontal padding of the ToolCallStep header and details (12px)."
+    },
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Vertical padding of the ToolCallStep header (8px)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between the status, name and duration, and between detail blocks (8px)."
+    },
+    "list-gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between the steps of a ToolCallList (8px)."
+    }
+  }
+}

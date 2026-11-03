@@ -1,0 +1,117 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+  }
+
+  .title {
+    margin: 0 0 var(--ds-space-2);
+    font-size: var(--ds-fs-label);
+    font-weight: var(--ds-weight-semibold);
+    line-height: var(--ds-lh-label);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-source-list-gap);
+    margin: 0;
+    padding: 0;
+    padding-inline-start: var(--ds-source-list-indent);
+    list-style: decimal;
+  }
+
+  .list ::marker {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+  }
+
+  .item {
+    padding: var(--ds-source-list-padding);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+    overflow-wrap: anywhere;
+  }
+
+  /* Reached from a citation by script: show where focus landed. */
+  .item:focus {
+    outline: 2px solid var(--ds-accent);
+  }
+
+  .item > span {
+    display: block;
+  }
+
+  .plainTitle {
+    font-weight: var(--ds-weight-medium);
+  }
+
+  .domain {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .snippet {
+    margin-block-start: var(--ds-space-1);
+    color: var(--ds-text-2);
+    text-wrap: pretty;
+  }
+
+  .citation {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--ds-citation-size);
+    min-block-size: var(--ds-citation-size);
+    padding-inline: var(--ds-space-1);
+    border: 1px solid var(--ds-line-control);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-bg);
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds-lh-meta);
+    text-decoration: none;
+    vertical-align: middle;
+    outline: none;
+    transition: border-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .citation:hover {
+    border-color: var(--ds-text-3);
+  }
+
+  .citation:focus-visible {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .citation {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .citation {
+      border-color: LinkText;
+      color: LinkText;
+    }
+
+    .citation:focus-visible,
+    .item:focus {
+      outline-color: Highlight;
+    }
+  }
+}

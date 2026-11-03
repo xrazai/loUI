@@ -1,0 +1,152 @@
+@layer components {
+  .root {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-surface);
+    color: var(--ds-text);
+    font-family: var(--ds-font-sans);
+    overflow: hidden;
+  }
+
+  .root[data-status='failed'] {
+    border-color: var(--ds-danger-line);
+  }
+
+  .heading {
+    margin: 0;
+    font: inherit;
+  }
+
+  .trigger,
+  .static {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-tool-call-step-gap);
+    inline-size: 100%;
+    padding-block: var(--ds-tool-call-step-padding-block);
+    padding-inline: var(--ds-tool-call-step-padding-inline);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .trigger {
+    border: 0;
+    background-color: transparent;
+    color: var(--ds-text);
+    font-family: inherit;
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  .trigger[data-hovered] {
+    background-color: var(--ds-surface-row-hover);
+  }
+
+  /* Inset outline: the root clips overflow, so an outer ring would be cut off. */
+  .trigger[data-focus-visible] {
+    outline: 2px solid var(--ds-accent);
+    outline-offset: -2px;
+  }
+
+  .chevron {
+    flex: none;
+    color: var(--ds-text-3);
+    transition: transform var(--ds-duration) var(--ds-ease);
+  }
+
+  .trigger[aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-space-1);
+    color: var(--ds-text-2);
+  }
+
+  .status[data-status='succeeded'] {
+    color: var(--ds-success);
+  }
+
+  .status[data-status='failed'] {
+    color: var(--ds-danger);
+  }
+
+  .name {
+    flex: 1;
+    min-inline-size: 0;
+    color: var(--ds-text);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    overflow-wrap: anywhere;
+  }
+
+  .duration {
+    flex: none;
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-tool-call-step-gap);
+    padding-block: 0 var(--ds-tool-call-step-padding-inline);
+    padding-inline: var(--ds-tool-call-step-padding-inline);
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    min-inline-size: 0;
+  }
+
+  .label {
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    letter-spacing: var(--ds-tracking-caption);
+    line-height: var(--ds-lh-caption);
+    text-transform: uppercase;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-tool-call-step-list-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    min-inline-size: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chevron,
+    .trigger {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .root {
+      border-color: CanvasText;
+    }
+
+    .trigger[data-focus-visible] {
+      outline-color: Highlight;
+    }
+  }
+}

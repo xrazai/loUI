@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "citation": {
+    "size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Minimum side of an inline citation marker (24px, the WCAG 2.5.8 target size)."
+    }
+  }
+}

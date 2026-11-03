@@ -18,6 +18,7 @@ export const RECIPE_NAMES = [
   'DetailSheet',
   'FilterableTable',
   'FormWithValidation',
+  'MarkdownMessage',
   'SettingsPage',
   'UndoableAction',
 ] as const;

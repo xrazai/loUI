@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "response-feedback": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Gap between the feedback, copy and regenerate buttons (4px)."
+    },
+    "divider-gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Space on each side of the divider between the rating and the other actions (8px)."
+    }
+  }
+}

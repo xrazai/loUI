@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "source-list": {
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between the sources of a SourceList (12px)."
+    },
+    "indent": {
+      "$type": "dimension",
+      "$value": "{space.6}",
+      "$description": "Inline start padding of the numbered list, where the numbers sit (24px)."
+    },
+    "padding": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Padding of one source, so its focus outline does not touch the text (8px)."
+    }
+  }
+}

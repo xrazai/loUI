@@ -1,0 +1,22 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-response-feedback-gap);
+    font-family: var(--ds-font-sans);
+  }
+
+  .group {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-response-feedback-gap);
+  }
+
+  /* Divide the rating from the actions that follow it; with none, there is nothing to divide. */
+  .group:has(~ button) {
+    padding-inline-end: var(--ds-response-feedback-divider-gap);
+    margin-inline-end: var(--ds-response-feedback-divider-gap);
+    border-inline-end: 1px solid var(--ds-line-subtle);
+  }
+}
