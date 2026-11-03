@@ -2,13 +2,14 @@
 
 Loui DS is published on npm as `loui-ds` under the MIT license (ADR-0004, amended 2026-11-03). Pushing a version tag publishes it; nothing is published from a laptop.
 
-| Document                                      | Content                                                                                              |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [Versioning policy](./versioning.md)          | Semver for a design system: what is major, minor, patch; deprecation window; support.                |
-| [Component lifecycle](./lifecycle.md)         | proposal, experimental, stable, deprecated, removed; graduation checklist.                           |
-| [Codemods and migration hints](./codemods.md) | Every breaking change ships a codemod; deprecations carry a machine-readable migration hint.         |
-| [Figma workflow](../figma/README.md)          | Tokens Studio sync, component naming parity, Code Connect (optional).                                |
-| [CHANGELOG.md](./CHANGELOG.md)                | Consumer-facing release notes, generated from changesets (created by the first `changeset:version`). |
+| Document                                                        | Content                                                                                              |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Versioning policy](./versioning.md)                            | Semver for a design system: what is major, minor, patch; deprecation window; support.                |
+| [Component lifecycle](./lifecycle.md)                           | proposal, experimental, stable, deprecated, removed; graduation checklist.                           |
+| [Codemods and migration hints](./codemods.md)                   | Every breaking change ships a codemod; deprecations carry a machine-readable migration hint.         |
+| [Figma workflow](../figma/README.md)                            | Tokens Studio sync, component naming parity, Code Connect (optional).                                |
+| [CHANGELOG.md](./CHANGELOG.md)                                  | Consumer-facing release notes, generated from changesets (created by the first `changeset:version`). |
+| [Local development with an app](../guides/local-development.md) | Linking the repo into an app, tarball route, what a release takes end to end.                        |
 
 ## Two changelogs, on purpose
 

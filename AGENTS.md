@@ -249,6 +249,7 @@ Scripts:
 | Command | Purpose |
 |---|---|
 | `pnpm dev` / `pnpm storybook` | Storybook on port 6006 |
+| `pnpm dev:lib` | Rebuild `dist/` on every change (tsdown watch) to link the repo into another app, see [docs/guides/local-development.md](docs/guides/local-development.md) |
 | `pnpm build` | Library build (tsdown → `dist/`) |
 | `pnpm build-storybook` | Static Storybook |
 | `pnpm lint` / `pnpm typecheck` | ESLint + Stylelint / TypeScript |
