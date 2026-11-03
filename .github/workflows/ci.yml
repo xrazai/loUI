@@ -1,4 +1,4 @@
-# CI gate: everything in `pnpm check` except visual regression (the `check` job). Visual regression
+# CI gate: everything in `pnpm check:ci`, split into parallel jobs (static, 4 test shards, package). Visual regression
 # is Windows-first for now: run `pnpm test:visual` locally on Windows before pushing. The Linux
 # `visual` job only runs when started by hand (Actions > CI > Run workflow); cross-platform
 # baselines are paused (see tests/visual/README.md).
@@ -12,9 +12,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  check:
+  # Fast feedback: tokens, lint, types, node unit tests, tools (ESLint plugin, MCP server, AI eval).
+  static:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -23,23 +24,47 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm check:ci
-      - run: pnpm publint
-      - run: pnpm size
-      - run: pnpm attw
-      - run: pnpm build-storybook
+      - run: pnpm tokens:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm vitest run --project unit
+      - run: pnpm test:tools
+  # Browser and Storybook tests, split into shards that run in parallel.
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+      - if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
+      - run: pnpm vitest run --project browser --project storybook --shard=${{ matrix.shard }}/4
       - name: Upload failure screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: vitest-failures
+          name: vitest-failures-${{ matrix.shard }}
           path: .vitest/attachments
           if-no-files-found: ignore
-  # Packaging check (REL-001): packs the library and builds the Vite and Next.js (App Router)
-  # examples against the tarball in isolation. Needs the `check` job so a broken build fails there first.
-  examples:
-    needs: check
+  # Library build and everything that inspects it, plus the consumer examples (REL-001).
+  package:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -51,7 +76,14 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - run: pnpm manifest:check
+      - run: pnpm api:check
+      - run: pnpm test:treeshake
+      - run: pnpm publint
+      - run: pnpm size
+      - run: pnpm attw
       - run: pnpm examples:verify
+      - run: pnpm build-storybook
   # Visual regression in the same pinned container that generated the Linux baselines
   # (.github/workflows/visual-baselines.yml). Skipped while no `*-chromium-linux.png` exists.
   visual:
