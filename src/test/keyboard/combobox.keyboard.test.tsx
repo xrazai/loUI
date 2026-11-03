@@ -219,6 +219,87 @@ describe('keyboard contract: combobox navigation in the list', () => {
   });
 });
 
+describe('keyboard contract: combobox Enter without a highlighted option (GAP-033)', () => {
+  const plans = [
+    { value: 'monthly', label: 'Mensal' },
+    { value: 'quarterly', label: 'Trimestral' },
+    { value: 'triennial', label: 'Trienal', isDisabled: true },
+    { value: 'yearly', label: 'Anual' },
+  ];
+
+  it('by default Enter with nothing highlighted selects nothing and keeps the typed text', async () => {
+    const onChange = vi.fn<(value: string | null) => void>();
+    await renderWithProvider(<Combobox label="Plan" options={plans} onChange={onChange} />);
+    await userEvent.tab();
+    await press('tri');
+    await expect.poll(() => field().getAttribute('aria-activedescendant')).toBeNull();
+    await press('{Enter}');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('selectFirstOnEnter selects the first enabled filtered option', async () => {
+    const onChange = vi.fn<(value: string | null) => void>();
+    await renderWithProvider(
+      <Combobox label="Plan" options={plans} selectFirstOnEnter onChange={onChange} />,
+    );
+    await userEvent.tab();
+    await press('tri');
+    await expect.poll(() => document.querySelectorAll('[role="option"]').length).toBe(2);
+    await press('{Enter}');
+    await expect.poll(() => onChange.mock.lastCall?.[0]).toBe('quarterly');
+    await expect.poll(() => field().value).toBe('Trimestral');
+    await expect.poll(listboxOpen).toBe(false);
+    await expectFocus('Plan');
+  });
+
+  it('selectFirstOnEnter leaves a highlighted option alone', async () => {
+    const onChange = vi.fn<(value: string | null) => void>();
+    await renderWithProvider(
+      <Combobox label="Plan" options={plans} selectFirstOnEnter onChange={onChange} />,
+    );
+    await userEvent.tab();
+    await press('a');
+    await press('{ArrowDown}{ArrowDown}{Enter}');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenLastCalledWith(expect.not.stringMatching(/^monthly$/));
+  });
+
+  it('selectFirstOnEnter does nothing when no option matches', async () => {
+    const onChange = vi.fn<(value: string | null) => void>();
+    await renderWithProvider(
+      <Combobox label="Plan" options={plans} selectFirstOnEnter onChange={onChange} />,
+    );
+    await userEvent.tab();
+    await press('zzz{Enter}');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('filter receives the whole option, so a code can be searched', async () => {
+    const onChange = vi.fn<(value: string | null) => void>();
+    const coded = [
+      { value: 'br', label: 'Brasil', meta: 'BRA' },
+      { value: 'de', label: 'Alemanha', meta: 'DEU' },
+    ];
+    await renderWithProvider(
+      <Combobox
+        label="Country"
+        options={coded}
+        selectFirstOnEnter
+        filter={(label, query, option) =>
+          label.toLowerCase().includes(query.toLowerCase()) ||
+          (option.meta ?? '').toLowerCase().startsWith(query.toLowerCase())
+        }
+        onChange={onChange}
+      />,
+    );
+    await userEvent.tab();
+    await press('deu');
+    await expect.poll(() => document.querySelectorAll('[role="option"]').length).toBe(1);
+    await press('{Enter}');
+    await expect.poll(() => onChange.mock.lastCall?.[0]).toBe('de');
+  });
+});
+
 describe('keyboard contract: TagInput', () => {
   function Example({ onChange }: { onChange?: (value: string[]) => void }) {
     return (

@@ -4,6 +4,7 @@ import type { TextFieldProps } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
 import { FieldMessages, Label, type fieldMessages } from '../Field';
 import type { FieldErrorMessage, FieldLabelingProps } from '../Field';
+import { continueUnhandledKeys } from '../Field/keyboard';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import styles from './Input.module.css';
@@ -67,6 +68,7 @@ export function Input({
   inputRef,
   messages: messageOverrides,
   ref,
+  onKeyDown,
   ...rest
 }: InputProps) {
   warnMissingName('Input', {
@@ -78,6 +80,7 @@ export function Input({
     <TextField
       {...rest}
       ref={ref}
+      {...(onKeyDown ? { onKeyDown: continueUnhandledKeys(onKeyDown) } : {})}
       data-size={size}
       className={classNames(fieldStyles.root, className)}
     >

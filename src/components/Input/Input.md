@@ -46,6 +46,7 @@ All other props of React Aria `TextField` are accepted (`onFocus`, `onBlur`, `on
 - Native `<input>` named by `<label for>`; description and error are in `aria-describedby`; `aria-invalid` when invalid; `required` when required.
 - Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline.
 - The placeholder never replaces the label.
+- Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
 - Click anywhere in the box (including padding) focuses the input. Clicking a decorative adornment does not; make interactive adornments real buttons with their own names.
 
 ## Content

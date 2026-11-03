@@ -1,7 +1,9 @@
+import { useContext, useEffect, useRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import {
   Button,
   ComboBox as RACComboBox,
+  ComboBoxStateContext,
   Group,
   Header,
   Input as RACInput,
@@ -48,6 +50,43 @@ export interface ComboboxGroup {
   options: readonly ComboboxOption[];
 }
 
+function allOptions(entries: readonly (ComboboxOption | ComboboxGroup)[]): ComboboxOption[] {
+  return entries.flatMap((entry) => (isGroup(entry) ? [...entry.options] : [entry]));
+}
+
+type ComboboxState = NonNullable<React.ContextType<typeof ComboBoxStateContext>>;
+
+/** Hands the React Aria combobox state to the parent (it lives below `ComboBox`). */
+function StateBridge({ stateRef }: { stateRef: { current: ComboboxState | null } }) {
+  const state = useContext(ComboBoxStateContext);
+  useEffect(() => {
+    stateRef.current = state;
+  });
+  return null;
+}
+
+interface CollectionNode {
+  type: string;
+  key: string | number;
+  childNodes: Iterable<CollectionNode>;
+}
+
+/** Key of the first selectable option in the filtered collection, or null. */
+function firstSelectableKey(state: ComboboxState): string | number | null {
+  const visit = (nodes: Iterable<CollectionNode>): string | number | null => {
+    for (const node of nodes) {
+      if (node.type === 'section') {
+        const found = visit(node.childNodes);
+        if (found !== null) return found;
+      } else if (node.type === 'item' && !state.selectionManager.isDisabled(node.key)) {
+        return node.key;
+      }
+    }
+    return null;
+  };
+  return visit(state.collection as Iterable<CollectionNode>);
+}
+
 function isGroup(entry: ComboboxOption | ComboboxGroup): entry is ComboboxGroup {
   return 'options' in entry;
 }
@@ -88,8 +127,21 @@ interface ComboboxBaseProps extends Omit<
    * "contains" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function,
    * or `false` to show `options` as given: use it when the list is loaded from a server as the
    * user types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile).
+   *
+   * The function receives the whole option as a third argument, so you can search by a field
+   * that is not the label (`option.value` as a code, `option.meta` as an SKU). Two-argument
+   * functions keep working. Options that share a label are matched together: give each option
+   * a distinct label when the filter looks at other fields.
    */
-  filter?: false | ((label: string, query: string) => boolean) | undefined;
+  filter?: false | ((label: string, query: string, option: ComboboxOption) => boolean) | undefined;
+  /**
+   * Press `Enter` with no option highlighted to select the first matching option (typing
+   * "tri" then `Enter` picks "Trimestral"). Default `false`: the WAI-ARIA editable combobox
+   * does not auto-select, so `Enter` without a highlighted option keeps the typed text (and
+   * submits the surrounding form). Turn it on for lookup fields where the typed text alone is
+   * never a valid value. Ignored while the list is closed, empty or has only disabled options.
+   */
+  selectFirstOnEnter?: boolean | undefined;
   /**
    * Shows a spinner in the box and, when there are no options yet, a "Loading" row instead of
    * "No results". The consumer owns the data: see `filter={false}` and `onInputChange`.
@@ -169,6 +221,8 @@ export function Combobox({
   defaultValue,
   onChange,
   filter,
+  selectFirstOnEnter = false,
+  onKeyDown,
   isLoading = false,
   placeholder,
   size = 'md',
@@ -187,10 +241,45 @@ export function Combobox({
     'aria-labelledby': rest['aria-labelledby'],
   });
   const t = useMessages('Combobox', messages, messageOverrides);
-  const defaultFilter =
-    filter === false
-      ? () => true
-      : (filter ?? ((text: string, query: string) => matchesSearch(text, query)));
+  const stateRef = useRef<ComboboxState | null>(null);
+  let defaultFilter: (text: string, query: string) => boolean;
+  if (filter === false) {
+    defaultFilter = () => true;
+  } else if (filter) {
+    const byLabel = new Map<string, ComboboxOption[]>();
+    for (const option of allOptions(options)) {
+      byLabel.set(option.label, [...(byLabel.get(option.label) ?? []), option]);
+    }
+    defaultFilter = (text, query) =>
+      (byLabel.get(text) ?? []).some((option) => filter(option.label, query, option));
+  } else {
+    defaultFilter = (text, query) => matchesSearch(text, query);
+  }
+  const handleKeyDown = (event: Parameters<NonNullable<typeof onKeyDown>>[0]) => {
+    // React Aria's own handler may already have prevented the default of Enter; only a
+    // consumer handler that prevents it claims the key.
+    const preventedBefore = event.isDefaultPrevented();
+    onKeyDown?.(event);
+    const claimed = !preventedBefore && event.isDefaultPrevented();
+    const state = stateRef.current;
+    if (
+      selectFirstOnEnter &&
+      event.key === 'Enter' &&
+      !claimed &&
+      state?.isOpen &&
+      state.selectionManager.focusedKey === null
+    ) {
+      const key = firstSelectableKey(state);
+      if (key !== null) {
+        event.preventDefault();
+        state.setValue(key);
+        state.close();
+        return;
+      }
+    }
+    // Keep unhandled keys bubbling to page-level shortcuts (GAP-035).
+    if (!event.isDefaultPrevented()) event.continuePropagation();
+  };
   const hasOptions = options.some((entry) => (isGroup(entry) ? entry.options.length > 0 : true));
 
   return (
@@ -200,6 +289,7 @@ export function Combobox({
       data-size={size}
       data-loading={isLoading || undefined}
       defaultFilter={defaultFilter}
+      onKeyDown={handleKeyDown}
       allowsEmptyCollection
       {...(allowsCustomValue === undefined ? {} : { allowsCustomValue })}
       {...(value === undefined ? {} : { value })}
@@ -209,6 +299,7 @@ export function Combobox({
       }}
       className={classNames(fieldStyles.root, className)}
     >
+      <StateBridge stateRef={stateRef} />
       {label ? (
         <Label isRequired={rest.isRequired} messages={messageOverrides}>
           {label}

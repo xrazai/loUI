@@ -50,6 +50,28 @@ useHotkeys([
 - Editable targets, unless `allowInEditable`. Use it for modified combos (`Mod+K`), not for bare letters.
 - Auto-repeat, unless `allowRepeat`.
 
+### Keys and your own `onKeyDown`
+
+`Input`, `CurrencyInput`, `Textarea`, `SearchInput` and `Combobox` compose a consumer `onKeyDown` with React Aria. React Aria stops every key that reaches a handler, which would hide F9, F2 or N from `useHotkeys(..., { allowInEditable: true })` while the field has focus. The design system lets a key keep bubbling **unless your handler called `event.preventDefault()`** on it. So: handle a key and claim it with `preventDefault()`; every other key keeps working as a hotkey.
+
+```tsx
+<Input
+  label="Name"
+  onKeyDown={(event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // claimed: not a hotkey
+      save();
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      cancel();
+    }
+    // F9, F2, N ... fall through to useHotkeys({ allowInEditable: true })
+  }}
+/>
+```
+
+Do not call `event.stopPropagation()` (React Aria disables it and logs an error). On `Combobox`, `Enter` and `Escape` already select and close, so only claim them when you mean to replace that behavior.
+
 ## `Mod` and the platform
 
 `Mod` is Command on macOS/iOS and Control elsewhere, resolved when the key is pressed, so SSR output and the first client render are never affected. `Kbd` renders the same combo for the platform (`<Kbd keys={hotkeyKeys('Mod+K')} />` or `keyParts` from `useRegisteredHotkeys`). Pin it with `<HotkeyProvider platform="mac" | "other">` in tests and stories.

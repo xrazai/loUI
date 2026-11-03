@@ -7,6 +7,7 @@ import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
 import { FieldMessages, Label, type fieldMessages } from '../Field';
 import type { FieldErrorMessage, FieldLabelingProps } from '../Field';
+import { continueUnhandledKeys } from '../Field/keyboard';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import { VisuallyHidden } from '../VisuallyHidden';
@@ -81,6 +82,7 @@ export function Textarea({
   textareaRef,
   messages: messageOverrides,
   ref,
+  onKeyDown,
   ...rest
 }: TextareaProps) {
   warnMissingName('Textarea', {
@@ -160,6 +162,7 @@ export function Textarea({
     <TextField
       {...rest}
       ref={ref}
+      {...(onKeyDown ? { onKeyDown: continueUnhandledKeys(onKeyDown) } : {})}
       {...(describedBy ? { 'aria-describedby': describedBy } : {})}
       onChange={(next) => {
         setUncontrolledLength(next.length);

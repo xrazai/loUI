@@ -17,6 +17,7 @@ import { classNames } from '../../utils/classNames';
 import { highlightMatch, matchesSearch } from '../../utils/text';
 import type { fieldMessages } from '../Field';
 import type { FieldLabelingProps } from '../Field';
+import { continueUnhandledKeys } from '../Field/keyboard';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import { Icon } from '../Icon';
@@ -181,6 +182,7 @@ function PlainSearch({
   inputRef,
   messages: overrides,
   ref,
+  onKeyDown,
   ...rest
 }: CommonProps) {
   const t = useMessages('SearchInput', messages, overrides);
@@ -188,6 +190,7 @@ function PlainSearch({
     <SearchField
       {...rest}
       ref={ref}
+      {...(onKeyDown ? { onKeyDown: continueUnhandledKeys(onKeyDown) } : {})}
       data-size={size}
       className={classNames(fieldStyles.root, styles.root, className)}
       {...(value === undefined ? {} : { value })}
