@@ -25,7 +25,6 @@ Everything in this project is written in **English** (code, comments, docs, UI s
 
 ### Setup
 
-- [ ] **SETUP-005** (P2 · S) Branch protection on `main` with required checks (`check`, `visual`, `examples`) — owner decision (it changes how direct pushes work). CI itself is complete and green. Visual changes require regenerating baselines: `gh workflow run visual-baselines.yml` → `pnpm visual:pull-linux` → commit (see `tests/visual/README.md`).
 
 All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions get a new ADR.
 
