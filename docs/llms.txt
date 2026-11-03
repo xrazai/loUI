@@ -163,6 +163,7 @@ Tested compositions for common situations. Start from the one that fits, keep it
 - [FormWithValidation](./recipes/form-with-validation.md): A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and "Saved" next to it. (experimental)
 - [MarkdownMessage](./recipes/markdown-message.md): Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. (experimental)
 - [SettingsPage](./recipes/settings-page.md): A settings screen: app shell, a top bar with the page's one primary action and its keyboard shortcut, and one card per topic with switches, a select and a radio group. (experimental)
+- [SheetForm](./recipes/sheet-form.md): A form inside a side `Sheet` whose primary button sits in the sheet footer, outside the `<form>`. (experimental)
 - [UndoableAction](./recipes/undoable-action.md): A reversible action (archive, mark as done, change status) that happens at once, with no confirmation, and an Undo in a toast. (experimental)
 
 ## Hooks, utilities and icons
@@ -172,7 +173,7 @@ Tested compositions for common situations. Start from the one that fits, keep it
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (114 components).
-- [tokens.json](./tokens.json): 431 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 432 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

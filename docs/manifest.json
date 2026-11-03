@@ -28,7 +28,7 @@
     "hooks": 11,
     "utilities": 41,
     "icons": 30,
-    "recipes": 9
+    "recipes": 10
   },
   "components": [
     {
@@ -84,9 +84,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'2' | '3' | '4' | '5' | '6'",
+          "type": "2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'3'",
+          "default": "3",
           "description": "Level of the heading that wraps each trigger, `3` by default. Use the level that follows\nthe heading above the accordion in the page outline.",
           "values": ["2", "3", "4", "5", "6"]
         },
@@ -743,9 +743,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'3'",
+          "default": "3",
           "description": "Heading level of the agent name (`h1` to `h6`). Default `3`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -1400,9 +1400,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'3'",
+          "default": "3",
           "description": "Heading level of the card heading (`h1` to `h6`). Default `3`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -3064,7 +3064,7 @@
       "sourceFile": "src/components/Button/Button.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "An action button built on React Aria's `Button`.\n\nUse one `primary` button per screen. While `isPending` the button keeps its width, shows a\nspinner, stays focusable, sets `aria-disabled` and ignores presses, so it can be explained\nby a tooltip and focus is never lost.",
+      "description": "An action button built on React Aria's `Button`.\n\nUse one `primary` button per screen. While `isPending` the button keeps its width and its\nlabel (dimmed), shows a spinner before the label (over the `leading` icon when there is one), stays focusable, sets `aria-disabled` and ignores presses, so it can be explained\nby a tooltip and focus is never lost.",
       "props": [
         {
           "name": "variant",
@@ -3451,6 +3451,7 @@
         "--ds-accent",
         "--ds-button-danger-solid-hover-brightness",
         "--ds-button-hover-brightness",
+        "--ds-button-pending-label-opacity",
         "--ds-control-h-lg",
         "--ds-control-h-md",
         "--ds-control-h-sm",
@@ -3465,6 +3466,8 @@
         "--ds-fs-body",
         "--ds-fs-label",
         "--ds-fs-small",
+        "--ds-icon-md",
+        "--ds-icon-sm",
         "--ds-lh-body",
         "--ds-lh-label",
         "--ds-lh-small",
@@ -3555,12 +3558,18 @@
           {
             "name": "Pending",
             "id": "components-button--pending",
-            "description": "The button keeps its width and stays focusable while pending; presses are ignored.",
+            "description": "The button keeps its width and its (dimmed) label, shows a spinner, stays focusable; presses are ignored.",
             "hasPlay": true
           },
           {
             "name": "PendingVariants",
             "id": "components-button--pending-variants",
+            "hasPlay": false
+          },
+          {
+            "name": "PendingWithLeadingAndSizes",
+            "id": "components-button--pending-with-leading-and-sizes",
+            "description": "Pending with a leading icon (the spinner replaces the icon in place) and in every size.",
             "hasPlay": false
           },
           {
@@ -3630,12 +3639,12 @@
           {
             "id": "anatomy",
             "heading": "Anatomy",
-            "content": "`[leading] label [trailing]` inside one native `<button>`. When pending, the content keeps its box (invisible) and a `Spinner` is centered on top, so the width never changes."
+            "content": "`[leading] label [trailing]` inside one native `<button>`. When pending, the label stays visible, dimmed with `--ds-button-pending-label-opacity` (0.65), and a `Spinner` takes the leading position: it sits over the `leading` icon when there is one, otherwise before the label, using the button padding (the content is pulled outward by half of spinner plus gap on each side), so the width never changes. The dimmed label is a busy state, not a disabled one; the label keeps meaning, so users still see what the action is doing (for example \"Connecting\")."
           },
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop         | Type                                                                | Default       | Notes                                                                                     |\n| ------------ | ------------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------- |\n| `variant`    | `'primary' \\| 'secondary' \\| 'ghost' \\| 'danger' \\| 'danger-solid'` | `'secondary'` | See above.                                                                                |\n| `size`       | `'sm' \\| 'md' \\| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                            |\n| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                      |\n| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size=\"sm\" />`. Decorative.                                                 |\n| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                      |\n| `isPending`  | `boolean`                                                           | `false`       | Busy: spinner, `aria-disabled`, presses and form submission ignored, stays focusable.     |\n| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                            |\n| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`. |\n| `type`       | `'button' \\| 'submit' \\| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                              |\n| `className`  | `string`                                                            | none          | Merged with the component class.                                                          |\n\nOther React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted."
+            "content": "| Prop         | Type                                                                | Default       | Notes                                                                                                   |\n| ------------ | ------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |\n| `variant`    | `'primary' \\| 'secondary' \\| 'ghost' \\| 'danger' \\| 'danger-solid'` | `'secondary'` | See above.                                                                                              |\n| `size`       | `'sm' \\| 'md' \\| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                                          |\n| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                                    |\n| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size=\"sm\" />`. Decorative.                                                               |\n| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                                    |\n| `isPending`  | `boolean`                                                           | `false`       | Busy: dimmed label plus spinner, `aria-disabled`, presses and form submission ignored, stays focusable. |\n| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                                          |\n| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`.               |\n| `type`       | `'button' \\| 'submit' \\| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                                            |\n| `className`  | `string`                                                            | none          | Merged with the component class.                                                                        |\n\nOther React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted."
           },
           {
             "id": "accessibility",
@@ -4011,9 +4020,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'2'",
+          "default": "2",
           "description": "Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -4635,9 +4644,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'2'",
+          "default": "2",
           "description": "Heading level of the title (`h1` to `h6`). Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -7466,9 +7475,16 @@
         },
         {
           "name": "filter",
-          "type": "false | ((label: string, query: string) => boolean)",
+          "type": "false | ((label: string, query: string, option: ComboboxOption) => boolean)",
           "required": false,
-          "description": "How options are matched against the typed text. Default: accent- and case-insensitive\n\"contains\" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function,\nor `false` to show `options` as given: use it when the list is loaded from a server as the\nuser types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile)."
+          "description": "How options are matched against the typed text. Default: accent- and case-insensitive\n\"contains\" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function,\nor `false` to show `options` as given: use it when the list is loaded from a server as the\nuser types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile).\n\nThe function receives the whole option as a third argument, so you can search by a field\nthat is not the label (`option.value` as a code, `option.meta` as an SKU). Two-argument\nfunctions keep working. Options that share a label are matched together: give each option\na distinct label when the filter looks at other fields."
+        },
+        {
+          "name": "selectFirstOnEnter",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Press `Enter` with no option highlighted to select the first matching option (typing\n\"tri\" then `Enter` picks \"Trimestral\"). Default `false`: the WAI-ARIA editable combobox\ndoes not auto-select, so `Enter` without a highlighted option keeps the typed text (and\nsubmits the surrounding form). Turn it on for lookup fields where the typed text alone is\nnever a valid value. Ignored while the list is closed, empty or has only disabled options."
         },
         {
           "name": "isLoading",
@@ -7993,7 +8009,7 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                                                                                                | Notes                                                                                                                           |\n| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |\n| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                                                                                                                |\n| `options`                                                                                                           | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                  |\n| `value` / `defaultValue` / `onChange(value)`                                                                        | The selected option `value`, `null` for none.                                                                                   |\n| `inputValue` / `defaultInputValue` / `onInputChange`                                                                | The text in the box (React Aria props, passed through).                                                                         |\n| `allowsCustomValue`                                                                                                 | The typed text is a valid value; the form then receives the text.                                                               |\n| `filter`                                                                                                            | Default accent- and case-insensitive \"contains\" on the label (`matchesSearch`). A function, or `false` for no client filtering. |\n| `isLoading`                                                                                                         | Spinner in the box; \"Loading\" row when there are no options yet.                                                                |\n| `menuTrigger`                                                                                                       | `input` (default), `focus` or `manual`.                                                                                         |\n| `description`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                 |\n| `messages`                                                                                                          | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                          |\n\nOption order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning."
+            "content": "| Prop                                                                                                                | Notes                                                                                                                                                                                                                                                                                            |\n| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                                                                                                                                                                                                                                                                                 |\n| `options`                                                                                                           | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |\n| `value` / `defaultValue` / `onChange(value)`                                                                        | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |\n| `inputValue` / `defaultInputValue` / `onInputChange`                                                                | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |\n| `allowsCustomValue`                                                                                                 | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |\n| `filter`                                                                                                            | Default accent- and case-insensitive \"contains\" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |\n| `selectFirstOnEnter`                                                                                                | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing \"tri\" then `Enter` picks \"Trimestral\").                                                                                                                                                              |\n| `isLoading`                                                                                                         | Spinner in the box; \"Loading\" row when there are no options yet.                                                                                                                                                                                                                                 |\n| `menuTrigger`                                                                                                       | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |\n| `description`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |\n| `messages`                                                                                                          | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |\n\nOption order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning."
           },
           {
             "id": "async-options-documented-pattern-a-full-async-list-is-p2",
@@ -8003,7 +8019,7 @@
           {
             "id": "accessibility-and-keyboard",
             "heading": "Accessibility and keyboard",
-            "content": "| Key                     | Behavior                                                                                         |\n| ----------------------- | ------------------------------------------------------------------------------------------------ |\n| Typing                  | Opens the list and filters                                                                       |\n| `ArrowDown` / `ArrowUp` | Open the list (first / last option) and move; focus stays in the input (`aria-activedescendant`) |\n| `Enter`                 | Select the highlighted option and close                                                          |\n| `Escape`                | Close the list; pressed again, restore the selected text (clear with `allowsCustomValue`)        |\n| `Home` / `End`          | Move the caret in the input (React Aria keeps them for text editing, not for the list)           |\n| `Tab`                   | Commit and leave                                                                                 |\n\nThe input has `role=\"combobox\"`, `aria-expanded`, `aria-controls`, `aria-autocomplete=\"list\"`. The chevron button (\"Show options\") is out of the tab order. While the list is open React Aria hides the rest of the page from assistive technology. An option's accessible name contains label, meta and description. The empty state is a single option-like row so screen readers announce it."
+            "content": "| Key                     | Behavior                                                                                         |\n| ----------------------- | ------------------------------------------------------------------------------------------------ |\n| Typing                  | Opens the list and filters                                                                       |\n| `ArrowDown` / `ArrowUp` | Open the list (first / last option) and move; focus stays in the input (`aria-activedescendant`) |\n| `Enter`                 | Select the highlighted option and close                                                          |\n| `Escape`                | Close the list; pressed again, restore the selected text (clear with `allowsCustomValue`)        |\n| `Home` / `End`          | Move the caret in the input (React Aria keeps them for text editing, not for the list)           |\n| `Tab`                   | Commit and leave                                                                                 |\n\n`Enter` with nothing highlighted keeps the typed text and selects nothing, as in the WAI-ARIA editable combobox. Turn on `selectFirstOnEnter` for lookup fields where the typed text alone is never a valid value (it does nothing while the list is closed, empty or has only disabled options; a highlighted option always wins).\n\nHotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.\n\nThe input has `role=\"combobox\"`, `aria-expanded`, `aria-controls`, `aria-autocomplete=\"list\"`. The chevron button (\"Show options\") is out of the tab order. While the list is open React Aria hides the rest of the page from assistive technology. An option's accessible name contains label, meta and description. The empty state is a single option-like row so screen readers announce it."
           },
           {
             "id": "content-rules",
@@ -9561,7 +9577,7 @@
           {
             "id": "accessibility-and-keyboard",
             "heading": "Accessibility and keyboard",
-            "content": "A text input (`inputmode=\"numeric\"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling)."
+            "content": "A text input (`inputmode=\"numeric\"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).\n\nHotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`."
           },
           {
             "id": "content-rules",
@@ -11761,9 +11777,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'2'",
+          "default": "2",
           "description": "Level of the title heading. Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -12236,9 +12252,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'2'",
+          "default": "2",
           "description": "Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -13318,6 +13334,36 @@
           "description": "Shows a `FormErrorSummary` at the top of the form. After a failed submit it takes focus and\nlists the invalid fields as links. Default `false`. To place the summary elsewhere, leave\nthis off and render `FormErrorSummary` inside the form yourself."
         },
         {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": "The `id` of the `<form>`. Other elements link to it with the `form` attribute, for example\na submit button in a `Sheet` footer: `<Button type=\"submit\" form=\"order-form\">`."
+        },
+        {
+          "name": "onKeyDown",
+          "type": "KeyboardEventHandler<HTMLFormElement>",
+          "required": false,
+          "description": "Key handlers on the `<form>`. They receive every key pressed inside a field (the events\nbubble), so a form-level shortcut such as `Ctrl+Enter` can live here. The form adds no key\nhandling of its own, so yours never replaces anything."
+        },
+        {
+          "name": "onKeyUp",
+          "type": "KeyboardEventHandler<HTMLFormElement>",
+          "required": false,
+          "description": "Key-up handler on the `<form>`; see `onKeyDown`."
+        },
+        {
+          "name": "onFocus",
+          "type": "FocusEventHandler<HTMLFormElement>",
+          "required": false,
+          "description": "Fires when focus enters the form or moves between its fields (React `focus` bubbles)."
+        },
+        {
+          "name": "onBlur",
+          "type": "FocusEventHandler<HTMLFormElement>",
+          "required": false,
+          "description": "Fires when focus leaves a field in the form; check `relatedTarget` to detect leaving the form."
+        },
+        {
           "name": "children",
           "type": "ReactNode",
           "required": false,
@@ -13366,19 +13412,6 @@
             },
             {
               "name": "aria-labelledby",
-              "type": "string",
-              "required": false
-            }
-          ]
-        },
-        {
-          "source": "@react-types/shared",
-          "interface": "DOMProps",
-          "domGeneric": false,
-          "count": 1,
-          "props": [
-            {
-              "name": "id",
               "type": "string",
               "required": false
             }
@@ -13575,6 +13608,11 @@
             "content": "| Prop                               | Type                                 | Default    | Notes                                                                                  |\n| ---------------------------------- | ------------------------------------ | ---------- | -------------------------------------------------------------------------------------- |\n| `validationBehavior`               | `'native' \\| 'aria'`                 | `'native'` | Form level; fields inherit it. `aria` marks fields invalid but never blocks the submit |\n| `validationErrors`                 | `Record<string, string \\| string[]>` |            | Server errors keyed by field `name`                                                    |\n| `errorSummary`                     | `boolean`                            | `false`    | Shows `FormErrorSummary` at the top                                                    |\n| `onSubmit`, `onReset`, `action`, … |                                      |            | As on a `form`                                                                         |\n| `messages`                         | `{ summaryTitle(n) }`                |            | Per-instance message overrides                                                         |\n\n`ref` points at the `<form>`. `FormErrorSummary` takes `className` and must be rendered inside a `Form`."
           },
           {
+            "id": "submitting-from-outside-the-form",
+            "heading": "Submitting from outside the form",
+            "content": "Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:\n\n```tsx\n<Sheet\n  title=\"New customer\"\n  footer={\n    <Button type=\"submit\" form=\"customer-form\" variant=\"primary\">\n      Save customer\n    </Button>\n  }\n>\n  <Form id=\"customer-form\" aria-label=\"New customer\" onSubmit={save}>\n    �\n  </Form>\n</Sheet>\n```\n\nEnter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.\n\nKeep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead."
+          },
+          {
             "id": "validation-flow",
             "heading": "Validation flow",
             "content": "1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.\n2. React Aria displays the errors (`FieldError`) and focuses the **first invalid field**, whose error is read through `aria-describedby`.\n3. With `errorSummary`, focus goes to the **summary** instead: a `role=\"alert\"` box, \"Fix 2 fields before saving\", listing each invalid field as a link that focuses it.\n4. Fixing a field (on blur, when React Aria commits the edit) updates the summary; it disappears when nothing is left.\n5. Server errors: set `validationErrors` after the request; the matching fields show their message and the summary (if on) lists them and takes focus. Clear them on the next submit or edit.\n\nKeep the submit button enabled: a disabled submit gives no way to learn what is wrong."
@@ -13733,6 +13771,11 @@
             "content": "| Prop                               | Type                                 | Default    | Notes                                                                                  |\n| ---------------------------------- | ------------------------------------ | ---------- | -------------------------------------------------------------------------------------- |\n| `validationBehavior`               | `'native' \\| 'aria'`                 | `'native'` | Form level; fields inherit it. `aria` marks fields invalid but never blocks the submit |\n| `validationErrors`                 | `Record<string, string \\| string[]>` |            | Server errors keyed by field `name`                                                    |\n| `errorSummary`                     | `boolean`                            | `false`    | Shows `FormErrorSummary` at the top                                                    |\n| `onSubmit`, `onReset`, `action`, … |                                      |            | As on a `form`                                                                         |\n| `messages`                         | `{ summaryTitle(n) }`                |            | Per-instance message overrides                                                         |\n\n`ref` points at the `<form>`. `FormErrorSummary` takes `className` and must be rendered inside a `Form`."
           },
           {
+            "id": "submitting-from-outside-the-form",
+            "heading": "Submitting from outside the form",
+            "content": "Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:\n\n```tsx\n<Sheet\n  title=\"New customer\"\n  footer={\n    <Button type=\"submit\" form=\"customer-form\" variant=\"primary\">\n      Save customer\n    </Button>\n  }\n>\n  <Form id=\"customer-form\" aria-label=\"New customer\" onSubmit={save}>\n    �\n  </Form>\n</Sheet>\n```\n\nEnter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.\n\nKeep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead."
+          },
+          {
             "id": "validation-flow",
             "heading": "Validation flow",
             "content": "1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.\n2. React Aria displays the errors (`FieldError`) and focuses the **first invalid field**, whose error is read through `aria-describedby`.\n3. With `errorSummary`, focus goes to the **summary** instead: a `role=\"alert\"` box, \"Fix 2 fields before saving\", listing each invalid field as a link that focuses it.\n4. Fixing a field (on blur, when React Aria commits the edit) updates the summary; it disappears when nothing is left.\n5. Server errors: set `validationErrors` after the request; the matching fields show their message and the summary (if on) lists them and takes focus. Clear them on the next submit or edit.\n\nKeep the submit button enabled: a disabled submit gives no way to learn what is wrong."
@@ -13778,7 +13821,7 @@
       "props": [
         {
           "name": "columns",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12",
           "required": false,
           "description": "A fixed number of equal columns (1 to 12). Items can shrink below their content width.",
           "values": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
@@ -13792,10 +13835,10 @@
         },
         {
           "name": "gap",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16 | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
           "required": false,
-          "default": "'4'",
-          "description": "Space between rows and columns, as a key of the space scale. Default `4`.",
+          "default": "4",
+          "description": "Space between rows and columns, as a key of the space scale (a number or its string form). Default `4`.",
           "values": ["1", "2", "3", "4", "5", "6", "8", "12", "16"]
         },
         {
@@ -13944,7 +13987,7 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop           | Type                                          | Default | Notes                                                                    |\n| -------------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------ |\n| `columns`      | `1` to `12`                                   |         | Fixed equal columns. Pass this **or** `minItemWidth`                     |\n| `minItemWidth` | `'sm' \\| 'md' \\| 'lg'`                        |         | Auto-fill; items are at least 160 / 240 / 320px (`--ds-grid-min-item-*`) |\n| `gap`          | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16` | `4`     | Space token key, used for rows and columns                               |\n| `as`           | `'div' \\| 'ul' \\| 'ol' …`                     | `'div'` | Lists get the reset and `role=\"list\"`                                    |\n\nThe types make `columns` and `minItemWidth` exclusive. Item widths are tokens, not pixels, like the gap."
+            "content": "| Prop           | Type                                                                          | Default | Notes                                                                    |\n| -------------- | ----------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------ |\n| `columns`      | `1` to `12`                                                                   |         | Fixed equal columns. Pass this **or** `minItemWidth`                     |\n| `minItemWidth` | `'sm' \\| 'md' \\| 'lg'`                                                        |         | Auto-fill; items are at least 160 / 240 / 320px (`--ds-grid-min-item-*`) |\n| `gap`          | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16` or the same as a string (`\"4\"`) | `4`     | Space token key, used for rows and columns                               |\n| `as`           | `'div' \\| 'ul' \\| 'ol' …`                                                     | `'div'` | Lists get the reset and `role=\"list\"`                                    |\n\nThe types make `columns` and `minItemWidth` exclusive. Item widths are tokens, not pixels, like the gap."
           },
           {
             "id": "responsive-behavior",
@@ -14000,9 +14043,9 @@
       "props": [
         {
           "name": "level",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'2'",
+          "default": "2",
           "description": "Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has\nnothing to do with how big the text looks: keep levels sequential and use one `h1` per\npage. Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -14962,10 +15005,10 @@
       "props": [
         {
           "name": "gap",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16 | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
           "required": false,
-          "default": "'2'",
-          "description": "Space between children, as a key of the space scale (`2` = `--ds-space-2` = 8px). Default `2`.",
+          "default": "2",
+          "description": "Space between children, as a key of the space scale, a number or its string form (`2` = `--ds-space-2` = 8px). Default `2`.",
           "values": ["1", "2", "3", "4", "5", "6", "8", "12", "16"]
         },
         {
@@ -15136,7 +15179,7 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop      | Type                                                      | Default    | Notes                                                            |\n| --------- | --------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |\n| `gap`     | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16`             | `2`        | Space token key (8px by default)                                 |\n| `align`   | `'start' \\| 'center' \\| 'end' \\| 'baseline' \\| 'stretch'` | `'center'` | Vertical alignment. Use `baseline` for a number beside its label |\n| `justify` | `'start' \\| 'center' \\| 'end' \\| 'between'`               | `'start'`  | `between` pushes the first and last child to the edges           |\n| `wrap`    | `boolean`                                                 | `true`     | Turn off only for short, fixed rows                              |\n| `as`      | `'div' \\| 'section' \\| 'ul' \\| 'ol' …`                    | `'div'`    | Lists get the reset and `role=\"list\"`                            |\n\nOther `div` attributes and `ref` go to the root."
+            "content": "| Prop      | Type                                                                          | Default    | Notes                                                            |\n| --------- | ----------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |\n| `gap`     | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16` or the same as a string (`\"4\"`) | `2`        | Space token key (8px by default)                                 |\n| `align`   | `'start' \\| 'center' \\| 'end' \\| 'baseline' \\| 'stretch'`                     | `'center'` | Vertical alignment. Use `baseline` for a number beside its label |\n| `justify` | `'start' \\| 'center' \\| 'end' \\| 'between'`                                   | `'start'`  | `between` pushes the first and last child to the edges           |\n| `wrap`    | `boolean`                                                                     | `true`     | Turn off only for short, fixed rows                              |\n| `as`      | `'div' \\| 'section' \\| 'ul' \\| 'ol' …`                                        | `'div'`    | Lists get the reset and `role=\"list\"`                            |\n\nOther `div` attributes and `ref` go to the root."
           },
           {
             "id": "accessibility",
@@ -16016,7 +16059,8 @@
           "Currency or quantity entry that needs masking: a dedicated field (`CurrencyInput`, planned)."
         ],
         "keyboard": [
-          "Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline."
+          "Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline.",
+          "Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`."
         ],
         "examples": [],
         "sections": [
@@ -16043,7 +16087,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- Native `<input>` named by `<label for>`; description and error are in `aria-describedby`; `aria-invalid` when invalid; `required` when required.\n- Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline.\n- The placeholder never replaces the label.\n- Click anywhere in the box (including padding) focuses the input. Clicking a decorative adornment does not; make interactive adornments real buttons with their own names."
+            "content": "- Native `<input>` named by `<label for>`; description and error are in `aria-describedby`; `aria-invalid` when invalid; `required` when required.\n- Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline.\n- The placeholder never replaces the label.\n- Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.\n- Click anywhere in the box (including padding) focuses the input. Clicking a decorative adornment does not; make interactive adornments real buttons with their own names."
           },
           {
             "id": "content",
@@ -27342,9 +27386,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'3'",
+          "default": "3",
           "description": "Heading level of the title (`h1` to `h6`). Default `3`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -28048,10 +28092,10 @@
       "props": [
         {
           "name": "gap",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16 | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '12' | '16'",
           "required": false,
-          "default": "'4'",
-          "description": "Space between children, as a key of the space scale (`4` = `--ds-space-4` = 16px). Default `4`.",
+          "default": "4",
+          "description": "Space between children, as a key of the space scale, a number or its string form (`4` = `--ds-space-4` = 16px). Default `4`.",
           "values": ["1", "2", "3", "4", "5", "6", "8", "12", "16"]
         },
         {
@@ -28207,7 +28251,7 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop    | Type                                                | Default     | Notes                                                       |\n| ------- | --------------------------------------------------- | ----------- | ----------------------------------------------------------- |\n| `gap`   | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16`       | `4`         | Space token key: 4, 8, 12, 16, 20, 24, 32, 48, 64 px        |\n| `align` | `'start' \\| 'center' \\| 'end' \\| 'stretch'`         | `'stretch'` | Horizontal alignment of the children                        |\n| `as`    | `'div' \\| 'section' \\| 'article' \\| 'ul' \\| 'ol' …` | `'div'`     | `ul` and `ol` get the list reset and `role=\"list\"` (Safari) |\n\nOther `div` attributes and `ref` go to the root. The gap travels as the custom property `--ds-stack-gap` (ADR-0002 amendment); a consumer `style` is kept."
+            "content": "| Prop    | Type                                                                          | Default     | Notes                                                       |\n| ------- | ----------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------- |\n| `gap`   | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 8 \\| 12 \\| 16` or the same as a string (`\"4\"`) | `4`         | Space token key: 4, 8, 12, 16, 20, 24, 32, 48, 64 px        |\n| `align` | `'start' \\| 'center' \\| 'end' \\| 'stretch'`                                   | `'stretch'` | Horizontal alignment of the children                        |\n| `as`    | `'div' \\| 'section' \\| 'article' \\| 'ul' \\| 'ol' …`                           | `'div'`     | `ul` and `ol` get the list reset and `role=\"list\"` (Safari) |\n\nOther `div` attributes and `ref` go to the root. The gap travels as the custom property `--ds-stack-gap` (ADR-0002 amendment); a consumer `style` is kept."
           },
           {
             "id": "accessibility",
@@ -28679,7 +28723,7 @@
       "sourceFile": "src/components/StatCard/StatCard.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "An indicator card: a mono caption, a large mono number and a short note, optionally with a\ntrend and a small visual (such as a `ProportionBar`) in between.\n\nIt is a description list: the label is the term, the value and the note are its\ndescriptions, so a screen reader announces \"Sold, $37,655.30, Up 12% vs previous 30 days\".\nA colored value is never the only signal: `tone` other than `neutral` requires a `note` or a\n`trend`, and the trend is written as text (\"Up 12%\").",
+      "description": "An indicator card: a mono caption, a large mono number and a short note, optionally with a\ntrend and a small visual (such as a `ProportionBar`) in between.\n\nIt is a description list: the label is the term, the value and the note are its\ndescriptions, so a screen reader announces \"Sold, $37,655.30, Up 12% vs previous 30 days\".\nA colored value is never the only signal: `tone` other than `neutral` requires a `note` or a\n`trend` (a computed `StatCardTone` is accepted when either is passed), and the trend is written as text (\"Up 12%\").",
       "props": [
         {
           "name": "label",
@@ -28732,7 +28776,7 @@
           "type": "'neutral' | 'success' | 'warning' | 'danger'",
           "required": false,
           "default": "'neutral'",
-          "description": "Color of the value. Use `danger` or `warning` only when the number asks for action, `success` when everything is fine. Default `neutral`.\nA colored value must be backed by text: pass `note` or `trend` (type error otherwise).",
+          "description": "Color of the value. Use `danger` or `warning` only when the number asks for action, `success` when everything is fine. Default `neutral`.\nA colored value must be backed by text: pass `note` or `trend` (type error otherwise).\nAccepts any `StatCardTone`, so a computed tone such as `flag ? 'warning' : 'neutral'`\ntype-checks as long as `note` or `trend` is present.",
           "values": ["neutral", "success", "warning", "danger"]
         },
         {
@@ -28967,7 +29011,7 @@
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<StatCard\n  label=\"Sold\"\n  value={formatCurrency(3765530, 'USD', locale)}\n  trend={{ direction: 'up', value: 0.12, comparedTo: 'vs previous 30 days' }}\n/>\n<StatCard label=\"Overdue\" value=\"$96.40\" tone=\"danger\" note=\"Water bill since Oct 28\" />\n```"
+            "content": "```tsx\n<StatCard\n  label=\"Sold\"\n  value={formatCurrency(3765530, 'USD', locale)}\n  trend={{ direction: 'up', value: 0.12, comparedTo: 'vs previous 30 days' }}\n/>\n<StatCard label=\"Overdue\" value=\"$96.40\" tone=\"danger\" note=\"Water bill since Oct 28\" />\n```\n\nA computed tone type-checks as long as `note` or `trend` is passed; a literal non-neutral tone without either is still a type error:\n\n```tsx\n<StatCard\n  label=\"Overdue\"\n  value={total}\n  tone={overdue ? 'warning' : 'neutral'}\n  note={`${count} bills`}\n/>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -36363,9 +36407,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'4'",
+          "default": "4",
           "description": "Heading level of the step header (`h1` to `h6`). Default `4`.",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -36881,9 +36925,9 @@
         },
         {
           "name": "headingLevel",
-          "type": "'1' | '2' | '3' | '4' | '5' | '6'",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
-          "default": "'1'",
+          "default": "1",
           "description": "Heading level of the title, `1` by default (one `h1` per page).",
           "values": ["1", "2", "3", "4", "5", "6"]
         },
@@ -37590,6 +37634,12 @@
       "description": "A settings screen: app shell, a top bar with the page's one primary action and its keyboard shortcut, and one card per topic with switches, a select and a radio group.",
       "status": "experimental",
       "doc": "recipes/settings-page.md"
+    },
+    {
+      "name": "SheetForm",
+      "description": "A form inside a side `Sheet` whose primary button sits in the sheet footer, outside the `<form>`. The button is linked to the form with the `form` attribute, so the browser submits and validates natively.",
+      "status": "experimental",
+      "doc": "recipes/sheet-form.md"
     },
     {
       "name": "UndoableAction",

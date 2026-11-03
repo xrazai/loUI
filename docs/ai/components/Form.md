@@ -21,6 +21,11 @@ A form built on React Aria `Form`: native validation by default, server errors, 
 | `validationBehavior` | `'native' \| 'aria'`                                    |          | `'native'` | Native validation (default) uses the browser's constraint validation: a failed submit focuses the first invalid field. `aria` marks fields invalid with ARIA only and never blocks the submit; use it when the server is the only validator.                    |
 | `validationErrors`   | `ValidationErrors`                                      |          |            | Errors from the server, keyed by the field `name`. The matching fields become invalid and show the message; the first one takes focus (or the summary does, with `errorSummary`). Clear them (pass `undefined`) when the user edits the field or submits again. |
 | `errorSummary`       | `boolean`                                               |          | `false`    | Shows a `FormErrorSummary` at the top of the form. After a failed submit it takes focus and lists the invalid fields as links. Default `false`. To place the summary elsewhere, leave this off and render `FormErrorSummary` inside the form yourself.          |
+| `id`                 | `string`                                                |          |            | The `id` of the `<form>`. Other elements link to it with the `form` attribute, for example a submit button in a `Sheet` footer: `<Button type="submit" form="order-form">`.                                                                                     |
+| `onKeyDown`          | `KeyboardEventHandler<HTMLFormElement>`                 |          |            | Key handlers on the `<form>`. They receive every key pressed inside a field (the events bubble), so a form-level shortcut such as `Ctrl+Enter` can live here. The form adds no key handling of its own, so yours never replaces anything.                       |
+| `onKeyUp`            | `KeyboardEventHandler<HTMLFormElement>`                 |          |            | Key-up handler on the `<form>`; see `onKeyDown`.                                                                                                                                                                                                                |
+| `onFocus`            | `FocusEventHandler<HTMLFormElement>`                    |          |            | Fires when focus enters the form or moves between its fields (React `focus` bubbles).                                                                                                                                                                           |
+| `onBlur`             | `FocusEventHandler<HTMLFormElement>`                    |          |            | Fires when focus leaves a field in the form; check `relatedTarget` to detect leaving the form.                                                                                                                                                                  |
 | `children`           | `ReactNode`                                             |          |            | The fields and actions of the form.                                                                                                                                                                                                                             |
 | `messages`           | `Partial<{ summaryTitle: (count: number) => string; }>` |          |            | Per-instance overrides of the built-in messages.                                                                                                                                                                                                                |
 | `className`          | `string`                                                |          |            |                                                                                                                                                                                                                                                                 |
@@ -29,7 +34,6 @@ A form built on React Aria `Form`: native validation by default, server errors, 
 ### Inherited props
 
 - From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`, `aria-label`, `aria-labelledby`
-- From `DOMProps` (@react-types/shared): `id`
 - From `FormProps` (@react-types/shared): `action`, `autoCapitalize`, `autoComplete`, `encType`, `method`, `onInvalid`, `onReset`, `onSubmit`, `role`, `target`
 - Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
 
@@ -62,6 +66,29 @@ form (flex column, gap --ds-form-gap)
   FormErrorSummary   (errorSummary prop, or placed by hand)
   children           fields, FieldSets, actions
 ```
+
+## Submitting from outside the form
+
+Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:
+
+```tsx
+<Sheet
+  title="New customer"
+  footer={
+    <Button type="submit" form="customer-form" variant="primary">
+      Save customer
+    </Button>
+  }
+>
+  <Form id="customer-form" aria-label="New customer" onSubmit={save}>
+    �
+  </Form>
+</Sheet>
+```
+
+Enter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.
+
+Keep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead.
 
 ## Validation flow
 

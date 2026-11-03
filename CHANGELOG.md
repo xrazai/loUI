@@ -6,6 +6,21 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Added
+
+- **GAP-023** (2026-11-03) `Form` types and documents `id`, `onKeyDown`, `onKeyUp`, `onFocus` and `onBlur` (reproduced: `id` already reached the `<form>`; only the types rejected key handlers), plus the tested `SheetForm` recipe (`docs/recipes/sheet-form.md`): a `Sheet` footer submit button linked with the `form` attribute, native Enter, validation and a saved toast.
+- **GAP-033** (2026-11-03) `Combobox` `selectFirstOnEnter` (default `false`, the APG editable combobox does not auto-select) and `filter(label, query, option)` that receives the whole option, so a list can be searched by a code; two-argument filters keep working.
+
+### Changed
+
+- **GAP-014** (2026-11-03) `Button` with `isPending` keeps its label: dimmed with the new token `--ds-button-pending-label-opacity` (0.65), the spinner sits before the label (over the `leading` icon when there is one) and the button keeps its width. No new props; refreshed Windows baselines.
+
+### Fixed
+
+- **GAP-021** (2026-11-03) `gap` of `Stack`, `Inline` and `Grid` accepts a number or its string form (`gap={4}` and `gap="4"`, new type `SpaceValue`). The manifest generator printed numeric unions as strings (also `Grid.columns`, `headingLevel`); it now prints them bare, and `scripts/manifest/doc-types.test.ts` type-checks every documented literal prop value against the real types so docs and types cannot drift.
+- **GAP-032** (2026-11-03) `StatCard` accepts a computed `tone` (`flag ? 'warning' : 'neutral'`) with `note` or `trend`; a literal non-neutral tone with neither is still a type error. Type tests added.
+- **GAP-035** (2026-11-03) A consumer `onKeyDown` on `Input`, `CurrencyInput`, `Textarea`, `SearchInput` and `Combobox` no longer hides the key from `useHotkeys` shortcuts with `allowInEditable`: unhandled keys keep bubbling unless the handler calls `preventDefault()` (`continueUnhandledKeys`). Rule and recipe in `docs/architecture/hotkeys.md` and the field pages.
+
 ## [0.2.2] - 2026-11-03
 ## [0.2.1] - 2026-11-03
 ### Changed

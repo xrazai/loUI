@@ -15,14 +15,14 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 ## Props
 
-| Prop           | Type                                     | Required | Default | Description                                                                                                                                                                       |
-| -------------- | ---------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`        | `ReactNode`                              |          |         | The title of the page or section. Rendered as a heading (see `headingLevel`). Ignored when `breadcrumb` is set: the trail then names the page and the page supplies its own `h1`. |
-| `subtitle`     | `ReactNode`                              |          |         | One short line under the title (a count, a date, an environment). Not used with `breadcrumb`.                                                                                     |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |          | `'1'`   | Heading level of the title, `1` by default (one `h1` per page).                                                                                                                   |
-| `breadcrumb`   | `readonly BreadcrumbItem[]`              |          |         | A breadcrumb trail shown instead of the title.                                                                                                                                    |
-| `children`     | `ReactNode`                              |          |         | Free content next to the title, for example a `Badge` or a `SegmentedControl`.                                                                                                    |
-| `actions`      | `ReactNode`                              |          |         | Actions at the end of the bar. Put the single primary action of the screen last, as a `Button variant="primary"` with its shortcut as a `Kbd` in `trailing`.                      |
+| Prop           | Type                         | Required | Default | Description                                                                                                                                                                       |
+| -------------- | ---------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`        | `ReactNode`                  |          |         | The title of the page or section. Rendered as a heading (see `headingLevel`). Ignored when `breadcrumb` is set: the trail then names the page and the page supplies its own `h1`. |
+| `subtitle`     | `ReactNode`                  |          |         | One short line under the title (a count, a date, an environment). Not used with `breadcrumb`.                                                                                     |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |          | `1`     | Heading level of the title, `1` by default (one `h1` per page).                                                                                                                   |
+| `breadcrumb`   | `readonly BreadcrumbItem[]`  |          |         | A breadcrumb trail shown instead of the title.                                                                                                                                    |
+| `children`     | `ReactNode`                  |          |         | Free content next to the title, for example a `Badge` or a `SegmentedControl`.                                                                                                    |
+| `actions`      | `ReactNode`                  |          |         | Actions at the end of the bar. Put the single primary action of the screen last, as a `Button variant="primary"` with its shortcut as a `Kbd` in `trailing`.                      |
 
 ### Inherited props
 

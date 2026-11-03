@@ -798,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-431 tokens; the table lists the 417 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+432 tokens; the table lists the 418 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -966,6 +966,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-breakpoint-lg` | `1024px` | Large breakpoint (1024px). Tablets in landscape and small laptops. A reference for consumer apps (for example to show a detail pane beside a list). |
 | `--ds-breakpoint-xl` | `1280px` | Extra-large breakpoint (1280px). Desktop. The handoff prototype assumed 1180px minimum; the DS itself guarantees nothing above md. |
 | `--ds-button-hover-brightness` | `0.88` | Brightness filter of the primary Button on hover (0.88): ink on dark gets slightly dimmer instead of changing color. Not for other variants or other components. |
+| `--ds-button-pending-label-opacity` | `0.65` | Opacity of the Button label while isPending (0.65): the label stays readable next to the spinner but reads as busy. Busy state only, not for disabled. |
 | `--ds-button-danger-solid-hover-brightness` | `0.9` | Brightness filter of the danger-solid Button on hover (0.9). Use only for the confirm action of a destructive dialog. |
 | `--ds-calendar-cell-size` | `36px` | Width and height of a Calendar day cell (36px). A month grid is seven cells wide. |
 | `--ds-calendar-weekday-height` | `24px` | Height of the weekday header row of a Calendar (24px). |
@@ -1256,7 +1257,7 @@ A stack of sections that expand and collapse. Each header is a heading that wrap
 | `defaultValue` | `readonly string[]` |  | `[]` | Values of the items expanded at first (uncontrolled). |
 | `onChange` | `(value: string[]) => void` |  |  | Called with the values of all expanded items after the user toggles one. |
 | `variant` | `'bordered' \| 'plain'` |  | `'bordered'` | `bordered` (default) draws a card around the sections; `plain` only draws dividers. |
-| `headingLevel` | `'2' \| '3' \| '4' \| '5' \| '6'` |  | `'3'` | Level of the heading that wraps each trigger, `3` by default. Use the level that follows the heading above the accordion in the page outline. |
+| `headingLevel` | `2 \| 3 \| 4 \| 5 \| 6` |  | `3` | Level of the heading that wraps each trigger, `3` by default. Use the level that follows the heading above the accordion in the page outline. |
 | `isDisabled` | `boolean` |  | `false` | Disables every section. |
 | `className` | `string` |  |  |  |
 | `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the root element. |
@@ -1487,7 +1488,7 @@ A card that represents one AI agent: icon, name, status, description and a foote
 | `lastActivity` | `ReactNode` |  |  | Text about the last activity ("Last reply sent at 08:40"). Shown in the footer. |
 | `href` | `string` |  |  | Destination of the card. Renders a real link (router-aware through `DSProvider`). |
 | `onOpen` | `() => void` |  |  | Called when the card is activated. Without `href` it renders a real button. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'3'` | Heading level of the agent name (`h1` to `h6`). Default `3`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `3` | Heading level of the agent name (`h1` to `h6`). Default `3`. |
 | `messages` | `Partial<{ statusTesting: string; statusActive: string; statusPaused: string; statusSoon: string; notConfigured: string; pending: (n: number) => string; }>` |  |  | Override the built-in messages for this instance. |
 
 ##### Inherited props
@@ -1726,7 +1727,7 @@ A reply waiting for approval: the original message, an editable draft written by
 | `flag` | `ReactNode` |  |  | Warning shown above the actions (for example "2-star review: read it carefully before sending"). Linked to the card as its description. Reviews of 1 to 3 stars should always have one. |
 | `onSend` | `() => void` |  |  | Called when the send button is pressed. Do it now and offer Undo with a toast; do not ask to confirm. |
 | `onDiscard` | `() => void` |  |  | Called when the discard button is pressed. Do it now and offer Undo with a toast. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'3'` | Heading level of the card heading (`h1` to `h6`). Default `3`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `3` | Heading level of the card heading (`h1` to `h6`). Default `3`. |
 | `messages` | `Partial<{ kindQuestion: string; kindReview: string; messageLabel: string; draftLabel: string; draftHint: string; send: string; discard: string; }>` |  |  | Override the built-in messages for this instance. |
 
 ##### Inherited props
@@ -2430,8 +2431,8 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 > An action button built on React Aria's `Button`.
 
-Use one `primary` button per screen. While `isPending` the button keeps its width, shows a
-spinner, stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
+Use one `primary` button per screen. While `isPending` the button keeps its width and its
+label (dimmed), shows a spinner before the label (over the `leading` icon when there is one), stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
 by a tooltip and focus is never lost.
 
 The control for an action. Built on React Aria's `Button`, styled with tokens and `data-*` state attributes.
@@ -2441,7 +2442,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 - Import: `import { Button } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Button/Button.tsx`
-- Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, LongText, Rtl, KeyboardActivation, Focused, Hovered
+- Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, PendingWithLeadingAndSizes, LongText, Rtl, KeyboardActivation, Focused, Hovered
 
 #### Props
 
@@ -2480,7 +2481,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-primary-fg-muted`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
+`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-button-pending-label-opacity`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-icon-md`, `--ds-icon-sm`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-primary-fg-muted`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
 
 #### One primary per screen
 
@@ -2500,7 +2501,7 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 
 #### Anatomy
 
-`[leading] label [trailing]` inside one native `<button>`. When pending, the content keeps its box (invisible) and a `Spinner` is centered on top, so the width never changes.
+`[leading] label [trailing]` inside one native `<button>`. When pending, the label stays visible, dimmed with `--ds-button-pending-label-opacity` (0.65), and a `Spinner` takes the leading position: it sits over the `leading` icon when there is one, otherwise before the label, using the button padding (the content is pulled outward by half of spinner plus gap on each side), so the width never changes. The dimmed label is a busy state, not a disabled one; the label keeps meaning, so users still see what the action is doing (for example "Connecting").
 
 #### Accessibility
 
@@ -2678,7 +2679,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `title` | `ReactNode` |  |  | Title shown as an uppercase mono caption. It is a real heading (see `headingLevel`) and names the card region through `aria-labelledby`. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`. |
 | `actions` | `ReactNode` |  |  | Controls placed at the end of the header, next to the title (buttons, a menu). |
 | `variant` | `'default' \| 'raised'` |  | `'default'` | `default` is a flat surface with a border. `raised` uses the raised surface, a stronger border and the overlay shadow: use it only for a card that floats above the page (a pinned panel, a detail popover shell), never for cards that sit in the normal flow. |
 | `padding` | `'md' \| 'none'` |  | `'md'` | `md` applies the card padding token; `none` removes it (for full-bleed content such as a table). Default `md`. |
@@ -2920,7 +2921,7 @@ A chat panel for talking to an agent: header with a Clear action, a message log,
 | --- | --- | --- | --- | --- |
 | `items` | `readonly ChatMessage[]` | yes |  | The conversation, oldest first. Update `content` and `status` of the last item as a reply streams in. |
 | `title` | `ReactNode` |  |  | Heading of the panel. Defaults to the "Chat with the agent" message. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Heading level of the title (`h1` to `h6`). Default `2`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Heading level of the title (`h1` to `h6`). Default `2`. |
 | `busy` | `boolean` |  | `false` | Waiting for the first part of a reply: shows a spinner with "Thinking…" and disables sending. |
 | `intro` | `ReactNode` |  |  | Short text shown while the conversation is empty. |
 | `prompts` | `readonly string[]` |  | `[]` | Suggested prompts shown while the conversation is empty. Pressing one sends it. |
@@ -3697,7 +3698,8 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 | `value` | `string \| null` |  |  | The selected option `value`; `null` means nothing is selected. Pair with `onChange`. |
 | `defaultValue` | `string \| null` |  |  | The initially selected `value` when uncontrolled. |
 | `onChange` | `((value: string \| null) => void)` |  |  | Called with the selected `value`, or `null` when the selection is cleared. |
-| `filter` | `false \| ((label: string, query: string) => boolean)` |  |  | How options are matched against the typed text. Default: accent- and case-insensitive "contains" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function, or `false` to show `options` as given: use it when the list is loaded from a server as the user types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile). |
+| `filter` | `false \| ((label: string, query: string, option: ComboboxOption) => boolean)` |  |  | How options are matched against the typed text. Default: accent- and case-insensitive "contains" on the label (`matchesSearch`), so `cafe` finds `Café`. Pass your own function, or `false` to show `options` as given: use it when the list is loaded from a server as the user types (listen to `onInputChange`, update `options`, set `isLoading` meanwhile).  The function receives the whole option as a third argument, so you can search by a field that is not the label (`option.value` as a code, `option.meta` as an SKU). Two-argument functions keep working. Options that share a label are matched together: give each option a distinct label when the filter looks at other fields. |
+| `selectFirstOnEnter` | `boolean` |  | `false` | Press `Enter` with no option highlighted to select the first matching option (typing "tri" then `Enter` picks "Trimestral"). Default `false`: the WAI-ARIA editable combobox does not auto-select, so `Enter` without a highlighted option keeps the typed text (and submits the surrounding form). Turn it on for lookup fields where the typed text alone is never a valid value. Ignored while the list is closed, empty or has only disabled options. |
 | `isLoading` | `boolean` |  | `false` | Shows a spinner in the box and, when there are no options yet, a "Loading" row instead of "No results". The consumer owns the data: see `filter={false}` and `onInputChange`. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
@@ -3762,18 +3764,19 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Props (key ones)
 
-| Prop                                                                                                                | Notes                                                                                                                           |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                                                                                                                |
-| `options`                                                                                                           | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                  |
-| `value` / `defaultValue` / `onChange(value)`                                                                        | The selected option `value`, `null` for none.                                                                                   |
-| `inputValue` / `defaultInputValue` / `onInputChange`                                                                | The text in the box (React Aria props, passed through).                                                                         |
-| `allowsCustomValue`                                                                                                 | The typed text is a valid value; the form then receives the text.                                                               |
-| `filter`                                                                                                            | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function, or `false` for no client filtering. |
-| `isLoading`                                                                                                         | Spinner in the box; "Loading" row when there are no options yet.                                                                |
-| `menuTrigger`                                                                                                       | `input` (default), `focus` or `manual`.                                                                                         |
-| `description`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                 |
-| `messages`                                                                                                          | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                          |
+| Prop                                                                                                                | Notes                                                                                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                                                                                                                                                                                                                                                                                 |
+| `options`                                                                                                           | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |
+| `value` / `defaultValue` / `onChange(value)`                                                                        | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |
+| `inputValue` / `defaultInputValue` / `onInputChange`                                                                | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |
+| `allowsCustomValue`                                                                                                 | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |
+| `filter`                                                                                                            | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |
+| `selectFirstOnEnter`                                                                                                | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing "tri" then `Enter` picks "Trimestral").                                                                                                                                                              |
+| `isLoading`                                                                                                         | Spinner in the box; "Loading" row when there are no options yet.                                                                                                                                                                                                                                 |
+| `menuTrigger`                                                                                                       | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |
+| `description`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |
+| `messages`                                                                                                          | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |
 
 Option order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning.
 
@@ -3791,6 +3794,10 @@ Set `filter={false}`, keep the query from `onInputChange`, fetch, and pass the r
 | `Escape`                | Close the list; pressed again, restore the selected text (clear with `allowsCustomValue`)        |
 | `Home` / `End`          | Move the caret in the input (React Aria keeps them for text editing, not for the list)           |
 | `Tab`                   | Commit and leave                                                                                 |
+
+`Enter` with nothing highlighted keeps the typed text and selects nothing, as in the WAI-ARIA editable combobox. Turn on `selectFirstOnEnter` for lookup fields where the typed text alone is never a valid value (it does nothing while the list is closed, empty or has only disabled options; a highlighted option always wins).
+
+Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
 
 The input has `role="combobox"`, `aria-expanded`, `aria-controls`, `aria-autocomplete="list"`. The chevron button ("Show options") is out of the tab order. While the list is open React Aria hides the rest of the page from assistive technology. An option's accessible name contains label, meta and description. The empty state is a single option-like row so screen readers announce it.
 
@@ -4295,6 +4302,8 @@ Two models were considered:
 #### Accessibility and keyboard
 
 A text input (`inputmode="numeric"`, or `text` with `allowNegative` so a minus can be typed on mobile) named by the label, described by the description and the error. Digits type, `Backspace` removes the last digit, `-` flips the sign when allowed. There is no live region; the value is announced as typed. The border stays 3:1 in every state (shared Input styling).
+
+Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
 
 #### Content rules
 
@@ -5111,7 +5120,7 @@ A non-modal side panel that sits next to the content, for filters, inspectors an
 | `onOpenChange` | `(isOpen: boolean) => void` |  |  | Called when the drawer opens or closes through the user (close button or `Escape`). |
 | `autoFocus` | `boolean` |  | `true` | Moves focus into the drawer when it opens after the first render. A drawer that is open on first render never takes focus. Default `true`; turn it off for a panel that should stay beside the page without interrupting what the user is doing. |
 | `role` | `'complementary' \| 'region'` |  | `'complementary'` | Landmark role. `complementary` (default) for content that supports the page (filters, inspectors); `region` for a section the user may want to find in the landmark list. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Level of the title heading. Default `2`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Level of the title heading. Default `2`. |
 | `messages` | `Partial<{ close: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 | `className` | `string` |  |  | Class name for the drawer panel. |
 | `ref` | `Ref<HTMLElement>` |  |  | Ref to the drawer panel. |
@@ -5315,7 +5324,7 @@ A typographic placeholder for a list, table or panel that has nothing to show. I
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `title` | `ReactNode` | yes |  | What happened, in one short sentence: "No orders found". Rendered as a heading (see `headingLevel`). |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`. |
 | `description` | `ReactNode` |  |  | What the user can do about it: "Try another filter or search term." |
 | `icon` | `ReactNode` |  |  | Optional icon above the title. Decorative: it is hidden from assistive technology. No illustrations. |
 | `action` | `ReactNode` |  |  | The primary action, usually a `Button`. Rendered after the secondary action. |
@@ -5819,6 +5828,11 @@ A form built on React Aria `Form`: native validation by default, server errors, 
 | `validationBehavior` | `'native' \| 'aria'` |  | `'native'` | Native validation (default) uses the browser's constraint validation: a failed submit focuses the first invalid field. `aria` marks fields invalid with ARIA only and never blocks the submit; use it when the server is the only validator. |
 | `validationErrors` | `ValidationErrors` |  |  | Errors from the server, keyed by the field `name`. The matching fields become invalid and show the message; the first one takes focus (or the summary does, with `errorSummary`). Clear them (pass `undefined`) when the user edits the field or submits again. |
 | `errorSummary` | `boolean` |  | `false` | Shows a `FormErrorSummary` at the top of the form. After a failed submit it takes focus and lists the invalid fields as links. Default `false`. To place the summary elsewhere, leave this off and render `FormErrorSummary` inside the form yourself. |
+| `id` | `string` |  |  | The `id` of the `<form>`. Other elements link to it with the `form` attribute, for example a submit button in a `Sheet` footer: `<Button type="submit" form="order-form">`. |
+| `onKeyDown` | `KeyboardEventHandler<HTMLFormElement>` |  |  | Key handlers on the `<form>`. They receive every key pressed inside a field (the events bubble), so a form-level shortcut such as `Ctrl+Enter` can live here. The form adds no key handling of its own, so yours never replaces anything. |
+| `onKeyUp` | `KeyboardEventHandler<HTMLFormElement>` |  |  | Key-up handler on the `<form>`; see `onKeyDown`. |
+| `onFocus` | `FocusEventHandler<HTMLFormElement>` |  |  | Fires when focus enters the form or moves between its fields (React `focus` bubbles). |
+| `onBlur` | `FocusEventHandler<HTMLFormElement>` |  |  | Fires when focus leaves a field in the form; check `relatedTarget` to detect leaving the form. |
 | `children` | `ReactNode` |  |  | The fields and actions of the form. |
 | `messages` | `Partial<{ summaryTitle: (count: number) => string; }>` |  |  | Per-instance overrides of the built-in messages. |
 | `className` | `string` |  |  |  |
@@ -5827,7 +5841,6 @@ A form built on React Aria `Form`: native validation by default, server errors, 
 ##### Inherited props
 
 - From `AriaLabelingProps` (@react-types/shared): `aria-describedby`, `aria-details`, `aria-label`, `aria-labelledby`
-- From `DOMProps` (@react-types/shared): `id`
 - From `FormProps` (@react-types/shared): `action`, `autoCapitalize`, `autoComplete`, `encType`, `method`, `onInvalid`, `onReset`, `onSubmit`, `role`, `target`
 - Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
 
@@ -5860,6 +5873,29 @@ form (flex column, gap --ds-form-gap)
   FormErrorSummary   (errorSummary prop, or placed by hand)
   children           fields, FieldSets, actions
 ```
+
+#### Submitting from outside the form
+
+Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:
+
+```tsx
+<Sheet
+  title="New customer"
+  footer={
+    <Button type="submit" form="customer-form" variant="primary">
+      Save customer
+    </Button>
+  }
+>
+  <Form id="customer-form" aria-label="New customer" onSubmit={save}>
+    �
+  </Form>
+</Sheet>
+```
+
+Enter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.
+
+Keep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead.
 
 #### Validation flow
 
@@ -5938,6 +5974,29 @@ form (flex column, gap --ds-form-gap)
   children           fields, FieldSets, actions
 ```
 
+#### Submitting from outside the form
+
+Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:
+
+```tsx
+<Sheet
+  title="New customer"
+  footer={
+    <Button type="submit" form="customer-form" variant="primary">
+      Save customer
+    </Button>
+  }
+>
+  <Form id="customer-form" aria-label="New customer" onSubmit={save}>
+    �
+  </Form>
+</Sheet>
+```
+
+Enter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.
+
+Keep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead.
+
 #### Validation flow
 
 1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.
@@ -5990,9 +6049,9 @@ A grid of equal columns: either a fixed number, or as many as fit with a minimum
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `columns` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '7' \| '8' \| '9' \| '10' \| '11' \| '12'` |  |  | A fixed number of equal columns (1 to 12). Items can shrink below their content width. |
+| `columns` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9 \| 10 \| 11 \| 12` |  |  | A fixed number of equal columns (1 to 12). Items can shrink below their content width. |
 | `minItemWidth` | `'sm' \| 'md' \| 'lg'` |  |  | Fills the row with as many equal columns as fit, each at least this wide: `sm` 160px, `md` 240px, `lg` 320px (`--ds-grid-min-item-*`). Collapses to one column on narrow screens. |
-| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'4'` | Space between rows and columns, as a key of the space scale. Default `4`. |
+| `gap` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16 \| '1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `4` | Space between rows and columns, as a key of the space scale (a number or its string form). Default `4`. |
 | `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the list reset is applied and `role="list"` keeps the list semantics in Safari. |
 
 ##### Inherited props
@@ -6069,7 +6128,7 @@ A heading whose semantic level (`h1` to `h6`) and visual size are separate choic
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `level` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'2'` | Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has nothing to do with how big the text looks: keep levels sequential and use one `h1` per page. Default `2`. |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has nothing to do with how big the text looks: keep levels sequential and use one `h1` per page. Default `2`. |
 | `size` | `'title' \| 'display' \| 'heading'` |  |  | Visual size, independent of `level`: `display` (34px, page hero), `title` (22px) or `heading` (17px). Default: `title` for level 1, `heading` for the others. |
 
 ##### Inherited props
@@ -6336,7 +6395,7 @@ A horizontal row of children with one consistent gap. It wraps by default, so a 
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'2'` | Space between children, as a key of the space scale (`2` = `--ds-space-2` = 8px). Default `2`. |
+| `gap` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16 \| '1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `2` | Space between children, as a key of the space scale, a number or its string form (`2` = `--ds-space-2` = 8px). Default `2`. |
 | `align` | `'center' \| 'start' \| 'end' \| 'baseline' \| 'stretch'` |  | `'center'` | Cross-axis (vertical) alignment. Default `center`. |
 | `justify` | `'center' \| 'start' \| 'end' \| 'between'` |  | `'start'` | Main-axis (horizontal) distribution. `between` pushes the first and last child to the edges. Default `start`. |
 | `wrap` | `boolean` |  | `true` | Whether children wrap onto the next line when they do not fit. Default `true`, so a row never overflows a narrow screen. |
@@ -6616,6 +6675,7 @@ All other props of React Aria `TextField` are accepted (`onFocus`, `onBlur`, `on
 - Native `<input>` named by `<label for>`; description and error are in `aria-describedby`; `aria-invalid` when invalid; `required` when required.
 - Keyboard: standard text editing. `Enter` submits the surrounding form. Focus is visible as the accent border plus ring; in forced-colors mode it is a system outline.
 - The placeholder never replaces the label.
+- Hotkeys: A consumer `onKeyDown` does not hide keys from `useHotkeys(..., { allowInEditable: true })` shortcuts: a key keeps bubbling unless your handler called `event.preventDefault()` on it. Recipe: `Enter` confirms and `Escape` cancels (both with `preventDefault()`), every other key stays a hotkey. See `docs/architecture/hotkeys.md`.
 - Click anywhere in the box (including padding) focuses the input. Clicking a decorative adornment does not; make interactive adornments real buttons with their own names.
 
 #### Content
@@ -10439,7 +10499,7 @@ The numbered list of sources an answer is based on (`SourceList`) and the inline
 | `id` | `string` | yes |  | Id of the list. Required: citations use it to find their source. |
 | `sources` | `readonly Source[]` | yes |  | The sources, in citation order. The first is source 1. |
 | `title` | `string` |  |  | Heading text. Defaults to "Sources". |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'3'` | Heading level of the title (`h1` to `h6`). Default `3`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `3` | Heading level of the title (`h1` to `h6`). Default `3`. |
 | `messages` | `Partial<{ title: string; citation: (number: number, title: string) => string; }>` |  |  | Override the built-in messages for this instance. |
 
 ##### Inherited props
@@ -10717,7 +10777,7 @@ A vertical column of children with one consistent gap. The gap is a key of the s
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `gap` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `'4'` | Space between children, as a key of the space scale (`4` = `--ds-space-4` = 16px). Default `4`. |
+| `gap` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 12 \| 16 \| '1' \| '2' \| '3' \| '4' \| '5' \| '6' \| '8' \| '12' \| '16'` |  | `4` | Space between children, as a key of the space scale, a number or its string form (`4` = `--ds-space-4` = 16px). Default `4`. |
 | `align` | `'center' \| 'start' \| 'end' \| 'stretch'` |  | `'stretch'` | Cross-axis (horizontal) alignment of the children. Default `stretch`. |
 | `as` | `'div' \| 'article' \| 'aside' \| 'footer' \| 'form' \| 'header' \| 'li' \| 'main' \| 'nav' \| 'ol' \| 'section' \| 'ul'` |  | `'div'` | Element to render, `div` by default. Use `ul` or `ol` for a list of `li` children: the list reset is applied and `role="list"` keeps the list semantics in Safari. |
 
@@ -10958,7 +11018,7 @@ trend and a small visual (such as a `ProportionBar`) in between.
 It is a description list: the label is the term, the value and the note are its
 descriptions, so a screen reader announces "Sold, $37,655.30, Up 12% vs previous 30 days".
 A colored value is never the only signal: `tone` other than `neutral` requires a `note` or a
-`trend`, and the trend is written as text ("Up 12%").
+`trend` (a computed `StatCardTone` is accepted when either is passed), and the trend is written as text ("Up 12%").
 
 An indicator card for the top of a screen: a mono caption, a large mono number, an optional small visual and a short note or trend in words.
 
@@ -10978,7 +11038,7 @@ An indicator card for the top of a screen: a mono caption, a large mono number, 
 | `children` | `ReactNode` |  |  | Content between the value and the note, for example a 4px `ProportionBar`. |
 | `noteTone` | `'neutral' \| 'success' \| 'warning' \| 'danger'` |  | `'neutral'` | Color of the note text. Default `neutral`. Only affects color: the note is text anyway. |
 | `messages` | `Partial<{ trendUp: (percent: string) => string; trendDown: (percent: string) => string; trendFlat: string; }>` |  |  | Per-instance overrides of the built-in messages. |
-| `tone` | `'neutral' \| 'success' \| 'warning' \| 'danger'` |  | `'neutral'` | Color of the value. Use `danger` or `warning` only when the number asks for action, `success` when everything is fine. Default `neutral`. A colored value must be backed by text: pass `note` or `trend` (type error otherwise). |
+| `tone` | `'neutral' \| 'success' \| 'warning' \| 'danger'` |  | `'neutral'` | Color of the value. Use `danger` or `warning` only when the number asks for action, `success` when everything is fine. Default `neutral`. A colored value must be backed by text: pass `note` or `trend` (type error otherwise). Accepts any `StatCardTone`, so a computed tone such as `flag ? 'warning' : 'neutral'` type-checks as long as `note` or `trend` is present. |
 | `note` | `ReactNode` |  |  | Context or change in words: "3 sales · average ticket $120". |
 | `trend` | `StatCardTrend` |  |  | A change versus a previous period, rendered as text through the messages. |
 
@@ -11064,6 +11124,17 @@ dl.root (surface, 1px line, radius lg, padding 20)
   trend={{ direction: 'up', value: 0.12, comparedTo: 'vs previous 30 days' }}
 />
 <StatCard label="Overdue" value="$96.40" tone="danger" note="Water bill since Oct 28" />
+```
+
+A computed tone type-checks as long as `note` or `trend` is passed; a literal non-neutral tone without either is still a type error:
+
+```tsx
+<StatCard
+  label="Overdue"
+  value={total}
+  tone={overdue ? 'warning' : 'neutral'}
+  note={`${count} bills`}
+/>
 ```
 
 #### Related components
@@ -13284,7 +13355,7 @@ One step of an agent run: the tool it called, whether it is running, succeeded o
 | `isExpanded` | `boolean` |  |  | Controlled state of the details. |
 | `defaultExpanded` | `boolean` |  | `false` | Initial state of the details when uncontrolled. Default closed. |
 | `onExpandedChange` | `(isExpanded: boolean) => void` |  |  | Called when the details open or close. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'4'` | Heading level of the step header (`h1` to `h6`). Default `4`. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `4` | Heading level of the step header (`h1` to `h6`). Default `4`. |
 | `messages` | `Partial<{ running: string; succeeded: string; failed: string; input: string; output: string; error: string; finishedSucceeded: (name: string) => string; finishedFailed: (name: string) => string; listLabel: string; }>` |  |  | Override the built-in messages for this instance. |
 
 ##### Inherited props
@@ -13482,7 +13553,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 | --- | --- | --- | --- | --- |
 | `title` | `ReactNode` |  |  | The title of the page or section. Rendered as a heading (see `headingLevel`). Ignored when `breadcrumb` is set: the trail then names the page and the page supplies its own `h1`. |
 | `subtitle` | `ReactNode` |  |  | One short line under the title (a count, a date, an environment). Not used with `breadcrumb`. |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |  | `'1'` | Heading level of the title, `1` by default (one `h1` per page). |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `1` | Heading level of the title, `1` by default (one `h1` per page). |
 | `breadcrumb` | `readonly BreadcrumbItem[]` |  |  | A breadcrumb trail shown instead of the title. |
 | `children` | `ReactNode` |  |  | Free content next to the title, for example a `Badge` or a `SegmentedControl`. |
 | `actions` | `ReactNode` |  |  | Actions at the end of the bar. Put the single primary action of the screen last, as a `Button variant="primary"` with its shortcut as a `Kbd` in `trailing`. |
@@ -15890,6 +15961,155 @@ export function SettingsPage({ initialSettings = DEFAULTS, onSave }: SettingsPag
 `src/recipes/SettingsPage/SettingsPage.test.tsx` (landmarks and a single primary action, save with the button and with the shortcut, the shortcut listed in the help, Space on a switch, axe) and the `Recipes/SettingsPage` stories.
 
 The axe checks skip the `Kbd` inside the primary button: it keeps its own light text color on the light button fill (2.13:1). That is a component issue, not a property of the recipe; see the report.
+
+### SheetForm
+
+Status: experimental
+
+A form inside a side `Sheet` whose primary button sits in the sheet footer, outside the `<form>`. The button is linked to the form with the `form` attribute, so the browser submits and validates natively.
+
+Components: `Sheet`, `Form`, `Input`, `Select`, `Button`, `Toast`.
+
+#### When to use
+
+- Create or edit a record in a sheet or dialog where the actions live in a fixed footer and the fields scroll.
+- Any layout where the submit button cannot be a child of the form.
+
+#### When not to use
+
+- A form on a page: put the submit button inside the form.
+- A short yes/no decision: use a `Dialog`.
+
+#### What it does
+
+- **Linked, not wired.** `Form` gets an `id`; the footer button is `type="submit"` with `form={id}`. No `onPress` handler calls submit.
+- **Enter submits.** Pressing Enter in a field submits the form, as in any native form.
+- **Validation is native.** An invalid submit is blocked, the first invalid field takes focus and every invalid field shows its message (`errorMessage` in plain words that say how to fix it).
+- **One primary action.** "Save supplier" is the only primary button; "Cancel" sits beside it. Esc also cancels.
+- **Saved.** A valid submit closes the sheet and shows "Supplier Northwind saved" in a toast.
+
+#### Things to keep when you adapt it
+
+- Generate the id with `useId()`; never derive it from a label.
+- Keep the submit button enabled so a click always shows what is wrong.
+- For a server-side check, keep the sheet open and pass `validationErrors` to the `Form` (see `FormWithValidation`).
+- To show progress, set `isPending` on the submit button.
+
+#### Code
+
+<!-- recipe-source:start -->
+
+```tsx
+import { useId, useState } from 'react';
+import type { SyntheticEvent } from 'react';
+import { Button, Form, Heading, Input, Select, Sheet, Stack, Text, toast } from 'loui-ds';
+
+export interface SupplierValues {
+  name: string;
+  email: string;
+  country: string;
+}
+
+export interface SheetFormProps {
+  /** Called with the values after a valid submit. The sheet closes and "saved" is announced. */
+  onSave?: (values: SupplierValues) => void;
+}
+
+const COUNTRIES = [
+  { value: 'br', label: 'Brazil' },
+  { value: 'de', label: 'Germany' },
+  { value: 'us', label: 'United States' },
+];
+
+/**
+ * A form inside a Sheet whose submit button lives in the Sheet footer, outside the form. The
+ * button and the form are linked with the `form` attribute, so the browser does the work: a
+ * click submits natively, Enter inside a field submits, and an invalid form is blocked with
+ * focus on the first invalid field. One primary action (the submit button), Cancel beside it.
+ */
+export function SheetForm({ onSave }: SheetFormProps) {
+  const formId = useId();
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const text = (name: string) => {
+      const value = data.get(name);
+      return typeof value === 'string' ? value : '';
+    };
+    const values = { name: text('name'), email: text('email'), country: text('country') };
+    onSave?.(values);
+    toast.success(`Supplier ${values.name} saved`);
+    setIsOpen(false);
+  }
+
+  return (
+    <Stack gap={4}>
+      <Heading level={2}>Suppliers</Heading>
+      <Text tone="secondary">No suppliers yet. Add the first one.</Text>
+      <div>
+        <Button
+          onPress={() => {
+            setIsOpen(true);
+          }}
+        >
+          New supplier
+        </Button>
+      </div>
+      <Sheet
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        title="New supplier"
+        footer={({ close }) => (
+          <>
+            <Button onPress={close}>Cancel</Button>
+            {/* Outside the <form>, but `form` points at it: a native submit with validation. */}
+            <Button type="submit" form={formId} variant="primary">
+              Save supplier
+            </Button>
+          </>
+        )}
+      >
+        <Form id={formId} aria-label="New supplier" onSubmit={handleSubmit}>
+          <Input
+            label="Name"
+            name="name"
+            autoComplete="organization"
+            isRequired
+            errorMessage="Enter the supplier's name."
+          />
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            isRequired
+            errorMessage={(validity) =>
+              validity.validationDetails.valueMissing || validity.validationDetails.typeMismatch
+                ? 'Enter a complete email address.'
+                : validity.validationErrors.join(' ')
+            }
+          />
+          <Select
+            label="Country"
+            name="country"
+            options={COUNTRIES}
+            isRequired
+            errorMessage="Select a country."
+          />
+        </Form>
+      </Sheet>
+    </Stack>
+  );
+}
+```
+
+<!-- recipe-source:end -->
+
+#### Verified by
+
+`src/recipes/SheetForm/SheetForm.test.tsx` (footer button linked by `form`, invalid submit focus and messages, submit by click and by Enter, Cancel and Esc, saved toast, axe in the closed, open and error states).
 
 ### UndoableAction
 

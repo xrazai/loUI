@@ -20,7 +20,7 @@ The numbered list of sources an answer is based on (`SourceList`) and the inline
 | `id`           | `string`                                                                           | yes      |         | Id of the list. Required: citations use it to find their source. |
 | `sources`      | `readonly Source[]`                                                                | yes      |         | The sources, in citation order. The first is source 1.           |
 | `title`        | `string`                                                                           |          |         | Heading text. Defaults to "Sources".                             |
-| `headingLevel` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'`                                           |          | `'3'`   | Heading level of the title (`h1` to `h6`). Default `3`.          |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6`                                                       |          | `3`     | Heading level of the title (`h1` to `h6`). Default `3`.          |
 | `messages`     | `Partial<{ title: string; citation: (number: number, title: string) => string; }>` |          |         | Override the built-in messages for this instance.                |
 
 ### Inherited props

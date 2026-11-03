@@ -12,16 +12,16 @@ A typographic placeholder for a list, table or panel that has nothing to show. I
 
 ## Props
 
-| Prop              | Type                                     | Required | Default | Description                                                                                                  |
-| ----------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `title`           | `ReactNode`                              | yes      |         | What happened, in one short sentence: "No orders found". Rendered as a heading (see `headingLevel`).         |
-| `headingLevel`    | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |          | `'2'`   | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`.           |
-| `description`     | `ReactNode`                              |          |         | What the user can do about it: "Try another filter or search term."                                          |
-| `icon`            | `ReactNode`                              |          |         | Optional icon above the title. Decorative: it is hidden from assistive technology. No illustrations.         |
-| `action`          | `ReactNode`                              |          |         | The primary action, usually a `Button`. Rendered after the secondary action.                                 |
-| `secondaryAction` | `ReactNode`                              |          |         | A second, lower-emphasis action.                                                                             |
-| `compact`         | `boolean`                                |          | `false` | Less padding and a smaller title, for use inside a card, a panel or a table.                                 |
-| `bordered`        | `boolean`                                |          | `true`  | Dashed border. Set to `false` when the empty state already sits inside a bordered container. Default `true`. |
+| Prop              | Type                         | Required | Default | Description                                                                                                  |
+| ----------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `title`           | `ReactNode`                  | yes      |         | What happened, in one short sentence: "No orders found". Rendered as a heading (see `headingLevel`).         |
+| `headingLevel`    | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |          | `2`     | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `2`.           |
+| `description`     | `ReactNode`                  |          |         | What the user can do about it: "Try another filter or search term."                                          |
+| `icon`            | `ReactNode`                  |          |         | Optional icon above the title. Decorative: it is hidden from assistive technology. No illustrations.         |
+| `action`          | `ReactNode`                  |          |         | The primary action, usually a `Button`. Rendered after the secondary action.                                 |
+| `secondaryAction` | `ReactNode`                  |          |         | A second, lower-emphasis action.                                                                             |
+| `compact`         | `boolean`                    |          | `false` | Less padding and a smaller title, for use inside a card, a panel or a table.                                 |
+| `bordered`        | `boolean`                    |          | `true`  | Dashed border. Set to `false` when the empty state already sits inside a bordered container. Default `true`. |
 
 ### Inherited props
 

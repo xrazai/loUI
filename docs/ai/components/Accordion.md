@@ -18,18 +18,18 @@ A stack of sections that expand and collapse. Each header is a heading that wrap
 
 ## Props
 
-| Prop           | Type                              | Required | Default      | Description                                                                                                                                   |
-| -------------- | --------------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`        | `readonly AccordionItem[]`        | yes      |              | The sections, in order.                                                                                                                       |
-| `multiple`     | `boolean`                         |          | `false`      | Allow several sections open at once. By default opening one section closes the others (single expansion).                                     |
-| `value`        | `readonly string[]`               |          |              | Values of the expanded items (controlled).                                                                                                    |
-| `defaultValue` | `readonly string[]`               |          | `[]`         | Values of the items expanded at first (uncontrolled).                                                                                         |
-| `onChange`     | `(value: string[]) => void`       |          |              | Called with the values of all expanded items after the user toggles one.                                                                      |
-| `variant`      | `'bordered' \| 'plain'`           |          | `'bordered'` | `bordered` (default) draws a card around the sections; `plain` only draws dividers.                                                           |
-| `headingLevel` | `'2' \| '3' \| '4' \| '5' \| '6'` |          | `'3'`        | Level of the heading that wraps each trigger, `3` by default. Use the level that follows the heading above the accordion in the page outline. |
-| `isDisabled`   | `boolean`                         |          | `false`      | Disables every section.                                                                                                                       |
-| `className`    | `string`                          |          |              |                                                                                                                                               |
-| `ref`          | `Ref<HTMLDivElement>`             |          |              | Ref to the root element.                                                                                                                      |
+| Prop           | Type                        | Required | Default      | Description                                                                                                                                   |
+| -------------- | --------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`        | `readonly AccordionItem[]`  | yes      |              | The sections, in order.                                                                                                                       |
+| `multiple`     | `boolean`                   |          | `false`      | Allow several sections open at once. By default opening one section closes the others (single expansion).                                     |
+| `value`        | `readonly string[]`         |          |              | Values of the expanded items (controlled).                                                                                                    |
+| `defaultValue` | `readonly string[]`         |          | `[]`         | Values of the items expanded at first (uncontrolled).                                                                                         |
+| `onChange`     | `(value: string[]) => void` |          |              | Called with the values of all expanded items after the user toggles one.                                                                      |
+| `variant`      | `'bordered' \| 'plain'`     |          | `'bordered'` | `bordered` (default) draws a card around the sections; `plain` only draws dividers.                                                           |
+| `headingLevel` | `2 \| 3 \| 4 \| 5 \| 6`     |          | `3`          | Level of the heading that wraps each trigger, `3` by default. Use the level that follows the heading above the accordion in the page outline. |
+| `isDisabled`   | `boolean`                   |          | `false`      | Disables every section.                                                                                                                       |
+| `className`    | `string`                    |          |              |                                                                                                                                               |
+| `ref`          | `Ref<HTMLDivElement>`       |          |              | Ref to the root element.                                                                                                                      |
 
 ### Inherited props
 

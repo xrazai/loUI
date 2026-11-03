@@ -40,6 +40,29 @@ form (flex column, gap --ds-form-gap)
   children           fields, FieldSets, actions
 ```
 
+## Submitting from outside the form
+
+Give the form an `id` and point a submit button at it with the `form` attribute. The browser then submits (and validates) the form natively, so the button can live anywhere in the document, such as the footer of a `Sheet`, which sits outside the body that holds the form:
+
+```tsx
+<Sheet
+  title="New customer"
+  footer={
+    <Button type="submit" form="customer-form" variant="primary">
+      Save customer
+    </Button>
+  }
+>
+  <Form id="customer-form" aria-label="New customer" onSubmit={save}>
+    �
+  </Form>
+</Sheet>
+```
+
+Enter inside a field submits the form as usual, and a failed native validation focuses the first invalid field (or the summary). See the `SheetForm` recipe.
+
+Keep consumer handlers (`onKeyDown`, `onFocus`, �) to what the form level needs, such as `Ctrl+Enter` to save. The form registers no React key or focus handler, so yours never replace an internal one. A handler on the form also sees keys from fields, so `event.key === 'Enter'` there is not a submit: let the browser submit instead.
+
 ## Validation flow
 
 1. The user presses the submit button. With native validation the browser blocks an invalid submit and fires `invalid` on each invalid field.

@@ -12,10 +12,10 @@ A heading whose semantic level (`h1` to `h6`) and visual size are separate choic
 
 ## Props
 
-| Prop    | Type                                     | Required | Default | Description                                                                                                                                                                                       |
-| ------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `level` | `'1' \| '2' \| '3' \| '4' \| '5' \| '6'` |          | `'2'`   | Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has nothing to do with how big the text looks: keep levels sequential and use one `h1` per page. Default `2`. |
-| `size`  | `'title' \| 'display' \| 'heading'`      |          |         | Visual size, independent of `level`: `display` (34px, page hero), `title` (22px) or `heading` (17px). Default: `title` for level 1, `heading` for the others.                                     |
+| Prop    | Type                                | Required | Default | Description                                                                                                                                                                                       |
+| ------- | ----------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6`        |          | `2`     | Semantic level, `h1` to `h6`. It sets the page outline for assistive technology and has nothing to do with how big the text looks: keep levels sequential and use one `h1` per page. Default `2`. |
+| `size`  | `'title' \| 'display' \| 'heading'` |          |         | Visual size, independent of `level`: `display` (34px, page hero), `title` (22px) or `heading` (17px). Default: `title` for level 1, `heading` for the others.                                     |
 
 ### Inherited props
 

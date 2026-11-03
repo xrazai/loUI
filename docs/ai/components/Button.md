@@ -2,8 +2,8 @@
 
 > An action button built on React Aria's `Button`.
 
-Use one `primary` button per screen. While `isPending` the button keeps its width, shows a
-spinner, stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
+Use one `primary` button per screen. While `isPending` the button keeps its width and its
+label (dimmed), shows a spinner before the label (over the `leading` icon when there is one), stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
 by a tooltip and focus is never lost.
 
 The control for an action. Built on React Aria's `Button`, styled with tokens and `data-*` state attributes.
@@ -13,7 +13,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 - Import: `import { Button } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Button/Button.tsx`
-- Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, LongText, Rtl, KeyboardActivation, Focused, Hovered
+- Stories (Storybook title `Components/Button`): Default, Primary, Secondary, Ghost, Danger, DangerSolid, Variants, Sizes, WithLeadingIcon, WithTrailingShortcut, FullWidth, Disabled, Pending, PendingVariants, PendingWithLeadingAndSizes, LongText, Rtl, KeyboardActivation, Focused, Hovered
 
 ## Props
 
@@ -52,7 +52,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-primary-fg-muted`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
+`--ds-accent`, `--ds-button-danger-solid-hover-brightness`, `--ds-button-hover-brightness`, `--ds-button-pending-label-opacity`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-danger-line`, `--ds-danger-soft`, `--ds-danger-soft-hover`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-sans`, `--ds-fs-body`, `--ds-fs-label`, `--ds-fs-small`, `--ds-icon-md`, `--ds-icon-sm`, `--ds-lh-body`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-primary-fg-muted`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-space-5`, `--ds-surface-hover`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`
 
 ## One primary per screen
 
@@ -72,7 +72,7 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 
 ## Anatomy
 
-`[leading] label [trailing]` inside one native `<button>`. When pending, the content keeps its box (invisible) and a `Spinner` is centered on top, so the width never changes.
+`[leading] label [trailing]` inside one native `<button>`. When pending, the label stays visible, dimmed with `--ds-button-pending-label-opacity` (0.65), and a `Spinner` takes the leading position: it sits over the `leading` icon when there is one, otherwise before the label, using the button padding (the content is pulled outward by half of spinner plus gap on each side), so the width never changes. The dimmed label is a busy state, not a disabled one; the label keeps meaning, so users still see what the action is doing (for example "Connecting").
 
 ## Accessibility
 
