@@ -66,3 +66,46 @@ createTester().run('no-deprecated (no manifest)', rule, {
   ],
   invalid: [],
 });
+
+// AI-016: the manifest generator writes `deprecated: "<hint>"` on props with a `@deprecated` tag
+// ("" when the tag has no text), so the rule must treat an empty string as deprecated.
+const generated = {
+  components: [
+    {
+      name: 'Button',
+      status: 'stable',
+      props: [
+        { name: 'variant', description: 'Visual style.' },
+        { name: 'oldSize', description: 'Old.\n@deprecated', deprecated: '' },
+        { name: 'legacyTone', description: 'Old.', deprecated: 'Use variant.' },
+      ],
+    },
+  ],
+  icons: { names: [] },
+};
+
+createTester().run('no-deprecated (generated manifest field)', rule, {
+  valid: [
+    {
+      ...tsx,
+      code: ds(`const a = <Button variant="primary">Save</Button>;`, 'Button'),
+      settings: { loui: { manifest: generated } },
+    },
+  ],
+  invalid: [
+    {
+      ...tsx,
+      code: ds(`const a = <Button oldSize="sm">Save</Button>;`, 'Button'),
+      settings: { loui: { manifest: generated } },
+      errors: [{ messageId: 'prop', data: { name: 'Button', prop: 'oldSize', hint: '' } }],
+    },
+    {
+      ...tsx,
+      code: ds(`const a = <Button legacyTone="x">Save</Button>;`, 'Button'),
+      settings: { loui: { manifest: generated } },
+      errors: [
+        { messageId: 'prop', data: { name: 'Button', prop: 'legacyTone', hint: ' Use variant.' } },
+      ],
+    },
+  ],
+});

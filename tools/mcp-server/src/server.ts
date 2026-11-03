@@ -60,6 +60,9 @@ function describeEntry(entry: ManifestEntry, data: DsData) {
       ...(p.default === undefined ? {} : { default: p.default }),
       ...(p.values ? { values: p.values } : {}),
       description: p.description ?? '',
+      ...(p.deprecated === undefined || p.deprecated === false
+        ? {}
+        : { deprecated: p.deprecated === true ? '' : p.deprecated }),
     })),
     variants: entry.variants ?? {},
     messages: (entry.messages?.keys ?? []).map((k) => ({
@@ -98,6 +101,9 @@ function componentText(c: ReturnType<typeof describeEntry>): string {
     for (const p of c.props) {
       const bits = [`${p.name}${p.required ? ' (required)' : ''}: ${p.type}`];
       if (p.default !== undefined) bits.push(`default ${p.default}`);
+      if (p.deprecated !== undefined) {
+        bits.push(`DEPRECATED${p.deprecated ? `: ${p.deprecated}` : ''} Do not use`);
+      }
       lines.push(`- ${bits.join(', ')}. ${oneLine(p.description, 140)}`);
     }
   }
@@ -271,6 +277,10 @@ export function createServer(data: DsData): McpServer {
             default: z.string().optional(),
             values: z.array(z.string()).optional(),
             description: z.string(),
+            deprecated: z
+              .string()
+              .optional()
+              .describe('Set when the prop is deprecated: the migration hint (may be empty).'),
           }),
         ),
         variants: z.record(z.string(), z.array(z.string())),

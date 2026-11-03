@@ -84,6 +84,17 @@ function createParser(compilerOptions: ts.CompilerOptions) {
   });
 }
 
+/**
+ * Migration hint of a `@deprecated` tag in a prop description (react-docgen-typescript appends
+ * the tags to the description). Returns undefined when the prop is not deprecated and an empty
+ * string when the tag has no text. The hint runs until the next tag.
+ */
+export function deprecationOf(description: string): string | undefined {
+  const match = /(?:^|\n)@deprecated\b[ \t]*([^\n]*(?:\n(?!@)[^\n]*)*)/.exec(description);
+  if (!match) return undefined;
+  return (match[1] ?? '').replace(/\s+/g, ' ').trim();
+}
+
 function convertProp(item: PropItem): ManifestProp {
   const values =
     item.type.name === 'enum' && Array.isArray(item.type.value)
@@ -99,6 +110,7 @@ function convertProp(item: PropItem): ManifestProp {
       : values?.includes(rawDefault)
         ? `'${rawDefault}'`
         : rawDefault;
+  const deprecated = deprecationOf(item.description);
   return {
     name: item.name,
     type,
@@ -106,6 +118,7 @@ function convertProp(item: PropItem): ManifestProp {
     ...(defaultValue === undefined ? {} : { default: defaultValue }),
     description: item.description.trim(),
     ...(values ? { values } : {}),
+    ...(deprecated === undefined ? {} : { deprecated }),
   };
 }
 
