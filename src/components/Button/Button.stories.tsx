@@ -113,11 +113,12 @@ export const Disabled: Story = {
   },
 };
 
-/** The button keeps its width and stays focusable while pending; presses are ignored. */
+/** The button keeps its width and its (dimmed) label, shows a spinner, stays focusable; presses are ignored. */
 export const Pending: Story = {
-  args: { isPending: true, variant: 'primary', children: 'Save changes' },
+  args: { isPending: true, variant: 'primary', children: 'Connecting' },
   play: async ({ canvasElement, args }) => {
     const button = within(canvasElement).getByRole('button');
+    await expect(within(canvasElement).getByText('Connecting')).toBeVisible();
     await expect(button).toHaveAttribute('aria-disabled', 'true');
     await userEvent.tab();
     await expect(button).toHaveFocus();
@@ -140,6 +141,24 @@ export const PendingVariants: Story = {
       </Button>
       <Button {...args} variant="danger-solid">
         Delete order
+      </Button>
+    </div>
+  ),
+};
+
+/** Pending with a leading icon (the spinner replaces the icon in place) and in every size. */
+export const PendingWithLeadingAndSizes: Story = {
+  args: { isPending: true },
+  render: (args) => (
+    <div style={row}>
+      <Button {...args} size="sm" variant="primary">
+        Connect
+      </Button>
+      <Button {...args} size="lg" variant="secondary">
+        Connect account
+      </Button>
+      <Button {...args} leading={<Icon icon={PlusIcon} size="sm" />}>
+        Create order
       </Button>
     </div>
   ),

@@ -28,10 +28,14 @@
     padding-inline: var(--ds-space-3);
     font-size: var(--ds-fs-label);
     line-height: var(--ds-lh-label);
+
+    --pending-shift: calc((var(--ds-icon-sm) + var(--ds-space-1)) / 2);
   }
 
   .root[data-size='md'] {
     min-block-size: var(--ds-control-h-md);
+
+    --pending-shift: calc((var(--ds-icon-md) + var(--ds-space-1)) / 2);
   }
 
   .root[data-size='lg'] {
@@ -39,6 +43,8 @@
     padding-inline: var(--ds-space-5);
     font-size: var(--ds-fs-body);
     line-height: var(--ds-lh-body);
+
+    --pending-shift: calc((var(--ds-icon-md) + var(--ds-space-1)) / 2);
   }
 
   .root[data-full-width] {
@@ -129,17 +135,38 @@
     min-inline-size: 0;
   }
 
-  .root[data-pending] .content {
-    opacity: 0;
+  /*
+   * Pending: the label stays visible, dimmed by a token. The spinner takes the leading position:
+   * over the leading icon when there is one, otherwise before the label. In the second case the
+   * content is pulled outward by half of (spinner + gap) on both sides, so the button keeps its
+   * width and the spinner sits in the padding. The dimmed label is a busy state, not a disabled one.
+   */
+  .root[data-pending] .label {
+    opacity: var(--ds-button-pending-label-opacity);
+  }
+
+  .content[data-spinner='inline'] {
+    gap: var(--ds-space-1);
+    margin-inline: calc(var(--pending-shift) * -1);
   }
 
   .slot {
+    position: relative;
     display: inline-flex;
     flex: none;
     align-items: center;
   }
 
-  .pending {
+  .slotContent {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .content[data-spinner='leading'] .slotContent {
+    visibility: hidden;
+  }
+
+  .overlay {
     position: absolute;
     inset: 0;
     display: flex;

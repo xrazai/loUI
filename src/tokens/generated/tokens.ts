@@ -180,6 +180,7 @@ export type TokenName =
   | 'breakpoint.lg'
   | 'breakpoint.xl'
   | 'button.hover-brightness'
+  | 'button.pending-label-opacity'
   | 'button.danger-solid-hover-brightness'
   | 'calendar.cell-size'
   | 'calendar.weekday-height'
@@ -604,6 +605,7 @@ export type TokenCssVar =
   | '--ds-breakpoint-lg'
   | '--ds-breakpoint-xl'
   | '--ds-button-hover-brightness'
+  | '--ds-button-pending-label-opacity'
   | '--ds-button-danger-solid-hover-brightness'
   | '--ds-calendar-cell-size'
   | '--ds-calendar-weekday-height'
@@ -1046,6 +1048,7 @@ export const tokenValues = {
   'breakpoint.lg': { cssVar: '--ds-breakpoint-lg', type: 'dimension', value: '1024px' },
   'breakpoint.xl': { cssVar: '--ds-breakpoint-xl', type: 'dimension', value: '1280px' },
   'button.hover-brightness': { cssVar: '--ds-button-hover-brightness', type: 'number', value: 0.88 },
+  'button.pending-label-opacity': { cssVar: '--ds-button-pending-label-opacity', type: 'number', value: 0.65 },
   'button.danger-solid-hover-brightness': { cssVar: '--ds-button-danger-solid-hover-brightness', type: 'number', value: 0.9 },
   'calendar.cell-size': { cssVar: '--ds-calendar-cell-size', type: 'dimension', value: '36px' },
   'calendar.weekday-height': { cssVar: '--ds-calendar-weekday-height', type: 'dimension', value: '24px' },

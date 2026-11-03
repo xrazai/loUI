@@ -1844,6 +1844,16 @@ exports[`generated token list (TEST-006) > matches the snapshot 1`] = `
   },
   {
     "aliasOf": null,
+    "cssValue": "0.65",
+    "cssVar": "--ds-button-pending-label-opacity",
+    "description": "Opacity of the Button label while isPending (0.65): the label stays readable next to the spinner but reads as busy. Busy state only, not for disabled.",
+    "name": "button.pending-label-opacity",
+    "tier": "core",
+    "type": "number",
+    "value": 0.65,
+  },
+  {
+    "aliasOf": null,
     "cssValue": "0.9",
     "cssVar": "--ds-button-danger-solid-hover-brightness",
     "description": "Brightness filter of the danger-solid Button on hover (0.9). Use only for the confirm action of a destructive dialog.",

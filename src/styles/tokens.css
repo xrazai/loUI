@@ -223,6 +223,7 @@
 
     /* button */
     --ds-button-hover-brightness: 0.88;
+    --ds-button-pending-label-opacity: 0.65;
     --ds-button-danger-solid-hover-brightness: 0.9;
 
     /* calendar */

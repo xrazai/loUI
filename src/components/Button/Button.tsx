@@ -38,8 +38,8 @@ const SPINNER_SIZE = { sm: 'sm', md: 'md', lg: 'md' } as const;
 /**
  * An action button built on React Aria's `Button`.
  *
- * Use one `primary` button per screen. While `isPending` the button keeps its width, shows a
- * spinner, stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
+ * Use one `primary` button per screen. While `isPending` the button keeps its width and its
+ * label (dimmed), shows a spinner before the label (over the `leading` icon when there is one), stays focusable, sets `aria-disabled` and ignores presses, so it can be explained
  * by a tooltip and focus is never lost.
  */
 export function Button({
@@ -60,20 +60,26 @@ export function Button({
       data-full-width={fullWidth || undefined}
       className={classNames(styles.root, className)}
     >
-      {({ isPending }) => (
-        <>
-          <span className={styles.content}>
-            {leading ? <span className={styles.slot}>{leading}</span> : null}
-            {children}
+      {({ isPending }) => {
+        const spinner = isPending ? <Spinner size={SPINNER_SIZE[size]} /> : null;
+        return (
+          <span
+            className={styles.content}
+            data-spinner={isPending ? (leading ? 'leading' : 'inline') : undefined}
+          >
+            {leading ? (
+              <span className={styles.slot}>
+                <span className={styles.slotContent}>{leading}</span>
+                {spinner ? <span className={styles.overlay}>{spinner}</span> : null}
+              </span>
+            ) : (
+              spinner
+            )}
+            <span className={styles.label}>{children}</span>
             {trailing ? <span className={styles.slot}>{trailing}</span> : null}
           </span>
-          {isPending ? (
-            <span className={styles.pending}>
-              <Spinner size={SPINNER_SIZE[size]} />
-            </span>
-          ) : null}
-        </>
-      )}
+        );
+      }}
     </AriaButton>
   );
 }

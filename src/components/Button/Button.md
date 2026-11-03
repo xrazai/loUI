@@ -23,22 +23,22 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 
 ## Anatomy
 
-`[leading] label [trailing]` inside one native `<button>`. When pending, the content keeps its box (invisible) and a `Spinner` is centered on top, so the width never changes.
+`[leading] label [trailing]` inside one native `<button>`. When pending, the label stays visible, dimmed with `--ds-button-pending-label-opacity` (0.65), and a `Spinner` takes the leading position: it sits over the `leading` icon when there is one, otherwise before the label, using the button padding (the content is pulled outward by half of spinner plus gap on each side), so the width never changes. The dimmed label is a busy state, not a disabled one; the label keeps meaning, so users still see what the action is doing (for example "Connecting").
 
 ## Props
 
-| Prop         | Type                                                                | Default       | Notes                                                                                     |
-| ------------ | ------------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------- |
-| `variant`    | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'danger-solid'` | `'secondary'` | See above.                                                                                |
-| `size`       | `'sm' \| 'md' \| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                            |
-| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                      |
-| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size="sm" />`. Decorative.                                                 |
-| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                      |
-| `isPending`  | `boolean`                                                           | `false`       | Busy: spinner, `aria-disabled`, presses and form submission ignored, stays focusable.     |
-| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                            |
-| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`. |
-| `type`       | `'button' \| 'submit' \| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                              |
-| `className`  | `string`                                                            | none          | Merged with the component class.                                                          |
+| Prop         | Type                                                                | Default       | Notes                                                                                                   |
+| ------------ | ------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |
+| `variant`    | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'danger-solid'` | `'secondary'` | See above.                                                                                              |
+| `size`       | `'sm' \| 'md' \| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                                          |
+| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                                    |
+| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size="sm" />`. Decorative.                                                               |
+| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                                    |
+| `isPending`  | `boolean`                                                           | `false`       | Busy: dimmed label plus spinner, `aria-disabled`, presses and form submission ignored, stays focusable. |
+| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                                          |
+| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`.               |
+| `type`       | `'button' \| 'submit' \| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                                            |
+| `className`  | `string`                                                            | none          | Merged with the component class.                                                                        |
 
 Other React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted.
 

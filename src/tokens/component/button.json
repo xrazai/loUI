@@ -6,6 +6,11 @@
       "$value": 0.88,
       "$description": "Brightness filter of the primary Button on hover (0.88): ink on dark gets slightly dimmer instead of changing color. Not for other variants or other components."
     },
+    "pending-label-opacity": {
+      "$type": "number",
+      "$value": 0.65,
+      "$description": "Opacity of the Button label while isPending (0.65): the label stays readable next to the spinner but reads as busy. Busy state only, not for disabled."
+    },
     "danger-solid-hover-brightness": {
       "$type": "number",
       "$value": 0.9,

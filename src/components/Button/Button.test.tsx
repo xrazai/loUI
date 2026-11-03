@@ -236,6 +236,40 @@ describe('Button', () => {
       expect(onPress).not.toHaveBeenCalled();
     });
 
+    it('keeps the label visible, dimmed, next to the spinner without overlap', async () => {
+      const screen = await renderWithProvider(<Button isPending>Connecting</Button>);
+      const button = screen.getByRole('button').element();
+      const label = screen.getByText('Connecting').element();
+      const bar = screen.getByRole('progressbar').element();
+      expect(getComputedStyle(label).opacity).toBe('0.65');
+      expect(getComputedStyle(label).visibility).toBe('visible');
+      const labelBox = label.getBoundingClientRect();
+      const barBox = bar.getBoundingClientRect();
+      const buttonBox = button.getBoundingClientRect();
+      expect(barBox.right <= labelBox.left || barBox.left >= labelBox.right).toBe(true);
+      expect(barBox.left).toBeGreaterThanOrEqual(buttonBox.left);
+      expect(barBox.right).toBeLessThanOrEqual(buttonBox.right);
+    });
+
+    it.each(['sm', 'md', 'lg'] as const)(
+      'keeps its width with a leading icon (%s)',
+      async (size) => {
+        const view = await renderWithProvider(
+          <Button size={size} leading={<span data-testid="icon">+</span>}>
+            Create order
+          </Button>,
+        );
+        const idleWidth = width(view.getByRole('button').element());
+        await view.rerender(
+          <Button size={size} isPending leading={<span data-testid="icon">+</span>}>
+            Create order
+          </Button>,
+        );
+        expect(width(view.getByRole('button').element())).toBe(idleWidth);
+        expect(getComputedStyle(view.getByText('Create order').element()).opacity).toBe('0.65');
+      },
+    );
+
     it('renders a named spinner inside the busy button', async () => {
       const screen = await renderWithProvider(<Button isPending>Save changes</Button>);
       const button = screen.getByRole('button', { name: /Save changes/ }).element();
