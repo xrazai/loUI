@@ -56,6 +56,7 @@ DialogTrigger
 - Slide-in is a 150 ms transform and the scrim fades; both are removed under `prefers-reduced-motion`. The slide direction follows the writing direction (`:dir(rtl)`).
 - The panel is `Modal` content inside the overlay, so it stacks above the scrim without a second z-index.
 - See the Dialog doc ("Layers") for popovers opened from inside the sheet.
+- **Exit animation.** The sheet stays mounted for the 150 ms slide-out. It keeps rendering the props of its last open render during that time, so you can clear the state that feeds it (`setRecord(null)`) in the same update that closes it and the panel will not animate out empty (no blank fields or title). Reopening shows the new content at once. Under `prefers-reduced-motion` there is no animation, so it leaves the DOM immediately (tested). If the tab is hidden the browser does not run animations and React Aria unmounts the sheet only once the tab is visible again.
 
 ## Content rules
 

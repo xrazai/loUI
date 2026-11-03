@@ -15,16 +15,16 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 - Import: `import { Swatch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Swatch/Swatch.tsx`
-- Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex
+- Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex, NoColor
 
 ## Props
 
-| Prop         | Type                   | Required | Default | Description                                                                                                                                                                        |
-| ------------ | ---------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `color`      | `string`               | yes      |         | The color to show, as `#rgb` or `#rrggbb`. Anything else throws in development and renders an empty circle in production.                                                          |
-| `label`      | `string`               |          |         | Name of the color ("Navy"). Required whenever the swatch is the only thing that identifies the color: a color on its own says nothing to a screen reader or to a color-blind user. |
-| `decorative` | `true`                 |          |         | Hides the swatch from assistive technology. Use it only when the color is also named by adjacent text (a table cell, an option label).                                             |
-| `size`       | `'sm' \| 'md' \| 'lg'` |          | `'md'`  | Diameter token: `sm` 16px, `md` 20px (default), `lg` 32px.                                                                                                                         |
+| Prop         | Type                   | Required | Default | Description                                                                                                                                                                                                                                                      |
+| ------------ | ---------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`      | `string`               |          |         | Name of the color ("Navy"). Required whenever the swatch is the only thing that identifies the color: a color on its own says nothing to a screen reader or to a color-blind user.                                                                               |
+| `decorative` | `true`                 |          |         | Hides the swatch from assistive technology. Use it only when the color is also named by adjacent text (a table cell, an option label).                                                                                                                           |
+| `color`      | `string \| null`       |          |         | The color to show, as `#rgb` or `#rrggbb`. `undefined`, `null` and `''` mean "no color" and render an empty dashed circle (use it for model data that may have no color). Any other value throws in development and renders the same empty circle in production. |
+| `size`       | `'sm' \| 'md' \| 'lg'` |          | `'md'`  | Diameter token: `sm` 16px, `md` 20px (default), `lg` 32px.                                                                                                                                                                                                       |
 
 ### Inherited props
 

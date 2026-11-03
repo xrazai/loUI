@@ -8,7 +8,7 @@ import type { LabelProps as RACLabelProps } from 'react-aria-components';
 import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { messages } from './Field.messages';
-import type { FieldErrorMessage } from './labeling';
+import type { FieldErrorMessage, FieldMessageTone } from './labeling';
 import styles from './Field.module.css';
 
 export interface LabelProps extends Omit<RACLabelProps, 'className'> {
@@ -63,6 +63,12 @@ export function RequiredMark({ messages: overrides }: RequiredMarkProps) {
 
 export interface DescriptionProps {
   children?: ReactNode;
+  /**
+   * Tints the text for a live check (`success` "Matches", `warning` "Over by $5", `danger`
+   * "Short by $5"). Default `neutral`. The words carry the meaning: colour only reinforces it,
+   * so never rely on the tone alone.
+   */
+  tone?: FieldMessageTone | undefined;
   className?: string | undefined;
   ref?: Ref<HTMLElement> | undefined;
 }
@@ -70,10 +76,17 @@ export interface DescriptionProps {
 /**
  * Helper text under a field (the handoff `hint`). Linked to the control with
  * `aria-describedby` by the surrounding React Aria field. It stays visible when an error shows.
+ * With `tone` it becomes a toned message ("Matches", "Over by $5"); the tone adds colour only,
+ * the announcement is the same text.
  */
-export function Description({ className, ...rest }: DescriptionProps) {
+export function Description({ className, tone = 'neutral', ...rest }: DescriptionProps) {
   return (
-    <RACText {...rest} slot="description" className={classNames(styles.description, className)} />
+    <RACText
+      {...rest}
+      slot="description"
+      data-tone={tone === 'neutral' ? undefined : tone}
+      className={classNames(styles.description, className)}
+    />
   );
 }
 
@@ -121,15 +134,17 @@ export function FieldError({ className, children, ...rest }: FieldErrorProps) {
 
 export interface FieldMessagesProps {
   description?: ReactNode;
+  /** Tone of the description, see `Description`. */
+  descriptionTone?: FieldMessageTone | undefined;
   errorMessage?: FieldErrorMessage;
 }
 
 /** Description followed by the error: the footer every field renders under its control. */
-export function FieldMessages({ description, errorMessage }: FieldMessagesProps) {
+export function FieldMessages({ description, descriptionTone, errorMessage }: FieldMessagesProps) {
   const hasDescription = description !== undefined && description !== null && description !== false;
   return (
     <>
-      {hasDescription ? <Description>{description}</Description> : null}
+      {hasDescription ? <Description tone={descriptionTone}>{description}</Description> : null}
       <FieldError>{errorMessage}</FieldError>
     </>
   );

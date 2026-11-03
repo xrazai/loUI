@@ -73,6 +73,48 @@ describe('Swatch', () => {
       expect(isHexColor('red')).toBe(false);
     });
 
+    it('is false for transparent, an empty string, null and undefined', () => {
+      expect(isHexColor('transparent')).toBe(false);
+      expect(isHexColor('')).toBe(false);
+      expect(isHexColor(null)).toBe(false);
+      expect(isHexColor(undefined)).toBe(false);
+    });
+
+    it('is exported from the package entry point', async () => {
+      const entry = await import('../../index');
+      expect(entry.isHexColor).toBe(isHexColor);
+    });
+
+    it.each([
+      ['undefined', undefined],
+      ['null', null],
+      ['an empty string', ''],
+    ])('renders an empty decorative circle for %s without throwing', async (_name, color) => {
+      const screen = await renderWithProvider(
+        <span data-testid="host">
+          <Swatch color={color} decorative />
+        </span>,
+      );
+      const swatch = screen.getByTestId('host').element().firstElementChild as HTMLElement;
+      expect(swatch.getAttribute('aria-hidden')).toBe('true');
+      expect(swatch.hasAttribute('data-empty')).toBe(true);
+      expect(swatch.style.getPropertyValue('--ds-swatch-color')).toBe('');
+      expect(getComputedStyle(swatch).borderTopStyle).toBe('dashed');
+    });
+
+    it('omits the color prop entirely', async () => {
+      const screen = await renderWithProvider(<Swatch label="No color" />);
+      await expect.element(screen.getByRole('img', { name: 'No color' })).toBeVisible();
+    });
+
+    it('still throws for non-empty invalid values such as transparent', async () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      await expect(renderWithProvider(<Swatch color="transparent" label="Bad" />)).rejects.toThrow(
+        /Swatch expects a hex color/,
+      );
+      error.mockRestore();
+    });
+
     it('throws for an invalid color in development', async () => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
       await expect(renderWithProvider(<Swatch color="not-a-color" label="Bad" />)).rejects.toThrow(

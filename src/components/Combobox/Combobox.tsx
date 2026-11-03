@@ -18,7 +18,12 @@ import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { matchesSearch } from '../../utils/text';
 import { FieldMessages, Label } from '../Field';
-import type { FieldErrorMessage, FieldLabelingProps, fieldMessages } from '../Field';
+import type {
+  FieldErrorMessage,
+  FieldLabelingProps,
+  FieldMessageTone,
+  fieldMessages,
+} from '../Field';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import { Icon } from '../Icon';
@@ -149,6 +154,11 @@ interface ComboboxBaseProps extends Omit<
   isLoading?: boolean | undefined;
   /** Helper text under the control. Linked with `aria-describedby`. */
   description?: ReactNode;
+  /**
+   * Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as
+   * "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.
+   */
+  descriptionTone?: FieldMessageTone | undefined;
   /** Error text, shown while the field is invalid and the error is displayed. See `Input`. */
   errorMessage?: FieldErrorMessage;
   /** Text shown while the box is empty. Never a substitute for the label. */
@@ -215,6 +225,7 @@ function renderOption(option: ComboboxOption) {
 export function Combobox({
   label,
   description,
+  descriptionTone,
   errorMessage,
   options,
   value,
@@ -316,7 +327,11 @@ export function Combobox({
           <Icon icon={ChevronDownIcon} size="sm" />
         </Button>
       </Group>
-      <FieldMessages description={description} errorMessage={errorMessage} />
+      <FieldMessages
+        description={description}
+        descriptionTone={descriptionTone}
+        errorMessage={errorMessage}
+      />
       {/* RAC writes an inline z-index of 100000; the style prop is the only way to put the popover on the dropdown layer. */}
       <Popover
         className={classNames(styles.popover, popoverClassName)}

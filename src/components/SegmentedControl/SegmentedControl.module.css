@@ -1,9 +1,26 @@
 @layer components {
+  /* The optional label and description wrapper. The bar keeps its own width inside it. */
+  .field {
+    align-items: flex-start;
+  }
+
+  .field[data-full-width] {
+    align-items: stretch;
+  }
+
+  /*
+   * The bar is as wide as its options, also as a child of a stretching flex column (Stack): a
+   * definite inline-size opts out of the stretch. Options that do not fit scroll the bar
+   * sideways; labels never truncate (GAP-041).
+   */
   .root {
     box-sizing: border-box;
     display: inline-flex;
     gap: var(--ds-segmented-control-padding);
+    inline-size: fit-content;
     max-inline-size: 100%;
+    overflow: auto hidden;
+    scrollbar-width: thin;
     padding: var(--ds-segmented-control-padding);
     border: 1px solid var(--ds-line-control);
     border-radius: var(--ds-radius-md);
@@ -12,18 +29,18 @@
 
   .root[data-full-width] {
     display: flex;
+    inline-size: 100%;
   }
 
   .segment {
     box-sizing: border-box;
     display: flex;
 
-    /* Segments shrink when the control is narrower than its labels; the label then truncates (WCAG 1.4.10). */
-    flex: 0 1 auto;
+    /* Segments never shrink below their label: the bar scrolls instead (WCAG 1.4.10). */
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     gap: var(--ds-space-2);
-    min-inline-size: 0;
     block-size: var(--ds-segmented-control-height-md);
     padding-inline: var(--ds-space-3);
     border: 1px solid transparent;
@@ -48,7 +65,8 @@
   }
 
   .root[data-full-width] .segment {
-    flex: 1;
+    flex: 1 0 0;
+    min-inline-size: max-content;
   }
 
   .segment[data-hovered] {
@@ -73,11 +91,6 @@
   .segment[data-disabled] {
     opacity: var(--ds-opacity-disabled);
     cursor: not-allowed;
-  }
-
-  .label {
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   /* text-2: text-3 would fail 4.5:1 on the selected (hover) surface. */

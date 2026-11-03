@@ -4,8 +4,14 @@ import { userEvent } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
+import { Combobox } from '../Combobox';
+import { CurrencyInput } from '../CurrencyInput';
 import { Input } from '../Input';
+import { NumberField } from '../NumberField';
+import { Select } from '../Select';
+import { Textarea } from '../Textarea';
 import { Description, FieldError, FieldMessages, Label } from './Field';
+import type { FieldMessageTone } from './labeling';
 
 function Composed(props: {
   isRequired?: boolean;
@@ -160,5 +166,143 @@ describe('validation timing (the product rule: errors appear only after a save a
     await expect.element(screen.getByRole('alert')).toHaveTextContent('Use at least 3 characters.');
     await screen.getByRole('button', { name: 'Save' }).click();
     expect(submitted).toBe(true);
+  });
+});
+
+describe('toned description (GAP-039)', () => {
+  const tones: FieldMessageTone[] = ['accent', 'success', 'warning', 'danger'];
+
+  function colorOf(element: Element | null): string {
+    return element ? getComputedStyle(element).color : '';
+  }
+
+  it('Description without a tone has no data-tone and keeps the tertiary colour', async () => {
+    const screen = await renderWithProvider(<Composed />);
+    const description = screen.getByText('Shown on invoices.').element();
+    expect(description.hasAttribute('data-tone')).toBe(false);
+    expect(colorOf(description)).not.toBe('');
+  });
+
+  it('neutral is the same as no tone', async () => {
+    const screen = await renderWithProvider(
+      <TextField>
+        <Label>Name</Label>
+        <RACInput />
+        <Description tone="neutral">Plain.</Description>
+      </TextField>,
+    );
+    expect(screen.getByText('Plain.').element().hasAttribute('data-tone')).toBe(false);
+  });
+
+  it.each(tones)('%s tints the text and leaves it linked with aria-describedby', async (tone) => {
+    const screen = await renderWithProvider(
+      <main>
+        <Input label="Plain" description="Plain." />
+        <Input label="Amount" description="Over by $5" descriptionTone={tone} />
+      </main>,
+    );
+    const description = screen.getByText('Over by $5').element();
+    expect(description.getAttribute('data-tone')).toBe(tone);
+    expect(colorOf(description)).not.toBe(colorOf(screen.getByText('Plain.').element()));
+    await expect
+      .element(screen.getByRole('textbox', { name: 'Amount' }))
+      .toHaveAccessibleDescription('Over by $5');
+  });
+
+  it('uses the same tokens as the signal colours', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <Input label="A" description="Matches" descriptionTone="success" />
+        <Input label="B" description="Short by $5" descriptionTone="danger" />
+        <Input label="C" description="Over by $5" descriptionTone="warning" />
+      </main>,
+    );
+    const probe = (token: string) => {
+      const element = document.createElement('span');
+      element.style.color = `var(${token})`;
+      document.body.append(element);
+      const color = getComputedStyle(element).color;
+      element.remove();
+      return color;
+    };
+    expect(colorOf(screen.getByText('Matches').element())).toBe(probe('--ds-success'));
+    expect(colorOf(screen.getByText('Short by $5').element())).toBe(probe('--ds-danger'));
+    expect(colorOf(screen.getByText('Over by $5').element())).toBe(probe('--ds-warning'));
+  });
+
+  it('a toned description is not an alert: the live error stays the only announcement', async () => {
+    const screen = await renderWithProvider(
+      <Input
+        label="Amount"
+        description="Short by $5"
+        descriptionTone="danger"
+        isInvalid
+        errorMessage="Enter the full amount."
+      />,
+    );
+    expect(screen.container.querySelectorAll('[role="alert"]')).toHaveLength(1);
+    await expect
+      .element(screen.getByRole('textbox', { name: 'Amount' }))
+      .toHaveAccessibleDescription('Short by $5 Enter the full amount.');
+  });
+
+  it('is passed through by Input, Textarea, Select, Combobox, NumberField and CurrencyInput', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <Input label="Input" description="Text message" descriptionTone="success" />
+        <Textarea label="Textarea" description="Textarea message" descriptionTone="success" />
+        <Select
+          label="Select"
+          options={[{ value: 'a', label: 'A' }]}
+          description="Select message"
+          descriptionTone="success"
+        />
+        <Combobox
+          label="Combobox"
+          options={[{ value: 'a', label: 'A' }]}
+          description="Combobox message"
+          descriptionTone="success"
+        />
+        <NumberField label="Number" description="Number message" descriptionTone="success" />
+        <CurrencyInput
+          label="Currency"
+          currency="USD"
+          description="Currency message"
+          descriptionTone="success"
+        />
+      </main>,
+    );
+    for (const text of [
+      'Text message',
+      'Textarea message',
+      'Select message',
+      'Combobox message',
+      'Number message',
+      'Currency message',
+    ]) {
+      expect(screen.getByText(text).element().getAttribute('data-tone')).toBe('success');
+    }
+    await expect
+      .element(screen.getByRole('textbox', { name: 'Currency' }))
+      .toHaveAccessibleDescription('Currency message');
+    await expect
+      .element(screen.getByRole('combobox', { name: 'Combobox' }))
+      .toHaveAccessibleDescription('Combobox message');
+  });
+
+  it('has no axe violations in every tone, including contrast (axe)', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        {tones.map((tone) => (
+          <Input
+            key={tone}
+            label={`Field ${tone}`}
+            description={`Message ${tone}`}
+            descriptionTone={tone}
+          />
+        ))}
+      </main>,
+    );
+    await expectNoA11yViolations(screen.container);
   });
 });

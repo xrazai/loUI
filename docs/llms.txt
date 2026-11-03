@@ -168,12 +168,12 @@ Tested compositions for common situations. Start from the one that fits, keep it
 
 ## Hooks, utilities and icons
 
-- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast, useUndoable; 41 utilities and constants; 30 icons.
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast, useUndoable; 43 utilities and constants; 40 icons.
 
 ## Machine-readable data
 
 - [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (114 components).
-- [tokens.json](./tokens.json): 432 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [tokens.json](./tokens.json): 434 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

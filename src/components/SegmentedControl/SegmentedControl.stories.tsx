@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { DSProvider } from '../../providers/DSProvider';
+import { Input } from '../Input';
+import { Kbd } from '../Kbd';
+import { Stack } from '../Stack';
 import { SegmentedControl } from './SegmentedControl';
 import { StoryFrame } from '../../test/StoryFrame';
 
@@ -136,6 +139,98 @@ export const LongLabels: Story = {
       </StoryFrame>
     ),
   ],
+};
+
+const transactionTypes = [
+  { value: 'transfer', label: 'Transfer' },
+  { value: 'deposit', label: 'Deposit' },
+  { value: 'withdrawal', label: 'Withdrawal' },
+  { value: 'adjustment', label: 'Adjustment' },
+];
+
+/** A visible label names the group, styled like the label of `Input`. No `aria-label` needed. */
+export const WithLabel: Story = {
+  args: { label: 'Transaction type', options: transactionTypes },
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('radiogroup', { name: 'Transaction type' }),
+    ).toBeInTheDocument();
+  },
+};
+
+export const WithDescription: Story = {
+  args: {
+    label: 'Transaction type',
+    description: 'Changes the fields below.',
+    options: transactionTypes,
+  },
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('radiogroup', { name: 'Transaction type' }),
+    ).toHaveAccessibleDescription('Changes the fields below.');
+  },
+};
+
+export const ToneDescription: Story = {
+  args: {
+    label: 'Status',
+    description: 'Saved for this device',
+    descriptionTone: 'success',
+    options,
+  },
+};
+
+/** Four options in a 440 px column: every label is shown in full. */
+export const FourOptions: Story = {
+  args: { label: 'Transaction type', options: transactionTypes },
+  decorators: [
+    (Story) => (
+      <StoryFrame width={440}>
+        <Story />
+      </StoryFrame>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const radio = within(canvasElement).getByRole('radio', { name: 'Transfer' });
+    await expect(radio.scrollWidth).toBeLessThanOrEqual(radio.clientWidth);
+  },
+};
+
+/** A `Stack` stretches its children, but the bar keeps the width of its options. */
+export const InsideStack: Story = {
+  args: { label: 'Transaction type', options: transactionTypes },
+  decorators: [
+    (Story) => (
+      <StoryFrame width={560}>
+        <Stack>
+          <Story />
+          <Input label="Reference" />
+        </Stack>
+      </StoryFrame>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const group = within(canvasElement).getByRole('radiogroup');
+    await expect(group.getBoundingClientRect().width).toBeLessThan(560);
+  },
+};
+
+/** Shortcuts go in the description, where `Kbd` is read once and the option names stay clean. */
+export const ShortcutHint: Story = {
+  args: {
+    label: 'View',
+    options,
+    description: (
+      <>
+        Switch with <Kbd keys={['Alt', '1']} /> <Kbd keys={['Alt', '2']} />{' '}
+        <Kbd keys={['Alt', '3']} />
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('radio', { name: 'List' })).toBeInTheDocument();
+  },
 };
 
 export const PortugueseCounts: Story = {

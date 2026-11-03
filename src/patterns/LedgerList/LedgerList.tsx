@@ -15,8 +15,12 @@ export type LedgerNegativeTone = 'neutral' | 'success' | 'warning' | 'danger';
 export interface LedgerEntry {
   /** Stable identifier: the React key and what `onDelete` identifies. */
   id: string;
-  /** Date of the entry as `YYYY-MM-DD`. */
-  date: ISODate;
+  /**
+   * Date of the entry as `YYYY-MM-DD`. Optional: an entry without a date renders no date (and no
+   * `time` element). When at least one entry in the list has a date, the date column is kept so
+   * titles and amounts stay aligned across rows; when none has, the column is dropped.
+   */
+  date?: ISODate | undefined;
   /** What happened ("Payment received", "Stock adjustment"). */
   title: string;
   /** Optional second line (a reference, a person, a note). */
@@ -28,6 +32,13 @@ export interface LedgerEntry {
   delta: number;
   /** Running balance after this entry, in the same unit as `delta`. Omit to hide it. */
   balance?: number;
+  /**
+   * Whether this entry gets a "Delete entry" button when the list has `onDelete`. Default `true`.
+   * Set `false` for a fixed row (an opening balance, a system entry): it renders no button, so
+   * nothing is focusable on it, and its amounts stay aligned with the deletable rows. Has no
+   * effect without `onDelete`.
+   */
+  isDeletable?: boolean | undefined;
 }
 
 export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'children'> {
@@ -53,8 +64,9 @@ export interface LedgerListProps extends Omit<ComponentPropsWithRef<'ul'>, 'chil
   /** Format of each entry's date (`formatDate` styles). Default `monthDay`. */
   dateStyle?: DateStyle;
   /**
-   * Adds a "Delete entry" button to each row and calls this with the entry. Deleting must be
-   * confirmed by the consumer (dialog or inline confirmation) before data is removed.
+   * Adds a "Delete entry" button to each row (except entries with `isDeletable: false`) and calls
+   * this with the entry. The component only reports the request: the consumer must confirm it
+   * (dialog or inline confirmation) before data is removed, and offer Undo afterwards.
    */
   onDelete?: (entry: LedgerEntry) => void;
   /** Message overrides for this instance. */
@@ -97,15 +109,18 @@ export function LedgerList({
       {...rest}
       className={classNames(styles.root, className)}
       data-deletable={onDelete ? 'true' : undefined}
+      data-dated={entries.some((entry) => entry.date !== undefined) ? 'true' : undefined}
     >
       {entries.map((entry) => {
         const direction = entry.delta > 0 ? 'positive' : entry.delta < 0 ? 'negative' : 'zero';
         const sign = direction === 'positive' ? PLUS : direction === 'negative' ? MINUS : '';
         return (
           <li key={entry.id} className={styles.entry} data-direction={direction}>
-            <time className={styles.date} dateTime={entry.date}>
-              {formatDate(entry.date, locale, dateStyle)}
-            </time>
+            {entry.date !== undefined ? (
+              <time className={styles.date} dateTime={entry.date}>
+                {formatDate(entry.date, locale, dateStyle)}
+              </time>
+            ) : null}
             <div className={styles.text}>
               <span className={styles.title}>{entry.title}</span>
               {entry.sub ? <span className={styles.sub}>{entry.sub}</span> : null}
@@ -127,7 +142,7 @@ export function LedgerList({
                 <span className={styles.balance}>{t.balance(formatValue(entry.balance))}</span>
               ) : null}
             </div>
-            {onDelete ? (
+            {onDelete && entry.isDeletable !== false ? (
               <IconButton
                 variant="ghost"
                 size="sm"

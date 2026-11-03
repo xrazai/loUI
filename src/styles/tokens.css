@@ -308,6 +308,8 @@
     --ds-data-table-gap: var(--ds-space-3);
     --ds-data-table-sticky-z-index: 1;
     --ds-data-table-col-w: 160px;
+    --ds-data-table-col-min-w: 0px;
+    --ds-data-table-min-w: 0px;
     --ds-data-table-max-h: 480px;
 
     /* dialog */

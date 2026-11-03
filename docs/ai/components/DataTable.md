@@ -15,7 +15,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
 
 ## Props
 
@@ -70,7 +70,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 ## When to use
 
@@ -98,25 +98,41 @@ div.root
 
 ## Props (key ones)
 
-| Prop                                                         | Type                                          | Default | Notes                                                                                                   |
-| ------------------------------------------------------------ | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| `columns`                                                    | `DataTableColumn<T>[]`                        | -       | `key`, `label`, `width`, `align` (`start`/`end`), `mono`, `muted`, `sortable`, `sortValue`, `render`    |
-| `rows`                                                       | `T[]`                                         | -       | Shown in the order given until the user sorts                                                           |
-| `rowKey`                                                     | `keyof T`                                     | `id`    | Unique id property; converted to a string                                                               |
-| `aria-label`                                                 | `string`                                      | -       | Required (or `aria-labelledby`)                                                                         |
-| `selectionMode`                                              | `none \| single \| multiple`                  | `none`  | Adds a checkbox column                                                                                  |
-| `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange` | `ReadonlySet<string>`                         |         | Controlled / uncontrolled. Selection survives page changes                                              |
-| `bulkActions`                                                | `(keys, clear) => ReactNode`                  |         | Content of the bar shown while rows are selected                                                        |
-| `sort` / `defaultSort` / `onSortChange`                      | `{ key, direction: 'asc' \| 'desc' } \| null` | `null`  | Controlled / uncontrolled sort                                                                          |
-| `pageSize`                                                   | `number \| false`                             | `10`    | `false` disables pagination                                                                             |
-| `page` / `defaultPage` / `onPageChange`                      | `number`                                      | `1`     | Controlled / uncontrolled page                                                                          |
-| `onRowAction`                                                | `(row) => void`                               |         | Row click or Enter. Adds hover style and pointer cursor                                                 |
-| `activeKey`                                                  | `string`                                      |         | Row open elsewhere (raised background + ink bar)                                                        |
-| `isLoading`                                                  | `boolean`                                     | `false` | Skeleton rows (`loadingRowCount`, default 5) and a live "Loading rows"                                  |
-| `emptyState`                                                 | `ReactNode`                                   |         | Default: `EmptyState` with built-in text                                                                |
-| `reserveBulkBarSpace`                                        | `boolean`                                     | `true`  | Keeps the bulk bar space free so the table does not jump when the first row is selected                 |
-| `stickyHeader`, `maxHeight`                                  | `boolean`, `number \| string`                 |         | With `maxHeight` the body scrolls and the header stays; without it the header sticks to the page scroll |
-| `messages`                                                   | `Partial<messages>`                           |         | Per-instance text overrides                                                                             |
+| Prop                                                         | Type                                          | Default | Notes                                                                                                                                                    |
+| ------------------------------------------------------------ | --------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `columns`                                                    | `DataTableColumn<T>[]`                        | -       | `key`, `label`, `width`, `minWidth`, `truncate`, `hideLabel`, `align` (`start`/`end`), `mono`, `muted`, `sortable`, `sortValue`, `render`, `isRowHeader` |
+| `rows`                                                       | `T[]`                                         | -       | Shown in the order given until the user sorts                                                                                                            |
+| `rowKey`                                                     | `keyof T`                                     | `id`    | Unique id property; converted to a string                                                                                                                |
+| `aria-label`                                                 | `string`                                      | -       | Required (or `aria-labelledby`)                                                                                                                          |
+| `selectionMode`                                              | `none \| single \| multiple`                  | `none`  | Adds a checkbox column                                                                                                                                   |
+| `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange` | `ReadonlySet<string>`                         |         | Controlled / uncontrolled. Selection survives page changes                                                                                               |
+| `bulkActions`                                                | `(keys, clear) => ReactNode`                  |         | Content of the bar shown while rows are selected                                                                                                         |
+| `sort` / `defaultSort` / `onSortChange`                      | `{ key, direction: 'asc' \| 'desc' } \| null` | `null`  | Controlled / uncontrolled sort                                                                                                                           |
+| `pageSize`                                                   | `number \| false`                             | `10`    | `false` disables pagination                                                                                                                              |
+| `page` / `defaultPage` / `onPageChange`                      | `number`                                      | `1`     | Controlled / uncontrolled page                                                                                                                           |
+| `onRowAction`                                                | `(row) => void`                               |         | Row click or Enter. Adds hover style and pointer cursor. A `Button` in a cell does not trigger it (see "Buttons inside cells")                           |
+| `activeKey`                                                  | `string`                                      |         | Row open elsewhere (raised background + ink bar)                                                                                                         |
+| `isLoading`                                                  | `boolean`                                     | `false` | Skeleton rows (`loadingRowCount`, default 5) and a live "Loading rows"                                                                                   |
+| `emptyState`                                                 | `ReactNode`                                   |         | Default: `EmptyState` with built-in text                                                                                                                 |
+| `reserveBulkBarSpace`                                        | `boolean`                                     | `true`  | Keeps the bulk bar space free so the table does not jump when the first row is selected                                                                  |
+| `stickyHeader`, `maxHeight`                                  | `boolean`, `number \| string`                 |         | With `maxHeight` the body scrolls and the header stays; without it the header sticks to the page scroll                                                  |
+| `messages`                                                   | `Partial<messages>`                           |         | Per-instance text overrides                                                                                                                              |
+
+## Column sizing
+
+| Column prop | Type      | Default | Effect                                                                                                                                     |
+| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `width`     | `string`  | -       | CSS width (`96px`, `20%`). Columns without it share the remaining space equally                                                            |
+| `minWidth`  | `string`  | -       | CSS minimum width (`120px`, `8rem`). The column is never narrower; a container that is too small scrolls horizontally instead of squashing |
+| `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |
+| `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |
+
+- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width of the fixed columns plus the flexible ones at their largest `minWidth` (`--ds-data-table-min-w`). Without any `minWidth` the layout is unchanged.
+- A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.
+- Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.
+- Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.
+- **Headers never wrap by default.** The mono uppercase caption style is cut with an ellipsis in a narrow column ("SUPPL…"). Either give the column a `minWidth` that fits the label, or set `truncate: false` to allow a two-line header.
+- **Icon-only columns:** set `hideLabel: true` and `sortable: false`. The header cell is named by `label` ("Row actions"), so a screen reader still announces it; never leave the label empty.
 
 ## Sorting
 
@@ -136,6 +152,10 @@ Lists are alphabetical by default in this design system (AGENTS.md rule 5b; exce
 - "Select all" applies to the rows on the current page. Selection of other pages is kept. `bulkActions` receives only ids that still exist in `rows`.
 - The bulk bar shows "N selected" (plural-aware) and a "Clear selection" button. A visually hidden polite `status` announces the count as it changes.
 - `single` mode shows a checkbox per row but no select-all.
+
+## Buttons inside cells
+
+A `Button` inside a cell handles its own press: the press does **not** also trigger `onRowAction` (covered by a test). This is a design decision, not a bug: a row can open a detail panel while its buttons run their own action ("Archive", "Open menu"). Keep the row action and the cell action distinct, give the Button an accessible name that includes the row ("Archive ORD-1001"), and do not repeat the row action in a Button.
 
 ## Accessibility
 

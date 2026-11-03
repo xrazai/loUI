@@ -108,7 +108,12 @@ export function DetailSheet({ initialOrders = ORDERS }: DetailSheetProps) {
       <Sheet
         isOpen={activeId !== null}
         onOpenChange={(isOpen) => {
-          if (!isOpen) setActiveId(null);
+          if (!isOpen) {
+            // Clearing the draft is safe: the Sheet keeps showing the last details while it
+            // slides out, so there is no need to hold on to the record for the animation.
+            setActiveId(null);
+            setDraft(null);
+          }
         }}
         title="Order"
         meta={draft?.number}

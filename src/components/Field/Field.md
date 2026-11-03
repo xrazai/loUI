@@ -9,10 +9,11 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -28,6 +29,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+## Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 ## One state model (ARCH-009)
 

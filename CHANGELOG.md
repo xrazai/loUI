@@ -5,6 +5,19 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+### Added
+
+- **GAP-043** (2026-11-03) `Swatch` accepts `undefined`, `null` and `''` as an empty decorative circle (dashed outline); a non-empty value that is not `#rgb`/`#rrggbb` still throws in development. `isHexColor` is exported from the package entry.
+- **GAP-028** (2026-11-03) Ten generic action glyphs in the icon set (30 to 40): `trash`, `pencil`, `printer`, `archive`, `bell`, `link`, `filter`, `users`, `bot` and `sparkles`, each with a usage description in `Icon.md`. Domain icons (truck, wallet, cart, WhatsApp) stay with the consuming product; a test guards that.
+- **GAP-044** (2026-11-03) `toastWithUndo(message, { onUndo })`: a non-hook helper that shows a toast with an Undo action for code outside components. The label comes from the message catalogue (`Toast` key `undo`: "Undo", pt-BR "Desfazer") and follows the locale of the mounted `ToastRegion`, with `locale` and `messages.undo` overrides. `useUndoable` is unchanged.
+- **GAP-027** (2026-11-03) `DataTable` columns accept `minWidth` (the table scrolls sideways instead of squashing the column; tokens `--ds-data-table-col-min-w` and `--ds-data-table-min-w`), `truncate` (default `true`; `false` wraps cells and the header so a mono header can use two lines) and `hideLabel` (visually hidden header for icon-only columns; `label` stays the accessible name). `DataTable.md` documents that a `Button` inside a cell does not call `onRowAction`.
+- **GAP-039** (2026-11-03) Field messages with tone: `descriptionTone` (`FieldMessageTone`, `neutral | accent | success | warning | danger`) on `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`, and `tone` on `Description`. The text carries the meaning ("Short by $5"); the colour only reinforces it, with the existing signal tokens. `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker` and `TagInput` do not expose it yet.
+- **GAP-041** (2026-11-03) `SegmentedControl` takes a visible `label` and a `description` (same styles as sibling fields; `aria-label` still works), no longer stretches inside a `Stack` unless `fullWidth` is set, and scrolls sideways instead of truncating long labels. `FieldSet.md` explains when the mono legend applies and when a sentence-case `Label` does; a shortcut hint belongs in `description`, not inside an option.
+- **GAP-040** (2026-11-03) `LedgerList` entries accept `isDeletable` (default `true`; `false` renders no delete button on that row) and an optional `date`, so a drawer can mix deletable and fixed rows. Confirmation and Undo stay with the consumer (documented).
+
+### Fixed
+
+- **GAP-036** (2026-11-03) `Dialog`, `Sheet` and `ConfirmDialog` keep their last open content while they animate out, so clearing the state that feeds them on close no longer shows a blank panel for 150 ms (internal `useRetainedWhileClosing`; no API change, an app-side "keep the last value" hook is no longer needed). With `prefers-reduced-motion` the overlay unmounts at once (tested). In a hidden tab React Aria waits for a rendered frame before it unmounts the overlay; documented. The `DetailSheet` recipe clears its draft on close to show the safe pattern.
 
 ## [0.4.0] - 2026-11-03
 ### Added

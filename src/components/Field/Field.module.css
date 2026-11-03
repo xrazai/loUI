@@ -46,6 +46,26 @@
     color: var(--ds-text-3);
   }
 
+  /*
+   * Toned description (GAP-039): the text carries the meaning, the colour only reinforces it.
+   * The signal colours pass 4.5:1 on bg, surface and surface-raised (contrast-pairs.json).
+   */
+  .description[data-tone='accent'] {
+    color: var(--ds-accent);
+  }
+
+  .description[data-tone='success'] {
+    color: var(--ds-success);
+  }
+
+  .description[data-tone='warning'] {
+    color: var(--ds-warning);
+  }
+
+  .description[data-tone='danger'] {
+    color: var(--ds-danger);
+  }
+
   .error {
     font-size: var(--ds-fs-label);
     line-height: var(--ds-lh-label);

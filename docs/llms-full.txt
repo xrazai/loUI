@@ -798,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-432 tokens; the table lists the 418 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+434 tokens; the table lists the 420 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -1023,6 +1023,8 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-data-table-gap` | `12px` | Gap between the bulk bar, the table and the pagination of a DataTable (12px). |
 | `--ds-data-table-sticky-z-index` | `1` | Stacking order of a sticky DataTable header inside its scroll container (1). Local to the table, not a layer. |
 | `--ds-data-table-col-w` | `160px` | Width of a DataTable column that has a `width` prop (default 160px). Set at runtime via style on that column header; columns without `width` share the remaining space. |
+| `--ds-data-table-col-min-w` | `0px` | Minimum width of a DataTable column that has `width` and `minWidth` props (default 0px, no minimum). Set at runtime via style on that column header; the column is as wide as the larger of `width` and `minWidth`. |
+| `--ds-data-table-min-w` | `0px` | Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the fixed columns plus the flexible ones at their largest `minWidth`. A narrower container then scrolls horizontally. |
 | `--ds-data-table-max-h` | `480px` | Maximum height of a scrollable DataTable (default 480px). Set at runtime via style from the `maxHeight` prop. |
 | `--ds-dialog-width-sm` | `420px` | Maximum width of a small Dialog (420px): confirmations and short forms. The handoff default. |
 | `--ds-dialog-width-md` | `540px` | Maximum width of a medium Dialog (540px): forms with several fields. |
@@ -3702,6 +3704,7 @@ A text input with a filtered list of options in a popover (ARIA combobox pattern
 | `selectFirstOnEnter` | `boolean` |  | `false` | Press `Enter` with no option highlighted to select the first matching option (typing "tri" then `Enter` picks "Trimestral"). Default `false`: the WAI-ARIA editable combobox does not auto-select, so `Enter` without a highlighted option keeps the typed text (and submits the surrounding form). Turn it on for lookup fields where the typed text alone is never a valid value. Ignored while the list is closed, empty or has only disabled options. |
 | `isLoading` | `boolean` |  | `false` | Shows a spinner in the box and, when there are no options yet, a "Loading" row instead of "No results". The consumer owns the data: see `filter={false}` and `onInputChange`. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Text shown while the box is empty. Never a substitute for the label. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
@@ -3764,19 +3767,19 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Props (key ones)
 
-| Prop                                                                                                                | Notes                                                                                                                                                                                                                                                                                            |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                                                                                                                                                                                                                                                                                 |
-| `options`                                                                                                           | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |
-| `value` / `defaultValue` / `onChange(value)`                                                                        | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |
-| `inputValue` / `defaultInputValue` / `onInputChange`                                                                | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |
-| `allowsCustomValue`                                                                                                 | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |
-| `filter`                                                                                                            | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |
-| `selectFirstOnEnter`                                                                                                | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing "tri" then `Enter` picks "Trimestral").                                                                                                                                                              |
-| `isLoading`                                                                                                         | Spinner in the box; "Loading" row when there are no options yet.                                                                                                                                                                                                                                 |
-| `menuTrigger`                                                                                                       | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |
-| `description`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |
-| `messages`                                                                                                          | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |
+| Prop                                                                                                                                   | Notes                                                                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                                                                                                                                                                                                                 |
+| `options`                                                                                                                              | `ComboboxOption[]` (`value`, `label`, `description`, `meta`, `isDisabled`) or groups `{ id, label, options }`.                                                                                                                                                                                   |
+| `value` / `defaultValue` / `onChange(value)`                                                                                           | The selected option `value`, `null` for none.                                                                                                                                                                                                                                                    |
+| `inputValue` / `defaultInputValue` / `onInputChange`                                                                                   | The text in the box (React Aria props, passed through).                                                                                                                                                                                                                                          |
+| `allowsCustomValue`                                                                                                                    | The typed text is a valid value; the form then receives the text.                                                                                                                                                                                                                                |
+| `filter`                                                                                                                               | Default accent- and case-insensitive "contains" on the label (`matchesSearch`). A function `(label, query, option) => boolean` (the whole option is the third argument, so you can search a code in `value` or `meta`; two-argument functions keep working), or `false` for no client filtering. |
+| `selectFirstOnEnter`                                                                                                                   | Default `false`. `Enter` with no option highlighted selects the first enabled match (typing "tri" then `Enter` picks "Trimestral").                                                                                                                                                              |
+| `isLoading`                                                                                                                            | Spinner in the box; "Loading" row when there are no options yet.                                                                                                                                                                                                                                 |
+| `menuTrigger`                                                                                                                          | `input` (default), `focus` or `manual`.                                                                                                                                                                                                                                                          |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `placeholder`, `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | As in `Select`.                                                                                                                                                                                                                                                                                  |
+| `messages`                                                                                                                             | `noResults`, `loading`, `showOptions`, `requiredMark`.                                                                                                                                                                                                                                           |
 
 Option order is yours (see `Select.md`): sort with `sortByText` unless the order carries meaning.
 
@@ -4070,7 +4073,8 @@ DialogTrigger
 - `Escape` closes **only the top-most layer**. A `Dialog` opened from a `Sheet` closes first and the Sheet stays (tested). Every overlay uses React Aria's shared layer stack instead of its own window listener (ARCH-005).
 - Named by the title (`aria-labelledby`, from the `h2`) and described by the description (`aria-describedby`; not linked in the handoff).
 - `ConfirmDialog` uses `alertdialog`, which screen readers announce with its description. A press outside does not dismiss it.
-- Reduced motion: the 150 ms fade and 8 px rise are removed. Forced colors: border in `CanvasText`.
+- Reduced motion: the 150 ms fade and 8 px rise are removed, so the dialog leaves the DOM immediately when it closes (tested). Forced colors: border in `CanvasText`.
+- **Exit animation.** The dialog (and `ConfirmDialog`) stays mounted for the 150 ms fade-out and keeps rendering the props of its last open render during that time. Clearing the state that feeds the title, description, body or footer in the same update that closes it (`setOrder(null)`) does not make the panel animate out empty, so no `useLast`-style workaround is needed. If the tab is hidden the browser does not run animations and React Aria unmounts the dialog only once the tab is visible again.
 - 320 px reflow: the dialog shrinks to the viewport less the 24 px gutter and the body scrolls.
 
 ##### Layers
@@ -4209,7 +4213,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 - Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
-- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
+- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled
 
 #### Props
 
@@ -4223,6 +4227,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 | `maxDigits` | `number` |  | `15` | Most digits the amount may have, fraction digits included (`15` is the maximum, the largest count that is always a safe integer). Typing beyond it is ignored. Default `15`. |
 | `name` | `string` |  |  | Name for form submission. The form receives the **integer minor units** (`123456`), or an empty string when the field is empty, never the formatted text. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Text shown while the field is empty. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  |  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
@@ -4290,14 +4295,14 @@ Two models were considered:
 
 #### Props (key ones)
 
-| Prop                                                                                                                | Notes                            |
-| ------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `currency`                                                                                                          | Required ISO 4217 code.          |
-| `value` / `defaultValue` / `onChange`                                                                               | `number \| null` in minor units. |
-| `allowNegative`, `maxDigits`                                                                                        | See above.                       |
-| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                 |
-| `description`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
-| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                        | As in `Input`.                   |
+| Prop                                                                                                                                   | Notes                            |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `currency`                                                                                                                             | Required ISO 4217 code.          |
+| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units. |
+| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
+| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |
 
 #### Accessibility and keyboard
 
@@ -4343,7 +4348,7 @@ A table of records with locale-aware sorting, row selection with a bulk action b
 - Import: `import { DataTable } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/DataTable/DataTable.tsx`
-- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, Controlled, PortugueseBrazil
+- Stories (Storybook title `Components/DataTable`): Default, AlphabeticalByDefault, Sorting, KeyboardSort, Selection, SelectAllOnPage, KeyboardSelection, SingleSelection, Paginated, SortSelectPaginate, ClickableRows, SelectionAndRowAction, Loading, Empty, CustomEmpty, StickyHeader, LongText, MinimumColumnWidth, WrappingColumns, HiddenHeaderLabel, ButtonInCell, Controlled, PortugueseBrazil
 
 #### Props
 
@@ -4398,7 +4403,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-data-table-active-bar-w`, `--ds-data-table-bulk-bar-h`, `--ds-data-table-cell-padding-inline`, `--ds-data-table-col-min-w`, `--ds-data-table-col-w`, `--ds-data-table-gap`, `--ds-data-table-header-padding-block`, `--ds-data-table-max-h`, `--ds-data-table-min-w`, `--ds-data-table-selection-col-w`, `--ds-data-table-sticky-z-index`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-row-h`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface-raised`, `--ds-surface-row-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 #### When to use
 
@@ -4426,25 +4431,41 @@ div.root
 
 #### Props (key ones)
 
-| Prop                                                         | Type                                          | Default | Notes                                                                                                   |
-| ------------------------------------------------------------ | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| `columns`                                                    | `DataTableColumn<T>[]`                        | -       | `key`, `label`, `width`, `align` (`start`/`end`), `mono`, `muted`, `sortable`, `sortValue`, `render`    |
-| `rows`                                                       | `T[]`                                         | -       | Shown in the order given until the user sorts                                                           |
-| `rowKey`                                                     | `keyof T`                                     | `id`    | Unique id property; converted to a string                                                               |
-| `aria-label`                                                 | `string`                                      | -       | Required (or `aria-labelledby`)                                                                         |
-| `selectionMode`                                              | `none \| single \| multiple`                  | `none`  | Adds a checkbox column                                                                                  |
-| `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange` | `ReadonlySet<string>`                         |         | Controlled / uncontrolled. Selection survives page changes                                              |
-| `bulkActions`                                                | `(keys, clear) => ReactNode`                  |         | Content of the bar shown while rows are selected                                                        |
-| `sort` / `defaultSort` / `onSortChange`                      | `{ key, direction: 'asc' \| 'desc' } \| null` | `null`  | Controlled / uncontrolled sort                                                                          |
-| `pageSize`                                                   | `number \| false`                             | `10`    | `false` disables pagination                                                                             |
-| `page` / `defaultPage` / `onPageChange`                      | `number`                                      | `1`     | Controlled / uncontrolled page                                                                          |
-| `onRowAction`                                                | `(row) => void`                               |         | Row click or Enter. Adds hover style and pointer cursor                                                 |
-| `activeKey`                                                  | `string`                                      |         | Row open elsewhere (raised background + ink bar)                                                        |
-| `isLoading`                                                  | `boolean`                                     | `false` | Skeleton rows (`loadingRowCount`, default 5) and a live "Loading rows"                                  |
-| `emptyState`                                                 | `ReactNode`                                   |         | Default: `EmptyState` with built-in text                                                                |
-| `reserveBulkBarSpace`                                        | `boolean`                                     | `true`  | Keeps the bulk bar space free so the table does not jump when the first row is selected                 |
-| `stickyHeader`, `maxHeight`                                  | `boolean`, `number \| string`                 |         | With `maxHeight` the body scrolls and the header stays; without it the header sticks to the page scroll |
-| `messages`                                                   | `Partial<messages>`                           |         | Per-instance text overrides                                                                             |
+| Prop                                                         | Type                                          | Default | Notes                                                                                                                                                    |
+| ------------------------------------------------------------ | --------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `columns`                                                    | `DataTableColumn<T>[]`                        | -       | `key`, `label`, `width`, `minWidth`, `truncate`, `hideLabel`, `align` (`start`/`end`), `mono`, `muted`, `sortable`, `sortValue`, `render`, `isRowHeader` |
+| `rows`                                                       | `T[]`                                         | -       | Shown in the order given until the user sorts                                                                                                            |
+| `rowKey`                                                     | `keyof T`                                     | `id`    | Unique id property; converted to a string                                                                                                                |
+| `aria-label`                                                 | `string`                                      | -       | Required (or `aria-labelledby`)                                                                                                                          |
+| `selectionMode`                                              | `none \| single \| multiple`                  | `none`  | Adds a checkbox column                                                                                                                                   |
+| `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange` | `ReadonlySet<string>`                         |         | Controlled / uncontrolled. Selection survives page changes                                                                                               |
+| `bulkActions`                                                | `(keys, clear) => ReactNode`                  |         | Content of the bar shown while rows are selected                                                                                                         |
+| `sort` / `defaultSort` / `onSortChange`                      | `{ key, direction: 'asc' \| 'desc' } \| null` | `null`  | Controlled / uncontrolled sort                                                                                                                           |
+| `pageSize`                                                   | `number \| false`                             | `10`    | `false` disables pagination                                                                                                                              |
+| `page` / `defaultPage` / `onPageChange`                      | `number`                                      | `1`     | Controlled / uncontrolled page                                                                                                                           |
+| `onRowAction`                                                | `(row) => void`                               |         | Row click or Enter. Adds hover style and pointer cursor. A `Button` in a cell does not trigger it (see "Buttons inside cells")                           |
+| `activeKey`                                                  | `string`                                      |         | Row open elsewhere (raised background + ink bar)                                                                                                         |
+| `isLoading`                                                  | `boolean`                                     | `false` | Skeleton rows (`loadingRowCount`, default 5) and a live "Loading rows"                                                                                   |
+| `emptyState`                                                 | `ReactNode`                                   |         | Default: `EmptyState` with built-in text                                                                                                                 |
+| `reserveBulkBarSpace`                                        | `boolean`                                     | `true`  | Keeps the bulk bar space free so the table does not jump when the first row is selected                                                                  |
+| `stickyHeader`, `maxHeight`                                  | `boolean`, `number \| string`                 |         | With `maxHeight` the body scrolls and the header stays; without it the header sticks to the page scroll                                                  |
+| `messages`                                                   | `Partial<messages>`                           |         | Per-instance text overrides                                                                                                                              |
+
+#### Column sizing
+
+| Column prop | Type      | Default | Effect                                                                                                                                     |
+| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `width`     | `string`  | -       | CSS width (`96px`, `20%`). Columns without it share the remaining space equally                                                            |
+| `minWidth`  | `string`  | -       | CSS minimum width (`120px`, `8rem`). The column is never narrower; a container that is too small scrolls horizontally instead of squashing |
+| `truncate`  | `boolean` | `true`  | `true`: header and cells stay on one line and end in an ellipsis. `false`: they wrap and the row grows                                     |
+| `hideLabel` | `boolean` | `false` | Hides the header text visually (icon-only or action columns). `label` stays the accessible name                                            |
+
+- Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width of the fixed columns plus the flexible ones at their largest `minWidth` (`--ds-data-table-min-w`). Without any `minWidth` the layout is unchanged.
+- A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.
+- Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.
+- Truncated text is not lost: the full text stays in the DOM (assistive technology reads it) and the truncated header label carries a `title`. Prefer `truncate: false` over a long truncated value that users need to read.
+- **Headers never wrap by default.** The mono uppercase caption style is cut with an ellipsis in a narrow column ("SUPPL…"). Either give the column a `minWidth` that fits the label, or set `truncate: false` to allow a two-line header.
+- **Icon-only columns:** set `hideLabel: true` and `sortable: false`. The header cell is named by `label` ("Row actions"), so a screen reader still announces it; never leave the label empty.
 
 #### Sorting
 
@@ -4464,6 +4485,10 @@ Lists are alphabetical by default in this design system (AGENTS.md rule 5b; exce
 - "Select all" applies to the rows on the current page. Selection of other pages is kept. `bulkActions` receives only ids that still exist in `rows`.
 - The bulk bar shows "N selected" (plural-aware) and a "Clear selection" button. A visually hidden polite `status` announces the count as it changes.
 - `single` mode shows a checkbox per row but no select-all.
+
+#### Buttons inside cells
+
+A `Button` inside a cell handles its own press: the press does **not** also trigger `onRowAction` (covered by a test). This is a design decision, not a bug: a row can open a detail panel while its buttons run their own action ("Archive", "Open menu"). Keep the row action and the cell action distinct, give the Button an accessible name that includes the row ("Archive ORD-1001"), and do not repeat the row action in a Button.
 
 #### Accessibility
 
@@ -4672,6 +4697,8 @@ The component imports `@internationalized/date`, which React Aria already depend
 
 > Helper text under a field (the handoff `hint`). Linked to the control with
 `aria-describedby` by the surrounding React Aria field. It stays visible when an error shows.
+With `tone` it becomes a toned message ("Matches", "Over by $5"); the tone adds colour only,
+the announcement is the same text.
 
 Shared building blocks that make every form control (`Input`, `Textarea`, `Select`, `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`) look and behave the same: the same label, description and error styles, the same spacing, the same required marker, the same disabled treatment and the same validation timing. Tickets: ARCH-008, ARCH-009, part of GAP-003.
 
@@ -4687,22 +4714,28 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `children` | `ReactNode` |  |  |  |
+| `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  | `'neutral'` | Tints the text for a live check (`success` "Matches", `warning` "Over by $5", `danger` "Short by $5"). Default `neutral`. The words carry the meaning: colour only reinforces it, so never rely on the tone alone. |
 | `className` | `string` |  |  |  |
 | `ref` | `Ref<HTMLElement>` |  |  |  |
 
+#### Variants, sizes and tones
+
+- `tone`: `neutral`, `accent`, `success`, `warning`, `danger`
+
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
 
 #### Exports
 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -4718,6 +4751,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 #### One state model (ARCH-009)
 
@@ -4854,7 +4906,8 @@ DialogTrigger
 - `Escape` closes **only the top-most layer**. A `Dialog` opened from a `Sheet` closes first and the Sheet stays (tested). Every overlay uses React Aria's shared layer stack instead of its own window listener (ARCH-005).
 - Named by the title (`aria-labelledby`, from the `h2`) and described by the description (`aria-describedby`; not linked in the handoff).
 - `ConfirmDialog` uses `alertdialog`, which screen readers announce with its description. A press outside does not dismiss it.
-- Reduced motion: the 150 ms fade and 8 px rise are removed. Forced colors: border in `CanvasText`.
+- Reduced motion: the 150 ms fade and 8 px rise are removed, so the dialog leaves the DOM immediately when it closes (tested). Forced colors: border in `CanvasText`.
+- **Exit animation.** The dialog (and `ConfirmDialog`) stays mounted for the 150 ms fade-out and keeps rendering the props of its last open render during that time. Clearing the state that feeds the title, description, body or footer in the same update that closes it (`setOrder(null)`) does not make the panel animate out empty, so no `useLast`-style workaround is needed. If the tab is hidden the browser does not run animations and React Aria unmounts the dialog only once the tab is visible again.
 - 320 px reflow: the dialog shrinks to the viewport less the 24 px gutter and the body scrolls.
 
 ##### Layers
@@ -5424,17 +5477,18 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
 
 #### Exports
 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -5450,6 +5504,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 #### One state model (ARCH-009)
 
@@ -5513,21 +5586,23 @@ Most code never imports from `Field` directly: use the ready-made controls. Use 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `description` | `ReactNode` |  |  |  |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description, see `Description`. |
 | `errorMessage` | `FieldErrorMessage` |  |  |  |
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
 
 #### Exports
 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -5543,6 +5618,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 #### One state model (ARCH-009)
 
@@ -5645,6 +5739,17 @@ fieldset
 - A `fieldset` + `legend` is announced as a named group; screen readers read the legend before each field ("Billing address, Street").
 - `isDisabled` uses the native attribute, so inputs, selects, textareas and buttons inside cannot be focused or submitted, and are skipped by constraint validation. Controls that are not native elements (menus, custom widgets) are **not** affected: disable those yourself.
 - The legend uses `--ds-text-2` (the faint `--ds-text-3` is too low-contrast for a name).
+
+#### Legend or label
+
+The two names look different on purpose:
+
+| Name                                                    | Looks like                                     | Use it for                                           |
+| ------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------- |
+| `Label` (of `Input`, `Select`, `SegmentedControl`, ...) | 13/18 medium sentence-case text in `--ds-text` | Naming one field                                     |
+| `FieldSet` `legend`                                     | Mono uppercase caption in `--ds-text-2`        | Naming a group of fields, like the title of a `Card` |
+
+The legend is a section caption, one level above the field labels it contains, so a group never reads as one more field. A single `SegmentedControl`, `RadioGroup` or `CheckboxGroup` is already a labelled group: give it a `label` and do not wrap it in a `FieldSet`. Use a `FieldSet` when several fields answer one question ("Billing address").
 
 #### Content rules
 
@@ -6242,7 +6347,9 @@ Import icons from the package, not from `lucide-react`: `import { Icon, SearchIc
 
 `iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).
 
-arrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, ellipsis, external-link, info, loader, minus, plus, search, star, triangle-alert, x.
+archive, arrow-down, arrow-left, arrow-right, arrow-up, bell, bot, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, copy, ellipsis, external-link, filter, info, link, loader, menu, message, minus, pencil, plus, printer, refresh, search, sparkles, star, thumbs-down, thumbs-up, trash, triangle-alert, users, x.
+
+Generic actions added by GAP-028: `trash` (delete, always behind a confirmation), `pencil` (edit), `printer`, `archive`, `bell`, `link`, `filter`, `users`, `bot` and `sparkles`. Sort is already covered by `arrow-up`, `arrow-down` and `chevrons-up-down`. Domain icons (truck, wallet, cart, WhatsApp) belong to the consuming product, not to this set; a product keeps its own icons next to the core set and passes them to `Icon` (any Lucide-compatible component works).
 
 #### Accessibility
 
@@ -6579,13 +6686,14 @@ Single-line text field with a label, helper text and error text wired together. 
 - Import: `import { Input } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Input/Input.tsx`
-- Stories (Storybook title `Components/Input`): Default, WithDescription, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers
+- Stories (Storybook title `Components/Input`): Default, WithDescription, DescriptionTones, Required, Invalid, Disabled, ReadOnly, Mono, Sizes, WithAdornments, LongLabel, Focused, FocusKeepsRingWithConsumerHandlers
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `description` | `ReactNode` |  |  | Helper text under the control (handoff `hint`). Linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text (handoff `error`). Shown while the field is invalid *and* the error is displayed: after a submit attempt with the default `validationBehavior="native"`, or at once when you control `isInvalid`. A function receives the validation result. |
 | `placeholder` | `string` |  |  | Text shown while the field is empty. Never a substitute for the label. |
 | `mono` | `boolean` |  | `false` | Geist Mono with tabular figures, for codes, identifiers and numbers. |
@@ -6653,20 +6761,21 @@ Error
 
 #### Props (key ones)
 
-| Prop                                                                | Notes                                                                                             |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `label`                                                             | Visible label. Without it you must pass `aria-label` or `aria-labelledby` (type error otherwise). |
-| `description`                                                       | Helper text (handoff `hint`).                                                                     |
-| `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.  |
-| `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                             |
-| `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                        |
-| `mono`                                                              | Geist Mono with tabular figures.                                                                  |
-| `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                      |
-| `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).   |
-| `name`, `type`, `autoComplete`, `inputMode`, `maxLength`, `pattern` | Passed to the `<input>`; `name` and the value take part in form submission.                       |
-| `validate`, `validationBehavior`                                    | See Field.md.                                                                                     |
-| `inputRef` / `ref`                                                  | `inputRef` is the `<input>`, `ref` the field root.                                                |
-| `messages`                                                          | `requiredMark` override.                                                                          |
+| Prop                                                                | Notes                                                                                                                            |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `label`                                                             | Visible label. Without it you must pass `aria-label` or `aria-labelledby` (type error otherwise).                                |
+| `description`                                                       | Helper text (handoff `hint`).                                                                                                    |
+| `descriptionTone`                                                   | `neutral` (default), `accent`, `success`, `warning`, `danger`: tints the description for a live check ("Matches"). See Field.md. |
+| `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.                                 |
+| `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                                                            |
+| `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                       |
+| `mono`                                                              | Geist Mono with tabular figures.                                                                                                 |
+| `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                                                     |
+| `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).                                  |
+| `name`, `type`, `autoComplete`, `inputMode`, `maxLength`, `pattern` | Passed to the `<input>`; `name` and the value take part in form submission.                                                      |
+| `validate`, `validationBehavior`                                    | See Field.md.                                                                                                                    |
+| `inputRef` / `ref`                                                  | `inputRef` is the `<input>`, `ref` the field root.                                                                               |
+| `messages`                                                          | `requiredMark` override.                                                                                                         |
 
 All other props of React Aria `TextField` are accepted (`onFocus`, `onBlur`, `onKeyDown`, `autoFocus`, `form`, ...). They are composed with the internal handlers, never replacing them.
 
@@ -6831,17 +6940,18 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
 
 #### Exports
 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -6857,6 +6967,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 #### One state model (ARCH-009)
 
@@ -6916,14 +7045,14 @@ money, `format` for anything else, or neither for plain quantities.
 
 Import it from `loui-ds/patterns`.
 
-A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `loui-ds/patterns`.
+A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. Rows can be fixed (no delete button) and the date is optional. The sign is shown as text and color. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).
 
 - Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
-- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
 
 #### Props
 
@@ -6934,7 +7063,7 @@ A list of signed entries: date, title, optional sub line, a signed amount and an
 | `format` | `(value: number) => string` |  |  | Custom formatter for amounts and balances, receiving a number in the same unit as `delta`. The amount of an entry is passed as an absolute value (the sign is shown separately). Without `currency` or `format`, numbers are formatted for the locale. |
 | `negativeTone` | `'neutral' \| 'success' \| 'warning' \| 'danger'` |  | `'danger'` | Color of negative amounts: `neutral`, `success`, `warning` or `danger` (default). The `-` sign is always shown too. Pick the tone by what the subtraction means (an expense is `danger`, a payment out of a balance owed may be `success`). |
 | `dateStyle` | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'` |  | `'monthDay'` | Format of each entry's date (`formatDate` styles). Default `monthDay`. |
-| `onDelete` | `(entry: LedgerEntry) => void` |  |  | Adds a "Delete entry" button to each row and calls this with the entry. Deleting must be confirmed by the consumer (dialog or inline confirmation) before data is removed. |
+| `onDelete` | `(entry: LedgerEntry) => void` |  |  | Adds a "Delete entry" button to each row (except entries with `isDeletable: false`) and calls this with the entry. The component only reports the request: the consumer must confirm it (dialog or inline confirmation) before data is removed, and offer Undo afterwards. |
 | `messages` | `Partial<{ balance: (amount: string) => string; deleteEntry: (title: string) => string; }>` |  |  | Message overrides for this instance. |
 
 ##### Inherited props
@@ -6952,7 +7081,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 #### When to use
 
@@ -6969,11 +7098,11 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 ```
 ul aria-label
   li[data-direction=positive|negative|zero]
-    time[datetime]                 formatDate(date, locale, dateStyle)
+    time[datetime]                 formatDate(date, locale, dateStyle)   (only when the entry has a date)
     title · sub
     amount                         "+" | "−" text sign + number   (color by negativeTone)
     balance                        "Balance $125.00"              (optional)
-    button "Delete entry …"        (only with onDelete)
+    button "Delete entry …"        (only with onDelete and isDeletable !== false)
 ```
 
 #### Accessibility
@@ -6981,8 +7110,8 @@ ul aria-label
 - A `ul` of `li`; the list should be named with `aria-label` or `aria-labelledby`.
 - The sign is text (`+` or the minus sign U+2212), so meaning never depends on color. Positive amounts use ink, negative ones the chosen tone, zero uses secondary text.
 - Dates are `<time datetime>`. The balance is labelled by text ("Balance $125.00"), not by position.
-- Delete buttons are `IconButton`s named "Delete entry {title}" (one per row, distinguishable); they are 32px.
-- Deleting must ask for confirmation (AGENTS.md): do it in `onDelete` with a dialog or inline confirmation, then offer Undo.
+- Delete buttons are `IconButton`s named "Delete entry {title}" (one per deletable row, distinguishable); they are 32px. Rows with `isDeletable: false` have no button, so they are skipped by `Tab`.
+- The component only calls `onDelete(entry)`; it never removes anything or asks for confirmation (AGENTS.md section 5.5). The consumer opens a confirmation dialog (title "Delete X?", the consequence, a danger button naming the action, initial focus on Cancel) in `onDelete`, removes the entry on confirm and then shows a toast with Undo.
 - Text truncates with an ellipsis; long titles do not push the amounts out.
 
 #### Content rules
@@ -7004,6 +7133,20 @@ import { LedgerList } from 'loui-ds/patterns';
   ]}
   onDelete={askToDelete}
 />;
+```
+
+A drawer that mixes a fixed opening balance with deletable payments, where `askToDelete` opens the confirmation dialog:
+
+```tsx
+<LedgerList
+  aria-label="Account activity"
+  currency="USD"
+  entries={[
+    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },
+    { id: '1', title: 'Opening balance', delta: 10000, balance: 10000, isDeletable: false },
+  ]}
+  onDelete={askToDelete}
+/>
 ```
 
 #### Related components
@@ -8229,6 +8372,7 @@ A number input with minus and plus steppers; the successor of the handoff `Stepp
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `description` | `ReactNode` |  |  | Helper text under the control, linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Text shown while the field is empty. Never a substitute for the label. |
 | `suffix` | `ReactNode` |  |  | A unit shown after the number inside the box ("m", "kg", "pcs"). Visual only: for a spoken unit use `formatOptions={{ style: 'unit', unit: 'meter' }}`, which also formats the number. |
@@ -8302,7 +8446,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `formatOptions`                                               | `Intl.NumberFormat` options (`{ style: 'unit', unit: 'kilogram' }`, `{ maximumFractionDigits: 2 }`). |
 | `suffix`                                                      | A visual unit after the number ("m", "pcs"). For a spoken unit use `formatOptions`.                  |
 | `size`                                                        | `sm` / `md` (default) / `lg`; the steppers follow.                                                   |
-| `description`, `errorMessage`                                 | As in `Input`.                                                                                       |
+| `description`, `descriptionTone`, `errorMessage`              | As in `Input`.                                                                                       |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits the raw number (`1234.5`), not the formatted text.                          |
 | `messages`                                                    | `decrease`, `increase`, `requiredMark`.                                                              |
 
@@ -9209,17 +9353,18 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-control-h-lg`, `--ds-control-h-md`, `--ds-control-h-sm`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-field-gap`, `--ds-focus-ring`, `--ds-focus-ring-danger`, `--ds-font-sans`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-lh-small`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-success`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
 
 #### Exports
 
 | Export                                 | What it is                                                                                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Label`                                | React Aria `Label` with the field label style (13/18, medium). `isRequired` appends the required marker.                                                         |
-| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`.                                                     |
+| `Description`                          | React Aria `Text slot="description"`, 13/18 in `--ds-text-3`. Linked to the control with `aria-describedby`. `tone` tints it (see Toned description).            |
 | `FieldError`                           | React Aria `FieldError`: renders only while the field is invalid and the error is displayed. The message is in a `role="alert"` element. 13/18 in `--ds-danger`. |
-| `FieldMessages`                        | `Description` followed by `FieldError`. Every control renders it under its box.                                                                                  |
+| `FieldMessages`                        | `Description` (with `descriptionTone`) followed by `FieldError`. Every control renders it under its box.                                                         |
 | `RequiredMark`                         | The marker alone, for fields whose label is not a `Label`.                                                                                                       |
+| `FieldMessageTone`                     | Type: `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`, the tone of a description.                                                                  |
 | `FieldLabelingProps`, `WithLabel`      | Types. `FieldLabelingProps` makes "label, `aria-label` or `aria-labelledby`" mandatory. `WithLabel<P>` helps type stories.                                       |
 | `FieldErrorMessage`, `FieldValidation` | Types for the `errorMessage` prop (a node or a function of the validation result).                                                                               |
 
@@ -9235,6 +9380,25 @@ Error                       13/18, --ds-danger
 ```
 
 The description stays visible when an error shows (the handoff replaced the hint with the error). Constraints such as "8 characters or more" remain useful while the user fixes the value, and both texts are linked to the control.
+
+#### Toned description (GAP-039)
+
+A live check under a field ("Matches", "Over by $5", "Short by $5") is a description with a tone, not an error: the field stays valid and no `role="alert"` is added.
+
+```tsx
+<CurrencyInput
+  label="Amount received"
+  currency="USD"
+  description="Short by $5.00"
+  descriptionTone="danger"
+/>
+```
+
+- `descriptionTone` (`neutral` default, `accent`, `success`, `warning`, `danger`) is supported by `Input`, `Textarea`, `Select`, `Combobox`, `NumberField`, `CurrencyInput` and `SegmentedControl`; `Description` and `FieldMessages` take `tone` / `descriptionTone`.
+- The text carries the meaning; the tone only reinforces it. Write the words yourself ("Over by $5", not a bare "$5") and never rely on colour alone. The tone sets `data-tone` on the description element and nothing else changes: the description is announced exactly as before through `aria-describedby`.
+- Colours are the signal tokens `--ds-accent`, `--ds-success`, `--ds-warning`, `--ds-danger`, which pass 4.5:1 on `--ds-bg`, `--ds-surface` and `--ds-surface-raised` (see `contrast-pairs.json`).
+- Use `errorMessage` when the value must be fixed before submitting; use a toned description for information that can be left as it is.
+- Other fields built on `FieldMessages` (`Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `ChoiceTiles`, `DatePicker`, `TagInput`) do not expose `descriptionTone` yet.
 
 #### One state model (ARCH-009)
 
@@ -9609,6 +9773,10 @@ option is always selected.
 Built on React Aria `ToggleButtonGroup` with single selection and no empty selection:
 it is exposed as a radio group, with one tab stop and arrow-key navigation.
 
+With `label` and/or `description` the bar is wrapped in a field-like column: the label names
+the group, the description is linked with `aria-describedby`. Long labels never truncate:
+when the options are wider than the container the bar scrolls sideways.
+
 A bar of two to five options where exactly one is selected, like a radio group drawn as buttons. It is a value control: it changes how something is shown or filtered, it does not own panels. Built on React Aria `ToggleButtonGroup` with single selection and no empty selection.
 
 - Handoff source: `components/forms/SegmentedControl.jsx` (TODO `CMP-FRM-09`).
@@ -9616,22 +9784,25 @@ A bar of two to five options where exactly one is selected, like a radio group d
 - Import: `import { SegmentedControl } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/SegmentedControl/SegmentedControl.tsx`
-- Stories (Storybook title `Components/SegmentedControl`): Default, Small, FullWidth, WithCounts, DisabledOption, DisabledGroup, KeyboardSelection, Controlled, LongLabels, PortugueseCounts, RightToLeft, Focused
+- Stories (Storybook title `Components/SegmentedControl`): Default, Small, FullWidth, WithCounts, DisabledOption, DisabledGroup, KeyboardSelection, Controlled, LongLabels, WithLabel, WithDescription, ToneDescription, FourOptions, InsideStack, ShortcutHint, PortugueseCounts, RightToLeft, Focused
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `options` | `readonly SegmentedControlOption[]` | yes |  | The options, in display order. Two to five fit comfortably. |
-| `aria-label` | `string` |  |  | Accessible name of the group ("View"). Required: name this or use `aria-labelledby`. |
-| `aria-labelledby` | `string` |  |  | Id of the element that names the group. |
 | `value` | `string` |  |  | Selected option (controlled). |
 | `defaultValue` | `string` |  |  | Initially selected option (uncontrolled). Defaults to the first enabled option. |
 | `onChange` | `(value: string) => void` |  |  | Called with the new value when the user selects another option. |
+| `description` | `ReactNode` |  |  | Helper text under the bar, linked to the group with `aria-describedby`. It can hold a `Kbd` to show the shortcuts of the options (see SegmentedControl.md). |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description, same as on `Input`: the text carries the meaning. |
 | `size` | `'sm' \| 'md'` |  | `'md'` | Height of the segments: `sm` 24px, `md` 32px (default). |
-| `fullWidth` | `boolean` |  | `false` | Stretch to the container; the segments share the width equally. |
-| `className` | `string` |  |  |  |
+| `fullWidth` | `boolean` |  | `false` | Stretch to the container; the segments share the width equally. Without it the bar is as wide as its options, also inside a `Stack` (which stretches its children by default). |
+| `className` | `string` |  |  | Class name for the bar (the group element), also when a `label` or `description` wraps it. |
 | `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the group element. |
+| `label` | `ReactNode` |  |  | Visible label. Prefer it: sighted and assistive technology users see the same name. |
+| `aria-label` | `string` |  |  | Accessible name when there is no visible label (for example a search box with an icon). |
+| `aria-labelledby` | `string` |  |  | Id of the element that names the field. |
 
 ##### Inherited props
 
@@ -9657,22 +9828,53 @@ A bar of two to five options where exactly one is selected, like a radio group d
 #### When not to use
 
 - To switch between panels of content: use `Tabs`.
-- For more than five options, or long labels: use `Select` or `RadioGroup`.
+- For more than five options, or labels that are whole sentences: use `Select` or `RadioGroup`. Long labels do not truncate (the bar scrolls sideways), but a scrolling bar hides options.
 - For on/off settings: use `Switch`.
 
 #### Anatomy
 
 ```
-div[role=radiogroup] aria-label        (bordered track)
-  button[role=radio] aria-checked      (one per option)
-    label
-    count                              (optional, mono)
+div.field                              (only with label or description)
+  span  label                          (names the group, aria-labelledby)
+  div[role=radiogroup]                 (bordered track)
+    button[role=radio] aria-checked    (one per option)
+      label
+      count                            (optional, mono)
+  span  description                    (aria-describedby, optional tone)
+```
+
+Without `label` and `description` the track is rendered alone, named by `aria-label` or `aria-labelledby`.
+
+#### Width and overflow
+
+- The bar is as wide as its options. It does not stretch in a `Stack` (which stretches its children) unless `fullWidth` is set.
+- Labels never truncate or wrap. When the options are wider than the container, the bar is capped at the container width and scrolls sideways; a focused option scrolls into view, and the keyboard contract does not change. With `fullWidth` the segments share the width equally but never get narrower than their label.
+- Keep labels short anyway: a scrolling bar hides options. Four short options fit in 440 px.
+
+#### Shortcut hints
+
+`count` is text or a number and cannot show a shortcut, and an option has no slot for a `Kbd`: a hint inside an option would become part of its accessible name ("List Control 1"). Show the shortcuts once, in the `description`, where they are read as a description of the group, and register them with `useHotkey`:
+
+```tsx
+<SegmentedControl
+  label="View"
+  options={views}
+  value={view}
+  onChange={setView}
+  description={
+    <>
+      Switch with <Kbd keys={['Alt', '1']} /> <Kbd keys={['Alt', '2']} />
+    </>
+  }
+/>
 ```
 
 #### Accessibility
 
 - Semantics: `radiogroup` with `radio` buttons and `aria-checked`. It is deliberately not a `tablist`.
 - Keyboard: one tab stop; `←` / `→` move focus between options, `Space` selects the focused option. React Aria does not wrap at the ends. Disabled options are skipped. The selection can never be empty.
+- The visible `label` is a `span` referenced by `aria-labelledby` (a `label` element would not name a group); the description is referenced by `aria-describedby`. A consumer `aria-describedby` is kept, in front of the description.
+- A disabled control dims its label like the other fields.
 - Selected state is shown by a raised background, a line and ink text, not by color alone. The track border uses `--ds-line-control` (3:1).
 - The count uses `--ds-text-2`: `--ds-text-3` would fail 4.5:1 on the selected surface.
 - Focus: accent border and ring. Forced colors: the selected segment border uses `Highlight`.
@@ -9681,10 +9883,19 @@ div[role=radiogroup] aria-label        (bordered track)
 
 - Labels are one word or a short phrase in sentence case ("Open", "This week").
 - Same-length labels look best; avoid mixing a count on some options only.
+- With a `label`, name the setting, not the control ("Transaction type", not "Segmented control"); do not repeat it in the options.
 
 #### Examples
 
 ```tsx
+<SegmentedControl
+  label="Transaction type"
+  description="Changes the fields below."
+  options={types}
+  value={type}
+  onChange={setType}
+/>
+
 <SegmentedControl
   aria-label="View"
   options={[
@@ -9708,8 +9919,8 @@ div[role=radiogroup] aria-label        (bordered track)
 #### Related components
 
 - Instead, see Tabs: To switch between panels of content: use `Tabs`.
-- Instead, see Select: For more than five options, or long labels: use `Select` or `RadioGroup`.
-- Instead, see RadioGroup: For more than five options, or long labels: use `Select` or `RadioGroup`.
+- Instead, see Select: For more than five options, or labels that are whole sentences: use `Select` or `RadioGroup`. Long labels do not truncate (the bar scrolls sideways), but a scrolling bar hides options.
+- Instead, see RadioGroup: For more than five options, or labels that are whole sentences: use `Select` or `RadioGroup`. Long labels do not truncate (the bar scrolls sideways), but a scrolling bar hides options.
 - Instead, see Switch: For on/off settings: use `Switch`.
 - Renders: VisuallyHidden
 
@@ -9738,6 +9949,7 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 | `defaultValue` | `string \| null` |  |  | The initially selected `value` when uncontrolled. |
 | `onChange` | `((value: string \| null) => void)` |  |  | Called with the new `value`. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `placeholder` | `string` |  |  | Trigger text while nothing is selected. Default from messages: "Select an option". |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Control height: `sm` 32px, `md` 40px (default), `lg` 48px. |
@@ -9795,16 +10007,16 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Props (key ones)
 
-| Prop                                            | Notes                                                                                               |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `label`, `description`, `errorMessage`          | As in `Input`.                                                                                      |
-| `options`                                       | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
-| `value` / `defaultValue` / `onChange(value)`    | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
-| `placeholder`                                   | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
-| `size`                                          | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
-| `name`, `isRequired`, `isInvalid`, `isDisabled` | Standard. `name` is submitted through the hidden `<select>`.                                        |
-| `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
-| `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
+| Prop                                                      | Notes                                                                                               |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `label`, `description`, `descriptionTone`, `errorMessage` | As in `Input`.                                                                                      |
+| `options`                                                 | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
+| `value` / `defaultValue` / `onChange(value)`              | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
+| `placeholder`                                             | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
+| `size`                                                    | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
+| `name`, `isRequired`, `isInvalid`, `isDisabled`           | Standard. `name` is submitted through the hidden `<select>`.                                        |
+| `popoverClassName`, `className`, `ref`                    | Styling hooks; `ref` is the field root.                                                             |
+| `messages`                                                | `placeholder`, `requiredMark`.                                                                      |
 
 Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 
@@ -9940,6 +10152,7 @@ DialogTrigger
 - Slide-in is a 150 ms transform and the scrim fades; both are removed under `prefers-reduced-motion`. The slide direction follows the writing direction (`:dir(rtl)`).
 - The panel is `Modal` content inside the overlay, so it stacks above the scrim without a second z-index.
 - See the Dialog doc ("Layers") for popovers opened from inside the sheet.
+- **Exit animation.** The sheet stays mounted for the 150 ms slide-out. It keeps rendering the props of its last open render during that time, so you can clear the state that feeds it (`setRecord(null)`) in the same update that closes it and the panel will not animate out empty (no blank fields or title). Reopening shows the new content at once. Under `prefers-reduced-motion` there is no animation, so it leaves the DOM immediately (tested). If the tab is hidden the browser does not run animations and React Aria unmounts the sheet only once the tab is visible again.
 
 #### Content rules
 
@@ -11595,15 +11808,15 @@ A small circle filled with a color, with a subtle inset ring so dark colors stay
 - Import: `import { Swatch } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Swatch/Swatch.tsx`
-- Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex
+- Stories (Storybook title `Components/Swatch`): Default, Sizes, ExtremeColors, Decorative, ShortHex, NoColor
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `color` | `string` | yes |  | The color to show, as `#rgb` or `#rrggbb`. Anything else throws in development and renders an empty circle in production. |
 | `label` | `string` |  |  | Name of the color ("Navy"). Required whenever the swatch is the only thing that identifies the color: a color on its own says nothing to a screen reader or to a color-blind user. |
 | `decorative` | `true` |  |  | Hides the swatch from assistive technology. Use it only when the color is also named by adjacent text (a table cell, an option label). |
+| `color` | `string \| null` |  |  | The color to show, as `#rgb` or `#rrggbb`. `undefined`, `null` and `''` mean "no color" and render an empty dashed circle (use it for model data that may have no color). Any other value throws in development and renders the same empty circle in production. |
 | `size` | `'sm' \| 'md' \| 'lg'` |  | `'md'` | Diameter token: `sm` 16px, `md` 20px (default), `lg` 32px. |
 
 ##### Inherited props
@@ -12640,6 +12853,7 @@ Multi-line text field. Same contract as [Input](../Input/Input.md) (label, descr
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
+| `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
 | `errorMessage` | `FieldErrorMessage` |  |  | Error text, shown while the field is invalid and the error is displayed. See `Input`. |
 | `aside` | `ReactNode` |  |  | Text on the label line, aligned to the end (for example "Optional" or "Markdown supported"). It is part of the field's description for assistive technology, not of its name. |
 | `placeholder` | `string` |  |  | Text shown while the field is empty. Never a substitute for the label. |
@@ -12703,17 +12917,17 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Props (key ones)
 
-| Prop                                         | Notes                                                                                                                    |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `label`, `description`, `errorMessage`       | As in `Input`.                                                                                                           |
-| `aside`                                      | Text on the label line, aligned to the end ("Optional", "Markdown supported"). Part of the description, not of the name. |
-| `rows`                                       | Visible lines. Default 3.                                                                                                |
-| `resize`                                     | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
-| `autoGrow`                                   | Grows with its content; the manual resize handle is off.                                                                 |
-| `maxLength` + `showCount`                    | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
-| `value` / `defaultValue` / `onChange(value)` | React Aria naming; `onChange` receives the string.                                                                       |
-| `textareaRef` / `ref`                        | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |
-| `messages`                                   | `count`, `remaining`, `over`, `requiredMark`.                                                                            |
+| Prop                                                      | Notes                                                                                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `label`, `description`, `descriptionTone`, `errorMessage` | As in `Input`.                                                                                                           |
+| `aside`                                                   | Text on the label line, aligned to the end ("Optional", "Markdown supported"). Part of the description, not of the name. |
+| `rows`                                                    | Visible lines. Default 3.                                                                                                |
+| `resize`                                                  | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
+| `autoGrow`                                                | Grows with its content; the manual resize handle is off.                                                                 |
+| `maxLength` + `showCount`                                 | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
+| `value` / `defaultValue` / `onChange(value)`              | React Aria naming; `onChange` receives the string.                                                                       |
+| `textareaRef` / `ref`                                     | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |
+| `messages`                                                | `count`, `remaining`, `over`, `requiredMark`.                                                                            |
 
 #### Character count
 
@@ -12870,7 +13084,7 @@ A short, temporary message about something that just happened, with an optional 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `queue` | `ToastQueue` |  | `createToastQueue()` | The queue to show. Defaults to the one `toast()` writes to. |
-| `messages` | `Partial<{ region: string; dismiss: string; info: string; success: string; warning: string; danger: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `messages` | `Partial<{ region: string; dismiss: string; info: string; success: string; warning: string; danger: string; undo: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 | `className` | `string` |  |  | Class name for the region. |
 | `ref` | `Ref<HTMLDivElement>` |  |  | Ref to the region element. |
 
@@ -12886,6 +13100,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `success` | `Success` |  |
 | `warning` | `Warning` |  |
 | `danger` | `Error` |  |
+| `undo` | `Undo` | Label of the Undo action added by `toastWithUndo`. A verb. |
 
 #### Design tokens used
 
@@ -12936,7 +13151,7 @@ toast.success('3 items archived', { action: { label: 'Undo', onPress: restore } 
 | `timeout` | `number \| null`                       | `5000`  | Milliseconds. `null` = until dismissed.                 |
 | `onClose` | `() => void`                           |         | Timeout, dismiss or action.                             |
 
-`toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait.
+`toastWithUndo(message, { onUndo })` shows a toast with a localized Undo action (see below). `toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait.
 
 #### Default timeout: 5000 ms
 
@@ -12982,7 +13197,34 @@ Rules:
 2. If the change was already sent to a server, Undo sends the inverse change; do not delay the real action to "wait for Undo".
 3. For deletes, soft-delete or keep the record for the Undo window plus a margin, and keep the confirmation dialog (`ConfirmDialog`), then show the toast. For example: confirm, delete, toast "Order #1048 deleted" with Undo.
 4. Irreversible actions get a `ConfirmDialog`, not a toast.
-5. A hook (`useUndoable`) that wraps steps 1 to 3 is tracked as GAP-008.
+5. Inside components, `useUndoable` wraps steps 1 to 3 and adds a deferred commit with failure handling. In plain modules (stores, services, handlers outside React) use `toastWithUndo`, below.
+
+##### Undo outside React: `toastWithUndo`
+
+`toast(..., { action })` has no default label, and a hook cannot run in a plain module. `toastWithUndo` is a non-hook helper that takes the **Undo** label from the message catalogue (`Toast` key `undo`) instead of every call site repeating the word:
+
+```ts
+import { toastWithUndo } from 'loui-ds';
+
+export function archiveOrder(order: Order) {
+  const previous = order.status;
+  orders.setStatus(order.id, 'archived'); // do it now
+  toastWithUndo(`Order #${order.number} archived`, {
+    onUndo: () => orders.setStatus(order.id, previous),
+  });
+}
+```
+
+| Option               | Type                | Default        | Notes                                             |
+| -------------------- | ------------------- | -------------- | ------------------------------------------------- |
+| `onUndo`             | `() => void`        | required       | Reverses the change. The toast closes afterwards. |
+| `tone`               | `info               | success        | warning`                                          | `success` | Not `danger`: a failure is not undoable. |
+| `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |
+| `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |
+| `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |
+| `timeout`, `onClose` |                     |                | As in `toast()`.                                  |
+
+It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
 
 #### Related components
 
@@ -14208,7 +14450,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly archive: "Archive an item (reversible, with Undo); not for delete"; readonly bell: "Notifications and alerts entry point"; readonly bot: "An AI agent as an actor, for example an agent avatar or a bot-authored message"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly filter: "Filter a list or table (opens filter controls)"; readonly info: "Neutral information status"; readonly link: "Copy or insert a link, linked records"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly pencil: "Edit an item or a field in place"; readonly plus: "Add, create"; readonly printer: "Print a document or a receipt"; readonly search: "Search fields"; readonly sparkles: "AI-generated content or an AI-assisted action (suggest, generate)"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly trash: "Delete an item; always paired with a confirmation dialog"; readonly users: "A group of people, for example team, members or assignees"; readonly x: "Close, dismiss, remove"; }
 ```
 
 #### iconSet
@@ -14216,7 +14458,18 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly archive: LucideIcon; readonly bell: LucideIcon; readonly bot: LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly filter: LucideIcon; readonly info: LucideIcon; readonly link: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly pencil: LucideIcon; readonly plus: LucideIcon; readonly printer: LucideIcon; readonly search: LucideIcon; readonly sparkles: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly trash: LucideIcon; readonly users: LucideIcon; readonly x: LucideIcon; }
+```
+
+#### isHexColor
+
+True for `#rgb` and `#rrggbb` (the `#` is required). Accepts model data typed
+`string | null | undefined`; `null`, `undefined`, `transparent`, a CSS name and an empty string are
+false. Deliberately a plain boolean, not a type predicate: a string that fails the check is still a
+string.
+
+```ts
+isHexColor(value: string | null | undefined): boolean
 ```
 
 #### isISODate
@@ -14335,6 +14588,24 @@ Shows a toast in the default queue. Mount one `ToastRegion` near the app root.
 toast(message: ReactNode, options?: ToastOptions): string
 ```
 
+#### toastWithUndo
+
+Non-hook form of the undo toast, for plain modules (stores, services, event handlers outside
+React). Shows `message` with an **Undo** action whose label comes from the message catalogue
+and the active locale, so callers never repeat the word by hand. Returns the toast key, like
+`toast()`.
+
+Unlike `useUndoable` it does not defer anything: do the change first, then call this with a
+function that reverses it. Use `useUndoable` inside components when you also need a deferred
+`commit` or failure handling.
+
+Outside React there is no context, so the locale is the one of the mounted `ToastRegion`
+(inside `DSProvider`); pass `locale` or `messages` to decide it yourself.
+
+```ts
+toastWithUndo(message: ReactNode, options: ToastWithUndoOptions): string
+```
+
 #### toISODate
 
 Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the
@@ -14369,7 +14640,7 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `RefreshIcon`, `SearchIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TriangleAlertIcon`, `XIcon`
+`ArchiveIcon`, `ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `BellIcon`, `BotIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `FilterIcon`, `InfoIcon`, `LinkIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PencilIcon`, `PlusIcon`, `PrinterIcon`, `RefreshIcon`, `SearchIcon`, `SparklesIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TrashIcon`, `TriangleAlertIcon`, `UsersIcon`, `XIcon`
 
 ---
 
@@ -14950,7 +15221,7 @@ Components: `DataTable`, `Sheet`, `ConfirmDialog`, `Input`, `Select`, `Textarea`
 - **Footer layout:** "Delete order" (danger) at the start, "Cancel" and "Save order" (the one primary) at the end.
 - **Delete asks first.** The button opens a `ConfirmDialog` on top of the sheet. Esc closes **only the confirmation**; the sheet stays. Confirming removes the order, closes the sheet and shows "Order ORD-1048 deleted" with Undo.
 - **Save** updates the row, closes the sheet and shows "Order ORD-1048 saved".
-- Edits live in a `draft` copy, so Cancel and Esc discard them.
+- Edits live in a `draft` copy, so Cancel and Esc discard them. The draft is cleared when the sheet closes; the `Sheet` keeps showing the last details while it slides out, so the panel never animates out empty.
 
 #### Things to keep when you adapt it
 
@@ -15073,7 +15344,12 @@ export function DetailSheet({ initialOrders = ORDERS }: DetailSheetProps) {
       <Sheet
         isOpen={activeId !== null}
         onOpenChange={(isOpen) => {
-          if (!isOpen) setActiveId(null);
+          if (!isOpen) {
+            // Clearing the draft is safe: the Sheet keeps showing the last details while it
+            // slides out, so there is no need to hold on to the record for the animation.
+            setActiveId(null);
+            setDraft(null);
+          }
         }}
         title="Order"
         meta={draft?.number}

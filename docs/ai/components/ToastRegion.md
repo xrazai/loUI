@@ -18,12 +18,12 @@ A short, temporary message about something that just happened, with an optional 
 
 ## Props
 
-| Prop        | Type                                                                                                            | Required | Default              | Description                                                 |
-| ----------- | --------------------------------------------------------------------------------------------------------------- | -------- | -------------------- | ----------------------------------------------------------- |
-| `queue`     | `ToastQueue`                                                                                                    |          | `createToastQueue()` | The queue to show. Defaults to the one `toast()` writes to. |
-| `messages`  | `Partial<{ region: string; dismiss: string; info: string; success: string; warning: string; danger: string; }>` |          |                      | Per-instance overrides of the built-in messages.            |
-| `className` | `string`                                                                                                        |          |                      | Class name for the region.                                  |
-| `ref`       | `Ref<HTMLDivElement>`                                                                                           |          |                      | Ref to the region element.                                  |
+| Prop        | Type                                                                                                                          | Required | Default              | Description                                                 |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------- | ----------------------------------------------------------- |
+| `queue`     | `ToastQueue`                                                                                                                  |          | `createToastQueue()` | The queue to show. Defaults to the one `toast()` writes to. |
+| `messages`  | `Partial<{ region: string; dismiss: string; info: string; success: string; warning: string; danger: string; undo: string; }>` |          |                      | Per-instance overrides of the built-in messages.            |
+| `className` | `string`                                                                                                                      |          |                      | Class name for the region.                                  |
+| `ref`       | `Ref<HTMLDivElement>`                                                                                                         |          |                      | Ref to the region element.                                  |
 
 ## Messages (i18n)
 
@@ -37,6 +37,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `success` | `Success`              |                                                                                                |
 | `warning` | `Warning`              |                                                                                                |
 | `danger`  | `Error`                |                                                                                                |
+| `undo`    | `Undo`                 | Label of the Undo action added by `toastWithUndo`. A verb.                                     |
 
 ## Design tokens used
 
@@ -87,7 +88,7 @@ toast.success('3 items archived', { action: { label: 'Undo', onPress: restore } 
 | `timeout` | `number \| null`                       | `5000`  | Milliseconds. `null` = until dismissed.                 |
 | `onClose` | `() => void`                           |         | Timeout, dismiss or action.                             |
 
-`toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait.
+`toastWithUndo(message, { onUndo })` shows a toast with a localized Undo action (see below). `toast(...)` returns a key; `toast.close(key)` and `toast.clear()` remove toasts. `useToast()` returns the same stable object. `createToastQueue()` / `createToastApi(queue)` and `<ToastRegion queue>` give an isolated queue (tests, a second region). `ToastRegion` also takes `messages` and `className`. At most four toasts show at once; the rest wait.
 
 ## Default timeout: 5000 ms
 
@@ -133,7 +134,34 @@ Rules:
 2. If the change was already sent to a server, Undo sends the inverse change; do not delay the real action to "wait for Undo".
 3. For deletes, soft-delete or keep the record for the Undo window plus a margin, and keep the confirmation dialog (`ConfirmDialog`), then show the toast. For example: confirm, delete, toast "Order #1048 deleted" with Undo.
 4. Irreversible actions get a `ConfirmDialog`, not a toast.
-5. A hook (`useUndoable`) that wraps steps 1 to 3 is tracked as GAP-008.
+5. Inside components, `useUndoable` wraps steps 1 to 3 and adds a deferred commit with failure handling. In plain modules (stores, services, handlers outside React) use `toastWithUndo`, below.
+
+### Undo outside React: `toastWithUndo`
+
+`toast(..., { action })` has no default label, and a hook cannot run in a plain module. `toastWithUndo` is a non-hook helper that takes the **Undo** label from the message catalogue (`Toast` key `undo`) instead of every call site repeating the word:
+
+```ts
+import { toastWithUndo } from 'loui-ds';
+
+export function archiveOrder(order: Order) {
+  const previous = order.status;
+  orders.setStatus(order.id, 'archived'); // do it now
+  toastWithUndo(`Order #${order.number} archived`, {
+    onUndo: () => orders.setStatus(order.id, previous),
+  });
+}
+```
+
+| Option               | Type                | Default        | Notes                                             |
+| -------------------- | ------------------- | -------------- | ------------------------------------------------- |
+| `onUndo`             | `() => void`        | required       | Reverses the change. The toast closes afterwards. |
+| `tone`               | `info               | success        | warning`                                          | `success` | Not `danger`: a failure is not undoable. |
+| `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |
+| `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |
+| `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |
+| `timeout`, `onClose` |                     |                | As in `toast()`.                                  |
+
+It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
 
 ## Related components
 

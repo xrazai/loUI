@@ -45,6 +45,27 @@ export interface DataTableColumn<T> {
   label: string;
   /** CSS width of the column (`96px`, `20%`). Columns without a width share the remaining space equally. */
   width?: string;
+  /**
+   * CSS minimum width of the column (`120px`, `8rem`). The column never gets narrower: when the
+   * container is too small the table area scrolls horizontally instead of squashing the column.
+   * Without `width`, the column still shares the free space with the other flexible columns, but
+   * never below this value. Use it for columns whose content breaks when squeezed (a row of
+   * swatches, a badge, a mono code). Note that a table with a `minWidth` column scrolls inside
+   * its own area, so with `stickyHeader` also set `maxHeight`.
+   */
+  minWidth?: string;
+  /**
+   * Whether text that does not fit is cut with an ellipsis (default `true`, one line) or wraps
+   * onto more lines (`false`; the row grows). It applies to the header and the cells of the
+   * column: with `false` a long mono header such as "Supplier name" can use two lines instead of
+   * being cut to "SUPPL…". The full text stays in the DOM in both cases.
+   */
+  truncate?: boolean;
+  /**
+   * Hides the header text visually, for columns that hold only an icon or an action button.
+   * `label` stays the accessible name of the column header. Default `false`.
+   */
+  hideLabel?: boolean;
   /** Alignment of header and cells: `start` (default) or `end` (numbers, amounts). Follows the writing direction. */
   align?: DataTableAlign;
   /** Mono type for codes, dates and numbers. */
@@ -164,6 +185,35 @@ function toLength(value: number | string | undefined): string | undefined {
   return typeof value === 'number' ? `${String(value)}px` : value;
 }
 
+/**
+ * Smallest width the table needs so that no `minWidth` column is squashed. Browsers ignore
+ * `min-width` on cells in a fixed table layout, so the table itself gets a minimum width:
+ * the fixed columns, plus the flexible columns at the largest `minWidth` among them (they share
+ * the free space equally). `undefined` when no column has a `minWidth` (layout unchanged).
+ */
+function tableMinWidth<T>(
+  columns: readonly DataTableColumn<T>[],
+  hasSelection: boolean,
+): string | undefined {
+  if (!columns.some((column) => column.minWidth !== undefined)) return undefined;
+  const fixed: string[] = [];
+  const flexibleMins: string[] = [];
+  let flexible = 0;
+  for (const column of columns) {
+    if (column.width === undefined) {
+      flexible += 1;
+      if (column.minWidth !== undefined) flexibleMins.push(column.minWidth);
+    } else {
+      fixed.push(
+        column.minWidth === undefined ? column.width : `max(${column.width}, ${column.minWidth})`,
+      );
+    }
+  }
+  const selection = hasSelection ? 'var(--ds-data-table-selection-col-w)' : '0px';
+  const flexibleMin = flexibleMins.length > 0 ? flexibleMins.join(', ') : '0px';
+  return `calc(${[selection, ...fixed].join(' + ')} + ${String(flexible)} * max(${flexibleMin}))`;
+}
+
 function readValue(row: object, key: string): SortableValue {
   const value = (row as Record<string, unknown>)[key];
   switch (typeof value) {
@@ -214,16 +264,31 @@ function DataTableHeader<T>({ columns, selectAllLabel, selectionLabel }: HeaderP
           isRowHeader={hasRowHeader ? column.isRowHeader === true : index === 0}
           className={classNames(styles.column)}
           data-align={column.align ?? 'start'}
-          {...(column.width === undefined
+          data-wrap={column.truncate === false || undefined}
+          data-sized={column.width === undefined ? undefined : true}
+          {...(column.width === undefined && column.minWidth === undefined
             ? {}
             : {
-                'data-sized': true,
-                style: { '--ds-data-table-col-w': column.width } as CSSProperties,
+                style: {
+                  ...(column.width === undefined ? {} : { '--ds-data-table-col-w': column.width }),
+                  ...(column.minWidth === undefined
+                    ? {}
+                    : { '--ds-data-table-col-min-w': column.minWidth }),
+                } as CSSProperties,
               })}
         >
           {({ allowsSorting, sortDirection }) => (
             <span className={classNames(styles.columnContent)}>
-              <span className={classNames(styles.columnLabel)}>{column.label}</span>
+              {column.hideLabel ? (
+                <VisuallyHidden>{column.label}</VisuallyHidden>
+              ) : (
+                <span
+                  className={classNames(styles.columnLabel)}
+                  {...(column.truncate === false ? {} : { title: column.label })}
+                >
+                  {column.label}
+                </span>
+              )}
               {allowsSorting ? (
                 <Icon
                   icon={
@@ -284,6 +349,7 @@ function DataRow<T extends object>({
           key={column.key}
           className={classNames(styles.cell)}
           data-align={column.align ?? 'start'}
+          data-wrap={column.truncate === false || undefined}
           data-mono={column.mono || undefined}
           data-muted={column.muted || undefined}
         >
@@ -463,6 +529,9 @@ export function DataTable<T extends object>({
     maxHeight === undefined
       ? undefined
       : ({ '--ds-data-table-max-h': toLength(maxHeight) } as CSSProperties);
+  const minWidth = tableMinWidth(columns, hasSelection);
+  const tableStyle =
+    minWidth === undefined ? undefined : ({ '--ds-data-table-min-w': minWidth } as CSSProperties);
 
   return (
     <div
@@ -488,12 +557,14 @@ export function DataTable<T extends object>({
       <div
         className={classNames(styles.scroll)}
         data-scrollable={maxHeight === undefined ? undefined : ''}
+        data-min-sized={minWidth === undefined ? undefined : ''}
         {...(scrollStyle ? { style: scrollStyle } : {})}
       >
         <Table
           {...(ariaLabel === undefined ? {} : { 'aria-label': ariaLabel })}
           {...(ariaLabelledBy === undefined ? {} : { 'aria-labelledby': ariaLabelledBy })}
           className={classNames(styles.table)}
+          {...(tableStyle ? { style: tableStyle } : {})}
           selectionMode={selectionMode}
           selectionBehavior="toggle"
           selectedKeys={racSelectedKeys}

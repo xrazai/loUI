@@ -57,7 +57,9 @@ Import icons from the package, not from `lucide-react`: `import { Icon, SearchIc
 
 `iconSet` maps the kebab-case names below to the components and `iconNames` documents the use of each. Both are the source of the allow-list in the manifest (AI-002).
 
-arrow-down, arrow-left, arrow-right, arrow-up, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, ellipsis, external-link, info, loader, minus, plus, search, star, triangle-alert, x.
+archive, arrow-down, arrow-left, arrow-right, arrow-up, bell, bot, calendar, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-up-down, circle-alert, circle-check, circle-x, copy, ellipsis, external-link, filter, info, link, loader, menu, message, minus, pencil, plus, printer, refresh, search, sparkles, star, thumbs-down, thumbs-up, trash, triangle-alert, users, x.
+
+Generic actions added by GAP-028: `trash` (delete, always behind a confirmation), `pencil` (edit), `printer`, `archive`, `bell`, `link`, `filter`, `users`, `bot` and `sparkles`. Sort is already covered by `arrow-up`, `arrow-down` and `chevrons-up-down`. Domain icons (truck, wallet, cart, WhatsApp) belong to the consuming product, not to this set; a product keeps its own icons next to the core set and passes them to `Icon` (any Lucide-compatible component works).
 
 ## Accessibility
 

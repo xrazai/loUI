@@ -123,9 +123,10 @@ export function getSourceElementId(listId: string, sourceId: string): string;
 // @public (undocumented)
 export interface LedgerEntry {
     balance?: number;
-    date: ISODate;
+    date?: ISODate | undefined;
     delta: number;
     id: string;
+    isDeletable?: boolean | undefined;
     sub?: string;
     title: string;
 }

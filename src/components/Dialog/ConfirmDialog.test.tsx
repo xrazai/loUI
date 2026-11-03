@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { watchExit } from '../../test/exitAnimation';
 import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
 import { ConfirmDialog } from './ConfirmDialog';
@@ -185,5 +186,34 @@ describe('ConfirmDialog', () => {
     await expect.element(screen.getByRole('alertdialog')).toBeVisible();
     await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
+  });
+
+  it('keeps the question and the consequence while it animates out after its target was cleared (GAP-036)', async () => {
+    function Target() {
+      const [order, setOrder] = useState<string | null>('#1048');
+      return (
+        <main>
+          <ConfirmDialog
+            isOpen={order !== null}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) setOrder(null);
+            }}
+            title={order ? `Delete order ${order}?` : ''}
+            description={order ? `Order ${order} will be removed.` : ''}
+            confirmLabel="Delete order"
+            onConfirm={() => undefined}
+          />
+        </main>
+      );
+    }
+    const screen = await renderWithProvider(<Target />);
+    await expect.element(screen.getByRole('alertdialog')).toBeVisible();
+    await expect.poll(() => document.getAnimations().length).toBe(0);
+    const watch = watchExit({ text: ['Delete order #1048?', 'Order #1048 will be removed.'] });
+    await screen.getByRole('button', { name: 'Cancel' }).click();
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
+    const seen = watch.stop();
+    expect(seen.sawExiting).toBe(true);
+    expect(seen.blank).toEqual([]);
   });
 });

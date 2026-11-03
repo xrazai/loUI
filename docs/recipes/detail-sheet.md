@@ -23,7 +23,7 @@ Components: `DataTable`, `Sheet`, `ConfirmDialog`, `Input`, `Select`, `Textarea`
 - **Footer layout:** "Delete order" (danger) at the start, "Cancel" and "Save order" (the one primary) at the end.
 - **Delete asks first.** The button opens a `ConfirmDialog` on top of the sheet. Esc closes **only the confirmation**; the sheet stays. Confirming removes the order, closes the sheet and shows "Order ORD-1048 deleted" with Undo.
 - **Save** updates the row, closes the sheet and shows "Order ORD-1048 saved".
-- Edits live in a `draft` copy, so Cancel and Esc discard them.
+- Edits live in a `draft` copy, so Cancel and Esc discard them. The draft is cleared when the sheet closes; the `Sheet` keeps showing the last details while it slides out, so the panel never animates out empty.
 
 ## Things to keep when you adapt it
 
@@ -146,7 +146,12 @@ export function DetailSheet({ initialOrders = ORDERS }: DetailSheetProps) {
       <Sheet
         isOpen={activeId !== null}
         onOpenChange={(isOpen) => {
-          if (!isOpen) setActiveId(null);
+          if (!isOpen) {
+            // Clearing the draft is safe: the Sheet keeps showing the last details while it
+            // slides out, so there is no need to hold on to the record for the animation.
+            setActiveId(null);
+            setDraft(null);
+          }
         }}
         title="Order"
         meta={draft?.number}

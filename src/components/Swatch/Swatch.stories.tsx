@@ -55,3 +55,15 @@ export const Decorative: Story = {
 };
 
 export const ShortHex: Story = { args: { color: '#f80', label: 'Orange' } };
+
+/** Model data without a color (`undefined`, `null` or `''`) renders an empty dashed circle. */
+export const NoColor: Story = {
+  render: () => (
+    <p style={{ margin: 0, color: 'var(--ds-text)' }}>
+      <Swatch color={null} decorative size="sm" /> No color
+    </p>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).queryByRole('img')).toBeNull();
+  },
+};

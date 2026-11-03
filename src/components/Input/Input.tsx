@@ -3,7 +3,7 @@ import { Input as RACInput, TextField } from 'react-aria-components';
 import type { TextFieldProps } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
 import { FieldMessages, Label, type fieldMessages } from '../Field';
-import type { FieldErrorMessage, FieldLabelingProps } from '../Field';
+import type { FieldErrorMessage, FieldLabelingProps, FieldMessageTone } from '../Field';
 import { continueUnhandledKeys } from '../Field/keyboard';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
@@ -17,6 +17,11 @@ interface InputBaseProps extends Omit<
 > {
   /** Helper text under the control (handoff `hint`). Linked with `aria-describedby`. */
   description?: ReactNode;
+  /**
+   * Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as
+   * "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.
+   */
+  descriptionTone?: FieldMessageTone | undefined;
   /**
    * Error text (handoff `error`). Shown while the field is invalid *and* the error is displayed:
    * after a submit attempt with the default `validationBehavior="native"`, or at once when you
@@ -57,6 +62,7 @@ export type InputProps = InputBaseProps & FieldLabelingProps;
 export function Input({
   label,
   description,
+  descriptionTone,
   errorMessage,
   placeholder,
   mono = false,
@@ -99,7 +105,11 @@ export function Input({
         />
         {trailing ? <span className={styles.adornmentEnd}>{trailing}</span> : null}
       </div>
-      <FieldMessages description={description} errorMessage={errorMessage} />
+      <FieldMessages
+        description={description}
+        descriptionTone={descriptionTone}
+        errorMessage={errorMessage}
+      />
     </TextField>
   );
 }

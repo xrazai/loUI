@@ -28,14 +28,24 @@ span[aria-hidden]                        (decorative)
 
 ## Props
 
-| Prop         | Type                   | Default  | Notes                                                                |
-| ------------ | ---------------------- | -------- | -------------------------------------------------------------------- |
-| `color`      | `string`               | required | `#rgb` or `#rrggbb`. Invalid values throw in development.            |
-| `label`      | `string`               | -        | Name of the color. Required unless `decorative`.                     |
-| `decorative` | `true`                 | -        | Hides the swatch from assistive technology. Use only next to a name. |
-| `size`       | `'sm' \| 'md' \| 'lg'` | `'md'`   | 16px, 20px or 32px (`--ds-swatch-size-*`).                           |
+| Prop         | Type                   | Default | Notes                                                                                                       |
+| ------------ | ---------------------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `color`      | `string \| null`       | -       | `#rgb` or `#rrggbb`. Missing (`undefined`, `null`, `''`) = empty circle. Other values throw in development. |
+| `label`      | `string`               | -       | Name of the color. Required unless `decorative`.                                                            |
+| `decorative` | `true`                 | -       | Hides the swatch from assistive technology. Use only next to a name.                                        |
+| `size`       | `'sm' \| 'md' \| 'lg'` | `'md'`  | 16px, 20px or 32px (`--ds-swatch-size-*`).                                                                  |
 
 The types make `label` and `decorative` mutually exclusive and require one of them.
+
+### Missing color
+
+Model data often has no color (a category without one, a `transparent` default that was never set). `undefined`, `null` and `''` render an empty dashed circle and never throw, so the call site does not need a guard. It is still a swatch: keep it `decorative` next to a name, or give it a `label` such as "No color". Any other non-hex value (`transparent`, `red`, `rgb(...)`) is a bug and throws in development; use the exported `isHexColor(value)` guard (a plain boolean) to decide yourself:
+
+```tsx
+import { Swatch, isHexColor } from 'loui-ds';
+
+<Swatch color={isHexColor(category.color) ? category.color : undefined} decorative />;
+```
 
 ## Accessibility
 
@@ -62,6 +72,6 @@ The types make `label` and `decorative` mutually exclusive and require one of th
 
 - `label` or `decorative` is required (the handoff had neither by default and used `title`, a mouse-only tooltip).
 - The color is applied through the `--ds-swatch-color` custom property, never as an inline `background` (ADR-0002 amendment). The inset ring is a token (`--ds-swatch-ring`) instead of `rgba(255,255,255,.12)`.
-- The hex value is validated: development throws a `RangeError`, production renders an empty dashed circle.
+- The hex value is validated: development throws a `RangeError` for a non-empty invalid value, production renders an empty dashed circle. A missing color (`undefined`, `null`, `''`) is accepted and renders the same empty circle (GAP-043).
 - Sizes are tokens (`sm`/`md`/`lg`) instead of a free pixel number.
 - React Aria `ColorSwatch` was evaluated and not used: it paints an inline `background` and names itself with a generated color description ("vibrant blue") that cannot be replaced by the product's own name.

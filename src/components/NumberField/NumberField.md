@@ -26,7 +26,7 @@ A number input with minus and plus steppers; the successor of the handoff `Stepp
 | `formatOptions`                                               | `Intl.NumberFormat` options (`{ style: 'unit', unit: 'kilogram' }`, `{ maximumFractionDigits: 2 }`). |
 | `suffix`                                                      | A visual unit after the number ("m", "pcs"). For a spoken unit use `formatOptions`.                  |
 | `size`                                                        | `sm` / `md` (default) / `lg`; the steppers follow.                                                   |
-| `description`, `errorMessage`                                 | As in `Input`.                                                                                       |
+| `description`, `descriptionTone`, `errorMessage`              | As in `Input`.                                                                                       |
 | `name`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly` | Standard. `name` submits the raw number (`1234.5`), not the formatted text.                          |
 | `messages`                                                    | `decrease`, `increase`, `requiredMark`.                                                              |
 

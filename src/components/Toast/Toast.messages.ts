@@ -11,6 +11,8 @@ export const messages = defineMessages({
     success: 'Success',
     warning: 'Warning',
     danger: 'Error',
+    /** Label of the Undo action added by `toastWithUndo`. A verb. */
+    undo: 'Undo',
   },
   'pt-BR': {
     region: 'Notificações temporárias',
@@ -19,5 +21,6 @@ export const messages = defineMessages({
     success: 'Sucesso',
     warning: 'Atenção',
     danger: 'Erro',
+    undo: 'Desfazer',
   },
 });

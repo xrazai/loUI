@@ -155,6 +155,151 @@ describe('LedgerList', () => {
     });
   });
 
+  describe('mixed deletable and fixed entries', () => {
+    const mixed: LedgerEntry[] = [
+      { id: 'm3', date: '2026-03-12', title: 'Refund', delta: -2500, balance: 12500 },
+      { id: 'm2', date: '2026-03-10', title: 'Payment received', delta: 5000, balance: 15000 },
+      {
+        id: 'm1',
+        date: '2026-03-01',
+        title: 'Opening balance',
+        delta: 10000,
+        isDeletable: false,
+      },
+    ];
+
+    it('renders no delete button on a non-deletable entry', async () => {
+      const screen = await renderWithProvider(<Example entries={mixed} onDelete={vi.fn()} />);
+      expect(screen.getByRole('button').elements()).toHaveLength(2);
+      const fixed = screen.getByRole('listitem').elements()[2] as HTMLElement;
+      expect(fixed.querySelector('button')).toBeNull();
+      expect(fixed.querySelector('[tabindex]')).toBeNull();
+      expect(fixed.innerText).toContain('Opening balance');
+    });
+
+    it('skips non-deletable entries in the tab order', async () => {
+      const onDelete = vi.fn();
+      const screen = await renderWithProvider(
+        <Example
+          entries={[
+            { id: 'a', date: '2026-03-12', title: 'Fixed', delta: 1, isDeletable: false },
+            { id: 'b', date: '2026-03-11', title: 'First', delta: 1 },
+            { id: 'c', date: '2026-03-10', title: 'Second', delta: 1, isDeletable: false },
+            { id: 'd', date: '2026-03-09', title: 'Third', delta: 1 },
+          ]}
+          onDelete={onDelete}
+        />,
+      );
+      await userEvent.keyboard('{Tab}');
+      await expect
+        .element(screen.getByRole('button', { name: 'Delete entry First' }))
+        .toHaveFocus();
+      await userEvent.keyboard('{Tab}');
+      await expect
+        .element(screen.getByRole('button', { name: 'Delete entry Third' }))
+        .toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+      expect(onDelete).toHaveBeenCalledTimes(1);
+      expect(onDelete.mock.calls[0]?.[0]).toMatchObject({ id: 'd' });
+    });
+
+    it('treats isDeletable true and omitted the same', async () => {
+      const screen = await renderWithProvider(
+        <Example
+          entries={[
+            { id: 'a', date: '2026-03-12', title: 'Explicit', delta: 1, isDeletable: true },
+            { id: 'b', date: '2026-03-11', title: 'Default', delta: 1 },
+          ]}
+          onDelete={vi.fn()}
+        />,
+      );
+      expect(screen.getByRole('button').elements()).toHaveLength(2);
+    });
+
+    it('ignores isDeletable without onDelete', async () => {
+      const screen = await renderWithProvider(<Example entries={mixed} />);
+      expect(screen.getByRole('button').elements()).toHaveLength(0);
+    });
+
+    it('keeps amounts aligned between fixed and deletable rows', async () => {
+      const screen = await renderWithProvider(<Example entries={mixed} onDelete={vi.fn()} />);
+      const rights = (screen.getByRole('listitem').elements() as HTMLElement[]).map(
+        (item) => item.querySelector('[data-part="amount"]')?.getBoundingClientRect().right,
+      );
+      expect(new Set(rights).size).toBe(1);
+    });
+  });
+
+  describe('entries without a date', () => {
+    const undated: LedgerEntry[] = [
+      { id: 'u2', title: 'Adjustment', sub: 'Manual', delta: -300, balance: 700 },
+      { id: 'u1', title: 'Opening balance', delta: 1000 },
+    ];
+
+    it('renders no time element and no empty date text', async () => {
+      const screen = await renderWithProvider(<Example entries={undated} />);
+      const items = screen.getByRole('listitem').elements() as HTMLElement[];
+      expect(items).toHaveLength(2);
+      for (const item of items) expect(item.querySelector('time')).toBeNull();
+      expect(items[0]?.innerText.replace(/\s+/g, ' ')).toBe(
+        'Adjustment Manual − $3.00 Balance $7.00',
+      );
+    });
+
+    it('reads title, amount and delete button in DOM order', async () => {
+      const screen = await renderWithProvider(
+        <Example entries={undated.slice(0, 1)} onDelete={vi.fn()} />,
+      );
+      const item = screen.getByRole('listitem').element() as HTMLElement;
+      const order = Array.from(item.children).map((child) =>
+        child.tagName === 'BUTTON' ? 'button' : child.textContent,
+      );
+      expect(order).toHaveLength(3);
+      expect(order[0]).toContain('Adjustment');
+      expect(order[1]).toContain('$3.00');
+      expect(order[2]).toBe('button');
+    });
+
+    it('lets undated rows share a list with dated rows and keeps columns aligned', async () => {
+      const screen = await renderWithProvider(
+        <Example
+          entries={[
+            { id: 'a', date: '2026-03-12', title: 'Dated', delta: 100 },
+            { id: 'b', title: 'Undated', delta: 100 },
+          ]}
+          onDelete={vi.fn()}
+        />,
+      );
+      const items = screen.getByRole('listitem').elements() as HTMLElement[];
+      expect(items[0]?.querySelectorAll('time')).toHaveLength(1);
+      expect(items[1]?.querySelectorAll('time')).toHaveLength(0);
+      const rects = items.map((item) => ({
+        title: item.querySelector('span')?.getBoundingClientRect().left,
+        amount: item.querySelector('[data-part="amount"]')?.getBoundingClientRect().right,
+      }));
+      expect(rects[0]?.title).toBe(rects[1]?.title);
+      expect(rects[0]?.amount).toBe(rects[1]?.amount);
+    });
+
+    it('drops the date column when no entry has a date', async () => {
+      const screen = await renderWithProvider(
+        <>
+          <Example
+            aria-label="Dated"
+            entries={[{ id: 'a', date: '2026-03-12', title: 'Dated', delta: 100 }]}
+          />
+          <Example aria-label="Plain" entries={undated.slice(0, 1)} />
+        </>,
+      );
+      const itemOf = (name: string) =>
+        screen.getByRole('list', { name }).getByRole('listitem').element() as HTMLElement;
+      const titleOffset = (item: HTMLElement) =>
+        (item.querySelector('span')?.getBoundingClientRect().left ?? 0) -
+        item.getBoundingClientRect().left;
+      expect(titleOffset(itemOf('Plain'))).toBeLessThan(titleOffset(itemOf('Dated')));
+    });
+  });
+
   describe('i18n', () => {
     it('speaks pt-BR: dates, money, balance and delete label', async () => {
       const screen = await renderWithProvider(<Example onDelete={() => undefined} />, {
@@ -195,6 +340,29 @@ describe('LedgerList', () => {
           <Example aria-label="Second" negativeTone="success" onDelete={() => undefined} />
         </main>,
       );
+      await expectNoA11yViolations(screen.container);
+    });
+
+    it('has no axe violations with fixed and undated rows (axe)', async () => {
+      const screen = await renderWithProvider(
+        <main>
+          <Example
+            entries={[
+              { id: 'a', date: '2026-03-12', title: 'Refund', delta: -2500, balance: 12500 },
+              { id: 'b', title: 'Adjustment', sub: 'No date', delta: 500, isDeletable: false },
+              {
+                id: 'c',
+                date: '2026-03-01',
+                title: 'Opening balance',
+                delta: 10000,
+                isDeletable: false,
+              },
+            ]}
+            onDelete={() => undefined}
+          />
+        </main>,
+      );
+      await userEvent.keyboard('{Tab}');
       await expectNoA11yViolations(screen.container);
     });
 

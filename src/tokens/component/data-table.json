@@ -41,6 +41,16 @@
       "$value": { "value": 160, "unit": "px" },
       "$description": "Width of a DataTable column that has a `width` prop (default 160px). Set at runtime via style on that column header; columns without `width` share the remaining space."
     },
+    "col-min-w": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Minimum width of a DataTable column that has `width` and `minWidth` props (default 0px, no minimum). Set at runtime via style on that column header; the column is as wide as the larger of `width` and `minWidth`."
+    },
+    "min-w": {
+      "$type": "dimension",
+      "$value": { "value": 0, "unit": "px" },
+      "$description": "Minimum width of the DataTable table element (default 0px, no minimum). Set at runtime via style when any column has a `minWidth`: the fixed columns plus the flexible ones at their largest `minWidth`. A narrower container then scrolls horizontally."
+    },
     "max-h": {
       "$type": "dimension",
       "$value": { "value": 480, "unit": "px" },

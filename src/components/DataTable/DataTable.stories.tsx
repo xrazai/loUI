@@ -273,6 +273,126 @@ export const LongText: Story = {
   },
 };
 
+const LONG_CUSTOMER = 'Companhia Brasileira de Papéis Finos e Acabamentos Industriais Ltda';
+
+/**
+ * `minWidth` keeps a column from being squashed: in a container that is too narrow the table area
+ * scrolls horizontally instead. Here the container is 360 px wide and the table needs more.
+ */
+export const MinimumColumnWidth: Story = {
+  args: {
+    columns: orderColumns.map((column) => {
+      if (column.key === 'customer') return { ...column, minWidth: '200px' };
+      if (column.key === 'status') return { ...column, width: '90px', minWidth: '120px' };
+      if (column.key === 'total') return { ...column, width: '90px', minWidth: '120px' };
+      return column;
+    }),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: 'calc(var(--ds-space-16) * 5.625)', maxInlineSize: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const headers = [...canvasElement.querySelectorAll('thead th')];
+    await expect(headers[1]?.getBoundingClientRect().width).toBeGreaterThanOrEqual(200);
+    await expect(headers[2]?.getBoundingClientRect().width).toBeGreaterThanOrEqual(120);
+    const scroller = canvasElement.querySelector('[data-min-sized]');
+    await expect((scroller?.scrollWidth ?? 0) > (scroller?.clientWidth ?? 0)).toBe(true);
+  },
+};
+
+/**
+ * `truncate: false` lets a column wrap instead of ending in an ellipsis, and a mono header such as
+ * "Supplier name" can use two lines instead of being cut to "SUPPL…". Other columns still truncate.
+ */
+export const WrappingColumns: Story = {
+  args: {
+    columns: [
+      { key: 'id', label: 'Order', width: '110px', mono: true, muted: true },
+      { key: 'customer', label: 'Supplier name', width: '140px', truncate: false },
+      { key: 'status', label: 'Status', width: '120px' },
+    ],
+    rows: [
+      {
+        id: 'ORD-2001',
+        customer: LONG_CUSTOMER,
+        status: 'Pending',
+        total: 99900,
+        date: '2026-10-29',
+      },
+      ...orders.slice(0, 2),
+    ],
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: 'calc(var(--ds-space-16) * 6)', maxInlineSize: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const cell = canvasElement.querySelectorAll('tbody td, tbody th')[1];
+    await expect(cell?.textContent).toBe(LONG_CUSTOMER);
+    await expect((cell?.scrollWidth ?? 0) <= (cell?.clientWidth ?? 0)).toBe(true);
+  },
+};
+
+/**
+ * `hideLabel` hides the header text of an icon-only or action column; `label` stays the accessible
+ * name of the column header.
+ */
+export const HiddenHeaderLabel: Story = {
+  args: {
+    columns: [
+      ...orderColumns.slice(0, 2),
+      {
+        key: 'actions',
+        label: 'Open order',
+        width: '64px',
+        hideLabel: true,
+        sortable: false,
+        render: (row) => (
+          <Button size="sm" variant="ghost">
+            {`Open ${row.id}`}
+          </Button>
+        ),
+      },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('columnheader', { name: 'Open order' }),
+    ).toBeInTheDocument();
+  },
+};
+
+/** A Button inside a cell handles its own press; the row action does not run. */
+export const ButtonInCell: Story = {
+  args: {
+    columns: [
+      ...orderColumns.filter((column) => column.key === 'customer'),
+      {
+        key: 'archive',
+        label: 'Archive',
+        sortable: false,
+        render: (row) => (
+          <Button size="sm" variant="ghost">
+            {`Archive ${row.id}`}
+          </Button>
+        ),
+      },
+    ],
+    onRowAction: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole('button', { name: 'Archive ORD-1001' }));
+    await expect(args.onRowAction).not.toHaveBeenCalled();
+  },
+};
+
 export const Controlled: Story = {
   render: function Render(args) {
     const [sort, setSort] = useState<DataTableSort | null>({ key: 'total', direction: 'desc' });

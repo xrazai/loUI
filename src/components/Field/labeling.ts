@@ -31,6 +31,13 @@ export type FieldLabelingProps =
  */
 export type WithLabel<P> = Extract<P, { label: ReactNode }>;
 
+/**
+ * Tone of a field's description (GAP-039): `neutral` is the plain helper text; `accent`,
+ * `success`, `warning` and `danger` tint it for a live check ("Matches", "Over by $5").
+ * Colour only reinforces: the words must carry the meaning on their own.
+ */
+export type FieldMessageTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+
 /** The subset of RAC's `ValidationResult` passed to an `errorMessage` function. */
 export interface FieldValidation {
   isInvalid: boolean;

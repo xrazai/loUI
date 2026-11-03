@@ -11,6 +11,11 @@
     min-inline-size: 0;
   }
 
+  /* A column with a `minWidth` makes the table wider than a narrow container: scroll, do not squash. */
+  .scroll[data-min-sized] {
+    overflow-x: auto;
+  }
+
   .scroll[data-scrollable] {
     overflow: auto;
     max-block-size: var(--ds-data-table-max-h);
@@ -27,6 +32,9 @@
 
   .table {
     inline-size: 100%;
+
+    /* Set from the columns' `minWidth` values (browsers ignore min-width on cells in a fixed layout). */
+    min-inline-size: var(--ds-data-table-min-w);
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
@@ -60,7 +68,7 @@
   }
 
   .column[data-sized] {
-    inline-size: var(--ds-data-table-col-w);
+    inline-size: max(var(--ds-data-table-col-w), var(--ds-data-table-col-min-w));
   }
 
   .selectionColumn,
@@ -99,9 +107,17 @@
   }
 
   .columnLabel {
+    min-inline-size: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* `truncate: false`: the header may use more than one line instead of ending in an ellipsis. */
+  .column[data-wrap] .columnLabel {
+    overflow: visible;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
 
   .sortIcon {
@@ -149,6 +165,15 @@
 
   .cell[data-align='end'] {
     text-align: end;
+  }
+
+  /* `truncate: false`: the content wraps and the row grows (the row height is a minimum). */
+  .cell[data-wrap] {
+    padding-block: var(--ds-space-2);
+    overflow: visible;
+    overflow-wrap: break-word;
+    text-overflow: clip;
+    white-space: normal;
   }
 
   .cell[data-mono] {

@@ -8,10 +8,14 @@ export type SwatchSize = 'sm' | 'md' | 'lg';
 
 interface SwatchBaseProps extends Omit<
   ComponentPropsWithRef<'span'>,
-  'children' | 'style' | 'role' | 'aria-label' | 'aria-labelledby' | 'aria-hidden'
+  'children' | 'color' | 'style' | 'role' | 'aria-label' | 'aria-labelledby' | 'aria-hidden'
 > {
-  /** The color to show, as `#rgb` or `#rrggbb`. Anything else throws in development and renders an empty circle in production. */
-  color: string;
+  /**
+   * The color to show, as `#rgb` or `#rrggbb`. `undefined`, `null` and `''` mean "no color" and
+   * render an empty dashed circle (use it for model data that may have no color). Any other
+   * value throws in development and renders the same empty circle in production.
+   */
+  color?: string | null | undefined;
   /** Diameter token: `sm` 16px, `md` 20px (default), `lg` 32px. */
   size?: SwatchSize;
 }
@@ -46,8 +50,9 @@ export type SwatchProps = NamedSwatchProps | DecorativeSwatchProps;
  * sets only the `--ds-swatch-color` custom property and uses the name you give it.
  */
 export function Swatch({ color, size = 'md', label, decorative, className, ...rest }: SwatchProps) {
+  const absent = color === undefined || color === null || color === '';
   const valid = isHexColor(color);
-  if (!valid) {
+  if (!valid && !absent) {
     reportInvalid(`Swatch expects a hex color (#rgb or #rrggbb), received "${color}".`);
   }
   const semantics =

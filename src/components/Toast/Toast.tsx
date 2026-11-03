@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useSyncExternalStore } from 'react';
 import type { Ref } from 'react';
 import { Text } from 'react-aria-components';
 import { useMessages } from '../../i18n';
@@ -12,6 +12,7 @@ import type { QueuedToastData, ToastQueue } from './queue';
 import { messages } from './Toast.messages';
 import styles from './Toast.module.css';
 import { RacToast, RacToastContent, RacToastRegion } from './toast.rac';
+import { registerUndoLabel } from './undoToast';
 
 export interface ToastRegionProps {
   /** The queue to show. Defaults to the one `toast()` writes to. */
@@ -116,6 +117,8 @@ export function ToastRegion({
   // React Aria registers the region as a landmark (F6) only when it is mounted with its first
   // toast, so the region is mounted here, on demand, instead of being rendered empty.
   const hasToasts = useHasToasts(queue);
+  const undoLabel = t.undo;
+  useEffect(() => registerUndoLabel(queue, undoLabel), [queue, undoLabel]);
   const regionRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (typeof ref === 'function') ref(node);

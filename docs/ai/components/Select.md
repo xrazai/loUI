@@ -16,23 +16,24 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 
 ## Props
 
-| Prop               | Type                                                            | Required | Default | Description                                                                              |
-| ------------------ | --------------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------- |
-| `options`          | `readonly (SelectOption \| SelectGroup)[]`                      | yes      |         | The options, or groups of options. Keep the order you want users to see (see Select.md). |
-| `value`            | `string \| null`                                                |          |         | The selected `value`; `null` means nothing is selected. Pair with `onChange`.            |
-| `defaultValue`     | `string \| null`                                                |          |         | The initially selected `value` when uncontrolled.                                        |
-| `onChange`         | `((value: string \| null) => void)`                             |          |         | Called with the new `value`.                                                             |
-| `description`      | `ReactNode`                                                     |          |         | Helper text under the control. Linked with `aria-describedby`.                           |
-| `errorMessage`     | `FieldErrorMessage`                                             |          |         | Error text, shown while the field is invalid and the error is displayed. See `Input`.    |
-| `placeholder`      | `string`                                                        |          |         | Trigger text while nothing is selected. Default from messages: "Select an option".       |
-| `size`             | `'sm' \| 'md' \| 'lg'`                                          |          | `'md'`  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px.                               |
-| `className`        | `string`                                                        |          |         | Class name for the field root.                                                           |
-| `popoverClassName` | `string`                                                        |          |         | Class name for the popover that holds the options.                                       |
-| `messages`         | `Partial<{ placeholder: string; } & { requiredMark: string; }>` |          |         | Message overrides for this instance: `placeholder`, `requiredMark`.                      |
-| `ref`              | `Ref<HTMLDivElement>`                                           |          |         | Ref to the field root `<div>`.                                                           |
-| `label`            | `ReactNode`                                                     |          |         | Visible label. Prefer it: sighted and assistive technology users see the same name.      |
-| `aria-label`       | `string`                                                        |          |         | Accessible name when there is no visible label (for example a search box with an icon).  |
-| `aria-labelledby`  | `string`                                                        |          |         | Id of the element that names the field.                                                  |
+| Prop               | Type                                                            | Required | Default | Description                                                                                                                                                                      |
+| ------------------ | --------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`          | `readonly (SelectOption \| SelectGroup)[]`                      | yes      |         | The options, or groups of options. Keep the order you want users to see (see Select.md).                                                                                         |
+| `value`            | `string \| null`                                                |          |         | The selected `value`; `null` means nothing is selected. Pair with `onChange`.                                                                                                    |
+| `defaultValue`     | `string \| null`                                                |          |         | The initially selected `value` when uncontrolled.                                                                                                                                |
+| `onChange`         | `((value: string \| null) => void)`                             |          |         | Called with the new `value`.                                                                                                                                                     |
+| `description`      | `ReactNode`                                                     |          |         | Helper text under the control. Linked with `aria-describedby`.                                                                                                                   |
+| `descriptionTone`  | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'`   |          |         | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
+| `errorMessage`     | `FieldErrorMessage`                                             |          |         | Error text, shown while the field is invalid and the error is displayed. See `Input`.                                                                                            |
+| `placeholder`      | `string`                                                        |          |         | Trigger text while nothing is selected. Default from messages: "Select an option".                                                                                               |
+| `size`             | `'sm' \| 'md' \| 'lg'`                                          |          | `'md'`  | Control height: `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                                                       |
+| `className`        | `string`                                                        |          |         | Class name for the field root.                                                                                                                                                   |
+| `popoverClassName` | `string`                                                        |          |         | Class name for the popover that holds the options.                                                                                                                               |
+| `messages`         | `Partial<{ placeholder: string; } & { requiredMark: string; }>` |          |         | Message overrides for this instance: `placeholder`, `requiredMark`.                                                                                                              |
+| `ref`              | `Ref<HTMLDivElement>`                                           |          |         | Ref to the field root `<div>`.                                                                                                                                                   |
+| `label`            | `ReactNode`                                                     |          |         | Visible label. Prefer it: sighted and assistive technology users see the same name.                                                                                              |
+| `aria-label`       | `string`                                                        |          |         | Accessible name when there is no visible label (for example a search box with an icon).                                                                                          |
+| `aria-labelledby`  | `string`                                                        |          |         | Id of the element that names the field.                                                                                                                                          |
 
 ### Inherited props
 
@@ -80,16 +81,16 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Props (key ones)
 
-| Prop                                            | Notes                                                                                               |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `label`, `description`, `errorMessage`          | As in `Input`.                                                                                      |
-| `options`                                       | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
-| `value` / `defaultValue` / `onChange(value)`    | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
-| `placeholder`                                   | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
-| `size`                                          | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
-| `name`, `isRequired`, `isInvalid`, `isDisabled` | Standard. `name` is submitted through the hidden `<select>`.                                        |
-| `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
-| `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
+| Prop                                                      | Notes                                                                                               |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `label`, `description`, `descriptionTone`, `errorMessage` | As in `Input`.                                                                                      |
+| `options`                                                 | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
+| `value` / `defaultValue` / `onChange(value)`              | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
+| `placeholder`                                             | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
+| `size`                                                    | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
+| `name`, `isRequired`, `isInvalid`, `isDisabled`           | Standard. `name` is submitted through the hidden `<select>`.                                        |
+| `popoverClassName`, `className`, `ref`                    | Styling hooks; `ref` is the field root.                                                             |
+| `messages`                                                | `placeholder`, `requiredMark`.                                                                      |
 
 Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 

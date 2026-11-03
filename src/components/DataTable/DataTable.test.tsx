@@ -5,7 +5,7 @@ import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
 import { DataTable } from './DataTable';
-import type { DataTableSort } from './DataTable';
+import type { DataTableColumn, DataTableSort } from './DataTable';
 import { orderColumns, orders } from './DataTable.fixtures';
 import type { Order } from './DataTable.fixtures';
 
@@ -522,6 +522,249 @@ describe('DataTable', () => {
         0,
       );
       expect(getComputedStyle(header).position).toBe('sticky');
+    });
+  });
+
+  describe('column sizing', () => {
+    const LONG = 'Companhia Brasileira de Papéis Finos e Acabamentos Industriais Ltda';
+    const longRows: Order[] = [
+      { id: 'ORD-2001', customer: LONG, status: 'Pending', total: 99900, date: '2026-10-29' },
+    ];
+
+    function headerWidths(container: Element): number[] {
+      return [...container.querySelectorAll('thead th')].map(
+        (th) => th.getBoundingClientRect().width,
+      );
+    }
+
+    it('never squashes a column below minWidth: the table area scrolls instead', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '120px', mono: true },
+        { key: 'customer', label: 'Customer', minWidth: '200px' },
+        { key: 'status', label: 'Status', minWidth: '160px' },
+        { key: 'total', label: 'Total', width: '80px', minWidth: '140px', align: 'end' },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 300 }}>
+          <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />
+        </div>,
+      );
+      const [id, customer, status, total] = headerWidths(screen.container);
+      expect(id).toBe(120);
+      expect(customer).toBeGreaterThanOrEqual(200);
+      expect(status).toBeGreaterThanOrEqual(160);
+      expect(total).toBe(140);
+      const scroller = screen.container.querySelector('[data-min-sized]') as HTMLElement;
+      expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+      expect(scroller.clientWidth).toBe(300);
+      expect(getComputedStyle(scroller).overflowX).toBe('auto');
+    });
+
+    it('lets flexible columns grow above minWidth when there is room', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '120px' },
+        { key: 'customer', label: 'Customer', minWidth: '100px' },
+        { key: 'status', label: 'Status' },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 700 }}>
+          <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />
+        </div>,
+      );
+      const [, customer, status] = headerWidths(screen.container);
+      expect(customer).toBeCloseTo(290, 0);
+      expect(status).toBeCloseTo(290, 0);
+      const scroller = screen.container.querySelector('[data-min-sized]') as HTMLElement;
+      expect(scroller.scrollWidth).toBe(scroller.clientWidth);
+    });
+
+    it('accounts for the selection column in the minimum width', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'customer', label: 'Customer', minWidth: '200px' },
+        { key: 'status', label: 'Status', minWidth: '100px' },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 240 }}>
+          <DataTable<Order>
+            columns={columns}
+            rows={orders}
+            aria-label="Orders"
+            selectionMode="multiple"
+          />
+        </div>,
+      );
+      const [selection, customer, status] = headerWidths(screen.container);
+      expect(selection).toBe(40);
+      expect(customer).toBeGreaterThanOrEqual(200);
+      expect(status).toBeGreaterThanOrEqual(200);
+    });
+
+    it('leaves the layout alone when no column has a minWidth', async () => {
+      const screen = await renderWithProvider(<DataTable<Order> {...baseProps} />);
+      expect(screen.container.querySelector('[data-min-sized]')).toBeNull();
+      const table = screen.getByRole('grid').element();
+      expect(table.style.getPropertyValue('--ds-data-table-min-w')).toBe('');
+    });
+
+    it('sets the width variables on the header cell only for the props given', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '120px', minWidth: '90px' },
+        { key: 'customer', label: 'Customer', minWidth: '10rem' },
+        { key: 'status', label: 'Status' },
+      ];
+      const screen = await renderWithProvider(
+        <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />,
+      );
+      const [first, second, third] = [
+        ...screen.container.querySelectorAll('thead th'),
+      ] as HTMLElement[];
+      expect(first?.style.getPropertyValue('--ds-data-table-col-w')).toBe('120px');
+      expect(first?.style.getPropertyValue('--ds-data-table-col-min-w')).toBe('90px');
+      expect(second?.style.getPropertyValue('--ds-data-table-col-w')).toBe('');
+      expect(second?.style.getPropertyValue('--ds-data-table-col-min-w')).toBe('10rem');
+      expect(third?.getAttribute('style')).toBeNull();
+    });
+
+    it('truncates by default with an ellipsis and keeps the full text available', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '90px' },
+        { key: 'customer', label: 'Customer name for the invoice', width: '120px' },
+      ];
+      const screen = await renderWithProvider(
+        <DataTable<Order> columns={columns} rows={longRows} aria-label="Orders" />,
+      );
+      const cell = screen.container.querySelectorAll('tbody td, tbody th')[1] as HTMLElement;
+      const style = getComputedStyle(cell);
+      expect(style.textOverflow).toBe('ellipsis');
+      expect(style.whiteSpace).toBe('nowrap');
+      expect(cell.scrollWidth).toBeGreaterThan(cell.clientWidth);
+      expect(cell.textContent).toBe(LONG);
+      const label = screen.container.querySelectorAll('thead th')[1]?.querySelector('span span');
+      expect(label?.getAttribute('title')).toBe('Customer name for the invoice');
+      expect(label?.scrollWidth).toBeGreaterThan(label?.clientWidth ?? 0);
+      expect(
+        screen.getByRole('columnheader', { name: /Customer name for the invoice/ }).element(),
+      ).toBeTruthy();
+    });
+
+    it('wraps cells and header onto more lines with truncate: false', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '90px' },
+        { key: 'customer', label: 'Supplier name', width: '80px', truncate: false },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 170 }}>
+          <DataTable<Order> columns={columns} rows={longRows} aria-label="Orders" />
+        </div>,
+      );
+      const cell = screen.container.querySelectorAll('tbody td, tbody th')[1] as HTMLElement;
+      expect(getComputedStyle(cell).whiteSpace).toBe('normal');
+      expect(cell.scrollWidth).toBeLessThanOrEqual(cell.clientWidth);
+      expect(cell.getBoundingClientRect().height).toBeGreaterThan(52);
+      expect(cell.textContent).toBe(LONG);
+      const [first, second] = [...screen.container.querySelectorAll('thead th')] as HTMLElement[];
+      // Header cells of one row share a height: compare the labels, one caption line is 16px.
+      const firstLabel = first?.querySelector('span span') as HTMLElement;
+      const label = second?.querySelector('span span') as HTMLElement;
+      expect(firstLabel.getBoundingClientRect().height).toBeLessThanOrEqual(17);
+      expect(label.getBoundingClientRect().height).toBeGreaterThanOrEqual(32);
+      expect(label.scrollWidth).toBeLessThanOrEqual(label.clientWidth);
+      expect(label.hasAttribute('title')).toBe(false);
+    });
+
+    it('keeps the label as the accessible name when hideLabel hides it visually', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '120px' },
+        {
+          key: 'actions',
+          label: 'Row actions',
+          width: '56px',
+          hideLabel: true,
+          sortable: false,
+          render: (row) => <Button size="sm">{`Open ${row.id}`}</Button>,
+        },
+      ];
+      const screen = await renderWithProvider(
+        <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />,
+      );
+      const header = screen.getByRole('columnheader', { name: 'Row actions' });
+      await expect.element(header).toBeInTheDocument();
+      expect(header.element().hasAttribute('aria-sort')).toBe(false);
+      const hidden = [...header.element().querySelectorAll('span')].find(
+        (span) => span.textContent === 'Row actions',
+      ) as HTMLElement;
+      const box = hidden.getBoundingClientRect();
+      expect(box.width).toBeLessThanOrEqual(1);
+      expect(box.height).toBeLessThanOrEqual(1);
+    });
+
+    it('keeps a sortable column with hideLabel sortable and named', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order id', hideLabel: true },
+        { key: 'customer', label: 'Customer' },
+      ];
+      const screen = await renderWithProvider(
+        <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />,
+      );
+      const header = screen.getByRole('columnheader', { name: 'Order id' });
+      await userEvent.click(header);
+      expect(header.element().getAttribute('aria-sort')).toBe('ascending');
+    });
+
+    it('has no axe violations with minWidth, truncate and hideLabel', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '120px', minWidth: '100px' },
+        { key: 'customer', label: 'Supplier name', minWidth: '160px', truncate: false },
+        { key: 'status', label: 'Status', minWidth: '120px' },
+        { key: 'actions', label: 'Row actions', width: '56px', hideLabel: true, sortable: false },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 400 }}>
+          <DataTable<Order>
+            columns={columns}
+            rows={orders}
+            aria-label="Orders"
+            selectionMode="multiple"
+            stickyHeader
+            maxHeight={240}
+            pageSize={false}
+          />
+        </div>,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
+  });
+
+  describe('buttons inside cells', () => {
+    it('does not run onRowAction when a Button in a cell is pressed', async () => {
+      const onRowAction = vi.fn();
+      const onPress = vi.fn();
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'customer', label: 'Customer' },
+        {
+          key: 'actions',
+          label: 'Actions',
+          sortable: false,
+          render: (row) => (
+            <Button size="sm" onPress={onPress}>
+              {`Archive ${row.id}`}
+            </Button>
+          ),
+        },
+      ];
+      const screen = await renderWithProvider(
+        <DataTable<Order>
+          columns={columns}
+          rows={orders}
+          aria-label="Orders"
+          onRowAction={onRowAction}
+        />,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Archive ORD-1001' }));
+      expect(onPress).toHaveBeenCalledTimes(1);
+      expect(onRowAction).not.toHaveBeenCalled();
+      await userEvent.click(screen.getByText('Zeta Supplies'));
+      expect(onRowAction).toHaveBeenCalledTimes(1);
     });
   });
 

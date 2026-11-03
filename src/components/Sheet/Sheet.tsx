@@ -12,6 +12,7 @@ import { classNames } from '../../utils/classNames';
 import { XIcon } from '../Icon/icons';
 import { ScrollBody } from '../Dialog/ScrollBody';
 import { IconButton } from '../IconButton';
+import { useRetainedWhileClosing } from '../Dialog/useRetainedWhileClosing';
 import { messages } from './Sheet.messages';
 import styles from './Sheet.module.css';
 
@@ -101,7 +102,6 @@ export function Sheet({
   ref,
 }: SheetProps) {
   const t = useMessages('Sheet', messages, overrides);
-  const descriptionId = useId();
   return (
     <DialogTrigger
       {...(isOpen === undefined ? {} : { isOpen })}
@@ -116,49 +116,111 @@ export function Sheet({
         className={classNames(styles.overlay)}
         style={{ zIndex: 'var(--ds-z-sheet)' }}
       >
-        <Modal className={classNames(styles.modal)} data-size={size}>
-          <AriaDialog
-            {...(ref ? { ref } : {})}
-            {...(description ? { 'aria-describedby': descriptionId } : {})}
-            className={classNames(styles.sheet, className)}
-          >
-            {(options) => (
-              <>
-                <header className={classNames(styles.header)}>
-                  <Heading slot="title" level={2} className={classNames(styles.title)}>
-                    {title}
-                  </Heading>
-                  {meta ? <span className={classNames(styles.meta)}>{meta}</span> : null}
-                  {headerExtra}
-                  <IconButton
-                    className={classNames(styles.close)}
-                    variant="ghost"
-                    icon={XIcon}
-                    label={t.close}
-                    onPress={options.close}
-                  />
-                </header>
-                {description ? (
-                  <p id={descriptionId} className={classNames(styles.description)}>
-                    {description}
-                  </p>
-                ) : null}
-                <ScrollBody className={classNames(styles.body)} data-padded={padded || undefined}>
-                  {resolve(children, options)}
-                </ScrollBody>
-                {footer || footerStart ? (
-                  <footer className={classNames(styles.footer)}>
-                    <div className={classNames(styles.footerStart)}>
-                      {resolve(footerStart, options)}
-                    </div>
-                    <div className={classNames(styles.footerEnd)}>{resolve(footer, options)}</div>
-                  </footer>
-                ) : null}
-              </>
-            )}
-          </AriaDialog>
-        </Modal>
+        <SheetPanel
+          title={title}
+          meta={meta}
+          headerExtra={headerExtra}
+          description={description}
+          footer={footer}
+          footerStart={footerStart}
+          size={size}
+          padded={padded}
+          closeLabel={t.close}
+          className={className}
+          panelRef={ref}
+        >
+          {children}
+        </SheetPanel>
       </ModalOverlay>
     </DialogTrigger>
+  );
+}
+
+/** Content props of `Sheet`, each one allowed to be `undefined` (a mapped type drops the `?`). */
+type SheetContentProps = {
+  [
+    K in
+      | 'title'
+      | 'meta'
+      | 'headerExtra'
+      | 'description'
+      | 'children'
+      | 'footer'
+      | 'footerStart'
+      | 'className'
+  ]: SheetProps[K];
+};
+
+interface SheetPanelProps extends SheetContentProps {
+  size: SheetSize;
+  padded: boolean;
+  closeLabel: string;
+  panelRef: Ref<HTMLElement> | undefined;
+}
+
+/**
+ * The part of the sheet that lives inside the overlay. While the sheet animates out it renders
+ * the props of its last open render, so clearing the state that feeds the content in the same
+ * update that closes the sheet does not blank the panel (GAP-036).
+ */
+function SheetPanel(props: SheetPanelProps) {
+  const {
+    title,
+    meta,
+    headerExtra,
+    description,
+    children,
+    footer,
+    footerStart,
+    size,
+    padded,
+    closeLabel,
+    className,
+    panelRef,
+  } = useRetainedWhileClosing(props);
+  const descriptionId = useId();
+  return (
+    <Modal className={classNames(styles.modal)} data-size={size}>
+      <AriaDialog
+        {...(panelRef ? { ref: panelRef } : {})}
+        {...(description ? { 'aria-describedby': descriptionId } : {})}
+        className={classNames(styles.sheet, className)}
+      >
+        {(options) => (
+          <>
+            <header className={classNames(styles.header)}>
+              <Heading slot="title" level={2} className={classNames(styles.title)}>
+                {title}
+              </Heading>
+              {meta ? <span className={classNames(styles.meta)}>{meta}</span> : null}
+              {headerExtra}
+              <IconButton
+                className={classNames(styles.close)}
+                variant="ghost"
+                icon={XIcon}
+                label={closeLabel}
+                onPress={options.close}
+              />
+            </header>
+            {description ? (
+              <p id={descriptionId} className={classNames(styles.description)}>
+                {description}
+              </p>
+            ) : null}
+            <ScrollBody className={classNames(styles.body)} data-padded={padded || undefined}>
+              {resolve(children, options)}
+            </ScrollBody>
+            {footer || footerStart ? (
+              <footer className={classNames(styles.footer)}>
+                <div className={classNames(styles.footerStart)}>
+                  {resolve(footerStart, options)}
+                </div>
+                <div className={classNames(styles.footerEnd)}>{resolve(footer, options)}</div>
+              </footer>
+            ) : null}
+          </>
+        )}
+      </AriaDialog>
+    </Modal>
   );
 }

@@ -66,6 +66,13 @@ export function createToastQueue(): ToastQueue {
   return new RacToastQueue<ToastContentData>({ maxVisibleToasts: MAX_VISIBLE_TOASTS });
 }
 
+const queuesByApi = new WeakMap<ToastApi, ToastQueue>();
+
+/** Internal: the queue a `createToastApi` function writes to, `undefined` for foreign objects. */
+export function getToastQueue(api: ToastApi): ToastQueue | undefined {
+  return queuesByApi.get(api);
+}
+
 /** Builds the `toast()` function for a queue. */
 export function createToastApi(queue: ToastQueue): ToastApi {
   const add = (message: ReactNode, options: ToastOptions = {}): string => {
@@ -89,6 +96,7 @@ export function createToastApi(queue: ToastQueue): ToastApi {
   api.clear = () => {
     queue.clear();
   };
+  queuesByApi.set(api, queue);
   return api;
 }
 

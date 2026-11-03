@@ -237,6 +237,8 @@ export type TokenName =
   | 'data-table.gap'
   | 'data-table.sticky-z-index'
   | 'data-table.col-w'
+  | 'data-table.col-min-w'
+  | 'data-table.min-w'
   | 'data-table.max-h'
   | 'dialog.width-sm'
   | 'dialog.width-md'
@@ -662,6 +664,8 @@ export type TokenCssVar =
   | '--ds-data-table-gap'
   | '--ds-data-table-sticky-z-index'
   | '--ds-data-table-col-w'
+  | '--ds-data-table-col-min-w'
+  | '--ds-data-table-min-w'
   | '--ds-data-table-max-h'
   | '--ds-dialog-width-sm'
   | '--ds-dialog-width-md'
@@ -1105,6 +1109,8 @@ export const tokenValues = {
   'data-table.gap': { cssVar: '--ds-data-table-gap', type: 'dimension', value: '12px' },
   'data-table.sticky-z-index': { cssVar: '--ds-data-table-sticky-z-index', type: 'number', value: 1 },
   'data-table.col-w': { cssVar: '--ds-data-table-col-w', type: 'dimension', value: '160px' },
+  'data-table.col-min-w': { cssVar: '--ds-data-table-col-min-w', type: 'dimension', value: '0px' },
+  'data-table.min-w': { cssVar: '--ds-data-table-min-w', type: 'dimension', value: '0px' },
   'data-table.max-h': { cssVar: '--ds-data-table-max-h', type: 'dimension', value: '480px' },
   'dialog.width-sm': { cssVar: '--ds-dialog-width-sm', type: 'dimension', value: '420px' },
   'dialog.width-md': { cssVar: '--ds-dialog-width-md', type: 'dimension', value: '540px' },

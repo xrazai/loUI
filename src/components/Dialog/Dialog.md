@@ -58,7 +58,8 @@ DialogTrigger
 - `Escape` closes **only the top-most layer**. A `Dialog` opened from a `Sheet` closes first and the Sheet stays (tested). Every overlay uses React Aria's shared layer stack instead of its own window listener (ARCH-005).
 - Named by the title (`aria-labelledby`, from the `h2`) and described by the description (`aria-describedby`; not linked in the handoff).
 - `ConfirmDialog` uses `alertdialog`, which screen readers announce with its description. A press outside does not dismiss it.
-- Reduced motion: the 150 ms fade and 8 px rise are removed. Forced colors: border in `CanvasText`.
+- Reduced motion: the 150 ms fade and 8 px rise are removed, so the dialog leaves the DOM immediately when it closes (tested). Forced colors: border in `CanvasText`.
+- **Exit animation.** The dialog (and `ConfirmDialog`) stays mounted for the 150 ms fade-out and keeps rendering the props of its last open render during that time. Clearing the state that feeds the title, description, body or footer in the same update that closes it (`setOrder(null)`) does not make the panel animate out empty, so no `useLast`-style workaround is needed. If the tab is hidden the browser does not run animations and React Aria unmounts the dialog only once the tab is visible again.
 - 320 px reflow: the dialog shrinks to the viewport less the 24 px gutter and the body scrolls.
 
 ### Layers

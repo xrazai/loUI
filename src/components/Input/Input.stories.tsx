@@ -43,6 +43,39 @@ export const WithDescription: Story = {
   },
 };
 
+/**
+ * A toned description for live checks ("Matches", "Over by $5"). The words carry the meaning;
+ * the colour only reinforces it. It stays linked with `aria-describedby`.
+ */
+export const DescriptionTones: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--ds-space-4)' }}>
+      <Input label="Plain" defaultValue="100" description="Shown on the invoice." />
+      <Input
+        label="Accent"
+        defaultValue="100"
+        description="Synced with the bank feed."
+        descriptionTone="accent"
+      />
+      <Input label="Success" defaultValue="100" description="Matches" descriptionTone="success" />
+      <Input
+        label="Warning"
+        defaultValue="105"
+        description="Over by $5"
+        descriptionTone="warning"
+      />
+      <Input label="Danger" defaultValue="95" description="Short by $5" descriptionTone="danger" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('textbox', { name: 'Success' })).toHaveAccessibleDescription(
+      'Matches',
+    );
+    await expect(canvas.getByText('Short by $5')).toHaveAttribute('data-tone', 'danger');
+  },
+};
+
 export const Required: Story = {
   args: { isRequired: true, description: 'Used in invoices.' },
   play: async ({ canvasElement }) => {

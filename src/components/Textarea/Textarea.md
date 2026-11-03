@@ -13,17 +13,17 @@ Multi-line text field. Same contract as [Input](../Input/Input.md) (label, descr
 
 ## Props (key ones)
 
-| Prop                                         | Notes                                                                                                                    |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `label`, `description`, `errorMessage`       | As in `Input`.                                                                                                           |
-| `aside`                                      | Text on the label line, aligned to the end ("Optional", "Markdown supported"). Part of the description, not of the name. |
-| `rows`                                       | Visible lines. Default 3.                                                                                                |
-| `resize`                                     | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
-| `autoGrow`                                   | Grows with its content; the manual resize handle is off.                                                                 |
-| `maxLength` + `showCount`                    | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
-| `value` / `defaultValue` / `onChange(value)` | React Aria naming; `onChange` receives the string.                                                                       |
-| `textareaRef` / `ref`                        | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |
-| `messages`                                   | `count`, `remaining`, `over`, `requiredMark`.                                                                            |
+| Prop                                                      | Notes                                                                                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `label`, `description`, `descriptionTone`, `errorMessage` | As in `Input`.                                                                                                           |
+| `aside`                                                   | Text on the label line, aligned to the end ("Optional", "Markdown supported"). Part of the description, not of the name. |
+| `rows`                                                    | Visible lines. Default 3.                                                                                                |
+| `resize`                                                  | `none`, `vertical` (default), `horizontal`, `both`.                                                                      |
+| `autoGrow`                                                | Grows with its content; the manual resize handle is off.                                                                 |
+| `maxLength` + `showCount`                                 | Shows "used / max" on the label line and announces the remaining characters politely.                                    |
+| `value` / `defaultValue` / `onChange(value)`              | React Aria naming; `onChange` receives the string.                                                                       |
+| `textareaRef` / `ref`                                     | `textareaRef` is the `<textarea>`, `ref` the field root.                                                                 |
+| `messages`                                                | `count`, `remaining`, `over`, `requiredMark`.                                                                            |
 
 ## Character count
 

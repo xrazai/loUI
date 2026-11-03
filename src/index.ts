@@ -105,6 +105,7 @@ export {
   createToastApi,
   createToastQueue,
   toast,
+  toastWithUndo,
   useToast,
 } from './components/Toast';
 export type {
@@ -114,6 +115,7 @@ export type {
   ToastQueue,
   ToastRegionProps,
   ToastTone,
+  ToastWithUndoOptions,
 } from './components/Toast';
 export { TOOLTIP_DELAY, Tooltip } from './components/Tooltip';
 export type { TooltipPlacement, TooltipProps } from './components/Tooltip';
@@ -190,6 +192,7 @@ export type {
   FieldErrorProps,
   FieldLabelingProps,
   FieldMessagesProps,
+  FieldMessageTone,
   FieldValidation,
   LabelProps,
   RequiredMarkProps,
@@ -308,7 +311,7 @@ export { DueIndicator } from './components/DueIndicator';
 export type { DueIndicatorProps } from './components/DueIndicator';
 export { StatusSteps } from './components/StatusSteps';
 export type { StatusStep, StatusStepState, StatusStepsProps } from './components/StatusSteps';
-export { Swatch } from './components/Swatch';
+export { Swatch, isHexColor } from './components/Swatch';
 export type { SwatchProps, SwatchSize } from './components/Swatch';
 
 // Display

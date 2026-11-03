@@ -14,16 +14,16 @@ Single-choice dropdown: a button that opens a listbox in a popover. Built on Rea
 
 ## Props (key ones)
 
-| Prop                                            | Notes                                                                                               |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `label`, `description`, `errorMessage`          | As in `Input`.                                                                                      |
-| `options`                                       | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
-| `value` / `defaultValue` / `onChange(value)`    | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
-| `placeholder`                                   | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
-| `size`                                          | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
-| `name`, `isRequired`, `isInvalid`, `isDisabled` | Standard. `name` is submitted through the hidden `<select>`.                                        |
-| `popoverClassName`, `className`, `ref`          | Styling hooks; `ref` is the field root.                                                             |
-| `messages`                                      | `placeholder`, `requiredMark`.                                                                      |
+| Prop                                                      | Notes                                                                                               |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `label`, `description`, `descriptionTone`, `errorMessage` | As in `Input`.                                                                                      |
+| `options`                                                 | `SelectOption[]` (`value`, `label`, `isDisabled`) or groups `{ id, label, options }`, mixed freely. |
+| `value` / `defaultValue` / `onChange(value)`              | The selected option `value`; `null` means nothing selected. `onChange` receives `string \| null`.   |
+| `placeholder`                                             | Trigger text while empty. Default from messages: "Select an option" (pt-BR "Selecione uma opção").  |
+| `size`                                                    | `sm` 32px, `md` 40px (default), `lg` 48px.                                                          |
+| `name`, `isRequired`, `isInvalid`, `isDisabled`           | Standard. `name` is submitted through the hidden `<select>`.                                        |
+| `popoverClassName`, `className`, `ref`                    | Styling hooks; `ref` is the field root.                                                             |
+| `messages`                                                | `placeholder`, `requiredMark`.                                                                      |
 
 Option order is yours: the component never reorders. The product rule that lists are alphabetical by default applies to what you pass in: use `sortByText(options, (o) => o.label, locale)` from `loui-ds` (locale- and accent-aware) unless the order carries meaning (sizes, steps).
 

@@ -6,7 +6,7 @@ import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
 import { FieldMessages, Label, type fieldMessages } from '../Field';
-import type { FieldErrorMessage, FieldLabelingProps } from '../Field';
+import type { FieldErrorMessage, FieldLabelingProps, FieldMessageTone } from '../Field';
 import { continueUnhandledKeys } from '../Field/keyboard';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
@@ -27,6 +27,11 @@ interface TextareaBaseProps extends Omit<
 > {
   /** Helper text under the control. Linked with `aria-describedby`. */
   description?: ReactNode;
+  /**
+   * Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as
+   * "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.
+   */
+  descriptionTone?: FieldMessageTone | undefined;
   /** Error text, shown while the field is invalid and the error is displayed. See `Input`. */
   errorMessage?: FieldErrorMessage;
   /**
@@ -70,6 +75,7 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
 export function Textarea({
   label,
   description,
+  descriptionTone,
   errorMessage,
   aside,
   placeholder,
@@ -208,7 +214,11 @@ export function Textarea({
         data-autogrow={autoGrow || undefined}
         className={classNames(fieldStyles.control, styles.textarea, textareaClassName)}
       />
-      <FieldMessages description={description} errorMessage={errorMessage} />
+      <FieldMessages
+        description={description}
+        descriptionTone={descriptionTone}
+        errorMessage={errorMessage}
+      />
       {counting ? (
         <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
           {announcement}

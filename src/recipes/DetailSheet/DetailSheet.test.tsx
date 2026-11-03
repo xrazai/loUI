@@ -2,6 +2,7 @@ import { act } from 'react';
 import { userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it } from 'vitest';
 import { toast } from '../../index';
+import { watchExit } from '../../test/exitAnimation';
 import { renderWithProvider } from '../../test/render';
 import { RecipeHost } from '../RecipeHost';
 import { expectNoViolationsOnceSettled } from '../settled';
@@ -62,6 +63,21 @@ describe('DetailSheet', () => {
     await expect
       .poll(() => document.activeElement?.closest('[role="row"]')?.textContent)
       .toContain('Contoso');
+  });
+
+  it('keeps the details on screen while the sheet slides out, although the draft is cleared', async () => {
+    const screen = await setup();
+    await openContoso(screen);
+    await expect.poll(() => document.getAnimations().length).toBe(0);
+    const watch = watchExit({
+      text: ['Order', 'ORD-1048', 'Delete order', 'Cancel', 'Save order'],
+      values: ['Contoso', 'Call before delivery.'],
+    });
+    await userEvent.keyboard('{Escape}');
+    await expect.element(sheet(screen)).not.toBeInTheDocument();
+    const seen = watch.stop();
+    expect(seen.sawExiting).toBe(true);
+    expect(seen.blank).toEqual([]);
   });
 
   it('opens from the keyboard with Enter on the row', async () => {

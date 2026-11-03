@@ -8,26 +8,26 @@ money, `format` for anything else, or neither for plain quantities.
 
 Import it from `loui-ds/patterns`.
 
-A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. The sign is shown as text and color. Import it from `loui-ds/patterns`.
+A list of signed entries: date, title, optional sub line, a signed amount and an optional running balance, with an optional delete button per row. Rows can be fixed (no delete button) and the date is optional. The sign is shown as text and color. Import it from `loui-ds/patterns`.
 
 - Handoff source: `components/erp/LedgerList.jsx` (TODO `CMP-PAT-12`).
 
 - Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
-- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
 
 ## Props
 
-| Prop           | Type                                                                                        | Required | Default      | Description                                                                                                                                                                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `entries`      | `readonly LedgerEntry[]`                                                                    | yes      |              | The entries, in display order (usually newest first).                                                                                                                                                                                                  |
-| `currency`     | `string`                                                                                    |          |              | ISO 4217 currency code ("USD"). When set, amounts and balances are formatted as money with `formatCurrency` (minor units). Ignored when `format` is given.                                                                                             |
-| `format`       | `(value: number) => string`                                                                 |          |              | Custom formatter for amounts and balances, receiving a number in the same unit as `delta`. The amount of an entry is passed as an absolute value (the sign is shown separately). Without `currency` or `format`, numbers are formatted for the locale. |
-| `negativeTone` | `'neutral' \| 'success' \| 'warning' \| 'danger'`                                           |          | `'danger'`   | Color of negative amounts: `neutral`, `success`, `warning` or `danger` (default). The `-` sign is always shown too. Pick the tone by what the subtraction means (an expense is `danger`, a payment out of a balance owed may be `success`).            |
-| `dateStyle`    | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'`                      |          | `'monthDay'` | Format of each entry's date (`formatDate` styles). Default `monthDay`.                                                                                                                                                                                 |
-| `onDelete`     | `(entry: LedgerEntry) => void`                                                              |          |              | Adds a "Delete entry" button to each row and calls this with the entry. Deleting must be confirmed by the consumer (dialog or inline confirmation) before data is removed.                                                                             |
-| `messages`     | `Partial<{ balance: (amount: string) => string; deleteEntry: (title: string) => string; }>` |          |              | Message overrides for this instance.                                                                                                                                                                                                                   |
+| Prop           | Type                                                                                        | Required | Default      | Description                                                                                                                                                                                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `entries`      | `readonly LedgerEntry[]`                                                                    | yes      |              | The entries, in display order (usually newest first).                                                                                                                                                                                                                      |
+| `currency`     | `string`                                                                                    |          |              | ISO 4217 currency code ("USD"). When set, amounts and balances are formatted as money with `formatCurrency` (minor units). Ignored when `format` is given.                                                                                                                 |
+| `format`       | `(value: number) => string`                                                                 |          |              | Custom formatter for amounts and balances, receiving a number in the same unit as `delta`. The amount of an entry is passed as an absolute value (the sign is shown separately). Without `currency` or `format`, numbers are formatted for the locale.                     |
+| `negativeTone` | `'neutral' \| 'success' \| 'warning' \| 'danger'`                                           |          | `'danger'`   | Color of negative amounts: `neutral`, `success`, `warning` or `danger` (default). The `-` sign is always shown too. Pick the tone by what the subtraction means (an expense is `danger`, a payment out of a balance owed may be `success`).                                |
+| `dateStyle`    | `'short' \| 'medium' \| 'long' \| 'full' \| 'monthDay' \| 'monthYear'`                      |          | `'monthDay'` | Format of each entry's date (`formatDate` styles). Default `monthDay`.                                                                                                                                                                                                     |
+| `onDelete`     | `(entry: LedgerEntry) => void`                                                              |          |              | Adds a "Delete entry" button to each row (except entries with `isDeletable: false`) and calls this with the entry. The component only reports the request: the consumer must confirm it (dialog or inline confirmation) before data is removed, and offer Undo afterwards. |
+| `messages`     | `Partial<{ balance: (amount: string) => string; deleteEntry: (title: string) => string; }>` |          |              | Message overrides for this instance.                                                                                                                                                                                                                                       |
 
 ### Inherited props
 
@@ -44,7 +44,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 ## When to use
 
@@ -61,11 +61,11 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 ```
 ul aria-label
   li[data-direction=positive|negative|zero]
-    time[datetime]                 formatDate(date, locale, dateStyle)
+    time[datetime]                 formatDate(date, locale, dateStyle)   (only when the entry has a date)
     title · sub
     amount                         "+" | "−" text sign + number   (color by negativeTone)
     balance                        "Balance $125.00"              (optional)
-    button "Delete entry …"        (only with onDelete)
+    button "Delete entry …"        (only with onDelete and isDeletable !== false)
 ```
 
 ## Accessibility
@@ -73,8 +73,8 @@ ul aria-label
 - A `ul` of `li`; the list should be named with `aria-label` or `aria-labelledby`.
 - The sign is text (`+` or the minus sign U+2212), so meaning never depends on color. Positive amounts use ink, negative ones the chosen tone, zero uses secondary text.
 - Dates are `<time datetime>`. The balance is labelled by text ("Balance $125.00"), not by position.
-- Delete buttons are `IconButton`s named "Delete entry {title}" (one per row, distinguishable); they are 32px.
-- Deleting must ask for confirmation (AGENTS.md): do it in `onDelete` with a dialog or inline confirmation, then offer Undo.
+- Delete buttons are `IconButton`s named "Delete entry {title}" (one per deletable row, distinguishable); they are 32px. Rows with `isDeletable: false` have no button, so they are skipped by `Tab`.
+- The component only calls `onDelete(entry)`; it never removes anything or asks for confirmation (AGENTS.md section 5.5). The consumer opens a confirmation dialog (title "Delete X?", the consequence, a danger button naming the action, initial focus on Cancel) in `onDelete`, removes the entry on confirm and then shows a toast with Undo.
 - Text truncates with an ellipsis; long titles do not push the amounts out.
 
 ## Content rules
@@ -96,6 +96,20 @@ import { LedgerList } from 'loui-ds/patterns';
   ]}
   onDelete={askToDelete}
 />;
+```
+
+A drawer that mixes a fixed opening balance with deletable payments, where `askToDelete` opens the confirmation dialog:
+
+```tsx
+<LedgerList
+  aria-label="Account activity"
+  currency="USD"
+  entries={[
+    { id: '2', date: '2026-03-12', title: 'Payment received', delta: 5000, balance: 15000 },
+    { id: '1', title: 'Opening balance', delta: 10000, balance: 10000, isDeletable: false },
+  ]}
+  onDelete={askToDelete}
+/>
 ```
 
 ## Related components

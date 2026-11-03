@@ -8,7 +8,8 @@
 
   .entry {
     display: grid;
-    grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto;
+    grid-template-areas: 'text amounts';
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--ds-ledger-list-gap);
     padding-block: var(--ds-space-3);
@@ -16,12 +17,28 @@
     border-block-end: 1px solid var(--ds-line-subtle);
   }
 
+  /* The date column exists when any entry has a date; rows without one leave it empty. */
+  .root[data-dated] .entry {
+    grid-template-areas: 'date text amounts';
+    grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto;
+  }
+
+  /* The delete column is reserved on every row so fixed rows align with deletable ones. */
   .root[data-deletable] .entry {
-    grid-template-columns: var(--ds-ledger-list-date-width) minmax(0, 1fr) auto auto;
+    grid-template-areas: 'text amounts delete';
+    grid-template-columns: minmax(0, 1fr) auto var(--ds-control-h-sm);
     padding-inline-end: var(--ds-space-3);
   }
 
+  .root[data-dated][data-deletable] .entry {
+    grid-template-areas: 'date text amounts delete';
+    grid-template-columns:
+      var(--ds-ledger-list-date-width) minmax(0, 1fr) auto
+      var(--ds-control-h-sm);
+  }
+
   .date {
+    grid-area: date;
     color: var(--ds-text-2);
     font-family: var(--ds-font-mono);
     font-size: var(--ds-fs-meta);
@@ -30,6 +47,7 @@
   }
 
   .text {
+    grid-area: text;
     display: flex;
     flex-direction: column;
     gap: var(--ds-ledger-list-text-gap);
@@ -55,6 +73,7 @@
   }
 
   .amounts {
+    grid-area: amounts;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -100,6 +119,10 @@
     line-height: var(--ds-lh-caption);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+  }
+
+  .delete {
+    grid-area: delete;
   }
 
   @media (forced-colors: active) {

@@ -405,7 +405,7 @@ Kebab-case names of the curated set with the use each icon is meant for. Source 
 allow-list in the component manifest; keep it in sync with the exports above (tested).
 
 ```ts
-{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly info: "Neutral information status"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly plus: "Add, create"; readonly search: "Search fields"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly x: "Close, dismiss, remove"; }
+{ readonly 'arrow-down': "Descending sort, move down"; readonly 'arrow-left': "Back, previous page"; readonly 'arrow-right': "Forward, next step"; readonly 'arrow-up': "Ascending sort, move up"; readonly archive: "Archive an item (reversible, with Undo); not for delete"; readonly bell: "Notifications and alerts entry point"; readonly bot: "An AI agent as an actor, for example an agent avatar or a bot-authored message"; readonly calendar: "Date fields and date pickers"; readonly check: "Done, selected, checkbox mark"; readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button"; readonly 'chevron-left': "Previous month or page (use the directional prop so it mirrors in RTL)"; readonly 'chevron-right': "Next month or page, submenu, breadcrumb separator (directional)"; readonly 'chevron-up': "Expanded disclosure"; readonly 'chevrons-up-down': "Sortable column, select trigger with many options"; readonly 'circle-alert': "Error and danger status"; readonly 'circle-check': "Success status"; readonly 'circle-x': "Failed status, clear input"; readonly ellipsis: "More actions (overflow menu)"; readonly 'external-link': "Link that opens in a new tab"; readonly filter: "Filter a list or table (opens filter controls)"; readonly info: "Neutral information status"; readonly link: "Copy or insert a link, linked records"; readonly loader: "Loading glyph (static); animated loading uses Spinner"; readonly message: "Messages, chat and comments, for example a conversational agent"; readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle"; readonly minus: "Remove one, indeterminate checkbox"; readonly pencil: "Edit an item or a field in place"; readonly plus: "Add, create"; readonly printer: "Print a document or a receipt"; readonly search: "Search fields"; readonly sparkles: "AI-generated content or an AI-assisted action (suggest, generate)"; readonly star: "Rating, favorite"; readonly 'triangle-alert': "Warning status"; readonly copy: "Copy to the clipboard"; readonly refresh: "Regenerate, reload, sync again"; readonly 'thumbs-down': "Negative feedback on a response"; readonly 'thumbs-up': "Positive feedback on a response"; readonly trash: "Delete an item; always paired with a confirmation dialog"; readonly users: "A group of people, for example team, members or assignees"; readonly x: "Close, dismiss, remove"; }
 ```
 
 ### iconSet
@@ -413,7 +413,18 @@ allow-list in the component manifest; keep it in sync with the exports above (te
 The curated set by kebab-case name, for tooling and name-driven rendering.
 
 ```ts
-{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly info: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly plus: LucideIcon; readonly search: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly x: LucideIcon; }
+{ readonly 'arrow-down': LucideIcon; readonly 'arrow-left': LucideIcon; readonly 'arrow-right': LucideIcon; readonly 'arrow-up': LucideIcon; readonly archive: LucideIcon; readonly bell: LucideIcon; readonly bot: LucideIcon; readonly calendar: LucideIcon; readonly check: LucideIcon; readonly 'chevron-down': LucideIcon; readonly 'chevron-left': LucideIcon; readonly 'chevron-right': LucideIcon; readonly 'chevron-up': LucideIcon; readonly 'chevrons-up-down': LucideIcon; readonly 'circle-alert': LucideIcon; readonly 'circle-check': LucideIcon; readonly 'circle-x': LucideIcon; readonly ellipsis: LucideIcon; readonly 'external-link': LucideIcon; readonly filter: LucideIcon; readonly info: LucideIcon; readonly link: LucideIcon; readonly loader: LucideIcon; readonly menu: LucideIcon; readonly message: LucideIcon; readonly minus: LucideIcon; readonly pencil: LucideIcon; readonly plus: LucideIcon; readonly printer: LucideIcon; readonly search: LucideIcon; readonly sparkles: LucideIcon; readonly star: LucideIcon; readonly 'triangle-alert': LucideIcon; readonly copy: LucideIcon; readonly refresh: LucideIcon; readonly 'thumbs-down': LucideIcon; readonly 'thumbs-up': LucideIcon; readonly trash: LucideIcon; readonly users: LucideIcon; readonly x: LucideIcon; }
+```
+
+### isHexColor
+
+True for `#rgb` and `#rrggbb` (the `#` is required). Accepts model data typed
+`string | null | undefined`; `null`, `undefined`, `transparent`, a CSS name and an empty string are
+false. Deliberately a plain boolean, not a type predicate: a string that fails the check is still a
+string.
+
+```ts
+isHexColor(value: string | null | undefined): boolean
 ```
 
 ### isISODate
@@ -532,6 +543,24 @@ Shows a toast in the default queue. Mount one `ToastRegion` near the app root.
 toast(message: ReactNode, options?: ToastOptions): string
 ```
 
+### toastWithUndo
+
+Non-hook form of the undo toast, for plain modules (stores, services, event handlers outside
+React). Shows `message` with an **Undo** action whose label comes from the message catalogue
+and the active locale, so callers never repeat the word by hand. Returns the toast key, like
+`toast()`.
+
+Unlike `useUndoable` it does not defer anything: do the change first, then call this with a
+function that reverses it. Use `useUndoable` inside components when you also need a deferred
+`commit` or failure handling.
+
+Outside React there is no context, so the locale is the one of the mounted `ToastRegion`
+(inside `DSProvider`); pass `locale` or `messages` to decide it yourself.
+
+```ts
+toastWithUndo(message: ReactNode, options: ToastWithUndoOptions): string
+```
+
 ### toISODate
 
 Converts a `Date` to `YYYY-MM-DD` using its **local** calendar day (what the
@@ -566,4 +595,4 @@ warnDeprecated(name: string, message: string): void
 
 Bundled Lucide icons, exported with an `Icon` suffix. Pass one to `Icon`, `IconButton` or a `leading`/`trailing` slot. Decorative unless labelled.
 
-`ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `InfoIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PlusIcon`, `RefreshIcon`, `SearchIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TriangleAlertIcon`, `XIcon`
+`ArchiveIcon`, `ArrowDownIcon`, `ArrowLeftIcon`, `ArrowRightIcon`, `ArrowUpIcon`, `BellIcon`, `BotIcon`, `CalendarIcon`, `CheckIcon`, `ChevronDownIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsUpDownIcon`, `ChevronUpIcon`, `CircleAlertIcon`, `CircleCheckIcon`, `CircleXIcon`, `CopyIcon`, `EllipsisIcon`, `ExternalLinkIcon`, `FilterIcon`, `InfoIcon`, `LinkIcon`, `LoaderIcon`, `MenuIcon`, `MessageIcon`, `MinusIcon`, `PencilIcon`, `PlusIcon`, `PrinterIcon`, `RefreshIcon`, `SearchIcon`, `SparklesIcon`, `StarIcon`, `ThumbsDownIcon`, `ThumbsUpIcon`, `TrashIcon`, `TriangleAlertIcon`, `UsersIcon`, `XIcon`

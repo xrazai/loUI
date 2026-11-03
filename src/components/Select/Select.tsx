@@ -13,7 +13,12 @@ import type { SelectProps as RACSelectProps } from 'react-aria-components';
 import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { FieldMessages, Label } from '../Field';
-import type { FieldErrorMessage, FieldLabelingProps, fieldMessages } from '../Field';
+import type {
+  FieldErrorMessage,
+  FieldLabelingProps,
+  FieldMessageTone,
+  fieldMessages,
+} from '../Field';
 import { warnMissingName } from '../Field/labeling';
 import fieldStyles from '../Field/Field.module.css';
 import { Icon } from '../Icon';
@@ -73,6 +78,11 @@ interface SelectBaseProps extends Omit<
   onChange?: ((value: string | null) => void) | undefined;
   /** Helper text under the control. Linked with `aria-describedby`. */
   description?: ReactNode;
+  /**
+   * Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as
+   * "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.
+   */
+  descriptionTone?: FieldMessageTone | undefined;
   /** Error text, shown while the field is invalid and the error is displayed. See `Input`. */
   errorMessage?: FieldErrorMessage;
   /** Trigger text while nothing is selected. Default from messages: "Select an option". */
@@ -121,6 +131,7 @@ function renderOption(option: SelectOption) {
 export function Select({
   label,
   description,
+  descriptionTone,
   errorMessage,
   options,
   value,
@@ -166,7 +177,11 @@ export function Select({
         </SelectValue>
         <Icon icon={ChevronDownIcon} size="sm" className={styles.chevron} />
       </Button>
-      <FieldMessages description={description} errorMessage={errorMessage} />
+      <FieldMessages
+        description={description}
+        descriptionTone={descriptionTone}
+        errorMessage={errorMessage}
+      />
       {/* RAC writes an inline z-index of 100000; the style prop is the only way to put the popover on the dropdown layer. */}
       <Popover
         className={classNames(styles.popover, popoverClassName)}

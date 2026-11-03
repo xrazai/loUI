@@ -51,6 +51,43 @@ export const WithDescription: Story = {
   args: { description: 'Without taxes.', defaultValue: 4990 },
 };
 
+function ReconcileExample() {
+  const [paid, setPaid] = useState<number | null>(9500);
+  const due = 10000;
+  const diff = (paid ?? 0) - due;
+  const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+  const message =
+    diff === 0
+      ? 'Matches'
+      : diff > 0
+        ? `Over by ${money.format(diff / 100)}`
+        : `Short by ${money.format(-diff / 100)}`;
+  return (
+    <CurrencyInput
+      label="Amount received"
+      currency="USD"
+      value={paid}
+      onChange={setPaid}
+      description={message}
+      descriptionTone={diff === 0 ? 'success' : diff > 0 ? 'warning' : 'danger'}
+    />
+  );
+}
+
+/** A live check under the field: the tone follows the difference, the words say what it is. */
+export const ToneMessage: Story = {
+  render: () => <ReconcileExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Short by $5.00')).toHaveAttribute('data-tone', 'danger');
+    const input = canvas.getByRole('textbox');
+    await userEvent.clear(input);
+    await userEvent.type(input, '10000');
+    await expect(canvas.getByText('Matches')).toHaveAttribute('data-tone', 'success');
+    await expect(input).toHaveAccessibleDescription('Matches');
+  },
+};
+
 export const Required: Story = {
   args: { isRequired: true },
 };

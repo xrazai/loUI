@@ -24,20 +24,21 @@ Error
 
 ## Props (key ones)
 
-| Prop                                                                | Notes                                                                                             |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `label`                                                             | Visible label. Without it you must pass `aria-label` or `aria-labelledby` (type error otherwise). |
-| `description`                                                       | Helper text (handoff `hint`).                                                                     |
-| `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.  |
-| `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                             |
-| `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                        |
-| `mono`                                                              | Geist Mono with tabular figures.                                                                  |
-| `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                      |
-| `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).   |
-| `name`, `type`, `autoComplete`, `inputMode`, `maxLength`, `pattern` | Passed to the `<input>`; `name` and the value take part in form submission.                       |
-| `validate`, `validationBehavior`                                    | See Field.md.                                                                                     |
-| `inputRef` / `ref`                                                  | `inputRef` is the `<input>`, `ref` the field root.                                                |
-| `messages`                                                          | `requiredMark` override.                                                                          |
+| Prop                                                                | Notes                                                                                                                            |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `label`                                                             | Visible label. Without it you must pass `aria-label` or `aria-labelledby` (type error otherwise).                                |
+| `description`                                                       | Helper text (handoff `hint`).                                                                                                    |
+| `descriptionTone`                                                   | `neutral` (default), `accent`, `success`, `warning`, `danger`: tints the description for a live check ("Matches"). See Field.md. |
+| `errorMessage`                                                      | Error text (handoff `error`), node or function of the validation result. Needs an invalid state.                                 |
+| `isInvalid` / `isRequired` / `isReadOnly` / `isDisabled`            | Standard states. `isInvalid` shows the error at once.                                                                            |
+| `size`                                                              | `sm` 32px, `md` 40px (default), `lg` 48px.                                                                                       |
+| `mono`                                                              | Geist Mono with tabular figures.                                                                                                 |
+| `leading` / `trailing`                                              | Adornments inside the box: an `Icon`, a unit, a `Kbd` hint, an `IconButton`.                                                     |
+| `value` / `defaultValue` / `onChange(value)`                        | Controlled and uncontrolled, React Aria naming (`onChange` receives the string, not the event).                                  |
+| `name`, `type`, `autoComplete`, `inputMode`, `maxLength`, `pattern` | Passed to the `<input>`; `name` and the value take part in form submission.                                                      |
+| `validate`, `validationBehavior`                                    | See Field.md.                                                                                                                    |
+| `inputRef` / `ref`                                                  | `inputRef` is the `<input>`, `ref` the field root.                                                                               |
+| `messages`                                                          | `requiredMark` override.                                                                                                         |
 
 All other props of React Aria `TextField` are accepted (`onFocus`, `onBlur`, `onKeyDown`, `autoFocus`, `form`, ...). They are composed with the internal handlers, never replacing them.
 

@@ -4,7 +4,12 @@ import type { TextFieldProps } from 'react-aria-components';
 import { useDSLocale } from '../../i18n';
 import { useControllableState } from '../../hooks/useControllableState';
 import { classNames } from '../../utils/classNames';
-import type { FieldErrorMessage, FieldLabelingProps, fieldMessages } from '../Field';
+import type {
+  FieldErrorMessage,
+  FieldLabelingProps,
+  FieldMessageTone,
+  fieldMessages,
+} from '../Field';
 import { Input } from '../Input';
 import type { InputProps, InputSize } from '../Input';
 import {
@@ -63,6 +68,11 @@ interface CurrencyInputBaseProps extends Omit<
   name?: string | undefined;
   /** Helper text under the control. Linked with `aria-describedby`. */
   description?: ReactNode;
+  /**
+   * Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as
+   * "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it.
+   */
+  descriptionTone?: FieldMessageTone | undefined;
   /** Error text, shown while the field is invalid and the error is displayed. See `Input`. */
   errorMessage?: FieldErrorMessage;
   /** Text shown while the field is empty. */

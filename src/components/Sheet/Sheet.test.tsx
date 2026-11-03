@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { page, userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { watchExit } from '../../test/exitAnimation';
 import { renderWithProvider } from '../../test/render';
+import { setReducedMotion } from '../../test/reducedMotion';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
+import { Input } from '../Input';
 import { Sheet } from './Sheet';
 import type { SheetProps } from './Sheet';
 
@@ -38,10 +41,41 @@ function OrderSheet(props: Partial<SheetProps>) {
   );
 }
 
+/** A sheet whose content comes from state that is cleared in the same update that closes it. */
+function ClearingSheet() {
+  const [record, setRecord] = useState<{ number: string; name: string } | null>({
+    number: 'ORD-1048',
+    name: 'Contoso',
+  });
+  return (
+    <main>
+      <Sheet
+        isOpen={record !== null}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setRecord(null);
+        }}
+        title={record ? 'Order' : ''}
+        meta={record?.number}
+        description={record ? 'Edit the customer.' : undefined}
+        footer={({ close }) =>
+          record ? (
+            <Button variant="primary" onPress={close}>
+              Save order
+            </Button>
+          ) : null
+        }
+      >
+        {record ? <Input label="Customer" defaultValue={record.name} /> : null}
+      </Sheet>
+    </main>
+  );
+}
+
 describe('Sheet', () => {
   const original = { width: window.innerWidth, height: window.innerHeight };
   afterEach(async () => {
     await page.viewport(original.width, original.height);
+    await setReducedMotion(false);
   });
 
   it('opens as a modal dialog named by its title, with mono meta and a close button', async () => {
@@ -226,5 +260,62 @@ describe('Sheet', () => {
     await expect.element(screen.getByRole('dialog')).toBeVisible();
     await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
+  });
+
+  it('keeps its content while it animates out after the state that feeds it was cleared (GAP-036)', async () => {
+    const screen = await renderWithProvider(<ClearingSheet />);
+    await expect.element(screen.getByRole('dialog', { name: 'Order' })).toBeVisible();
+    await settled();
+    const watch = watchExit({ text: ['Order', 'ORD-1048', 'Save order'], values: ['Contoso'] });
+    await userEvent.keyboard('{Escape}');
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
+    const seen = watch.stop();
+    expect(seen.sawExiting).toBe(true);
+    expect(seen.blank).toEqual([]);
+  });
+
+  it('shows the new content again when it reopens after the state was cleared', async () => {
+    function Reopen() {
+      const [record, setRecord] = useState<string | null>('ORD-1048');
+      return (
+        <main>
+          <Button
+            onPress={() => {
+              setRecord('ORD-2000');
+            }}
+          >
+            Open another
+          </Button>
+          <Sheet
+            isOpen={record !== null}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) setRecord(null);
+            }}
+            title="Order"
+            meta={record ?? undefined}
+          >
+            <p>{record}</p>
+          </Sheet>
+        </main>
+      );
+    }
+    const screen = await renderWithProvider(<Reopen />);
+    await userEvent.keyboard('{Escape}');
+    await expect.poll(none, { timeout: 4000 }).toBe(true);
+    await screen.getByRole('button', { name: 'Open another' }).click();
+    const dialog = screen.getByRole('dialog', { name: 'Order' });
+    await expect.element(dialog).toBeVisible();
+    expect(dialog.element().textContent).toContain('ORD-2000');
+    expect(dialog.element().textContent).not.toContain('ORD-1048');
+  });
+
+  it('leaves the DOM right after closing when the user prefers reduced motion', async () => {
+    await setReducedMotion(true);
+    await renderWithProvider(<ClearingSheet />);
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+    await userEvent.keyboard('{Escape}');
+    await expect.poll(none, { timeout: 1000 }).toBe(true);
+    expect(document.querySelector('[data-exiting]')).toBeNull();
+    expect(document.getAnimations().length).toBe(0);
   });
 });

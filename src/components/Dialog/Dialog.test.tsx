@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { page, userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
+import { watchExit } from '../../test/exitAnimation';
+import { setReducedMotion } from '../../test/reducedMotion';
 import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
 import { Input } from '../Input';
@@ -41,6 +43,7 @@ describe('Dialog', () => {
   const original = { width: window.innerWidth, height: window.innerHeight };
   afterEach(async () => {
     await page.viewport(original.width, original.height);
+    await setReducedMotion(false);
   });
 
   it('opens from the trigger as a modal dialog named by its title and described by its text', async () => {
@@ -354,5 +357,58 @@ describe('Dialog', () => {
     await expect.element(screen.getByRole('dialog')).toBeVisible();
     await expect.poll(() => document.getAnimations().length).toBe(0);
     await expectNoA11yViolations(document.body);
+  });
+
+  describe('exit animation (GAP-036)', () => {
+    /** A dialog whose content comes from state that is cleared in the same update that closes it. */
+    function ClearingDialog() {
+      const [customer, setCustomer] = useState<string | null>('Contoso');
+      return (
+        <main>
+          <Dialog
+            isOpen={customer !== null}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) setCustomer(null);
+            }}
+            title={customer ? `Edit ${customer}` : ''}
+            description={customer ? 'Changes apply to new orders only.' : undefined}
+            footer={({ close }) =>
+              customer ? (
+                <Button variant="primary" onPress={close}>
+                  Save customer
+                </Button>
+              ) : null
+            }
+          >
+            {customer ? <Input label="Name" defaultValue={customer} /> : null}
+          </Dialog>
+        </main>
+      );
+    }
+
+    it('keeps its content while it animates out after the state that feeds it was cleared', async () => {
+      const screen = await renderWithProvider(<ClearingDialog />);
+      await expect.element(screen.getByRole('dialog', { name: 'Edit Contoso' })).toBeVisible();
+      await settled();
+      const watch = watchExit({
+        text: ['Edit Contoso', 'Changes apply to new orders only.', 'Save customer'],
+        values: ['Contoso'],
+      });
+      await userEvent.keyboard('{Escape}');
+      await expect.poll(() => none(), { timeout: 4000 }).toBe(true);
+      const seen = watch.stop();
+      expect(seen.sawExiting).toBe(true);
+      expect(seen.blank).toEqual([]);
+    });
+
+    it('leaves the DOM right after closing when the user prefers reduced motion', async () => {
+      await setReducedMotion(true);
+      await renderWithProvider(<ClearingDialog />);
+      expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+      await userEvent.keyboard('{Escape}');
+      await expect.poll(() => none(), { timeout: 1000 }).toBe(true);
+      expect(document.querySelector('[data-exiting]')).toBeNull();
+      expect(document.getAnimations().length).toBe(0);
+    });
   });
 });

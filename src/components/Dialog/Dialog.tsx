@@ -9,6 +9,7 @@ import {
 } from 'react-aria-components';
 import { classNames } from '../../utils/classNames';
 import { ScrollBody } from './ScrollBody';
+import { useRetainedWhileClosing } from './useRetainedWhileClosing';
 import styles from './Dialog.module.css';
 
 export type DialogSize = 'sm' | 'md' | 'lg';
@@ -96,7 +97,6 @@ export function Dialog({
   className,
   ref,
 }: DialogProps) {
-  const descriptionId = useId();
   return (
     <DialogTrigger
       {...(isOpen === undefined ? {} : { isOpen })}
@@ -111,43 +111,78 @@ export function Dialog({
         className={classNames(styles.overlay)}
         style={{ zIndex: 'var(--ds-z-dialog)' }}
       >
-        <Modal className={classNames(styles.modal)} data-size={size}>
-          <AriaDialog
-            {...(ref ? { ref } : {})}
-            role={role}
-            {...(description ? { 'aria-describedby': descriptionId } : {})}
-            className={classNames(styles.dialog, className)}
-          >
-            {(options) => (
-              <>
-                <header className={classNames(styles.header)}>
-                  <Heading slot="title" level={2} className={classNames(styles.title)}>
-                    {title}
-                  </Heading>
-                  {description ? (
-                    <p id={descriptionId} className={classNames(styles.description)}>
-                      {description}
-                    </p>
-                  ) : null}
-                </header>
-                {children ? (
-                  <ScrollBody className={classNames(styles.body)}>
-                    {resolve(children, options)}
-                  </ScrollBody>
-                ) : null}
-                {footer ? (
-                  <footer
-                    className={classNames(styles.footer)}
-                    data-divided={children ? '' : undefined}
-                  >
-                    {resolve(footer, options)}
-                  </footer>
-                ) : null}
-              </>
-            )}
-          </AriaDialog>
-        </Modal>
+        <DialogPanel
+          title={title}
+          description={description}
+          footer={footer}
+          size={size}
+          role={role}
+          className={className}
+          panelRef={ref}
+        >
+          {children}
+        </DialogPanel>
       </ModalOverlay>
     </DialogTrigger>
+  );
+}
+
+/** Content props of `Dialog`, each one allowed to be `undefined` (a mapped type drops the `?`). */
+type DialogContentProps = {
+  [K in 'title' | 'description' | 'children' | 'footer' | 'className']: DialogProps[K];
+};
+
+interface DialogPanelProps extends DialogContentProps {
+  size: DialogSize;
+  role: 'dialog' | 'alertdialog';
+  panelRef: Ref<HTMLElement> | undefined;
+}
+
+/**
+ * The part of the dialog that lives inside the overlay. While the dialog animates out it renders
+ * the props of its last open render, so clearing the state that feeds the content in the same
+ * update that closes the dialog does not blank the panel (GAP-036).
+ */
+function DialogPanel(props: DialogPanelProps) {
+  const { title, description, children, footer, size, role, className, panelRef } =
+    useRetainedWhileClosing(props);
+  const descriptionId = useId();
+  return (
+    <Modal className={classNames(styles.modal)} data-size={size}>
+      <AriaDialog
+        {...(panelRef ? { ref: panelRef } : {})}
+        role={role}
+        {...(description ? { 'aria-describedby': descriptionId } : {})}
+        className={classNames(styles.dialog, className)}
+      >
+        {(options) => (
+          <>
+            <header className={classNames(styles.header)}>
+              <Heading slot="title" level={2} className={classNames(styles.title)}>
+                {title}
+              </Heading>
+              {description ? (
+                <p id={descriptionId} className={classNames(styles.description)}>
+                  {description}
+                </p>
+              ) : null}
+            </header>
+            {children ? (
+              <ScrollBody className={classNames(styles.body)}>
+                {resolve(children, options)}
+              </ScrollBody>
+            ) : null}
+            {footer ? (
+              <footer
+                className={classNames(styles.footer)}
+                data-divided={children ? '' : undefined}
+              >
+                {resolve(footer, options)}
+              </footer>
+            ) : null}
+          </>
+        )}
+      </AriaDialog>
+    </Modal>
   );
 }

@@ -32,14 +32,14 @@ Two models were considered:
 
 ## Props (key ones)
 
-| Prop                                                                                                                | Notes                            |
-| ------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `currency`                                                                                                          | Required ISO 4217 code.          |
-| `value` / `defaultValue` / `onChange`                                                                               | `number \| null` in minor units. |
-| `allowNegative`, `maxDigits`                                                                                        | See above.                       |
-| `label` / `aria-label` / `aria-labelledby`                                                                          | One is required.                 |
-| `description`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
-| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                        | As in `Input`.                   |
+| Prop                                                                                                                                   | Notes                            |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `currency`                                                                                                                             | Required ISO 4217 code.          |
+| `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units. |
+| `allowNegative`, `maxDigits`                                                                                                           | See above.                       |
+| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                 |
+| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                   |
+| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                   |
 
 ## Accessibility and keyboard
 

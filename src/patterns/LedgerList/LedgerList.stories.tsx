@@ -150,6 +150,60 @@ export const KeyboardDelete: Story = {
   },
 };
 
+/** `isDeletable: false` marks fixed rows: no button, and the amounts stay aligned. */
+export const MixedDeletableAndFixed: Story = {
+  args: {
+    onDelete: fn(),
+    entries: entries.map((entry) =>
+      entry.id === 'e1' || entry.id === 'e3' ? { ...entry, isDeletable: false } : entry,
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole('listitem')).toHaveLength(4);
+    await expect(canvas.getAllByRole('button')).toHaveLength(2);
+    await expect(
+      canvas.queryByRole('button', { name: 'Delete entry Opening balance' }),
+    ).not.toBeInTheDocument();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Delete entry Refund' })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole('button', { name: 'Delete entry Service fee' })).toHaveFocus();
+  },
+};
+
+/** Entries without a date keep the date column when other rows have one. */
+export const WithoutDate: Story = {
+  args: {
+    entries: [
+      { id: 'n3', date: '2026-03-14', title: 'Refund', sub: 'Order 1048', delta: -2500 },
+      { id: 'n2', title: 'Manual adjustment', sub: 'No date recorded', delta: 500 },
+      { id: 'n1', title: 'Opening balance', delta: 11000, isDeletable: false },
+    ],
+    onDelete: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole('listitem')).toHaveLength(3);
+    await expect(canvasElement.querySelectorAll('time')).toHaveLength(1);
+    await expect(canvas.getAllByRole('button')).toHaveLength(2);
+  },
+};
+
+/** When no entry has a date, the date column is dropped entirely. */
+export const NoDatesAtAll: Story = {
+  args: {
+    entries: [
+      { id: 'q2', title: 'Delivery received', delta: 120, balance: 340 },
+      { id: 'q1', title: 'Opening stock', delta: 220, balance: 220, isDeletable: false },
+    ],
+    onDelete: fn(),
+  },
+  render: (args) => (
+    <LedgerList aria-label="Stock movements" entries={args.entries} onDelete={() => undefined} />
+  ),
+};
+
 export const Portuguese: Story = {
   render: (args) => (
     <DSProvider locale="pt-BR">

@@ -4,10 +4,13 @@
 
 ```ts
 
+import { Archive as ArchiveIcon } from 'lucide-react';
 import { ArrowDown as ArrowDownIcon } from 'lucide-react';
 import { ArrowLeft as ArrowLeftIcon } from 'lucide-react';
 import { ArrowRight as ArrowRightIcon } from 'lucide-react';
 import { ArrowUp as ArrowUpIcon } from 'lucide-react';
+import { Bell as BellIcon } from 'lucide-react';
+import { Bot as BotIcon } from 'lucide-react';
 import { ButtonProps as ButtonProps_2 } from 'react-aria-components';
 import { CalendarDate } from '@internationalized/date';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -31,6 +34,8 @@ import { DisclosureGroupProps } from 'react-aria-components';
 import { ElementType } from 'react';
 import { Ellipsis as EllipsisIcon } from 'lucide-react';
 import { ExternalLink as ExternalLinkIcon } from 'lucide-react';
+import { Funnel as FilterIcon } from 'lucide-react';
+import { FocusEventHandler } from 'react';
 import { FormProps as FormProps_2 } from 'react-aria-components';
 import { GridListProps } from 'react-aria-components';
 import { LucideIcon as IconComponent } from 'lucide-react';
@@ -38,7 +43,9 @@ import { Info as InfoIcon } from 'lucide-react';
 import { isRTL } from 'react-aria-components';
 import { JSX } from 'react';
 import { Key } from 'react-aria-components';
+import { KeyboardEventHandler } from 'react';
 import { LabelProps as LabelProps_2 } from 'react-aria-components';
+import { Link as LinkIcon } from 'lucide-react';
 import { LinkProps as LinkProps_2 } from 'react-aria-components';
 import { LoaderCircle as LoaderIcon } from 'lucide-react';
 import { Menu as MenuIcon } from 'lucide-react';
@@ -49,8 +56,10 @@ import { MessageCircle as MessageIcon } from 'lucide-react';
 import { MeterProps as MeterProps_2 } from 'react-aria-components';
 import { Minus as MinusIcon } from 'lucide-react';
 import { NumberFieldProps as NumberFieldProps_2 } from 'react-aria-components';
+import { Pencil as PencilIcon } from 'lucide-react';
 import { Plus as PlusIcon } from 'lucide-react';
 import { PopoverProps as PopoverProps_2 } from 'react-aria-components';
+import { Printer as PrinterIcon } from 'lucide-react';
 import { ProgressBarProps } from 'react-aria-components';
 import { RadioFieldProps } from 'react-aria-components';
 import { RadioGroupProps as RadioGroupProps_2 } from 'react-aria-components';
@@ -65,6 +74,7 @@ import { Search as SearchIcon } from 'lucide-react';
 import { SelectProps as SelectProps_2 } from 'react-aria-components';
 import { SeparatorProps } from 'react-aria-components';
 import { SliderProps as SliderProps_2 } from 'react-aria-components';
+import { Sparkles as SparklesIcon } from 'lucide-react';
 import { Star as StarIcon } from 'lucide-react';
 import { SwitchFieldProps } from 'react-aria-components';
 import { TabListProps as TabListProps_2 } from 'react-aria-components';
@@ -77,9 +87,11 @@ import { ThumbsDown as ThumbsDownIcon } from 'lucide-react';
 import { ThumbsUp as ThumbsUpIcon } from 'lucide-react';
 import { ToggleButtonGroupProps } from 'react-aria-components';
 import { ToggleButtonProps } from 'react-aria-components';
+import { Trash2 as TrashIcon } from 'lucide-react';
 import { TriangleAlert as TriangleAlertIcon } from 'lucide-react';
 import { UNSTABLE_ToastQueue } from 'react-aria-components';
 import { useLocale } from 'react-aria-components';
+import { Users as UsersIcon } from 'lucide-react';
 import { X as XIcon } from 'lucide-react';
 
 // @public
@@ -179,6 +191,8 @@ export interface AppShellProps extends Omit<ComponentPropsWithRef<'div'>, 'child
     topBar?: ReactNode;
 }
 
+export { ArchiveIcon }
+
 export { ArrowDownIcon }
 
 export { ArrowLeftIcon }
@@ -226,6 +240,10 @@ export interface BannerProps extends Omit<ComponentPropsWithRef<'div'>, 'title' 
 
 // @public (undocumented)
 export type BannerTone = 'info' | 'success' | 'warning' | 'danger';
+
+export { BellIcon }
+
+export { BotIcon }
 
 // @public
 export function Breadcrumb(input: BreadcrumbProps): JSX.Element;
@@ -511,14 +529,17 @@ export type DataTableAlign = 'start' | 'end';
 // @public (undocumented)
 export interface DataTableColumn<T> {
     align?: DataTableAlign;
+    hideLabel?: boolean;
     isRowHeader?: boolean;
     key: string;
     label: string;
+    minWidth?: string;
     mono?: boolean;
     muted?: boolean;
     render?: (row: T) => ReactNode;
     sortable?: boolean;
     sortValue?: (row: T) => SortableValue;
+    truncate?: boolean;
     width?: string;
 }
 
@@ -576,6 +597,7 @@ export interface DescriptionProps {
     className?: string | undefined;
     // (undocumented)
     ref?: Ref<HTMLElement> | undefined;
+    tone?: FieldMessageTone | undefined;
 }
 
 // @public
@@ -766,9 +788,13 @@ export function FieldMessages(input: FieldMessagesProps): JSX.Element;
 export interface FieldMessagesProps {
     // (undocumented)
     description?: ReactNode;
+    descriptionTone?: FieldMessageTone | undefined;
     // (undocumented)
     errorMessage?: FieldErrorMessage;
 }
+
+// @public
+export type FieldMessageTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
 // @public
 export function FieldSet(input: FieldSetProps): JSX.Element;
@@ -809,6 +835,8 @@ export type FileUploadMessages = Partial<typeof messages_17.en>;
 
 // @public (undocumented)
 export type FileUploadProps = FileUploadBaseProps & FieldLabelingProps;
+
+export { FilterIcon }
 
 // @public
 export function Form(input: FormProps): JSX.Element;
@@ -852,7 +880,12 @@ export interface FormProps extends Omit<FormProps_2, 'className' | 'style' | 're
     // (undocumented)
     className?: string;
     errorSummary?: boolean;
+    id?: string;
     messages?: Partial<typeof messages_18.en>;
+    onBlur?: FocusEventHandler<HTMLFormElement>;
+    onFocus?: FocusEventHandler<HTMLFormElement>;
+    onKeyDown?: KeyboardEventHandler<HTMLFormElement>;
+    onKeyUp?: KeyboardEventHandler<HTMLFormElement>;
     ref?: Ref<HTMLFormElement>;
     validationBehavior?: 'native' | 'aria';
     validationErrors?: FormProps_2['validationErrors'] | undefined;
@@ -991,6 +1024,9 @@ export const iconNames: {
     readonly 'arrow-left': "Back, previous page";
     readonly 'arrow-right': "Forward, next step";
     readonly 'arrow-up': "Ascending sort, move up";
+    readonly archive: "Archive an item (reversible, with Undo); not for delete";
+    readonly bell: "Notifications and alerts entry point";
+    readonly bot: "An AI agent as an actor, for example an agent avatar or a bot-authored message";
     readonly calendar: "Date fields and date pickers";
     readonly check: "Done, selected, checkbox mark";
     readonly 'chevron-down': "Collapsed disclosure, select trigger, menu button";
@@ -1003,19 +1039,26 @@ export const iconNames: {
     readonly 'circle-x': "Failed status, clear input";
     readonly ellipsis: "More actions (overflow menu)";
     readonly 'external-link': "Link that opens in a new tab";
+    readonly filter: "Filter a list or table (opens filter controls)";
     readonly info: "Neutral information status";
+    readonly link: "Copy or insert a link, linked records";
     readonly loader: "Loading glyph (static); animated loading uses Spinner";
     readonly message: "Messages, chat and comments, for example a conversational agent";
     readonly menu: "Opens the navigation menu (hamburger), for example the app shell nav toggle";
     readonly minus: "Remove one, indeterminate checkbox";
+    readonly pencil: "Edit an item or a field in place";
     readonly plus: "Add, create";
+    readonly printer: "Print a document or a receipt";
     readonly search: "Search fields";
+    readonly sparkles: "AI-generated content or an AI-assisted action (suggest, generate)";
     readonly star: "Rating, favorite";
     readonly 'triangle-alert': "Warning status";
     readonly copy: "Copy to the clipboard";
     readonly refresh: "Regenerate, reload, sync again";
     readonly 'thumbs-down': "Negative feedback on a response";
     readonly 'thumbs-up': "Positive feedback on a response";
+    readonly trash: "Delete an item; always paired with a confirmation dialog";
+    readonly users: "A group of people, for example team, members or assignees";
     readonly x: "Close, dismiss, remove";
 };
 
@@ -1033,6 +1076,9 @@ export const iconSet: {
     readonly 'arrow-left': IconComponent;
     readonly 'arrow-right': IconComponent;
     readonly 'arrow-up': IconComponent;
+    readonly archive: IconComponent;
+    readonly bell: IconComponent;
+    readonly bot: IconComponent;
     readonly calendar: IconComponent;
     readonly check: IconComponent;
     readonly 'chevron-down': IconComponent;
@@ -1045,19 +1091,26 @@ export const iconSet: {
     readonly 'circle-x': IconComponent;
     readonly ellipsis: IconComponent;
     readonly 'external-link': IconComponent;
+    readonly filter: IconComponent;
     readonly info: IconComponent;
+    readonly link: IconComponent;
     readonly loader: IconComponent;
     readonly menu: IconComponent;
     readonly message: IconComponent;
     readonly minus: IconComponent;
+    readonly pencil: IconComponent;
     readonly plus: IconComponent;
+    readonly printer: IconComponent;
     readonly search: IconComponent;
+    readonly sparkles: IconComponent;
     readonly star: IconComponent;
     readonly 'triangle-alert': IconComponent;
     readonly copy: IconComponent;
     readonly refresh: IconComponent;
     readonly 'thumbs-down': IconComponent;
     readonly 'thumbs-up': IconComponent;
+    readonly trash: IconComponent;
+    readonly users: IconComponent;
     readonly x: IconComponent;
 };
 
@@ -1112,7 +1165,7 @@ export type InlineJustify = 'start' | 'center' | 'end' | 'between';
 export interface InlineProps extends ComponentPropsWithRef<'div'> {
     align?: InlineAlign;
     as?: LayoutElement;
-    gap?: SpaceKey;
+    gap?: SpaceValue;
     justify?: InlineJustify;
     wrap?: boolean;
 }
@@ -1125,6 +1178,9 @@ export type InputProps = InputBaseProps & FieldLabelingProps;
 
 // @public (undocumented)
 export type InputSize = 'sm' | 'md' | 'lg';
+
+// @public
+export function isHexColor(value: string | null | undefined): boolean;
 
 // @public
 export function isISODate(value: string): value is ISODate;
@@ -1186,6 +1242,8 @@ export interface LegendProps extends Omit<ComponentPropsWithRef<'ul'>, 'children
 
 // @public
 export function Link(input: LinkProps): JSX.Element;
+
+export { LinkIcon }
 
 // @public (undocumented)
 export interface LinkProps extends Omit<LinkProps_2, 'className' | 'style' | 'children'> {
@@ -1365,6 +1423,8 @@ export interface PaginationProps extends Omit<ComponentPropsWithRef<'div'>, 'chi
 // @public
 export function parseCurrencyInput(text: string, currency: string, locale: string): number;
 
+export { PencilIcon }
+
 // @public
 export function plural(locale: string, count: number, forms: PluralForms): string;
 
@@ -1406,6 +1466,8 @@ export interface PopoverProps {
     showArrow?: boolean;
     trigger: ReactElement;
 }
+
+export { PrinterIcon }
 
 // @public
 export function Progress(input: ProgressProps): JSX.Element;
@@ -1571,8 +1633,8 @@ export interface SegmentedControlOption {
     value: string;
 }
 
-// @public (undocumented)
-export type SegmentedControlProps = LabelledByText | LabelledByElement;
+// @public
+export type SegmentedControlProps = SegmentedControlBaseProps & FieldLabelingProps;
 
 // @public (undocumented)
 export type SegmentedControlSize = 'sm' | 'md';
@@ -1747,6 +1809,11 @@ export type SortDirection = 'asc' | 'desc';
 export type SpaceKey = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 12 | 16;
 
 // @public
+export type SpaceValue = SpaceKey | `${SpaceKey}`;
+
+export { SparklesIcon }
+
+// @public
 export function Sparkline(input: SparklineProps): JSX.Element;
 
 // @public (undocumented)
@@ -1804,7 +1871,7 @@ export interface StackedBarSeries {
 export interface StackProps extends ComponentPropsWithRef<'div'> {
     align?: StackAlign;
     as?: LayoutElement;
-    gap?: SpaceKey;
+    gap?: SpaceValue;
 }
 
 export { StarIcon }
@@ -1842,7 +1909,7 @@ export interface StatusStep {
 export function StatusSteps(input: StatusStepsProps): JSX.Element;
 
 // @public (undocumented)
-export type StatusStepsProps = LabelledByText_2 | LabelledByElement_2;
+export type StatusStepsProps = LabelledByText | LabelledByElement;
 
 // @public (undocumented)
 export type StatusStepState = 'complete' | 'current' | 'upcoming';
@@ -1854,7 +1921,7 @@ export function Stepper(input: StepperProps): JSX.Element;
 export type StepperOrientation = 'horizontal' | 'vertical';
 
 // @public (undocumented)
-export type StepperProps = LabelledByText_3 | LabelledByElement_3;
+export type StepperProps = LabelledByText_2 | LabelledByElement_2;
 
 // @public (undocumented)
 export interface StepperStep {
@@ -2135,6 +2202,18 @@ export interface ToastRegionProps {
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
 
 // @public
+export function toastWithUndo(message: ReactNode, options: ToastWithUndoOptions): string;
+
+// @public (undocumented)
+export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'action'> {
+    locale?: string;
+    messages?: Partial<typeof messages_45.en>;
+    onUndo: () => void;
+    toast?: ToastApi;
+    tone?: Exclude<ToastTone, 'danger'>;
+}
+
+// @public
 export function Toggle(props: ToggleProps): JSX.Element;
 
 // @public
@@ -2144,7 +2223,7 @@ export function ToggleGroup(input: ToggleGroupProps): JSX.Element;
 export type ToggleGroupOrientation = 'horizontal' | 'vertical';
 
 // @public (undocumented)
-export type ToggleGroupProps = LabelledByText_4 | LabelledByElement_4;
+export type ToggleGroupProps = LabelledByText_3 | LabelledByElement_3;
 
 // @public (undocumented)
 export type ToggleGroupSelectionMode = 'single' | 'multiple';
@@ -2241,6 +2320,8 @@ export interface TourStep {
     title: ReactNode;
 }
 
+export { TrashIcon }
+
 export { TriangleAlertIcon }
 
 // @public (undocumented)
@@ -2316,6 +2397,8 @@ export function useRegisteredHotkeys(input?: UseRegisteredHotkeysOptions): reado
 export interface UseRegisteredHotkeysOptions {
     includeInactive?: boolean;
 }
+
+export { UsersIcon }
 
 // @public
 export function useToast(): ToastApi;

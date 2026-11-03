@@ -39,6 +39,17 @@ Other `fieldset` attributes and `ref` go to the root.
 - `isDisabled` uses the native attribute, so inputs, selects, textareas and buttons inside cannot be focused or submitted, and are skipped by constraint validation. Controls that are not native elements (menus, custom widgets) are **not** affected: disable those yourself.
 - The legend uses `--ds-text-2` (the faint `--ds-text-3` is too low-contrast for a name).
 
+## Legend or label
+
+The two names look different on purpose:
+
+| Name                                                    | Looks like                                     | Use it for                                           |
+| ------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------- |
+| `Label` (of `Input`, `Select`, `SegmentedControl`, ...) | 13/18 medium sentence-case text in `--ds-text` | Naming one field                                     |
+| `FieldSet` `legend`                                     | Mono uppercase caption in `--ds-text-2`        | Naming a group of fields, like the title of a `Card` |
+
+The legend is a section caption, one level above the field labels it contains, so a group never reads as one more field. A single `SegmentedControl`, `RadioGroup` or `CheckboxGroup` is already a labelled group: give it a `label` and do not wrap it in a `FieldSet`. Use a `FieldSet` when several fields answer one question ("Billing address").
+
 ## Content rules
 
 - Legends are short nouns in sentence case ("Billing address"); CSS uppercases them. Descriptions say what the group is for, not how to fill each field.

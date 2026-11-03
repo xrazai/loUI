@@ -7,4 +7,10 @@ export type {
   RequiredMarkProps,
 } from './Field';
 export { messages as fieldMessages } from './Field.messages';
-export type { FieldErrorMessage, FieldLabelingProps, FieldValidation, WithLabel } from './labeling';
+export type {
+  FieldErrorMessage,
+  FieldLabelingProps,
+  FieldMessageTone,
+  FieldValidation,
+  WithLabel,
+} from './labeling';

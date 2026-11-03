@@ -111,6 +111,30 @@ describe('icon set', () => {
     for (const use of Object.values(iconNames)) expect(use.length).toBeGreaterThan(8);
   });
 
+  it('includes the generic action icons (GAP-028)', () => {
+    for (const name of [
+      'trash',
+      'pencil',
+      'printer',
+      'archive',
+      'bell',
+      'link',
+      'filter',
+      'users',
+      'bot',
+      'sparkles',
+    ] as const) {
+      expect(iconSet[name], name).toBeDefined();
+      expect(iconNames[name].length, name).toBeGreaterThan(8);
+    }
+  });
+
+  it('keeps domain icons out of the core set', () => {
+    for (const name of ['truck', 'wallet', 'cart', 'whatsapp']) {
+      expect(Object.keys(iconSet)).not.toContain(name);
+    }
+  });
+
   it('renders every icon of the set', async () => {
     const screen = await renderWithProvider(
       <>
