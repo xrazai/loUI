@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.6.0] - 2026-11-03
 ### Added
 
 - **GAP-024** (2026-11-03) New `ColorField` (experimental): wraps React Aria `ColorField` in hex mode with the `Input` field anatomy (label, description, `descriptionTone`, error, sizes, `fullWidth`) and a decorative leading `Swatch` (empty when there is no value). Hex in Geist Mono, uppercase; `#abc` normalises to `#AABBCC` on blur or Enter, non-colours revert, `↑/↓` step the value. `value`/`defaultValue` take `#RRGGBB` or a `Color`, `onChange` gets a `Color` or `null` (`color?.toString('hex')` for the string). Default error "Enter a colour as #RRGGBB." (pt-BR included). Design note: wrapping RAC needs no ADR (ADR-0001, no new dependency); a picker is a later task.
