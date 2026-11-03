@@ -2,6 +2,7 @@ import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mc
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { findByName, suggest, type DsData } from './data.ts';
+import { rank, searchableEntry, searchableRecipe } from './search.ts';
 import type { ManifestEntry, Token } from './types.ts';
 import { validateSnippet } from './validate.ts';
 
@@ -185,7 +186,9 @@ export function createServer(data: DsData): McpServer {
         query: z
           .string()
           .optional()
-          .describe('Case-insensitive text matched against name and description.'),
+          .describe(
+            'Free text, a name or a plain description of the UI ("table of orders with sorting"). Results are ranked by relevance to name, summary and when-to-use text.',
+          ),
         group: z
           .enum(['Components', 'Primitives', 'Patterns'])
           .optional()
@@ -215,27 +218,24 @@ export function createServer(data: DsData): McpServer {
       annotations: READ_ONLY,
     },
     ({ query, group, status, kind }) => {
-      const q = query?.trim().toLowerCase();
-      const items = data.entries
+      const q = query?.trim();
+      const pool = data.entries
         .filter((e) => kind === 'any' || e.kind === kind)
         .filter((e) => !group || groupOf(e) === group)
-        .filter((e) => !status || (e.status ?? 'stable') === status)
-        .filter(
-          (e) =>
-            !q ||
-            e.name.toLowerCase().includes(q) ||
-            (e.description ?? '').toLowerCase().includes(q),
-        )
-        .map((e) => ({
-          name: e.name,
-          kind: e.kind,
-          group: groupOf(e),
-          entryPoint: e.entryPoint,
-          importStatement: e.importStatement,
-          status: e.status ?? 'stable',
-          description: oneLine(e.docs?.summary ?? e.description),
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .filter((e) => !status || (e.status ?? 'stable') === status);
+      const order = q ? rank(pool.map(searchableEntry), q).map((r) => r.name) : null;
+      const ordered = order
+        ? order.flatMap((n) => pool.filter((e) => e.name === n))
+        : [...pool].sort((a, b) => a.name.localeCompare(b.name));
+      const items = ordered.map((e) => ({
+        name: e.name,
+        kind: e.kind,
+        group: groupOf(e),
+        entryPoint: e.entryPoint,
+        importStatement: e.importStatement,
+        status: e.status ?? 'stable',
+        description: oneLine(e.docs?.summary ?? e.description),
+      }));
       const text = items.length
         ? [
             `${items.length} match${items.length === 1 ? '' : 'es'}:`,
@@ -456,8 +456,15 @@ export function createServer(data: DsData): McpServer {
           .string()
           .optional()
           .describe('Recipe file name without extension. Omit to list recipes.'),
+        query: z
+          .string()
+          .optional()
+          .describe(
+            'Plain description of the screen ("confirm before deleting a customer"). Returns the best matching recipe names, ranked, in `matches`. Ignored when `name` is given.',
+          ),
       },
       outputSchema: {
+        matches: z.array(z.string()).optional(),
         available: z.array(z.string()),
         name: z.string().optional(),
         markdown: z.string().optional(),
@@ -465,8 +472,18 @@ export function createServer(data: DsData): McpServer {
       },
       annotations: READ_ONLY,
     },
-    ({ name }) => {
+    ({ name, query }) => {
       const available = data.recipeNames();
+      if (!name && query?.trim()) {
+        const matches = rank(
+          available.map((n) => searchableRecipe(n, data.readRecipe(n) ?? '')),
+          query,
+        ).map((r) => r.name);
+        const message = matches.length
+          ? `Best matching recipes: ${matches.join(', ')}.`
+          : `No recipe matches "${query}". Available: ${available.join(', ')}.`;
+        return ok(message, { matches, available, message });
+      }
       if (!name) {
         const message = available.length
           ? `Available recipes: ${available.join(', ')}.`

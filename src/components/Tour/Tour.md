@@ -6,7 +6,7 @@ Step-by-step onboarding hints anchored to elements of the page. Each step is a n
 
 ## When to use
 
-- Introducing a screen to a first-time user in a few steps (three to six).
+- Guiding new users through the interface with a few onboarding hints (three to six steps) that introduce a screen.
 - Pointing at controls that are not obvious from their label.
 
 ## When not to use
