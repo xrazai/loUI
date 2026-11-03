@@ -149,6 +149,80 @@ describe('Legend', () => {
     });
   });
 
+  describe('share', () => {
+    const amounts: LegendItem[] = [
+      { id: 'a', label: 'Pix', amount: 50 },
+      { id: 'b', label: 'Cash', amount: 25 },
+      { id: 'c', label: 'Card', amount: 25 },
+    ];
+
+    it('prints the share of each item over the sum of the amounts', async () => {
+      const screen = await renderWithProvider(<Legend items={amounts} showShare />);
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows.map((row) => row.textContent)).toEqual(['Pix50%', 'Cash25%', 'Card25%']);
+    });
+
+    it('formats the share for the locale and the digits', async () => {
+      const screen = await renderWithProvider(
+        <Legend
+          items={[
+            { id: 'a', label: 'A', amount: 1 },
+            { id: 'b', label: 'B', amount: 2 },
+          ]}
+          showShare
+          shareDigits={1}
+        />,
+        { locale: 'pt-BR' },
+      );
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows[0]?.textContent).toContain('33,3');
+    });
+
+    it('uses shareOf as the denominator when given', async () => {
+      const screen = await renderWithProvider(<Legend items={amounts} showShare shareOf={200} />);
+      expect(screen.getByRole('listitem').elements()[0]?.textContent).toBe('Pix25%');
+    });
+
+    it('leaves hidden items out of the denominator and prints no share for them', async () => {
+      const screen = await renderWithProvider(
+        <Legend items={amounts} showShare interactive hiddenIds={['a']} />,
+      );
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows.map((row) => row.textContent)).toEqual(['Pix', 'Cash50%', 'Card50%']);
+    });
+
+    it('prints 0% when the denominator is zero and nothing for items without amount', async () => {
+      const screen = await renderWithProvider(
+        <Legend
+          items={[
+            { id: 'a', label: 'A', amount: 0 },
+            { id: 'b', label: 'B' },
+          ]}
+          showShare
+        />,
+      );
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows.map((row) => row.textContent)).toEqual(['A0%', 'B']);
+    });
+
+    it('shows value and share in separate columns and does not adjust rounded shares', async () => {
+      const screen = await renderWithProvider(
+        <Legend
+          orientation="vertical"
+          showShare
+          items={[
+            { id: 'a', label: 'A', amount: 1, value: '1' },
+            { id: 'b', label: 'B', amount: 1, value: '1' },
+            { id: 'c', label: 'C', amount: 1, value: '1' },
+          ]}
+        />,
+      );
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows.map((row) => row.textContent)).toEqual(['A133%', 'B133%', 'C133%']);
+      expect((rows[0] as Element).querySelectorAll('span')).toHaveLength(4);
+    });
+  });
+
   describe('messages', () => {
     it('translates the name and the hint to pt-BR', async () => {
       const screen = await renderWithProvider(<Legend items={items} interactive />, {
@@ -172,6 +246,20 @@ describe('Legend', () => {
   describe('accessibility', () => {
     it('has no axe violations as a list', async () => {
       const screen = await renderWithProvider(<Legend items={items} />);
+      await expectNoA11yViolations(screen.container);
+    });
+
+    it('has no axe violations with value and share columns', async () => {
+      const screen = await renderWithProvider(
+        <Legend
+          orientation="vertical"
+          showShare
+          items={[
+            { id: 'a', label: 'A', amount: 3, value: '3' },
+            { id: 'b', label: 'B', amount: 1, value: '1' },
+          ]}
+        />,
+      );
       await expectNoA11yViolations(screen.container);
     });
 

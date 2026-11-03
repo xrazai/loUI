@@ -202,3 +202,8 @@ export const RightToLeft: Story = {
     ),
   ],
 };
+
+/** `legendShare` adds each series' share of the visible total to the legend. */
+export const LegendShare: Story = {
+  args: { legendShare: true },
+};

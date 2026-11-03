@@ -27,14 +27,40 @@ div.root
 
 ## Props (key ones)
 
-| Prop            | Type                         | Default | Notes                                                                  |
-| --------------- | ---------------------------- | ------- | ---------------------------------------------------------------------- |
-| `segments`      | `{ label, value, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0 |
-| `label`         | `string`                     |         | Name of the whole; starts the summary                                  |
-| `legend`        | `boolean`                    | `false` | List with swatch, label, percentage and formatted value                |
-| `format`        | `(value) => ReactNode`       | `Intl`  | Formats legend values. Use `formatCurrency` for money                  |
-| `percentDigits` | `number`                     | `0`     | Decimals of the percentages                                            |
-| `messages`      | `Partial<messages>`          |         | `segment(label, percent)`, `summary(items, label?)`                    |
+| Prop            | Type                                      | Default | Notes                                                                                                                                               |
+| --------------- | ----------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `segments`      | `{ id?, label, value, count?, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0. `id` links the segment to its legend item, `count` feeds the `count` column |
+| `total`         | `number`                                  |         | Size of the whole. When larger than the sum, the rest is an unlabelled track named "Remaining"                                                      |
+| `legendColumns` | `('share'                                 | 'value' | 'count')[]`                                                                                                                                         | `['share', 'value']` | Columns of the legend, in order |
+| `label`         | `string`                                  |         | Name of the whole; starts the summary                                                                                                               |
+| `legend`        | `boolean`                                 | `false` | List with swatch, label, percentage and formatted value                                                                                             |
+| `format`        | `(value) => ReactNode`                    | `Intl`  | Formats legend values. Use `formatCurrency` for money                                                                                               |
+| `percentDigits` | `number`                                  | `0`     | Decimals of the percentages                                                                                                                         |
+| `messages`      | `Partial<messages>`                       |         | `segment(label, percent)`, `summary(items, label?)`, `remaining`                                                                                    |
+
+## Part of the whole
+
+A single segment plus `total` is the "Paid 1,240 of 2,000" indicator; there is no separate component:
+
+```tsx
+<ProportionBar
+  label="Invoice"
+  total={2000}
+  legend
+  format={(value) => formatCurrency(value * 100, 'USD', locale)}
+  segments={[{ id: 'paid', label: 'Paid', value: 1240 }]}
+/>
+```
+
+The summary reads "Invoice: Paid 62% and Remaining 38%" (the word comes from the `remaining` message, `Restante` in pt-BR). The remaining part is drawn as the empty track, so it carries no color; in the legend it has a hollow, dashed swatch. A `total` smaller than the sum of the segments is ignored. Use `DonutMeter` instead when the share is the only message and a ring fits better.
+
+## Linking segments and legend items
+
+Each segment can carry a stable `id`. The bar segment gets `data-segment="<id>"` and its legend item gets the same attribute and the DOM id `<bar id>-<id>`, so tests and consumer code can find the pair. For people the link is the order, the label and the matching swatch (color is never the only link). The bar itself is one `role="img"` whose children are presentational, so the accessible link is the summary: it names every part in the same order as the legend, and the legend repeats the same labels.
+
+## Legend columns
+
+`legendColumns` picks and orders the columns after the label: `share` (percentage), `value` (formatted with `format`) and `count` (the segment `count`, formatted with `Intl`). All rows share one grid, so the columns line up (tabular mono figures). Shares are rounded one by one and may not add up to 100%.
 
 ## Distinguishing the parts
 

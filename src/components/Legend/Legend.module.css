@@ -69,11 +69,6 @@
     grid-template-columns: subgrid;
   }
 
-  .root[data-orientation='vertical'][data-columns] .value,
-  .root[data-orientation='vertical'][data-columns] .share {
-    text-align: end;
-  }
-
   .name {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -84,6 +79,7 @@
     color: var(--ds-text-2);
     font-family: var(--ds-font-mono);
     font-size: var(--ds-fs-label);
+    text-align: end;
     white-space: nowrap;
   }
 

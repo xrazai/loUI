@@ -27,15 +27,22 @@ VisuallyHidden  hint, linked with aria-describedby (interactive only)
 
 ## Props (key ones)
 
-| Prop                | Type                              | Default        | Notes                                                 |
-| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |
-| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |
-| `orientation`       | `'horizontal' \| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |
-| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |
-| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |
-| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |
-| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |
-| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |
+| Prop                | Type                                       | Default        | Notes                                                      |
+| ------------------- | ------------------------------------------ | -------------- | ---------------------------------------------------------- |
+| `items`             | `{ id, label, value?, amount?, color? }[]` | -              | Same order as the chart: the position sets the swatch      |
+| `showShare`         | `boolean`                                  | `false`        | Prints each item's share of the `amount`s (needs `amount`) |
+| `shareOf`           | `number`                                   | sum of visible | Denominator of the shares                                  |
+| `shareDigits`       | `number`                                   | `0`            | Decimals of the printed shares                             |
+| `orientation`       | `'horizontal' \| 'vertical'`               | `'horizontal'` | Row that wraps, or one item per line                       |
+| `interactive`       | `boolean`                                  | `false`        | Items become toggle buttons                                |
+| `hiddenIds`         | `readonly string[]`                        |                | Controlled hidden series                                   |
+| `defaultHiddenIds`  | `readonly string[]`                        | `[]`           | Initial hidden series when uncontrolled                    |
+| `onHiddenIdsChange` | `(ids: string[]) => void`                  |                | Called on every toggle                                     |
+| `messages`          | `Partial<messages>`                        |                | `label` (list name), `toggleHint`                          |
+
+## Showing the share
+
+Give each item a numeric `amount` and set `showShare`: the legend prints `amount / denominator` with `formatPercent` for the provider locale. The denominator is the sum of the visible items (hidden series leave it, and print no share) unless you pass `shareOf` because the items are only part of a whole. `value` still works as a free node; with both, a vertical legend lines value and share up in two columns (tabular mono). Percentages are rounded one by one, so three equal items show 33% each and the shares may sum to 99% or 101%. The legend never fudges them; raise `shareDigits` if that matters. `StackedBar` uses this through its `legendShare` prop.
 
 ## Telling series apart without color
 

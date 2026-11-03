@@ -141,3 +141,37 @@ export const PortugueseBrazil: Story = {
     ).toBeInTheDocument();
   },
 };
+
+/** Share, value and count columns, in the order given. Each legend item shares its `id` with the bar segment. */
+export const LegendColumns: Story = {
+  args: {
+    legend: true,
+    legendColumns: ['value', 'share', 'count'],
+    format: (value: number) => formatCurrency(value, 'USD', 'en-US'),
+    segments: [
+      { id: 'pix', label: 'Pix', value: 1693000, count: 124 },
+      { id: 'cash', label: 'Cash', value: 573400, count: 48 },
+      { id: 'debit', label: 'Debit', value: 538800, count: 37 },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const items = within(canvasElement).getAllByRole('listitem');
+    await expect(items[0]).toHaveTextContent('124');
+  },
+};
+
+/** One segment plus `total`: "Paid 1,240 of 2,000". The rest is an unlabelled track named "Remaining" for assistive technology. */
+export const PartOfWhole: Story = {
+  args: {
+    label: 'Invoice',
+    total: 2000,
+    legend: true,
+    segments: [{ id: 'paid', label: 'Paid', value: 1240 }],
+    format: (value: number) => formatCurrency(value * 100, 'USD', 'en-US'),
+  },
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('img', { name: 'Invoice: Paid 62% and Remaining 38%' }),
+    ).toBeInTheDocument();
+  },
+};

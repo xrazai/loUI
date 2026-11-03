@@ -64,6 +64,12 @@ interface StackedBarBaseProps extends Omit<
   legend?: boolean;
   /** Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table. */
   interactiveLegend?: boolean;
+  /**
+   * Adds the share of each series (its total over the total of the visible series) to the
+   * legend, next to the formatted total. Hidden series leave the denominator. Shares are rounded
+   * one by one and may not add up to exactly 100%.
+   */
+  legendShare?: boolean;
   /** Controlled list of hidden series ids. */
   hiddenSeries?: readonly string[];
   /** Initial hidden series ids when uncontrolled. */
@@ -131,6 +137,7 @@ export function StackedBar({
   format,
   legend = true,
   interactiveLegend = false,
+  legendShare = false,
   hiddenSeries,
   defaultHiddenSeries = NO_IDS,
   onHiddenSeriesChange,
@@ -322,10 +329,13 @@ export function StackedBar({
             id: s.id,
             label: s.label,
             ...(s.color ? { color: s.color } : {}),
+            amount: data.reduce((sum, datum) => sum + safeValue(datum.values[s.id] ?? 0), 0),
             value: formatValue(
               data.reduce((sum, datum) => sum + safeValue(datum.values[s.id] ?? 0), 0),
             ),
           }))}
+          showShare={legendShare}
+          orientation={legendShare ? 'vertical' : 'horizontal'}
           interactive={interactiveLegend}
           hiddenIds={hiddenIds}
           onHiddenIdsChange={setHiddenIds}

@@ -260,6 +260,92 @@ describe('ProportionBar', () => {
     });
   });
 
+  describe('legend columns and links', () => {
+    const rows: ProportionSegment[] = [
+      { id: 'pix', label: 'Pix', value: 75, count: 12 },
+      { id: 'cash', label: 'Cash', value: 25, count: 3 },
+    ];
+
+    it('prints share and value by default, in that order', async () => {
+      const screen = await renderWithProvider(<ProportionBar legend segments={rows} />);
+      expect(screen.getByRole('listitem').elements()[0]?.textContent).toBe('Pix75%75');
+    });
+
+    it('prints the chosen columns in the chosen order, count included', async () => {
+      const screen = await renderWithProvider(
+        <ProportionBar legend legendColumns={['value', 'share', 'count']} segments={rows} />,
+      );
+      expect(screen.getByRole('listitem').elements()[0]?.textContent).toBe('Pix7575%12');
+      const list = screen.container.querySelector('ul') as HTMLElement;
+      expect(list.style.getPropertyValue('--ds-proportion-bar-columns')).toBe('3');
+    });
+
+    it('links each bar segment to its legend item by the segment id', async () => {
+      const screen = await renderWithProvider(<ProportionBar legend segments={rows} />);
+      const bar = screen.container.querySelectorAll('[role="img"] > [data-segment]');
+      const items = screen.container.querySelectorAll('li[data-segment]');
+      expect([...bar].map((n) => n.getAttribute('data-segment'))).toEqual(['pix', 'cash']);
+      expect([...items].map((n) => n.getAttribute('data-segment'))).toEqual(['pix', 'cash']);
+      expect(items[0]?.id.endsWith('-pix')).toBe(true);
+    });
+
+    it('draws the remainder of a total as an unlabelled track and names it', async () => {
+      const screen = await renderWithProvider(
+        <ProportionBar
+          legend
+          label="Invoice"
+          total={2000}
+          segments={[{ id: 'paid', label: 'Paid', value: 1240 }]}
+        />,
+      );
+      await expect
+        .element(screen.getByRole('img', { name: 'Invoice: Paid 62% and Remaining 38%' }))
+        .toBeVisible();
+      const rows = screen.getByRole('listitem').elements();
+      expect(rows.map((row) => row.textContent)).toEqual(['Paid62%1,240', 'Remaining38%760']);
+      expect(screen.container.querySelectorAll('[role="img"] > div')).toHaveLength(2);
+    });
+
+    it('ignores a total smaller than the sum', async () => {
+      const screen = await renderWithProvider(
+        <ProportionBar total={10} segments={rows} label="X" />,
+      );
+      await expect
+        .element(screen.getByRole('img', { name: 'X: Pix 75% and Cash 25%' }))
+        .toBeVisible();
+    });
+
+    it('translates the remaining part to pt-BR and takes overrides', async () => {
+      const screen = await renderWithProvider(
+        <ProportionBar total={200} segments={[{ label: 'Pago', value: 100 }]} />,
+        { locale: 'pt-BR' },
+      );
+      await expect
+        .element(screen.getByRole('img', { name: 'Pago 50% e Restante 50%' }))
+        .toBeVisible();
+      await screen.rerender(
+        <ProportionBar
+          total={200}
+          segments={[{ label: 'Paid', value: 100 }]}
+          messages={{ remaining: 'Left' }}
+        />,
+      );
+      await expect.element(screen.getByRole('img', { name: 'Paid 50% e Left 50%' })).toBeVisible();
+    });
+
+    it('has no axe violations with columns, count and a remainder', async () => {
+      const screen = await renderWithProvider(
+        <ProportionBar
+          legend
+          total={200}
+          legendColumns={['value', 'share', 'count']}
+          segments={rows}
+        />,
+      );
+      await expectNoA11yViolations(screen.container);
+    });
+  });
+
   describe('accessibility', () => {
     it('has no axe violations with and without legend, explicit colors and many parts', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);

@@ -152,3 +152,34 @@ export const RightToLeft: Story = {
     ),
   ],
 };
+
+/** `showShare` prints the share of each `amount` for the active locale, in a column next to the value. */
+export const WithShare: Story = {
+  args: {
+    orientation: 'vertical',
+    showShare: true,
+    items: [
+      { id: 'online', label: 'Online', amount: 1240, value: '1,240' },
+      { id: 'store', label: 'Store', amount: 860, value: '860' },
+      { id: 'phone', label: 'Phone', amount: 310, value: '310' },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const rows = within(canvasElement).getAllByRole('listitem');
+    await expect(rows[0]).toHaveTextContent('51%');
+    await expect(rows[2]).toHaveTextContent('13%');
+  },
+};
+
+/** Without a `value` and with `shareOf`, the items are only part of a whole of 4,000. */
+export const ShareOfTotal: Story = {
+  args: {
+    showShare: true,
+    shareOf: 4000,
+    shareDigits: 1,
+    items: [
+      { id: 'online', label: 'Online', amount: 1240 },
+      { id: 'store', label: 'Store', amount: 860 },
+    ],
+  },
+};

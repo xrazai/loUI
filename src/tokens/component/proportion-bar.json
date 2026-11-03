@@ -27,6 +27,11 @@
       "$value": "{color.text}",
       "$description": "Fill of a ProportionBar segment and its legend swatch. The neutral ramp classes set it per step; a segment `color` prop overrides it at runtime via style."
     },
+    "columns": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "Number of legend columns after the label in a ProportionBar (share, value, count). Set at runtime via style from legendColumns."
+    },
     "share": {
       "$type": "number",
       "$value": 1,

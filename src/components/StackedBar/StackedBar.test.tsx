@@ -273,6 +273,28 @@ describe('StackedBar', () => {
     });
   });
 
+  describe('legend share', () => {
+    it('adds the share of each series next to its total', async () => {
+      const screen = await renderWithProvider(
+        <StackedBar
+          aria-label="Sales"
+          data={[
+            { label: 'Q1', values: { a: 30, b: 10 } },
+            { label: 'Q2', values: { a: 30, b: 30 } },
+          ]}
+          series={[
+            { id: 'a', label: 'Online' },
+            { id: 'b', label: 'Store' },
+          ]}
+          legendShare
+        />,
+      );
+      const legend = screen.getByRole('list', { name: 'Legend' }).element();
+      const rows = [...legend.querySelectorAll('li')].map((li) => li.textContent);
+      expect(rows).toEqual(['Online6060%', 'Store4040%']);
+    });
+  });
+
   describe('keyboard', () => {
     it('has one tab stop and moves between bars with the arrow keys, Home and End', async () => {
       const screen = await renderWithProvider(

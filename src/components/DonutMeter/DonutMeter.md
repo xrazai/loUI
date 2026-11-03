@@ -15,7 +15,7 @@ A circular meter for one proportion: how much of a whole is used, done or filled
 
 - Progress of a task that is running: use `Progress`.
 - A bar in a column or a row: use `Meter` (`Progress` module).
-- Several parts of a whole: use `ProportionBar`.
+- Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.
 - A trend over time: use `Sparkline` or `Chart`.
 
 ## Anatomy
