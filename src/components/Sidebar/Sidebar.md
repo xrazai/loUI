@@ -31,17 +31,17 @@ aside[aria-label="Sidebar"]         (--ds-sidebar-w wide, scrolls on its own)
 
 ## Props
 
-| Prop         | Type                              | Notes                                                                                    |
-| ------------ | --------------------------------- | ---------------------------------------------------------------------------------------- |
-| `workspace`  | `{ name, subtitle?, initial? }`   | `initial` defaults to the first letter of the name (locale upper-casing).                |
-| `sections`   | `SidebarSection[]`                | `{ id, title, items }` or `{ id, label, items }` (one of `title` / `label` is required). |
-| `value`      | `string`                          | `value` of the active item.                                                              |
-| `onChange`   | `(value: string) => void`         | Called with the item the user pressed (links and buttons).                               |
-| `status`     | `{ tone?, title, meta?, value? }` | `tone`: `success` (default), `warning`, `danger`. The title carries the meaning.         |
-| `footer`     | `ReactNode`                       | Free slot above the user block.                                                          |
-| `user`       | `{ name, role?, avatarSrc? }`     | Rendered with a decorative `Avatar` (the name is next to it).                            |
-| `aria-label` | `string`                          | Overrides the landmark name (default "Sidebar" from the catalog).                        |
-| `messages`   | `{ label?: string }`              | Per-instance message override (ADR-0005).                                                |
+| Prop         | Type                              | Notes                                                                                       |
+| ------------ | --------------------------------- | ------------------------------------------------------------------------------------------- |
+| `workspace`  | `{ name, subtitle?, initial? }`   | `initial` defaults to the first letter of the name (locale upper-casing).                   |
+| `sections`   | `SidebarSection[]`                | `{ id, title, items }` or `{ id, label, items }` (one of `title` / `label` is required).    |
+| `value`      | `string`                          | `value` of the active item.                                                                 |
+| `onChange`   | `(value: string) => void`         | Called with the item the user pressed (links and buttons).                                  |
+| `status`     | `{ tone?, title, meta?, value? }` | `tone`: `neutral` (default), `success`, `warning`, `danger`. The title carries the meaning. |
+| `footer`     | `ReactNode`                       | Free slot above the user block.                                                             |
+| `user`       | `{ name, role?, avatarSrc? }`     | Rendered with a decorative `Avatar` (the name is next to it).                               |
+| `aria-label` | `string`                          | Overrides the landmark name (default "Sidebar" from the catalog).                           |
+| `messages`   | `{ label?: string }`              | Per-instance message override (ADR-0005).                                                   |
 
 A `SidebarItem` is `{ value, label, href?, icon?, count?, countLabel?, countTone?, isDisabled? }`; it renders a `NavItem`. Always set `countLabel` with `count`.
 
@@ -49,6 +49,10 @@ A `SidebarItem` is `{ value, label, href?, icon?, count?, countLabel?, countTone
 
 - Width is `--ds-sidebar-w` (240px). The handoff's `width` prop and 248px default are dropped; there is one width in the system.
 - The sidebar uses `max-block-size: 100%` and `overflow-y: auto`: give its parent a definite height (for example a full-height flex row) and it scrolls on its own while the content scrolls separately. The status, footer and user stay at the bottom when there is room.
+
+## Behavior change
+
+The status dot is now grey (`neutral`) when `tone` is omitted; it used to default to green. Pass `tone: 'success'` to keep the green dot.
 
 ## Accessibility
 

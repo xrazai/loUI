@@ -63,7 +63,7 @@ The handoff closed toasts after 3.6 s, which is too short to read a sentence and
 - Each toast is announced by React Aria's toast semantics. The tone is spoken as a prefix ("Success: ...", "Error: ...") from messages; the colored dot is decorative and `aria-hidden`.
 - Pause on hover and on focus within the region; the timer resumes on leave or blur.
 - Dismiss button named from messages ("Dismiss notification"); action is a real `Button`.
-- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sheet, Sidebar).
+- Layer `--ds-z-toast` (58): above dialogs, below tooltips. Bottom center keeps it clear of side panels (Sidebar). While a `Sheet` is open (GAP-052) the region moves into the free space beside it by reading `data-ds-sheet` on the document (`:root:has(...)`, CSS only, SSR-safe), so stacked toasts never cover the sheet footer; below 768px the sheet fills the width and toasts go to the top, under the sheet header. Keyboard (F6), pause on hover/focus and reduced motion are unchanged.
 - Reduced motion: the 150 ms fade-in is removed. Forced colors: border and dot use `CanvasText`.
 - `UNSTABLE_*` isolation: all React Aria `UNSTABLE_Toast*` imports live in `toast.rac.ts`. Renaming or stabilizing them is a one-file change.
 
@@ -122,9 +122,10 @@ export function archiveOrder(order: Order) {
 | `locale`             | `string`            | see below      | BCP 47 tag for the label.                         |
 | `messages`           | `{ undo?: string }` |                | Per-call override; wins over `locale`.            |
 | `toast`              | `ToastApi`          | shared `toast` | An isolated queue (tests, a second region).       |
+| `groupKey`           | `string`            |                | Replaces the previous undo toast of the same key. |
 | `timeout`, `onClose` |                     |                | As in `toast()`.                                  |
 
-It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
+`groupKey` (GAP-053) is for quick repeated actions of one kind (four toggles in a grid): a new toast with the same key closes the previous one, so only the latest change offers Undo and earlier ones are final. It does not offer "Undo 4 changes": the changes may be on different records and made in any order, so one Undo could not safely reverse them all. Different keys still stack. `useUndoable` takes the same `groupKey` on the action. It returns the toast key, like `toast()`. Outside React there is no context, so the label is resolved in this order: `messages.undo`, then `locale`, then the label the mounted `ToastRegion` publishes for the same queue (the `DSProvider` locale, a `messages={{ Toast: { undo } }}` provider override or the region's `messages` prop), then English. With a mounted region inside `DSProvider` you normally pass nothing. The helper does not defer anything and has no commit step; use `useUndoable` when you need that.
 
 ## Differences from the handoff
 

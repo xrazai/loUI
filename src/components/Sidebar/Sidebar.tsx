@@ -62,8 +62,8 @@ interface UntitledSection extends SidebarSectionBase {
 export type SidebarSection = TitledSection | UntitledSection;
 
 export interface SidebarStatus {
-  /** Meaning of the dot: `success` (default), `warning` or `danger`. */
-  tone?: 'success' | 'warning' | 'danger';
+  /** Meaning of the dot: `neutral` (default, grey: no judgement), `success`, `warning` or `danger`. */
+  tone?: 'neutral' | 'success' | 'warning' | 'danger';
   /** The status in words ("All systems operational"). The dot only reinforces it. */
   title: string;
   /** Left text of the detail line ("Last sync"). */
@@ -176,7 +176,7 @@ export function Sidebar({
   const locale = useDSLocale();
   const initial =
     workspace.initial ?? Array.from(workspace.name.trim())[0]?.toLocaleUpperCase(locale) ?? '';
-  const statusTone = status?.tone ?? 'success';
+  const statusTone = status?.tone ?? 'neutral';
   const hasBottom = status !== undefined || footer !== undefined || user !== undefined;
 
   return (

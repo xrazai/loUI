@@ -279,6 +279,27 @@ const LONG_CUSTOMER = 'Companhia Brasileira de Papéis Finos e Acabamentos Indus
  * `minWidth` keeps a column from being squashed: in a container that is too narrow the table area
  * scrolls horizontally instead. Here the container is 360 px wide and the table needs more.
  */
+/** An empty table with `minWidth` columns does not scroll sideways: the empty state fits the container. */
+export const EmptyWithMinimumColumnWidth: Story = {
+  args: {
+    rows: [],
+    columns: orderColumns.map((column) =>
+      column.key === 'customer' ? { ...column, minWidth: '300px' } : column,
+    ),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: 'calc(var(--ds-space-16) * 5.625)', maxInlineSize: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const scroller = canvasElement.querySelector('thead')?.closest('table')?.parentElement;
+    await expect(scroller?.scrollWidth).toBe(scroller?.clientWidth);
+  },
+};
+
 export const MinimumColumnWidth: Story = {
   args: {
     columns: orderColumns.map((column) => {

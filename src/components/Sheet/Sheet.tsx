@@ -188,7 +188,7 @@ function SheetPanel(props: SheetPanelProps) {
   } = useRetainedWhileClosing(props);
   const descriptionId = useId();
   return (
-    <Modal className={classNames(styles.modal)} data-size={size}>
+    <Modal className={classNames(styles.modal)} data-size={size} data-ds-sheet={size}>
       <AriaDialog
         {...(panelRef ? { ref: panelRef } : {})}
         {...(description ? { 'aria-describedby': descriptionId } : {})}

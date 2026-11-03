@@ -120,6 +120,10 @@
     inline-size: var(--ds-sidebar-status-dot-size);
     block-size: var(--ds-sidebar-status-dot-size);
     border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-text-3);
+  }
+
+  .dot[data-tone='success'] {
     background-color: var(--ds-success);
   }
 

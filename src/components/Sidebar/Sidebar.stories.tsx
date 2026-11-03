@@ -73,7 +73,12 @@ export const Default: Story = {
 
 export const Complete: Story = {
   args: {
-    status: { title: 'All systems operational', meta: 'Last sync', value: '2 min ago' },
+    status: {
+      tone: 'success',
+      title: 'All systems operational',
+      meta: 'Last sync',
+      value: '2 min ago',
+    },
     footer: <a href="#help">Help center</a>,
     user: { name: 'Ana Souza', role: 'ana@example.com' },
   },
@@ -82,6 +87,13 @@ export const Complete: Story = {
 export const StatusTones: Story = {
   args: {
     status: { tone: 'danger', title: 'Sync failed', meta: 'Last attempt', value: '10:42' },
+    user: { name: 'Ana Souza', role: 'Owner' },
+  },
+};
+
+export const StatusNeutral: Story = {
+  args: {
+    status: { title: 'Register closed', meta: 'Closed at', value: '18:02' },
     user: { name: 'Ana Souza', role: 'Owner' },
   },
 };

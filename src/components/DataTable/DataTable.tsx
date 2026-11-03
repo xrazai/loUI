@@ -186,32 +186,32 @@ function toLength(value: number | string | undefined): string | undefined {
 }
 
 /**
- * Smallest width the table needs so that no `minWidth` column is squashed. Browsers ignore
- * `min-width` on cells in a fixed table layout, so the table itself gets a minimum width:
- * the fixed columns, plus the flexible columns at the largest `minWidth` among them (they share
- * the free space equally). `undefined` when no column has a `minWidth` (layout unchanged).
+ * Sizes derived from the columns' `minWidth` values. Browsers ignore `min-width` on cells in a
+ * fixed table layout, so the table itself gets a minimum width: the sum of every column's own
+ * minimum (fixed columns at `max(width, minWidth)`, flexible ones at their `minWidth`, or zero).
+ * Each flexible column is then sized as its own minimum plus an equal share of what is left over
+ * (`calc(min + (100% - tableMin) / flexibleCount)`, see the stylesheet), so a column never gets
+ * less than its own minimum and the widths add up to the table width. `undefined` when no column
+ * has a `minWidth` (layout unchanged).
  */
-function tableMinWidth<T>(
+function tableSizes<T>(
   columns: readonly DataTableColumn<T>[],
   hasSelection: boolean,
-): string | undefined {
+): { minWidth: string; flexibleCount: number } | undefined {
   if (!columns.some((column) => column.minWidth !== undefined)) return undefined;
-  const fixed: string[] = [];
-  const flexibleMins: string[] = [];
-  let flexible = 0;
+  const parts: string[] = [hasSelection ? 'var(--ds-data-table-selection-col-w)' : '0px'];
+  let flexibleCount = 0;
   for (const column of columns) {
     if (column.width === undefined) {
-      flexible += 1;
-      if (column.minWidth !== undefined) flexibleMins.push(column.minWidth);
+      flexibleCount += 1;
+      if (column.minWidth !== undefined) parts.push(column.minWidth);
     } else {
-      fixed.push(
+      parts.push(
         column.minWidth === undefined ? column.width : `max(${column.width}, ${column.minWidth})`,
       );
     }
   }
-  const selection = hasSelection ? 'var(--ds-data-table-selection-col-w)' : '0px';
-  const flexibleMin = flexibleMins.length > 0 ? flexibleMins.join(', ') : '0px';
-  return `calc(${[selection, ...fixed].join(' + ')} + ${String(flexible)} * max(${flexibleMin}))`;
+  return { minWidth: `calc(${parts.join(' + ')})`, flexibleCount };
 }
 
 function readValue(row: object, key: string): SortableValue {
@@ -239,9 +239,16 @@ interface HeaderProps<T> {
   columns: readonly DataTableColumn<T>[];
   selectAllLabel: string;
   selectionLabel: string;
+  /** Whether flexible columns are sized from their own `minWidth` (see `tableSizes`). */
+  isMinSized: boolean;
 }
 
-function DataTableHeader<T>({ columns, selectAllLabel, selectionLabel }: HeaderProps<T>) {
+function DataTableHeader<T>({
+  columns,
+  selectAllLabel,
+  selectionLabel,
+  isMinSized,
+}: HeaderProps<T>) {
   const { selectionBehavior, selectionMode } = useTableOptions();
   const hasRowHeader = columns.some((column) => column.isRowHeader);
   return (
@@ -266,6 +273,7 @@ function DataTableHeader<T>({ columns, selectAllLabel, selectionLabel }: HeaderP
           data-align={column.align ?? 'start'}
           data-wrap={column.truncate === false || undefined}
           data-sized={column.width === undefined ? undefined : true}
+          data-flex={isMinSized && column.width === undefined ? '' : undefined}
           {...(column.width === undefined && column.minWidth === undefined
             ? {}
             : {
@@ -529,9 +537,17 @@ export function DataTable<T extends object>({
     maxHeight === undefined
       ? undefined
       : ({ '--ds-data-table-max-h': toLength(maxHeight) } as CSSProperties);
-  const minWidth = tableMinWidth(columns, hasSelection);
+  // An empty table has nothing to protect from squashing: no minimum width, so the empty state
+  // never scrolls sideways (the header stays visible, its labels are cut with an ellipsis).
+  const isEmpty = !isLoading && viewRows.length === 0;
+  const sizes = isEmpty ? undefined : tableSizes(columns, hasSelection);
   const tableStyle =
-    minWidth === undefined ? undefined : ({ '--ds-data-table-min-w': minWidth } as CSSProperties);
+    sizes === undefined
+      ? undefined
+      : ({
+          '--ds-data-table-min-w': sizes.minWidth,
+          '--ds-data-table-flex-count': sizes.flexibleCount,
+        } as CSSProperties);
 
   return (
     <div
@@ -557,7 +573,7 @@ export function DataTable<T extends object>({
       <div
         className={classNames(styles.scroll)}
         data-scrollable={maxHeight === undefined ? undefined : ''}
-        data-min-sized={minWidth === undefined ? undefined : ''}
+        data-min-sized={sizes === undefined ? undefined : ''}
         {...(scrollStyle ? { style: scrollStyle } : {})}
       >
         <Table
@@ -584,6 +600,7 @@ export function DataTable<T extends object>({
             columns={columns}
             selectAllLabel={t.selectAll}
             selectionLabel={t.selection}
+            isMinSized={sizes !== undefined}
           />
           <TableBody
             renderEmptyState={() =>

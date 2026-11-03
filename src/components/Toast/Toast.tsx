@@ -46,15 +46,22 @@ const CLEARANCE_PROPERTY = '--ds-toast-clearance';
 function trackClearance(node: HTMLElement): () => void {
   const root = document.documentElement;
   const update = () => {
-    const distance = Math.max(0, window.innerHeight - node.getBoundingClientRect().top);
+    const rect = node.getBoundingClientRect();
+    // At the top (narrow screen with an open sheet) the region covers nothing at the bottom.
+    const atTop = rect.top < window.innerHeight / 2;
+    const distance = atTop ? 0 : Math.max(0, window.innerHeight - rect.top);
     root.style.setProperty(CLEARANCE_PROPERTY, `${String(Math.ceil(distance))}px`);
   };
   update();
   const observer = new ResizeObserver(update);
   observer.observe(node);
   window.addEventListener('resize', update);
+  // A Sheet opening or closing moves the region without resizing it (it lives in a body portal).
+  const mutations = new MutationObserver(update);
+  mutations.observe(document.body, { childList: true });
   return () => {
     observer.disconnect();
+    mutations.disconnect();
     window.removeEventListener('resize', update);
     root.style.removeProperty(CLEARANCE_PROPERTY);
   };
@@ -105,7 +112,9 @@ function ToastItem({
  *
  * The region is a landmark named "Toast notifications" that `F6` moves into; the timer of every toast
  * pauses while the pointer is over the region or focus is inside it (WCAG 2.2.1). Toasts stack
- * at the bottom center of the viewport, clear of side panels, above dialogs and below tooltips.
+ * at the bottom center of the viewport, above dialogs and below tooltips. While a `Sheet` is open
+ * they move into the free space beside it (or to the top, below its header, on narrow screens), so
+ * they never cover its footer.
  */
 export function ToastRegion({
   queue = defaultToastQueue,

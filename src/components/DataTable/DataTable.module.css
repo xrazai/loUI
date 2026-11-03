@@ -14,6 +14,7 @@
   /* A column with a `minWidth` makes the table wider than a narrow container: scroll, do not squash. */
   .scroll[data-min-sized] {
     overflow-x: auto;
+    container-type: inline-size;
   }
 
   .scroll[data-scrollable] {
@@ -69,6 +70,19 @@
 
   .column[data-sized] {
     inline-size: max(var(--ds-data-table-col-w), var(--ds-data-table-col-min-w));
+  }
+
+  /*
+   * Flexible column of a table with `minWidth` columns: its own minimum plus an equal share of the
+   * space left after every column's minimum (`100cqw` is the scroll area, i.e. the table width unless the minimum is larger; browsers treat a
+   * calc() with a percentage as `auto` in a fixed table layout, a container unit is a plain length).
+   */
+  .column[data-flex] {
+    inline-size: calc(
+      var(--ds-data-table-col-min-w, 0px) +
+        (max(100cqw, var(--ds-data-table-min-w)) - var(--ds-data-table-min-w)) /
+        var(--ds-data-table-flex-count)
+    );
   }
 
   .selectionColumn,

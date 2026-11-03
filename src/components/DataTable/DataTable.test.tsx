@@ -572,10 +572,54 @@ describe('DataTable', () => {
         </div>,
       );
       const [, customer, status] = headerWidths(screen.container);
-      expect(customer).toBeCloseTo(290, 0);
-      expect(status).toBeCloseTo(290, 0);
+      // Leftover space (700 - 120 - 100 = 480) is shared equally on top of each minimum.
+      expect(customer).toBeCloseTo(340, 0);
+      expect(status).toBeCloseTo(240, 0);
       const scroller = screen.container.querySelector('[data-min-sized]') as HTMLElement;
       expect(scroller.scrollWidth).toBe(scroller.clientWidth);
+    });
+
+    it('gives each flexible column its own minimum, narrow and wide', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '100px' },
+        { key: 'customer', label: 'Customer', minWidth: '240px' },
+        { key: 'status', label: 'Status', minWidth: '80px' },
+        { key: 'total', label: 'Total' },
+      ];
+      const narrow = await renderWithProvider(
+        <div style={{ inlineSize: 200 }}>
+          <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />
+        </div>,
+      );
+      expect(headerWidths(narrow.container)).toEqual([100, 240, 80, 24]);
+      const wide = await renderWithProvider(
+        <div style={{ inlineSize: 1000 }}>
+          <DataTable<Order> columns={columns} rows={orders} aria-label="Orders" />
+        </div>,
+      );
+      // 1000 - 100 - 240 - 80 = 580, shared by three flexible columns.
+      const [id, customer, status, total] = headerWidths(wide.container);
+      expect(id).toBe(100);
+      expect(customer).toBeCloseTo(240 + 580 / 3, 0);
+      expect(status).toBeCloseTo(80 + 580 / 3, 0);
+      expect(total).toBeCloseTo(580 / 3, 0);
+    });
+
+    it('does not scroll sideways when empty, even with minWidth columns', async () => {
+      const columns: DataTableColumn<Order>[] = [
+        { key: 'customer', label: 'Customer', minWidth: '300px' },
+        { key: 'status', label: 'Status', minWidth: '300px' },
+      ];
+      const screen = await renderWithProvider(
+        <div style={{ inlineSize: 320 }}>
+          <DataTable<Order> columns={columns} rows={[]} aria-label="Orders" />
+        </div>,
+      );
+      const scroller = screen.container.querySelector('thead')?.closest('table')
+        ?.parentElement as HTMLElement;
+      expect(scroller.scrollWidth).toBe(scroller.clientWidth);
+      expect(screen.container.querySelector('[data-min-sized]')).toBeNull();
+      expect(screen.container.querySelectorAll('thead th').length).toBe(2);
     });
 
     it('accounts for the selection column in the minimum width', async () => {
@@ -595,8 +639,8 @@ describe('DataTable', () => {
       );
       const [selection, customer, status] = headerWidths(screen.container);
       expect(selection).toBe(40);
-      expect(customer).toBeGreaterThanOrEqual(200);
-      expect(status).toBeGreaterThanOrEqual(200);
+      expect(customer).toBe(200);
+      expect(status).toBe(100);
     });
 
     it('leaves the layout alone when no column has a minWidth', async () => {

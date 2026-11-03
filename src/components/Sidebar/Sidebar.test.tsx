@@ -130,6 +130,12 @@ describe('Sidebar', () => {
   });
 
   describe('status, footer and user', () => {
+    it('uses the neutral tone when none is given', async () => {
+      const screen = await renderSidebar({ status: { title: 'Register closed' } });
+      const dot = screen.getByRole('status').element().querySelector('[aria-hidden="true"]');
+      expect(dot?.getAttribute('data-tone')).toBe('neutral');
+    });
+
     it('renders the status as text with a decorative dot', async () => {
       const screen = await renderSidebar({
         status: { tone: 'warning', title: 'Sync delayed', meta: 'Last sync', value: '2 min ago' },

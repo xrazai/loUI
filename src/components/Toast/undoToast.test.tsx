@@ -104,3 +104,23 @@ describe('toastWithUndo', () => {
     toast.clear();
   });
 });
+
+describe('toastWithUndo groupKey (GAP-053)', () => {
+  it('replaces the previous toast of the same group and keeps others', () => {
+    const { queue, api } = setup();
+    const onClose = vi.fn();
+    toastWithUndo('Toggled 1', { toast: api, onUndo: () => undefined, groupKey: 'g', onClose });
+    toastWithUndo('Other', { toast: api, onUndo: () => undefined, groupKey: 'h' });
+    toastWithUndo('Toggled 2', { toast: api, onUndo: () => undefined, groupKey: 'g' });
+    toastWithUndo('Toggled 3', { toast: api, onUndo: () => undefined, groupKey: 'g' });
+    expect(queue.visibleToasts.map((t) => t.content.message)).toEqual(['Toggled 3', 'Other']);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('stacks toasts without a groupKey', () => {
+    const { queue, api } = setup();
+    toastWithUndo('A', { toast: api, onUndo: () => undefined });
+    toastWithUndo('B', { toast: api, onUndo: () => undefined });
+    expect(queue.visibleToasts).toHaveLength(2);
+  });
+});
