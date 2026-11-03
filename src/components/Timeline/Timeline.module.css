@@ -1,0 +1,111 @@
+@layer components {
+  .root {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ds-font-sans);
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    gap: var(--ds-timeline-marker-gap);
+    padding-block-end: var(--ds-timeline-item-gap);
+  }
+
+  .item:last-child {
+    padding-block-end: 0;
+  }
+
+  /* Connector to the next event: decorative, from under this marker to the top of the next one. */
+  .item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--ds-timeline-marker-size) 0;
+    inset-inline-start: calc(
+      (var(--ds-timeline-marker-size) - var(--ds-timeline-connector-thickness)) / 2
+    );
+    inline-size: var(--ds-timeline-connector-thickness);
+    background-color: var(--ds-line-strong);
+  }
+
+  .marker {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--ds-timeline-marker-size);
+    block-size: var(--ds-timeline-marker-size);
+    background-color: var(--ds-bg);
+    color: var(--ds-text-3);
+  }
+
+  .item[data-tone='accent'] .marker {
+    color: var(--ds-accent);
+  }
+
+  .item[data-tone='success'] .marker {
+    color: var(--ds-success);
+  }
+
+  .item[data-tone='warning'] .marker {
+    color: var(--ds-warning);
+  }
+
+  .item[data-tone='danger'] .marker {
+    color: var(--ds-danger);
+  }
+
+  .dot {
+    inline-size: var(--ds-timeline-dot-size);
+    block-size: var(--ds-timeline-dot-size);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-line-control);
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .title {
+    color: var(--ds-text);
+    font-size: var(--ds-fs-small);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-small);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--ds-space-3);
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+  }
+
+  .description {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  @media (forced-colors: active) {
+    .item:not(:last-child)::before {
+      background-color: ButtonText;
+    }
+
+    .dot {
+      background-color: ButtonText;
+    }
+
+    .marker {
+      color: ButtonText;
+    }
+  }
+}

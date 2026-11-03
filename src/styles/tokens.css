@@ -206,6 +206,15 @@
     --ds-badge-dot-size: 6px;
     --ds-badge-padding-inline: var(--ds-space-2);
 
+    /* banner */
+    --ds-banner-success-bg: color-mix(in oklab, var(--ds-success) 6%, transparent);
+    --ds-banner-success-border: color-mix(in oklab, var(--ds-success) 30%, transparent);
+    --ds-banner-warning-bg: color-mix(in oklab, var(--ds-warning) 6%, transparent);
+    --ds-banner-warning-border: color-mix(in oklab, var(--ds-warning) 30%, transparent);
+    --ds-banner-danger-bg: color-mix(in oklab, var(--ds-danger) 6%, transparent);
+    --ds-banner-danger-border: color-mix(in oklab, var(--ds-danger) 30%, transparent);
+    --ds-banner-content-basis: 240px;
+
     /* breakpoint */
     --ds-breakpoint-sm: 480px;
     --ds-breakpoint-md: 768px;
@@ -224,6 +233,13 @@
     /* card */
     --ds-card-padding: var(--ds-space-5);
     --ds-card-gap: var(--ds-space-4);
+
+    /* chart-series */
+    --ds-chart-series-1: var(--ds-text);
+    --ds-chart-series-2: var(--ds-text-2);
+    --ds-chart-series-3: var(--ds-text-3);
+    --ds-chart-series-4: var(--ds-line-control);
+    --ds-chart-series-hatch-size: 3px;
 
     /* chart */
     --ds-chart-height: 200px;
@@ -258,6 +274,9 @@
     --ds-choice-tiles-height-md: var(--ds-control-h-md);
     --ds-choice-tiles-height-lg: var(--ds-control-h-lg);
     --ds-choice-tiles-columns: 2;
+
+    /* citation */
+    --ds-citation-size: 24px;
 
     /* code */
     --ds-code-inline-padding-block: 1px;
@@ -304,6 +323,15 @@
     --ds-donut-meter-stroke-w: 10px;
     --ds-donut-meter-value: 0;
     --ds-donut-meter-color: var(--ds-accent);
+
+    /* drawer */
+    --ds-drawer-width-sm: 280px;
+    --ds-drawer-width-md: 320px;
+    --ds-drawer-width-lg: 400px;
+    --ds-drawer-padding: var(--ds-space-4);
+    --ds-drawer-shift: var(--ds-space-4);
+    --ds-drawer-width: var(--ds-drawer-width-md);
+    --ds-drawer-from: var(--ds-drawer-shift);
 
     /* due-indicator */
     --ds-due-indicator-dot-size: 8px;
@@ -359,6 +387,11 @@
     --ds-ledger-list-gap: var(--ds-space-3);
     --ds-ledger-list-padding-inline: var(--ds-space-6);
     --ds-ledger-list-text-gap: 2px;
+
+    /* legend */
+    --ds-legend-swatch-size: 10px;
+    --ds-legend-gap: var(--ds-space-4);
+    --ds-legend-color: var(--ds-text);
 
     /* matrix-grid */
     --ds-matrix-grid-cell-size: 40px;
@@ -422,6 +455,10 @@
     --ds-rating-star-gap: 2px;
     --ds-rating-fill: 0px;
 
+    /* response-feedback */
+    --ds-response-feedback-gap: var(--ds-space-1);
+    --ds-response-feedback-divider-gap: var(--ds-space-2);
+
     /* segmented-control */
     --ds-segmented-control-padding: 2px;
     --ds-segmented-control-height-sm: var(--ds-target-min);
@@ -458,6 +495,11 @@
     --ds-slider-thumb-size: var(--ds-target-min);
     --ds-slider-thumb-dot-size: 16px;
 
+    /* source-list */
+    --ds-source-list-gap: var(--ds-space-3);
+    --ds-source-list-indent: var(--ds-space-6);
+    --ds-source-list-padding: var(--ds-space-2);
+
     /* sparkline */
     --ds-sparkline-stroke-w: 1.5px;
     --ds-sparkline-dot-r: 2.5px;
@@ -472,6 +514,17 @@
     /* stack */
     --ds-stack-gap: var(--ds-space-4);
 
+    /* stacked-bar */
+    --ds-stacked-bar-bar-thickness: 20px;
+    --ds-stacked-bar-column-max-w: 56px;
+    --ds-stacked-bar-height: 200px;
+    --ds-stacked-bar-category-w: 96px;
+    --ds-stacked-bar-segment-gap: 2px;
+    --ds-stacked-bar-readout-min-h: 24px;
+    --ds-stacked-bar-extent: 100;
+    --ds-stacked-bar-share: 1;
+    --ds-stacked-bar-color: var(--ds-text);
+
     /* stat-card */
     --ds-stat-card-padding: var(--ds-space-5);
     --ds-stat-card-gap: var(--ds-space-2);
@@ -484,6 +537,15 @@
     --ds-status-steps-marker-hover-border: var(--ds-text-3);
     --ds-status-steps-marker-size: 20px;
     --ds-status-steps-padding-block: var(--ds-space-1);
+
+    /* stepper */
+    --ds-stepper-connector-thickness: 2px;
+    --ds-stepper-content-z-index: 1;
+    --ds-stepper-gap: var(--ds-space-2);
+    --ds-stepper-marker-border-width: 1.5px;
+    --ds-stepper-marker-size: 24px;
+    --ds-stepper-padding-block: var(--ds-space-1);
+    --ds-stepper-step-gap: var(--ds-space-4);
 
     /* swatch */
     --ds-swatch-size-sm: 16px;
@@ -518,6 +580,13 @@
     --ds-textarea-padding-block: 10px;
     --ds-textarea-padding-inline: 12px;
 
+    /* timeline */
+    --ds-timeline-connector-thickness: 2px;
+    --ds-timeline-dot-size: 8px;
+    --ds-timeline-item-gap: var(--ds-space-5);
+    --ds-timeline-marker-gap: var(--ds-space-3);
+    --ds-timeline-marker-size: 20px;
+
     /* toast */
     --ds-toast-max-width: 420px;
     --ds-toast-min-height: var(--ds-control-h-md);
@@ -525,10 +594,21 @@
     --ds-toast-offset: var(--ds-space-6);
     --ds-toast-clearance: 0px;
 
+    /* tool-call-step */
+    --ds-tool-call-step-padding-inline: var(--ds-space-3);
+    --ds-tool-call-step-padding-block: var(--ds-space-2);
+    --ds-tool-call-step-gap: var(--ds-space-2);
+    --ds-tool-call-step-list-gap: var(--ds-space-2);
+
     /* tooltip */
     --ds-tooltip-max-width: 240px;
 
     /* top-bar */
     --ds-top-bar-padding-inline: var(--ds-space-6);
+
+    /* tour */
+    --ds-tour-width: 320px;
+    --ds-tour-padding: var(--ds-space-4);
+    --ds-tour-arrow-size: 8px;
   }
 }

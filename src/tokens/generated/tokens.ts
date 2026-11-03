@@ -168,6 +168,13 @@ export type TokenName =
   | 'badge.height'
   | 'badge.dot-size'
   | 'badge.padding-inline'
+  | 'banner.success-bg'
+  | 'banner.success-border'
+  | 'banner.warning-bg'
+  | 'banner.warning-border'
+  | 'banner.danger-bg'
+  | 'banner.danger-border'
+  | 'banner.content-basis'
   | 'breakpoint.sm'
   | 'breakpoint.md'
   | 'breakpoint.lg'
@@ -179,6 +186,11 @@ export type TokenName =
   | 'calendar.today-ring-width'
   | 'card.padding'
   | 'card.gap'
+  | 'chart-series.1'
+  | 'chart-series.2'
+  | 'chart-series.3'
+  | 'chart-series.4'
+  | 'chart-series.hatch-size'
   | 'chart.height'
   | 'chart.stroke-w'
   | 'chart.point-r'
@@ -205,6 +217,7 @@ export type TokenName =
   | 'choice-tiles.height-md'
   | 'choice-tiles.height-lg'
   | 'choice-tiles.columns'
+  | 'citation.size'
   | 'code.inline-padding-block'
   | 'combobox.popover-max-height'
   | 'command-palette.width'
@@ -235,6 +248,13 @@ export type TokenName =
   | 'donut-meter.stroke-w'
   | 'donut-meter.value'
   | 'donut-meter.color'
+  | 'drawer.width-sm'
+  | 'drawer.width-md'
+  | 'drawer.width-lg'
+  | 'drawer.padding'
+  | 'drawer.shift'
+  | 'drawer.width'
+  | 'drawer.from'
   | 'due-indicator.dot-size'
   | 'due-indicator.gap'
   | 'empty-state.padding-block'
@@ -268,6 +288,9 @@ export type TokenName =
   | 'ledger-list.gap'
   | 'ledger-list.padding-inline'
   | 'ledger-list.text-gap'
+  | 'legend.swatch-size'
+  | 'legend.gap'
+  | 'legend.color'
   | 'matrix-grid.cell-size'
   | 'matrix-grid.color'
   | 'matrix-grid.column-header-padding-inline'
@@ -310,6 +333,8 @@ export type TokenName =
   | 'rating.gap'
   | 'rating.star-gap'
   | 'rating.fill'
+  | 'response-feedback.gap'
+  | 'response-feedback.divider-gap'
   | 'segmented-control.padding'
   | 'segmented-control.height-sm'
   | 'segmented-control.height-md'
@@ -332,6 +357,9 @@ export type TokenName =
   | 'slider.track-height'
   | 'slider.thumb-size'
   | 'slider.thumb-dot-size'
+  | 'source-list.gap'
+  | 'source-list.indent'
+  | 'source-list.padding'
   | 'sparkline.stroke-w'
   | 'sparkline.dot-r'
   | 'sparkline.marker-r'
@@ -340,6 +368,15 @@ export type TokenName =
   | 'spinner.stroke-width'
   | 'spinner.duration'
   | 'stack.gap'
+  | 'stacked-bar.bar-thickness'
+  | 'stacked-bar.column-max-w'
+  | 'stacked-bar.height'
+  | 'stacked-bar.category-w'
+  | 'stacked-bar.segment-gap'
+  | 'stacked-bar.readout-min-h'
+  | 'stacked-bar.extent'
+  | 'stacked-bar.share'
+  | 'stacked-bar.color'
   | 'stat-card.padding'
   | 'stat-card.gap'
   | 'status-steps.connector-thickness'
@@ -349,6 +386,13 @@ export type TokenName =
   | 'status-steps.marker-hover-border'
   | 'status-steps.marker-size'
   | 'status-steps.padding-block'
+  | 'stepper.connector-thickness'
+  | 'stepper.content-z-index'
+  | 'stepper.gap'
+  | 'stepper.marker-border-width'
+  | 'stepper.marker-size'
+  | 'stepper.padding-block'
+  | 'stepper.step-gap'
   | 'swatch.size-sm'
   | 'swatch.size-md'
   | 'swatch.size-lg'
@@ -370,13 +414,25 @@ export type TokenName =
   | 'tag.padding-inline'
   | 'textarea.padding-block'
   | 'textarea.padding-inline'
+  | 'timeline.connector-thickness'
+  | 'timeline.dot-size'
+  | 'timeline.item-gap'
+  | 'timeline.marker-gap'
+  | 'timeline.marker-size'
   | 'toast.max-width'
   | 'toast.min-height'
   | 'toast.dot-size'
   | 'toast.offset'
   | 'toast.clearance'
+  | 'tool-call-step.padding-inline'
+  | 'tool-call-step.padding-block'
+  | 'tool-call-step.gap'
+  | 'tool-call-step.list-gap'
   | 'tooltip.max-width'
-  | 'top-bar.padding-inline';
+  | 'top-bar.padding-inline'
+  | 'tour.width'
+  | 'tour.padding'
+  | 'tour.arrow-size';
 
 /** Every emitted CSS custom property. */
 export type TokenCssVar =
@@ -536,6 +592,13 @@ export type TokenCssVar =
   | '--ds-badge-height'
   | '--ds-badge-dot-size'
   | '--ds-badge-padding-inline'
+  | '--ds-banner-success-bg'
+  | '--ds-banner-success-border'
+  | '--ds-banner-warning-bg'
+  | '--ds-banner-warning-border'
+  | '--ds-banner-danger-bg'
+  | '--ds-banner-danger-border'
+  | '--ds-banner-content-basis'
   | '--ds-breakpoint-sm'
   | '--ds-breakpoint-md'
   | '--ds-breakpoint-lg'
@@ -547,6 +610,11 @@ export type TokenCssVar =
   | '--ds-calendar-today-ring-width'
   | '--ds-card-padding'
   | '--ds-card-gap'
+  | '--ds-chart-series-1'
+  | '--ds-chart-series-2'
+  | '--ds-chart-series-3'
+  | '--ds-chart-series-4'
+  | '--ds-chart-series-hatch-size'
   | '--ds-chart-height'
   | '--ds-chart-stroke-w'
   | '--ds-chart-point-r'
@@ -573,6 +641,7 @@ export type TokenCssVar =
   | '--ds-choice-tiles-height-md'
   | '--ds-choice-tiles-height-lg'
   | '--ds-choice-tiles-columns'
+  | '--ds-citation-size'
   | '--ds-code-inline-padding-block'
   | '--ds-combobox-popover-max-height'
   | '--ds-command-palette-width'
@@ -603,6 +672,13 @@ export type TokenCssVar =
   | '--ds-donut-meter-stroke-w'
   | '--ds-donut-meter-value'
   | '--ds-donut-meter-color'
+  | '--ds-drawer-width-sm'
+  | '--ds-drawer-width-md'
+  | '--ds-drawer-width-lg'
+  | '--ds-drawer-padding'
+  | '--ds-drawer-shift'
+  | '--ds-drawer-width'
+  | '--ds-drawer-from'
   | '--ds-due-indicator-dot-size'
   | '--ds-due-indicator-gap'
   | '--ds-empty-state-padding-block'
@@ -636,6 +712,9 @@ export type TokenCssVar =
   | '--ds-ledger-list-gap'
   | '--ds-ledger-list-padding-inline'
   | '--ds-ledger-list-text-gap'
+  | '--ds-legend-swatch-size'
+  | '--ds-legend-gap'
+  | '--ds-legend-color'
   | '--ds-matrix-grid-cell-size'
   | '--ds-matrix-grid-color'
   | '--ds-matrix-grid-column-header-padding-inline'
@@ -678,6 +757,8 @@ export type TokenCssVar =
   | '--ds-rating-gap'
   | '--ds-rating-star-gap'
   | '--ds-rating-fill'
+  | '--ds-response-feedback-gap'
+  | '--ds-response-feedback-divider-gap'
   | '--ds-segmented-control-padding'
   | '--ds-segmented-control-height-sm'
   | '--ds-segmented-control-height-md'
@@ -700,6 +781,9 @@ export type TokenCssVar =
   | '--ds-slider-track-height'
   | '--ds-slider-thumb-size'
   | '--ds-slider-thumb-dot-size'
+  | '--ds-source-list-gap'
+  | '--ds-source-list-indent'
+  | '--ds-source-list-padding'
   | '--ds-sparkline-stroke-w'
   | '--ds-sparkline-dot-r'
   | '--ds-sparkline-marker-r'
@@ -708,6 +792,15 @@ export type TokenCssVar =
   | '--ds-spinner-stroke-width'
   | '--ds-spinner-duration'
   | '--ds-stack-gap'
+  | '--ds-stacked-bar-bar-thickness'
+  | '--ds-stacked-bar-column-max-w'
+  | '--ds-stacked-bar-height'
+  | '--ds-stacked-bar-category-w'
+  | '--ds-stacked-bar-segment-gap'
+  | '--ds-stacked-bar-readout-min-h'
+  | '--ds-stacked-bar-extent'
+  | '--ds-stacked-bar-share'
+  | '--ds-stacked-bar-color'
   | '--ds-stat-card-padding'
   | '--ds-stat-card-gap'
   | '--ds-status-steps-connector-thickness'
@@ -717,6 +810,13 @@ export type TokenCssVar =
   | '--ds-status-steps-marker-hover-border'
   | '--ds-status-steps-marker-size'
   | '--ds-status-steps-padding-block'
+  | '--ds-stepper-connector-thickness'
+  | '--ds-stepper-content-z-index'
+  | '--ds-stepper-gap'
+  | '--ds-stepper-marker-border-width'
+  | '--ds-stepper-marker-size'
+  | '--ds-stepper-padding-block'
+  | '--ds-stepper-step-gap'
   | '--ds-swatch-size-sm'
   | '--ds-swatch-size-md'
   | '--ds-swatch-size-lg'
@@ -738,13 +838,25 @@ export type TokenCssVar =
   | '--ds-tag-padding-inline'
   | '--ds-textarea-padding-block'
   | '--ds-textarea-padding-inline'
+  | '--ds-timeline-connector-thickness'
+  | '--ds-timeline-dot-size'
+  | '--ds-timeline-item-gap'
+  | '--ds-timeline-marker-gap'
+  | '--ds-timeline-marker-size'
   | '--ds-toast-max-width'
   | '--ds-toast-min-height'
   | '--ds-toast-dot-size'
   | '--ds-toast-offset'
   | '--ds-toast-clearance'
+  | '--ds-tool-call-step-padding-inline'
+  | '--ds-tool-call-step-padding-block'
+  | '--ds-tool-call-step-gap'
+  | '--ds-tool-call-step-list-gap'
   | '--ds-tooltip-max-width'
-  | '--ds-top-bar-padding-inline';
+  | '--ds-top-bar-padding-inline'
+  | '--ds-tour-width'
+  | '--ds-tour-padding'
+  | '--ds-tour-arrow-size';
 
 export interface TokenEntry {
   /** CSS custom property, or null when the token is not emitted to CSS. */
@@ -922,6 +1034,13 @@ export const tokenValues = {
   'badge.height': { cssVar: '--ds-badge-height', type: 'dimension', value: '24px' },
   'badge.dot-size': { cssVar: '--ds-badge-dot-size', type: 'dimension', value: '6px' },
   'badge.padding-inline': { cssVar: '--ds-badge-padding-inline', type: 'dimension', value: '8px' },
+  'banner.success-bg': { cssVar: '--ds-banner-success-bg', type: 'color', value: 'rgba(95, 212, 154, 0.06)' },
+  'banner.success-border': { cssVar: '--ds-banner-success-border', type: 'color', value: 'rgba(95, 212, 154, 0.3)' },
+  'banner.warning-bg': { cssVar: '--ds-banner-warning-bg', type: 'color', value: 'rgba(233, 182, 92, 0.06)' },
+  'banner.warning-border': { cssVar: '--ds-banner-warning-border', type: 'color', value: 'rgba(233, 182, 92, 0.3)' },
+  'banner.danger-bg': { cssVar: '--ds-banner-danger-bg', type: 'color', value: 'rgba(240, 122, 110, 0.06)' },
+  'banner.danger-border': { cssVar: '--ds-banner-danger-border', type: 'color', value: 'rgba(240, 122, 110, 0.3)' },
+  'banner.content-basis': { cssVar: '--ds-banner-content-basis', type: 'dimension', value: '240px' },
   'breakpoint.sm': { cssVar: '--ds-breakpoint-sm', type: 'dimension', value: '480px' },
   'breakpoint.md': { cssVar: '--ds-breakpoint-md', type: 'dimension', value: '768px' },
   'breakpoint.lg': { cssVar: '--ds-breakpoint-lg', type: 'dimension', value: '1024px' },
@@ -933,6 +1052,11 @@ export const tokenValues = {
   'calendar.today-ring-width': { cssVar: '--ds-calendar-today-ring-width', type: 'dimension', value: '1px' },
   'card.padding': { cssVar: '--ds-card-padding', type: 'dimension', value: '20px' },
   'card.gap': { cssVar: '--ds-card-gap', type: 'dimension', value: '16px' },
+  'chart-series.1': { cssVar: '--ds-chart-series-1', type: 'color', value: '#EDEDEA' },
+  'chart-series.2': { cssVar: '--ds-chart-series-2', type: 'color', value: '#A3A3A9' },
+  'chart-series.3': { cssVar: '--ds-chart-series-3', type: 'color', value: '#86868E' },
+  'chart-series.4': { cssVar: '--ds-chart-series-4', type: 'color', value: '#64646B' },
+  'chart-series.hatch-size': { cssVar: '--ds-chart-series-hatch-size', type: 'dimension', value: '3px' },
   'chart.height': { cssVar: '--ds-chart-height', type: 'dimension', value: '200px' },
   'chart.stroke-w': { cssVar: '--ds-chart-stroke-w', type: 'dimension', value: '1.5px' },
   'chart.point-r': { cssVar: '--ds-chart-point-r', type: 'dimension', value: '3.5px' },
@@ -959,6 +1083,7 @@ export const tokenValues = {
   'choice-tiles.height-md': { cssVar: '--ds-choice-tiles-height-md', type: 'dimension', value: '40px' },
   'choice-tiles.height-lg': { cssVar: '--ds-choice-tiles-height-lg', type: 'dimension', value: '48px' },
   'choice-tiles.columns': { cssVar: '--ds-choice-tiles-columns', type: 'number', value: 2 },
+  'citation.size': { cssVar: '--ds-citation-size', type: 'dimension', value: '24px' },
   'code.inline-padding-block': { cssVar: '--ds-code-inline-padding-block', type: 'dimension', value: '1px' },
   'combobox.popover-max-height': { cssVar: '--ds-combobox-popover-max-height', type: 'dimension', value: '320px' },
   'command-palette.width': { cssVar: '--ds-command-palette-width', type: 'dimension', value: '640px' },
@@ -989,6 +1114,13 @@ export const tokenValues = {
   'donut-meter.stroke-w': { cssVar: '--ds-donut-meter-stroke-w', type: 'dimension', value: '10px' },
   'donut-meter.value': { cssVar: '--ds-donut-meter-value', type: 'number', value: 0 },
   'donut-meter.color': { cssVar: '--ds-donut-meter-color', type: 'color', value: '#8AB4FF' },
+  'drawer.width-sm': { cssVar: '--ds-drawer-width-sm', type: 'dimension', value: '280px' },
+  'drawer.width-md': { cssVar: '--ds-drawer-width-md', type: 'dimension', value: '320px' },
+  'drawer.width-lg': { cssVar: '--ds-drawer-width-lg', type: 'dimension', value: '400px' },
+  'drawer.padding': { cssVar: '--ds-drawer-padding', type: 'dimension', value: '16px' },
+  'drawer.shift': { cssVar: '--ds-drawer-shift', type: 'dimension', value: '16px' },
+  'drawer.width': { cssVar: '--ds-drawer-width', type: 'dimension', value: '320px' },
+  'drawer.from': { cssVar: '--ds-drawer-from', type: 'dimension', value: '16px' },
   'due-indicator.dot-size': { cssVar: '--ds-due-indicator-dot-size', type: 'dimension', value: '8px' },
   'due-indicator.gap': { cssVar: '--ds-due-indicator-gap', type: 'dimension', value: '8px' },
   'empty-state.padding-block': { cssVar: '--ds-empty-state-padding-block', type: 'dimension', value: '48px' },
@@ -1022,6 +1154,9 @@ export const tokenValues = {
   'ledger-list.gap': { cssVar: '--ds-ledger-list-gap', type: 'dimension', value: '12px' },
   'ledger-list.padding-inline': { cssVar: '--ds-ledger-list-padding-inline', type: 'dimension', value: '24px' },
   'ledger-list.text-gap': { cssVar: '--ds-ledger-list-text-gap', type: 'dimension', value: '2px' },
+  'legend.swatch-size': { cssVar: '--ds-legend-swatch-size', type: 'dimension', value: '10px' },
+  'legend.gap': { cssVar: '--ds-legend-gap', type: 'dimension', value: '16px' },
+  'legend.color': { cssVar: '--ds-legend-color', type: 'color', value: '#EDEDEA' },
   'matrix-grid.cell-size': { cssVar: '--ds-matrix-grid-cell-size', type: 'dimension', value: '40px' },
   'matrix-grid.color': { cssVar: '--ds-matrix-grid-color', type: 'color', value: '#A3A3A9' },
   'matrix-grid.column-header-padding-inline': { cssVar: '--ds-matrix-grid-column-header-padding-inline', type: 'dimension', value: '2px' },
@@ -1064,6 +1199,8 @@ export const tokenValues = {
   'rating.gap': { cssVar: '--ds-rating-gap', type: 'dimension', value: '8px' },
   'rating.star-gap': { cssVar: '--ds-rating-star-gap', type: 'dimension', value: '2px' },
   'rating.fill': { cssVar: '--ds-rating-fill', type: 'dimension', value: '0px' },
+  'response-feedback.gap': { cssVar: '--ds-response-feedback-gap', type: 'dimension', value: '4px' },
+  'response-feedback.divider-gap': { cssVar: '--ds-response-feedback-divider-gap', type: 'dimension', value: '8px' },
   'segmented-control.padding': { cssVar: '--ds-segmented-control-padding', type: 'dimension', value: '2px' },
   'segmented-control.height-sm': { cssVar: '--ds-segmented-control-height-sm', type: 'dimension', value: '24px' },
   'segmented-control.height-md': { cssVar: '--ds-segmented-control-height-md', type: 'dimension', value: '32px' },
@@ -1086,6 +1223,9 @@ export const tokenValues = {
   'slider.track-height': { cssVar: '--ds-slider-track-height', type: 'dimension', value: '4px' },
   'slider.thumb-size': { cssVar: '--ds-slider-thumb-size', type: 'dimension', value: '24px' },
   'slider.thumb-dot-size': { cssVar: '--ds-slider-thumb-dot-size', type: 'dimension', value: '16px' },
+  'source-list.gap': { cssVar: '--ds-source-list-gap', type: 'dimension', value: '12px' },
+  'source-list.indent': { cssVar: '--ds-source-list-indent', type: 'dimension', value: '24px' },
+  'source-list.padding': { cssVar: '--ds-source-list-padding', type: 'dimension', value: '8px' },
   'sparkline.stroke-w': { cssVar: '--ds-sparkline-stroke-w', type: 'dimension', value: '1.5px' },
   'sparkline.dot-r': { cssVar: '--ds-sparkline-dot-r', type: 'dimension', value: '2.5px' },
   'sparkline.marker-r': { cssVar: '--ds-sparkline-marker-r', type: 'dimension', value: '2px' },
@@ -1094,6 +1234,15 @@ export const tokenValues = {
   'spinner.stroke-width': { cssVar: '--ds-spinner-stroke-width', type: 'dimension', value: '2px' },
   'spinner.duration': { cssVar: '--ds-spinner-duration', type: 'duration', value: '700ms' },
   'stack.gap': { cssVar: '--ds-stack-gap', type: 'dimension', value: '16px' },
+  'stacked-bar.bar-thickness': { cssVar: '--ds-stacked-bar-bar-thickness', type: 'dimension', value: '20px' },
+  'stacked-bar.column-max-w': { cssVar: '--ds-stacked-bar-column-max-w', type: 'dimension', value: '56px' },
+  'stacked-bar.height': { cssVar: '--ds-stacked-bar-height', type: 'dimension', value: '200px' },
+  'stacked-bar.category-w': { cssVar: '--ds-stacked-bar-category-w', type: 'dimension', value: '96px' },
+  'stacked-bar.segment-gap': { cssVar: '--ds-stacked-bar-segment-gap', type: 'dimension', value: '2px' },
+  'stacked-bar.readout-min-h': { cssVar: '--ds-stacked-bar-readout-min-h', type: 'dimension', value: '24px' },
+  'stacked-bar.extent': { cssVar: '--ds-stacked-bar-extent', type: 'number', value: 100 },
+  'stacked-bar.share': { cssVar: '--ds-stacked-bar-share', type: 'number', value: 1 },
+  'stacked-bar.color': { cssVar: '--ds-stacked-bar-color', type: 'color', value: '#EDEDEA' },
   'stat-card.padding': { cssVar: '--ds-stat-card-padding', type: 'dimension', value: '20px' },
   'stat-card.gap': { cssVar: '--ds-stat-card-gap', type: 'dimension', value: '8px' },
   'status-steps.connector-thickness': { cssVar: '--ds-status-steps-connector-thickness', type: 'dimension', value: '2px' },
@@ -1103,6 +1252,13 @@ export const tokenValues = {
   'status-steps.marker-hover-border': { cssVar: '--ds-status-steps-marker-hover-border', type: 'color', value: '#86868E' },
   'status-steps.marker-size': { cssVar: '--ds-status-steps-marker-size', type: 'dimension', value: '20px' },
   'status-steps.padding-block': { cssVar: '--ds-status-steps-padding-block', type: 'dimension', value: '4px' },
+  'stepper.connector-thickness': { cssVar: '--ds-stepper-connector-thickness', type: 'dimension', value: '2px' },
+  'stepper.content-z-index': { cssVar: '--ds-stepper-content-z-index', type: 'number', value: 1 },
+  'stepper.gap': { cssVar: '--ds-stepper-gap', type: 'dimension', value: '8px' },
+  'stepper.marker-border-width': { cssVar: '--ds-stepper-marker-border-width', type: 'dimension', value: '1.5px' },
+  'stepper.marker-size': { cssVar: '--ds-stepper-marker-size', type: 'dimension', value: '24px' },
+  'stepper.padding-block': { cssVar: '--ds-stepper-padding-block', type: 'dimension', value: '4px' },
+  'stepper.step-gap': { cssVar: '--ds-stepper-step-gap', type: 'dimension', value: '16px' },
   'swatch.size-sm': { cssVar: '--ds-swatch-size-sm', type: 'dimension', value: '16px' },
   'swatch.size-md': { cssVar: '--ds-swatch-size-md', type: 'dimension', value: '20px' },
   'swatch.size-lg': { cssVar: '--ds-swatch-size-lg', type: 'dimension', value: '32px' },
@@ -1124,13 +1280,25 @@ export const tokenValues = {
   'tag.padding-inline': { cssVar: '--ds-tag-padding-inline', type: 'dimension', value: '8px' },
   'textarea.padding-block': { cssVar: '--ds-textarea-padding-block', type: 'dimension', value: '10px' },
   'textarea.padding-inline': { cssVar: '--ds-textarea-padding-inline', type: 'dimension', value: '12px' },
+  'timeline.connector-thickness': { cssVar: '--ds-timeline-connector-thickness', type: 'dimension', value: '2px' },
+  'timeline.dot-size': { cssVar: '--ds-timeline-dot-size', type: 'dimension', value: '8px' },
+  'timeline.item-gap': { cssVar: '--ds-timeline-item-gap', type: 'dimension', value: '20px' },
+  'timeline.marker-gap': { cssVar: '--ds-timeline-marker-gap', type: 'dimension', value: '12px' },
+  'timeline.marker-size': { cssVar: '--ds-timeline-marker-size', type: 'dimension', value: '20px' },
   'toast.max-width': { cssVar: '--ds-toast-max-width', type: 'dimension', value: '420px' },
   'toast.min-height': { cssVar: '--ds-toast-min-height', type: 'dimension', value: '40px' },
   'toast.dot-size': { cssVar: '--ds-toast-dot-size', type: 'dimension', value: '6px' },
   'toast.offset': { cssVar: '--ds-toast-offset', type: 'dimension', value: '24px' },
   'toast.clearance': { cssVar: '--ds-toast-clearance', type: 'dimension', value: '0px' },
+  'tool-call-step.padding-inline': { cssVar: '--ds-tool-call-step-padding-inline', type: 'dimension', value: '12px' },
+  'tool-call-step.padding-block': { cssVar: '--ds-tool-call-step-padding-block', type: 'dimension', value: '8px' },
+  'tool-call-step.gap': { cssVar: '--ds-tool-call-step-gap', type: 'dimension', value: '8px' },
+  'tool-call-step.list-gap': { cssVar: '--ds-tool-call-step-list-gap', type: 'dimension', value: '8px' },
   'tooltip.max-width': { cssVar: '--ds-tooltip-max-width', type: 'dimension', value: '240px' },
   'top-bar.padding-inline': { cssVar: '--ds-top-bar-padding-inline', type: 'dimension', value: '24px' },
+  'tour.width': { cssVar: '--ds-tour-width', type: 'dimension', value: '320px' },
+  'tour.padding': { cssVar: '--ds-tour-padding', type: 'dimension', value: '16px' },
+  'tour.arrow-size': { cssVar: '--ds-tour-arrow-size', type: 'dimension', value: '8px' },
 } as const satisfies Record<TokenName, TokenEntry>;
 
 /** `var(--ds-*)` reference for a token that is emitted to CSS. */

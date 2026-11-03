@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "timeline": {
+    "connector-thickness": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Thickness of the decorative line that joins the markers of two events (2px)."
+    },
+    "dot-size": {
+      "$type": "dimension",
+      "$value": { "value": 8, "unit": "px" },
+      "$description": "Diameter of the dot that marks a neutral event (8px)."
+    },
+    "item-gap": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Space between two events, where the connector line runs (20px)."
+    },
+    "marker-gap": {
+      "$type": "dimension",
+      "$value": "{space.3}",
+      "$description": "Gap between the marker column and the text of an event (12px)."
+    },
+    "marker-size": {
+      "$type": "dimension",
+      "$value": { "value": 20, "unit": "px" },
+      "$description": "Width and height of the marker slot that holds the dot or the tone icon (20px)."
+    }
+  }
+}

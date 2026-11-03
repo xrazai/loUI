@@ -1,0 +1,229 @@
+@layer components {
+  .root {
+    container-type: inline-size;
+    font-family: var(--ds-font-sans);
+  }
+
+  .summary {
+    display: none;
+    margin: 0 0 var(--ds-space-2);
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-label);
+    line-height: var(--ds-lh-label);
+  }
+
+  .list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  .content {
+    position: relative;
+
+    /* Above the connector of the next step, which would otherwise be painted across this marker. */
+    z-index: var(--ds-stepper-content-z-index);
+    box-sizing: border-box;
+    display: flex;
+    gap: var(--ds-stepper-gap);
+    min-inline-size: 0;
+    padding: var(--ds-stepper-padding-block) var(--ds-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-md);
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+  }
+
+  button.content {
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--ds-duration) var(--ds-ease);
+  }
+
+  button.content[data-hovered] {
+    background-color: var(--ds-surface-hover);
+  }
+
+  button.content[data-focus-visible] {
+    border-color: var(--ds-accent);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--ds-focus-ring);
+  }
+
+  .marker {
+    box-sizing: border-box;
+    display: grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--ds-stepper-marker-size);
+    block-size: var(--ds-stepper-marker-size);
+    border: var(--ds-stepper-marker-border-width) solid var(--ds-line-control);
+    border-radius: var(--ds-radius-pill);
+    background-color: var(--ds-surface);
+    color: var(--ds-text-2);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-fs-caption);
+    font-weight: var(--ds-weight-semibold);
+    line-height: 1;
+  }
+
+  .step[data-state='complete'] .marker {
+    border-color: var(--ds-success);
+    background-color: var(--ds-success);
+    color: var(--ds-text-inverse);
+  }
+
+  .step[data-state='current'] .marker {
+    border-color: var(--ds-primary-bg);
+    background-color: var(--ds-primary-bg);
+    color: var(--ds-text-inverse);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-stepper-padding-block);
+    min-inline-size: 0;
+  }
+
+  .label {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    font-weight: var(--ds-weight-medium);
+    line-height: var(--ds-lh-meta);
+    overflow-wrap: anywhere;
+  }
+
+  .step[data-state='complete'] .label,
+  .step[data-state='current'] .label {
+    color: var(--ds-text);
+  }
+
+  .description {
+    color: var(--ds-text-2);
+    font-size: var(--ds-fs-meta);
+    line-height: var(--ds-lh-meta);
+    overflow-wrap: anywhere;
+  }
+
+  /* Horizontal: the steps share the row, the label sits under the marker. */
+  .root[data-orientation='horizontal'] .step {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .root[data-orientation='horizontal'] .content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Connector to the previous step: decorative, centered on the marker. */
+  .root[data-orientation='horizontal'] .step + .step::before {
+    content: '';
+    position: absolute;
+    inset-block-start: calc(
+      var(--ds-stepper-padding-block) + (var(--ds-stepper-marker-size) / 2) -
+        (var(--ds-stepper-connector-thickness) / 2)
+    );
+    inset-inline-start: -50%;
+    inline-size: 100%;
+    block-size: var(--ds-stepper-connector-thickness);
+    background-color: var(--ds-line-strong);
+  }
+
+  .root[data-orientation='horizontal'] .step[data-state='complete']::before,
+  .root[data-orientation='horizontal'] .step[data-state='current']::before {
+    background-color: var(--ds-success);
+  }
+
+  /* Vertical: markers in a column, label and description beside them. */
+  .root[data-orientation='vertical'] .list {
+    flex-direction: column;
+  }
+
+  .root[data-orientation='vertical'] .step {
+    padding-block-end: var(--ds-stepper-step-gap);
+  }
+
+  .root[data-orientation='vertical'] .step:last-child {
+    padding-block-end: 0;
+  }
+
+  .root[data-orientation='vertical'] .content {
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  /* Connector to the next step: from under this marker to the top of the next one. */
+  .root[data-orientation='vertical'] .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-block: calc(var(--ds-stepper-padding-block) + var(--ds-stepper-marker-size) + 1px)
+      calc(var(--ds-stepper-padding-block) * -1);
+    inset-inline-start: calc(
+      1px + var(--ds-space-2) + (var(--ds-stepper-marker-size) / 2) -
+        (var(--ds-stepper-connector-thickness) / 2)
+    );
+    inline-size: var(--ds-stepper-connector-thickness);
+    background-color: var(--ds-line-strong);
+  }
+
+  .root[data-orientation='vertical'] .step[data-state='complete']::after {
+    background-color: var(--ds-success);
+  }
+
+  /*
+   * Narrow container: only the markers stay in the horizontal list, and the summary
+   * ("Step 3 of 9: Label") carries the names. The labels remain in the DOM for assistive technology.
+   */
+  @container (max-width: 480px) {
+    .root[data-orientation='horizontal'] .summary {
+      display: block;
+    }
+
+    .root[data-orientation='horizontal'] .content {
+      padding-inline: 0;
+    }
+
+    .root[data-orientation='horizontal'] .label {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .root[data-orientation='horizontal'] .step + .step::before,
+    .root[data-orientation='vertical'] .step:not(:last-child)::after {
+      background-color: ButtonText;
+    }
+
+    .marker {
+      border-color: ButtonText;
+    }
+
+    .step[data-state='current'] .marker,
+    .step[data-state='complete'] .marker {
+      border-color: Highlight;
+      background-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
+  }
+}
