@@ -122,6 +122,17 @@ Dragging is only a pointer shortcut; nothing depends on it. While files are drag
 />
 ```
 
+## Manual verification
+
+Dropping files is automated: `FileUpload.test.tsx` performs a native drag of real files through the Chrome DevTools Protocol (`commands.dropFiles`, defined in `tests/browser-commands`), because React Aria rejects synthetic `DragEvent`s. Pasting is not automatable, so check it by hand before a release that touches this component (TEST-017):
+
+1. Copy a file in the operating system file manager (Explorer, Finder), or copy an image.
+2. Tab to the drop zone (the first stop, named "Drop zone") so it has focus.
+3. Press `Ctrl+V` (`Cmd+V` on macOS). The file should be added to the list and announced ("1 file added.").
+4. Repeat with Chrome, Firefox and Safari. Record any browser where the file is not added.
+
+Why it cannot be automated: the paste handler of React Aria reads each item through `webkitGetAsEntry()`, which returns `null` for a synthetic `DataTransfer` and for an image written to the clipboard by a script (verified in Chromium: `kind: file`, `type: image/png`, entry `null`), so the item is skipped. Only a file copied by the operating system can be tested, and no browser API can put one on the clipboard.
+
 ## Related components
 
 - Renders: Button, Description, IconButton, Progress, VisuallyHidden

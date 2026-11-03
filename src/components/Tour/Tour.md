@@ -47,7 +47,7 @@ When the tour ends (finished or skipped) an uncontrolled step index returns to t
 
 - Each step is a `dialog` named by its title. It is non-modal: the page is not inert, there is no scrim, nothing is hidden from assistive technology.
 - Focus moves into each step as it appears (the dialog itself, so a screen reader reads its title; the next `Tab` reaches Skip, Back and Next). Pressing Next or Back mounts the next step and moves focus to it, so focus never lands on a removed button.
-- `Escape` skips the tour. Pressing or tabbing elsewhere on the page does not end it.
+- While a step is open, `Tab` and `Shift+Tab` cycle through the step's buttons (React Aria contains focus in the dialog); `Escape` skips the tour and is the keyboard way out. A pointer press elsewhere on the page does not end it, and the page stays visible and readable (no scrim, not inert).
 - When the tour ends, focus returns to the element that had focus when the tour opened (normally the button that started it); for a tour that is open on first render, to the target of the current step if it is focusable. If the consumer closes a controlled tour from outside, focus is left where the user put it.
 - The target is scrolled into view (`block: nearest`) when its step appears. The step is positioned against the target and flips when it does not fit; the arrow points at the target.
 - The fade-in is removed under `prefers-reduced-motion`. Visuals are calm: raised surface, strong line and the overlay shadow only; accent is used only for focus rings.

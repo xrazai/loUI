@@ -94,14 +94,6 @@ Suggested order: **forms → feedback → display → navigation → inputs → 
 
 Goal: **no component merges without regression and accessibility coverage.** Strategy and conventions live in AGENTS.md.
 
-- [ ] **TEST-004** (P1 · L) **Keyboard-contract tests**, one per ARIA Authoring Practices pattern used (button, checkbox, radio group, switch, tabs, menu, combobox, listbox, dialog, popover/disclosure, accordion, slider, spinbutton, grid, breadcrumb, table, tooltip, toast/alert). The contract table in AGENTS.md is the spec; each row becomes tests (Tab order, arrows, Home/End, Enter/Space, Esc, focus restore).
-- [ ] **TEST-012** (P2 · M) Interaction tests as Storybook `play` functions for complex flows (destructive confirm with Cancel focus, undo toast, combobox select, date selection, table sort/select/paginate) reused by both unit and visual runs.
-- [ ] **TEST-013** (P2 · S) Manual screen-reader checklist per release (NVDA + Firefox, VoiceOver + Safari, TalkBack optional) stored in `docs/a11y/`; record results per component.
-- [ ] **TEST-016** (P3 · M) Mutation/fuzz testing for utilities (`formatCurrency`, `compareText`, `dueInfo`, color luminance) with property-based tests (`fast-check`).
-- [ ] **TEST-017** (P2 · S) Drag-and-drop and paste paths of `FileUpload` are untested (React Aria rejects synthetic `DragEvent`s); cover with Playwright native drag or a documented manual check.
-- [ ] **TEST-018** (P2 · S) Screen-reader verification of `ChatPanel` streaming announcements and `Toast` (NVDA, VoiceOver) — behavior follows practitioner guidance but is untested with real AT.
-- [ ] **TEST-022** (P2 · S) Investigate focus restoration after a pointer-opened Dialog inside a Sheet: when the trigger is clicked during the sheet entry animation, focus sometimes does not return to it on Escape (flaky on Linux CI). The nested-overlay test now opens from the keyboard; add a dedicated pointer test once understood.
-- [ ] **TEST-023** (P3 · S) Visual baselines of calendar stories depend on the real date (the "today" marker): the Linux DatePicker baselines changed when the date left October 2026. Freeze the date in the visual harness (or pass a fixed `today`) so baselines never depend on the clock.
 
 ---
 
@@ -109,8 +101,6 @@ Goal: **no component merges without regression and accessibility coverage.** Str
 
 Goal: LLMs and coding agents can discover, use and validate the design system correctly, and cannot silently violate its rules.
 
-- [ ] **AI-001** (P0 · S, ongoing) Keep `AGENTS.md` accurate (it is the entry point for agents; `CLAUDE.md` imports it). Review it whenever conventions change.
-- [ ] **AI-014** (P3 · M) Snapshot evaluation set: a list of natural-language UI prompts + expected component usage, run against the MCP/manifest in CI to catch regressions in AI-facing docs.
 
 ---
 
