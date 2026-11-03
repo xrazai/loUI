@@ -1,11 +1,12 @@
 /**
- * Keyboard contract: radio group, SegmentedControl, ChoiceTiles, ToggleGroup.
+ * Keyboard contract: radio group, SegmentedControl, ChoiceTiles, ToggleGroup, ColorOptionGroup.
  * Spec: AGENTS.md section 8, row "Radio group / segmented / choice tiles": one tab stop (roving),
  * prev/next arrows (radio groups wrap, ToggleButtonGroup stops at the ends), Space selects (TEST-004).
  */
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { ChoiceTiles } from '../../components/ChoiceTiles';
+import { ColorOption, ColorOptionGroup } from '../../patterns/ColorOption';
 import { Radio, RadioGroup } from '../../components/RadioGroup';
 import { SegmentedControl } from '../../components/SegmentedControl';
 import { Toggle } from '../../components/Toggle';
@@ -250,5 +251,49 @@ describe('keyboard contract: SegmentedControl (toggle-button group exposed as ra
     await enterGroup();
     await press('{ArrowRight}');
     await expectFocus('Charlie');
+  });
+});
+
+describe('keyboard contract: ColorOptionGroup (multiple selection)', () => {
+  function Group({ onChange }: { onChange?: (v: string[]) => void }) {
+    return (
+      <Around>
+        <ColorOptionGroup label="Colors" {...(onChange ? { onChange } : {})}>
+          <ColorOption id="green" color="#27ae60" label="Green" />
+          <ColorOption id="navy" color="#1f3a93" label="Navy" isDisabled />
+          <ColorOption id="red" color="#c0392b" label="Red" />
+        </ColorOptionGroup>
+      </Around>
+    );
+  }
+
+  it('is one Tab stop (roving) and the next Tab leaves the group', async () => {
+    await renderWithProvider(<Group />);
+    await userEvent.tab();
+    expect(await tabOrder(2)).toEqual(['Green', 'After']);
+  });
+
+  it('arrows skip disabled options and stop at the ends (no wrapping)', async () => {
+    await renderWithProvider(<Group />);
+    await enterGroup();
+    await press('{ArrowRight}');
+    await expectFocus('Red');
+    await press('{ArrowRight}');
+    expect(activeLabel()).toBe('Red');
+    await press('{ArrowLeft}{ArrowLeft}');
+    await expectFocus('Green');
+    await press('{ArrowLeft}');
+    expect(activeLabel()).toBe('Green');
+  });
+
+  it('Space and Enter toggle the focused option without moving focus', async () => {
+    const onChange = vi.fn();
+    await renderWithProvider(<Group onChange={onChange} />);
+    await enterGroup();
+    await press(' ');
+    expect(onChange).toHaveBeenLastCalledWith(['green']);
+    await press('{ArrowRight}{Enter}');
+    expect(onChange).toHaveBeenLastCalledWith(['green', 'red']);
+    expect(activeLabel()).toBe('Red');
   });
 });

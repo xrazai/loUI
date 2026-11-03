@@ -21,7 +21,7 @@ A selectable option that shows a color swatch and the color's name, with an opti
 
 The option exposes `aria-pressed` (a toggle button), not a radio. The handoff uses it for multi-select ("which colors does this item come in?"), and a radio group would force a single answer and a roving tab stop. React Aria `ColorSwatchPicker` was evaluated and does not fit: it is a single-select listbox of bare swatches with generated color names and no room for a visible label or mark. For single choice, use `ChoiceTiles`.
 
-Group several options in `role="group"` with an `aria-label` ("Available colors"); every option is its own tab stop.
+Group several options with `ColorOptionGroup` (a named group with a shared `value`, error text and roving arrow keys, see `ColorOptionGroup.md`). Outside a group every option is its own tab stop.
 
 ## Anatomy
 

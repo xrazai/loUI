@@ -1,0 +1,23 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "color-option-group": {
+    "min-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 140,
+        "unit": "px"
+      },
+      "$description": "Minimum option width. Columns collapse so an option never gets narrower than this (responsive columns)."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Gap between options (8px)."
+    },
+    "columns": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "Maximum number of columns of ColorOptionGroup. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers."
+    }
+  }
+}

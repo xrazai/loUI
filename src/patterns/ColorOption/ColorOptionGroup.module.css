@@ -1,0 +1,24 @@
+@layer components {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(
+        max(
+          var(--ds-color-option-group-min-width),
+          calc(
+            (100% - (var(--ds-color-option-group-columns) - 1) * var(--ds-color-option-group-gap)) /
+              var(--ds-color-option-group-columns)
+          )
+        ),
+        1fr
+      )
+    );
+    gap: var(--ds-color-option-group-gap);
+  }
+
+  /* An invalid group outlines every option that is not selected; the error text names the problem. */
+  .grid[data-invalid] > button:not([data-selected]) {
+    border-color: var(--ds-danger);
+  }
+}
