@@ -62,12 +62,17 @@ export function ResponseFeedback({
     defaultValue,
     onChange,
   });
-  const [announcement, setAnnouncement] = useState('');
+  const [announcement, setAnnouncement] = useState({ text: '', count: 0 });
 
   function choose(next: ResponseRating, selected: boolean) {
     const nextRating = selected ? next : null;
     setRating(nextRating);
-    setAnnouncement(nextRating === null ? t.removed : t.sent);
+    // The counter keys the text node: changing from one rating to the other repeats "Feedback sent",
+    // and a live region only speaks when its content mutates, so the text must be replaced.
+    setAnnouncement((previous) => ({
+      text: nextRating === null ? t.removed : t.sent,
+      count: previous.count + 1,
+    }));
   }
 
   return (
@@ -121,7 +126,7 @@ export function ResponseFeedback({
         </Button>
       ) : null}
       <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
-        {announcement}
+        <span key={announcement.count}>{announcement.text}</span>
       </VisuallyHidden>
     </div>
   );
