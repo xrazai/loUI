@@ -20,3 +20,5 @@ examples/*/.next
 examples/*/node_modules
 examples/*/next-env.d.ts
 docs/release/CHANGELOG.md
+tokens-studio
+docs/figma/component-parity.md
