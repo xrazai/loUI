@@ -1,6 +1,6 @@
 @layer components {
   .inline {
-    padding-block: 1px;
+    padding-block: var(--ds-code-inline-padding-block);
     padding-inline: var(--ds-space-1);
     border: 1px solid var(--ds-line-subtle);
     border-radius: var(--ds-radius-sm);

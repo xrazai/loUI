@@ -9,6 +9,19 @@
       },
       "$description": "Width and height of a toggle cell (40px, above the 24px minimum target)."
     },
+    "color": {
+      "$type": "color",
+      "$value": "{color.text-2}",
+      "$description": "Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`."
+    },
+    "column-header-padding-inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Horizontal padding of a column header so neighboring labels do not touch (2px)."
+    },
     "column-width": {
       "$type": "dimension",
       "$value": {
@@ -17,13 +30,10 @@
       },
       "$description": "Width of a data column (64px)."
     },
-    "label-width": {
-      "$type": "dimension",
-      "$value": {
-        "value": 220,
-        "unit": "px"
-      },
-      "$description": "Width of the row header column (220px)."
+    "columns": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop."
     },
     "count-width": {
       "$type": "dimension",
@@ -33,6 +43,27 @@
       },
       "$description": "Width of the optional count column (64px)."
     },
+    "label-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 220,
+        "unit": "px"
+      },
+      "$description": "Width of the row header column (220px)."
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Horizontal padding of rows and the header (20px)."
+    },
+    "row-header-gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Gap between the label and the description of a row header (2px)."
+    },
     "row-min-height": {
       "$type": "dimension",
       "$value": {
@@ -40,21 +71,6 @@
         "unit": "px"
       },
       "$description": "Minimum height of a row (60px)."
-    },
-    "padding-inline": {
-      "$type": "dimension",
-      "$value": "{space.5}",
-      "$description": "Horizontal padding of rows and the header (20px)."
-    },
-    "columns": {
-      "$type": "number",
-      "$value": 0,
-      "$description": "Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop."
-    },
-    "color": {
-      "$type": "color",
-      "$value": "{color.text-2}",
-      "$description": "Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`."
     }
   }
 }

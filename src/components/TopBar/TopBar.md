@@ -33,7 +33,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 - A `header` that is not inside `main`, `section` or `article` is the page's banner landmark. Use at most one banner per page; inside a section it is a plain group.
 - The title is a real heading. A breadcrumb replaces it, so keep a page-level `h1` elsewhere in that case.
-- Long titles and subtitles are truncated with an ellipsis; the actions never move out of the bar.
+- The title wins the space: content next to it (`children`, such as badges) wraps to a second line before the title truncates, and the bar grows taller. A title truncates with an ellipsis only when it alone is wider than the bar. The actions never shrink or move out of the bar; on narrow screens keep the primary action and put the others in a `Menu`.
 - The primary action is a `Button variant="primary"` with its shortcut as a `Kbd` in `trailing`. Register the shortcut with `useHotkey`; `Kbd` only displays it.
 - Height is a minimum, so a 200% text zoom grows the bar instead of clipping it.
 

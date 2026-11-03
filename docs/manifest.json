@@ -6304,6 +6304,7 @@
       },
       "cssVariables": [
         "--ds-accent",
+        "--ds-code-inline-padding-block",
         "--ds-font-mono",
         "--ds-fs-label",
         "--ds-lh-small",
@@ -15811,6 +15812,7 @@
         "--ds-ledger-list-date-width",
         "--ds-ledger-list-gap",
         "--ds-ledger-list-padding-inline",
+        "--ds-ledger-list-text-gap",
         "--ds-lh-caption",
         "--ds-lh-label",
         "--ds-lh-meta",
@@ -16566,11 +16568,13 @@
         "--ds-line-subtle",
         "--ds-matrix-grid-cell-size",
         "--ds-matrix-grid-color",
+        "--ds-matrix-grid-column-header-padding-inline",
         "--ds-matrix-grid-column-width",
         "--ds-matrix-grid-columns",
         "--ds-matrix-grid-count-width",
         "--ds-matrix-grid-label-width",
         "--ds-matrix-grid-padding-inline",
+        "--ds-matrix-grid-row-header-gap",
         "--ds-matrix-grid-row-min-height",
         "--ds-radius-lg",
         "--ds-radius-md",
@@ -22168,7 +22172,13 @@
           {
             "name": "Default",
             "id": "components-rank-list--default",
-            "description": "Rows render in the order given: the list never re-sorts or truncates on its own.",
+            "description": "Ranked data, largest first. Rows render in the order given: the list never re-sorts or truncates on its own.",
+            "hasPlay": true
+          },
+          {
+            "name": "GivenOrder",
+            "id": "components-rank-list--given-order",
+            "description": "Without `sort`, unsorted data keeps its given order (here: insertion order).",
             "hasPlay": true
           },
           {
@@ -27105,6 +27115,7 @@
         "--ds-status-steps-connector-thickness",
         "--ds-status-steps-content-z-index",
         "--ds-status-steps-gap",
+        "--ds-status-steps-marker-border-width",
         "--ds-status-steps-marker-hover-border",
         "--ds-status-steps-marker-size",
         "--ds-status-steps-padding-block",
@@ -33762,6 +33773,7 @@
         "--ds-lh-heading",
         "--ds-lh-meta",
         "--ds-line-subtle",
+        "--ds-space-1",
         "--ds-space-2",
         "--ds-space-4",
         "--ds-text",
@@ -33850,7 +33862,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- A `header` that is not inside `main`, `section` or `article` is the page's banner landmark. Use at most one banner per page; inside a section it is a plain group.\n- The title is a real heading. A breadcrumb replaces it, so keep a page-level `h1` elsewhere in that case.\n- Long titles and subtitles are truncated with an ellipsis; the actions never move out of the bar.\n- The primary action is a `Button variant=\"primary\"` with its shortcut as a `Kbd` in `trailing`. Register the shortcut with `useHotkey`; `Kbd` only displays it.\n- Height is a minimum, so a 200% text zoom grows the bar instead of clipping it."
+            "content": "- A `header` that is not inside `main`, `section` or `article` is the page's banner landmark. Use at most one banner per page; inside a section it is a plain group.\n- The title is a real heading. A breadcrumb replaces it, so keep a page-level `h1` elsewhere in that case.\n- The title wins the space: content next to it (`children`, such as badges) wraps to a second line before the title truncates, and the bar grows taller. A title truncates with an ellipsis only when it alone is wider than the bar. The actions never shrink or move out of the bar; on narrow screens keep the primary action and put the others in a `Menu`.\n- The primary action is a `Button variant=\"primary\"` with its shortcut as a `Kbd` in `trailing`. Register the shortcut with `useHotkey`; `Kbd` only displays it.\n- Height is a minimum, so a 200% text zoom grows the bar instead of clipping it."
           },
           {
             "id": "content-rules",

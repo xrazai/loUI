@@ -37,7 +37,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-font-mono`, `--ds-fs-label`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`
+`--ds-accent`, `--ds-code-inline-padding-block`, `--ds-font-mono`, `--ds-fs-label`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`
 
 ## When to use
 

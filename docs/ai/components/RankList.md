@@ -11,7 +11,7 @@ An ordered list of items with a value, a bar relative to the largest value and a
 - Import: `import { RankList } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RankList/RankList.tsx`
-- Stories (Storybook title `Components/RankList`): Default, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil
+- Stories (Storybook title `Components/RankList`): Default, GivenOrder, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil
 
 ## Props
 

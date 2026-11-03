@@ -1,14 +1,6 @@
 {
   "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
   "status-steps": {
-    "marker-size": {
-      "$type": "dimension",
-      "$value": {
-        "value": 20,
-        "unit": "px"
-      },
-      "$description": "Diameter of the numbered or checked marker of a step (20px)."
-    },
     "connector-thickness": {
       "$type": "dimension",
       "$value": {
@@ -17,25 +9,41 @@
       },
       "$description": "Thickness of the decorative line between two steps (2px)."
     },
-    "padding-block": {
-      "$type": "dimension",
-      "$value": "{space.1}",
-      "$description": "Vertical padding of a step (4px)."
+    "content-z-index": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer."
     },
     "gap": {
       "$type": "dimension",
       "$value": "{space.2}",
       "$description": "Gap between the marker and the label (8px)."
     },
+    "marker-border-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "px"
+      },
+      "$description": "Border width of a pending step marker (1.5px), matching the 1.5px icon stroke."
+    },
     "marker-hover-border": {
       "$type": "color",
       "$value": "{color.text-3}",
       "$description": "Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014)."
     },
-    "content-z-index": {
-      "$type": "number",
-      "$value": 1,
-      "$description": "Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer."
+    "marker-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Diameter of the numbered or checked marker of a step (20px)."
+    },
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.1}",
+      "$description": "Vertical padding of a step (4px)."
     }
   }
 }

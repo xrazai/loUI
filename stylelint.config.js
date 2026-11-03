@@ -47,6 +47,26 @@ export default {
   },
   overrides: [
     {
+      // Logical properties only, so RTL needs no extra CSS (ADR-0002 amendment, ARCH-011).
+      files: ['src/components/**/*.css', 'src/patterns/**/*.css'],
+      rules: {
+        'property-disallowed-list': [
+          [
+            '/^(margin|padding|border)-(top|right|bottom|left)(-|$)/',
+            '/^(top|right|bottom|left)$/',
+            '/^(min-|max-)?(width|height)$/',
+            '/^border-(top|bottom)-(left|right)-radius$/',
+            'float',
+            'clear',
+          ],
+          {
+            message:
+              'Use the logical property instead (inline/block, start/end, inline-size/block-size).',
+          },
+        ],
+      },
+    },
+    {
       // Foundation files define the values (generated tokens.css, reset, base, fonts).
       files: ['src/styles/**/*.css'],
       rules: {

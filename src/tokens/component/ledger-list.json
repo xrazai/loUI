@@ -18,6 +18,14 @@
       "$type": "dimension",
       "$value": "{space.6}",
       "$description": "Horizontal padding of an entry (24px)."
+    },
+    "text-gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Gap between the stacked lines of an entry (title and subtitle, amount and balance) (2px)."
     }
   }
 }

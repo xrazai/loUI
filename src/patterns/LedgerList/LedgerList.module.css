@@ -32,7 +32,7 @@
   .text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--ds-ledger-list-text-gap);
     min-inline-size: 0;
   }
 
@@ -58,7 +58,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: var(--ds-ledger-list-text-gap);
   }
 
   .amount {

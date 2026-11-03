@@ -724,7 +724,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-370 tokens; the table lists the 356 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+375 tokens; the table lists the 361 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -917,6 +917,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-choice-tiles-height-md` | `40px` | Minimum height of a medium tile (40px). |
 | `--ds-choice-tiles-height-lg` | `48px` | Minimum height of a large tile (48px, default). |
 | `--ds-choice-tiles-columns` | `2` | Maximum number of columns of ChoiceTiles. Default 2; the component sets it inline from its `columns` prop, and the grid collapses on narrow containers. |
+| `--ds-code-inline-padding-block` | `1px` | Vertical padding of inline Code (1px) so the box fits the line height of the surrounding text. |
 | `--ds-combobox-popover-max-height` | `320px` | Maximum height of the Combobox list before it scrolls (same as the Select list). |
 | `--ds-command-palette-width` | `640px` | Maximum width of the CommandPalette panel (640px). Narrower on small screens. |
 | `--ds-command-palette-list-max-height` | `360px` | Maximum height of the CommandPalette command list before it scrolls (360px, about 9 rows at item-h). |
@@ -978,14 +979,17 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-ledger-list-date-width` | `64px` | Width of the date column (64px). |
 | `--ds-ledger-list-gap` | `12px` | Gap between the columns of an entry (12px). |
 | `--ds-ledger-list-padding-inline` | `24px` | Horizontal padding of an entry (24px). |
+| `--ds-ledger-list-text-gap` | `2px` | Gap between the stacked lines of an entry (title and subtitle, amount and balance) (2px). |
 | `--ds-matrix-grid-cell-size` | `40px` | Width and height of a toggle cell (40px, above the 24px minimum target). |
-| `--ds-matrix-grid-column-width` | `64px` | Width of a data column (64px). |
-| `--ds-matrix-grid-label-width` | `220px` | Width of the row header column (220px). |
-| `--ds-matrix-grid-count-width` | `64px` | Width of the optional count column (64px). |
-| `--ds-matrix-grid-row-min-height` | `60px` | Minimum height of a row (60px). |
-| `--ds-matrix-grid-padding-inline` | `20px` | Horizontal padding of rows and the header (20px). |
-| `--ds-matrix-grid-columns` | `0` | Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop. |
 | `--ds-matrix-grid-color` | `#A3A3A9` | Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`. |
+| `--ds-matrix-grid-column-header-padding-inline` | `2px` | Horizontal padding of a column header so neighboring labels do not touch (2px). |
+| `--ds-matrix-grid-column-width` | `64px` | Width of a data column (64px). |
+| `--ds-matrix-grid-columns` | `0` | Number of data columns of MatrixGrid. The component sets it inline from the `columns` prop. |
+| `--ds-matrix-grid-count-width` | `64px` | Width of the optional count column (64px). |
+| `--ds-matrix-grid-label-width` | `220px` | Width of the row header column (220px). |
+| `--ds-matrix-grid-padding-inline` | `20px` | Horizontal padding of rows and the header (20px). |
+| `--ds-matrix-grid-row-header-gap` | `2px` | Gap between the label and the description of a row header (2px). |
+| `--ds-matrix-grid-row-min-height` | `60px` | Minimum height of a row (60px). |
 | `--ds-menu-min-width` | `200px` | Minimum width of a Menu (200px, the handoff default). |
 | `--ds-menu-max-width` | `360px` | Maximum width of a Menu popover (360px). A longer label wraps instead of stretching the popover across the screen; it never goes below the trigger width. |
 | `--ds-menu-indicator-size` | `18px` | Width reserved for the check or radio indicator of selectable Menu items (18px). |
@@ -1050,12 +1054,13 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-stack-gap` | `16px` | Default Stack gap; set at runtime via style from the `gap` prop (a space token key). |
 | `--ds-stat-card-padding` | `20px` | Padding of a StatCard (20px, same as Card). |
 | `--ds-stat-card-gap` | `8px` | Vertical gap between the label, value, content and note of a StatCard (8px). |
-| `--ds-status-steps-marker-size` | `20px` | Diameter of the numbered or checked marker of a step (20px). |
 | `--ds-status-steps-connector-thickness` | `2px` | Thickness of the decorative line between two steps (2px). |
-| `--ds-status-steps-padding-block` | `4px` | Vertical padding of a step (4px). |
-| `--ds-status-steps-gap` | `8px` | Gap between the marker and the label (8px). |
-| `--ds-status-steps-marker-hover-border` | `#86868E` | Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014). |
 | `--ds-status-steps-content-z-index` | `1` | Stacking order of a step above the connector lines of its neighbours (1). Local to the list, not a layer. |
+| `--ds-status-steps-gap` | `8px` | Gap between the marker and the label (8px). |
+| `--ds-status-steps-marker-border-width` | `1.5px` | Border width of a pending step marker (1.5px), matching the 1.5px icon stroke. |
+| `--ds-status-steps-marker-hover-border` | `#86868E` | Border of the marker of a step that is hovered in an interactive list. line-control is only 2.8:1 on surface-hover, so the border brightens to text-3 (4.5:1 there) to keep the 3:1 boundary of WCAG 1.4.11 (TOK-014). |
+| `--ds-status-steps-marker-size` | `20px` | Diameter of the numbered or checked marker of a step (20px). |
+| `--ds-status-steps-padding-block` | `4px` | Vertical padding of a step (4px). |
 | `--ds-swatch-size-sm` | `16px` | Diameter of a small Swatch (16px), used inside options and headers. |
 | `--ds-swatch-size-md` | `20px` | Diameter of a medium Swatch (20px, default). |
 | `--ds-swatch-size-lg` | `32px` | Diameter of a large Swatch (32px). |
@@ -3173,7 +3178,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-font-mono`, `--ds-fs-label`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`
+`--ds-accent`, `--ds-code-inline-padding-block`, `--ds-font-mono`, `--ds-fs-label`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-radius-md`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-text`
 
 #### When to use
 
@@ -6402,7 +6407,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 #### When to use
 
@@ -6625,7 +6630,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-min-height`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-header-padding-inline`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-header-gap`, `--ds-matrix-grid-row-min-height`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 #### When to use
 
@@ -8302,7 +8307,7 @@ An ordered list of items with a value, a bar relative to the largest value and a
 - Import: `import { RankList } from '@loui/ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/RankList/RankList.tsx`
-- Stories (Storybook title `Components/RankList`): Default, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil
+- Stories (Storybook title `Components/RankList`): Default, GivenOrder, SortedAndLimited, WithoutPositions, WithoutSwatchOrMeta, Actionable, Empty, LongLabels, BarsAlign, PortugueseBrazil
 
 #### Props
 
@@ -10145,7 +10150,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-hover-border`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-lh-meta`, `--ds-line-control`, `--ds-line-strong`, `--ds-primary-bg`, `--ds-radius-md`, `--ds-radius-pill`, `--ds-space-2`, `--ds-status-steps-connector-thickness`, `--ds-status-steps-content-z-index`, `--ds-status-steps-gap`, `--ds-status-steps-marker-border-width`, `--ds-status-steps-marker-hover-border`, `--ds-status-steps-marker-size`, `--ds-status-steps-padding-block`, `--ds-success`, `--ds-surface`, `--ds-surface-hover`, `--ds-text`, `--ds-text-2`, `--ds-text-inverse`, `--ds-weight-medium`, `--ds-weight-semibold`
 
 #### When to use
 
@@ -12068,7 +12073,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 #### Design tokens used
 
-`--ds-bg`, `--ds-font-sans`, `--ds-fs-heading`, `--ds-fs-meta`, `--ds-lh-heading`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-2`, `--ds-space-4`, `--ds-text`, `--ds-text-2`, `--ds-top-bar-padding-inline`, `--ds-topbar-h`, `--ds-weight-semibold`
+`--ds-bg`, `--ds-font-sans`, `--ds-fs-heading`, `--ds-fs-meta`, `--ds-lh-heading`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-2`, `--ds-space-4`, `--ds-text`, `--ds-text-2`, `--ds-top-bar-padding-inline`, `--ds-topbar-h`, `--ds-weight-semibold`
 
 #### When to use
 
@@ -12084,7 +12089,7 @@ The page header: a title with an optional subtitle, or a breadcrumb trail, and a
 
 - A `header` that is not inside `main`, `section` or `article` is the page's banner landmark. Use at most one banner per page; inside a section it is a plain group.
 - The title is a real heading. A breadcrumb replaces it, so keep a page-level `h1` elsewhere in that case.
-- Long titles and subtitles are truncated with an ellipsis; the actions never move out of the bar.
+- The title wins the space: content next to it (`children`, such as badges) wraps to a second line before the title truncates, and the bar grows taller. A title truncates with an ellipsis only when it alone is wider than the bar. The actions never shrink or move out of the bar; on narrow screens keep the primary action and put the others in a `Menu`.
 - The primary action is a `Button variant="primary"` with its shortcut as a `Kbd` in `trailing`. Register the shortcut with `useHotkey`; `Kbd` only displays it.
 - Height is a minimum, so a 200% text zoom grows the bar instead of clipping it.
 

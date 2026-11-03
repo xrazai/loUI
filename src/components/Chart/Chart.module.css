@@ -123,7 +123,9 @@
 
     /* SVG coordinates are physical, so the label is positioned with `left` (the chart is not mirrored in RTL). */
     inset-block-start: var(--ds-chart-tooltip-y);
-    left: var(--ds-chart-tooltip-x);
+    left: var(
+      --ds-chart-tooltip-x
+    ); /* stylelint-disable-line property-disallowed-list -- SVG coordinates are physical (ADR-0002). */
     padding-block: var(--ds-chart-tooltip-padding-block);
     padding-inline: var(--ds-chart-tooltip-padding-inline);
     border-radius: var(--ds-radius-sm);

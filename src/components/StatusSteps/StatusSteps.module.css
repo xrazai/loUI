@@ -83,7 +83,7 @@
     place-items: center;
     inline-size: var(--ds-status-steps-marker-size);
     block-size: var(--ds-status-steps-marker-size);
-    border: 1.5px solid var(--ds-line-control);
+    border: var(--ds-status-steps-marker-border-width) solid var(--ds-line-control);
     border-radius: var(--ds-radius-pill);
     background-color: var(--ds-surface);
     color: var(--ds-text-2);

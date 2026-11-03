@@ -35,12 +35,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<RankListProps>;
 
-/** Rows render in the order given: the list never re-sorts or truncates on its own. */
+/** Ranked data, largest first. Rows render in the order given: the list never re-sorts or truncates on its own. */
 export const Default: Story = {
+  args: { items: [...products].sort((a, b) => b.value - a.value) },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const items = canvas.getAllByRole('listitem');
     await expect(items).toHaveLength(4);
+    await expect(items[0]).toHaveTextContent('Backpack');
+    await expect(items[3]).toHaveTextContent('Headphones');
+  },
+};
+
+/** Without `sort`, unsorted data keeps its given order (here: insertion order). */
+export const GivenOrder: Story = {
+  play: async ({ canvasElement }) => {
+    const items = within(canvasElement).getAllByRole('listitem');
     await expect(items[0]).toHaveTextContent('Notebook');
   },
 };

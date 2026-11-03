@@ -49,7 +49,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-min-height`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-header-padding-inline`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-header-gap`, `--ds-matrix-grid-row-min-height`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 ## When to use
 

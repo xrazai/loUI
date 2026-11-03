@@ -52,7 +52,10 @@
     min-block-size: 0;
   }
 
+  /* Positioned so absolute descendants (visually hidden inputs, popover anchors) scroll with the
+     content instead of growing the clipping shell. */
   .main {
+    position: relative;
     flex: 1;
     min-block-size: 0;
     min-inline-size: 0;
@@ -70,6 +73,7 @@
   }
 
   .detail {
+    position: relative;
     box-sizing: border-box;
     flex: none;
     inline-size: var(--ds-app-shell-detail-w);

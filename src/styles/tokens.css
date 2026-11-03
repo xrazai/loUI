@@ -259,6 +259,9 @@
     --ds-choice-tiles-height-lg: var(--ds-control-h-lg);
     --ds-choice-tiles-columns: 2;
 
+    /* code */
+    --ds-code-inline-padding-block: 1px;
+
     /* combobox */
     --ds-combobox-popover-max-height: var(--ds-select-popover-max-height);
 
@@ -355,16 +358,19 @@
     --ds-ledger-list-date-width: 64px;
     --ds-ledger-list-gap: var(--ds-space-3);
     --ds-ledger-list-padding-inline: var(--ds-space-6);
+    --ds-ledger-list-text-gap: 2px;
 
     /* matrix-grid */
     --ds-matrix-grid-cell-size: 40px;
-    --ds-matrix-grid-column-width: 64px;
-    --ds-matrix-grid-label-width: 220px;
-    --ds-matrix-grid-count-width: 64px;
-    --ds-matrix-grid-row-min-height: 60px;
-    --ds-matrix-grid-padding-inline: var(--ds-space-5);
-    --ds-matrix-grid-columns: 0;
     --ds-matrix-grid-color: var(--ds-text-2);
+    --ds-matrix-grid-column-header-padding-inline: 2px;
+    --ds-matrix-grid-column-width: 64px;
+    --ds-matrix-grid-columns: 0;
+    --ds-matrix-grid-count-width: 64px;
+    --ds-matrix-grid-label-width: 220px;
+    --ds-matrix-grid-padding-inline: var(--ds-space-5);
+    --ds-matrix-grid-row-header-gap: 2px;
+    --ds-matrix-grid-row-min-height: 60px;
 
     /* menu */
     --ds-menu-min-width: 200px;
@@ -471,12 +477,13 @@
     --ds-stat-card-gap: var(--ds-space-2);
 
     /* status-steps */
-    --ds-status-steps-marker-size: 20px;
     --ds-status-steps-connector-thickness: 2px;
-    --ds-status-steps-padding-block: var(--ds-space-1);
-    --ds-status-steps-gap: var(--ds-space-2);
-    --ds-status-steps-marker-hover-border: var(--ds-text-3);
     --ds-status-steps-content-z-index: 1;
+    --ds-status-steps-gap: var(--ds-space-2);
+    --ds-status-steps-marker-border-width: 1.5px;
+    --ds-status-steps-marker-hover-border: var(--ds-text-3);
+    --ds-status-steps-marker-size: 20px;
+    --ds-status-steps-padding-block: var(--ds-space-1);
 
     /* swatch */
     --ds-swatch-size-sm: 16px;

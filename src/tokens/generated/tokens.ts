@@ -205,6 +205,7 @@ export type TokenName =
   | 'choice-tiles.height-md'
   | 'choice-tiles.height-lg'
   | 'choice-tiles.columns'
+  | 'code.inline-padding-block'
   | 'combobox.popover-max-height'
   | 'command-palette.width'
   | 'command-palette.list-max-height'
@@ -266,14 +267,17 @@ export type TokenName =
   | 'ledger-list.date-width'
   | 'ledger-list.gap'
   | 'ledger-list.padding-inline'
+  | 'ledger-list.text-gap'
   | 'matrix-grid.cell-size'
-  | 'matrix-grid.column-width'
-  | 'matrix-grid.label-width'
-  | 'matrix-grid.count-width'
-  | 'matrix-grid.row-min-height'
-  | 'matrix-grid.padding-inline'
-  | 'matrix-grid.columns'
   | 'matrix-grid.color'
+  | 'matrix-grid.column-header-padding-inline'
+  | 'matrix-grid.column-width'
+  | 'matrix-grid.columns'
+  | 'matrix-grid.count-width'
+  | 'matrix-grid.label-width'
+  | 'matrix-grid.padding-inline'
+  | 'matrix-grid.row-header-gap'
+  | 'matrix-grid.row-min-height'
   | 'menu.min-width'
   | 'menu.max-width'
   | 'menu.indicator-size'
@@ -338,12 +342,13 @@ export type TokenName =
   | 'stack.gap'
   | 'stat-card.padding'
   | 'stat-card.gap'
-  | 'status-steps.marker-size'
   | 'status-steps.connector-thickness'
-  | 'status-steps.padding-block'
-  | 'status-steps.gap'
-  | 'status-steps.marker-hover-border'
   | 'status-steps.content-z-index'
+  | 'status-steps.gap'
+  | 'status-steps.marker-border-width'
+  | 'status-steps.marker-hover-border'
+  | 'status-steps.marker-size'
+  | 'status-steps.padding-block'
   | 'swatch.size-sm'
   | 'swatch.size-md'
   | 'swatch.size-lg'
@@ -568,6 +573,7 @@ export type TokenCssVar =
   | '--ds-choice-tiles-height-md'
   | '--ds-choice-tiles-height-lg'
   | '--ds-choice-tiles-columns'
+  | '--ds-code-inline-padding-block'
   | '--ds-combobox-popover-max-height'
   | '--ds-command-palette-width'
   | '--ds-command-palette-list-max-height'
@@ -629,14 +635,17 @@ export type TokenCssVar =
   | '--ds-ledger-list-date-width'
   | '--ds-ledger-list-gap'
   | '--ds-ledger-list-padding-inline'
+  | '--ds-ledger-list-text-gap'
   | '--ds-matrix-grid-cell-size'
-  | '--ds-matrix-grid-column-width'
-  | '--ds-matrix-grid-label-width'
-  | '--ds-matrix-grid-count-width'
-  | '--ds-matrix-grid-row-min-height'
-  | '--ds-matrix-grid-padding-inline'
-  | '--ds-matrix-grid-columns'
   | '--ds-matrix-grid-color'
+  | '--ds-matrix-grid-column-header-padding-inline'
+  | '--ds-matrix-grid-column-width'
+  | '--ds-matrix-grid-columns'
+  | '--ds-matrix-grid-count-width'
+  | '--ds-matrix-grid-label-width'
+  | '--ds-matrix-grid-padding-inline'
+  | '--ds-matrix-grid-row-header-gap'
+  | '--ds-matrix-grid-row-min-height'
   | '--ds-menu-min-width'
   | '--ds-menu-max-width'
   | '--ds-menu-indicator-size'
@@ -701,12 +710,13 @@ export type TokenCssVar =
   | '--ds-stack-gap'
   | '--ds-stat-card-padding'
   | '--ds-stat-card-gap'
-  | '--ds-status-steps-marker-size'
   | '--ds-status-steps-connector-thickness'
-  | '--ds-status-steps-padding-block'
-  | '--ds-status-steps-gap'
-  | '--ds-status-steps-marker-hover-border'
   | '--ds-status-steps-content-z-index'
+  | '--ds-status-steps-gap'
+  | '--ds-status-steps-marker-border-width'
+  | '--ds-status-steps-marker-hover-border'
+  | '--ds-status-steps-marker-size'
+  | '--ds-status-steps-padding-block'
   | '--ds-swatch-size-sm'
   | '--ds-swatch-size-md'
   | '--ds-swatch-size-lg'
@@ -949,6 +959,7 @@ export const tokenValues = {
   'choice-tiles.height-md': { cssVar: '--ds-choice-tiles-height-md', type: 'dimension', value: '40px' },
   'choice-tiles.height-lg': { cssVar: '--ds-choice-tiles-height-lg', type: 'dimension', value: '48px' },
   'choice-tiles.columns': { cssVar: '--ds-choice-tiles-columns', type: 'number', value: 2 },
+  'code.inline-padding-block': { cssVar: '--ds-code-inline-padding-block', type: 'dimension', value: '1px' },
   'combobox.popover-max-height': { cssVar: '--ds-combobox-popover-max-height', type: 'dimension', value: '320px' },
   'command-palette.width': { cssVar: '--ds-command-palette-width', type: 'dimension', value: '640px' },
   'command-palette.list-max-height': { cssVar: '--ds-command-palette-list-max-height', type: 'dimension', value: '360px' },
@@ -1010,14 +1021,17 @@ export const tokenValues = {
   'ledger-list.date-width': { cssVar: '--ds-ledger-list-date-width', type: 'dimension', value: '64px' },
   'ledger-list.gap': { cssVar: '--ds-ledger-list-gap', type: 'dimension', value: '12px' },
   'ledger-list.padding-inline': { cssVar: '--ds-ledger-list-padding-inline', type: 'dimension', value: '24px' },
+  'ledger-list.text-gap': { cssVar: '--ds-ledger-list-text-gap', type: 'dimension', value: '2px' },
   'matrix-grid.cell-size': { cssVar: '--ds-matrix-grid-cell-size', type: 'dimension', value: '40px' },
-  'matrix-grid.column-width': { cssVar: '--ds-matrix-grid-column-width', type: 'dimension', value: '64px' },
-  'matrix-grid.label-width': { cssVar: '--ds-matrix-grid-label-width', type: 'dimension', value: '220px' },
-  'matrix-grid.count-width': { cssVar: '--ds-matrix-grid-count-width', type: 'dimension', value: '64px' },
-  'matrix-grid.row-min-height': { cssVar: '--ds-matrix-grid-row-min-height', type: 'dimension', value: '60px' },
-  'matrix-grid.padding-inline': { cssVar: '--ds-matrix-grid-padding-inline', type: 'dimension', value: '20px' },
-  'matrix-grid.columns': { cssVar: '--ds-matrix-grid-columns', type: 'number', value: 0 },
   'matrix-grid.color': { cssVar: '--ds-matrix-grid-color', type: 'color', value: '#A3A3A9' },
+  'matrix-grid.column-header-padding-inline': { cssVar: '--ds-matrix-grid-column-header-padding-inline', type: 'dimension', value: '2px' },
+  'matrix-grid.column-width': { cssVar: '--ds-matrix-grid-column-width', type: 'dimension', value: '64px' },
+  'matrix-grid.columns': { cssVar: '--ds-matrix-grid-columns', type: 'number', value: 0 },
+  'matrix-grid.count-width': { cssVar: '--ds-matrix-grid-count-width', type: 'dimension', value: '64px' },
+  'matrix-grid.label-width': { cssVar: '--ds-matrix-grid-label-width', type: 'dimension', value: '220px' },
+  'matrix-grid.padding-inline': { cssVar: '--ds-matrix-grid-padding-inline', type: 'dimension', value: '20px' },
+  'matrix-grid.row-header-gap': { cssVar: '--ds-matrix-grid-row-header-gap', type: 'dimension', value: '2px' },
+  'matrix-grid.row-min-height': { cssVar: '--ds-matrix-grid-row-min-height', type: 'dimension', value: '60px' },
   'menu.min-width': { cssVar: '--ds-menu-min-width', type: 'dimension', value: '200px' },
   'menu.max-width': { cssVar: '--ds-menu-max-width', type: 'dimension', value: '360px' },
   'menu.indicator-size': { cssVar: '--ds-menu-indicator-size', type: 'dimension', value: '18px' },
@@ -1082,12 +1096,13 @@ export const tokenValues = {
   'stack.gap': { cssVar: '--ds-stack-gap', type: 'dimension', value: '16px' },
   'stat-card.padding': { cssVar: '--ds-stat-card-padding', type: 'dimension', value: '20px' },
   'stat-card.gap': { cssVar: '--ds-stat-card-gap', type: 'dimension', value: '8px' },
-  'status-steps.marker-size': { cssVar: '--ds-status-steps-marker-size', type: 'dimension', value: '20px' },
   'status-steps.connector-thickness': { cssVar: '--ds-status-steps-connector-thickness', type: 'dimension', value: '2px' },
-  'status-steps.padding-block': { cssVar: '--ds-status-steps-padding-block', type: 'dimension', value: '4px' },
-  'status-steps.gap': { cssVar: '--ds-status-steps-gap', type: 'dimension', value: '8px' },
-  'status-steps.marker-hover-border': { cssVar: '--ds-status-steps-marker-hover-border', type: 'color', value: '#86868E' },
   'status-steps.content-z-index': { cssVar: '--ds-status-steps-content-z-index', type: 'number', value: 1 },
+  'status-steps.gap': { cssVar: '--ds-status-steps-gap', type: 'dimension', value: '8px' },
+  'status-steps.marker-border-width': { cssVar: '--ds-status-steps-marker-border-width', type: 'dimension', value: '1.5px' },
+  'status-steps.marker-hover-border': { cssVar: '--ds-status-steps-marker-hover-border', type: 'color', value: '#86868E' },
+  'status-steps.marker-size': { cssVar: '--ds-status-steps-marker-size', type: 'dimension', value: '20px' },
+  'status-steps.padding-block': { cssVar: '--ds-status-steps-padding-block', type: 'dimension', value: '4px' },
   'swatch.size-sm': { cssVar: '--ds-swatch-size-sm', type: 'dimension', value: '16px' },
   'swatch.size-md': { cssVar: '--ds-swatch-size-md', type: 'dimension', value: '20px' },
   'swatch.size-lg': { cssVar: '--ds-swatch-size-lg', type: 'dimension', value: '32px' },

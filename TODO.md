@@ -35,7 +35,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ### Tokens
 
-- [ ] **TOK-003** (P1 · S) **Remaining token gaps** (z-index, opacity, swatch ring, icon sizes and progress duration are done): decide `color-mix` percentages for hover/tint states (6/12/18/30/35%), extra compact heights (22/24/26/28 px), 5px checkbox and 8px matrix-cell radii, `brightness(.88/.9)` hover filters. Component agents add component-scoped tokens in `src/tokens/component/`; promote repeated ones to semantic tokens.
 - [ ] **TOK-011** (P2 · S) Round-trip test between CSS output and the Tokens Studio JSON so Figma and code cannot drift.
 
 ### Typography and fonts
@@ -54,7 +53,6 @@ All ADRs 0001–0010 are accepted (see `docs/adr/` and CHANGELOG). New decisions
 
 ## Phase 2 — Architecture and shared primitives
 
-- [ ] **ARCH-011** (P2 · S) Logical CSS properties (`inline-start/end`) throughout so RTL is possible later; document the decision.
 
 ---
 
@@ -136,8 +134,6 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
-- [ ] **GAP-012** (P3 · S) AppShell at 320px: the TopBar title truncates to "Ord…" while badges keep full width — define shrink priorities (title wins, actions collapse into a Menu).
-- [ ] **GAP-013** (P3 · S) `RankList` `Default` story shows positions 1–4 with values not in descending order (renders as given) — use descending data or `sort` so the example reads as a ranking.
 - [ ] **GAP-006** (P3 · M) `Drawer` (generic), `Banner`, `Tour/Coachmark`, `Stepper/Wizard` (progress for multi-step flows like the 9-step "new agent" assistant), `Timeline`.
 - [ ] **GAP-007** (P3 · M) Data visualization expansion: stacked bars, standalone legend component, shared chart a11y layer. (`Sparkline` and `DonutMeter` are done.)
 

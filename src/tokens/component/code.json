@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "code": {
+    "inline-padding-block": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$description": "Vertical padding of inline Code (1px) so the box fits the line height of the surrounding text."
+    }
+  }
+}

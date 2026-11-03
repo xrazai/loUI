@@ -73,7 +73,7 @@
     align-items: center;
     gap: var(--ds-space-2);
     min-inline-size: 0;
-    padding-inline: 2px;
+    padding-inline: var(--ds-matrix-grid-column-header-padding-inline);
     color: var(--ds-text-2);
     font-size: var(--ds-fs-caption);
     line-height: var(--ds-lh-meta);
@@ -93,7 +93,7 @@
   .rowHeader {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--ds-matrix-grid-row-header-gap);
     min-inline-size: 0;
     padding-inline-end: var(--ds-space-3);
   }

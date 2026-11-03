@@ -1,4 +1,9 @@
 @layer components {
+  /*
+   * Shrink priorities (GAP-012): the title wins. Content next to it (`children`) wraps to a second
+   * line before the title truncates; the title truncates only when it alone is wider than the bar.
+   * Actions never shrink: on narrow screens keep the primary action and move the others into a Menu.
+   */
   .root {
     box-sizing: border-box;
     display: flex;
@@ -7,6 +12,7 @@
     justify-content: space-between;
     gap: var(--ds-space-4);
     min-block-size: var(--ds-topbar-h);
+    padding-block: var(--ds-space-2);
     padding-inline: var(--ds-top-bar-padding-inline);
     border-block-end: 1px solid var(--ds-line-subtle);
     background-color: var(--ds-bg);
@@ -17,8 +23,9 @@
   .start {
     display: flex;
     flex: 1;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--ds-space-4);
+    gap: var(--ds-space-1) var(--ds-space-4);
     min-inline-size: 0;
   }
 
@@ -26,6 +33,7 @@
     display: flex;
     flex-direction: column;
     min-inline-size: 0;
+    max-inline-size: 100%;
   }
 
   .title {
