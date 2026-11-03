@@ -65,6 +65,17 @@ dl.root (surface, 1px line, radius lg, padding 20)
 <StatCard label="Overdue" value="$96.40" tone="danger" note="Water bill since Oct 28" />
 ```
 
+A computed tone type-checks as long as `note` or `trend` is passed; a literal non-neutral tone without either is still a type error:
+
+```tsx
+<StatCard
+  label="Overdue"
+  value={total}
+  tone={overdue ? 'warning' : 'neutral'}
+  note={`${count} bills`}
+/>
+```
+
 ## Differences from the handoff
 
 - Semantics: `dl`/`dt`/`dd` instead of anonymous `span`s.

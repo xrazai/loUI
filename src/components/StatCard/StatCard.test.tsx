@@ -1,8 +1,10 @@
 import { createRef } from 'react';
+import type { ReactElement } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { StatCard } from './StatCard';
+import type { StatCardTone } from './StatCard';
 
 describe('StatCard', () => {
   describe('dev warning', () => {
@@ -183,5 +185,29 @@ describe('StatCard', () => {
       );
       await expectNoA11yViolations(screen.container);
     });
+  });
+});
+
+/** Type-level checks: the element is built, never rendered. */
+const use = (element: ReactElement): ReactElement => element;
+
+describe('StatCard types', () => {
+  const flag = Math.random() > 2;
+  const tone: StatCardTone = flag ? 'warning' : 'neutral';
+
+  it('accepts a computed tone backed by a note or a trend', () => {
+    use(<StatCard label="A" value="1" tone={flag ? 'warning' : 'neutral'} note="text" />);
+    use(<StatCard label="A" value="1" tone={tone} note="text" />);
+    use(<StatCard label="A" value="1" tone={tone} trend={{ direction: 'up', value: 0.1 }} />);
+    use(<StatCard label="A" value="1" tone={tone} note="text" trend={{ direction: 'flat' }} />);
+  });
+
+  it('still rejects a non-neutral tone with no words, and accepts neutral alone', () => {
+    // @ts-expect-error -- a literal non-neutral tone needs a note or a trend.
+    use(<StatCard label="A" value="1" tone="warning" />);
+    // @ts-expect-error -- a computed tone needs a note or a trend too.
+    use(<StatCard label="A" value="1" tone={tone} />);
+    use(<StatCard label="A" value="1" tone="neutral" />);
+    use(<StatCard label="A" value="1" />);
   });
 });

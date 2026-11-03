@@ -59,13 +59,17 @@ type StatCardTonality =
       trend?: StatCardTrend;
     }
   | {
-      /** A colored value must be backed by text: pass `note` or `trend` (type error otherwise). */
-      tone: Exclude<StatCardTone, 'neutral'>;
+      /**
+       * A colored value must be backed by text: pass `note` or `trend` (type error otherwise).
+       * Accepts any `StatCardTone`, so a computed tone such as `flag ? 'warning' : 'neutral'`
+       * type-checks as long as `note` or `trend` is present.
+       */
+      tone: StatCardTone;
       note: ReactNode;
       trend?: StatCardTrend;
     }
   | {
-      tone: Exclude<StatCardTone, 'neutral'>;
+      tone: StatCardTone;
       note?: ReactNode;
       trend: StatCardTrend;
     };
@@ -85,7 +89,7 @@ const TREND_ICON = { up: ArrowUpIcon, down: ArrowDownIcon, flat: MinusIcon } as 
  * It is a description list: the label is the term, the value and the note are its
  * descriptions, so a screen reader announces "Sold, $37,655.30, Up 12% vs previous 30 days".
  * A colored value is never the only signal: `tone` other than `neutral` requires a `note` or a
- * `trend`, and the trend is written as text ("Up 12%").
+ * `trend` (a computed `StatCardTone` is accepted when either is passed), and the trend is written as text ("Up 12%").
  */
 export function StatCard({
   label,
