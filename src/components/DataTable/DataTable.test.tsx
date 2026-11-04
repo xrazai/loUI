@@ -605,6 +605,46 @@ describe('DataTable', () => {
       expect(total).toBeCloseTo(580 / 3, 0);
     });
 
+    it('warns once in development about a % size next to a minWidth column', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const cols: DataTableColumn<Order>[] = [
+        { key: 'id', label: 'Order', width: '30%' },
+        { key: 'customer', label: 'Customer', minWidth: '200px' },
+      ];
+      const screen = await renderWithProvider(<DataTable<Order> {...baseProps} columns={cols} />);
+      await screen.rerender(<DataTable<Order> {...baseProps} columns={[...cols]} />);
+      const calls = warn.mock.calls.filter((call) => String(call[0]).includes('DataTable'));
+      expect(calls).toHaveLength(1);
+      expect(String(calls[0]?.[0])).toContain('"id"');
+      warn.mockRestore();
+    });
+
+    it('does not warn when sizes are fixed units or no column has a minWidth', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      await renderWithProvider(
+        <DataTable<Order>
+          {...baseProps}
+          columns={[
+            { key: 'id', label: 'Order', width: '120px' },
+            { key: 'customer', label: 'Customer', minWidth: '200px' },
+          ]}
+        />,
+      );
+      await renderWithProvider(
+        <DataTable<Order>
+          {...baseProps}
+          columns={[
+            { key: 'id', label: 'Order', width: '30%' },
+            { key: 'customer', label: 'Customer' },
+          ]}
+        />,
+      );
+      expect(warn.mock.calls.filter((call) => String(call[0]).includes('DataTable'))).toHaveLength(
+        0,
+      );
+      warn.mockRestore();
+    });
+
     it('does not scroll sideways when empty, even with minWidth columns', async () => {
       const columns: DataTableColumn<Order>[] = [
         { key: 'customer', label: 'Customer', minWidth: '300px' },

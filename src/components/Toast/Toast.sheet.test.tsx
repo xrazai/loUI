@@ -1,5 +1,5 @@
 import { act } from 'react';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderWithProvider } from '../../test/render';
 import { Button } from '../Button';
@@ -13,7 +13,7 @@ function overlaps(a: DOMRect, b: DOMRect): boolean {
   return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 }
 
-async function openSheetWithToasts() {
+async function openSheetWithToasts(size?: 'sm' | 'md' | 'lg') {
   const queue = createToastQueue();
   const api = createToastApi(queue);
   await renderWithProvider(
@@ -21,6 +21,7 @@ async function openSheetWithToasts() {
       <ToastRegion queue={queue} />
       <Sheet
         defaultOpen
+        {...(size ? { size } : {})}
         title="New order"
         footer={() => (
           <>
@@ -53,7 +54,7 @@ describe('Toast next to a Sheet (GAP-052)', () => {
 
   it('keeps three stacked toasts clear of the footer buttons of an open sheet', async () => {
     await page.viewport(800, 720);
-    const { region, footer } = await openSheetWithToasts();
+    const { region, footer } = await openSheetWithToasts('lg');
     const toasts = [...region.querySelectorAll<HTMLElement>('[data-tone]')];
     expect(toasts).toHaveLength(3);
     const buttons = [...footer.querySelectorAll('button')];
@@ -69,11 +70,31 @@ describe('Toast next to a Sheet (GAP-052)', () => {
 
   it('also stays clear on a narrow screen where the sheet is full width', async () => {
     await page.viewport(390, 800);
-    const { region, footer } = await openSheetWithToasts();
+    const { region, footer } = await openSheetWithToasts('lg');
     const toasts = [...region.querySelectorAll<HTMLElement>('[data-tone]')];
     const footerRect = footer.getBoundingClientRect();
     for (const toastEl of toasts) {
       expect(overlaps(toastEl.getBoundingClientRect(), footerRect)).toBe(false);
     }
+  });
+
+  it('puts the toasts beside a large sheet while open and back in the centre as it starts to close', async () => {
+    await page.viewport(800, 720);
+    const { region } = await openSheetWithToasts('lg');
+    const toast = region.querySelector<HTMLElement>('[data-tone]');
+    const sheet = document.querySelector<HTMLElement>('[data-ds-sheet="lg"]');
+    if (!toast || !sheet) throw new Error('Toast or sheet missing');
+    expect(toast.getBoundingClientRect().right).toBeLessThanOrEqual(
+      sheet.getBoundingClientRect().left + 1,
+    );
+    await userEvent.keyboard('{Escape}');
+    // The sheet is still in the DOM, playing its exit animation, but no longer counts.
+    await expect.poll(() => document.querySelector('[data-exiting]') !== null).toBe(true);
+    await expect
+      .poll(() => {
+        const rect = toast.getBoundingClientRect();
+        return Math.abs((rect.left + rect.right) / 2 - window.innerWidth / 2);
+      })
+      .toBeLessThan(2);
   });
 });

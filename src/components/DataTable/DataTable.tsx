@@ -13,6 +13,7 @@ import type { Key, Selection, SortDescriptor } from 'react-aria-components';
 import { useControllableState } from '../../hooks';
 import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
+import { isDev } from '../../utils/env';
 import { formatNumber } from '../../utils/number';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
@@ -212,6 +213,15 @@ function tableSizes<T>(
     }
   }
   return { minWidth: `calc(${parts.join(' + ')})`, flexibleCount };
+}
+
+/** Name of the first column whose `%` size cannot be part of the minimum width maths, if any. */
+function percentColumnWithMinWidth<T>(columns: readonly DataTableColumn<T>[]): string | undefined {
+  if (!columns.some((column) => column.minWidth !== undefined)) return undefined;
+  const isPercent = (value: string | number | undefined) =>
+    typeof value === 'string' && value.includes('%');
+  const found = columns.find((column) => isPercent(column.width) || isPercent(column.minWidth));
+  return found?.key;
 }
 
 function readValue(row: object, key: string): SortableValue {
@@ -541,6 +551,15 @@ export function DataTable<T extends object>({
   // never scrolls sideways (the header stays visible, its labels are cut with an ellipsis).
   const isEmpty = !isLoading && viewRows.length === 0;
   const sizes = isEmpty ? undefined : tableSizes(columns, hasSelection);
+  const warnedPercent = useRef(false);
+  const percentColumn = percentColumnWithMinWidth(columns);
+  useEffect(() => {
+    if (percentColumn === undefined || warnedPercent.current || !isDev()) return;
+    warnedPercent.current = true;
+    console.warn(
+      `[loui-ds] DataTable column "${percentColumn}" uses a percentage width or minWidth in a table with a minWidth column. Percentages are not part of the minimum width calculation, so the table can be narrower than its columns need. Use px or rem.`,
+    );
+  }, [percentColumn]);
   const tableStyle =
     sizes === undefined
       ? undefined

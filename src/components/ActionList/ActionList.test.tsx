@@ -290,6 +290,43 @@ describe('ActionList', () => {
       expect(onAction).toHaveBeenLastCalledWith(items[2]);
     });
 
+    it('focuses the clicked row when no row is selected, and the keyboard continues from it', async () => {
+      const onAction = vi.fn();
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          onAction={onAction}
+        />,
+      );
+      await userEvent.click(screen.getByText('Price list 2026'));
+      expect(onAction).toHaveBeenCalledTimes(1);
+      const rows = screen.getByRole('row').all();
+      expect(rows[1]?.element().contains(document.activeElement)).toBe(true);
+      await userEvent.keyboard('{ArrowDown}');
+      expect(rows[2]?.element().contains(document.activeElement)).toBe(true);
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+      expect(rows[0]?.element().contains(document.activeElement)).toBe(true);
+    });
+
+    it('shows the focus ring on the row that keyboard navigation reaches after a click', async () => {
+      const screen = await renderWithProvider(
+        <ActionList
+          items={items}
+          aria-label="Files"
+          selectionMode="multiple"
+          defaultSelectedKeys={['contract']}
+          onAction={vi.fn()}
+        />,
+      );
+      await userEvent.click(screen.getByText('Price list 2026'));
+      await userEvent.keyboard('{ArrowDown}');
+      const rows = screen.getByRole('row').all();
+      expect(rows[2]?.element().hasAttribute('data-focus-visible')).toBe(true);
+      expect(rows[1]?.element().hasAttribute('data-focus-visible')).toBe(false);
+    });
+
     it('disables the checkbox of a disabled row', async () => {
       const disabled = items.map((item, index) =>
         index === 1 ? { ...item, isDisabled: true } : item,

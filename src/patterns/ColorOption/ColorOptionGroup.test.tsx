@@ -134,6 +134,30 @@ describe('ColorOptionGroup', () => {
     expect(group.hasAttribute('data-invalid')).toBe(true);
   });
 
+  it('sets aria-invalid on the radiogroup in single mode, never on the toolbar', async () => {
+    const single = await renderWithProvider(
+      <Example selectionMode="single" isInvalid errorMessage="Choose a color." />,
+    );
+    expect(single.getByRole('radiogroup').element().getAttribute('aria-invalid')).toBe('true');
+    await single.unmount();
+    const multiple = await renderWithProvider(<Example isInvalid errorMessage="Choose a color." />);
+    expect(multiple.getByRole('toolbar').element().hasAttribute('aria-invalid')).toBe(false);
+  });
+
+  it('shows no aria-invalid on a valid radiogroup', async () => {
+    const screen = await renderWithProvider(<Example selectionMode="single" />);
+    expect(screen.getByRole('radiogroup').element().hasAttribute('aria-invalid')).toBe(false);
+  });
+
+  it('has no axe violations for an invalid radiogroup (axe)', async () => {
+    const screen = await renderWithProvider(
+      <main>
+        <Example selectionMode="single" isInvalid errorMessage="Choose a color." />
+      </main>,
+    );
+    await expectNoA11yViolations(screen.container);
+  });
+
   it('shows no error while valid, even with an errorMessage', async () => {
     const screen = await renderWithProvider(<Example errorMessage="Choose a color." />);
     expect(screen.getByText('Choose a color.').elements()).toHaveLength(0);

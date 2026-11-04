@@ -19,23 +19,24 @@
    * While a Sheet is open (it marks itself with data-ds-sheet, GAP-052) the toasts move into the
    * free space beside it, so they never cover its footer. The region is not inside the sheet, so
    * the document is the only common ancestor: :has() on the root keeps this SSR-safe and free of
-   * any JS or shared state.
+   * any JS or shared state. A closing sheet (data-exiting, set by React Aria while it animates out) no
+   * longer counts, so the toasts return to the centre as soon as it starts to close (D-B4).
    */
-  :root:has([data-ds-sheet='sm']) .region {
+  :root:has([data-ds-sheet='sm']:not([data-exiting])) .region {
     inset-inline-end: var(--ds-sheet-width-sm);
   }
 
-  :root:has([data-ds-sheet='md']) .region {
+  :root:has([data-ds-sheet='md']:not([data-exiting])) .region {
     inset-inline-end: var(--ds-sheet-width-md);
   }
 
-  :root:has([data-ds-sheet='lg']) .region {
+  :root:has([data-ds-sheet='lg']:not([data-exiting])) .region {
     inset-inline-end: var(--ds-sheet-width-lg);
   }
 
   /* Narrow screens: the sheet fills the width and there is no free side. Toasts go to the top, below the sheet header, so the footer and the close button stay clear. */
   @media (width < 768px) {
-    :root:has([data-ds-sheet]) .region {
+    :root:has([data-ds-sheet]:not([data-exiting])) .region {
       inset-block: calc(var(--ds-topbar-h) + var(--ds-toast-offset)) auto;
       inset-inline-end: 0;
     }

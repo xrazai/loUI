@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useCallback, useId, useLayoutEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
 import { ToggleButtonGroup } from 'react-aria-components';
 import type { ToggleButtonGroupProps } from 'react-aria-components';
@@ -96,6 +96,24 @@ export function ColorOptionGroup({
     'aria-label': rest['aria-label'],
     'aria-labelledby': rest['aria-labelledby'],
   });
+  const groupRef = useRef<HTMLDivElement | null>(null);
+  const setRefs = useCallback(
+    (node: HTMLDivElement | null) => {
+      groupRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
+  // React Aria does not forward `aria-invalid` to the group. It is allowed on a radiogroup
+  // (`single`) but not on the toolbar used in `multiple` mode.
+  const markInvalid = isInvalid && selectionMode === 'single';
+  useLayoutEffect(() => {
+    const node = groupRef.current;
+    if (!node) return;
+    if (markInvalid) node.setAttribute('aria-invalid', 'true');
+    else node.removeAttribute('aria-invalid');
+  }, [markInvalid]);
   const labelId = useId();
   const descriptionId = useId();
   const errorId = useId();
@@ -136,7 +154,7 @@ export function ColorOptionGroup({
       ) : null}
       <ToggleButtonGroup
         {...rest}
-        {...(ref ? { ref } : {})}
+        ref={setRefs}
         {...(labelledBy ? { 'aria-labelledby': labelledBy } : {})}
         {...(describedBy ? { 'aria-describedby': describedBy } : {})}
         selectionMode={selectionMode}

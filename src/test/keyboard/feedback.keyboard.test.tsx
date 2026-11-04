@@ -16,7 +16,6 @@ import { renderWithProvider } from '../render';
 import { expectFocus, focusIsWithin, press, tabOrder, tabTo } from './contract';
 
 const toastCount = () => document.querySelectorAll('[class*="toast"][data-tone]').length;
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function setup() {
   const queue = createToastQueue();
@@ -76,15 +75,25 @@ describe('keyboard contract: toast', () => {
 
   it('auto-dismiss pauses while keyboard focus is inside the region', async () => {
     const { queue, api } = setup();
-    await renderWithProvider(<Page queue={queue} />);
-    act(() => {
-      api('Order archived', { timeout: 700, action: { label: 'Undo', onPress: () => undefined } });
-    });
-    await userEvent.tab();
-    await tabTo('Undo');
-    // Wait well past the timeout: the toast must still be there while focus is on it.
-    await sleep(1400);
-    expect(toastCount()).toBe(1);
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      await renderWithProvider(<Page queue={queue} />);
+      act(() => {
+        api('Order archived', {
+          timeout: 700,
+          action: { label: 'Undo', onPress: () => undefined },
+        });
+      });
+      await userEvent.tab();
+      await tabTo('Undo');
+      // Move the clock well past the timeout: the toast must still be there while focus is on it.
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1400);
+      });
+      expect(toastCount()).toBe(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('the dismiss button is a labelled, keyboard-operable control', async () => {

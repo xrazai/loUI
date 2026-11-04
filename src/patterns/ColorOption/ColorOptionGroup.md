@@ -45,7 +45,7 @@ div
 
 - Semantics follow React Aria `ToggleButtonGroup`: `role="toolbar"` of toggle buttons in `multiple` mode, `role="radiogroup"` of radios in `single` mode. Both are named by the label.
 - One tab stop. `←` `→` move between enabled options and stop at the ends; `Space` and `Enter` choose the focused option; disabled options are skipped.
-- The error text (`ErrorText`) and the description are linked with `aria-describedby` on the group. `aria-invalid` is not allowed on a toolbar, so the invalid state is carried by the error text and a danger border on the unselected options (never color alone). Move focus to the first option on submit so the error is read, or use `ErrorText announce` yourself for errors with no focus move.
+- The error text (`ErrorText`) and the description are linked with `aria-describedby` on the group. In `single` mode (`radiogroup`) the group also gets `aria-invalid="true"` while invalid. `aria-invalid` is not allowed on a toolbar (`multiple` mode), so there the invalid state is carried by the error text and a danger border on the unselected options (never color alone). Move focus to the first option on submit so the error is read, or use `ErrorText announce` yourself for errors with no focus move.
 
 ## Content rules
 
