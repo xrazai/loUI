@@ -20,6 +20,11 @@ export interface ChangeEntry {
   components: string[];
   /** True for repository work with no effect on consumers (tests, CI, release tooling). */
   internal: boolean;
+  /**
+   * True when the entry contains a `**Breaking:** <what to do>` marker: an upgrade can change
+   * rendering, a default or a type that existing code relies on. Read `summary` for the action.
+   */
+  breaking: boolean;
 }
 
 export interface ChangeRelease {
@@ -57,6 +62,9 @@ const ENTRY = /^- \*\*([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*)\*\*(?: \((\d{4}-\d{2}-\d{2
 const RELEASE_HEADING = /^## \[([^\]]+)\](?: - (\d{4}-\d{2}-\d{2}))?\s*$/;
 const KIND_HEADING = /^### (\w+)\s*$/;
 const OPEN_ITEM = /^- \[ \] \*\*([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*)\*\* \((P\d) · ([SML])\) (.*)$/;
+
+/** Marker that flags an entry as breaking, followed by what a consumer does. */
+const BREAKING_MARKER = /\*\*Breaking:\*\*/;
 
 function componentsIn(text: string, names: ReadonlySet<string>): string[] {
   const found = new Set<string>();
@@ -119,6 +127,7 @@ export function parseTaskLog(
         summary,
         components: componentsIn(summary, names),
         internal: isInternal(entry[1] ?? ''),
+        breaking: BREAKING_MARKER.test(summary),
       };
       target.push(last);
       continue;
@@ -126,6 +135,7 @@ export function parseTaskLog(
     if (last && line.trim() !== '' && !line.startsWith('#') && !line.startsWith('- ')) {
       last.summary = `${last.summary} ${line.trim()}`;
       last.components = componentsIn(last.summary, names);
+      last.breaking = BREAKING_MARKER.test(last.summary);
     } else if (line.trim() === '') {
       last = undefined;
     }

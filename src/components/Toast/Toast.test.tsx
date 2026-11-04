@@ -14,7 +14,11 @@ function setup() {
 }
 
 const toasts = () => document.querySelectorAll('[class*="toast"][data-tone]');
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+/** Moves the fake clock (the toast timers) forward. Needs `vi.useFakeTimers`. */
+const advance = (ms: number) =>
+  act(async () => {
+    await vi.advanceTimersByTimeAsync(ms);
+  });
 
 describe('Toast', () => {
   it('shows nothing until a toast is queued, then a labelled region', async () => {
@@ -51,52 +55,68 @@ describe('Toast', () => {
 
   it('stays until dismissed when the timeout is null', async () => {
     const { queue, api } = setup();
-    const screen = await renderWithProvider(<ToastRegion queue={queue} />);
-    act(() => {
-      api.danger('Payment failed', { timeout: null });
-    });
-    expect(queue.visibleToasts[0]?.timeout).toBeUndefined();
-    await wait(500);
-    await expect.element(screen.getByText(/Payment failed/)).toBeVisible();
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      const screen = await renderWithProvider(<ToastRegion queue={queue} />);
+      act(() => {
+        api.danger('Payment failed', { timeout: null });
+      });
+      expect(queue.visibleToasts[0]?.timeout).toBeUndefined();
+      await advance(5500);
+      await expect.element(screen.getByText(/Payment failed/)).toBeVisible();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('pauses the timer while the pointer is over the toast and resumes afterwards', async () => {
     const { queue, api } = setup();
-    const screen = await renderWithProvider(
-      <main>
-        <p>Page content</p>
-        <ToastRegion queue={queue} />
-      </main>,
-    );
-    act(() => {
-      api('Saved', { timeout: 1500 });
-    });
-    await expect.poll(() => document.getAnimations().length).toBe(0);
-    const message = screen.getByText(/Saved/);
-    const box = document.querySelector('[data-tone]') as HTMLElement;
-    await userEvent.hover(screen.getByText('Page content'));
-    await userEvent.hover(box);
-    await wait(2000);
-    await expect.element(message).toBeVisible();
-    await userEvent.unhover(box);
-    await expect.poll(() => toasts().length, { timeout: 4000 }).toBe(0);
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      const screen = await renderWithProvider(
+        <main>
+          <p>Page content</p>
+          <ToastRegion queue={queue} />
+        </main>,
+      );
+      act(() => {
+        api('Saved', { timeout: 1500 });
+      });
+      await expect.poll(() => document.getAnimations().length).toBe(0);
+      const message = screen.getByText(/Saved/);
+      const box = document.querySelector('[data-tone]') as HTMLElement;
+      await userEvent.hover(screen.getByText('Page content'));
+      await userEvent.hover(box);
+      await advance(2000);
+      await expect.element(message).toBeVisible();
+      await userEvent.unhover(box);
+      await advance(1600);
+      await expect.poll(() => toasts().length, { timeout: 4000 }).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('pauses the timer while keyboard focus is inside the region (WCAG 2.2.1)', async () => {
     const { queue, api } = setup();
     const onUndo = vi.fn();
-    const screen = await renderWithProvider(
-      <main>
-        <ToastRegion queue={queue} />
-      </main>,
-    );
-    act(() => {
-      api('Order archived', { timeout: 700, action: { label: 'Undo', onPress: onUndo } });
-    });
-    screen.getByRole('button', { name: 'Undo' }).element().focus();
-    await wait(1200);
-    await expect.element(screen.getByText(/Order archived/)).toBeVisible();
-    expect(onUndo).not.toHaveBeenCalled();
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      const screen = await renderWithProvider(
+        <main>
+          <ToastRegion queue={queue} />
+        </main>,
+      );
+      act(() => {
+        api('Order archived', { timeout: 700, action: { label: 'Undo', onPress: onUndo } });
+      });
+      screen.getByRole('button', { name: 'Undo' }).element().focus();
+      await advance(1200);
+      await expect.element(screen.getByText(/Order archived/)).toBeVisible();
+      expect(onUndo).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('moves focus into the region with F6', async () => {

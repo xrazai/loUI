@@ -39,7 +39,24 @@ Fixing an accessibility defect is never "breaking" by itself, even if behavior c
 
 ## Before 1.0.0
 
-A `minor` may break; a `patch` never does. Breaking changes are still called out under a "Breaking" heading in the changeset so migration is possible. `experimental` components may change in any release (see the [lifecycle](./lifecycle.md)).
+A `minor` may break; a `patch` never does. So while the major is `0`, a breaking change is a **minor** bump, and it must still be called out (see below) so migration is possible. `experimental` components may change in any release (see the [lifecycle](./lifecycle.md)).
+
+## Marking a breaking change
+
+A change counts as breaking for the markers below when an upgrade can alter what existing code renders or compiles, even if the API signature is "compatible":
+
+- a changed **default** (for example a status that was green is now grey);
+- a **layout** change (size, spacing, line breaks, a breakpoint that moves content);
+- a **widened output type** (a union gains a member, an optional field replaces a required one, a `string` becomes `ReactNode`, an interface becomes a union), which breaks exhaustive `switch` statements and code that reads the value;
+- anything in the major list above.
+
+Where to write it:
+
+1. **Changeset:** add a paragraph that starts with `Breaking:` and says what the consumer does ("`Sidebar` status without `tone` is now grey; pass `tone: 'success'` to keep it green"). A changeset for such a change is at least a `minor` (never a `patch`) and, after 1.0.0, a `major`.
+2. **Task log (`CHANGELOG.md`):** end the entry with `**Breaking:** <what the consumer does>`. The exact marker is `**Breaking:**` (bold, capital B, trailing colon), anywhere in the entry, including a wrapped continuation line.
+3. **`changes.json`:** the build sets `breaking: true` on every entry that contains the marker. Consuming apps filter releases for `breaking` entries before upgrading (see [local development](../guides/local-development.md)).
+
+Released entries can be marked retroactively by editing the marker into the released section of the task log; `changes.json` is rebuilt from it on the next build.
 
 ## Deprecation window
 

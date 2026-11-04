@@ -107,7 +107,7 @@ So plan on about five minutes between the tag and an installable version. npm pr
 
 ### Tracking what changed automatically (`changes.json`)
 
-From the first release after 0.3.0 the package ships `loui-ds/changes.json` (schema `schemas/changes.schema.json`, generated from the task log and the backlog at build time). It lists, newest first, every release with its entries (`id` such as `GAP-014`, `kind`, `summary`, the `components` it names, and `internal` for repository-only work), the entries not yet released, and the gaps still `open`. An app that keeps its own notes with the same ids can compare them with the installed version without reading prose:
+From the first release after 0.3.0 the package ships `loui-ds/changes.json` (schema `schemas/changes.schema.json`, generated from the task log and the backlog at build time). It lists, newest first, every release with its entries (`id` such as `GAP-014`, `kind`, `summary`, the `components` it names, `internal` for repository-only work, and `breaking`), the entries not yet released, and the gaps still `open`. An app that keeps its own notes with the same ids can compare them with the installed version without reading prose:
 
 ```js
 import changes from 'loui-ds/changes.json' with { type: 'json' };
@@ -116,6 +116,16 @@ const resolved = changes.releases
   .filter((release) => release.version > lastSyncedVersion) // compare with a semver library
   .flatMap((release) => release.entries.filter((entry) => !entry.internal));
 ```
+
+Check `breaking` before upgrading: an entry with `breaking: true` carries a `**Breaking:** <what to do>` sentence in its `summary` and flags a changed default, a layout or line-break change, or a widened output type (a union that gained a member, a field that became optional) that can break an exhaustive `switch` or a type check without any API removal. List them for the versions you are crossing:
+
+```js
+const breaking = changes.releases
+  .filter((release) => release.version > installedVersion) // compare with a semver library
+  .flatMap((release) => release.entries.filter((entry) => entry.breaking));
+```
+
+The flag exists from the first release after 0.7.1; entries of 0.6.0 and 0.7.0 were marked retroactively.
 
 Verified on 2026-11-03 against a packed tarball in a clean project: both `require('loui-ds/changes.json')` and an ESM `import ... with { type: 'json' }` resolve, and the 0.3.0 entries list `GAP-014`, `021`, `023`, `032`, `033` and `035`. Version 0.3.0 itself was published before the file existed, so for it use the GitHub Release.
 

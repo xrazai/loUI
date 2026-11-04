@@ -14,6 +14,9 @@ const LOG = `# Changelog
 ### Fixed
 
 - **GAP-040** (2026-11-04) \`Form\` fix that is not released yet.
+- **GAP-050** (2026-11-03) \`Button\` default changed. **Breaking:** pass \`tone\` to keep it.
+- **GAP-055** (2026-11-03) \`Form\` layout change.
+  **Breaking:** wrap it in a wider container.
 
 ## [0.3.0] - 2026-11-03
 
@@ -55,7 +58,7 @@ describe('parseTaskLog (consumer change index)', () => {
   });
 
   it('puts unfinished-release entries under unreleased', () => {
-    expect(unreleased.map((e) => e.id)).toEqual(['GAP-040']);
+    expect(unreleased.map((e) => e.id)).toEqual(['GAP-040', 'GAP-050', 'GAP-055']);
     expect(unreleased[0]?.kind).toBe('fixed');
   });
 
@@ -78,6 +81,13 @@ describe('parseTaskLog (consumer change index)', () => {
     const entries = releases[0]?.entries ?? [];
     expect(entries.find((e) => e.id === 'GAP-014')?.internal).toBe(false);
     expect(entries.find((e) => e.id === 'TEST-020')?.internal).toBe(true);
+  });
+
+  it('detects the Breaking marker, also on a continuation line', () => {
+    expect(unreleased.find((e) => e.id === 'GAP-050')?.breaking).toBe(true);
+    expect(unreleased.find((e) => e.id === 'GAP-055')?.breaking).toBe(true);
+    expect(unreleased.find((e) => e.id === 'GAP-040')?.breaking).toBe(false);
+    expect(releases[0]?.entries.every((e) => !e.breaking)).toBe(true);
   });
 
   it('keeps a release without entries', () => {
@@ -129,6 +139,22 @@ describe('buildChanges', () => {
     expect(check(changes), JSON.stringify(check.errors)).toBe(true);
     const ids = changes.releases.flatMap((r) => r.entries.map((e) => e.id));
     expect(ids).toContain('GAP-014');
+    const byId = new Map(changes.releases.flatMap((r) => r.entries.map((e) => [e.id, e] as const)));
+    // D-M1 / D-B3: retroactive marks in the released sections.
+    for (const id of [
+      'GAP-050',
+      'GAP-037',
+      'GAP-047',
+      'GAP-055',
+      'GAP-017',
+      'GAP-048',
+      'GAP-025',
+      'GAP-042',
+      'GAP-016',
+    ]) {
+      expect(byId.get(id)?.breaking, id).toBe(true);
+    }
+    expect(byId.get('GAP-014')?.breaking).toBe(false);
     // The backlog may be empty; every open entry still has to validate (checked above).
     expect(Array.isArray(changes.open)).toBe(true);
     for (const gap of changes.open) expect(ids).not.toContain(gap.id);
