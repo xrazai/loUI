@@ -14,19 +14,22 @@ A list of the series of a chart: swatch, name and, optionally, a value. With `in
 - Import: `import { Legend } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Legend/Legend.tsx`
-- Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft
+- Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft, WithShare, ShareOfTotal
 
 ## Props
 
-| Prop                | Type                                              | Required | Default        | Description                                                                                                                                                                               |
-| ------------------- | ------------------------------------------------- | -------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`             | `readonly LegendItem[]`                           | yes      |                | The series, in the same order as in the chart (the order sets the swatch of items without `color`).                                                                                       |
-| `orientation`       | `'horizontal' \| 'vertical'`                      |          | `'horizontal'` | `horizontal` (default) wraps items in a row; `vertical` stacks them, one per line.                                                                                                        |
-| `interactive`       | `boolean`                                         |          | `false`        | Turns each item into a toggle button (`aria-pressed`: pressed means the series is shown), so readers can hide series in the chart that consumes the legend. Off by default: a plain list. |
-| `hiddenIds`         | `readonly string[]`                               |          |                | Controlled list of hidden series ids (interactive legends).                                                                                                                               |
-| `defaultHiddenIds`  | `readonly string[]`                               |          | `[]`           | Initial hidden series ids when uncontrolled.                                                                                                                                              |
-| `onHiddenIdsChange` | `(hiddenIds: string[]) => void`                   |          |                | Called with the new list of hidden ids whenever the user toggles an item.                                                                                                                 |
-| `messages`          | `Partial<{ label: string; toggleHint: string; }>` |          |                | Per-instance overrides of the built-in messages.                                                                                                                                          |
+| Prop                | Type                                              | Required | Default        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------- | ------------------------------------------------- | -------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`             | `readonly LegendItem[]`                           | yes      |                | The series, in the same order as in the chart (the order sets the swatch of items without `color`).                                                                                                                                                                                                                                                                                                                                            |
+| `orientation`       | `'horizontal' \| 'vertical'`                      |          | `'horizontal'` | `horizontal` (default) wraps items in a row; `vertical` stacks them, one per line.                                                                                                                                                                                                                                                                                                                                                             |
+| `interactive`       | `boolean`                                         |          | `false`        | Turns each item into a toggle button (`aria-pressed`: pressed means the series is shown), so readers can hide series in the chart that consumes the legend. Off by default: a plain list.                                                                                                                                                                                                                                                      |
+| `hiddenIds`         | `readonly string[]`                               |          |                | Controlled list of hidden series ids (interactive legends).                                                                                                                                                                                                                                                                                                                                                                                    |
+| `defaultHiddenIds`  | `readonly string[]`                               |          | `[]`           | Initial hidden series ids when uncontrolled.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `onHiddenIdsChange` | `(hiddenIds: string[]) => void`                   |          |                | Called with the new list of hidden ids whenever the user toggles an item.                                                                                                                                                                                                                                                                                                                                                                      |
+| `showShare`         | `boolean`                                         |          | `false`        | Prints the share of each item (its `amount` over the denominator) in a column of its own, formatted with `Intl` for the active locale. When an item also has a `value`, both show, in two aligned columns (value, then share). Hidden series print no share and leave the denominator. Percentages are rounded one by one, so the printed shares may sum to 99% or 101%; raise `shareDigits` when that matters, the legend never adjusts them. |
+| `shareOf`           | `number`                                          |          |                | Denominator of the shares, in the unit of `amount`. Default: the sum of the amounts of the visible (not hidden) items. Pass the real total when the items are only part of a whole.                                                                                                                                                                                                                                                            |
+| `shareDigits`       | `number`                                          |          | `0`            | Decimals of the printed shares. Default `0`.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `messages`          | `Partial<{ label: string; toggleHint: string; }>` |          |                | Per-instance overrides of the built-in messages.                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### Inherited props
 
@@ -43,7 +46,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-legend-color`, `--ds-legend-gap`, `--ds-legend-swatch-size`, `--ds-lh-small`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-surface-hover`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-legend-color`, `--ds-legend-gap`, `--ds-legend-share-col-w`, `--ds-legend-swatch-size`, `--ds-lh-small`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-surface-hover`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
 
 ## When to use
 
@@ -68,15 +71,22 @@ VisuallyHidden  hint, linked with aria-describedby (interactive only)
 
 ## Props (key ones)
 
-| Prop                | Type                              | Default        | Notes                                                 |
-| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |
-| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |
-| `orientation`       | `'horizontal' \| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |
-| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |
-| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |
-| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |
-| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |
-| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |
+| Prop                | Type                                       | Default        | Notes                                                      |
+| ------------------- | ------------------------------------------ | -------------- | ---------------------------------------------------------- |
+| `items`             | `{ id, label, value?, amount?, color? }[]` | -              | Same order as the chart: the position sets the swatch      |
+| `showShare`         | `boolean`                                  | `false`        | Prints each item's share of the `amount`s (needs `amount`) |
+| `shareOf`           | `number`                                   | sum of visible | Denominator of the shares                                  |
+| `shareDigits`       | `number`                                   | `0`            | Decimals of the printed shares                             |
+| `orientation`       | `'horizontal' \| 'vertical'`               | `'horizontal'` | Row that wraps, or one item per line                       |
+| `interactive`       | `boolean`                                  | `false`        | Items become toggle buttons                                |
+| `hiddenIds`         | `readonly string[]`                        |                | Controlled hidden series                                   |
+| `defaultHiddenIds`  | `readonly string[]`                        | `[]`           | Initial hidden series when uncontrolled                    |
+| `onHiddenIdsChange` | `(ids: string[]) => void`                  |                | Called on every toggle                                     |
+| `messages`          | `Partial<messages>`                        |                | `label` (list name), `toggleHint`                          |
+
+## Showing the share
+
+Give each item a numeric `amount` and set `showShare`: the legend prints `amount / denominator` with `formatPercent` for the provider locale. The denominator is the sum of the visible items (hidden series leave it, and print no share) unless you pass `shareOf` because the items are only part of a whole. `value` still works as a free node; with both, a vertical legend lines value and share up in two columns (tabular mono). Percentages are rounded one by one, so three equal items show 33% each and the shares may sum to 99% or 101%. The legend never fudges them; raise `shareDigits` if that matters. `StackedBar` uses this through its `legendShare` prop.
 
 ## Telling series apart without color
 

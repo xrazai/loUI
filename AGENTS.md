@@ -47,7 +47,7 @@ dist/        build output (never edited by hand)
 
 ## 4. Decision status
 
-All ADRs 0001–0010 were **accepted on 2026-10-31** (by the PM while the owner was away; the owner may revisit). Read the ADR before working in its area. New decisions need a new ADR.
+ADRs 0001–0010 were **accepted on 2026-10-31** (by the PM while the owner was away; the owner may revisit); ADR-0011 was accepted by the owner on 2026-11-03. Read the ADR before working in its area. New decisions need a new ADR.
 
 | Area | Decision | ADR |
 |---|---|---|
@@ -62,6 +62,7 @@ All ADRs 0001–0010 were **accepted on 2026-10-31** (by the PM while the owner 
 | Entry points | `loui-ds` (core) and `loui-ds/patterns` (domain patterns, generic names) | 0008 |
 | Support | React `^19` only (ref as a prop, no `forwardRef`), evergreen browsers, Node 24, SSR-safe | 0009 |
 | Testing | Vitest 5 browser mode (Playwright chromium) + axe-core; Storybook 10 + addon-vitest + addon-a11y; `toMatchScreenshot` | 0010 |
+| Interactive cards | `Card` stays non-interactive; `CardLink` (whole-card link or button, stretched hit area) and `AddCard` (dashed "create new" tile) are separate components with one real interactive element and no nested interactive content | 0011 |
 
 Pinned tooling: pnpm 12.16, TypeScript 6.0 (TS 7 has no JS API — tooling needs 6.x), Vite 8, tsdown 0.23 (+ `@tsdown/css`), ESLint 10 (`eslint-plugin-jsx-a11y-x` fork), Stylelint 17, Playwright 1.64. No Docker locally: visual baselines are platform-suffixed until CI exists.
 

@@ -111,4 +111,9 @@ export const CASES: EvalCase[] = [
     include: ['Combobox'],
     recipes: ['create-on-the-fly'],
   },
+  {
+    prompt: 'a password field with a show password toggle on the sign in form',
+    include: ['Input'],
+    recipes: ['password-field'],
+  },
 ];

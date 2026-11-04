@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "scroll-area": {
+    "max-h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 320,
+        "unit": "px"
+      },
+      "$description": "Maximum block size of a ScrollArea with the `maxBlockSize` prop. Set at runtime via style from that prop (a number is px); 320px is only the fallback value of the token."
+    }
+  }
+}

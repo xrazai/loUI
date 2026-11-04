@@ -798,7 +798,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 
 ## Design tokens
 
-443 tokens; the table lists the 429 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
+459 tokens; the table lists the 445 semantic and core ones (primitives are listed in tokens.json). Use the CSS variable, never the value.
 
 | CSS variable | Value | Use |
 | --- | --- | --- |
@@ -928,6 +928,8 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-z-tooltip` | `60` | Layer of tooltips. The highest layer in the system. Do not add layers above it. |
 | `--ds-opacity-disabled` | `0.35` | Opacity of disabled controls. One value for every component (the handoff .4 and .45 are unified). Disabled elements are exempt from contrast rules. Not for decorative fading. |
 | `--ds-accordion-padding-inline` | `12px` | Horizontal padding of an Accordion header and panel (12px). |
+| `--ds-add-card-min-block-size` | `64px` | Minimum height of an AddCard (64px), so a lone tile keeps a comfortable target. |
+| `--ds-add-card-gap` | `8px` | Gap between the plus icon and the label of an AddCard (8px). |
 | `--ds-agent-card-min-height` | `196px` | Minimum height of an AgentCard (196px), so cards in a grid line up. |
 | `--ds-agent-card-padding` | `20px` | Inner padding of an AgentCard (20px). |
 | `--ds-agent-card-gap` | `12px` | Vertical gap between the header, description and footer (12px). |
@@ -971,6 +973,8 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-calendar-cell-size` | `36px` | Width and height of a Calendar day cell (36px). A month grid is seven cells wide. |
 | `--ds-calendar-weekday-height` | `24px` | Height of the weekday header row of a Calendar (24px). |
 | `--ds-calendar-today-ring-width` | `1px` | Border width of the ring that marks today in a Calendar (1px). |
+| `--ds-card-link-gap` | `12px` | Gap between the leading node and the text of a CardLink (12px). |
+| `--ds-card-link-text-gap` | `4px` | Vertical gap between the title, description and meta of a CardLink (4px). |
 | `--ds-card-padding` | `20px` | Inner padding of a Card (20px). |
 | `--ds-card-gap` | `16px` | Vertical gap between the header and the content of a Card (16px). |
 | `--ds-chart-series-1` | `#EDEDEA` | Series 1 of a multi-series chart (StackedBar) and its Legend swatch: the neutral ramp's first step. Series never use the accent or signal colors by default; pass an explicit color instead. |
@@ -988,6 +992,13 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-chart-outline-w` | `2px` | Outline width of a highlighted bar (2px). Together with the label it is the non-color cue of a highlight. |
 | `--ds-chart-tooltip-padding-inline` | `8px` | Horizontal padding of the value label of the active Chart point (8px). |
 | `--ds-chart-tooltip-padding-block` | `4px` | Vertical padding of the value label of the active Chart point (4px). |
+| `--ds-chart-ref-w` | `1px` | Stroke width of a reference line (average or target) in a Chart (1px). |
+| `--ds-chart-ref-average-dash` | `6px` | Dash length of an average reference line (6px). Long dashes tell it apart from the target line without color. |
+| `--ds-chart-ref-average-gap` | `4px` | Gap between dashes of an average reference line (4px). |
+| `--ds-chart-ref-target-dash` | `10px` | Dash length of a target reference line (10px). Dash, gap, dot, gap: tells it apart from the average line without color. |
+| `--ds-chart-ref-target-dot` | `2px` | Dot length of a target reference line (2px), between its dashes. |
+| `--ds-chart-ref-target-gap` | `3px` | Gap around the dot and between dashes of a target reference line (3px). |
+| `--ds-chart-tooltip-max-w` | `240px` | Widest the active-point label grows before a long note wraps (240px). Keep in sync with chartLayout.ts. |
 | `--ds-chart-color` | `#8AB4FF` | Series color of a Chart. Each tone class sets it; it can be overridden at runtime via style (ADR-0002 amendment). |
 | `--ds-chart-tooltip-x` | `0px` | Horizontal position of the active-point label, in px from the chart's left edge. Set at runtime via style. |
 | `--ds-chart-tooltip-y` | `0px` | Vertical position of the active-point label, in px from the chart's top edge. Set at runtime via style. |
@@ -1083,6 +1094,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-ledger-list-text-gap` | `2px` | Gap between the stacked lines of an entry (title and subtitle, amount and balance) (2px). |
 | `--ds-legend-swatch-size` | `10px` | Size of the series swatch in a Legend (10px). |
 | `--ds-legend-gap` | `16px` | Gap between the items of a horizontal Legend (16px). |
+| `--ds-legend-share-col-w` | `48px` | Minimum width of the share column in a Legend with `showShare` (48px), so shares line up. |
 | `--ds-legend-color` | `#EDEDEA` | Fill of a Legend swatch. The series ramp classes set it per step; an item `color` overrides it at runtime via style (ADR-0002 amendment). |
 | `--ds-matrix-grid-cell-size` | `40px` | Width and height of a toggle cell (40px, above the 24px minimum target). |
 | `--ds-matrix-grid-color` | `#A3A3A9` | Fill of a linked MatrixGrid cell. Defaults to secondary text; the component sets it inline from the column `color`. |
@@ -1092,6 +1104,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-matrix-grid-count-width` | `64px` | Width of the optional count column (64px). |
 | `--ds-matrix-grid-label-width` | `220px` | Width of the row header column (220px). |
 | `--ds-matrix-grid-padding-inline` | `20px` | Horizontal padding of rows and the header (20px). |
+| `--ds-matrix-grid-sticky-z-index` | `1` | Stacking order of the sticky MatrixGrid header row and row header column inside the scroll region (1; the corner adds 1). Local to the grid, not a layer. |
 | `--ds-matrix-grid-row-header-gap` | `2px` | Gap between the label and the description of a row header (2px). |
 | `--ds-matrix-grid-row-min-height` | `60px` | Minimum height of a row (60px). |
 | `--ds-menu-min-width` | `200px` | Minimum width of a Menu (200px, the handoff default). |
@@ -1115,6 +1128,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-proportion-bar-percent-col-w` | `48px` | Width of the percentage column in the ProportionBar legend (48px). |
 | `--ds-proportion-bar-hatch-size` | `3px` | Stripe width of the hatch pattern that tells apart segments beyond the fourth (3px). |
 | `--ds-proportion-bar-color` | `#EDEDEA` | Fill of a ProportionBar segment and its legend swatch. The neutral ramp classes set it per step; a segment `color` prop overrides it at runtime via style. |
+| `--ds-proportion-bar-columns` | `2` | Number of legend columns after the label in a ProportionBar (share, value, count). Set at runtime via style from legendColumns. |
 | `--ds-proportion-bar-share` | `1` | Relative size (flex-grow) of a ProportionBar segment. Set at runtime via style from the segment value. |
 | `--ds-radio-size` | `18px` | Width and height of the Radio circle (18px). |
 | `--ds-radio-dot-size` | `9px` | Diameter of the selected dot inside the Radio circle (9px). |
@@ -1128,6 +1142,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-rating-fill` | `0px` | Width of the filled part of a partially filled Rating star. Set at runtime via style as a percentage of the star (0 by default: an empty star). |
 | `--ds-response-feedback-gap` | `4px` | Gap between the feedback, copy and regenerate buttons (4px). |
 | `--ds-response-feedback-divider-gap` | `8px` | Space on each side of the divider between the rating and the other actions (8px). |
+| `--ds-scroll-area-max-h` | `320px` | Maximum block size of a ScrollArea with the `maxBlockSize` prop. Set at runtime via style from that prop (a number is px); 320px is only the fallback value of the token. |
 | `--ds-segmented-control-padding` | `2px` | Inner padding and gap of the SegmentedControl track (2px). |
 | `--ds-segmented-control-height-sm` | `24px` | Height of a small segment (24px, the minimum target size). The handoff used 26px. |
 | `--ds-segmented-control-height-md` | `32px` | Height of a medium segment (32px). |
@@ -1200,6 +1215,7 @@ Icons are Lucide, bundled in the package (never fetched from a CDN at runtime), 
 | `--ds-switch-knob-size` | `16px` | Diameter of the Switch knob (16px). |
 | `--ds-switch-knob-offset` | `2px` | Gap between the knob and the track edge (2px). The knob travels track-width minus knob-size minus twice this value. |
 | `--ds-tabs-gap` | `20px` | Gap between tabs in a horizontal tab list (20px). |
+| `--ds-tabs-divider-width` | `1px` | Thickness of the line under the tab list (1px). The tabs are one divider shorter so the list never overflows vertically. |
 | `--ds-tabs-indicator-height` | `2px` | Thickness of the active-tab underline (2px, ink colored). |
 | `--ds-tabs-count-size` | `20px` | Minimum width and height of the count pill inside a Tab (20px). A label, not a target. |
 | `--ds-tabs-count-padding-inline` | `6px` | Horizontal padding of the count pill inside a Tab (6px). |
@@ -1520,6 +1536,79 @@ React Aria turns a row into a pure selection toggle as soon as one row is select
 - Instead, see CheckboxGroup: Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
 - Instead, see Select: Choosing options in a form: use `RadioGroup`, `CheckboxGroup` or `Select`.
 - Renders: Checkbox, EmptyState, MoreActionsMenu, VisuallyHidden
+
+### AddCard
+
+> A dashed "create new" tile that sits in a grid next to cards. The whole tile is one link
+(`href`) or button (`onPress`) with a centred plus icon and a verb-plus-object label. It
+stretches to the height of its row.
+
+A dashed "create new" tile that sits in a grid next to cards. Decision: [ADR-0011](../../../docs/adr/0011-interactive-cards.md).
+
+- Import: `import { AddCard } from 'loui-ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/AddCard/AddCard.tsx`
+- Stories (Storybook title `Components/AddCard`): Default, AsLink, Disabled, Focused, LongText, RightToLeft, InGrid
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | yes |  | Label: a short verb plus object in sentence case ("Create agent"). It is the accessible name. |
+| `href` | `string` |  |  | Destination of the create flow. Renders a real `<a>`. |
+| `target` | `string` |  |  | Link target. `_blank` adds `rel="noopener noreferrer"` and a hidden "opens in a new tab" note. |
+| `rel` | `string` |  |  | Link relationship, merged with `noopener noreferrer` for `_blank`. |
+| `onPress` | `((event: PressEvent) => void) \| ((event: PressEvent) => void)` |  |  | Fired when the link is pressed, before navigation. Action run when the tile is pressed (usually opens a dialog). Renders a real `<button type="button">`. |
+| `ref` | `((instance: HTMLAnchorElement \| null) => void \| (() => VoidOrUndefinedOnly)) \| RefObject<HTMLAnchorElement \| null> \| ((instance: HTMLButtonElement \| null) => void \| (() => VoidOrUndefinedOnly)) \| RefObject<...> \| null` |  |  | Ref to the underlying `<a>` element. Ref to the underlying `<button>` element. |
+| `isDisabled` | `boolean` |  |  | Disables the tile: it is dimmed, skipped by `Tab` and ignores presses. |
+| `messages` | `Partial<{ opensInNewTab: string; }>` |  |  | Override the built-in messages for this instance. |
+| `className` | `string` |  |  |  |
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ AddCard: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `opensInNewTab` | `(opens in a new tab)` |  |
+
+#### Design tokens used
+
+`--ds-accent`, `--ds-add-card-gap`, `--ds-add-card-min-block-size`, `--ds-card-padding`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-fs-body`, `--ds-lh-body`, `--ds-line-strong`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-surface`, `--ds-text`, `--ds-text-2`, `--ds-weight-medium`
+
+#### When to use
+
+- The last tile of a grid of cards, to create another one ("Create agent", "Create report").
+
+#### When not to use
+
+- A navigation or action tile with a title and description: use `CardLink`.
+- A card that groups content: use `Card`.
+- The primary action of a screen: use a primary `Button`.
+- A tile that is not available yet and does nothing: render a non-interactive card (for example `AgentCard status="soon"`), not a disabled `AddCard`, unless you want to show that creation is currently blocked.
+
+#### Accessibility
+
+- One real `<a>` or `<button>` named by the label; the plus icon is decorative.
+- `Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button.
+- Focus: accent border and ring (kept in `forced-colors`). Hover: one surface step lighter. Dashed border marks an "add" slot (AGENTS.md section 7).
+- It stretches to the height of its row in a `Grid`; minimum height 64 px.
+
+#### Example
+
+```tsx
+<Grid minItemWidth="md">
+  <Card title="Support agent">…</Card>
+  <AddCard onPress={openCreateAgent}>Create agent</AddCard>
+</Grid>
+```
+
+#### Related components
+
+- Instead, see CardLink: A navigation or action tile with a title and description: use `CardLink`.
+- Instead, see Card: A card that groups content: use `Card`.
+- Instead, see Button: The primary action of a screen: use a primary `Button`.
+- Renders: Icon, VisuallyHidden
 
 ### AgentCard
 
@@ -2520,6 +2609,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 | `fullWidth` | `boolean` |  | `false` | Stretch to the width of the container. |
 | `leading` | `ReactNode` |  |  | Node before the label, usually `<Icon size="sm" />`. Decorative; the label names the button. |
 | `trailing` | `ReactNode` |  |  | Node after the label, for example a `Kbd` shortcut hint. |
+| `shortcut` | `readonly string[]` |  |  | Keyboard shortcut of the action, as `Kbd` keys (`['Mod', 'K']`). Renders the hint after the label (before `trailing`), hidden from assistive technology, and sets `aria-keyshortcuts` so the shortcut is announced once and is not part of the accessible name. Bind the key itself with `useHotkeys`. |
 | `children` | `ReactNode` |  |  | Label: a short verb plus object in sentence case ("Create order"). |
 | `className` | `string` |  |  |  |
 | `ref` | `Ref<HTMLButtonElement>` |  |  | Ref to the underlying `<button>` element. |
@@ -2572,6 +2662,8 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 
 #### Accessibility
 
+- A `Kbd` inside a button (through `shortcut` or `trailing`) is hidden from assistive technology, so the accessible name is only the label ("Settings", not "Settings Escape"). `shortcut` also sets `aria-keyshortcuts` (`Control+K`, `Meta+K` on Apple).
+
 - A real `<button>`; the name is its visible label.
 - Keys: `Tab` focuses, `Enter` and `Space` press (RAC). One tab stop.
 - Focus: accent border plus a 3px ring through `data-focus-visible`, a transparent outline that forced-colors mode repaints as `Highlight`. Mouse clicks do not show the ring.
@@ -2609,7 +2701,7 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
-- Renders: Spinner
+- Renders: Kbd, Spinner
 - Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ResponseFeedback, ShortcutsHelp, ToastRegion, Tour
 
 ### Calendar
@@ -2740,7 +2832,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - Import: `import { Card } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Card/Card.tsx`
-- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt
+- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt, ReceiptPreview
 
 #### Props
 
@@ -2774,6 +2866,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - To wrap a whole page: use the page layout.
 - For content that interrupts the user: use `Dialog` or `Alert`.
 - Do not nest a Card inside a Card; use a divider instead.
+- For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
 
 #### Anatomy
 
@@ -2788,6 +2881,20 @@ section (surface + 1px line, radius lg, padding)
 #### Elevation
 
 Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `raised` card gets the raised surface, a stronger border **and** `--ds-shadow-overlay`, so use it only when the card really floats (a pinned side panel, the shell of a custom popover). A card in the normal flow stays `default`.
+
+#### Paper scope
+
+Put `data-theme="paper"` on the `Card` to render the only light surface in the system, for receipt and PDF previews (ADR-0007). The card reads semantic tokens (`--ds-surface`, `--ds-line`, `--ds-text`), which the `[data-theme='paper']` scope remaps on the element itself, so the background, border and text switch with no extra prop. Inside it, `Text`, `Heading` and `Divider` (solid and dashed) follow the same remap; use `<Divider variant="dashed" />` for the total line.
+
+```tsx
+<Card data-theme="paper" title="Receipt #1051">
+  <Text mono>$1,240.00</Text>
+  <Divider variant="dashed" />
+  <Text mono>Total $1,240.00</Text>
+</Card>
+```
+
+Paper-safe components (axe contrast tested in the paper scope): `Card`, `Text`, `Heading`, `Divider`, plus `Badge`, `Alert` and `Button` (see the `PaperReceipt` story). A receipt or PDF component is product domain and is not part of the design system; compose these instead.
 
 #### Accessibility
 
@@ -2815,6 +2922,112 @@ Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `rais
 
 - Instead, see Dialog: For content that interrupts the user: use `Dialog` or `Alert`.
 - Instead, see Alert: For content that interrupts the user: use `Dialog` or `Alert`.
+- Instead, see CardLink: For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
+- Instead, see AddCard: For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
+
+### CardLink
+
+> A card whose whole surface is one link or button. The title is the real interactive
+element (an `<a>` with `href`, a `<button>` with `onPress`) inside a heading, and a
+stretched `::after` makes the full card its hit area. The title is the accessible name; the
+description and meta are the accessible description.
+
+Use it for navigation tiles (a settings category grid). A card that needs inner buttons is a
+`Card` with a `Button` (ADR-0011).
+
+A card whose whole surface is one link or button. Decision: [ADR-0011](../../../docs/adr/0011-interactive-cards.md).
+
+- Import: `import { CardLink } from 'loui-ds';`
+- Status: experimental (do not use in recipes until stable)
+- Source: `src/components/CardLink/CardLink.tsx`
+- Stories (Storybook title `Components/CardLink`): Default, WithLeadingAndMeta, AsButton, LongText, Disabled, Focused, ExternalLink, RightToLeft, InGrid
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | yes |  | Title of the card. It is the accessible name of the link or button, and a real heading (see `headingLevel`). Keep it to a few words ("Billing"). |
+| `href` | `string` |  |  | Destination. Renders a real `<a>`; uses the router set on `DSProvider` for client-side navigation. |
+| `target` | `string` |  |  | Link target. `_blank` adds `rel="noopener noreferrer"` and a hidden "opens in a new tab" note. |
+| `rel` | `string` |  |  | Link relationship, merged with `noopener noreferrer` for `_blank`. |
+| `onPress` | `((event: PressEvent) => void) \| ((event: PressEvent) => void)` |  |  | Fired when the link is pressed, before navigation. Action run when the card is pressed. Renders a real `<button type="button">`. |
+| `description` | `ReactNode` |  |  | Supporting text. It is the accessible description (`aria-describedby`), not part of the name. Plain text only: the whole card is one interactive element, so never put links, buttons or form controls here. |
+| `meta` | `ReactNode` |  |  | Small mono detail under the text ("3 members", "ORD-1048"). Same rule as `description`: no interactive content. |
+| `leading` | `ReactNode` |  |  | Icon or avatar before the text. Decorative: the title names the card. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  |  | Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `3`. |
+| `isDisabled` | `boolean` |  |  | Disables the card: it is dimmed, skipped by `Tab` and ignores presses. |
+| `messages` | `Partial<{ opensInNewTab: string; }>` |  |  | Override the built-in messages for this instance. |
+
+##### Inherited props
+
+- Standard DOM attributes, ARIA attributes and event handlers; other attributes and `ref` go to the root element.
+
+#### Messages (i18n)
+
+Locales shipped: en, pt-BR. Override per instance with the `messages` prop or globally with `<DSProvider messages={{ CardLink: { ... } }}>`.
+
+| Key | English default | Notes |
+| --- | --- | --- |
+| `opensInNewTab` | `(opens in a new tab)` |  |
+
+#### Design tokens used
+
+`--ds-card-link-gap`, `--ds-card-link-text-gap`, `--ds-card-padding`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-body`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-body`, `--ds-lh-meta`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-lg`, `--ds-surface`, `--ds-surface-raised`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+
+#### When to use
+
+- A grid of destinations, such as a settings category grid: each tile opens a page.
+- A tile that runs one action (`onPress`), such as "Import data".
+
+#### When not to use
+
+- A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content).
+- A "create new" tile: use `AddCard`.
+- A plain group of content: use `Card`.
+- A list row: use `ActionList` or a table.
+
+#### Anatomy
+
+```
+div (surface + 1px line, radius lg, padding, hover = raised surface)
+  leading            optional icon or avatar, decorative
+  div
+    h{headingLevel}
+      a | button     the title; its ::after stretches over the whole card
+    p                description (aria-describedby)
+    p                meta, mono (aria-describedby)
+```
+
+#### Accessibility
+
+- One real `<a>` or `<button>`, in a heading, so the card shows up in the heading outline. The name is the title only; the description and meta are announced as the description.
+- Keyboard: `Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button (AGENTS.md section 8).
+- Focus ring on the whole card outline, kept in `forced-colors`. Hover is one surface step lighter. Transitions are neutralized by the global reduced-motion rule.
+- The target is the whole card (well above 24 px).
+- Trade-off: the stretched overlay stops text selection by dragging inside the card.
+
+#### Examples
+
+```tsx
+<Grid minItemWidth="md">
+  <CardLink
+    leading={<Icon icon={UsersIcon} />}
+    title="Team"
+    description="Members, roles and invitations."
+    href="/settings/team"
+  />
+  <CardLink title="Import data" description="Upload a CSV file." onPress={openImport} />
+  <AddCard href="/settings/new">Create category</AddCard>
+</Grid>
+```
+
+#### Related components
+
+- Instead, see Card: A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content).
+- Instead, see Button: A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content).
+- Instead, see AddCard: A "create new" tile: use `AddCard`.
+- Instead, see ActionList: A list row: use `ActionList` or a table.
+- Renders: VisuallyHidden
 
 ### Chart
 
@@ -2834,7 +3047,7 @@ A small responsive bar or line chart for one series, drawn in SVG with no chart 
 - Import: `import { Chart } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Chart/Chart.tsx`
-- Stories (Storybook title `Components/Chart`): Default, Line, Highlight, LineHighlight, NegativeValues, SmallValues, AllZero, SinglePoint, Empty, Tones, CustomHeight, ManyPoints, KeyboardNavigation, Hover, PortugueseBrazil
+- Stories (Storybook title `Components/Chart`): Default, Line, Highlight, LineHighlight, NegativeValues, Notes, LongNote, AverageLine, TargetLine, AverageAndTarget, TickEvery, AnnotatedRtl, SmallValues, AllZero, SinglePoint, Empty, Tones, CustomHeight, ManyPoints, KeyboardNavigation, Hover, PortugueseBrazil
 
 #### Props
 
@@ -2845,11 +3058,14 @@ A small responsive bar or line chart for one series, drawn in SVG with no chart 
 | `format` | `(value: number) => string` |  |  | Formats values on the axis, in the tooltip, in the announcement and in the data table. Receives a number and returns text; use `formatCurrency` or `formatNumber` with the active locale. Default: `formatNumber` (compact on the axis, full in the tooltip). |
 | `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  | `'accent'` | Color of the active point and of the line: `accent` (default), `neutral`, `success`, `warning` or `danger`. |
 | `highlight` | `Readonly<Record<number, string>>` |  |  | Marks points by index with short text, for example `{ 29: 'Today', 12: 'Best day' }`. The marked point is drawn in the strong ink color, and its text is printed above it and read by screen readers, so the highlight never depends on color. Keep the texts short. |
+| `notes` | `Readonly<Record<number, string>>` |  |  | Long text about a point by index, for example `{ 12: 'Free shipping started this day.' }`. Shown under the value in the label of the active point, in the "Note" column of the hidden table and in the announcement of the point. Points with a note get a small diamond marker above them (a shape, not a color). Unlike `highlight`, the text is not printed on the chart, so it may be a full sentence. |
+| `referenceLines` | `readonly ChartReferenceLine[]` |  |  | Dashed lines across the plot, each with its label printed at the end side of the line. `average` and `target` differ by dash pattern and by name. Use `chartAverage(values)` for the average. The lines are listed in the description and in the last rows of the hidden table. A value outside the data range widens the axis. |
+| `tickEvery` | `number` |  |  | Show the label of every nth category (`tickEvery={7}` shows 1st, 8th, 15th...). Default: automatic, labels are skipped only when they would collide. Values below 1 or not finite mean automatic. Points still get a keyboard stop and a table row. |
 | `height` | `string \| number` |  |  | Height of the chart (a number is px, or any CSS length). Default `--ds-chart-height` (200px). The width is always 100% of the container. |
 | `description` | `string` |  |  | Longer description of what the chart shows. Read after the name, together with the keyboard instructions. |
 | `categoryLabel` | `string` |  |  | Header of the category column in the hidden data table. Default: the "Category" message. |
 | `valueLabel` | `string` |  |  | Header of the value column in the hidden data table (for example "Sales"). Default: the "Value" message. |
-| `messages` | `Partial<{ instructions: (count: number, formatted: string) => string; point: (label: string, value: string, position: string, count: string, note?: string) => string; tableCaption: (name?: string) => string; category: string; value: string; note: string; empty: string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `messages` | `Partial<{ instructions: (count: number, formatted: string) => string; point: (label: string, value: string, position: string, count: string, note?: string) => string; tableCaption: (name?: string) => string; ... 7 more ...; empty: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 | `aria-label` | `string` |  |  | Accessible name of the chart: what it shows ("Sales, last 30 days"). Required unless `aria-labelledby` is set. |
 | `aria-labelledby` | `string` |  |  | Id of the element that names the chart (a visible heading). |
 
@@ -2873,11 +3089,15 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | `category` | `Category` | Header of the category column of the data table, unless `categoryLabel` is given. |
 | `value` | `Value` | Header of the value column of the data table, unless `valueLabel` is given. |
 | `note` | `Note` | Header of the note column of the data table (shown when a point is highlighted). |
+| `average` | `Average` | Name of the `average` reference line kind (dash pattern: long dashes). |
+| `target` | `Target` | Name of the `target` reference line kind (dash pattern: dash and dot). |
+| `referenceLine(kind: string, label: string)` | `{kind}, {label}` | Read form of one reference line, used in the description and as the row header in the data table. `kind` is the "Average" / "Target" message; `label` is the author's text. |
+| `referenceSummary(items: string)` | `Reference lines: {items}.` | Sentence added to the description. `items` is the joined list of "kind, label: value". |
 | `empty` | `No data to show` | Text shown inside the plot when there is no data. |
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-chart-area-opacity`, `--ds-chart-bar-radius`, `--ds-chart-color`, `--ds-chart-grid-dash`, `--ds-chart-grid-gap`, `--ds-chart-height`, `--ds-chart-outline-w`, `--ds-chart-point-r`, `--ds-chart-stroke-w`, `--ds-chart-tooltip-padding-block`, `--ds-chart-tooltip-padding-inline`, `--ds-chart-tooltip-x`, `--ds-chart-tooltip-y`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-line-control`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-radius-sm`, `--ds-space-1`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`
+`--ds-accent`, `--ds-bg`, `--ds-chart-area-opacity`, `--ds-chart-bar-radius`, `--ds-chart-color`, `--ds-chart-grid-dash`, `--ds-chart-grid-gap`, `--ds-chart-height`, `--ds-chart-outline-w`, `--ds-chart-point-r`, `--ds-chart-ref-average-dash`, `--ds-chart-ref-average-gap`, `--ds-chart-ref-target-dash`, `--ds-chart-ref-target-dot`, `--ds-chart-ref-target-gap`, `--ds-chart-ref-w`, `--ds-chart-stroke-w`, `--ds-chart-tooltip-max-w`, `--ds-chart-tooltip-padding-block`, `--ds-chart-tooltip-padding-inline`, `--ds-chart-tooltip-x`, `--ds-chart-tooltip-y`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-label`, `--ds-line-control`, `--ds-line-strong`, `--ds-line-subtle`, `--ds-primary-bg`, `--ds-primary-fg`, `--ds-radius-sm`, `--ds-space-1`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -2896,33 +3116,41 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 ```
 div.root
   div[role=img][tabindex=0]   named by aria-label / aria-labelledby, described by the instructions
-    svg[aria-hidden]          grid + tick labels, bars or line + area, category labels, highlight texts
+    svg[aria-hidden]          grid + tick labels, bars or line + area, reference lines + labels, category labels, highlight texts, note markers
     span                      value label of the active point (aria-hidden)
   span                        visually hidden description + keyboard instructions
   span[role=status]           visually hidden polite live region: "Tue: 58. 2 of 7"
-  table (visually hidden)     caption, headers, one row per point
+  table (visually hidden)     caption, headers, one row per point, one footer row per reference line
 ```
 
 #### Props (key ones)
 
-| Prop                          | Type                    | Default  | Notes                                                                             |
-| ----------------------------- | ----------------------- | -------- | --------------------------------------------------------------------------------- |
-| `data`                        | `{ label, value }[]`    | -        | In display order; the chart never sorts                                           |
-| `aria-label`                  | `string`                | -        | Required (or `aria-labelledby`): what the chart shows                             |
-| `type`                        | `bar \| line`           | `bar`    |                                                                                   |
-| `format`                      | `(value) => string`     | `Intl`   | Axis, label, announcement and table. Default: compact on the axis, full elsewhere |
-| `tone`                        | `ChartTone`             | `accent` | Color of the active bar and of the line                                           |
-| `highlight`                   | `Record<index, string>` |          | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced    |
-| `height`                      | `number \| string`      | `200px`  | Width is always 100% of the container                                             |
-| `description`                 | `string`                |          | Longer description, read before the keyboard instructions                         |
-| `categoryLabel`, `valueLabel` | `string`                |          | Headers of the hidden table ("Day", "Sales")                                      |
-| `messages`                    | `Partial<messages>`     |          | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `empty`     |
+| Prop                          | Type                       | Default   | Notes                                                                                                                                   |
+| ----------------------------- | -------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`                        | `{ label, value }[]`       | -         | In display order; the chart never sorts                                                                                                 |
+| `aria-label`                  | `string`                   | -         | Required (or `aria-labelledby`): what the chart shows                                                                                   |
+| `type`                        | `bar \| line`              | `bar`     |                                                                                                                                         |
+| `format`                      | `(value) => string`        | `Intl`    | Axis, label, announcement and table. Default: compact on the axis, full elsewhere                                                       |
+| `tone`                        | `ChartTone`                | `accent`  | Color of the active bar and of the line                                                                                                 |
+| `highlight`                   | `Record<index, string>`    |           | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced                                                          |
+| `notes`                       | `Record<index, string>`    |           | Long text per point: in the label of the active point, the table and the announcement; diamond marker on the point                      |
+| `referenceLines`              | `{ value, label, kind }[]` |           | Dashed lines across the plot (`kind`: `average` or `target`); the axis widens to include them                                           |
+| `tickEvery`                   | `number`                   | automatic | Show every nth category label. Below 1 or not finite means automatic                                                                    |
+| `height`                      | `number \| string`         | `200px`   | Width is always 100% of the container                                                                                                   |
+| `description`                 | `string`                   |           | Longer description, read before the keyboard instructions                                                                               |
+| `categoryLabel`, `valueLabel` | `string`                   |           | Headers of the hidden table ("Day", "Sales")                                                                                            |
+| `messages`                    | `Partial<messages>`        |           | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `average`, `target`, `referenceLine`, `referenceSummary`, `empty` |
+
+`chartAverage(values)` is exported: the mean of numbers (or of `{ value }` data), ignoring non-finite entries, `0` when empty. Use it for the `average` line: `referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.
 
 `niceScale(min, max, tickCount?)` is exported: a pure helper that returns `{ min, max, step, ticks }` for a round axis. It always includes zero, handles all-zero data (0 to 1), tiny values (`0.00003`), huge values, negatives and non-finite input.
 
 #### Accessibility
 
 - The plot is one `role="img"` with an accessible name and a description; the SVG inside is hidden. The visually hidden `<table>` with a `<caption>` is the text alternative and holds every value (and the highlight texts in a "Note" column).
+- Notes: a point with a `notes` entry gets a small diamond above it (a shape, not a color). Its text is shown under the value in the label of the active point (wrapping, up to `--ds-chart-tooltip-max-w`), read in the announcement after the highlight ("Tue: 58, Today. Free shipping started. 2 of 7") and written in the "Note" column of the table. When a point has both, the cell reads "Today. Free shipping started."; the table gets the Note column as soon as any point has a highlight or a note.
+- Reference lines: dashed across the plot with the label and the formatted value as text at the end side of the line ("Goal 120"). `average` uses long dashes, `target` dash and dot, so the kind never depends on color; the line and the text use `text-2`. Screen readers get them in the description ("Reference lines: Average, Weekly mean: 51.5 and Target, Goal: 120.") and in the footer rows of the table ("Average, Weekly mean" / "51.5"). If the label equals the kind name only the kind is read. Two lines closer than a text line put the second label under its line so they do not overprint.
+- Axis labels: by default category labels are skipped automatically when they would collide; `tickEvery` forces every nth label (1 shows all, even if they touch). The keyboard and the table always reach every point.
 - Keyboard: `Tab` focuses the chart (nothing announced yet). Left/Right (also Up/Down) move to the previous/next point, Home/End to the first/last, Escape clears the active point. The first Right arrow goes to the first point, the first Left arrow to the last. Movement stops at the ends.
 - The active point is announced politely ("Tue: 58, Today. 2 of 7") and drawn as a label above it; hover shows the same label. The label is also in the SVG as text, never color-only.
 - Highlights always carry text and a stronger shape (outline on bars, a ring marker on lines), so they do not depend on color. Active bars get a tone fill and outline.
@@ -2939,8 +3167,9 @@ div.root
 #### Limits
 
 - One series per chart. For two series use two charts side by side.
-- Categories are spaced evenly (no time scale); labels are skipped when crowded (the table and the keyboard still reach every point).
-- The value axis always includes zero. Up to about 100 ticks are generated at most (usually 4 to 7).
+- Categories are spaced evenly (no time scale); labels are skipped when crowded unless `tickEvery` is set (the table and the keyboard still reach every point).
+- Reference lines are horizontal only; reference line labels are printed at the end side and can cross bars (they carry a background-colored halo).
+- The value axis always includes zero, and reference line values (a target far above the data, for example) widen it. Up to about 100 ticks are generated at most (usually 4 to 7).
 - Geometry (padding, bar width, label spacing) lives in `chartLayout.ts` as SVG units; every color, stroke, radius and font is a token.
 
 #### Example
@@ -2952,6 +3181,12 @@ div.root
   data={days.map((d) => ({ label: d.day, value: d.totalMinor }))}
   format={(v) => formatCurrency(v, 'USD', locale)}
   highlight={{ 29: 'Today', [bestIndex]: 'Best day' }}
+  notes={{ [bestIndex]: 'Free shipping campaign started this day.' }}
+  referenceLines={[
+    { kind: 'average', label: 'Average', value: chartAverage(days.map((d) => d.totalMinor)) },
+    { kind: 'target', label: 'Goal', value: 500000 },
+  ]}
+  tickEvery={7}
 />
 ```
 
@@ -2981,7 +3216,7 @@ A chat panel for talking to an agent: header with a Clear action, a message log,
 - Import: `import { ChatPanel } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/ChatPanel/ChatPanel.tsx`
-- Stories (Storybook title `Patterns/ChatPanel`): Empty, Conversation, Busy, Streaming, ErrorWithRetry, PrimarySend, LongConversation, LongText, CustomRenderer, RightToLeft, InteractiveStreaming, InteractiveError
+- Stories (Storybook title `Patterns/ChatPanel`): Empty, Conversation, Busy, WithoutIds, CustomBusyLabel, Streaming, ErrorWithRetry, PrimarySend, LongConversation, LongText, CustomRenderer, RightToLeft, InteractiveStreaming, InteractiveError
 
 #### Props
 
@@ -2991,6 +3226,9 @@ A chat panel for talking to an agent: header with a Clear action, a message log,
 | `title` | `ReactNode` |  |  | Heading of the panel. Defaults to the "Chat with the agent" message. |
 | `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` |  | `2` | Heading level of the title (`h1` to `h6`). Default `2`. |
 | `busy` | `boolean` |  | `false` | Waiting for the first part of a reply: shows a spinner with "Thinking…" and disables sending. |
+| `busyLabel` | `string` |  |  | Text shown next to the busy indicator and announced while waiting ("Searching orders…"). Defaults to the "Thinking…" message. |
+| `busyIndicator` | `ReactNode` |  |  | Replaces the default `Spinner` of the busy row. Decorative: the busy text is `busyLabel`. Pass `null` to show the text only. |
+| `getKey` | `(message: ChatMessage, index: number) => string` |  |  | Key of a message, used as the React key and to tell history from news. Must be unique and stable for the same message across renders. Default: `message.id` when present, otherwise the role plus the position among messages of the same role (`user-0`, `assistant-1`), which breaks if you insert or remove messages before the end. Pass `getKey` (or give each message an `id`) whenever the list is not append-only. |
 | `intro` | `ReactNode` |  |  | Short text shown while the conversation is empty. |
 | `prompts` | `readonly string[]` |  | `[]` | Suggested prompts shown while the conversation is empty. Pressing one sends it. |
 | `placeholder` | `string` |  |  | Placeholder of the composer. Never a substitute for its label. |
@@ -3364,7 +3602,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 - Import: `import { ChoiceTiles } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ChoiceTiles/ChoiceTiles.tsx`
-- Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused
+- Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithDetail, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused
 
 #### Props
 
@@ -3403,7 +3641,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-choice-tiles-columns`, `--ds-choice-tiles-gap`, `--ds-choice-tiles-height-lg`, `--ds-choice-tiles-height-md`, `--ds-choice-tiles-min-width`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-choice-tiles-columns`, `--ds-choice-tiles-gap`, `--ds-choice-tiles-height-lg`, `--ds-choice-tiles-height-md`, `--ds-choice-tiles-min-width`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -3424,7 +3662,8 @@ div[role=radiogroup] aria-labelledby=label
   div.grid                   (responsive grid, at most `columns` columns)
     div > label.tile         (one per option; hidden native radio inside)
       label text
-      meta                   (optional, mono)
+      meta                   (optional, mono; text or a short inline node)
+      detail                 (optional second line, body font; the radio's description)
   description / error
 ```
 
@@ -3435,6 +3674,8 @@ div[role=radiogroup] aria-labelledby=label
 - State is not color alone: the selected tile has a doubled (2px) accent border, a soft fill and ink text, and screen readers get "checked".
 - Boundaries: unselected tiles use `--ds-line-control` (3:1) and hover brightens the border instead of changing the fill, so the 3:1 holds in every state. The meta line uses `--ds-text-2` (`--ds-text-3` fails 4.5:1 on the selected fill).
 - Focus: accent border plus ring. Forced colors: the selected border uses `Highlight`.
+
+- `detail` is linked with `aria-describedby`: the radio's name stays the label plus the meta, and the detail is read after it as the description. Use it for a short helpful sentence, not for essential text.
 
 #### Content rules
 
@@ -4578,7 +4819,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 - Import: `import { CurrencyInput } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/CurrencyInput/CurrencyInput.tsx`
-- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled, WithPlaceholder, FullWidthInRow
+- Stories (Storybook title `Components/CurrencyInput`): Default, Filled, WithDescription, ToneMessage, Required, Invalid, Disabled, ReadOnly, AllowNegative, MaxDigits, Brazilian, ZeroAndThreeDigitCurrencies, Sizes, Controlled, WithPlaceholder, FullWidthInRow, AmountMode, AmountModeBrazilian, AmountModeYen
 
 #### Props
 
@@ -4590,6 +4831,7 @@ A money field. The value is an **integer in minor units** plus an ISO 4217 `curr
 | `onChange` | `((minorUnits: number \| null) => void)` |  |  | Called with the new amount in minor units, or `null` when the field is emptied. |
 | `allowNegative` | `boolean` |  | `false` | Accepts negative amounts. Type `-` anywhere to flip the sign. Default `false`. |
 | `maxDigits` | `number` |  | `15` | Most digits the amount may have, fraction digits included (`15` is the maximum, the largest count that is always a safe integer). Typing beyond it is ignored. Default `15`. |
+| `entryMode` | `'cents' \| 'amount'` |  | `'cents'` | How digits are typed. `'cents'` (default) shifts digits in from the right: `200` is 2.00. `'amount'` types whole units: `200` is 200.00, and the decimal mark (`.` or `,`) starts the fraction (`12,5` is 12.50). Both give integer minor units. See "Typing modes" in the docs. |
 | `name` | `string` |  |  | Name for form submission. The form receives the **integer minor units** (`123456`), or an empty string when the field is empty, never the formatted text. |
 | `description` | `ReactNode` |  |  | Helper text under the control. Linked with `aria-describedby`. |
 | `descriptionTone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` |  |  | Tone of the description: `success`, `warning`, `danger` or `accent` for a live check such as "Matches" or "Over by $5". The text carries the meaning; colour only reinforces it. |
@@ -4650,6 +4892,24 @@ Two models were considered:
 
 **Decision: digits-only typing**, with a smarter **paste** (below). The trade-off: a person who types `12.5` gets `$1.25`, not `$12.50`. That is the point of the model (type `1250`), the field always shows what it will submit, and paste covers the decimal-writing habit.
 
+#### Typing modes
+
+`entryMode` chooses how typed digits are read. Both modes keep the value an integer in minor units, call `onChange` with integers or `null`, accept the same smart paste, and honor `maxDigits` and `allowNegative`.
+
+|                     | `cents` (default)                                                    | `amount`                                                                                 |
+| ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Typing `200` in USD | `$2.00`                                                              | `$200.00`                                                                                |
+| Model               | Digits shift in from the right; separators ignored; caret at the end | Digits are whole units; a decimal mark starts the fraction                               |
+| Use for             | Cash-register style, fast numeric-keypad entry, POS                  | People who think in whole units, prices like "200", forms where users type decimal marks |
+
+**Amount mode rules** (`parseCurrencyAmount`, string manipulation only, no floats):
+
+- Digits are whole units until a decimal mark. The mark is the **last** `.` or `,` (or the locale's own decimal mark) when it is the only one of its kind and either it is the locale's decimal mark or it is followed by at most as many digits as the currency has (2 for USD/BRL, 3 for KWD). A mark followed by more digits is grouping and ignored, so users can mix habits: `12.5` and `12,5` both mean 12.50; `1,234.56` (en-US) and `1.234,56` (pt-BR) both mean 1234.56; `1,234` in USD is 1234.00.
+- At most as many fraction digits as the currency has, and `maxDigits` counts minor-unit digits (`maxDigits: 5` allows up to 999.99). After the locale's decimal mark, extra digits are ignored while typing (`12.567` stays `12.56`), and a second locale decimal mark is ignored. JPY (0 digits) has no fraction: marks are ignored.
+- Examples en-US USD: `200` is 20000, `12.5` is 1250, `12,50` is 1250. pt-BR BRL: `200` is 20000, `12,5` is 1250, `1.234,56` is 123456. JPY: `1500` is 1500. KWD en-US: `1.5` is 1500.
+- Limitation: a foreign mark followed by a full fraction and one more digit is regrouped (en-US `12,50` then `7` becomes 12507), the same reading as paste.
+- While focused the box edits **plain text** (no symbol) with normal caret editing, and keeps what you typed readable: `200,` stays `200,`. The existing amount is selected on focus so typing replaces it. On blur the box shows the full currency format (`R$ 200,00`). `Backspace` edits the text, select all + `Delete` gives `null`, and a lone `-` (with `allowNegative`) is negative zero as in `cents` mode. The mobile keyboard is `decimal` (`text` with `allowNegative`).
+
 #### Behavior
 
 - `value` / `defaultValue` / `onChange` are **integer minor units** or `null` (empty, which is not `0`). `onChange` receives `null` when the field is emptied (select all, then `Delete`).
@@ -4667,6 +4927,7 @@ Two models were considered:
 | `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |
 | `value` / `defaultValue` / `onChange`                                                                                                  | `number \| null` in minor units.                                                                   |
 | `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |
+| `entryMode`                                                                                                                            | `'cents'` (default) or `'amount'`. See "Typing modes".                                             |
 | `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |
 | `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |
 | `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |
@@ -5378,14 +5639,14 @@ A 1px line that separates groups of content. Built on React Aria `Separator`.
 - Import: `import { Divider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Divider/Divider.tsx`
-- Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Vertical, Weights
+- Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Dashed, DashedOnPaper, Vertical, Weights
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `orientation` | `'horizontal' \| 'vertical'` |  | `'horizontal'` | `horizontal` (default) separates stacked content; `vertical` separates items in a row and needs a parent with a height. |
-| `variant` | `'subtle' \| 'default' \| 'strong'` |  | `'default'` | Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default` (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls and overlays). Default `default`. |
+| `variant` | `'subtle' \| 'default' \| 'strong' \| 'dashed'` |  | `'default'` | Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default` (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls and overlays). `dashed` is a 1px dashed `--ds-line-strong` rule for a total row or a receipt tear line (AGENTS.md section 7). Default `default`. |
 | `className` | `string` |  |  |  |
 | `ref` | `Ref<HTMLElement>` |  |  | Ref to the separator element. |
 
@@ -5398,7 +5659,7 @@ A 1px line that separates groups of content. Built on React Aria `Separator`.
 
 #### Variants, sizes and tones
 
-- `variant`: `subtle`, `default`, `strong`
+- `variant`: `subtle`, `default`, `strong`, `dashed`
 
 #### Design tokens used
 
@@ -5427,6 +5688,10 @@ div[role=separator]    vertical, with aria-orientation
 - Rendered by React Aria: a horizontal divider is an `<hr>`; a vertical one has `role="separator"` and `aria-orientation="vertical"`.
 - It is a thematic break for assistive technology, so do not use it as a pure visual rule between unrelated things.
 - Line colors are borders, not text; `forced-colors` paints them with `CanvasText`.
+
+#### Dashed rule
+
+`variant="dashed"` is the "total row" rule of AGENTS.md section 7: a 1px dashed line in `--ds-line-strong`, for the line above a total or a tear line on a receipt preview. It works on the dark surfaces and inside the paper scope (`data-theme="paper"`, where the line becomes the paper rule). In `forced-colors` it is drawn with `CanvasText`. Like the other variants it is a decorative border, not a text or control boundary.
 
 #### Examples
 
@@ -5503,7 +5768,7 @@ A circular meter for one proportion: how much of a whole is used, done or filled
 
 - Progress of a task that is running: use `Progress`.
 - A bar in a column or a row: use `Meter` (`Progress` module).
-- Several parts of a whole: use `ProportionBar`.
+- Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.
 - A trend over time: use `Sparkline` or `Chart`.
 
 #### Anatomy
@@ -5549,7 +5814,8 @@ div[role=meter] aria-valuenow/min/max/valuetext
 
 - Instead, see Progress: Progress of a task that is running: use `Progress`.
 - Instead, see Meter: A bar in a column or a row: use `Meter` (`Progress` module).
-- Instead, see ProportionBar: Several parts of a whole: use `ProportionBar`.
+- Instead, see ProportionBar: Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.
+- Instead, see Legend: Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.
 - Instead, see Sparkline: A trend over time: use `Sparkline` or `Chart`.
 - Instead, see Chart: A trend over time: use `Sparkline` or `Chart`.
 
@@ -7027,7 +7293,7 @@ import { Button, CircleCheckIcon, ChevronRightIcon, Icon, PlusIcon } from 'loui-
 #### Related components
 
 - Instead, see Spinner: For a loading indicator that moves: use `Spinner`.
-- Used by: Accordion, AgentCard, Alert, ApprovalCard, Banner, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, ResponseFeedback, SearchInput, Select, StatCard, StatusSteps, Stepper, SubMenu, SuggestionChip, Tag, TagGroup, Timeline, Toggle, ToolCallStep
+- Used by: Accordion, AddCard, AgentCard, Alert, ApprovalCard, Banner, Breadcrumb, Checkbox, ColorOption, Combobox, CommandPalette, DataTable, DatePicker, IconButton, Link, MatrixGrid, Menu, MenuItem, MenuSection, MenuSeparator, MoreActionsMenu, NavItem, Rating, ResponseFeedback, SearchInput, Select, StatCard, StatusSteps, Stepper, SubMenu, SuggestionChip, Tag, TagGroup, Timeline, Toggle, ToolCallStep
 
 ### IconButton
 
@@ -7389,7 +7655,7 @@ Single-line text field with a label, helper text and error text wired together. 
 
 #### When to use
 
-- Short free text, codes, emails, search terms, numbers typed as text.
+- Short free text, codes, emails, passwords, search terms, numbers typed as text. For a password with a show/hide toggle, see the `PasswordField` recipe.
 - Use `mono` for codes and identifiers (`ORD-1048`).
 
 #### When not to use
@@ -7524,6 +7790,8 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 
 #### Accessibility
 
+Inside a `Button` the `Kbd` is `aria-hidden` (the button's `shortcut` prop exposes the keys once through `aria-keyshortcuts`), so the shortcut never doubles the accessible name.
+
 - Screen readers do not reliably read symbols such as `⌘`. Every symbol or abbreviation is `aria-hidden` and followed by a visually hidden spoken name from the message catalog: "Command K", "Control Shift Escape".
 - When the visible text already is the name (`Enter`, `Tab`) nothing is duplicated.
 - The element has no role and is not focusable: it is text. The shortcut itself must be announced where it works (for example `aria-keyshortcuts` on the control, which is the control's responsibility).
@@ -7545,7 +7813,7 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 #### Related components
 
 - Renders: VisuallyHidden
-- Used by: CommandPalette, SearchInput, ShortcutsHelp, Tab, TabList, TabPanel, Tabs
+- Used by: Button, CommandPalette, SearchInput, ShortcutsHelp, Tab, TabList, TabPanel, Tabs
 
 ### Label
 
@@ -7724,7 +7992,7 @@ A list of signed entries: date, title, optional sub line, a signed amount and an
 - Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: stable
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
-- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, EditableAndDeletable, EditOnly, EditInSheet, EditInline, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, NarrowEditableAndDeletable, Empty, Deletable, KeyboardDelete, EditableAndDeletable, EditOnly, EditInSheet, EditInline, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
 
 #### Props
 
@@ -7755,7 +8023,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 #### When to use
 
@@ -7825,6 +8093,10 @@ A drawer that mixes a fixed opening balance with deletable payments, where `askT
 />
 ```
 
+#### Narrow containers
+
+The list is a size container. At 480 px or less the date moves under the title as a meta line, the padding shrinks and the amount, balance and actions columns stay fixed, so titles keep a readable width. The DOM and reading order do not change.
+
 #### Related components
 
 - Instead, see DataTable: Large, sortable or filterable data: use `DataTable`.
@@ -7846,7 +8118,7 @@ A list of the series of a chart: swatch, name and, optionally, a value. With `in
 - Import: `import { Legend } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Legend/Legend.tsx`
-- Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft
+- Stories (Storybook title `Components/Legend`): Default, Vertical, NamesOnly, EightSeries, ExplicitColors, Interactive, InteractiveWithHiddenSeries, LongLabels, WithChart, PortugueseBrazil, RightToLeft, WithShare, ShareOfTotal
 
 #### Props
 
@@ -7858,6 +8130,9 @@ A list of the series of a chart: swatch, name and, optionally, a value. With `in
 | `hiddenIds` | `readonly string[]` |  |  | Controlled list of hidden series ids (interactive legends). |
 | `defaultHiddenIds` | `readonly string[]` |  | `[]` | Initial hidden series ids when uncontrolled. |
 | `onHiddenIdsChange` | `(hiddenIds: string[]) => void` |  |  | Called with the new list of hidden ids whenever the user toggles an item. |
+| `showShare` | `boolean` |  | `false` | Prints the share of each item (its `amount` over the denominator) in a column of its own, formatted with `Intl` for the active locale. When an item also has a `value`, both show, in two aligned columns (value, then share). Hidden series print no share and leave the denominator. Percentages are rounded one by one, so the printed shares may sum to 99% or 101%; raise `shareDigits` when that matters, the legend never adjusts them. |
+| `shareOf` | `number` |  |  | Denominator of the shares, in the unit of `amount`. Default: the sum of the amounts of the visible (not hidden) items. Pass the real total when the items are only part of a whole. |
+| `shareDigits` | `number` |  | `0` | Decimals of the printed shares. Default `0`. |
 | `messages` | `Partial<{ label: string; toggleHint: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 
 ##### Inherited props
@@ -7875,7 +8150,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-legend-color`, `--ds-legend-gap`, `--ds-legend-swatch-size`, `--ds-lh-small`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-surface-hover`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
+`--ds-accent`, `--ds-bg`, `--ds-chart-series-1`, `--ds-chart-series-2`, `--ds-chart-series-3`, `--ds-chart-series-4`, `--ds-chart-series-hatch-size`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-legend-color`, `--ds-legend-gap`, `--ds-legend-share-col-w`, `--ds-legend-swatch-size`, `--ds-lh-small`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-surface-hover`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`
 
 #### When to use
 
@@ -7900,15 +8175,22 @@ VisuallyHidden  hint, linked with aria-describedby (interactive only)
 
 #### Props (key ones)
 
-| Prop                | Type                              | Default        | Notes                                                 |
-| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |
-| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |
-| `orientation`       | `'horizontal' \| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |
-| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |
-| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |
-| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |
-| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |
-| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |
+| Prop                | Type                                       | Default        | Notes                                                      |
+| ------------------- | ------------------------------------------ | -------------- | ---------------------------------------------------------- |
+| `items`             | `{ id, label, value?, amount?, color? }[]` | -              | Same order as the chart: the position sets the swatch      |
+| `showShare`         | `boolean`                                  | `false`        | Prints each item's share of the `amount`s (needs `amount`) |
+| `shareOf`           | `number`                                   | sum of visible | Denominator of the shares                                  |
+| `shareDigits`       | `number`                                   | `0`            | Decimals of the printed shares                             |
+| `orientation`       | `'horizontal' \| 'vertical'`               | `'horizontal'` | Row that wraps, or one item per line                       |
+| `interactive`       | `boolean`                                  | `false`        | Items become toggle buttons                                |
+| `hiddenIds`         | `readonly string[]`                        |                | Controlled hidden series                                   |
+| `defaultHiddenIds`  | `readonly string[]`                        | `[]`           | Initial hidden series when uncontrolled                    |
+| `onHiddenIdsChange` | `(ids: string[]) => void`                  |                | Called on every toggle                                     |
+| `messages`          | `Partial<messages>`                        |                | `label` (list name), `toggleHint`                          |
+
+#### Showing the share
+
+Give each item a numeric `amount` and set `showShare`: the legend prints `amount / denominator` with `formatPercent` for the provider locale. The denominator is the sum of the visible items (hidden series leave it, and print no share) unless you pass `shareOf` because the items are only part of a whole. `value` still works as a free node; with both, a vertical legend lines value and share up in two columns (tabular mono). Percentages are rounded one by one, so three equal items show 33% each and the shares may sum to 99% or 101%. The legend never fudges them; raise `shareDigits` if that matters. `StackedBar` uses this through its `legendShare` prop.
 
 #### Telling series apart without color
 
@@ -8074,6 +8356,11 @@ column. It is an ARIA `grid` with roving focus: the grid is one tab stop, the ar
 between cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last
 cell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.
 
+The row and the column of the focused cell get a subtle surface step (a visual aid; the focus
+ring and the cell name carry the meaning). The column header row and the row header column stay
+fixed while the region scrolls; give the root a height (`className`) to scroll vertically.
+`onToggle` may return a promise for a per-cell pending state (see `onToggle`).
+
 Each cell is a button named "{row} · {column}: linked" / "not linked" (messages). The grid
 scrolls horizontally inside a labelled, focusable region.
 
@@ -8086,7 +8373,7 @@ A rows-by-columns matrix of toggle cells, where each cell links or unlinks one r
 - Import: `import { MatrixGrid } from 'loui-ds/patterns';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/patterns/MatrixGrid/MatrixGrid.tsx`
-- Stories (Storybook title `Patterns/MatrixGrid`): Default, WithCountAndHint, CheckContrast, WithoutColors, ManyColumns, LongLabels, Empty, KeyboardNavigation, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/MatrixGrid`): Default, WithCountAndHint, CheckContrast, WithoutColors, ManyColumns, LongLabels, Empty, KeyboardNavigation, AsyncToggle, StickyHeaders, Portuguese, RightToLeft, Focused
 
 #### Props
 
@@ -8096,11 +8383,12 @@ A rows-by-columns matrix of toggle cells, where each cell links or unlinks one r
 | `rows` | `readonly MatrixGridRow[]` | yes |  | The rows, in display order. Sort them yourself (alphabetically by default). |
 | `columns` | `readonly MatrixGridColumn[]` | yes |  | The columns, in display order. |
 | `isLinked` | `(rowId: string, columnId: string) => boolean` | yes |  | Whether a row and a column are linked. Called for every cell on each render; keep it cheap. |
-| `onToggle` | `(rowId: string, columnId: string) => void` | yes |  | Called with the row and column ids when the user toggles a cell. Update your state in it. |
+| `onToggle` | `(rowId: string, columnId: string) => unknown` | yes |  | Called with the row and column ids when the user toggles a cell. Update your state in it.  It may return a promise (a request to save the link). While it is pending the cell shows a spinner, is `aria-busy` and ignores further toggles. The grid never flips a cell by itself: the cell shows what `isLinked` returns, so if you update optimistically, revert in `onToggleError`. A rejected promise calls `onToggleError`. |
+| `onToggleError` | `(error: unknown, rowId: string, columnId: string) => void` |  |  | Called when the promise returned by `onToggle` rejects, with the error and the cell's ids. Revert an optimistic update here and tell the user (a toast). The grid also announces "Couldn't update {row} · {column}. Try again." in a visually hidden status. |
 | `cornerLabel` | `string` |  |  | Caption of the first (row header) column. Without it a visually hidden "Row" is used. |
 | `countLabel` | `string` |  |  | Adds a last column with the number of linked cells per row; this is its header ("Linked"). |
 | `hint` | `ReactNode` |  |  | Help text under the grid, linked to it with `aria-describedby`. |
-| `messages` | `Partial<{ cell: (row: string, column: string, linked: boolean) => string; scrollRegion: (name: string) => string; rowHeader: string; }>` |  |  | Message overrides for this instance. |
+| `messages` | `Partial<{ cell: (row: string, column: string, linked: boolean) => string; cellPending: (row: string, column: string, linked: boolean) => string; toggleFailed: (row: string, column: string) => string; scrollRegion: (name: string) => string; rowHeader: string; }>` |  |  | Message overrides for this instance. |
 
 ##### Inherited props
 
@@ -8113,12 +8401,14 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | Key | English default | Notes |
 | --- | --- | --- |
 | `cell(row: string, column: string, linked: boolean)` | `{row} · {column}: not linked` | Accessible name of a toggle cell: the row, the column and the state of the link. |
+| `cellPending(row: string, column: string, linked: boolean)` | `{row} · {column}: not linked, saving` | Accessible name of a cell while its toggle request is running. |
+| `toggleFailed(row: string, column: string)` | `Couldn't update {row} · {column}. Try again.` | Status announced when a toggle request fails; the cell keeps its previous state. |
 | `scrollRegion(name: string)` | `{name}, scrollable` | Accessible name of the focusable scroll region around the grid. `name` is the grid's name. |
 | `rowHeader` | `Row` | Hidden header text of the first column when no `cornerLabel` is given. |
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-header-padding-inline`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-header-gap`, `--ds-matrix-grid-row-min-height`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
+`--ds-accent`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-matrix-grid-cell-size`, `--ds-matrix-grid-color`, `--ds-matrix-grid-column-header-padding-inline`, `--ds-matrix-grid-column-width`, `--ds-matrix-grid-columns`, `--ds-matrix-grid-count-width`, `--ds-matrix-grid-label-width`, `--ds-matrix-grid-padding-inline`, `--ds-matrix-grid-row-header-gap`, `--ds-matrix-grid-row-min-height`, `--ds-matrix-grid-sticky-z-index`, `--ds-radius-lg`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-surface`, `--ds-surface-row-hover`, `--ds-swatch-ring`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-text-inverse`, `--ds-tracking-caption`, `--ds-weight-medium`
 
 #### When to use
 
@@ -8143,6 +8433,12 @@ div.root
         rowheader (label + meta) · gridcell > button "{row} · {column}: linked" × N · gridcell (count)
   p.hint
 ```
+
+#### Async toggle, sticky headers and focus guides
+
+- **Async toggle.** `onToggle` may return a promise (saving the link on a server). While it is pending the cell is `aria-busy` (on the `gridcell`), shows a small spinner, is named "{row} · {column}: linked, saving" (message `cellPending`) and ignores further toggles; focus stays on it and other cells keep working. The grid never flips a cell by itself: it shows what `isLinked` says. If you update your state optimistically, revert it in `onToggleError`, which runs when the promise rejects (also when `onToggle` throws). Use it for a toast: `onToggleError={() => toast.error('Could not save the link')}`. The grid also announces "Couldn't update {row} · {column}. Try again." in a visually hidden `role="status"` (message `toggleFailed`).
+- **Sticky headers.** The column header row and the row header column are `position: sticky`; the corner sits above both. For vertical scrolling give the root a height or `max-block-size` through `className` / `style` (the scroll region fills it). `scroll-padding` keeps a focused cell out from behind the sticky parts (WCAG 2.4.11).
+- **Focus guides.** While a cell has focus, its row, its column and the column header get one surface step (`--ds-surface-row-hover`). It is a visual aid only: the focus ring and the cell name carry the meaning, nothing changes in the accessibility tree.
 
 #### Accessibility
 
@@ -8181,7 +8477,7 @@ import { MatrixGrid } from 'loui-ds/patterns';
 - Instead, see DataTable: Reading or sorting data: use a table (`DataTable`).
 - Instead, see CheckboxGroup: One list of independent switches: use `CheckboxGroup` or `Switch`.
 - Instead, see Switch: One list of independent switches: use `CheckboxGroup` or `Switch`.
-- Renders: Icon, Swatch, VisuallyHidden
+- Renders: Icon, Spinner, Swatch, VisuallyHidden
 
 ### Menu
 
@@ -9464,7 +9760,7 @@ One bar split into the parts of a whole (payment methods, composition), with a t
 - Import: `import { ProportionBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ProportionBar/ProportionBar.tsx`
-- Stories (Storybook title `Components/ProportionBar`): Default, WithLegend, EightParts, ExplicitColors, ZeroPart, AllZero, OneDecimalPercent, LongLabels, PortugueseBrazil
+- Stories (Storybook title `Components/ProportionBar`): Default, WithLegend, EightParts, ExplicitColors, ZeroPart, AllZero, OneDecimalPercent, LongLabels, PortugueseBrazil, LegendColumns, PartOfWhole
 
 #### Props
 
@@ -9473,9 +9769,11 @@ One bar split into the parts of a whole (payment methods, composition), with a t
 | `segments` | `readonly ProportionSegment[]` | yes |  | The parts of the whole, in display order. Without `color` they use a neutral ramp of four steps (`text`, `text-2`, `text-3`, `line-control`); from the fifth part on, the ramp repeats with a hatch pattern so no two parts look the same (up to eight; group the tail into "Other" or give explicit colors beyond that). The bar never sorts. |
 | `label` | `string` |  |  | Name of the whole ("Payment methods"). It starts the summary read for the bar. |
 | `legend` | `boolean` |  | `false` | Shows a list under the bar with swatch, label, percentage and formatted value for each part. |
+| `total` | `number` |  |  | The size of the whole, in the unit of the segment values. When it is larger than the sum of the segments, the difference is the remaining part: an unlabelled track after the segments, named "Remaining" in the summary and in the legend. This is how a single segment becomes a "part of the whole" indicator ("Paid 1,240 of 2,000"). When smaller than the sum it is ignored. |
+| `legendColumns` | `readonly ProportionLegendColumn[]` |  | `['share', 'value']` | Columns of the legend, in order: `share` (percentage), `value` (formatted with `format`) and `count` (the segment `count`). Default `['share', 'value']`. Percentages are rounded one by one and may not add up to exactly 100%. |
 | `format` | `(value: number) => ReactNode` |  |  | Formats each value in the legend. Default: `formatNumber` with the active locale. Use `formatCurrency` for money. |
 | `percentDigits` | `number` |  | `0` | Decimals of the percentages in the summary and the legend. Default `0`. |
-| `messages` | `Partial<{ segment: (label: string, percent: string) => string; summary: (items: string, label?: string) => string; }>` |  |  | Per-instance overrides of the built-in messages. |
+| `messages` | `Partial<{ segment: (label: string, percent: string) => string; summary: (items: string, label?: string) => string; remaining: string; }>` |  |  | Per-instance overrides of the built-in messages. |
 
 ##### Inherited props
 
@@ -9489,10 +9787,11 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 | --- | --- | --- |
 | `segment(label: string, percent: string)` | `{label} {percent}` | One segment in the summary read for the bar: "Cash 16%". Both arguments are already formatted. |
 | `summary(items: string, label?: string)` | `{label?}: {items}` | The whole summary. `items` is the list of segments joined for the locale ("Cash 16%, Card 11% and Pix 73%"); `label` names the bar, if given. |
+| `remaining` | `Remaining` | Name of the unfilled part when `total` is larger than the sum of the segments: read in the summary and printed in the legend. |
 
 #### Design tokens used
 
-`--ds-bg`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-proportion-bar-color`, `--ds-proportion-bar-hatch-size`, `--ds-proportion-bar-height`, `--ds-proportion-bar-percent-col-w`, `--ds-proportion-bar-segment-gap`, `--ds-proportion-bar-share`, `--ds-proportion-bar-swatch-size`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
+`--ds-bg`, `--ds-font-mono`, `--ds-fs-label`, `--ds-fs-small`, `--ds-lh-small`, `--ds-line`, `--ds-line-control`, `--ds-line-subtle`, `--ds-proportion-bar-color`, `--ds-proportion-bar-columns`, `--ds-proportion-bar-hatch-size`, `--ds-proportion-bar-height`, `--ds-proportion-bar-percent-col-w`, `--ds-proportion-bar-segment-gap`, `--ds-proportion-bar-share`, `--ds-proportion-bar-swatch-size`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`
 
 #### When to use
 
@@ -9517,14 +9816,40 @@ div.root
 
 #### Props (key ones)
 
-| Prop            | Type                         | Default | Notes                                                                  |
-| --------------- | ---------------------------- | ------- | ---------------------------------------------------------------------- |
-| `segments`      | `{ label, value, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0 |
-| `label`         | `string`                     |         | Name of the whole; starts the summary                                  |
-| `legend`        | `boolean`                    | `false` | List with swatch, label, percentage and formatted value                |
-| `format`        | `(value) => ReactNode`       | `Intl`  | Formats legend values. Use `formatCurrency` for money                  |
-| `percentDigits` | `number`                     | `0`     | Decimals of the percentages                                            |
-| `messages`      | `Partial<messages>`          |         | `segment(label, percent)`, `summary(items, label?)`                    |
+| Prop            | Type                                      | Default | Notes                                                                                                                                               |
+| --------------- | ----------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `segments`      | `{ id?, label, value, count?, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0. `id` links the segment to its legend item, `count` feeds the `count` column |
+| `total`         | `number`                                  |         | Size of the whole. When larger than the sum, the rest is an unlabelled track named "Remaining"                                                      |
+| `legendColumns` | `('share'                                 | 'value' | 'count')[]`                                                                                                                                         | `['share', 'value']` | Columns of the legend, in order |
+| `label`         | `string`                                  |         | Name of the whole; starts the summary                                                                                                               |
+| `legend`        | `boolean`                                 | `false` | List with swatch, label, percentage and formatted value                                                                                             |
+| `format`        | `(value) => ReactNode`                    | `Intl`  | Formats legend values. Use `formatCurrency` for money                                                                                               |
+| `percentDigits` | `number`                                  | `0`     | Decimals of the percentages                                                                                                                         |
+| `messages`      | `Partial<messages>`                       |         | `segment(label, percent)`, `summary(items, label?)`, `remaining`                                                                                    |
+
+#### Part of the whole
+
+A single segment plus `total` is the "Paid 1,240 of 2,000" indicator; there is no separate component:
+
+```tsx
+<ProportionBar
+  label="Invoice"
+  total={2000}
+  legend
+  format={(value) => formatCurrency(value * 100, 'USD', locale)}
+  segments={[{ id: 'paid', label: 'Paid', value: 1240 }]}
+/>
+```
+
+The summary reads "Invoice: Paid 62% and Remaining 38%" (the word comes from the `remaining` message, `Restante` in pt-BR). The remaining part is drawn as the empty track, so it carries no color; in the legend it has a hollow, dashed swatch. A `total` smaller than the sum of the segments is ignored. Use `DonutMeter` instead when the share is the only message and a ring fits better.
+
+#### Linking segments and legend items
+
+Each segment can carry a stable `id`. The bar segment gets `data-segment="<id>"` and its legend item gets the same attribute and the DOM id `<bar id>-<id>`, so tests and consumer code can find the pair. For people the link is the order, the label and the matching swatch (color is never the only link). The bar itself is one `role="img"` whose children are presentational, so the accessible link is the summary: it names every part in the same order as the legend, and the legend repeats the same labels.
+
+#### Legend columns
+
+`legendColumns` picks and orders the columns after the label: `share` (percentage), `value` (formatted with `format`) and `count` (the segment `count`, formatted with `Intl`). All rows share one grid, so the columns line up (tabular mono figures). Shares are rounded one by one and may not add up to 100%.
 
 #### Distinguishing the parts
 
@@ -10264,13 +10589,14 @@ A scrolling container with thin, themed scrollbars that stays keyboard accessibl
 - Import: `import { ScrollArea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ScrollArea/ScrollArea.tsx`
-- Stories (Storybook title `Layout/ScrollArea`): Default, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
+- Stories (Storybook title `Layout/ScrollArea`): Default, MaxHeight, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
 
 #### Props
 
 | Prop | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `orientation` | `'both' \| 'horizontal' \| 'vertical'` |  | `'vertical'` | Which axes scroll. Default `vertical`. |
+| `maxBlockSize` | `string \| number` |  |  | Maximum height of the region: a CSS length (`"20rem"`, `"40vh"`) or a number of pixels. The region grows with its content up to this height and then scrolls, which suits a list that should show a fixed number of rows (a searchable picker). Set as the `--ds-scroll-area-max-h` custom property; without it the region is limited by its parent (`100%`). While it scrolls it stays a focusable, labelled region. |
 | `aria-label` | `string` |  |  | Accessible name of the region ("Order history"). |
 | `aria-labelledby` | `string` |  |  | Id of the element that names the region. |
 
@@ -10280,7 +10606,7 @@ A scrolling container with thin, themed scrollbars that stays keyboard accessibl
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-line-control`, `--ds-space-1`, `--ds-text-3`
+`--ds-accent`, `--ds-line-control`, `--ds-scroll-area-max-h`, `--ds-space-1`, `--ds-text-3`
 
 #### When to use
 
@@ -10848,6 +11174,10 @@ DialogTrigger
         body         scrolls; padded (24px) or not
         footer       sticky: footerStart (destructive) ... footer (Cancel + primary)
 ```
+
+#### Initial focus
+
+React Aria moves focus into the sheet on open: to the first element with `autoFocus` if there is one, otherwise to the dialog itself. This holds for every way of opening it (keyboard or pointer on the trigger, `element.click()` from code, and a controlled sheet without a trigger whose `isOpen` is set from an effect or a timer); regression tests cover each one (GAP-031). If `autoFocus` seems lost in your own tests, the cause is the test environment, not `Sheet`: wait for the dialog to be visible before asserting focus (the field is focused after the overlay mounts).
 
 #### Accessibility
 
@@ -11683,7 +12013,7 @@ One element: a ring with an open top edge. Size comes from `--ds-icon-sm|md|lg`,
 
 - Instead, see Skeleton: For large areas or page loads: use `Skeleton` so the layout does not jump.
 - Instead, see Progress: When you know the progress: use `Progress` with a value.
-- Used by: Button, ChatPanel, Combobox, ToolCallStep
+- Used by: Button, ChatPanel, Combobox, MatrixGrid, ToolCallStep
 
 ### SplitLayout
 
@@ -11876,7 +12206,7 @@ Stacked bars for parts of a whole per category, horizontal (a row per category) 
 - Import: `import { StackedBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StackedBar/StackedBar.tsx`
-- Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft
+- Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft, LegendShare
 
 #### Props
 
@@ -11889,6 +12219,7 @@ Stacked bars for parts of a whole per category, horizontal (a row per category) 
 | `format` | `(value: number) => string` |  |  | Formats values in the totals, the legend, the readout and the data table. Default: `Intl` for the active locale. Use `formatCurrency` for money. |
 | `legend` | `boolean` |  | `true` | Shows the legend under the bars. On by default: the legend is what names the series. |
 | `interactiveLegend` | `boolean` |  | `false` | Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table. |
+| `legendShare` | `boolean` |  | `false` | Adds the share of each series (its total over the total of the visible series) to the legend, next to the formatted total. Hidden series leave the denominator. Shares are rounded one by one and may not add up to exactly 100%. |
 | `hiddenSeries` | `readonly string[]` |  |  | Controlled list of hidden series ids. |
 | `defaultHiddenSeries` | `readonly string[]` |  | `[]` | Initial hidden series ids when uncontrolled. |
 | `onHiddenSeriesChange` | `(hiddenSeries: string[]) => void` |  |  | Called with the new list of hidden series ids when the user toggles a legend item. |
@@ -11950,22 +12281,23 @@ Drawn with HTML and CSS: bars use one scale (the largest total is full length), 
 
 #### Props (key ones)
 
-| Prop                   | Type                         | Default        | Notes                                                                 |
-| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------- |
-| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0     |
-| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)       |
-| `orientation`          | `'horizontal' \| 'vertical'` | `'horizontal'` |                                                                       |
-| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                               |
-| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money      |
-| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby |
-| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                     |
-| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                              |
-| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                               |
-| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                       |
-| `height`               | `number \| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                             |
-| `description`          | `string`                     |                | Read after the name                                                   |
-| `categoryLabel`        | `string`                     | "Category"     | Header of the first table column                                      |
-| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                  |
+| Prop                   | Type                         | Default        | Notes                                                                                               |
+| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------- |
+| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0                                   |
+| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)                                     |
+| `orientation`          | `'horizontal' \| 'vertical'` | `'horizontal'` |                                                                                                     |
+| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                                                             |
+| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money                                    |
+| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby                               |
+| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                                                   |
+| `legendShare`          | `boolean`                    | `false`        | Legend also shows each series' share of the visible total (rounded one by one, may not sum to 100%) |
+| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                                                            |
+| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                                                             |
+| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                                                     |
+| `height`               | `number \| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                                                           |
+| `description`          | `string`                     |                | Read after the name                                                                                 |
+| `categoryLabel`        | `string`                     | "Category"     | Header of the first table column                                                                    |
+| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                                                |
 
 `aria-label` or `aria-labelledby` is required.
 
@@ -12274,14 +12606,16 @@ started") and the current step has `aria-current="step"`. Markers and connectors
 decorative. Completed steps can be buttons with `onStepPress`.
 
 In narrow containers the horizontal orientation shows only the markers and a visible summary
-("Step 3 of 9"), so nine steps fit in 320 px.
+("Step 3 of 9"), so nine steps fit in 320 px. The width at which this happens grows with the step count
+(6, 7 to 8 and 9 or more steps switch at 600, 720 and 800 px), and a label that does not fit
+is clipped after two lines instead of breaking inside a word.
 
 Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.
 
 - Import: `import { Stepper } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stepper/Stepper.tsx`
-- Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, LongLabels, GoBackToCompletedSteps, RightToLeft
+- Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, NineLongLabels700, NineLongLabels900, LongLabels, GoBackToCompletedSteps, RightToLeft
 
 #### Props
 
@@ -12358,7 +12692,7 @@ div[data-orientation]
 - Markers, connectors and the "Step 3 of 9" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.
 - Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.
 - Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.
-- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
+- Reflow: labels never break inside a word; one that does not fit is clipped after two lines. The container width below which the horizontal stepper collapses grows with the step count: 480 px, 600 px for 6 steps, 720 px for 7 or 8 steps and 800 px for 9 or more. Below that width the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
 - Forced colors: markers and connectors use system colors; the state text still names every step.
 
 #### Content rules
@@ -12823,7 +13157,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-divider-width`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -12922,7 +13256,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-divider-width`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -13023,7 +13357,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-divider-width`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -13130,7 +13464,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 #### Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-divider-width`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
 
 #### When to use
 
@@ -14852,7 +15186,7 @@ span.root   (or as="h2", "div", ...)
 #### Related components
 
 - Instead, see SkipLink: For a skip link that appears on focus: use `SkipLink`.
-- Used by: ActionList, Alert, ApprovalCard, Banner, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep
+- Used by: ActionList, AddCard, Alert, ApprovalCard, Banner, CardLink, Chart, ChatPanel, CommandPalette, DataTable, FileUpload, Kbd, Legend, Link, MatrixGrid, NavItem, ResponseFeedback, SegmentedControl, ShortcutsHelp, StackedBar, StatusSteps, Stepper, Tab, TabList, TabPanel, Tabs, Textarea, Timeline, ToastRegion, ToolCallStep
 
 ---
 
@@ -15005,6 +15339,18 @@ useUndoable({ toast, messages: overrides, }?: UseUndoableOptions): UseUndoableRe
 ```
 
 ### Utilities and constants
+
+#### chartAverage
+
+The arithmetic mean of chart values, for an `average` reference line:
+`referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.
+
+Accepts numbers or chart data (`{ value }`). Non-finite entries are ignored; with nothing
+left to average (or the sum overflows) the result is `0`. The result is never `NaN`.
+
+```ts
+chartAverage(values: readonly (number | { readonly value: number; })[]): number
+```
 
 #### compareText
 
@@ -15323,6 +15669,28 @@ become `cafe`. Works per code point so it stays index-aligned with `highlightMat
 
 ```ts
 normalizeSearch(text: string): string
+```
+
+#### parseCurrencyAmount
+
+Parses what the user typed in **whole units** into integer minor units (the `amount` typing
+mode of `CurrencyInput`): `200` is 200.00, so `20000` in BRL; `12,5` is `1250`.
+
+Rules, applied with string manipulation only (no floats):
+- Digits are whole units until a decimal mark; the locale's own digits and full-width digits
+  count. Other characters (symbols, spaces, signs, letters) are ignored.
+- The **last** `.` or `,` (or the locale's decimal mark) starts the fraction when it is the
+  only one of its kind and either it is the locale's decimal mark, or it is followed by at
+  most as many digits as the currency has minor digits (and is not the locale's grouping
+  mark followed by exactly three digits, as in `1.234` for KWD in pt-BR). Otherwise it is
+  grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
+- Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
+  0 minor digits (JPY) have no fraction: every mark is ignored.
+- A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
+  15 digits so it is always a safe integer. The sign is not handled here.
+
+```ts
+parseCurrencyAmount(text: string, currency: string, locale: string): number
 ```
 
 #### parseCurrencyInput
@@ -16776,7 +17144,7 @@ Components: `Button`, `CurrencyInput`, `Text`, `Inline`, `Stack`.
 
 #### What it does
 
-1. **Press** the price (or `Enter` / `Space` on it) to open the field. It takes focus with the current value; the digits-only typing model of `CurrencyInput` applies ("1800" gives $18.00).
+1. **Press** the price (or `Enter` / `Space` on it) to open the field. It takes focus with the current value selected as plain text. The field uses `entryMode="amount"`: digits are whole units and the decimal mark starts the cents ("18" gives $18.00, "12.5" gives $12.50), which matches how people say a price.
 2. **Enter** confirms. **Esc** cancels: the old value stays, nothing is saved, and the key does not close a surrounding dialog or sheet (`stopPropagation`).
 3. **Blur** confirms (clicking or tabbing elsewhere). Focus stays where the user moved it. After Enter or Esc, focus returns to the price button.
 4. **Empty** (select all, then `Delete`) means "no price of its own". The placeholder shows the inherited price while the field is empty, even focused, until the first digit is typed.
@@ -16874,6 +17242,7 @@ export function InlinePriceEdit({
         {editing ? (
           <CurrencyInput
             size="sm"
+            entryMode="amount"
             aria-label={`Price of ${name}`}
             currency={currency}
             inputRef={field}
@@ -17148,6 +17517,150 @@ export function MarkdownChat({ initialItems = INITIAL }: MarkdownChatProps) {
 #### Verified by
 
 `src/recipes/MarkdownMessage/MarkdownMessage.test.tsx` (every supported construct, escaping of raw HTML, unsafe link addresses, unclosed markers while streaming, the chat integration and axe) and the `Recipes/MarkdownMessage` stories.
+
+### PasswordField
+
+Status: experimental
+
+A password field with a show/hide toggle, built from `Input` and a labelled `Button` in its `trailing` slot. It satisfies WCAG 3.3.8 (accessible authentication): pasting and password managers keep working, and nothing asks the user to remember or retype a password.
+
+Components: `Input`, `Button`, `VisuallyHidden`.
+
+#### When to use
+
+- Sign-in, sign-up and change-password forms.
+- Any secret the user types that a typo would make hard to correct: API keys, access tokens.
+
+#### When not to use
+
+- A PIN or one-time code: use `Input` with `inputMode="numeric"` and `autoComplete="one-time-code"`.
+- Confirming a password by typing it twice: do not add a second field. The toggle lets the user check what they typed, and a second field defeats password managers.
+
+#### What it does
+
+1. The field is `type="password"` and the toggle sits inside it, after the text. The toggle is a real button in the tab order, so keyboard and switch users can reach it. Enter and Space press it.
+2. The toggle's visible text and its accessible name change together: "Show" with the name "Show password", then "Hide" with "Hide password". The name contains the visible text (WCAG 2.5.3, Label in Name).
+3. A visually hidden `role="status"` announces "Password shown" or "Password hidden". Focus stays on the toggle, and the typed value is kept.
+4. `mode="current"` sets `autoComplete="current-password"` (sign-in). `mode="new"` sets `autoComplete="new-password"` (sign-up, change password), which also lets the password manager offer a generated password.
+
+#### Why not `autoComplete="off"`
+
+`off` on a password field tells password managers and the browser not to help. Browsers mostly ignore it for login forms, and where they obey it the user is pushed towards a weak, memorable password or to retyping one. WCAG 3.3.8 asks for the opposite: let the user paste and use a manager. Use `current-password` or `new-password`, always.
+
+#### Why not `aria-pressed`
+
+The toggle changes its name ("Show password" / "Hide password"), so its state is already in the name. A button whose name changes **and** has `aria-pressed` reads as "Hide password, pressed", which is ambiguous. Use one of the two: a changing name (this recipe), or a fixed name ("Show password") with `aria-pressed={visible}` and no visible text swap.
+
+#### Things to keep when you adapt it
+
+- Never add an `onPaste` handler that blocks, `autoComplete="off"`, or any rule that forbids pasting.
+- Keep `spellCheck="false"`; a password is not a word.
+- Pass translated strings through `labels`; each pair (visible text and name) must stay consistent, with the visible text inside the name.
+- Do not hide the password again automatically in a way that moves focus or clears the value.
+- Show the password rule in `description` (not in a placeholder) when you create a password, and put server errors in `errorMessage`.
+
+#### Code
+
+<!-- recipe-source:start -->
+
+```tsx
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+import { Button, Input, VisuallyHidden } from 'loui-ds';
+import type { InputProps } from 'loui-ds';
+
+export interface PasswordFieldLabels {
+  /** Visible text of the toggle while the password is hidden. */
+  show: string;
+  /** Visible text of the toggle while the password is visible. */
+  hide: string;
+  /** Accessible name while hidden. Must contain `show` (WCAG 2.5.3 Label in Name). */
+  showPassword: string;
+  /** Accessible name while visible. Must contain `hide`. */
+  hidePassword: string;
+  /** Announced after showing the password. */
+  shown: string;
+  /** Announced after hiding the password. */
+  hidden: string;
+}
+
+const DEFAULT_LABELS: PasswordFieldLabels = {
+  show: 'Show',
+  hide: 'Hide',
+  showPassword: 'Show password',
+  hidePassword: 'Hide password',
+  shown: 'Password shown',
+  hidden: 'Password hidden',
+};
+
+export interface PasswordFieldProps extends Omit<
+  Extract<InputProps, { label: ReactNode }>,
+  'type' | 'trailing' | 'autoComplete' | 'label'
+> {
+  /** Label of the field. */
+  label?: string;
+  /**
+   * `current` for signing in (`autoComplete="current-password"`), `new` for creating or changing
+   * a password (`autoComplete="new-password"`), which also lets a password manager offer a
+   * generated one.
+   */
+  mode?: 'current' | 'new';
+  /** Strings of the toggle, so they can be translated. */
+  labels?: Partial<PasswordFieldLabels>;
+}
+
+/**
+ * A password field with a show/hide toggle. The toggle is a labelled `Button` inside the field,
+ * after the text; it never leaves the tab order, so keyboard and switch users can use it.
+ *
+ * Accessible authentication (WCAG 3.3.8): the field keeps pasting and password managers working.
+ * It sets `autoComplete` to `current-password` or `new-password`, never `off`, and it blocks
+ * nothing: no `onPaste` handler, no `autoComplete="off"`, no "type it, do not paste it" rule.
+ */
+export function PasswordField({
+  label = 'Password',
+  mode = 'current',
+  labels,
+  ...rest
+}: PasswordFieldProps) {
+  const text = { ...DEFAULT_LABELS, ...labels };
+  const [visible, setVisible] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
+
+  function toggle() {
+    const next = !visible;
+    setVisible(next);
+    setAnnouncement(next ? text.shown : text.hidden);
+  }
+
+  return (
+    <>
+      <Input
+        {...rest}
+        label={label}
+        type={visible ? 'text' : 'password'}
+        autoComplete={mode === 'new' ? 'new-password' : 'current-password'}
+        // Passwords are not words: no spell checking.
+        spellCheck="false"
+        trailing={
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label={visible ? text.hidePassword : text.showPassword}
+            isDisabled={rest.isDisabled === true}
+            onPress={toggle}
+          >
+            {visible ? text.hide : text.show}
+          </Button>
+        }
+      />
+      <VisuallyHidden role="status">{announcement}</VisuallyHidden>
+    </>
+  );
+}
+```
+
+<!-- recipe-source:end -->
 
 ### SettingsPage
 

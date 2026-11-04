@@ -21,6 +21,7 @@ export const RECIPE_NAMES = [
   'FormWithValidation',
   'InlinePriceEdit',
   'MarkdownMessage',
+  'PasswordField',
   'SettingsPage',
   'SheetForm',
   'UndoableAction',

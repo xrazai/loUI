@@ -6,14 +6,16 @@
 > decorative. Completed steps can be buttons with `onStepPress`.
 
 In narrow containers the horizontal orientation shows only the markers and a visible summary
-("Step 3 of 9"), so nine steps fit in 320 px.
+("Step 3 of 9"), so nine steps fit in 320 px. The width at which this happens grows with the step count
+(6, 7 to 8 and 9 or more steps switch at 600, 720 and 800 px), and a label that does not fit
+is clipped after two lines instead of breaking inside a word.
 
 Progress through a multi-step flow, such as a 9-step setup assistant. It is an ordered list; each step states its progress as text for assistive technology, and completed steps can optionally be buttons to go back.
 
 - Import: `import { Stepper } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Stepper/Stepper.tsx`
-- Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, LongLabels, GoBackToCompletedSteps, RightToLeft
+- Stories (Storybook title `Components/Stepper`): Default, FirstStep, AllComplete, Vertical, NineStepsNarrow, NineStepsWide, NineLongLabels700, NineLongLabels900, LongLabels, GoBackToCompletedSteps, RightToLeft
 
 ## Props
 
@@ -90,7 +92,7 @@ div[data-orientation]
 - Markers, connectors and the "Step 3 of 9" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.
 - Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.
 - Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.
-- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
+- Reflow: labels never break inside a word; one that does not fit is clipped after two lines. The container width below which the horizontal stepper collapses grows with the step count: 480 px, 600 px for 6 steps, 720 px for 7 or 8 steps and 800 px for 9 or more. Below that width the horizontal labels are visually hidden (still read by screen readers) and a visible "Step N of M: label" line appears. The vertical orientation needs no collapse.
 - Forced colors: markers and connectors use system colors; the state text still names every step.
 
 ## Content rules

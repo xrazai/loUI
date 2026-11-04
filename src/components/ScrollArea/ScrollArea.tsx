@@ -84,6 +84,7 @@ export function ScrollArea({
             } as CSSProperties)
       }
       data-orientation={orientation}
+      data-max-height={maxBlockSize === undefined ? undefined : 'true'}
       data-scrollable={scrollable ? 'true' : undefined}
     >
       <div ref={contentRef} className={styles.content}>

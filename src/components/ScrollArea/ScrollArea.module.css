@@ -1,9 +1,14 @@
 @layer components {
+  /* `maxBlockSize` sets the token inline and this attribute. */
+  .root[data-max-height] {
+    max-block-size: var(--ds-scroll-area-max-h);
+  }
+
   .root {
     box-sizing: border-box;
     min-block-size: 0;
     min-inline-size: 0;
-    max-block-size: var(--ds-scroll-area-max-h, 100%);
+    max-block-size: 100%;
     max-inline-size: 100%;
     overflow: hidden;
     scrollbar-width: thin;

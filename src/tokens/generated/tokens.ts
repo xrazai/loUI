@@ -356,6 +356,7 @@ export type TokenName =
   | 'rating.fill'
   | 'response-feedback.gap'
   | 'response-feedback.divider-gap'
+  | 'scroll-area.max-h'
   | 'segmented-control.padding'
   | 'segmented-control.height-sm'
   | 'segmented-control.height-md'
@@ -807,6 +808,7 @@ export type TokenCssVar =
   | '--ds-rating-fill'
   | '--ds-response-feedback-gap'
   | '--ds-response-feedback-divider-gap'
+  | '--ds-scroll-area-max-h'
   | '--ds-segmented-control-padding'
   | '--ds-segmented-control-height-sm'
   | '--ds-segmented-control-height-md'
@@ -1276,6 +1278,7 @@ export const tokenValues = {
   'rating.fill': { cssVar: '--ds-rating-fill', type: 'dimension', value: '0px' },
   'response-feedback.gap': { cssVar: '--ds-response-feedback-gap', type: 'dimension', value: '4px' },
   'response-feedback.divider-gap': { cssVar: '--ds-response-feedback-divider-gap', type: 'dimension', value: '8px' },
+  'scroll-area.max-h': { cssVar: '--ds-scroll-area-max-h', type: 'dimension', value: '320px' },
   'segmented-control.padding': { cssVar: '--ds-segmented-control-padding', type: 'dimension', value: '2px' },
   'segmented-control.height-sm': { cssVar: '--ds-segmented-control-height-sm', type: 'dimension', value: '24px' },
   'segmented-control.height-md': { cssVar: '--ds-segmented-control-height-md', type: 'dimension', value: '32px' },

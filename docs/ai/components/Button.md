@@ -24,6 +24,7 @@ The control for an action. Built on React Aria's `Button`, styled with tokens an
 | `fullWidth` | `boolean`                                                           |          | `false`       | Stretch to the width of the container.                                                                                                                                                                                                                                                                            |
 | `leading`   | `ReactNode`                                                         |          |               | Node before the label, usually `<Icon size="sm" />`. Decorative; the label names the button.                                                                                                                                                                                                                      |
 | `trailing`  | `ReactNode`                                                         |          |               | Node after the label, for example a `Kbd` shortcut hint.                                                                                                                                                                                                                                                          |
+| `shortcut`  | `readonly string[]`                                                 |          |               | Keyboard shortcut of the action, as `Kbd` keys (`['Mod', 'K']`). Renders the hint after the label (before `trailing`), hidden from assistive technology, and sets `aria-keyshortcuts` so the shortcut is announced once and is not part of the accessible name. Bind the key itself with `useHotkeys`.            |
 | `children`  | `ReactNode`                                                         |          |               | Label: a short verb plus object in sentence case ("Create order").                                                                                                                                                                                                                                                |
 | `className` | `string`                                                            |          |               |                                                                                                                                                                                                                                                                                                                   |
 | `ref`       | `Ref<HTMLButtonElement>`                                            |          |               | Ref to the underlying `<button>` element.                                                                                                                                                                                                                                                                         |
@@ -76,6 +77,8 @@ Use **one `primary` button per screen**, at the top right of the view, ideally w
 
 ## Accessibility
 
+- A `Kbd` inside a button (through `shortcut` or `trailing`) is hidden from assistive technology, so the accessible name is only the label ("Settings", not "Settings Escape"). `shortcut` also sets `aria-keyshortcuts` (`Control+K`, `Meta+K` on Apple).
+
 - A real `<button>`; the name is its visible label.
 - Keys: `Tab` focuses, `Enter` and `Space` press (RAC). One tab stop.
 - Focus: accent border plus a 3px ring through `data-focus-visible`, a transparent outline that forced-colors mode repaints as `Highlight`. Mouse clicks do not show the ring.
@@ -113,5 +116,5 @@ Hover (one surface step lighter; primary dims with `--ds-button-hover-brightness
 
 - Instead, see Link: To navigate to another page: use `Link` (styled as text) so the browser keeps link semantics.
 - Instead, see IconButton: For an icon-only action: use `IconButton`, which requires an accessible name.
-- Renders: Spinner
+- Renders: Kbd, Spinner
 - Used by: ApprovalCard, ChatPanel, ConfirmDialog, DataTable, DatePicker, FileUpload, InlineConfirm, ResponseFeedback, ShortcutsHelp, ToastRegion, Tour

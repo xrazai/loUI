@@ -60,6 +60,7 @@ import { NumberFieldProps as NumberFieldProps_2 } from 'react-aria-components';
 import { Pencil as PencilIcon } from 'lucide-react';
 import { Plus as PlusIcon } from 'lucide-react';
 import { PopoverProps as PopoverProps_2 } from 'react-aria-components';
+import { PressEvent } from 'react-aria-components';
 import { Printer as PrinterIcon } from 'lucide-react';
 import { ProgressBarProps } from 'react-aria-components';
 import { RadioFieldProps } from 'react-aria-components';
@@ -149,6 +150,12 @@ export interface ActionListItem {
 export type ActionListProps = ActionListBaseProps & ActionListNaming;
 
 // @public
+export function AddCard(props: AddCardProps): JSX.Element;
+
+// @public
+export type AddCardProps = AddCardAsLinkProps | AddCardAsButtonProps;
+
+// @public
 export function Alert(input: AlertProps): JSX.Element;
 
 // @public (undocumented)
@@ -156,7 +163,7 @@ export interface AlertProps extends Omit<ComponentPropsWithRef<'div'>, 'title' |
     action?: ReactNode;
     announce?: boolean;
     children?: ReactNode;
-    messages?: Partial<typeof messages_2.en>;
+    messages?: Partial<typeof messages_3.en>;
     onDismiss?: () => void;
     title?: ReactNode;
     tone?: AlertTone;
@@ -186,7 +193,7 @@ export interface AppShellProps extends Omit<ComponentPropsWithRef<'div'>, 'child
     detailLabel?: string;
     isNavOpen?: boolean;
     mainId?: string;
-    messages?: Partial<typeof messages_3.en>;
+    messages?: Partial<typeof messages_4.en>;
     onNavOpenChange?: (isOpen: boolean) => void;
     padded?: boolean;
     sidebar?: ReactNode;
@@ -234,7 +241,7 @@ export interface BannerProps extends Omit<ComponentPropsWithRef<'div'>, 'title' 
     action?: ReactNode;
     announce?: boolean;
     children?: ReactNode;
-    messages?: Partial<typeof messages_4.en>;
+    messages?: Partial<typeof messages_5.en>;
     onDismiss?: () => void;
     title?: ReactNode;
     tone?: BannerTone;
@@ -260,7 +267,7 @@ export interface BreadcrumbItem {
 // @public (undocumented)
 export interface BreadcrumbProps extends Omit<ComponentPropsWithRef<'nav'>, 'children'> {
     items: readonly BreadcrumbItem[];
-    messages?: Partial<typeof messages_5.en>;
+    messages?: Partial<typeof messages_6.en>;
 }
 
 // @public
@@ -274,6 +281,7 @@ export interface ButtonProps extends Omit<ButtonProps_2, 'className' | 'style' |
     fullWidth?: boolean;
     leading?: ReactNode;
     ref?: Ref<HTMLButtonElement>;
+    shortcut?: readonly string[];
     size?: ButtonSize;
     trailing?: ReactNode;
     variant?: ButtonVariant;
@@ -291,7 +299,7 @@ export function Calendar(input: CalendarProps): JSX.Element;
 export { CalendarIcon }
 
 // @public (undocumented)
-export type CalendarMessages = Partial<typeof messages_6.en>;
+export type CalendarMessages = Partial<typeof messages_7.en>;
 
 // @public (undocumented)
 export type CalendarProps = CalendarViewProps & NamedProps & {
@@ -312,6 +320,15 @@ export function Card(input: CardProps): JSX.Element;
 // @public (undocumented)
 export type CardHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
+// @public
+export function CardLink(props: CardLinkProps): JSX.Element;
+
+// @public (undocumented)
+export type CardLinkHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+// @public
+export type CardLinkProps = CardLinkAsLinkProps | CardLinkAsButtonProps;
+
 // @public (undocumented)
 export interface CardProps extends Omit<ComponentPropsWithRef<'section'>, 'title'> {
     actions?: ReactNode;
@@ -327,6 +344,11 @@ export type CardVariant = 'default' | 'raised';
 // @public
 export function Chart(input: ChartProps): JSX.Element;
 
+// @public
+export function chartAverage(values: readonly (number | {
+    readonly value: number;
+})[]): number;
+
 // @public (undocumented)
 export interface ChartDatum {
     label: string;
@@ -335,6 +357,16 @@ export interface ChartDatum {
 
 // @public (undocumented)
 export type ChartProps = ChartBaseProps & ChartNaming;
+
+// @public (undocumented)
+export type ChartReferenceKind = 'average' | 'target';
+
+// @public (undocumented)
+export interface ChartReferenceLine {
+    kind: ChartReferenceKind;
+    label: string;
+    value: number;
+}
 
 // @public (undocumented)
 export type ChartTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
@@ -371,9 +403,10 @@ export function ChoiceTiles(input: ChoiceTilesProps): JSX.Element;
 
 // @public (undocumented)
 export interface ChoiceTilesOption {
+    detail?: ReactNode;
     isDisabled?: boolean;
     label: string;
-    meta?: string;
+    meta?: ReactNode;
     value: string;
 }
 
@@ -395,7 +428,7 @@ export function Code(input: CodeProps): JSX.Element;
 // @public (undocumented)
 export interface CodeProps extends ComponentPropsWithRef<'code'> {
     'aria-label'?: string;
-    messages?: Partial<typeof messages_9.en>;
+    messages?: Partial<typeof messages_11.en>;
     variant?: CodeVariant;
 }
 
@@ -406,7 +439,7 @@ export type CodeVariant = 'inline' | 'block';
 export function ColorField(input: ColorFieldProps): JSX.Element;
 
 // @public (undocumented)
-export type ColorFieldMessages = Partial<typeof messages_10.en & typeof messages_8.en>;
+export type ColorFieldMessages = Partial<typeof messages_12.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export type ColorFieldProps = ColorFieldBaseProps & FieldLabelingProps;
@@ -426,7 +459,7 @@ export interface ComboboxGroup {
 }
 
 // @public (undocumented)
-export type ComboboxMessages = Partial<typeof messages_11.en & typeof messages_8.en>;
+export type ComboboxMessages = Partial<typeof messages_13.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export interface ComboboxOption {
@@ -460,7 +493,7 @@ export interface Command {
 export function CommandPalette(input: CommandPaletteProps): JSX.Element;
 
 // @public (undocumented)
-export type CommandPaletteMessages = Partial<typeof messages_12.en>;
+export type CommandPaletteMessages = Partial<typeof messages_14.en>;
 
 // @public (undocumented)
 export interface CommandPaletteProps {
@@ -497,7 +530,7 @@ export interface ConfirmDialogProps extends Omit<DialogProps, 'footer' | 'role' 
     description: ReactNode;
     initialFocus?: 'cancel' | 'confirm';
     isPending?: boolean;
-    messages?: Partial<typeof messages_13.en>;
+    messages?: Partial<typeof messages_15.en>;
     onConfirm: () => void;
     title: ReactNode;
     tone?: 'danger' | 'neutral';
@@ -575,7 +608,7 @@ export interface DataTableSort {
 export function DatePicker(input: DatePickerProps): JSX.Element;
 
 // @public (undocumented)
-export type DatePickerMessages = Partial<typeof messages_15.en & typeof messages_8.en & CalendarMessages>;
+export type DatePickerMessages = Partial<typeof messages_17.en & typeof messages_10.en & CalendarMessages>;
 
 // @public (undocumented)
 export type DatePickerProps = DatePickerBaseProps & FieldLabelingProps;
@@ -658,7 +691,7 @@ export interface DividerProps extends Omit<SeparatorProps, 'className' | 'style'
 }
 
 // @public (undocumented)
-export type DividerVariant = 'subtle' | 'default' | 'strong';
+export type DividerVariant = 'subtle' | 'default' | 'strong' | 'dashed';
 
 // @public
 export function DonutMeter(input: DonutMeterProps): JSX.Element;
@@ -687,7 +720,7 @@ export interface DrawerProps {
     footer?: ReactNode | ((options: DrawerRenderOptions) => ReactNode);
     headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
     isOpen?: boolean;
-    messages?: Partial<typeof messages_16.en>;
+    messages?: Partial<typeof messages_18.en>;
     onOpenChange?: (isOpen: boolean) => void;
     padded?: boolean;
     placement?: DrawerPlacement;
@@ -892,7 +925,7 @@ export type FileRejectionReason = 'type' | 'size' | 'count';
 export function FileUpload(input: FileUploadProps): JSX.Element;
 
 // @public (undocumented)
-export type FileUploadMessages = Partial<typeof messages_18.en>;
+export type FileUploadMessages = Partial<typeof messages_20.en>;
 
 // @public (undocumented)
 export type FileUploadProps = FileUploadBaseProps & FieldLabelingProps;
@@ -942,7 +975,7 @@ export interface FormProps extends Omit<FormProps_2, 'className' | 'style' | 're
     className?: string;
     errorSummary?: boolean;
     id?: string;
-    messages?: Partial<typeof messages_19.en>;
+    messages?: Partial<typeof messages_21.en>;
     onBlur?: FocusEventHandler<HTMLFormElement>;
     onFocus?: FocusEventHandler<HTMLFormElement>;
     onKeyDown?: KeyboardEventHandler<HTMLFormElement>;
@@ -1210,7 +1243,7 @@ export interface InlineConfirmProps {
     isDisabled?: boolean;
     isOpen?: boolean;
     label: string;
-    messages?: Partial<typeof messages_20.en>;
+    messages?: Partial<typeof messages_22.en>;
     onConfirm: () => void;
     onOpenChange?: (isOpen: boolean) => void;
     prompt?: string | undefined;
@@ -1268,7 +1301,7 @@ export interface LabelProps extends Omit<LabelProps_2, 'className'> {
     // (undocumented)
     className?: string | undefined;
     isRequired?: boolean | undefined;
-    messages?: Partial<typeof messages_8.en> | undefined;
+    messages?: Partial<typeof messages_10.en> | undefined;
     // (undocumented)
     ref?: Ref<HTMLLabelElement> | undefined;
 }
@@ -1281,6 +1314,7 @@ export function Legend(input: LegendProps): JSX.Element;
 
 // @public (undocumented)
 export interface LegendItem {
+    amount?: number;
     color?: string;
     id: string;
     label: string;
@@ -1296,9 +1330,12 @@ export interface LegendProps extends Omit<ComponentPropsWithRef<'ul'>, 'children
     hiddenIds?: readonly string[];
     interactive?: boolean;
     items: readonly LegendItem[];
-    messages?: Partial<typeof messages_22.en>;
+    messages?: Partial<typeof messages_24.en>;
     onHiddenIdsChange?: (hiddenIds: string[]) => void;
     orientation?: LegendOrientation;
+    shareDigits?: number;
+    shareOf?: number;
+    showShare?: boolean;
 }
 
 // @public
@@ -1311,7 +1348,7 @@ export interface LinkProps extends Omit<LinkProps_2, 'className' | 'style' | 'ch
     children?: ReactNode;
     // (undocumented)
     className?: string;
-    messages?: Partial<typeof messages_23.en>;
+    messages?: Partial<typeof messages_25.en>;
     ref?: Ref<HTMLAnchorElement>;
     variant?: LinkVariant;
 }
@@ -1407,7 +1444,7 @@ export function MoreActionsMenu(input: MoreActionsMenuProps): JSX.Element;
 
 // @public (undocumented)
 export interface MoreActionsMenuProps extends Omit<MenuProps, 'trigger'> {
-    messages?: Partial<typeof messages_24.en>;
+    messages?: Partial<typeof messages_26.en>;
     size?: 'sm' | 'md' | 'lg';
 }
 
@@ -1425,7 +1462,7 @@ export interface NavItemProps extends Omit<LinkProps_2, 'className' | 'style' | 
     href?: string;
     icon?: IconComponent;
     isActive?: boolean;
-    messages?: Partial<typeof messages_25.en>;
+    messages?: Partial<typeof messages_27.en>;
     ref?: Ref<HTMLElement>;
 }
 
@@ -1450,7 +1487,7 @@ export function normalizeSearch(text: string): string;
 export function NumberField(input: NumberFieldProps): JSX.Element;
 
 // @public (undocumented)
-export type NumberFieldMessages = Partial<typeof messages_26.en & typeof messages_8.en>;
+export type NumberFieldMessages = Partial<typeof messages_28.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export type NumberFieldProps = NumberFieldBaseProps & FieldLabelingProps;
@@ -1473,13 +1510,16 @@ export function Pagination(input: PaginationProps): JSX.Element;
 // @public (undocumented)
 export interface PaginationProps extends Omit<ComponentPropsWithRef<'div'>, 'children' | 'onChange' | 'defaultValue'> {
     defaultPage?: number;
-    messages?: Partial<typeof messages_27.en>;
+    messages?: Partial<typeof messages_29.en>;
     onChange?: (page: number) => void;
     page?: number;
     pageCount?: number;
     pageSize?: number;
     total?: number;
 }
+
+// @public
+export function parseCurrencyAmount(text: string, currency: string, locale: string): number;
 
 // @public
 export function parseCurrencyInput(text: string, currency: string, locale: string): number;
@@ -1547,14 +1587,21 @@ export interface ProportionBarProps extends Omit<ComponentPropsWithRef<'div'>, '
     format?: (value: number) => ReactNode;
     label?: string;
     legend?: boolean;
-    messages?: Partial<typeof messages_28.en>;
+    legendColumns?: readonly ProportionLegendColumn[];
+    messages?: Partial<typeof messages_30.en>;
     percentDigits?: number;
     segments: readonly ProportionSegment[];
+    total?: number;
 }
+
+// @public
+export type ProportionLegendColumn = 'value' | 'share' | 'count';
 
 // @public (undocumented)
 export interface ProportionSegment {
     color?: string;
+    count?: number;
+    id?: string;
     label: string;
     value: number;
 }
@@ -1592,7 +1639,7 @@ export interface RankListProps extends Omit<ComponentPropsWithRef<'div'>, 'child
     format?: (value: number) => ReactNode;
     items: readonly RankItem[];
     limit?: number;
-    messages?: Partial<typeof messages_29.en>;
+    messages?: Partial<typeof messages_31.en>;
     showPosition?: boolean;
     sort?: RankListSort;
 }
@@ -1606,7 +1653,7 @@ export function Rating(input: RatingProps): JSX.Element;
 // @public (undocumented)
 export interface RatingProps extends Omit<ComponentPropsWithRef<'span'>, 'children' | 'role' | 'aria-label' | 'aria-labelledby' | 'aria-hidden'> {
     max?: number;
-    messages?: Partial<typeof messages_30.en>;
+    messages?: Partial<typeof messages_32.en>;
     showValue?: boolean;
     size?: RatingSize;
     value: number;
@@ -1640,7 +1687,7 @@ export function RequiredMark(input: RequiredMarkProps): JSX.Element;
 
 // @public (undocumented)
 export interface RequiredMarkProps {
-    messages?: Partial<typeof messages_8.en> | undefined;
+    messages?: Partial<typeof messages_10.en> | undefined;
 }
 
 // @public
@@ -1667,7 +1714,7 @@ export { SearchIcon }
 export function SearchInput(props: SearchInputProps): JSX.Element;
 
 // @public (undocumented)
-export type SearchInputMessages = Partial<typeof messages_31.en & typeof messages_8.en>;
+export type SearchInputMessages = Partial<typeof messages_33.en & typeof messages_10.en>;
 
 // @public
 export type SearchInputProps = SearchInputBaseProps & FieldLabelingProps;
@@ -1712,7 +1759,7 @@ export interface SelectGroup {
 }
 
 // @public (undocumented)
-export type SelectMessages = Partial<typeof messages_32.en & typeof messages_8.en>;
+export type SelectMessages = Partial<typeof messages_34.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export interface SelectOption {
@@ -1742,7 +1789,7 @@ export interface SheetProps {
     isDismissable?: boolean;
     isKeyboardDismissDisabled?: boolean;
     isOpen?: boolean;
-    messages?: Partial<typeof messages_33.en>;
+    messages?: Partial<typeof messages_35.en>;
     meta?: ReactNode;
     onOpenChange?: (isOpen: boolean) => void;
     padded?: boolean;
@@ -1764,7 +1811,7 @@ export type SheetSize = 'sm' | 'md' | 'lg';
 export function ShortcutsHelp(input: ShortcutsHelpProps): JSX.Element;
 
 // @public (undocumented)
-export type ShortcutsHelpMessages = Partial<typeof messages_34.en>;
+export type ShortcutsHelpMessages = Partial<typeof messages_36.en>;
 
 // @public (undocumented)
 export interface ShortcutsHelpProps {
@@ -1796,7 +1843,7 @@ export interface SidebarItem {
 export interface SidebarProps extends Omit<ComponentPropsWithRef<'aside'>, 'children' | 'onChange' | 'aria-label'> {
     'aria-label'?: string;
     footer?: ReactNode;
-    messages?: Partial<typeof messages_35.en>;
+    messages?: Partial<typeof messages_37.en>;
     onChange?: (value: string) => void;
     sections: readonly SidebarSection[];
     status?: SidebarStatus;
@@ -1847,7 +1894,7 @@ export function SkipLink(input: SkipLinkProps): JSX.Element;
 // @public (undocumented)
 export interface SkipLinkProps extends Omit<ComponentPropsWithRef<'a'>, 'href' | 'children'> {
     children?: ReactNode;
-    messages?: Partial<typeof messages_36.en>;
+    messages?: Partial<typeof messages_38.en>;
     targetId?: string;
 }
 
@@ -1893,7 +1940,7 @@ export function Spinner(input: SpinnerProps): JSX.Element;
 export interface SpinnerProps extends Omit<ComponentPropsWithRef<'span'>, 'children' | 'role' | 'aria-label' | 'aria-hidden' | 'aria-labelledby'> {
     decorative?: boolean;
     label?: string;
-    messages?: Partial<typeof messages_37.en>;
+    messages?: Partial<typeof messages_39.en>;
     size?: SpinnerSize;
 }
 
@@ -2138,7 +2185,7 @@ export interface TagGroupProps<T extends object = object> extends Omit<TagGroupP
 export function TagInput(input: TagInputProps): JSX.Element;
 
 // @public (undocumented)
-export type TagInputMessages = Partial<typeof messages_43.en & typeof messages_8.en>;
+export type TagInputMessages = Partial<typeof messages_45.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export type TagInputProps = TagInputBaseProps & FieldLabelingProps;
@@ -2164,7 +2211,7 @@ export { Text_2 as Text }
 export function Textarea(input: TextareaProps): JSX.Element;
 
 // @public (undocumented)
-export type TextareaMessages = Partial<typeof messages_44.en & typeof messages_8.en>;
+export type TextareaMessages = Partial<typeof messages_46.en & typeof messages_10.en>;
 
 // @public (undocumented)
 export type TextareaProps = TextareaBaseProps & FieldLabelingProps;
@@ -2228,7 +2275,7 @@ export type TimelineOrder = 'newest-first' | 'oldest-first' | 'as-given';
 export interface TimelineProps extends Omit<ComponentPropsWithRef<'ol'>, 'children'> {
     empty?: ReactNode;
     items: readonly TimelineItem[];
-    messages?: Partial<typeof messages_45.en>;
+    messages?: Partial<typeof messages_47.en>;
     order?: TimelineOrder;
     timeZone?: string;
 }
@@ -2278,7 +2325,7 @@ export function ToastRegion(input: ToastRegionProps): JSX.Element | null;
 // @public (undocumented)
 export interface ToastRegionProps {
     className?: string;
-    messages?: Partial<typeof messages_46.en>;
+    messages?: Partial<typeof messages_48.en>;
     queue?: ToastQueue;
     ref?: Ref<HTMLDivElement>;
 }
@@ -2293,7 +2340,7 @@ export function toastWithUndo(message: ReactNode, options: ToastWithUndoOptions)
 export interface ToastWithUndoOptions extends Omit<ToastOptions, 'tone' | 'action'> {
     groupKey?: string;
     locale?: string;
-    messages?: Partial<typeof messages_46.en>;
+    messages?: Partial<typeof messages_48.en>;
     onUndo: () => void;
     toast?: ToastApi;
     tone?: Exclude<ToastTone, 'danger'>;
@@ -2390,7 +2437,7 @@ export interface TourProps {
     defaultOpen?: boolean;
     defaultStep?: number;
     isOpen?: boolean;
-    messages?: Partial<typeof messages_47.en>;
+    messages?: Partial<typeof messages_49.en>;
     onComplete?: () => void;
     onOpenChange?: (isOpen: boolean) => void;
     onSkip?: () => void;
@@ -2498,7 +2545,7 @@ export function useUndoable(input?: UseUndoableOptions): UseUndoableResult;
 
 // @public (undocumented)
 export interface UseUndoableOptions {
-    messages?: Partial<typeof messages_48.en>;
+    messages?: Partial<typeof messages_50.en>;
     toast?: ToastApi;
 }
 

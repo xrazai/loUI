@@ -31,7 +31,7 @@ Tabs switch between panels of related content on the same page. Built on React A
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-danger`, `--ds-danger-soft`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-small`, `--ds-line`, `--ds-opacity-disabled`, `--ds-radius-pill`, `--ds-radius-sm`, `--ds-space-1`, `--ds-space-2`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-success-soft`, `--ds-tabs-count-padding-inline`, `--ds-tabs-count-size`, `--ds-tabs-divider-width`, `--ds-tabs-gap`, `--ds-tabs-indicator-height`, `--ds-target-min`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-warning`, `--ds-warning-soft`, `--ds-weight-medium`, `--ds-weight-regular`
 
 ## When to use
 

@@ -16,7 +16,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 - Import: `import { ChoiceTiles } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ChoiceTiles/ChoiceTiles.tsx`
-- Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused
+- Stories (Storybook title `Components/ChoiceTiles`): Default, Selected, Medium, ThreeColumns, WithDetail, WithoutMeta, DisabledTile, DisabledGroup, WithDescription, Invalid, Required, LongText, NarrowContainer, RightToLeft, KeyboardSelection, Controlled, Focused
 
 ## Props
 
@@ -55,7 +55,7 @@ Single-choice tiles: a labelled group where the options are drawn as large butto
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-choice-tiles-columns`, `--ds-choice-tiles-gap`, `--ds-choice-tiles-height-lg`, `--ds-choice-tiles-height-md`, `--ds-choice-tiles-min-width`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-regular`
+`--ds-accent`, `--ds-accent-soft`, `--ds-bg`, `--ds-choice-tiles-columns`, `--ds-choice-tiles-gap`, `--ds-choice-tiles-height-lg`, `--ds-choice-tiles-height-md`, `--ds-choice-tiles-min-width`, `--ds-danger`, `--ds-duration`, `--ds-ease`, `--ds-focus-ring`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-meta`, `--ds-fs-small`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-control`, `--ds-opacity-disabled`, `--ds-radius-md`, `--ds-space-1`, `--ds-space-3`, `--ds-text`, `--ds-text-2`, `--ds-text-3`, `--ds-weight-medium`, `--ds-weight-regular`
 
 ## When to use
 
@@ -76,7 +76,8 @@ div[role=radiogroup] aria-labelledby=label
   div.grid                   (responsive grid, at most `columns` columns)
     div > label.tile         (one per option; hidden native radio inside)
       label text
-      meta                   (optional, mono)
+      meta                   (optional, mono; text or a short inline node)
+      detail                 (optional second line, body font; the radio's description)
   description / error
 ```
 
@@ -87,6 +88,8 @@ div[role=radiogroup] aria-labelledby=label
 - State is not color alone: the selected tile has a doubled (2px) accent border, a soft fill and ink text, and screen readers get "checked".
 - Boundaries: unselected tiles use `--ds-line-control` (3:1) and hover brightens the border instead of changing the fill, so the 3:1 holds in every state. The meta line uses `--ds-text-2` (`--ds-text-3` fails 4.5:1 on the selected fill).
 - Focus: accent border plus ring. Forced colors: the selected border uses `Highlight`.
+
+- `detail` is linked with `aria-describedby`: the radio's name stays the label plus the meta, and the detail is read after it as the description. Use it for a short helpful sentence, not for essential text.
 
 ## Content rules
 

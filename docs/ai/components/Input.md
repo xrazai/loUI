@@ -67,7 +67,7 @@ Single-line text field with a label, helper text and error text wired together. 
 
 ## When to use
 
-- Short free text, codes, emails, search terms, numbers typed as text.
+- Short free text, codes, emails, passwords, search terms, numbers typed as text. For a password with a show/hide toggle, see the `PasswordField` recipe.
 - Use `mono` for codes and identifiers (`ORD-1048`).
 
 ## When not to use

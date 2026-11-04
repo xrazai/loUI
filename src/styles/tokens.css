@@ -486,6 +486,9 @@
     --ds-response-feedback-gap: var(--ds-space-1);
     --ds-response-feedback-divider-gap: var(--ds-space-2);
 
+    /* scroll-area */
+    --ds-scroll-area-max-h: 320px;
+
     /* segmented-control */
     --ds-segmented-control-padding: 2px;
     --ds-segmented-control-height-sm: var(--ds-target-min);

@@ -18,7 +18,7 @@ Stacked bars for parts of a whole per category, horizontal (a row per category) 
 - Import: `import { StackedBar } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/StackedBar/StackedBar.tsx`
-- Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft
+- Stories (Storybook title `Components/StackedBar`): Default, Vertical, VerticalTall, Normalized, NormalizedVertical, WithCurrency, EightSeries, ExplicitColors, InteractiveLegend, InteractiveLegendControlled, AllSeriesHidden, KeyboardReadout, WithoutLegend, ZeroBar, Empty, LongLabels, PortugueseBrazil, RightToLeft, LegendShare
 
 ## Props
 
@@ -31,6 +31,7 @@ Stacked bars for parts of a whole per category, horizontal (a row per category) 
 | `format`               | `(value: number) => string`                                                                                                                                                                                                                                                                            |          |                | Formats values in the totals, the legend, the readout and the data table. Default: `Intl` for the active locale. Use `formatCurrency` for money.                                                                                                                       |
 | `legend`               | `boolean`                                                                                                                                                                                                                                                                                              |          | `true`         | Shows the legend under the bars. On by default: the legend is what names the series.                                                                                                                                                                                   |
 | `interactiveLegend`    | `boolean`                                                                                                                                                                                                                                                                                              |          | `false`        | Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table.                                                                                                                                   |
+| `legendShare`          | `boolean`                                                                                                                                                                                                                                                                                              |          | `false`        | Adds the share of each series (its total over the total of the visible series) to the legend, next to the formatted total. Hidden series leave the denominator. Shares are rounded one by one and may not add up to exactly 100%.                                      |
 | `hiddenSeries`         | `readonly string[]`                                                                                                                                                                                                                                                                                    |          |                | Controlled list of hidden series ids.                                                                                                                                                                                                                                  |
 | `defaultHiddenSeries`  | `readonly string[]`                                                                                                                                                                                                                                                                                    |          | `[]`           | Initial hidden series ids when uncontrolled.                                                                                                                                                                                                                           |
 | `onHiddenSeriesChange` | `(hiddenSeries: string[]) => void`                                                                                                                                                                                                                                                                     |          |                | Called with the new list of hidden series ids when the user toggles a legend item.                                                                                                                                                                                     |
@@ -92,22 +93,23 @@ Drawn with HTML and CSS: bars use one scale (the largest total is full length), 
 
 ## Props (key ones)
 
-| Prop                   | Type                         | Default        | Notes                                                                 |
-| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------- |
-| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0     |
-| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)       |
-| `orientation`          | `'horizontal' \| 'vertical'` | `'horizontal'` |                                                                       |
-| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                               |
-| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money      |
-| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby |
-| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                     |
-| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                              |
-| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                               |
-| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                       |
-| `height`               | `number \| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                             |
-| `description`          | `string`                     |                | Read after the name                                                   |
-| `categoryLabel`        | `string`                     | "Category"     | Header of the first table column                                      |
-| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                  |
+| Prop                   | Type                         | Default        | Notes                                                                                               |
+| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------- |
+| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0                                   |
+| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)                                     |
+| `orientation`          | `'horizontal' \| 'vertical'` | `'horizontal'` |                                                                                                     |
+| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                                                             |
+| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money                                    |
+| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby                               |
+| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                                                   |
+| `legendShare`          | `boolean`                    | `false`        | Legend also shows each series' share of the visible total (rounded one by one, may not sum to 100%) |
+| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                                                            |
+| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                                                             |
+| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                                                     |
+| `height`               | `number \| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                                                           |
+| `description`          | `string`                     |                | Read after the name                                                                                 |
+| `categoryLabel`        | `string`                     | "Category"     | Header of the first table column                                                                    |
+| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                                                |
 
 `aria-label` or `aria-labelledby` is required.
 

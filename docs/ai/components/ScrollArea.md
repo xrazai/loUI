@@ -13,15 +13,16 @@ A scrolling container with thin, themed scrollbars that stays keyboard accessibl
 - Import: `import { ScrollArea } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/ScrollArea/ScrollArea.tsx`
-- Stories (Storybook title `Layout/ScrollArea`): Default, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
+- Stories (Storybook title `Layout/ScrollArea`): Default, MaxHeight, NotScrollable, Horizontal, Both, LabelledBy, RightToLeft
 
 ## Props
 
-| Prop              | Type                                   | Required | Default      | Description                                      |
-| ----------------- | -------------------------------------- | -------- | ------------ | ------------------------------------------------ |
-| `orientation`     | `'both' \| 'horizontal' \| 'vertical'` |          | `'vertical'` | Which axes scroll. Default `vertical`.           |
-| `aria-label`      | `string`                               |          |              | Accessible name of the region ("Order history"). |
-| `aria-labelledby` | `string`                               |          |              | Id of the element that names the region.         |
+| Prop              | Type                                   | Required | Default      | Description                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------- | -------------------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `orientation`     | `'both' \| 'horizontal' \| 'vertical'` |          | `'vertical'` | Which axes scroll. Default `vertical`.                                                                                                                                                                                                                                                                                                                                                                                |
+| `maxBlockSize`    | `string \| number`                     |          |              | Maximum height of the region: a CSS length (`"20rem"`, `"40vh"`) or a number of pixels. The region grows with its content up to this height and then scrolls, which suits a list that should show a fixed number of rows (a searchable picker). Set as the `--ds-scroll-area-max-h` custom property; without it the region is limited by its parent (`100%`). While it scrolls it stays a focusable, labelled region. |
+| `aria-label`      | `string`                               |          |              | Accessible name of the region ("Order history").                                                                                                                                                                                                                                                                                                                                                                      |
+| `aria-labelledby` | `string`                               |          |              | Id of the element that names the region.                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Inherited props
 
@@ -29,7 +30,7 @@ A scrolling container with thin, themed scrollbars that stays keyboard accessibl
 
 ## Design tokens used
 
-`--ds-accent`, `--ds-line-control`, `--ds-space-1`, `--ds-text-3`
+`--ds-accent`, `--ds-line-control`, `--ds-scroll-area-max-h`, `--ds-space-1`, `--ds-text-3`
 
 ## When to use
 

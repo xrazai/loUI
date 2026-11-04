@@ -30,7 +30,9 @@ const {
   Breadcrumb,
   Button,
   Calendar,
+  AddCard,
   Card,
+  CardLink,
   Chart,
   Checkbox,
   CommandPalette,
@@ -268,6 +270,8 @@ const CASES: Record<string, () => ReactElement> = {
   ),
   Button: () => <Button>Create order</Button>,
   Calendar: () => <Calendar aria-label="Delivery date" defaultValue="2026-10-15" />,
+  AddCard: () => <AddCard onPress={() => undefined}>Create agent</AddCard>,
+  CardLink: () => <CardLink title="Billing" description="Plans and invoices" href="/billing" />,
   Card: () => <Card title="Summary">Content</Card>,
   Chart: () => (
     <Chart

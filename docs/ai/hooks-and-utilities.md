@@ -152,6 +152,18 @@ useUndoable({ toast, messages: overrides, }?: UseUndoableOptions): UseUndoableRe
 
 ## Utilities and constants
 
+### chartAverage
+
+The arithmetic mean of chart values, for an `average` reference line:
+`referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.
+
+Accepts numbers or chart data (`{ value }`). Non-finite entries are ignored; with nothing
+left to average (or the sum overflows) the result is `0`. The result is never `NaN`.
+
+```ts
+chartAverage(values: readonly (number | { readonly value: number; })[]): number
+```
+
 ### compareText
 
 Compares two strings alphabetically for `locale`; usable as an `Array.prototype.sort` comparator.
@@ -469,6 +481,29 @@ become `cafe`. Works per code point so it stays index-aligned with `highlightMat
 
 ```ts
 normalizeSearch(text: string): string
+```
+
+### parseCurrencyAmount
+
+Parses what the user typed in **whole units** into integer minor units (the `amount` typing
+mode of `CurrencyInput`): `200` is 200.00, so `20000` in BRL; `12,5` is `1250`.
+
+Rules, applied with string manipulation only (no floats):
+
+- Digits are whole units until a decimal mark; the locale's own digits and full-width digits
+  count. Other characters (symbols, spaces, signs, letters) are ignored.
+- The **last** `.` or `,` (or the locale's decimal mark) starts the fraction when it is the
+  only one of its kind and either it is the locale's decimal mark, or it is followed by at
+  most as many digits as the currency has minor digits (and is not the locale's grouping
+  mark followed by exactly three digits, as in `1.234` for KWD in pt-BR). Otherwise it is
+  grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
+- Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
+  0 minor digits (JPY) have no fraction: every mark is ignored.
+- A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
+  15 digits so it is always a safe integer. The sign is not handled here.
+
+```ts
+parseCurrencyAmount(text: string, currency: string, locale: string): number
 ```
 
 ### parseCurrencyInput

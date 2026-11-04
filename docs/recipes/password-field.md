@@ -46,8 +46,8 @@ The toggle changes its name ("Show password" / "Hide password"), so its state is
 ```tsx
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Button, Input, VisuallyHidden } from '../../index';
-import type { InputProps } from '../../index';
+import { Button, Input, VisuallyHidden } from 'loui-ds';
+import type { InputProps } from 'loui-ds';
 
 export interface PasswordFieldLabels {
   /** Visible text of the toggle while the password is hidden. */

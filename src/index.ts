@@ -283,8 +283,16 @@ export { Sparkline } from './components/Sparkline';
 export type { SparklineProps, SparklineTone, SparklineVariant } from './components/Sparkline';
 export { ActionList } from './components/ActionList';
 export type { ActionListItem, ActionListProps } from './components/ActionList';
-export { Chart, niceScale } from './components/Chart';
-export type { ChartDatum, ChartProps, ChartTone, ChartType, NiceScale } from './components/Chart';
+export { Chart, chartAverage, niceScale } from './components/Chart';
+export type {
+  ChartDatum,
+  ChartProps,
+  ChartReferenceKind,
+  ChartReferenceLine,
+  ChartTone,
+  ChartType,
+  NiceScale,
+} from './components/Chart';
 export { StackedBar } from './components/StackedBar';
 export type {
   StackedBarDatum,
@@ -305,7 +313,11 @@ export type {
   SortableValue,
 } from './components/DataTable';
 export { ProportionBar } from './components/ProportionBar';
-export type { ProportionBarProps, ProportionSegment } from './components/ProportionBar';
+export type {
+  ProportionBarProps,
+  ProportionLegendColumn,
+  ProportionSegment,
+} from './components/ProportionBar';
 export { RankList } from './components/RankList';
 export type { RankItem, RankListProps, RankListSort } from './components/RankList';
 export { StatCard } from './components/StatCard';
@@ -355,6 +367,10 @@ export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeTone } from './components/Badge';
 export { Card } from './components/Card';
 export type { CardHeadingLevel, CardProps, CardVariant } from './components/Card';
+export { CardLink } from './components/CardLink';
+export type { CardLinkHeadingLevel, CardLinkProps } from './components/CardLink';
+export { AddCard } from './components/AddCard';
+export type { AddCardProps } from './components/AddCard';
 export { EmptyState } from './components/EmptyState';
 export type { EmptyStateHeadingLevel, EmptyStateProps } from './components/EmptyState';
 export { Kbd } from './components/Kbd';

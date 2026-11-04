@@ -62,7 +62,7 @@ export interface ApprovalCardProps extends Omit<ComponentPropsWithRef<'article'>
 // @public (undocumented)
 export interface ChatMessage {
     content: string;
-    id: string;
+    id?: string;
     role: ChatMessageRole;
     status?: ChatMessageStatus;
 }
@@ -79,6 +79,9 @@ export function ChatPanel(input: ChatPanelProps): JSX.Element;
 // @public (undocumented)
 export interface ChatPanelProps extends Omit<ComponentPropsWithRef<'section'>, 'children' | 'title'> {
     busy?: boolean;
+    busyIndicator?: ReactNode;
+    busyLabel?: string;
+    getKey?: (message: ChatMessage, index: number) => string;
     headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
     intro?: ReactNode;
     items: readonly ChatMessage[];
@@ -179,7 +182,8 @@ export interface MatrixGridProps extends Omit<ComponentPropsWithRef<'div'>, 'chi
     hint?: ReactNode;
     isLinked: (rowId: string, columnId: string) => boolean;
     messages?: Partial<typeof messages_6.en>;
-    onToggle: (rowId: string, columnId: string) => void;
+    onToggle: (rowId: string, columnId: string) => unknown;
+    onToggleError?: (error: unknown, rowId: string, columnId: string) => void;
     rows: readonly MatrixGridRow[];
 }
 

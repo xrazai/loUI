@@ -24,11 +24,11 @@
     }
   ],
   "counts": {
-    "components": 118,
+    "components": 120,
     "hooks": 11,
-    "utilities": 44,
+    "utilities": 46,
     "icons": 40,
-    "recipes": 12
+    "recipes": 13
   },
   "components": [
     {
@@ -760,6 +760,209 @@
           }
         ],
         "uses": ["Checkbox", "EmptyState", "MoreActionsMenu", "VisuallyHidden"],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "AddCard",
+      "kind": "component",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { AddCard } from 'loui-ds';",
+      "folder": "src/components/AddCard",
+      "sourceFile": "src/components/AddCard/AddCard.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A dashed \"create new\" tile that sits in a grid next to cards. The whole tile is one link\n(`href`) or button (`onPress`) with a centred plus icon and a verb-plus-object label. It\nstretches to the height of its row.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Label: a short verb plus object in sentence case (\"Create agent\"). It is the accessible name."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Destination of the create flow. Renders a real `<a>`."
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": false,
+          "description": "Link target. `_blank` adds `rel=\"noopener noreferrer\"` and a hidden \"opens in a new tab\" note."
+        },
+        {
+          "name": "rel",
+          "type": "string",
+          "required": false,
+          "description": "Link relationship, merged with `noopener noreferrer` for `_blank`."
+        },
+        {
+          "name": "onPress",
+          "type": "((event: PressEvent) => void) | ((event: PressEvent) => void)",
+          "required": false,
+          "description": "Fired when the link is pressed, before navigation.\nAction run when the tile is pressed (usually opens a dialog). Renders a real `<button type=\"button\">`."
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLAnchorElement | null) => void | (() => VoidOrUndefinedOnly)) | RefObject<HTMLAnchorElement | null> | ((instance: HTMLButtonElement | null) => void | (() => VoidOrUndefinedOnly)) | RefObject<...> | null",
+          "required": false,
+          "description": "Ref to the underlying `<a>` element.\nRef to the underlying `<button>` element."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Disables the tile: it is dimmed, skipped by `Tab` and ignores presses."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ opensInNewTab: string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "inheritedProps": [],
+      "variants": {},
+      "messages": {
+        "providerKey": "AddCard",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "opensInNewTab",
+            "kind": "string",
+            "default": "(opens in a new tab)"
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-add-card-gap",
+        "--ds-add-card-min-block-size",
+        "--ds-card-padding",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-fs-body",
+        "--ds-lh-body",
+        "--ds-line-strong",
+        "--ds-opacity-disabled",
+        "--ds-radius-lg",
+        "--ds-surface",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/AddCard",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-add-card--default",
+            "hasPlay": true
+          },
+          {
+            "name": "AsLink",
+            "id": "components-add-card--as-link",
+            "hasPlay": true
+          },
+          {
+            "name": "Disabled",
+            "id": "components-add-card--disabled",
+            "hasPlay": false
+          },
+          {
+            "name": "Focused",
+            "id": "components-add-card--focused",
+            "description": "Keyboard focus draws the accent border and ring.",
+            "hasPlay": true
+          },
+          {
+            "name": "LongText",
+            "id": "components-add-card--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-add-card--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "InGrid",
+            "id": "components-add-card--in-grid",
+            "description": "In a grid the tile stretches to the height of the tallest card in its row.",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/AddCard/AddCard.md",
+        "summary": "A dashed \"create new\" tile that sits in a grid next to cards. Decision: [ADR-0011](../../../docs/adr/0011-interactive-cards.md).",
+        "whenToUse": [
+          "The last tile of a grid of cards, to create another one (\"Create agent\", \"Create report\")."
+        ],
+        "whenNotToUse": [
+          "A navigation or action tile with a title and description: use `CardLink`.",
+          "A card that groups content: use `Card`.",
+          "The primary action of a screen: use a primary `Button`.",
+          "A tile that is not available yet and does nothing: render a non-interactive card (for example `AgentCard status=\"soon\"`), not a disabled `AddCard`, unless you want to show that creation is currently blocked."
+        ],
+        "keyboard": [
+          "`Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button."
+        ],
+        "examples": [],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- The last tile of a grid of cards, to create another one (\"Create agent\", \"Create report\")."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A navigation or action tile with a title and description: use `CardLink`.\n- A card that groups content: use `Card`.\n- The primary action of a screen: use a primary `Button`.\n- A tile that is not available yet and does nothing: render a non-interactive card (for example `AgentCard status=\"soon\"`), not a disabled `AddCard`, unless you want to show that creation is currently blocked."
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop           | Type                         | Default | Notes                                                                   |\n| -------------- | ---------------------------- | ------- | ----------------------------------------------------------------------- |\n| `children`     | `ReactNode`                  |         | Required. Verb plus object in sentence case (\"Create agent\"). The name. |\n| `href`         | `string`                     |         | Renders an `<a>`.                                                       |\n| `target`/`rel` | `string`                     |         | With `href`. `_blank` adds `rel` and a hidden note.                     |\n| `onPress`      | `(e: PressEvent) => void`    |         | Required without `href` (renders a `<button>`).                         |\n| `isDisabled`   | `boolean`                    | `false` | Dimmed, skipped by `Tab`.                                               |\n| `messages`     | `{ opensInNewTab?: string }` |         | Per-instance message override.                                          |\n| `className`    | `string`                     |         |                                                                         |\n| `ref`          | element ref                  |         | The `<a>` or `<button>`.                                                |"
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- One real `<a>` or `<button>` named by the label; the plus icon is decorative.\n- `Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button.\n- Focus: accent border and ring (kept in `forced-colors`). Hover: one surface step lighter. Dashed border marks an \"add\" slot (AGENTS.md section 7).\n- It stretches to the height of its row in a `Grid`; minimum height 64 px."
+          },
+          {
+            "id": "example",
+            "heading": "Example",
+            "content": "```tsx\n<Grid minItemWidth=\"md\">\n  <Card title=\"Support agent\">…</Card>\n  <AddCard onPress={openCreateAgent}>Create agent</AddCard>\n</Grid>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "CardLink",
+            "reason": "A navigation or action tile with a title and description: use `CardLink`."
+          },
+          {
+            "name": "Card",
+            "reason": "A card that groups content: use `Card`."
+          },
+          {
+            "name": "Button",
+            "reason": "The primary action of a screen: use a primary `Button`."
+          }
+        ],
+        "uses": ["Icon", "VisuallyHidden"],
         "usedBy": []
       }
     },
@@ -3192,6 +3395,12 @@
           "description": "Node after the label, for example a `Kbd` shortcut hint."
         },
         {
+          "name": "shortcut",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Keyboard shortcut of the action, as `Kbd` keys (`['Mod', 'K']`). Renders the hint after the\nlabel (before `trailing`), hidden from assistive technology, and sets `aria-keyshortcuts` so\nthe shortcut is announced once and is not part of the accessible name. Bind the key itself\nwith `useHotkeys`."
+        },
+        {
           "name": "children",
           "type": "ReactNode",
           "required": false,
@@ -3734,12 +3943,12 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop         | Type                                                                | Default       | Notes                                                                                                   |\n| ------------ | ------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |\n| `variant`    | `'primary' \\| 'secondary' \\| 'ghost' \\| 'danger' \\| 'danger-solid'` | `'secondary'` | See above.                                                                                              |\n| `size`       | `'sm' \\| 'md' \\| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                                          |\n| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                                    |\n| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size=\"sm\" />`. Decorative.                                                               |\n| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                                    |\n| `isPending`  | `boolean`                                                           | `false`       | Busy: dimmed label plus spinner, `aria-disabled`, presses and form submission ignored, stays focusable. |\n| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                                          |\n| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`.               |\n| `type`       | `'button' \\| 'submit' \\| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                                            |\n| `className`  | `string`                                                            | none          | Merged with the component class.                                                                        |\n\nOther React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted."
+            "content": "| Prop         | Type                                                                | Default       | Notes                                                                                                   |\n| ------------ | ------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |\n| `variant`    | `'primary' \\| 'secondary' \\| 'ghost' \\| 'danger' \\| 'danger-solid'` | `'secondary'` | See above.                                                                                              |\n| `size`       | `'sm' \\| 'md' \\| 'lg'`                                              | `'md'`        | 32, 40, 48 px (`--ds-control-h-*`). Taller if the label wraps.                                          |\n| `fullWidth`  | `boolean`                                                           | `false`       | Fills the container.                                                                                    |\n| `leading`    | `ReactNode`                                                         | none          | Usually `<Icon size=\"sm\" />`. Decorative.                                                               |\n| `trailing`   | `ReactNode`                                                         | none          | For example a shortcut hint in mono.                                                                    |\n| `shortcut`   | `readonly string[]`                                                 | none          | Shortcut keys (`['Mod', 'K']`): renders a `Kbd` hint, sets `aria-keyshortcuts`; not part of the name.   |\n| `isPending`  | `boolean`                                                           | `false`       | Busy: dimmed label plus spinner, `aria-disabled`, presses and form submission ignored, stays focusable. |\n| `isDisabled` | `boolean`                                                           | `false`       | Native `disabled`: not focusable, 35% opacity.                                                          |\n| `onPress`    | `(e: PressEvent) => void`                                           | none          | React Aria press event (mouse, touch, keyboard, screen reader). Prefer it over `onClick`.               |\n| `type`       | `'button' \\| 'submit' \\| 'reset'`                                   | `'button'`    | Stays `button` so a button never submits a form by accident.                                            |\n| `className`  | `string`                                                            | none          | Merged with the component class.                                                                        |\n\nOther React Aria `Button` props (`form*`, `autoFocus`, `aria-*`, `onHoverStart`, ...) and `ref` pass through. `style` and render-prop children are not accepted."
           },
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- A real `<button>`; the name is its visible label.\n- Keys: `Tab` focuses, `Enter` and `Space` press (RAC). One tab stop.\n- Focus: accent border plus a 3px ring through `data-focus-visible`, a transparent outline that forced-colors mode repaints as `Highlight`. Mouse clicks do not show the ring.\n- Pending: the button stays in the tab order (focus is not lost while waiting) with `aria-disabled=\"true\"` (React Aria does not set `aria-busy`). React Aria announces the busy state when the focused button becomes pending and again when it finishes. The spinner is named \"Loading\" (pt-BR \"Carregando\", from the `Spinner` messages) and sits inside the button so it is part of the button's content.\n- Disabled: removed from the tab order. Explain _why_ in nearby text rather than relying on a disabled button alone.\n- Targets: at least 32px high, above the 24px minimum of WCAG 2.5.8.\n- Contrast: label colors meet 4.5:1 on their backgrounds in every variant; disabled controls are exempt.\n- Reduced motion: the only transition is a 150ms background color change, which the global reduced-motion rule neutralizes. The pending spinner turns into a static ring."
+            "content": "- A `Kbd` inside a button (through `shortcut` or `trailing`) is hidden from assistive technology, so the accessible name is only the label (\"Settings\", not \"Settings Escape\"). `shortcut` also sets `aria-keyshortcuts` (`Control+K`, `Meta+K` on Apple).\n\n- A real `<button>`; the name is its visible label.\n- Keys: `Tab` focuses, `Enter` and `Space` press (RAC). One tab stop.\n- Focus: accent border plus a 3px ring through `data-focus-visible`, a transparent outline that forced-colors mode repaints as `Highlight`. Mouse clicks do not show the ring.\n- Pending: the button stays in the tab order (focus is not lost while waiting) with `aria-disabled=\"true\"` (React Aria does not set `aria-busy`). React Aria announces the busy state when the focused button becomes pending and again when it finishes. The spinner is named \"Loading\" (pt-BR \"Carregando\", from the `Spinner` messages) and sits inside the button so it is part of the button's content.\n- Disabled: removed from the tab order. Explain _why_ in nearby text rather than relying on a disabled button alone.\n- Targets: at least 32px high, above the 24px minimum of WCAG 2.5.8.\n- Contrast: label colors meet 4.5:1 on their backgrounds in every variant; disabled controls are exempt.\n- Reduced motion: the only transition is a 150ms background color change, which the global reduced-motion rule neutralizes. The pending spinner turns into a static ring."
           },
           {
             "id": "content-rules",
@@ -3774,7 +3983,7 @@
             "reason": "For an icon-only action: use `IconButton`, which requires an accessible name."
           }
         ],
-        "uses": ["Spinner"],
+        "uses": ["Kbd", "Spinner"],
         "usedBy": [
           "ApprovalCard",
           "ChatPanel",
@@ -4248,6 +4457,12 @@
             "id": "components-card--paper-receipt",
             "description": "The paper scope (`data-theme=\"paper\"`): the only light surface, for receipt and PDF previews.\nSuccess, warning and danger use their darker paper twins (TOK-012), so badges, alerts and\ntinted buttons keep 4.5:1 on the paper.",
             "hasPlay": false
+          },
+          {
+            "name": "ReceiptPreview",
+            "id": "components-card--receipt-preview",
+            "description": "The entry point of the paper scope: put `data-theme=\"paper\"` on the `Card` itself. The card\ntakes the light paper surface, border and text, and nested `Text`, `Heading` and `Divider`\n(solid and dashed) follow. This is an example composition, not a receipt component.",
+            "hasPlay": false
           }
         ]
       },
@@ -4261,7 +4476,8 @@
         "whenNotToUse": [
           "To wrap a whole page: use the page layout.",
           "For content that interrupts the user: use `Dialog` or `Alert`.",
-          "Do not nest a Card inside a Card; use a divider instead."
+          "Do not nest a Card inside a Card; use a divider instead.",
+          "For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed \"create new\" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`."
         ],
         "keyboard": [],
         "examples": [
@@ -4276,7 +4492,7 @@
           {
             "id": "when-not-to-use",
             "heading": "When not to use",
-            "content": "- To wrap a whole page: use the page layout.\n- For content that interrupts the user: use `Dialog` or `Alert`.\n- Do not nest a Card inside a Card; use a divider instead."
+            "content": "- To wrap a whole page: use the page layout.\n- For content that interrupts the user: use `Dialog` or `Alert`.\n- Do not nest a Card inside a Card; use a divider instead.\n- For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed \"create new\" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`."
           },
           {
             "id": "anatomy",
@@ -4292,6 +4508,11 @@
             "id": "elevation",
             "heading": "Elevation",
             "content": "Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `raised` card gets the raised surface, a stronger border **and** `--ds-shadow-overlay`, so use it only when the card really floats (a pinned side panel, the shell of a custom popover). A card in the normal flow stays `default`."
+          },
+          {
+            "id": "paper-scope",
+            "heading": "Paper scope",
+            "content": "Put `data-theme=\"paper\"` on the `Card` to render the only light surface in the system, for receipt and PDF previews (ADR-0007). The card reads semantic tokens (`--ds-surface`, `--ds-line`, `--ds-text`), which the `[data-theme='paper']` scope remaps on the element itself, so the background, border and text switch with no extra prop. Inside it, `Text`, `Heading` and `Divider` (solid and dashed) follow the same remap; use `<Divider variant=\"dashed\" />` for the total line.\n\n```tsx\n<Card data-theme=\"paper\" title=\"Receipt #1051\">\n  <Text mono>$1,240.00</Text>\n  <Divider variant=\"dashed\" />\n  <Text mono>Total $1,240.00</Text>\n</Card>\n```\n\nPaper-safe components (axe contrast tested in the paper scope): `Card`, `Text`, `Heading`, `Divider`, plus `Badge`, `Alert` and `Button` (see the `PaperReceipt` story). A receipt or PDF component is product domain and is not part of the design system; compose these instead."
           },
           {
             "id": "accessibility",
@@ -4324,9 +4545,293 @@
           {
             "name": "Alert",
             "reason": "For content that interrupts the user: use `Dialog` or `Alert`."
+          },
+          {
+            "name": "CardLink",
+            "reason": "For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed \"create new\" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`."
+          },
+          {
+            "name": "AddCard",
+            "reason": "For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed \"create new\" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`."
           }
         ],
         "uses": [],
+        "usedBy": []
+      }
+    },
+    {
+      "name": "CardLink",
+      "kind": "component",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { CardLink } from 'loui-ds';",
+      "folder": "src/components/CardLink",
+      "sourceFile": "src/components/CardLink/CardLink.tsx",
+      "status": "experimental",
+      "statusSource": "doc",
+      "description": "A card whose whole surface is one link or button. The title is the real interactive\nelement (an `<a>` with `href`, a `<button>` with `onPress`) inside a heading, and a\nstretched `::after` makes the full card its hit area. The title is the accessible name; the\ndescription and meta are the accessible description.\n\nUse it for navigation tiles (a settings category grid). A card that needs inner buttons is a\n`Card` with a `Button` (ADR-0011).",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Title of the card. It is the accessible name of the link or button, and a real heading\n(see `headingLevel`). Keep it to a few words (\"Billing\")."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Destination. Renders a real `<a>`; uses the router set on `DSProvider` for client-side navigation."
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": false,
+          "description": "Link target. `_blank` adds `rel=\"noopener noreferrer\"` and a hidden \"opens in a new tab\" note."
+        },
+        {
+          "name": "rel",
+          "type": "string",
+          "required": false,
+          "description": "Link relationship, merged with `noopener noreferrer` for `_blank`."
+        },
+        {
+          "name": "onPress",
+          "type": "((event: PressEvent) => void) | ((event: PressEvent) => void)",
+          "required": false,
+          "description": "Fired when the link is pressed, before navigation.\nAction run when the card is pressed. Renders a real `<button type=\"button\">`."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Supporting text. It is the accessible description (`aria-describedby`), not part of the\nname. Plain text only: the whole card is one interactive element, so never put links,\nbuttons or form controls here."
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Small mono detail under the text (\"3 members\", \"ORD-1048\"). Same rule as `description`: no interactive content."
+        },
+        {
+          "name": "leading",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Icon or avatar before the text. Decorative: the title names the card."
+        },
+        {
+          "name": "headingLevel",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "description": "Heading level of the title (`h1` to `h6`). Pick the level that fits the page outline. Default `3`.",
+          "values": ["1", "2", "3", "4", "5", "6"]
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Disables the card: it is dimmed, skipped by `Tab` and ignores presses."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<{ opensInNewTab: string; }>",
+          "required": false,
+          "description": "Override the built-in messages for this instance."
+        }
+      ],
+      "inheritedProps": [
+        {
+          "source": "@types/react",
+          "interface": "AriaAttributes",
+          "domGeneric": true,
+          "count": 53
+        },
+        {
+          "source": "@types/react",
+          "interface": "Attributes",
+          "domGeneric": true,
+          "count": 1
+        },
+        {
+          "source": "@types/react",
+          "interface": "DOMAttributes",
+          "domGeneric": true,
+          "count": 167
+        },
+        {
+          "source": "@types/react",
+          "interface": "HTMLAttributes",
+          "domGeneric": true,
+          "count": 51
+        },
+        {
+          "source": "@types/react",
+          "interface": "RefAttributes",
+          "domGeneric": true,
+          "count": 1
+        }
+      ],
+      "variants": {},
+      "messages": {
+        "providerKey": "CardLink",
+        "locales": ["en", "pt-BR"],
+        "keys": [
+          {
+            "key": "opensInNewTab",
+            "kind": "string",
+            "default": "(opens in a new tab)"
+          }
+        ]
+      },
+      "cssVariables": [
+        "--ds-card-link-gap",
+        "--ds-card-link-text-gap",
+        "--ds-card-padding",
+        "--ds-duration",
+        "--ds-ease",
+        "--ds-focus-ring",
+        "--ds-font-mono",
+        "--ds-fs-body",
+        "--ds-fs-meta",
+        "--ds-fs-small",
+        "--ds-lh-body",
+        "--ds-lh-meta",
+        "--ds-lh-small",
+        "--ds-line",
+        "--ds-opacity-disabled",
+        "--ds-radius-lg",
+        "--ds-surface",
+        "--ds-surface-raised",
+        "--ds-text",
+        "--ds-text-2",
+        "--ds-text-3",
+        "--ds-weight-medium"
+      ],
+      "stories": {
+        "title": "Components/CardLink",
+        "tags": ["autodocs"],
+        "items": [
+          {
+            "name": "Default",
+            "id": "components-card-link--default",
+            "description": "The title is the link; its name is only the title, the description is the accessible description.",
+            "hasPlay": true
+          },
+          {
+            "name": "WithLeadingAndMeta",
+            "id": "components-card-link--with-leading-and-meta",
+            "hasPlay": false
+          },
+          {
+            "name": "AsButton",
+            "id": "components-card-link--as-button",
+            "hasPlay": true
+          },
+          {
+            "name": "LongText",
+            "id": "components-card-link--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "Disabled",
+            "id": "components-card-link--disabled",
+            "hasPlay": true
+          },
+          {
+            "name": "Focused",
+            "id": "components-card-link--focused",
+            "description": "Keyboard focus draws the ring on the whole card outline.",
+            "hasPlay": true
+          },
+          {
+            "name": "ExternalLink",
+            "id": "components-card-link--external-link",
+            "hasPlay": false
+          },
+          {
+            "name": "RightToLeft",
+            "id": "components-card-link--right-to-left",
+            "hasPlay": false
+          },
+          {
+            "name": "InGrid",
+            "id": "components-card-link--in-grid",
+            "description": "Next to plain `Card`s and an `AddCard`; every tile stretches to the row height.",
+            "hasPlay": false
+          }
+        ]
+      },
+      "docs": {
+        "path": "src/components/CardLink/CardLink.md",
+        "summary": "A card whose whole surface is one link or button. Decision: [ADR-0011](../../../docs/adr/0011-interactive-cards.md).",
+        "whenToUse": [
+          "A grid of destinations, such as a settings category grid: each tile opens a page.",
+          "A tile that runs one action (`onPress`), such as \"Import data\"."
+        ],
+        "whenNotToUse": [
+          "A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content).",
+          "A \"create new\" tile: use `AddCard`.",
+          "A plain group of content: use `Card`.",
+          "A list row: use `ActionList` or a table."
+        ],
+        "keyboard": [
+          "Keyboard: `Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button (AGENTS.md section 8)."
+        ],
+        "examples": [
+          "<Grid minItemWidth=\"md\">\n  <CardLink\n    leading={<Icon icon={UsersIcon} />}\n    title=\"Team\"\n    description=\"Members, roles and invitations.\"\n    href=\"/settings/team\"\n  />\n  <CardLink title=\"Import data\" description=\"Upload a CSV file.\" onPress={openImport} />\n  <AddCard href=\"/settings/new\">Create category</AddCard>\n</Grid>"
+        ],
+        "sections": [
+          {
+            "id": "when-to-use",
+            "heading": "When to use",
+            "content": "- A grid of destinations, such as a settings category grid: each tile opens a page.\n- A tile that runs one action (`onPress`), such as \"Import data\"."
+          },
+          {
+            "id": "when-not-to-use",
+            "heading": "When not to use",
+            "content": "- A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content).\n- A \"create new\" tile: use `AddCard`.\n- A plain group of content: use `Card`.\n- A list row: use `ActionList` or a table."
+          },
+          {
+            "id": "anatomy",
+            "heading": "Anatomy",
+            "content": "```\ndiv (surface + 1px line, radius lg, padding, hover = raised surface)\n  leading            optional icon or avatar, decorative\n  div\n    h{headingLevel}\n      a | button     the title; its ::after stretches over the whole card\n    p                description (aria-describedby)\n    p                meta, mono (aria-describedby)\n```"
+          },
+          {
+            "id": "props",
+            "heading": "Props",
+            "content": "| Prop           | Type                         | Default | Notes                                                                     |\n| -------------- | ---------------------------- | ------- | ------------------------------------------------------------------------- |\n| `title`        | `string`                     |         | Required. The accessible name.                                            |\n| `description`  | `ReactNode`                  |         | Accessible description. Plain text, no interactive content.               |\n| `meta`         | `ReactNode`                  |         | Small mono detail. Accessible description. No interactive content.        |\n| `leading`      | `ReactNode`                  |         | Decorative icon or avatar.                                                |\n| `href`         | `string`                     |         | Renders an `<a>`. Router support through `DSProvider`.                    |\n| `target`/`rel` | `string`                     |         | With `href`. `_blank` adds `rel=\"noopener noreferrer\"` and a hidden note. |\n| `onPress`      | `(e: PressEvent) => void`    |         | Required without `href` (renders a `<button>`); optional with `href`.     |\n| `isDisabled`   | `boolean`                    | `false` | Dimmed, dashed, skipped by `Tab`.                                         |\n| `headingLevel` | `1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6` | `3`     | Keeps the page outline.                                                   |\n| `messages`     | `{ opensInNewTab?: string }` |         | Per-instance message override (ADR-0005).                                 |\n| `className`    | `string`                     |         | On the root.                                                              |\n\nOther `div` attributes and `ref` go to the root. There is no `children` and no `actions`."
+          },
+          {
+            "id": "accessibility",
+            "heading": "Accessibility",
+            "content": "- One real `<a>` or `<button>`, in a heading, so the card shows up in the heading outline. The name is the title only; the description and meta are announced as the description.\n- Keyboard: `Tab` reaches it once; `Enter` activates a link or a button, `Space` also activates a button (AGENTS.md section 8).\n- Focus ring on the whole card outline, kept in `forced-colors`. Hover is one surface step lighter. Transitions are neutralized by the global reduced-motion rule.\n- The target is the whole card (well above 24 px).\n- Trade-off: the stretched overlay stops text selection by dragging inside the card."
+          },
+          {
+            "id": "examples",
+            "heading": "Examples",
+            "content": "```tsx\n<Grid minItemWidth=\"md\">\n  <CardLink\n    leading={<Icon icon={UsersIcon} />}\n    title=\"Team\"\n    description=\"Members, roles and invitations.\"\n    href=\"/settings/team\"\n  />\n  <CardLink title=\"Import data\" description=\"Upload a CSV file.\" onPress={openImport} />\n  <AddCard href=\"/settings/new\">Create category</AddCard>\n</Grid>\n```"
+          }
+        ]
+      },
+      "related": {
+        "alternatives": [
+          {
+            "name": "Card",
+            "reason": "A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content)."
+          },
+          {
+            "name": "Button",
+            "reason": "A card that contains its own buttons, a menu or form controls: use `Card` with a `Button` (a card can't be interactive and contain interactive content)."
+          },
+          {
+            "name": "AddCard",
+            "reason": "A \"create new\" tile: use `AddCard`."
+          },
+          {
+            "name": "ActionList",
+            "reason": "A list row: use `ActionList` or a table."
+          }
+        ],
+        "uses": ["VisuallyHidden"],
         "usedBy": []
       }
     },
@@ -4376,6 +4881,24 @@
           "description": "Marks points by index with short text, for example `{ 29: 'Today', 12: 'Best day' }`. The\nmarked point is drawn in the strong ink color, and its text is printed above it and read\nby screen readers, so the highlight never depends on color. Keep the texts short."
         },
         {
+          "name": "notes",
+          "type": "Readonly<Record<number, string>>",
+          "required": false,
+          "description": "Long text about a point by index, for example `{ 12: 'Free shipping started this day.' }`.\nShown under the value in the label of the active point, in the \"Note\" column of the hidden\ntable and in the announcement of the point. Points with a note get a small diamond marker\nabove them (a shape, not a color). Unlike `highlight`, the text is not printed on the\nchart, so it may be a full sentence."
+        },
+        {
+          "name": "referenceLines",
+          "type": "readonly ChartReferenceLine[]",
+          "required": false,
+          "description": "Dashed lines across the plot, each with its label printed at the end side of the line.\n`average` and `target` differ by dash pattern and by name. Use `chartAverage(values)` for\nthe average. The lines are listed in the description and in the last rows of the hidden\ntable. A value outside the data range widens the axis."
+        },
+        {
+          "name": "tickEvery",
+          "type": "number",
+          "required": false,
+          "description": "Show the label of every nth category (`tickEvery={7}` shows 1st, 8th, 15th...). Default:\nautomatic, labels are skipped only when they would collide. Values below 1 or not finite\nmean automatic. Points still get a keyboard stop and a table row."
+        },
+        {
           "name": "height",
           "type": "string | number",
           "required": false,
@@ -4401,7 +4924,7 @@
         },
         {
           "name": "messages",
-          "type": "Partial<{ instructions: (count: number, formatted: string) => string; point: (label: string, value: string, position: string, count: string, note?: string) => string; tableCaption: (name?: string) => string; category: string; value: string; note: string; empty: string; }>",
+          "type": "Partial<{ instructions: (count: number, formatted: string) => string; point: (label: string, value: string, position: string, count: string, note?: string) => string; tableCaption: (name?: string) => string; ... 7 more ...; empty: string; }>",
           "required": false,
           "description": "Per-instance overrides of the built-in messages."
         },
@@ -4497,6 +5020,32 @@
             "description": "Header of the note column of the data table (shown when a point is highlighted)."
           },
           {
+            "key": "average",
+            "kind": "string",
+            "default": "Average",
+            "description": "Name of the `average` reference line kind (dash pattern: long dashes)."
+          },
+          {
+            "key": "target",
+            "kind": "string",
+            "default": "Target",
+            "description": "Name of the `target` reference line kind (dash pattern: dash and dot)."
+          },
+          {
+            "key": "referenceLine",
+            "kind": "function",
+            "default": "{kind}, {label}",
+            "signature": "(kind: string, label: string)",
+            "description": "Read form of one reference line, used in the description and as the row header in the\ndata table. `kind` is the \"Average\" / \"Target\" message; `label` is the author's text."
+          },
+          {
+            "key": "referenceSummary",
+            "kind": "function",
+            "default": "Reference lines: {items}.",
+            "signature": "(items: string)",
+            "description": "Sentence added to the description. `items` is the joined list of \"kind, label: value\"."
+          },
+          {
             "key": "empty",
             "kind": "string",
             "default": "No data to show",
@@ -4515,7 +5064,14 @@
         "--ds-chart-height",
         "--ds-chart-outline-w",
         "--ds-chart-point-r",
+        "--ds-chart-ref-average-dash",
+        "--ds-chart-ref-average-gap",
+        "--ds-chart-ref-target-dash",
+        "--ds-chart-ref-target-dot",
+        "--ds-chart-ref-target-gap",
+        "--ds-chart-ref-w",
         "--ds-chart-stroke-w",
+        "--ds-chart-tooltip-max-w",
         "--ds-chart-tooltip-padding-block",
         "--ds-chart-tooltip-padding-inline",
         "--ds-chart-tooltip-x",
@@ -4541,7 +5097,8 @@
         "--ds-text-2",
         "--ds-text-3",
         "--ds-warning",
-        "--ds-weight-medium"
+        "--ds-weight-medium",
+        "--ds-weight-regular"
       ],
       "stories": {
         "title": "Components/Chart",
@@ -4572,6 +5129,47 @@
             "name": "NegativeValues",
             "id": "components-chart--negative-values",
             "description": "The axis always includes zero and bars hang below it for negative values.",
+            "hasPlay": false
+          },
+          {
+            "name": "Notes",
+            "id": "components-chart--notes",
+            "description": "`notes` attach long text to a point by index. A small diamond marks the point; the text shows\nunder the value in the label of the active point, in the \"Note\" column of the hidden table and\nin the announcement.",
+            "hasPlay": true
+          },
+          {
+            "name": "LongNote",
+            "id": "components-chart--long-note",
+            "description": "A long note wraps inside the label instead of stretching it.",
+            "hasPlay": true
+          },
+          {
+            "name": "AverageLine",
+            "id": "components-chart--average-line",
+            "description": "An average line is drawn with long dashes; use `chartAverage(values)` to compute it.",
+            "hasPlay": true
+          },
+          {
+            "name": "TargetLine",
+            "id": "components-chart--target-line",
+            "description": "A target line is drawn with dash and dot. A target above the data widens the axis.",
+            "hasPlay": true
+          },
+          {
+            "name": "AverageAndTarget",
+            "id": "components-chart--average-and-target",
+            "hasPlay": true
+          },
+          {
+            "name": "TickEvery",
+            "id": "components-chart--tick-every",
+            "description": "`tickEvery` shows every nth category label, whatever the width.",
+            "hasPlay": true
+          },
+          {
+            "name": "AnnotatedRtl",
+            "id": "components-chart--annotated-rtl",
+            "description": "Notes, reference lines and a highlight together; the chart itself is not mirrored.",
             "hasPlay": false
           },
           {
@@ -4662,17 +5260,17 @@
           {
             "id": "anatomy",
             "heading": "Anatomy",
-            "content": "```\ndiv.root\n  div[role=img][tabindex=0]   named by aria-label / aria-labelledby, described by the instructions\n    svg[aria-hidden]          grid + tick labels, bars or line + area, category labels, highlight texts\n    span                      value label of the active point (aria-hidden)\n  span                        visually hidden description + keyboard instructions\n  span[role=status]           visually hidden polite live region: \"Tue: 58. 2 of 7\"\n  table (visually hidden)     caption, headers, one row per point\n```"
+            "content": "```\ndiv.root\n  div[role=img][tabindex=0]   named by aria-label / aria-labelledby, described by the instructions\n    svg[aria-hidden]          grid + tick labels, bars or line + area, reference lines + labels, category labels, highlight texts, note markers\n    span                      value label of the active point (aria-hidden)\n  span                        visually hidden description + keyboard instructions\n  span[role=status]           visually hidden polite live region: \"Tue: 58. 2 of 7\"\n  table (visually hidden)     caption, headers, one row per point, one footer row per reference line\n```"
           },
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                          | Type                    | Default  | Notes                                                                             |\n| ----------------------------- | ----------------------- | -------- | --------------------------------------------------------------------------------- |\n| `data`                        | `{ label, value }[]`    | -        | In display order; the chart never sorts                                           |\n| `aria-label`                  | `string`                | -        | Required (or `aria-labelledby`): what the chart shows                             |\n| `type`                        | `bar \\| line`           | `bar`    |                                                                                   |\n| `format`                      | `(value) => string`     | `Intl`   | Axis, label, announcement and table. Default: compact on the axis, full elsewhere |\n| `tone`                        | `ChartTone`             | `accent` | Color of the active bar and of the line                                           |\n| `highlight`                   | `Record<index, string>` |          | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced    |\n| `height`                      | `number \\| string`      | `200px`  | Width is always 100% of the container                                             |\n| `description`                 | `string`                |          | Longer description, read before the keyboard instructions                         |\n| `categoryLabel`, `valueLabel` | `string`                |          | Headers of the hidden table (\"Day\", \"Sales\")                                      |\n| `messages`                    | `Partial<messages>`     |          | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `empty`     |\n\n`niceScale(min, max, tickCount?)` is exported: a pure helper that returns `{ min, max, step, ticks }` for a round axis. It always includes zero, handles all-zero data (0 to 1), tiny values (`0.00003`), huge values, negatives and non-finite input."
+            "content": "| Prop                          | Type                       | Default   | Notes                                                                                                                                   |\n| ----------------------------- | -------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- |\n| `data`                        | `{ label, value }[]`       | -         | In display order; the chart never sorts                                                                                                 |\n| `aria-label`                  | `string`                   | -         | Required (or `aria-labelledby`): what the chart shows                                                                                   |\n| `type`                        | `bar \\| line`              | `bar`     |                                                                                                                                         |\n| `format`                      | `(value) => string`        | `Intl`    | Axis, label, announcement and table. Default: compact on the axis, full elsewhere                                                       |\n| `tone`                        | `ChartTone`                | `accent`  | Color of the active bar and of the line                                                                                                 |\n| `highlight`                   | `Record<index, string>`    |           | `{ 29: 'Today', 12: 'Best day' }`: ink fill + outline + text above + announced                                                          |\n| `notes`                       | `Record<index, string>`    |           | Long text per point: in the label of the active point, the table and the announcement; diamond marker on the point                      |\n| `referenceLines`              | `{ value, label, kind }[]` |           | Dashed lines across the plot (`kind`: `average` or `target`); the axis widens to include them                                           |\n| `tickEvery`                   | `number`                   | automatic | Show every nth category label. Below 1 or not finite means automatic                                                                    |\n| `height`                      | `number \\| string`         | `200px`   | Width is always 100% of the container                                                                                                   |\n| `description`                 | `string`                   |           | Longer description, read before the keyboard instructions                                                                               |\n| `categoryLabel`, `valueLabel` | `string`                   |           | Headers of the hidden table (\"Day\", \"Sales\")                                                                                            |\n| `messages`                    | `Partial<messages>`        |           | `instructions`, `point`, `tableCaption`, `category`, `value`, `note`, `average`, `target`, `referenceLine`, `referenceSummary`, `empty` |\n\n`chartAverage(values)` is exported: the mean of numbers (or of `{ value }` data), ignoring non-finite entries, `0` when empty. Use it for the `average` line: `referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.\n\n`niceScale(min, max, tickCount?)` is exported: a pure helper that returns `{ min, max, step, ticks }` for a round axis. It always includes zero, handles all-zero data (0 to 1), tiny values (`0.00003`), huge values, negatives and non-finite input."
           },
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- The plot is one `role=\"img\"` with an accessible name and a description; the SVG inside is hidden. The visually hidden `<table>` with a `<caption>` is the text alternative and holds every value (and the highlight texts in a \"Note\" column).\n- Keyboard: `Tab` focuses the chart (nothing announced yet). Left/Right (also Up/Down) move to the previous/next point, Home/End to the first/last, Escape clears the active point. The first Right arrow goes to the first point, the first Left arrow to the last. Movement stops at the ends.\n- The active point is announced politely (\"Tue: 58, Today. 2 of 7\") and drawn as a label above it; hover shows the same label. The label is also in the SVG as text, never color-only.\n- Highlights always carry text and a stronger shape (outline on bars, a ring marker on lines), so they do not depend on color. Active bars get a tone fill and outline.\n- Bars use `line-control` (3:1 against the surface); tick labels use `text-3` (above 4.5:1 on `bg` and `surface`).\n- Reduced motion: color transitions only apply when motion is allowed. Forced colors: bars, lines and labels switch to system colors (`GrayText`, `CanvasText`, `Highlight`).\n- The chart does not mirror in right-to-left languages (time still runs left to right); the label position uses physical coordinates on purpose."
+            "content": "- The plot is one `role=\"img\"` with an accessible name and a description; the SVG inside is hidden. The visually hidden `<table>` with a `<caption>` is the text alternative and holds every value (and the highlight texts in a \"Note\" column).\n- Notes: a point with a `notes` entry gets a small diamond above it (a shape, not a color). Its text is shown under the value in the label of the active point (wrapping, up to `--ds-chart-tooltip-max-w`), read in the announcement after the highlight (\"Tue: 58, Today. Free shipping started. 2 of 7\") and written in the \"Note\" column of the table. When a point has both, the cell reads \"Today. Free shipping started.\"; the table gets the Note column as soon as any point has a highlight or a note.\n- Reference lines: dashed across the plot with the label and the formatted value as text at the end side of the line (\"Goal 120\"). `average` uses long dashes, `target` dash and dot, so the kind never depends on color; the line and the text use `text-2`. Screen readers get them in the description (\"Reference lines: Average, Weekly mean: 51.5 and Target, Goal: 120.\") and in the footer rows of the table (\"Average, Weekly mean\" / \"51.5\"). If the label equals the kind name only the kind is read. Two lines closer than a text line put the second label under its line so they do not overprint.\n- Axis labels: by default category labels are skipped automatically when they would collide; `tickEvery` forces every nth label (1 shows all, even if they touch). The keyboard and the table always reach every point.\n- Keyboard: `Tab` focuses the chart (nothing announced yet). Left/Right (also Up/Down) move to the previous/next point, Home/End to the first/last, Escape clears the active point. The first Right arrow goes to the first point, the first Left arrow to the last. Movement stops at the ends.\n- The active point is announced politely (\"Tue: 58, Today. 2 of 7\") and drawn as a label above it; hover shows the same label. The label is also in the SVG as text, never color-only.\n- Highlights always carry text and a stronger shape (outline on bars, a ring marker on lines), so they do not depend on color. Active bars get a tone fill and outline.\n- Bars use `line-control` (3:1 against the surface); tick labels use `text-3` (above 4.5:1 on `bg` and `surface`).\n- Reduced motion: color transitions only apply when motion is allowed. Forced colors: bars, lines and labels switch to system colors (`GrayText`, `CanvasText`, `Highlight`).\n- The chart does not mirror in right-to-left languages (time still runs left to right); the label position uses physical coordinates on purpose."
           },
           {
             "id": "content-rules",
@@ -4682,12 +5280,12 @@
           {
             "id": "limits",
             "heading": "Limits",
-            "content": "- One series per chart. For two series use two charts side by side.\n- Categories are spaced evenly (no time scale); labels are skipped when crowded (the table and the keyboard still reach every point).\n- The value axis always includes zero. Up to about 100 ticks are generated at most (usually 4 to 7).\n- Geometry (padding, bar width, label spacing) lives in `chartLayout.ts` as SVG units; every color, stroke, radius and font is a token."
+            "content": "- One series per chart. For two series use two charts side by side.\n- Categories are spaced evenly (no time scale); labels are skipped when crowded unless `tickEvery` is set (the table and the keyboard still reach every point).\n- Reference lines are horizontal only; reference line labels are printed at the end side and can cross bars (they carry a background-colored halo).\n- The value axis always includes zero, and reference line values (a target far above the data, for example) widen it. Up to about 100 ticks are generated at most (usually 4 to 7).\n- Geometry (padding, bar width, label spacing) lives in `chartLayout.ts` as SVG units; every color, stroke, radius and font is a token."
           },
           {
             "id": "example",
             "heading": "Example",
-            "content": "```tsx\n<Chart\n  aria-label=\"Sales, last 30 days\"\n  type=\"bar\"\n  data={days.map((d) => ({ label: d.day, value: d.totalMinor }))}\n  format={(v) => formatCurrency(v, 'USD', locale)}\n  highlight={{ 29: 'Today', [bestIndex]: 'Best day' }}\n/>\n```"
+            "content": "```tsx\n<Chart\n  aria-label=\"Sales, last 30 days\"\n  type=\"bar\"\n  data={days.map((d) => ({ label: d.day, value: d.totalMinor }))}\n  format={(v) => formatCurrency(v, 'USD', locale)}\n  highlight={{ 29: 'Today', [bestIndex]: 'Best day' }}\n  notes={{ [bestIndex]: 'Free shipping campaign started this day.' }}\n  referenceLines={[\n    { kind: 'average', label: 'Average', value: chartAverage(days.map((d) => d.totalMinor)) },\n    { kind: 'target', label: 'Goal', value: 500000 },\n  ]}\n  tickEvery={7}\n/>\n```"
           },
           {
             "id": "differences-from-the-handoff",
@@ -4752,6 +5350,24 @@
           "required": false,
           "default": "false",
           "description": "Waiting for the first part of a reply: shows a spinner with \"Thinking…\" and disables sending."
+        },
+        {
+          "name": "busyLabel",
+          "type": "string",
+          "required": false,
+          "description": "Text shown next to the busy indicator and announced while waiting (\"Searching orders…\").\nDefaults to the \"Thinking…\" message."
+        },
+        {
+          "name": "busyIndicator",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Replaces the default `Spinner` of the busy row. Decorative: the busy text is `busyLabel`.\nPass `null` to show the text only."
+        },
+        {
+          "name": "getKey",
+          "type": "(message: ChatMessage, index: number) => string",
+          "required": false,
+          "description": "Key of a message, used as the React key and to tell history from news. Must be unique and\nstable for the same message across renders. Default: `message.id` when present, otherwise\nthe role plus the position among messages of the same role (`user-0`, `assistant-1`), which\nbreaks if you insert or remove messages before the end. Pass `getKey` (or give each message\nan `id`) whenever the list is not append-only."
         },
         {
           "name": "intro",
@@ -5012,6 +5628,18 @@
             "hasPlay": false
           },
           {
+            "name": "WithoutIds",
+            "id": "patterns-chat-panel--without-ids",
+            "description": "Messages without ids (`{ role, content }`): keys come from the role and position, or from `getKey`.",
+            "hasPlay": false
+          },
+          {
+            "name": "CustomBusyLabel",
+            "id": "patterns-chat-panel--custom-busy-label",
+            "description": "A busy row with the consumer's own text instead of \"Thinking…\".",
+            "hasPlay": false
+          },
+          {
             "name": "Streaming",
             "id": "patterns-chat-panel--streaming",
             "hasPlay": false
@@ -5094,7 +5722,7 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop                                     | Type                       | Default                                                  | Notes                                                                                     |\n| ---------------------------------------- | -------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------- |\n| `items`                                  | `ChatMessage[]`            | required                                                 | The conversation, oldest first. (Named `items` because `messages` overrides the catalog.) |\n| `busy`                                   | `boolean`                  | `false`                                                  | Waiting for the first part of a reply.                                                    |\n| `onSend`                                 | `(text: string) => void`   |                                                          | Trimmed text. Called from Enter, the button and the suggested prompts.                    |\n| `onStop`                                 | `() => void`               |                                                          | Stop generating. The button is disabled while working without it.                         |\n| `onRetry`                                | `(message) => void`        |                                                          | Shows Retry on failed messages.                                                           |\n| `onClear`                                | `() => void`               |                                                          | Shows Clear when there are messages.                                                      |\n| `intro` / `prompts`                      | `ReactNode` / `string[]`   |                                                          | Empty state.                                                                              |\n| `renderContent`                          | `(message) => ReactNode`   | plain text                                               | Plug in a sanitized renderer (see below).                                                 |\n| `sendVariant`                            | `'secondary' \\| 'primary'` | `'secondary'`                                            | See \"Send button\".                                                                        |\n| `title` / `headingLevel` / `placeholder` |                            | \"Chat with the agent\" / `2` / \"Ask or request something\" |                                                                                           |\n| `messages`                               | partial catalog            |                                                          | Every string, including the announcements.                                                |\n\n`ChatMessage`: `{ id: string; role: 'user' | 'assistant'; content: string; status?: 'complete' | 'streaming' | 'error' }`. Ids must be stable and unique; they are the React keys."
+            "content": "| Prop                                     | Type                         | Default                                                  | Notes                                                                                      |\n| ---------------------------------------- | ---------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------ |\n| `items`                                  | `ChatMessage[]`              | required                                                 | The conversation, oldest first. (Named `items` because `messages` overrides the catalog.)  |\n| `busy`                                   | `boolean`                    | `false`                                                  | Waiting for the first part of a reply.                                                     |\n| `busyLabel` / `busyIndicator`            | `string` / `ReactNode`       | \"Thinking…\" / `Spinner`                                  | Text of the busy row (also announced) and a replacement for its spinner (`null` for none). |\n| `getKey`                                 | `(message, index) => string` | `id`, else role + position                               | React key and history detection. Pass it when messages are inserted or removed mid-list.   |\n| `onSend`                                 | `(text: string) => void`     |                                                          | Trimmed text. Called from Enter, the button and the suggested prompts.                     |\n| `onStop`                                 | `() => void`                 |                                                          | Stop generating. The button is disabled while working without it.                          |\n| `onRetry`                                | `(message) => void`          |                                                          | Shows Retry on failed messages.                                                            |\n| `onClear`                                | `() => void`                 |                                                          | Shows Clear when there are messages.                                                       |\n| `intro` / `prompts`                      | `ReactNode` / `string[]`     |                                                          | Empty state.                                                                               |\n| `renderContent`                          | `(message) => ReactNode`     | plain text                                               | Plug in a sanitized renderer (see below).                                                  |\n| `sendVariant`                            | `'secondary' \\| 'primary'`   | `'secondary'`                                            | See \"Send button\".                                                                         |\n| `title` / `headingLevel` / `placeholder` |                              | \"Chat with the agent\" / `2` / \"Ask or request something\" |                                                                                            |\n| `messages`                               | partial catalog              |                                                          | Every string, including the announcements.                                                 |\n\n`ChatMessage`: `{ id?: string; role: 'user' | 'assistant'; content: string; status?: 'complete' | 'streaming' | 'error' }`. `id` is optional so `{ role, content }` objects work as they are. Without it the key is the role plus the position among messages of the same role (`user-0`, `assistant-1`), which is stable while the list only grows. If you insert, remove or reorder messages, give each one an `id` or pass `getKey`; keys must be unique and stable across renders. Never use the array index."
           },
           {
             "id": "streaming-and-live-regions-research-notes",
@@ -6445,9 +7073,11 @@
         "--ds-font-mono",
         "--ds-font-sans",
         "--ds-fs-caption",
+        "--ds-fs-meta",
         "--ds-fs-small",
         "--ds-lh-caption",
         "--ds-lh-label",
+        "--ds-lh-meta",
         "--ds-line-control",
         "--ds-opacity-disabled",
         "--ds-radius-md",
@@ -6481,6 +7111,12 @@
           {
             "name": "ThreeColumns",
             "id": "components-choice-tiles--three-columns",
+            "hasPlay": false
+          },
+          {
+            "name": "WithDetail",
+            "id": "components-choice-tiles--with-detail",
+            "description": "A second line (`detail`) under the label and meta, exposed as the radio's description.",
             "hasPlay": false
           },
           {
@@ -6579,17 +7215,17 @@
           {
             "id": "anatomy",
             "heading": "Anatomy",
-            "content": "```\ndiv[role=radiogroup] aria-labelledby=label\n  label                      (group label, from `label`)\n  div.grid                   (responsive grid, at most `columns` columns)\n    div > label.tile         (one per option; hidden native radio inside)\n      label text\n      meta                   (optional, mono)\n  description / error\n```"
+            "content": "```\ndiv[role=radiogroup] aria-labelledby=label\n  label                      (group label, from `label`)\n  div.grid                   (responsive grid, at most `columns` columns)\n    div > label.tile         (one per option; hidden native radio inside)\n      label text\n      meta                   (optional, mono; text or a short inline node)\n      detail                 (optional second line, body font; the radio's description)\n  description / error\n```"
           },
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop                                                          | Type                   | Default      | Notes                                                         |\n| ------------------------------------------------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |\n| `options`                                                     | `ChoiceTilesOption[]`  | required     | `{ value, label, meta?, isDisabled? }`.                       |\n| `label` / `aria-label` / `aria-labelledby`                    | `ReactNode` / `string` | one required | Names the group. Enforced by the types.                       |\n| `value` / `defaultValue` / `onChange(value)`                  | `string`               | none         | Controlled / uncontrolled selection (React Aria names).       |\n| `columns`                                                     | `number`               | `2`          | Maximum columns. Fewer on narrow containers (min tile 120px). |\n| `size`                                                        | `'md' \\| 'lg'`         | `'lg'`       | Minimum tile height: 40px or 48px.                            |\n| `description`, `errorMessage`                                 | `ReactNode`            | none         | Linked with `aria-describedby`.                               |\n| `isDisabled`, `isRequired`, `isInvalid`, `isReadOnly`, `name` | -                      | -            | Group state, forwarded to React Aria.                         |"
+            "content": "| Prop                                                          | Type                   | Default      | Notes                                                         |\n| ------------------------------------------------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |\n| `options`                                                     | `ChoiceTilesOption[]`  | required     | `{ value, label, meta?, detail?, isDisabled? }`.              |\n| `label` / `aria-label` / `aria-labelledby`                    | `ReactNode` / `string` | one required | Names the group. Enforced by the types.                       |\n| `value` / `defaultValue` / `onChange(value)`                  | `string`               | none         | Controlled / uncontrolled selection (React Aria names).       |\n| `columns`                                                     | `number`               | `2`          | Maximum columns. Fewer on narrow containers (min tile 120px). |\n| `size`                                                        | `'md' \\| 'lg'`         | `'lg'`       | Minimum tile height: 40px or 48px.                            |\n| `description`, `errorMessage`                                 | `ReactNode`            | none         | Linked with `aria-describedby`.                               |\n| `isDisabled`, `isRequired`, `isInvalid`, `isReadOnly`, `name` | -                      | -            | Group state, forwarded to React Aria.                         |"
           },
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- Semantics: `radiogroup` of native radio inputs; the tile is the radio's label.\n- Keyboard: one tab stop; arrows (`←` `↑` previous, `→` `↓` next) move focus and select, wrapping at the ends; `Space` selects the focused tile. Disabled tiles are skipped.\n- State is not color alone: the selected tile has a doubled (2px) accent border, a soft fill and ink text, and screen readers get \"checked\".\n- Boundaries: unselected tiles use `--ds-line-control` (3:1) and hover brightens the border instead of changing the fill, so the 3:1 holds in every state. The meta line uses `--ds-text-2` (`--ds-text-3` fails 4.5:1 on the selected fill).\n- Focus: accent border plus ring. Forced colors: the selected border uses `Highlight`."
+            "content": "- Semantics: `radiogroup` of native radio inputs; the tile is the radio's label.\n- Keyboard: one tab stop; arrows (`←` `↑` previous, `→` `↓` next) move focus and select, wrapping at the ends; `Space` selects the focused tile. Disabled tiles are skipped.\n- State is not color alone: the selected tile has a doubled (2px) accent border, a soft fill and ink text, and screen readers get \"checked\".\n- Boundaries: unselected tiles use `--ds-line-control` (3:1) and hover brightens the border instead of changing the fill, so the 3:1 holds in every state. The meta line uses `--ds-text-2` (`--ds-text-3` fails 4.5:1 on the selected fill).\n- Focus: accent border plus ring. Forced colors: the selected border uses `Highlight`.\n\n- `detail` is linked with `aria-describedby`: the radio's name stays the label plus the meta, and the detail is read after it as the description. Use it for a short helpful sentence, not for essential text."
           },
           {
             "id": "content-rules",
@@ -10264,6 +10900,14 @@
           "description": "Most digits the amount may have, fraction digits included (`15` is the maximum, the\nlargest count that is always a safe integer). Typing beyond it is ignored. Default `15`."
         },
         {
+          "name": "entryMode",
+          "type": "'cents' | 'amount'",
+          "required": false,
+          "default": "'cents'",
+          "description": "How digits are typed. `'cents'` (default) shifts digits in from the right: `200` is 2.00.\n`'amount'` types whole units: `200` is 200.00, and the decimal mark (`.` or `,`) starts the\nfraction (`12,5` is 12.50). Both give integer minor units. See \"Typing modes\" in the docs.",
+          "values": ["cents", "amount"]
+        },
+        {
           "name": "name",
           "type": "string",
           "required": false,
@@ -10771,6 +11415,22 @@
             "id": "components-currency-input--full-width-in-row",
             "description": "In an `Inline` row the field takes the free space next to the button.",
             "hasPlay": false
+          },
+          {
+            "name": "AmountMode",
+            "id": "components-currency-input--amount-mode",
+            "description": "Amount mode types whole units: `200` is 200.00 and the decimal mark starts the fraction.",
+            "hasPlay": true
+          },
+          {
+            "name": "AmountModeBrazilian",
+            "id": "components-currency-input--amount-mode-brazilian",
+            "hasPlay": true
+          },
+          {
+            "name": "AmountModeYen",
+            "id": "components-currency-input--amount-mode-yen",
+            "hasPlay": true
           }
         ]
       },
@@ -10804,6 +11464,11 @@
             "content": "Two models were considered:\n\n1. **React Aria `NumberField` with `style: 'currency'`**. Reuses its parsing and stepping, but its editing model is \"type a number, format on blur\": locale decimal marks must be typed, the caret and text change on blur, and the value is a JS `number` in major units, so every boundary needs `Math.round(x * 100)` and float drift (`0.1 + 0.2`) becomes a bug source. Money in the handoff is also typed without separators.\n2. **Digits-only typing** (the handoff model, implemented by `parseCurrencyInput`). Typing `1`, `2`, `3` gives `$1.23`; `1`, `2`, `3`, `4`, `5`, `6` gives `$1,234.56`. Separators and symbols are ignored, `Backspace` shifts the last digit out, the caret always stays at the end. The state is an integer from the first keystroke to the form value, so there is no floating point anywhere; the same code serves JPY (0 digits) and KWD (3 digits); no locale decimal mark has to be known to type.\n\n**Decision: digits-only typing**, with a smarter **paste** (below). The trade-off: a person who types `12.5` gets `$1.25`, not `$12.50`. That is the point of the model (type `1250`), the field always shows what it will submit, and paste covers the decimal-writing habit."
           },
           {
+            "id": "typing-modes",
+            "heading": "Typing modes",
+            "content": "`entryMode` chooses how typed digits are read. Both modes keep the value an integer in minor units, call `onChange` with integers or `null`, accept the same smart paste, and honor `maxDigits` and `allowNegative`.\n\n|                     | `cents` (default)                                                    | `amount`                                                                                 |\n| ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |\n| Typing `200` in USD | `$2.00`                                                              | `$200.00`                                                                                |\n| Model               | Digits shift in from the right; separators ignored; caret at the end | Digits are whole units; a decimal mark starts the fraction                               |\n| Use for             | Cash-register style, fast numeric-keypad entry, POS                  | People who think in whole units, prices like \"200\", forms where users type decimal marks |\n\n**Amount mode rules** (`parseCurrencyAmount`, string manipulation only, no floats):\n\n- Digits are whole units until a decimal mark. The mark is the **last** `.` or `,` (or the locale's own decimal mark) when it is the only one of its kind and either it is the locale's decimal mark or it is followed by at most as many digits as the currency has (2 for USD/BRL, 3 for KWD). A mark followed by more digits is grouping and ignored, so users can mix habits: `12.5` and `12,5` both mean 12.50; `1,234.56` (en-US) and `1.234,56` (pt-BR) both mean 1234.56; `1,234` in USD is 1234.00.\n- At most as many fraction digits as the currency has, and `maxDigits` counts minor-unit digits (`maxDigits: 5` allows up to 999.99). After the locale's decimal mark, extra digits are ignored while typing (`12.567` stays `12.56`), and a second locale decimal mark is ignored. JPY (0 digits) has no fraction: marks are ignored.\n- Examples en-US USD: `200` is 20000, `12.5` is 1250, `12,50` is 1250. pt-BR BRL: `200` is 20000, `12,5` is 1250, `1.234,56` is 123456. JPY: `1500` is 1500. KWD en-US: `1.5` is 1500.\n- Limitation: a foreign mark followed by a full fraction and one more digit is regrouped (en-US `12,50` then `7` becomes 12507), the same reading as paste.\n- While focused the box edits **plain text** (no symbol) with normal caret editing, and keeps what you typed readable: `200,` stays `200,`. The existing amount is selected on focus so typing replaces it. On blur the box shows the full currency format (`R$ 200,00`). `Backspace` edits the text, select all + `Delete` gives `null`, and a lone `-` (with `allowNegative`) is negative zero as in `cents` mode. The mobile keyboard is `decimal` (`text` with `allowNegative`)."
+          },
+          {
             "id": "behavior",
             "heading": "Behavior",
             "content": "- `value` / `defaultValue` / `onChange` are **integer minor units** or `null` (empty, which is not `0`). `onChange` receives `null` when the field is emptied (select all, then `Delete`).\n- Display: the currency's own format with the symbol where the locale puts it (`$1,234.56`, `R$ 1.234,56`, `1.234,56 €`, `¥1,234`), mono, tabular, right-aligned. The symbol is part of the text, so screen readers announce it with the amount.\n- Caret: always moved to the end after every edit and whenever you click or arrow into the text. A range selection (Ctrl+A) is allowed so you can clear the field.\n- `allowNegative`: type `-` anywhere to flip the sign; a lone `-` shows `-$0.00` (negative zero) and the next digit keeps the sign. Without it, minus signs are ignored.\n- `maxDigits` (default and maximum 15, the largest count that is always a safe integer): typing beyond it is ignored. Large amounts are exact (`$9,999,999,999,999.99` is `999999999999999`).\n- **Paste** reads the text against the locale: `12.50` and `12,50` both paste as 12.50; `1,234.56` in en-US and `1.234,56` in pt-BR are grouped thousands; a lone separator followed by exactly three digits is a thousands group (`1.234` is 1234 in pt-BR but 1.23 in en-US because `.` is the en-US decimal mark); extra fraction digits are rounded half up; symbols and spaces are dropped; text without digits is ignored.\n- **Form**: `name` submits the **integer minor units** (`123456`) or an empty string, through a hidden input; it is not sent while the field is disabled. The visible text is never submitted."
@@ -10811,7 +11476,7 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                                                                                                                                   | Notes                                                                                              |\n| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |\n| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |\n| `value` / `defaultValue` / `onChange`                                                                                                  | `number \\| null` in minor units.                                                                   |\n| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |\n| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |\n| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |\n| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |\n| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |"
+            "content": "| Prop                                                                                                                                   | Notes                                                                                              |\n| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |\n| `currency`                                                                                                                             | Required ISO 4217 code.                                                                            |\n| `value` / `defaultValue` / `onChange`                                                                                                  | `number \\| null` in minor units.                                                                   |\n| `allowNegative`, `maxDigits`                                                                                                           | See above.                                                                                         |\n| `entryMode`                                                                                                                            | `'cents'` (default) or `'amount'`. See \"Typing modes\".                                             |\n| `label` / `aria-label` / `aria-labelledby`                                                                                             | One is required.                                                                                   |\n| `description`, `descriptionTone`, `errorMessage`, `size`, `isRequired`, `isInvalid`, `isDisabled`, `isReadOnly`, `placeholder`, `name` | As in `Input`.                                                                                     |\n| `placeholder`                                                                                                                          | Shown while `value` is `null`, also while focused, until the first digit is typed.                 |\n| `fullWidth`                                                                                                                            | Take the free space of a flex row such as `Inline` (`flex: 1 1 auto`, can shrink). Off by default. |\n| `onKeyDown`, `onFocus`, `onBlur`                                                                                                       | Event handlers, composed with the internal ones (see below).                                       |\n| `inputRef`, `ref`, `className`, `inputClassName`, `messages`                                                                           | As in `Input`.                                                                                     |"
           },
           {
             "id": "accessibility-and-keyboard",
@@ -12488,11 +13153,11 @@
         },
         {
           "name": "variant",
-          "type": "'subtle' | 'default' | 'strong'",
+          "type": "'subtle' | 'default' | 'strong' | 'dashed'",
           "required": false,
           "default": "'default'",
-          "description": "Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default`\n(`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls\nand overlays). Default `default`.",
-          "values": ["subtle", "default", "strong"]
+          "description": "Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default`\n(`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls\nand overlays). `dashed` is a 1px dashed `--ds-line-strong` rule for a total row or a\nreceipt tear line (AGENTS.md section 7). Default `default`.",
+          "values": ["subtle", "default", "strong", "dashed"]
         },
         {
           "name": "className",
@@ -12576,7 +13241,7 @@
         }
       ],
       "variants": {
-        "variant": ["subtle", "default", "strong"]
+        "variant": ["subtle", "default", "strong", "dashed"]
       },
       "cssVariables": ["--ds-line", "--ds-line-strong", "--ds-line-subtle"],
       "stories": {
@@ -12596,6 +13261,18 @@
           {
             "name": "Strong",
             "id": "layout-divider--strong",
+            "hasPlay": false
+          },
+          {
+            "name": "Dashed",
+            "id": "layout-divider--dashed",
+            "description": "The total-row rule: dashed, for the line above a total (AGENTS.md section 7).",
+            "hasPlay": false
+          },
+          {
+            "name": "DashedOnPaper",
+            "id": "layout-divider--dashed-on-paper",
+            "description": "The dashed rule inside the paper scope.",
             "hasPlay": false
           },
           {
@@ -12647,12 +13324,17 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop          | Type                                | Default        | Notes                                                                            |\n| ------------- | ----------------------------------- | -------------- | -------------------------------------------------------------------------------- |\n| `orientation` | `'horizontal' \\| 'vertical'`        | `'horizontal'` | Vertical needs a parent with a height (it stretches in a flex row)               |\n| `variant`     | `'subtle' \\| 'default' \\| 'strong'` | `'default'`    | `--ds-line-subtle` (internal), `--ds-line` (cards, sections), `--ds-line-strong` |\n\nReact Aria separator props (`aria-label`, …) and `ref` pass through."
+            "content": "| Prop          | Type                                            | Default        | Notes                                                                                                                                                       |\n| ------------- | ----------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| `orientation` | `'horizontal' \\| 'vertical'`                    | `'horizontal'` | Vertical needs a parent with a height (it stretches in a flex row)                                                                                          |\n| `variant`     | `'subtle' \\| 'default' \\| 'strong' \\| 'dashed'` | `'default'`    | `--ds-line-subtle` (internal), `--ds-line` (cards, sections), `--ds-line-strong`; `dashed` is a dashed `--ds-line-strong` rule for a total row or tear line |\n\nReact Aria separator props (`aria-label`, …) and `ref` pass through."
           },
           {
             "id": "accessibility",
             "heading": "Accessibility",
             "content": "- Rendered by React Aria: a horizontal divider is an `<hr>`; a vertical one has `role=\"separator\"` and `aria-orientation=\"vertical\"`.\n- It is a thematic break for assistive technology, so do not use it as a pure visual rule between unrelated things.\n- Line colors are borders, not text; `forced-colors` paints them with `CanvasText`."
+          },
+          {
+            "id": "dashed-rule",
+            "heading": "Dashed rule",
+            "content": "`variant=\"dashed\"` is the \"total row\" rule of AGENTS.md section 7: a 1px dashed line in `--ds-line-strong`, for the line above a total or a tear line on a receipt preview. It works on the dark surfaces and inside the paper scope (`data-theme=\"paper\"`, where the line becomes the paper rule). In `forced-colors` it is drawn with `CanvasText`. Like the other variants it is a decorative border, not a text or control boundary."
           },
           {
             "id": "examples",
@@ -12662,7 +13344,7 @@
           {
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
-            "content": "- The handoff drew dividers with `border-top` on a wrapper; this is a real separator with three line weights from tokens."
+            "content": "- The handoff drew dividers with `border-top` on a wrapper; this is a real separator with three line weights from tokens plus a dashed rule."
           }
         ]
       },
@@ -12949,7 +13631,7 @@
         "whenNotToUse": [
           "Progress of a task that is running: use `Progress`.",
           "A bar in a column or a row: use `Meter` (`Progress` module).",
-          "Several parts of a whole: use `ProportionBar`.",
+          "Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.",
           "A trend over time: use `Sparkline` or `Chart`."
         ],
         "keyboard": [],
@@ -12965,7 +13647,7 @@
           {
             "id": "when-not-to-use",
             "heading": "When not to use",
-            "content": "- Progress of a task that is running: use `Progress`.\n- A bar in a column or a row: use `Meter` (`Progress` module).\n- Several parts of a whole: use `ProportionBar`.\n- A trend over time: use `Sparkline` or `Chart`."
+            "content": "- Progress of a task that is running: use `Progress`.\n- A bar in a column or a row: use `Meter` (`Progress` module).\n- Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`.\n- A trend over time: use `Sparkline` or `Chart`."
           },
           {
             "id": "anatomy",
@@ -13006,7 +13688,11 @@
           },
           {
             "name": "ProportionBar",
-            "reason": "Several parts of a whole: use `ProportionBar`."
+            "reason": "Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`."
+          },
+          {
+            "name": "Legend",
+            "reason": "Several parts of a whole: use `ProportionBar` (a legend with share, value and count columns). One part of a known total as a bar, with the remainder named, is also `ProportionBar` with one segment and `total`. Percentages next to a ring or chart series: `Legend` with `showShare`."
           },
           {
             "name": "Sparkline",
@@ -16031,6 +16717,7 @@
         "uses": [],
         "usedBy": [
           "Accordion",
+          "AddCard",
           "AgentCard",
           "Alert",
           "ApprovalCard",
@@ -17686,7 +18373,7 @@
         "path": "src/components/Input/Input.md",
         "summary": "Single-line text field with a label, helper text and error text wired together. Built on React Aria `TextField` + `Input`; see [Field](../Field/Field.md) for the shared states, spacing and validation timing.",
         "whenToUse": [
-          "Short free text, codes, emails, search terms, numbers typed as text.",
+          "Short free text, codes, emails, passwords, search terms, numbers typed as text. For a password with a show/hide toggle, see the `PasswordField` recipe.",
           "Use `mono` for codes and identifiers (`ORD-1048`)."
         ],
         "whenNotToUse": [
@@ -17703,7 +18390,7 @@
           {
             "id": "when-to-use",
             "heading": "When to use",
-            "content": "- Short free text, codes, emails, search terms, numbers typed as text.\n- Use `mono` for codes and identifiers (`ORD-1048`)."
+            "content": "- Short free text, codes, emails, passwords, search terms, numbers typed as text. For a password with a show/hide toggle, see the `PasswordField` recipe.\n- Use `mono` for codes and identifiers (`ORD-1048`)."
           },
           {
             "id": "when-not-to-use",
@@ -17966,7 +18653,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- Screen readers do not reliably read symbols such as `⌘`. Every symbol or abbreviation is `aria-hidden` and followed by a visually hidden spoken name from the message catalog: \"Command K\", \"Control Shift Escape\".\n- When the visible text already is the name (`Enter`, `Tab`) nothing is duplicated.\n- The element has no role and is not focusable: it is text. The shortcut itself must be announced where it works (for example `aria-keyshortcuts` on the control, which is the control's responsibility).\n- Text is `--ds-text-2`, which keeps at least 4.5:1 on the surface (the handoff used `--ds-text-3`)."
+            "content": "Inside a `Button` the `Kbd` is `aria-hidden` (the button's `shortcut` prop exposes the keys once through `aria-keyshortcuts`), so the shortcut never doubles the accessible name.\n\n- Screen readers do not reliably read symbols such as `⌘`. Every symbol or abbreviation is `aria-hidden` and followed by a visually hidden spoken name from the message catalog: \"Command K\", \"Control Shift Escape\".\n- When the visible text already is the name (`Enter`, `Tab`) nothing is duplicated.\n- The element has no role and is not focusable: it is text. The shortcut itself must be announced where it works (for example `aria-keyshortcuts` on the control, which is the control's responsibility).\n- Text is `--ds-text-2`, which keeps at least 4.5:1 on the surface (the handoff used `--ds-text-3`)."
           },
           {
             "id": "content-rules",
@@ -17989,6 +18676,7 @@
         "alternatives": [],
         "uses": ["VisuallyHidden"],
         "usedBy": [
+          "Button",
           "CommandPalette",
           "SearchInput",
           "ShortcutsHelp",
@@ -18378,6 +19066,7 @@
         "--ds-line-subtle",
         "--ds-space-1",
         "--ds-space-3",
+        "--ds-space-4",
         "--ds-success",
         "--ds-text",
         "--ds-text-2",
@@ -18423,6 +19112,12 @@
           {
             "name": "LongText",
             "id": "patterns-ledger-list--long-text",
+            "hasPlay": false
+          },
+          {
+            "name": "NarrowEditableAndDeletable",
+            "id": "patterns-ledger-list--narrow-editable-and-deletable",
+            "description": "384 px with date, amount, balance, edit and delete: the date moves under the title.",
             "hasPlay": false
           },
           {
@@ -18558,6 +19253,11 @@
             "id": "differences-from-the-handoff",
             "heading": "Differences from the handoff",
             "content": "- A `div` of `div`s becomes a `ul` / `li` list; dates are `time` elements formatted with `formatDate` (the handoff printed a raw string).\n- Amounts go through `Intl` (`formatCurrency` or `formatNumber`) from minor units, or a `format` prop; there is no hand-built number formatting.\n- \"saldo\" and \"Excluir lançamento\" were hard-coded Portuguese; they are messages (`en`, `pt-BR`), and the delete label includes the entry title.\n- `negativeTone` defaults to `danger` (the handoff defaulted to `success`, which is product specific) and takes `neutral | success | warning | danger`.\n- The edit and delete buttons are the shared `IconButton` (focus ring, 32px target) instead of a styled `×` glyph; layout values are tokens (`--ds-ledger-list-*`)."
+          },
+          {
+            "id": "narrow-containers",
+            "heading": "Narrow containers",
+            "content": "The list is a size container. At 480 px or less the date moves under the title as a meta line, the padding shrinks and the amount, balance and actions columns stay fixed, so titles keep a readable width. The DOM and reading order do not change."
           }
         ]
       },
@@ -18622,6 +19322,26 @@
           "type": "(hiddenIds: string[]) => void",
           "required": false,
           "description": "Called with the new list of hidden ids whenever the user toggles an item."
+        },
+        {
+          "name": "showShare",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Prints the share of each item (its `amount` over the denominator) in a column of its own,\nformatted with `Intl` for the active locale. When an item also has a `value`, both show, in\ntwo aligned columns (value, then share). Hidden series print no share and leave the\ndenominator. Percentages are rounded one by one, so the printed shares may sum to 99% or\n101%; raise `shareDigits` when that matters, the legend never adjusts them."
+        },
+        {
+          "name": "shareOf",
+          "type": "number",
+          "required": false,
+          "description": "Denominator of the shares, in the unit of `amount`. Default: the sum of the amounts of the\nvisible (not hidden) items. Pass the real total when the items are only part of a whole."
+        },
+        {
+          "name": "shareDigits",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Decimals of the printed shares. Default `0`."
         },
         {
           "name": "messages",
@@ -18695,6 +19415,7 @@
         "--ds-fs-small",
         "--ds-legend-color",
         "--ds-legend-gap",
+        "--ds-legend-share-col-w",
         "--ds-legend-swatch-size",
         "--ds-lh-small",
         "--ds-radius-sm",
@@ -18769,6 +19490,18 @@
             "name": "RightToLeft",
             "id": "components-legend--right-to-left",
             "hasPlay": false
+          },
+          {
+            "name": "WithShare",
+            "id": "components-legend--with-share",
+            "description": "`showShare` prints the share of each `amount` for the active locale, in a column next to the value.",
+            "hasPlay": true
+          },
+          {
+            "name": "ShareOfTotal",
+            "id": "components-legend--share-of-total",
+            "description": "Without a `value` and with `shareOf`, the items are only part of a whole of 4,000.",
+            "hasPlay": false
           }
         ]
       },
@@ -18808,7 +19541,12 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                | Type                              | Default        | Notes                                                 |\n| ------------------- | --------------------------------- | -------------- | ----------------------------------------------------- |\n| `items`             | `{ id, label, value?, color? }[]` | -              | Same order as the chart: the position sets the swatch |\n| `orientation`       | `'horizontal' \\| 'vertical'`      | `'horizontal'` | Row that wraps, or one item per line                  |\n| `interactive`       | `boolean`                         | `false`        | Items become toggle buttons                           |\n| `hiddenIds`         | `readonly string[]`               |                | Controlled hidden series                              |\n| `defaultHiddenIds`  | `readonly string[]`               | `[]`           | Initial hidden series when uncontrolled               |\n| `onHiddenIdsChange` | `(ids: string[]) => void`         |                | Called on every toggle                                |\n| `messages`          | `Partial<messages>`               |                | `label` (list name), `toggleHint`                     |"
+            "content": "| Prop                | Type                                       | Default        | Notes                                                      |\n| ------------------- | ------------------------------------------ | -------------- | ---------------------------------------------------------- |\n| `items`             | `{ id, label, value?, amount?, color? }[]` | -              | Same order as the chart: the position sets the swatch      |\n| `showShare`         | `boolean`                                  | `false`        | Prints each item's share of the `amount`s (needs `amount`) |\n| `shareOf`           | `number`                                   | sum of visible | Denominator of the shares                                  |\n| `shareDigits`       | `number`                                   | `0`            | Decimals of the printed shares                             |\n| `orientation`       | `'horizontal' \\| 'vertical'`               | `'horizontal'` | Row that wraps, or one item per line                       |\n| `interactive`       | `boolean`                                  | `false`        | Items become toggle buttons                                |\n| `hiddenIds`         | `readonly string[]`                        |                | Controlled hidden series                                   |\n| `defaultHiddenIds`  | `readonly string[]`                        | `[]`           | Initial hidden series when uncontrolled                    |\n| `onHiddenIdsChange` | `(ids: string[]) => void`                  |                | Called on every toggle                                     |\n| `messages`          | `Partial<messages>`                        |                | `label` (list name), `toggleHint`                          |"
+          },
+          {
+            "id": "showing-the-share",
+            "heading": "Showing the share",
+            "content": "Give each item a numeric `amount` and set `showShare`: the legend prints `amount / denominator` with `formatPercent` for the provider locale. The denominator is the sum of the visible items (hidden series leave it, and print no share) unless you pass `shareOf` because the items are only part of a whole. `value` still works as a free node; with both, a vertical legend lines value and share up in two columns (tabular mono). Percentages are rounded one by one, so three equal items show 33% each and the shares may sum to 99% or 101%. The legend never fudges them; raise `shareDigits` if that matters. `StackedBar` uses this through its `legendShare` prop."
           },
           {
             "id": "telling-series-apart-without-color",
@@ -19320,7 +20058,7 @@
       "sourceFile": "src/patterns/MatrixGrid/MatrixGrid.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "A matrix of toggle cells: rows by columns, each cell linking or unlinking one row with one\ncolumn. It is an ARIA `grid` with roving focus: the grid is one tab stop, the arrow keys move\nbetween cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last\ncell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.\n\nEach cell is a button named \"{row} · {column}: linked\" / \"not linked\" (messages). The grid\nscrolls horizontally inside a labelled, focusable region.\n\nImport it from `loui-ds/patterns`.",
+      "description": "A matrix of toggle cells: rows by columns, each cell linking or unlinking one row with one\ncolumn. It is an ARIA `grid` with roving focus: the grid is one tab stop, the arrow keys move\nbetween cells (`Home` / `End` within a row, `Ctrl+Home` / `Ctrl+End` to the first / last\ncell), and `Space` or `Enter` toggles. Arrow keys follow the reading direction.\n\nThe row and the column of the focused cell get a subtle surface step (a visual aid; the focus\nring and the cell name carry the meaning). The column header row and the row header column stay\nfixed while the region scrolls; give the root a height (`className`) to scroll vertically.\n`onToggle` may return a promise for a per-cell pending state (see `onToggle`).\n\nEach cell is a button named \"{row} · {column}: linked\" / \"not linked\" (messages). The grid\nscrolls horizontally inside a labelled, focusable region.\n\nImport it from `loui-ds/patterns`.",
       "props": [
         {
           "name": "aria-label",
@@ -19348,9 +20086,15 @@
         },
         {
           "name": "onToggle",
-          "type": "(rowId: string, columnId: string) => void",
+          "type": "(rowId: string, columnId: string) => unknown",
           "required": true,
-          "description": "Called with the row and column ids when the user toggles a cell. Update your state in it."
+          "description": "Called with the row and column ids when the user toggles a cell. Update your state in it.\n\nIt may return a promise (a request to save the link). While it is pending the cell shows a\nspinner, is `aria-busy` and ignores further toggles. The grid never flips a cell by itself:\nthe cell shows what `isLinked` returns, so if you update optimistically, revert in\n`onToggleError`. A rejected promise calls `onToggleError`."
+        },
+        {
+          "name": "onToggleError",
+          "type": "(error: unknown, rowId: string, columnId: string) => void",
+          "required": false,
+          "description": "Called when the promise returned by `onToggle` rejects, with the error and the cell's ids.\nRevert an optimistic update here and tell the user (a toast). The grid also announces\n\"Couldn't update {row} · {column}. Try again.\" in a visually hidden status."
         },
         {
           "name": "cornerLabel",
@@ -19372,7 +20116,7 @@
         },
         {
           "name": "messages",
-          "type": "Partial<{ cell: (row: string, column: string, linked: boolean) => string; scrollRegion: (name: string) => string; rowHeader: string; }>",
+          "type": "Partial<{ cell: (row: string, column: string, linked: boolean) => string; cellPending: (row: string, column: string, linked: boolean) => string; toggleFailed: (row: string, column: string) => string; scrollRegion: (name: string) => string; rowHeader: string; }>",
           "required": false,
           "description": "Message overrides for this instance."
         }
@@ -19422,6 +20166,20 @@
             "description": "Accessible name of a toggle cell: the row, the column and the state of the link."
           },
           {
+            "key": "cellPending",
+            "kind": "function",
+            "default": "{row} · {column}: not linked, saving",
+            "signature": "(row: string, column: string, linked: boolean)",
+            "description": "Accessible name of a cell while its toggle request is running."
+          },
+          {
+            "key": "toggleFailed",
+            "kind": "function",
+            "default": "Couldn't update {row} · {column}. Try again.",
+            "signature": "(row: string, column: string)",
+            "description": "Status announced when a toggle request fails; the cell keeps its previous state."
+          },
+          {
             "key": "scrollRegion",
             "kind": "function",
             "default": "{name}, scrollable",
@@ -19463,11 +20221,13 @@
         "--ds-matrix-grid-padding-inline",
         "--ds-matrix-grid-row-header-gap",
         "--ds-matrix-grid-row-min-height",
+        "--ds-matrix-grid-sticky-z-index",
         "--ds-radius-lg",
         "--ds-radius-md",
         "--ds-space-1",
         "--ds-space-2",
         "--ds-space-3",
+        "--ds-space-4",
         "--ds-surface",
         "--ds-surface-row-hover",
         "--ds-swatch-ring",
@@ -19526,6 +20286,18 @@
             "hasPlay": true
           },
           {
+            "name": "AsyncToggle",
+            "id": "patterns-matrix-grid--async-toggle",
+            "description": "`onToggle` returns a promise: the cell shows a spinner and ignores repeat toggles while it\nruns. \"Brick red\" always fails, so `onToggleError` runs (here it only logs; use a toast).",
+            "hasPlay": true
+          },
+          {
+            "name": "StickyHeaders",
+            "id": "patterns-matrix-grid--sticky-headers",
+            "description": "The header row and the row header stay in view while the region scrolls in both directions.",
+            "hasPlay": false
+          },
+          {
             "name": "Portuguese",
             "id": "patterns-matrix-grid--portuguese",
             "hasPlay": true
@@ -19579,7 +20351,12 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop          | Type                           | Default      | Notes                                                                 |\n| ------------- | ------------------------------ | ------------ | --------------------------------------------------------------------- |\n| `aria-label`  | `string`                       | required     | Names the grid; the scroll region is named \"{label}, scrollable\".     |\n| `rows`        | `{ id, label, meta? }[]`       | required     | Display order is yours (sort alphabetically by default).              |\n| `columns`     | `{ id, label, color? }[]`      | required     | `color` is `#rgb` / `#rrggbb`; fills linked cells and shows a swatch. |\n| `isLinked`    | `(rowId, columnId) => boolean` | required     | Source of truth is yours.                                             |\n| `onToggle`    | `(rowId, columnId) => void`    | required     | Update your state here.                                               |\n| `cornerLabel` | `string`                       | hidden \"Row\" | Caption of the row header column.                                     |\n| `countLabel`  | `string`                       | none         | Adds a count column (\"Linked\") with the per-row number of links.      |\n| `hint`        | `ReactNode`                    | none         | Help text under the grid, linked with `aria-describedby`.             |"
+            "content": "| Prop            | Type                                   | Default      | Notes                                                                      |\n| --------------- | -------------------------------------- | ------------ | -------------------------------------------------------------------------- |\n| `aria-label`    | `string`                               | required     | Names the grid; the scroll region is named \"{label}, scrollable\".          |\n| `rows`          | `{ id, label, meta? }[]`               | required     | Display order is yours (sort alphabetically by default).                   |\n| `columns`       | `{ id, label, color? }[]`              | required     | `color` is `#rgb` / `#rrggbb`; fills linked cells and shows a swatch.      |\n| `isLinked`      | `(rowId, columnId) => boolean`         | required     | Source of truth is yours.                                                  |\n| `onToggle`      | `(rowId, columnId) => void \\| Promise` | required     | Update your state here. A returned promise gives the cell a pending state. |\n| `onToggleError` | `(error, rowId, columnId) => void`     | none         | Runs when the promise from `onToggle` rejects.                             |\n| `cornerLabel`   | `string`                               | hidden \"Row\" | Caption of the row header column.                                          |\n| `countLabel`    | `string`                               | none         | Adds a count column (\"Linked\") with the per-row number of links.           |\n| `hint`          | `ReactNode`                            | none         | Help text under the grid, linked with `aria-describedby`.                  |"
+          },
+          {
+            "id": "async-toggle-sticky-headers-and-focus-guides",
+            "heading": "Async toggle, sticky headers and focus guides",
+            "content": "- **Async toggle.** `onToggle` may return a promise (saving the link on a server). While it is pending the cell is `aria-busy` (on the `gridcell`), shows a small spinner, is named \"{row} · {column}: linked, saving\" (message `cellPending`) and ignores further toggles; focus stays on it and other cells keep working. The grid never flips a cell by itself: it shows what `isLinked` says. If you update your state optimistically, revert it in `onToggleError`, which runs when the promise rejects (also when `onToggle` throws). Use it for a toast: `onToggleError={() => toast.error('Could not save the link')}`. The grid also announces \"Couldn't update {row} · {column}. Try again.\" in a visually hidden `role=\"status\"` (message `toggleFailed`).\n- **Sticky headers.** The column header row and the row header column are `position: sticky`; the corner sits above both. For vertical scrolling give the root a height or `max-block-size` through `className` / `style` (the scroll region fills it). `scroll-padding` keeps a focused cell out from behind the sticky parts (WCAG 2.4.11).\n- **Focus guides.** While a cell has focus, its row, its column and the column header get one surface step (`--ds-surface-row-hover`). It is a visual aid only: the focus ring and the cell name carry the meaning, nothing changes in the accessibility tree."
           },
           {
             "id": "accessibility",
@@ -19618,7 +20395,7 @@
             "reason": "One list of independent switches: use `CheckboxGroup` or `Switch`."
           }
         ],
-        "uses": ["Icon", "Swatch", "VisuallyHidden"],
+        "uses": ["Icon", "Spinner", "Swatch", "VisuallyHidden"],
         "usedBy": []
       }
     },
@@ -23886,6 +24663,19 @@
           "description": "Shows a list under the bar with swatch, label, percentage and formatted value for each part."
         },
         {
+          "name": "total",
+          "type": "number",
+          "required": false,
+          "description": "The size of the whole, in the unit of the segment values. When it is larger than the sum of\nthe segments, the difference is the remaining part: an unlabelled track after the segments,\nnamed \"Remaining\" in the summary and in the legend. This is how a single segment becomes a\n\"part of the whole\" indicator (\"Paid 1,240 of 2,000\"). When smaller than the sum it is ignored."
+        },
+        {
+          "name": "legendColumns",
+          "type": "readonly ProportionLegendColumn[]",
+          "required": false,
+          "default": "['share', 'value']",
+          "description": "Columns of the legend, in order: `share` (percentage), `value` (formatted with `format`)\nand `count` (the segment `count`). Default `['share', 'value']`. Percentages are rounded one\nby one and may not add up to exactly 100%."
+        },
+        {
           "name": "format",
           "type": "(value: number) => ReactNode",
           "required": false,
@@ -23900,7 +24690,7 @@
         },
         {
           "name": "messages",
-          "type": "Partial<{ segment: (label: string, percent: string) => string; summary: (items: string, label?: string) => string; }>",
+          "type": "Partial<{ segment: (label: string, percent: string) => string; summary: (items: string, label?: string) => string; remaining: string; }>",
           "required": false,
           "description": "Per-instance overrides of the built-in messages."
         }
@@ -23955,6 +24745,12 @@
             "default": "{label?}: {items}",
             "signature": "(items: string, label?: string)",
             "description": "The whole summary. `items` is the list of segments joined for the locale (\"Cash 16%, Card 11% and Pix 73%\"); `label` names the bar, if given."
+          },
+          {
+            "key": "remaining",
+            "kind": "string",
+            "default": "Remaining",
+            "description": "Name of the unfilled part when `total` is larger than the sum of the segments: read in the summary and printed in the legend."
           }
         ]
       },
@@ -23968,6 +24764,7 @@
         "--ds-line-control",
         "--ds-line-subtle",
         "--ds-proportion-bar-color",
+        "--ds-proportion-bar-columns",
         "--ds-proportion-bar-hatch-size",
         "--ds-proportion-bar-height",
         "--ds-proportion-bar-percent-col-w",
@@ -24034,6 +24831,18 @@
             "id": "components-proportion-bar--portuguese-brazil",
             "description": "Percentages, numbers and the list in the summary follow the provider locale.",
             "hasPlay": true
+          },
+          {
+            "name": "LegendColumns",
+            "id": "components-proportion-bar--legend-columns",
+            "description": "Share, value and count columns, in the order given. Each legend item shares its `id` with the bar segment.",
+            "hasPlay": true
+          },
+          {
+            "name": "PartOfWhole",
+            "id": "components-proportion-bar--part-of-whole",
+            "description": "One segment plus `total`: \"Paid 1,240 of 2,000\". The rest is an unlabelled track named \"Remaining\" for assistive technology.",
+            "hasPlay": true
           }
         ]
       },
@@ -24070,7 +24879,22 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop            | Type                         | Default | Notes                                                                  |\n| --------------- | ---------------------------- | ------- | ---------------------------------------------------------------------- |\n| `segments`      | `{ label, value, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0 |\n| `label`         | `string`                     |         | Name of the whole; starts the summary                                  |\n| `legend`        | `boolean`                    | `false` | List with swatch, label, percentage and formatted value                |\n| `format`        | `(value) => ReactNode`       | `Intl`  | Formats legend values. Use `formatCurrency` for money                  |\n| `percentDigits` | `number`                     | `0`     | Decimals of the percentages                                            |\n| `messages`      | `Partial<messages>`          |         | `segment(label, percent)`, `summary(items, label?)`                    |"
+            "content": "| Prop            | Type                                      | Default | Notes                                                                                                                                               |\n| --------------- | ----------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |\n| `segments`      | `{ id?, label, value, count?, color? }[]` | -       | Display order; never sorted. Negative and non-finite values count as 0. `id` links the segment to its legend item, `count` feeds the `count` column |\n| `total`         | `number`                                  |         | Size of the whole. When larger than the sum, the rest is an unlabelled track named \"Remaining\"                                                      |\n| `legendColumns` | `('share'                                 | 'value' | 'count')[]`                                                                                                                                         | `['share', 'value']` | Columns of the legend, in order |\n| `label`         | `string`                                  |         | Name of the whole; starts the summary                                                                                                               |\n| `legend`        | `boolean`                                 | `false` | List with swatch, label, percentage and formatted value                                                                                             |\n| `format`        | `(value) => ReactNode`                    | `Intl`  | Formats legend values. Use `formatCurrency` for money                                                                                               |\n| `percentDigits` | `number`                                  | `0`     | Decimals of the percentages                                                                                                                         |\n| `messages`      | `Partial<messages>`                       |         | `segment(label, percent)`, `summary(items, label?)`, `remaining`                                                                                    |"
+          },
+          {
+            "id": "part-of-the-whole",
+            "heading": "Part of the whole",
+            "content": "A single segment plus `total` is the \"Paid 1,240 of 2,000\" indicator; there is no separate component:\n\n```tsx\n<ProportionBar\n  label=\"Invoice\"\n  total={2000}\n  legend\n  format={(value) => formatCurrency(value * 100, 'USD', locale)}\n  segments={[{ id: 'paid', label: 'Paid', value: 1240 }]}\n/>\n```\n\nThe summary reads \"Invoice: Paid 62% and Remaining 38%\" (the word comes from the `remaining` message, `Restante` in pt-BR). The remaining part is drawn as the empty track, so it carries no color; in the legend it has a hollow, dashed swatch. A `total` smaller than the sum of the segments is ignored. Use `DonutMeter` instead when the share is the only message and a ring fits better."
+          },
+          {
+            "id": "linking-segments-and-legend-items",
+            "heading": "Linking segments and legend items",
+            "content": "Each segment can carry a stable `id`. The bar segment gets `data-segment=\"<id>\"` and its legend item gets the same attribute and the DOM id `<bar id>-<id>`, so tests and consumer code can find the pair. For people the link is the order, the label and the matching swatch (color is never the only link). The bar itself is one `role=\"img\"` whose children are presentational, so the accessible link is the summary: it names every part in the same order as the legend, and the legend repeats the same labels."
+          },
+          {
+            "id": "legend-columns",
+            "heading": "Legend columns",
+            "content": "`legendColumns` picks and orders the columns after the label: `share` (percentage), `value` (formatted with `format`) and `count` (the segment `count`, formatted with `Intl`). All rows share one grid, so the columns line up (tabular mono figures). Shares are rounded one by one and may not add up to 100%."
           },
           {
             "id": "distinguishing-the-parts",
@@ -25869,6 +26693,12 @@
           "values": ["both", "horizontal", "vertical"]
         },
         {
+          "name": "maxBlockSize",
+          "type": "string | number",
+          "required": false,
+          "description": "Maximum height of the region: a CSS length (`\"20rem\"`, `\"40vh\"`) or a number of pixels. The\nregion grows with its content up to this height and then scrolls, which suits a list that\nshould show a fixed number of rows (a searchable picker). Set as the\n`--ds-scroll-area-max-h` custom property; without it the region is limited by its parent\n(`100%`). While it scrolls it stays a focusable, labelled region."
+        },
+        {
           "name": "aria-label",
           "type": "string",
           "required": false,
@@ -25914,7 +26744,13 @@
         }
       ],
       "variants": {},
-      "cssVariables": ["--ds-accent", "--ds-line-control", "--ds-space-1", "--ds-text-3"],
+      "cssVariables": [
+        "--ds-accent",
+        "--ds-line-control",
+        "--ds-scroll-area-max-h",
+        "--ds-space-1",
+        "--ds-text-3"
+      ],
       "stories": {
         "title": "Layout/ScrollArea",
         "tags": ["autodocs"],
@@ -25926,9 +26762,14 @@
             "hasPlay": true
           },
           {
+            "name": "MaxHeight",
+            "id": "layout-scroll-area--max-height",
+            "description": "`maxBlockSize` lets the region grow with its content up to a cap, then scroll (a visible list of N rows).",
+            "hasPlay": false
+          },
+          {
             "name": "NotScrollable",
             "id": "layout-scroll-area--not-scrollable",
-            "description": "Nothing overflows: a plain container, no tab stop and no landmark.",
             "hasPlay": true
           },
           {
@@ -25988,7 +26829,7 @@
           {
             "id": "props",
             "heading": "Props",
-            "content": "| Prop                             | Type                                   | Default      | Notes                                             |\n| -------------------------------- | -------------------------------------- | ------------ | ------------------------------------------------- |\n| `aria-label` / `aria-labelledby` | `string`                               | **required** | One of them. It names the region while it scrolls |\n| `orientation`                    | `'vertical' \\| 'horizontal' \\| 'both'` | `'vertical'` | Which axes scroll                                 |\n\nOther `div` attributes (not `role`, `tabIndex`) and `ref` go to the root. Give the area a height, or put it in a flex column and let it shrink; it scrolls inside the space its parent gives it."
+            "content": "| Prop                             | Type                                   | Default      | Notes                                                                                                                      |\n| -------------------------------- | -------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------- |\n| `aria-label` / `aria-labelledby` | `string`                               | **required** | One of them. It names the region while it scrolls                                                                          |\n| `orientation`                    | `'vertical' \\| 'horizontal' \\| 'both'` | `'vertical'` | Which axes scroll                                                                                                          |\n| `maxBlockSize`                   | `string \\| number`                     | none         | Height cap (CSS length, or pixels as a number). The region grows with its content up to it, then scrolls (stays focusable) |\n\nOther `div` attributes (not `role`, `tabIndex`) and `ref` go to the root. Give the area a height, or put it in a flex column and let it shrink; it scrolls inside the space its parent gives it."
           },
           {
             "id": "accessibility",
@@ -27906,6 +28747,11 @@
             "id": "props",
             "heading": "Props",
             "content": "| Prop                                      | Type                                    | Default | Notes                                                                     |\n| ----------------------------------------- | --------------------------------------- | ------- | ------------------------------------------------------------------------- |\n| `title`                                   | `ReactNode` (required)                  | none    | Heading and accessible name (not limited to strings, unlike the handoff). |\n| `meta`                                    | `ReactNode`                             |         | Mono text after the title (\"ORD-1048\").                                   |\n| `headerExtra`                             | `ReactNode`                             |         | Usually a `Badge`.                                                        |\n| `description`                             | `ReactNode`                             |         | Linked with `aria-describedby`.                                           |\n| `children`                                | `ReactNode \\| ({ close }) => ReactNode` |         | Body.                                                                     |\n| `footer` / `footerStart`                  | `ReactNode \\| ({ close }) => ReactNode` |         | End / start aligned actions.                                              |\n| `size`                                    | `'sm' \\| 'md' \\| 'lg'`                  | `sm`    | 440 / 460 / 480 px (`--ds-sheet-width-*`); full width on small screens.   |\n| `padded`                                  | `boolean`                               | `true`  | `false` for a table or list that bleeds to the edges.                     |\n| `trigger`                                 | `ReactElement`                          |         | Optional when controlled.                                                 |\n| `isOpen` / `defaultOpen` / `onOpenChange` |                                         |         | Controlled / uncontrolled open state.                                     |\n| `isDismissable`                           | `boolean`                               | `true`  | Press on the scrim closes it.                                             |\n| `isKeyboardDismissDisabled`               | `boolean`                               | `false` |                                                                           |\n| `messages`                                | `{ close }`                             |         | \"Close panel\" (pt-BR \"Fechar painel\").                                    |"
+          },
+          {
+            "id": "initial-focus",
+            "heading": "Initial focus",
+            "content": "React Aria moves focus into the sheet on open: to the first element with `autoFocus` if there is one, otherwise to the dialog itself. This holds for every way of opening it (keyboard or pointer on the trigger, `element.click()` from code, and a controlled sheet without a trigger whose `isOpen` is set from an effect or a timer); regression tests cover each one (GAP-031). If `autoFocus` seems lost in your own tests, the cause is the test environment, not `Sheet`: wait for the dialog to be visible before asserting focus (the field is focused after the overlay mounts)."
           },
           {
             "id": "accessibility",
@@ -29934,7 +30780,7 @@
           }
         ],
         "uses": [],
-        "usedBy": ["Button", "ChatPanel", "Combobox", "ToolCallStep"]
+        "usedBy": ["Button", "ChatPanel", "Combobox", "MatrixGrid", "ToolCallStep"]
       }
     },
     {
@@ -30448,6 +31294,13 @@
           "description": "Makes the legend items toggle buttons that hide and show series. Hidden series leave the bars, totals, summaries and the data table."
         },
         {
+          "name": "legendShare",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Adds the share of each series (its total over the total of the visible series) to the\nlegend, next to the formatted total. Hidden series leave the denominator. Shares are rounded\none by one and may not add up to exactly 100%."
+        },
+        {
           "name": "hiddenSeries",
           "type": "readonly string[]",
           "required": false,
@@ -30726,6 +31579,12 @@
             "name": "RightToLeft",
             "id": "components-stacked-bar--right-to-left",
             "hasPlay": false
+          },
+          {
+            "name": "LegendShare",
+            "id": "components-stacked-bar--legend-share",
+            "description": "`legendShare` adds each series' share of the visible total to the legend.",
+            "hasPlay": false
           }
         ]
       },
@@ -30765,7 +31624,7 @@
           {
             "id": "props-key-ones",
             "heading": "Props (key ones)",
-            "content": "| Prop                   | Type                         | Default        | Notes                                                                 |\n| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------- |\n| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0     |\n| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)       |\n| `orientation`          | `'horizontal' \\| 'vertical'` | `'horizontal'` |                                                                       |\n| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                               |\n| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money      |\n| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby |\n| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                     |\n| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                              |\n| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                               |\n| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                       |\n| `height`               | `number \\| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                             |\n| `description`          | `string`                     |                | Read after the name                                                   |\n| `categoryLabel`        | `string`                     | \"Category\"     | Header of the first table column                                      |\n| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                  |\n\n`aria-label` or `aria-labelledby` is required."
+            "content": "| Prop                   | Type                         | Default        | Notes                                                                                               |\n| ---------------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------- |\n| `data`                 | `{ label, values }[]`        | -              | `values` is keyed by series `id`; missing or negative counts as 0                                   |\n| `series`               | `{ id, label, color? }[]`    | -              | Part order: start to end (horizontal), bottom to top (vertical)                                     |\n| `orientation`          | `'horizontal' \\| 'vertical'` | `'horizontal'` |                                                                                                     |\n| `normalize`            | `boolean`                    | `false`        | Every bar at full length (100% stacked)                                                             |\n| `format`               | `(value) => string`          | `Intl`         | Totals, legend, summaries, table. Use `formatCurrency` for money                                    |\n| `legend`               | `boolean`                    | `true`         | The legend names the series; turn it off only if you name them nearby                               |\n| `interactiveLegend`    | `boolean`                    | `false`        | Legend items hide and show series                                                                   |\n| `legendShare`          | `boolean`                    | `false`        | Legend also shows each series' share of the visible total (rounded one by one, may not sum to 100%) |\n| `hiddenSeries`         | `readonly string[]`          |                | Controlled hidden series                                                                            |\n| `defaultHiddenSeries`  | `readonly string[]`          | `[]`           | Initial hidden series when uncontrolled                                                             |\n| `onHiddenSeriesChange` | `(ids: string[]) => void`    |                |                                                                                                     |\n| `height`               | `number \\| string`           | 200px          | Vertical only (`--ds-stacked-bar-height`)                                                           |\n| `description`          | `string`                     |                | Read after the name                                                                                 |\n| `categoryLabel`        | `string`                     | \"Category\"     | Header of the first table column                                                                    |\n| `messages`             | `Partial<messages>`          |                | Instructions, summaries, table headers, empty states                                                |\n\n`aria-label` or `aria-labelledby` is required."
           },
           {
             "id": "telling-series-apart-without-color",
@@ -31428,7 +32287,7 @@
       "sourceFile": "src/components/Stepper/Stepper.tsx",
       "status": "experimental",
       "statusSource": "doc",
-      "description": "Progress through a multi-step flow such as a setup assistant. It is an ordered list; every\nstep states its progress as text for assistive technology (\"Completed\", \"Current\", \"Not\nstarted\") and the current step has `aria-current=\"step\"`. Markers and connectors are\ndecorative. Completed steps can be buttons with `onStepPress`.\n\nIn narrow containers the horizontal orientation shows only the markers and a visible summary\n(\"Step 3 of 9\"), so nine steps fit in 320 px.",
+      "description": "Progress through a multi-step flow such as a setup assistant. It is an ordered list; every\nstep states its progress as text for assistive technology (\"Completed\", \"Current\", \"Not\nstarted\") and the current step has `aria-current=\"step\"`. Markers and connectors are\ndecorative. Completed steps can be buttons with `onStepPress`.\n\nIn narrow containers the horizontal orientation shows only the markers and a visible summary\n(\"Step 3 of 9\"), so nine steps fit in 320 px. The width at which this happens grows with the step count\n(6, 7 to 8 and 9 or more steps switch at 600, 720 and 800 px), and a label that does not fit\nis clipped after two lines instead of breaking inside a word.",
       "props": [
         {
           "name": "steps",
@@ -31616,6 +32475,18 @@
             "hasPlay": false
           },
           {
+            "name": "NineLongLabels700",
+            "id": "components-stepper--nine-long-labels700",
+            "description": "Nine long labels at 700 px: too tight for words, so the compact \"Step 3 of 9\" form is used.",
+            "hasPlay": false
+          },
+          {
+            "name": "NineLongLabels900",
+            "id": "components-stepper--nine-long-labels900",
+            "description": "Nine long labels at 900 px: labels stay on whole words, clipped after two lines when needed.",
+            "hasPlay": false
+          },
+          {
             "name": "LongLabels",
             "id": "components-stepper--long-labels",
             "hasPlay": false
@@ -31675,7 +32546,7 @@
           {
             "id": "accessibility",
             "heading": "Accessibility",
-            "content": "- A real ordered list named by `aria-label` or `aria-labelledby`. The current step has `aria-current=\"step\"` (on the button when it is one).\n- Progress is text, not only color or a check: every step ends with a visually hidden \"Completed\", \"Current\" or \"Not started\" (messages).\n- Markers, connectors and the \"Step 3 of 9\" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.\n- Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.\n- Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.\n- Reflow: in containers up to 480 px wide the horizontal labels are visually hidden (still read by screen readers) and a visible \"Step N of M: label\" line appears. The vertical orientation needs no collapse.\n- Forced colors: markers and connectors use system colors; the state text still names every step."
+            "content": "- A real ordered list named by `aria-label` or `aria-labelledby`. The current step has `aria-current=\"step\"` (on the button when it is one).\n- Progress is text, not only color or a check: every step ends with a visually hidden \"Completed\", \"Current\" or \"Not started\" (messages).\n- Markers, connectors and the \"Step 3 of 9\" summary are decorative duplicates (`aria-hidden`); the list conveys the same information.\n- Keyboard: completed step buttons are in the Tab order and activate with `Enter` or `Space`. Upcoming steps are not focusable, so people cannot skip ahead; move forward with the flow's own Next button.\n- Target size: the marker is 24 px, so step buttons meet WCAG 2.5.8 even at 320 px with 9 steps.\n- Reflow: labels never break inside a word; one that does not fit is clipped after two lines. The container width below which the horizontal stepper collapses grows with the step count: 480 px, 600 px for 6 steps, 720 px for 7 or 8 steps and 800 px for 9 or more. Below that width the horizontal labels are visually hidden (still read by screen readers) and a visible \"Step N of M: label\" line appears. The vertical orientation needs no collapse.\n- Forced colors: markers and connectors use system colors; the state text still names every step."
           },
           {
             "id": "content-rules",
@@ -33445,6 +34316,7 @@
         "--ds-success-soft",
         "--ds-tabs-count-padding-inline",
         "--ds-tabs-count-size",
+        "--ds-tabs-divider-width",
         "--ds-tabs-gap",
         "--ds-tabs-indicator-height",
         "--ds-target-min",
@@ -33740,6 +34612,7 @@
         "--ds-success-soft",
         "--ds-tabs-count-padding-inline",
         "--ds-tabs-count-size",
+        "--ds-tabs-divider-width",
         "--ds-tabs-gap",
         "--ds-tabs-indicator-height",
         "--ds-target-min",
@@ -34039,6 +34912,7 @@
         "--ds-success-soft",
         "--ds-tabs-count-padding-inline",
         "--ds-tabs-count-size",
+        "--ds-tabs-divider-width",
         "--ds-tabs-gap",
         "--ds-tabs-indicator-height",
         "--ds-target-min",
@@ -34392,6 +35266,7 @@
         "--ds-success-soft",
         "--ds-tabs-count-padding-inline",
         "--ds-tabs-count-size",
+        "--ds-tabs-divider-width",
         "--ds-tabs-gap",
         "--ds-tabs-indicator-height",
         "--ds-target-min",
@@ -39710,9 +40585,11 @@
         "uses": [],
         "usedBy": [
           "ActionList",
+          "AddCard",
           "Alert",
           "ApprovalCard",
           "Banner",
+          "CardLink",
           "Chart",
           "ChatPanel",
           "CommandPalette",
@@ -39795,6 +40672,12 @@
       "description": "Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. A small subset is parsed into React elements: no markdown library, no `dangerouslySetInnerHTML`, no HTML string anywhere.",
       "status": "experimental",
       "doc": "recipes/markdown-message.md"
+    },
+    {
+      "name": "PasswordField",
+      "description": "A password field with a show/hide toggle, built from `Input` and a labelled `Button` in its `trailing` slot. It satisfies WCAG 3.3.8 (accessible authentication): pasting and password managers keep working, and nothing asks the user to remember or retype a password.",
+      "status": "experimental",
+      "doc": "recipes/password-field.md"
     },
     {
       "name": "SettingsPage",
@@ -40073,6 +40956,24 @@
     }
   ],
   "utilities": [
+    {
+      "name": "chartAverage",
+      "kind": "utility",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { chartAverage } from 'loui-ds';",
+      "sourceFile": "src/components/Chart/chartAverage.ts",
+      "description": "The arithmetic mean of chart values, for an `average` reference line:\n`referenceLines={[{ kind: 'average', label: 'Average', value: chartAverage(data) }]}`.\n\nAccepts numbers or chart data (`{ value }`). Non-finite entries are ignored; with nothing\nleft to average (or the sum overflows) the result is `0`. The result is never `NaN`.",
+      "signature": "chartAverage(values: readonly (number | { readonly value: number; })[]): number",
+      "params": [
+        {
+          "name": "values",
+          "type": "readonly (number | { readonly value: number; })[]",
+          "required": true
+        }
+      ],
+      "returns": "number",
+      "docs": "docs/architecture/utilities.md"
+    },
     {
       "name": "compareText",
       "kind": "utility",
@@ -40741,6 +41642,34 @@
         }
       ],
       "returns": "string",
+      "docs": "docs/architecture/utilities.md"
+    },
+    {
+      "name": "parseCurrencyAmount",
+      "kind": "utility",
+      "entryPoint": "loui-ds",
+      "importStatement": "import { parseCurrencyAmount } from 'loui-ds';",
+      "sourceFile": "src/utils/currency.ts",
+      "description": "Parses what the user typed in **whole units** into integer minor units (the `amount` typing\nmode of `CurrencyInput`): `200` is 200.00, so `20000` in BRL; `12,5` is `1250`.\n\nRules, applied with string manipulation only (no floats):\n- Digits are whole units until a decimal mark; the locale's own digits and full-width digits\n  count. Other characters (symbols, spaces, signs, letters) are ignored.\n- The **last** `.` or `,` (or the locale's decimal mark) starts the fraction when it is the\n  only one of its kind and either it is the locale's decimal mark, or it is followed by at\n  most as many digits as the currency has minor digits (and is not the locale's grouping\n  mark followed by exactly three digits, as in `1.234` for KWD in pt-BR). Otherwise it is\n  grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.\n- Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with\n  0 minor digits (JPY) have no fraction: every mark is ignored.\n- A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to\n  15 digits so it is always a safe integer. The sign is not handled here.",
+      "signature": "parseCurrencyAmount(text: string, currency: string, locale: string): number",
+      "params": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "returns": "number",
       "docs": "docs/architecture/utilities.md"
     },
     {

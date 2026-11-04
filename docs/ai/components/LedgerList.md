@@ -15,7 +15,7 @@ A list of signed entries: date, title, optional sub line, a signed amount and an
 - Import: `import { LedgerList } from 'loui-ds/patterns';`
 - Status: stable
 - Source: `src/patterns/LedgerList/LedgerList.tsx`
-- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, Empty, Deletable, KeyboardDelete, EditableAndDeletable, EditOnly, EditInSheet, EditInline, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
+- Stories (Storybook title `Patterns/LedgerList`): Default, NegativeAsSuccess, NegativeNeutral, WithoutBalance, Quantities, CustomFormat, LongText, NarrowEditableAndDeletable, Empty, Deletable, KeyboardDelete, EditableAndDeletable, EditOnly, EditInSheet, EditInline, MixedDeletableAndFixed, WithoutDate, NoDatesAtAll, Portuguese, RightToLeft, Focused
 
 ## Props
 
@@ -46,7 +46,7 @@ Locales shipped: en, pt-BR. Override per instance with the `messages` prop or gl
 
 ## Design tokens used
 
-`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
+`--ds-control-h-sm`, `--ds-danger`, `--ds-font-mono`, `--ds-font-sans`, `--ds-fs-caption`, `--ds-fs-label`, `--ds-fs-meta`, `--ds-ledger-list-date-width`, `--ds-ledger-list-gap`, `--ds-ledger-list-padding-inline`, `--ds-ledger-list-text-gap`, `--ds-lh-caption`, `--ds-lh-label`, `--ds-lh-meta`, `--ds-line-subtle`, `--ds-space-1`, `--ds-space-3`, `--ds-space-4`, `--ds-success`, `--ds-text`, `--ds-text-2`, `--ds-warning`, `--ds-weight-medium`
 
 ## When to use
 
@@ -115,6 +115,10 @@ A drawer that mixes a fixed opening balance with deletable payments, where `askT
   onDelete={askToDelete}
 />
 ```
+
+## Narrow containers
+
+The list is a size container. At 480 px or less the date moves under the title as a meta line, the padding shrinks and the amount, balance and actions columns stay fixed, so titles keep a readable width. The DOM and reading order do not change.
 
 ## Related components
 

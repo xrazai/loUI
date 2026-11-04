@@ -38,6 +38,7 @@ Rules for generated UI:
 
 - [Accordion](./ai/components/Accordion.md): A stack of sections that expand and collapse. (experimental)
 - [ActionList](./ai/components/ActionList.md): A vertical list of records, each with a title, optional description, a mono meta value and a "more actions" menu, with optional row checkboxes (`selectionMode="multiple"`). (experimental)
+- [AddCard](./ai/components/AddCard.md): A dashed "create new" tile that sits in a grid next to cards. (experimental)
 - [AgentCard](./ai/components/AgentCard.md): A card for one agent: icon, name, status, description and a footer with the last activity and the number of items waiting for approval. (experimental)
 - [Alert](./ai/components/Alert.md): An inline message with a tone, an icon, an optional title, an action and a dismiss button. (experimental)
 - [ApprovalCard](./ai/components/ApprovalCard.md): A reply waiting for approval: the original message, an editable draft written by an agent and two actions, send and discard. (experimental)
@@ -50,6 +51,7 @@ Rules for generated UI:
 - [Button](./ai/components/Button.md): An action button built on React Aria's `Button`. (experimental)
 - [Calendar](./ai/components/Calendar.md): A month calendar (React Aria `Calendar`, an ARIA grid). (experimental)
 - [Card](./ai/components/Card.md): A bordered surface that groups related content. (experimental)
+- [CardLink](./ai/components/CardLink.md): A card whose whole surface is one link or button. (experimental)
 - [Chart](./ai/components/Chart.md): A responsive bar or line chart for one series, drawn in SVG. (experimental)
 - [ChatPanel](./ai/components/ChatPanel.md): A chat side panel for talking to an agent: header with Clear, a message log, suggested prompts when empty, and a composer. (experimental)
 - [Checkbox](./ai/components/Checkbox.md): A checkbox with a native `<input type="checkbox">` (so `name` / `value` take part in form submission), an 18px box and an optional description. (experimental)
@@ -168,18 +170,19 @@ Tested compositions for common situations. Start from the one that fits, keep it
 - [FormWithValidation](./recipes/form-with-validation.md): A form that fails well: native validation with one message per field, an error summary that takes focus, server errors on the same fields, a Save button that always works, and "Saved" next to it. (experimental)
 - [InlinePriceEdit](./recipes/inline-price-edit.md): A price that reads as text and turns into a field when pressed. (experimental)
 - [MarkdownMessage](./recipes/markdown-message.md): Safe markdown in the replies of a `ChatPanel`, through its `renderContent` prop. (experimental)
+- [PasswordField](./recipes/password-field.md): A password field with a show/hide toggle, built from `Input` and a labelled `Button` in its `trailing` slot. (experimental)
 - [SettingsPage](./recipes/settings-page.md): A settings screen: app shell, a top bar with the page's one primary action and its keyboard shortcut, and one card per topic with switches, a select and a radio group. (experimental)
 - [SheetForm](./recipes/sheet-form.md): A form inside a side `Sheet` whose primary button sits in the sheet footer, outside the `<form>`. (experimental)
 - [UndoableAction](./recipes/undoable-action.md): A reversible action (archive, mark as done, change status) that happens at once, with no confirmation, and an Undo in a toast. (experimental)
 
 ## Hooks, utilities and icons
 
-- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast, useUndoable; 44 utilities and constants; 40 icons.
+- [Hooks and utilities](./ai/hooks-and-utilities.md): useControllableState, useDSLocale, useHotkey, useHotkeys, useHotkeyScope, useMediaQuery, useMessages, usePrefersReducedMotion, useRegisteredHotkeys, useToast, useUndoable; 46 utilities and constants; 40 icons.
 
 ## Machine-readable data
 
-- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (118 components).
-- [tokens.json](./tokens.json): 443 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
+- [manifest.json](./manifest.json): every export with props, variants, messages, CSS variables, stories and doc sections (120 components).
+- [tokens.json](./tokens.json): 459 design tokens with CSS variables, values, descriptions and allowed text/surface pairings.
 - [content-rules.json](./ai/content-rules.json): microcopy rules as data.
 
 ## Optional

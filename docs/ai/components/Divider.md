@@ -9,16 +9,16 @@ A 1px line that separates groups of content. Built on React Aria `Separator`.
 - Import: `import { Divider } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Divider/Divider.tsx`
-- Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Vertical, Weights
+- Stories (Storybook title `Layout/Divider`): Default, Subtle, Strong, Dashed, DashedOnPaper, Vertical, Weights
 
 ## Props
 
-| Prop          | Type                                | Required | Default        | Description                                                                                                                                                                                                    |
-| ------------- | ----------------------------------- | -------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `'horizontal' \| 'vertical'`        |          | `'horizontal'` | `horizontal` (default) separates stacked content; `vertical` separates items in a row and needs a parent with a height.                                                                                        |
-| `variant`     | `'subtle' \| 'default' \| 'strong'` |          | `'default'`    | Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default` (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls and overlays). Default `default`. |
-| `className`   | `string`                            |          |                |                                                                                                                                                                                                                |
-| `ref`         | `Ref<HTMLElement>`                  |          |                | Ref to the separator element.                                                                                                                                                                                  |
+| Prop          | Type                                            | Required | Default        | Description                                                                                                                                                                                                                                                                                                                   |
+| ------------- | ----------------------------------------------- | -------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`                    |          | `'horizontal'` | `horizontal` (default) separates stacked content; `vertical` separates items in a row and needs a parent with a height.                                                                                                                                                                                                       |
+| `variant`     | `'subtle' \| 'default' \| 'strong' \| 'dashed'` |          | `'default'`    | Line weight by token: `subtle` (`--ds-line-subtle`, internal dividers), `default` (`--ds-line`, between cards and sections) or `strong` (`--ds-line-strong`, around controls and overlays). `dashed` is a 1px dashed `--ds-line-strong` rule for a total row or a receipt tear line (AGENTS.md section 7). Default `default`. |
+| `className`   | `string`                                        |          |                |                                                                                                                                                                                                                                                                                                                               |
+| `ref`         | `Ref<HTMLElement>`                              |          |                | Ref to the separator element.                                                                                                                                                                                                                                                                                                 |
 
 ### Inherited props
 
@@ -29,7 +29,7 @@ A 1px line that separates groups of content. Built on React Aria `Separator`.
 
 ## Variants, sizes and tones
 
-- `variant`: `subtle`, `default`, `strong`
+- `variant`: `subtle`, `default`, `strong`, `dashed`
 
 ## Design tokens used
 
@@ -58,6 +58,10 @@ div[role=separator]    vertical, with aria-orientation
 - Rendered by React Aria: a horizontal divider is an `<hr>`; a vertical one has `role="separator"` and `aria-orientation="vertical"`.
 - It is a thematic break for assistive technology, so do not use it as a pure visual rule between unrelated things.
 - Line colors are borders, not text; `forced-colors` paints them with `CanvasText`.
+
+## Dashed rule
+
+`variant="dashed"` is the "total row" rule of AGENTS.md section 7: a 1px dashed line in `--ds-line-strong`, for the line above a total or a tear line on a receipt preview. It works on the dark surfaces and inside the paper scope (`data-theme="paper"`, where the line becomes the paper rule). In `forced-colors` it is drawn with `CanvasText`. Like the other variants it is a decorative border, not a text or control boundary.
 
 ## Examples
 

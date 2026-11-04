@@ -8,7 +8,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - Import: `import { Card } from 'loui-ds';`
 - Status: experimental (do not use in recipes until stable)
 - Source: `src/components/Card/Card.tsx`
-- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt
+- Stories (Storybook title `Components/Card`): Default, WithActions, Raised, WithoutTitle, HeadingLevel3, NoPadding, LongText, RightToLeft, PaperReceipt, ReceiptPreview
 
 ## Props
 
@@ -42,6 +42,7 @@ A bordered surface that groups related content. With a `title` it is a labelled 
 - To wrap a whole page: use the page layout.
 - For content that interrupts the user: use `Dialog` or `Alert`.
 - Do not nest a Card inside a Card; use a divider instead.
+- For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
 
 ## Anatomy
 
@@ -56,6 +57,20 @@ section (surface + 1px line, radius lg, padding)
 ## Elevation
 
 Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `raised` card gets the raised surface, a stronger border **and** `--ds-shadow-overlay`, so use it only when the card really floats (a pinned side panel, the shell of a custom popover). A card in the normal flow stays `default`.
+
+## Paper scope
+
+Put `data-theme="paper"` on the `Card` to render the only light surface in the system, for receipt and PDF previews (ADR-0007). The card reads semantic tokens (`--ds-surface`, `--ds-line`, `--ds-text`), which the `[data-theme='paper']` scope remaps on the element itself, so the background, border and text switch with no extra prop. Inside it, `Text`, `Heading` and `Divider` (solid and dashed) follow the same remap; use `<Divider variant="dashed" />` for the total line.
+
+```tsx
+<Card data-theme="paper" title="Receipt #1051">
+  <Text mono>$1,240.00</Text>
+  <Divider variant="dashed" />
+  <Text mono>Total $1,240.00</Text>
+</Card>
+```
+
+Paper-safe components (axe contrast tested in the paper scope): `Card`, `Text`, `Heading`, `Divider`, plus `Badge`, `Alert` and `Button` (see the `PaperReceipt` story). A receipt or PDF component is product domain and is not part of the design system; compose these instead.
 
 ## Accessibility
 
@@ -83,3 +98,5 @@ Borders carry hierarchy, shadows are for overlays (AGENTS.md section 5). A `rais
 
 - Instead, see Dialog: For content that interrupts the user: use `Dialog` or `Alert`.
 - Instead, see Alert: For content that interrupts the user: use `Dialog` or `Alert`.
+- Instead, see CardLink: For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.
+- Instead, see AddCard: For a card that is itself one click target (a settings category tile): use `CardLink`. For a dashed "create new" tile: use `AddCard`. `Card` is never interactive (ADR-0011); a card with inner buttons stays a `Card`.

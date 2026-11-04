@@ -63,6 +63,8 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 
 ## Accessibility
 
+Inside a `Button` the `Kbd` is `aria-hidden` (the button's `shortcut` prop exposes the keys once through `aria-keyshortcuts`), so the shortcut never doubles the accessible name.
+
 - Screen readers do not reliably read symbols such as `⌘`. Every symbol or abbreviation is `aria-hidden` and followed by a visually hidden spoken name from the message catalog: "Command K", "Control Shift Escape".
 - When the visible text already is the name (`Enter`, `Tab`) nothing is duplicated.
 - The element has no role and is not focusable: it is text. The shortcut itself must be announced where it works (for example `aria-keyshortcuts` on the control, which is the control's responsibility).
@@ -84,4 +86,4 @@ On Apple platforms modifiers use symbols (`⌘ ⌃ ⇧ ⌥ ↵ ⎋ ⇥ ⌫ ⌦`)
 ## Related components
 
 - Renders: VisuallyHidden
-- Used by: CommandPalette, SearchInput, ShortcutsHelp, Tab, TabList, TabPanel, Tabs
+- Used by: Button, CommandPalette, SearchInput, ShortcutsHelp, Tab, TabList, TabPanel, Tabs
