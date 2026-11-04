@@ -7,6 +7,10 @@ All notable changes to this project are documented here. Format based on [Keep a
 ## [Unreleased]
 
 ## [0.7.2] - 2026-11-04
+### Process
+
+- (2026-11-04) The 0.7.2 publish took three tags on the same version. `v0.7.2` on e041542 stopped in the new `verify` job because `upload-artifact` v4 skips the hidden `.release/` folder (fixed in 004c975: `release-out/`, plus `include-hidden-files` for the `.vitest/attachments` uploads). On 004c975 `npm publish release-out/loui-ds-0.7.2.tgz` was read as a GitHub `user/repo` shortcut and tried SSH (fixed in 15894b4: `./release-out/…`). The tag was moved to 15894b4, which is the only one that published; the package content is the same as e041542 (only workflows, `.gitignore` and one test changed, none of them in `dist`). A dry run of the release workflow before the next tag would catch this kind of error earlier.
+
 ### Added
 
 - **D-A2** (2026-11-04) Linux visual baselines regenerated in the pinned container for every story (1116; 246 new since 0.6, 80 updated for the 0.6/0.7 layout changes, reviewed), and the CI `visual` job now runs on every push to `main`. A red visual job fails the CI run, so the release gate (D-A1) also blocks a tag with a visual regression. The release checklist (`docs/release/README.md`) keeps the local Windows run; `AGENTS.md` §10 and `tests/visual/README.md` describe the two platforms.
