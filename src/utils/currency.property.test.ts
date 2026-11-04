@@ -90,10 +90,14 @@ describe('formatCurrency (properties)', () => {
 });
 
 describe('parseCurrencyInput (properties)', () => {
-  it('always returns a safe, non-negative integer, whatever was typed', () => {
+  it('returns a safe, non-negative integer, or NaN above 15 digits, whatever was typed', () => {
     fc.assert(
       fc.property(fc.string({ unit: 'binary' }), caseArb, (text, { currency, locale }) => {
         const value = parseCurrencyInput(text, currency, locale);
+        if (Number.isNaN(value)) {
+          expect(text.replace(/\D/gu, '').replace(/^0+/u, '').length).toBeGreaterThan(15);
+          return;
+        }
         expect(Number.isSafeInteger(value)).toBe(true);
         expect(value).toBeGreaterThanOrEqual(0);
       }),
@@ -151,13 +155,29 @@ describe('parseCurrencyAmount (properties)', () => {
     );
   });
 
-  it('always returns a non-negative safe integer', () => {
+  it('returns a non-negative safe integer, or NaN, never a shortened number', () => {
     fc.assert(
       fc.property(fc.string({ maxLength: 40 }), roundTripCases, (text, { currency, locale }) => {
         const value = parseCurrencyAmount(text, currency, locale);
+        if (Number.isNaN(value)) return;
         expect(Number.isSafeInteger(value)).toBe(true);
         expect(value).toBeGreaterThanOrEqual(0);
       }),
+    );
+  });
+
+  it('is NaN exactly when the digits exceed 15, otherwise the digits as written', () => {
+    fc.assert(
+      fc.property(
+        fc.stringMatching(/^[1-9][0-9]{0,24}$/),
+        roundTripCases,
+        (whole, { currency, locale }) => {
+          const digits = getCurrencyDigits(currency, locale);
+          const value = parseCurrencyAmount(whole, currency, locale);
+          if (whole.length + digits > 15) expect(value).toBeNaN();
+          else expect(value).toBe(Number(`${whole}${'0'.repeat(digits)}`));
+        },
+      ),
     );
   });
 });

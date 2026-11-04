@@ -65,7 +65,7 @@ function toDecimalString(minorUnits: number, digits: number): `${number}` {
   return `${negative ? '-' : ''}${integer}${fraction}` as `${number}`;
 }
 
-/** Longest digit run kept; keeps the result a safe integer (2^53 has 16 digits). */
+/** Longest digit run accepted; keeps the result a safe integer (2^53 has 16 digits). */
 const MAX_DIGITS = 15;
 
 const digitMaps = createCache<Map<string, string>>(50);
@@ -96,7 +96,8 @@ function fullWidthDigit(char: string): string | undefined {
  * `1`, `2`, `3` into a USD field yields `1`, `12`, `123`, shown as `$0.01`,
  * `$0.12`, `$1.23`. Digits of the locale's numbering system (e.g. Arabic-Indic)
  * and full-width digits count as digits. Empty input is `0`. Input longer than
- * 15 digits is cut, so the result is always a safe integer.
+ * 15 digits (leading zeros do not count) returns `NaN` rather than a silently shorter number,
+ * so a result that is not `NaN` is always a safe integer.
  *
  * `currency` is validated through `Intl` (throws `RangeError` for an invalid code).
  * Pasting `12` into a USD field means `$0.12` by this model; callers that want
@@ -111,7 +112,8 @@ export function parseCurrencyInput(text: string, currency: string, locale: strin
     if (digit !== undefined) digits += digit;
   }
   if (digits === '') return 0;
-  return Number(digits.slice(0, MAX_DIGITS));
+  digits = digits.replace(/^0+(?=\d)/u, '');
+  return digits.length > MAX_DIGITS ? Number.NaN : Number(digits);
 }
 
 /** The decimal and grouping characters of a currency format in a locale. */
@@ -199,12 +201,14 @@ export function splitCurrencyAmount(
  *   grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
  * - Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
  *   0 minor digits (JPY) have no fraction: every mark is ignored.
- * - A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
- *   15 digits so it is always a safe integer. The sign is not handled here.
+ * - A missing fraction is padded with zeros. Text without digits is `0`. More than 15 digits
+ *   (leading zeros excluded) returns `NaN`, never a shortened number; any other result is a safe
+ *   integer. The sign is not handled here.
  */
 export function parseCurrencyAmount(text: string, currency: string, locale: string): number {
   const minorDigits = getCurrencyDigits(currency, locale);
   const { integer, fraction } = splitCurrencyAmount(text, currency, locale);
   const digits = `${integer}${fraction.padEnd(minorDigits, '0')}`.replace(/^0+/u, '');
-  return digits === '' ? 0 : Number(digits.slice(0, MAX_DIGITS));
+  if (digits === '') return 0;
+  return digits.length > MAX_DIGITS ? Number.NaN : Number(digits);
 }

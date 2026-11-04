@@ -147,6 +147,8 @@ export function CurrencyInput({
   // so a value changed from outside replaces a stale draft.
   const [draft, setDraft] = useState<{ text: string; amount: number | null } | null>(null);
   const selectOnRender = useRef(false);
+  // True from focus until the first edit: a mouse press keeps the amount selected (see below).
+  const untouched = useRef(false);
   let draftText: string | null = null;
   if (isAmountMode && draft) {
     if (draft.amount === amount) draftText = draft.text;
@@ -188,6 +190,23 @@ export function CurrencyInput({
     };
   }, [isAmountMode]);
 
+  // Amount mode: a mouse press on a field that is already focused (autofocus, a second click)
+  // would drop the caret where it landed, often at the start of the right-aligned text, so typing
+  // lands before the amount. While nothing was edited yet, that press keeps the amount selected
+  // instead. After the first edit presses place the caret normally, so a text can be selected
+  // with the mouse.
+  useEffect(() => {
+    const element = input.current;
+    if (!isAmountMode || !element) return undefined;
+    const keepSelected = (event: MouseEvent) => {
+      if (untouched.current && document.activeElement === element) event.preventDefault();
+    };
+    element.addEventListener('mousedown', keepSelected);
+    return () => {
+      element.removeEventListener('mousedown', keepSelected);
+    };
+  }, [isAmountMode]);
+
   const apply = (next: TypedAmount | undefined) => {
     if (!next) return;
     setTypedNegative(next.negativeZero);
@@ -198,8 +217,9 @@ export function CurrencyInput({
     ...rest,
     value: text,
     onChange: (typed: string) => {
+      untouched.current = false;
       if (isAmountMode) {
-        const result = interpretAmountTyping(typed, options);
+        const result = interpretAmountTyping(typed, options, draftText ?? undefined);
         if (!result) return;
         setTypedNegative(result.typed.negativeZero);
         setDraft({ text: result.draft, amount: result.typed.minorUnits });
@@ -223,6 +243,7 @@ export function CurrencyInput({
       apply(next);
     },
     onPaste: (event: ClipboardEvent<HTMLInputElement>) => {
+      untouched.current = false;
       const pasted = event.clipboardData.getData('text');
       event.preventDefault();
       const next = interpretPaste(pasted, options);
@@ -243,6 +264,7 @@ export function CurrencyInput({
           amount,
         });
         selectOnRender.current = amount !== null;
+        untouched.current = amount !== null;
         return;
       }
       const element = event.currentTarget;
@@ -252,6 +274,7 @@ export function CurrencyInput({
       setTypedNegative(false);
       setDraft(null);
       selectOnRender.current = false;
+      untouched.current = false;
       onBlur?.(event);
     },
     mono: true,

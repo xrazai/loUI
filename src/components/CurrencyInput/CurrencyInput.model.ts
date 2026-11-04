@@ -1,3 +1,4 @@
+import type { CurrencyAmountParts } from '../../utils/currency';
 import {
   getCurrencyDigits,
   getCurrencySeparators,
@@ -84,6 +85,7 @@ export function interpretTyping(text: string, options: TypingOptions): TypedAmou
       : { minorUnits: null, negativeZero: false };
   }
   const magnitude = parseCurrencyInput(text, options.currency, options.locale);
+  if (Number.isNaN(magnitude)) return undefined;
   if (String(magnitude).length > clampDigits(options.maxDigits) && magnitude !== 0)
     return undefined;
   return {
@@ -109,10 +111,15 @@ function isSeparator(char: string, separators: Separators): boolean {
   return char === '.' || char === ',' || char === separators.decimal || char === separators.group;
 }
 
-/** Splits `integer` + `fraction` digit strings into minor units, rounding half up. */
+/**
+ * Splits `integer` + `fraction` digit strings into minor units, rounding half up. `NaN` when the
+ * amount has more than `MAX_SAFE_DIGITS` digits (it could not be held exactly).
+ */
 function toMinorUnits(integer: string, fraction: string, digits: number): number {
   const kept = fraction.slice(0, digits).padEnd(digits, '0');
-  let minor = Number(`${integer || '0'}${kept}`);
+  const text = `${integer || '0'}${kept}`.replace(/^0+(?=\d)/u, '');
+  if (text.length > MAX_SAFE_DIGITS) return Number.NaN;
+  let minor = Number(text);
   if (fraction.length > digits && Number(fraction[digits]) >= 5) minor += 1;
   return minor;
 }
@@ -123,7 +130,7 @@ function toMinorUnits(integer: string, fraction: string, digits: number): number
  * mean (`1.234` is 1234 in pt-BR and 1.23 in en-US); a lone separator followed by 1 to
  * `digits` digits that cannot be a thousands group is read as the decimal mark; anything else
  * is grouping. Fractions longer than the currency allows are rounded half up. Returns
- * `undefined` when the text has no digits or is longer than `maxDigits`.
+ * `undefined` when the text has no digits or is longer than `maxDigits` or than 15 digits.
  */
 export function interpretPaste(text: string, options: TypingOptions): TypedAmount | undefined {
   if (!hasDigit(text)) return undefined;
@@ -156,6 +163,7 @@ export function interpretPaste(text: string, options: TypingOptions): TypedAmoun
   const integer = digitsOnly(decimalAt === -1 ? sequence : sequence.slice(0, decimalAt));
   const fraction = decimalAt === -1 ? '' : digitsOnly(sequence.slice(decimalAt + 1));
   const magnitude = toMinorUnits(integer.replace(/^0+(?=\d)/u, ''), fraction, digits);
+  if (Number.isNaN(magnitude)) return undefined;
   if (String(magnitude).length > clampDigits(options.maxDigits) && magnitude !== 0)
     return undefined;
   const negative = options.allowNegative && countMinus(text) % 2 === 1;
@@ -185,14 +193,33 @@ export function plainAmountText(minorUnits: number, currency: string, locale: st
 }
 
 /**
+ * The mark of `draft` that was read as its decimal mark (`.` in pt-BR `12.90`), or `undefined`
+ * when the draft has no fraction. The reading is the one `splitCurrencyAmount` gives the draft.
+ */
+function decimalMarkOf(draft: string, options: TypingOptions): string | undefined {
+  const parts = splitCurrencyAmount(draft, options.currency, options.locale);
+  if (!parts.hasDecimalMark) return undefined;
+  const { decimal } = getCurrencySeparators(options.currency, options.locale);
+  const marks = Array.from(draft).filter(
+    (char) => char === '.' || char === ',' || char === decimal,
+  );
+  return marks.at(-1);
+}
+
+/**
  * Interprets the text of the box after an edit in the `amount` mode (see `parseCurrencyAmount`
  * for the rules). Keeps what was typed readable: `200,` stays `200,`. Returns `undefined` when
  * the edit must be ignored: more fraction digits than the currency has, a second locale decimal
  * mark, or more than `maxDigits` digits. The caller keeps the previous text then.
+ *
+ * `previous` is the draft before this edit. When it already holds a decimal mark (`12.90` in
+ * pt-BR), that mark keeps its reading while the user edits: one more digit is refused instead of
+ * turning the mark into a thousands separator and changing the order of magnitude.
  */
 export function interpretAmountTyping(
   text: string,
   options: TypingOptions,
+  previous?: string,
 ): AmountTyping | undefined {
   const minorDigits = getCurrencyDigits(options.currency, options.locale);
   const { decimal } = getCurrencySeparators(options.currency, options.locale);
@@ -208,7 +235,24 @@ export function interpretAmountTyping(
   }
   if (cleaned.split(decimal).length > 2) return undefined;
 
-  const parts = splitCurrencyAmount(cleaned, options.currency, options.locale);
+  const locked = previous === undefined ? undefined : decimalMarkOf(previous, options);
+  let parts: CurrencyAmountParts;
+  if (locked !== undefined && cleaned.includes(locked)) {
+    if (cleaned.split(locked).length > 2) return undefined;
+    const at = cleaned.indexOf(locked);
+    const strip = (value: string) => value.replace(/[^\d]/gu, '');
+    const fractionAll = strip(cleaned.slice(at + 1));
+    parts = {
+      integer: strip(cleaned.slice(0, at)).replace(/^0+/u, ''),
+      fraction: fractionAll.slice(0, minorDigits),
+      hasDecimalMark: true,
+      excessFraction: fractionAll.length > minorDigits,
+    };
+    // Other marks were grouping: leave them out of the draft.
+    cleaned = `${strip(cleaned.slice(0, at))}${locked}${fractionAll}`;
+  } else {
+    parts = splitCurrencyAmount(cleaned, options.currency, options.locale);
+  }
   if (parts.excessFraction) return undefined;
   const total = `${parts.integer}${parts.fraction.padEnd(minorDigits, '0')}`.replace(/^0+/u, '');
   if (total.length > clampDigits(options.maxDigits)) return undefined;

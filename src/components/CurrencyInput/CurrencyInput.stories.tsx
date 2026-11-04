@@ -244,8 +244,8 @@ export const AmountModeBrazilian: Story = {
   play: async ({ canvasElement }) => {
     const field = within(canvasElement).getByRole('textbox');
     await userEvent.click(field);
-    await userEvent.keyboard('1.234,5');
-    await expect(field).toHaveValue('1.234,5');
+    await userEvent.keyboard('1234,5');
+    await expect(field).toHaveValue('1234,5');
   },
 };
 

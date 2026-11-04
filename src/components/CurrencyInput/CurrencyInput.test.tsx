@@ -494,9 +494,37 @@ describe('CurrencyInput amount entry mode', () => {
     expect(onChange).toHaveBeenLastCalledWith(1250);
   });
 
-  it('parses grouped "1.234,56" in pt-BR', async () => {
-    const { onChange } = await typeInto({ currency: 'BRL' }, '1.234,56', 'pt-BR');
+  it('pastes grouped "1.234,56" in pt-BR', async () => {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(
+      <Price entryMode="amount" currency="BRL" onChange={onChange} />,
+      { locale: 'pt-BR' },
+    );
+    const field = screen.getByRole('textbox');
+    await userEvent.click(field);
+    await paste(field.element(), '1.234,56');
     expect(onChange).toHaveBeenLastCalledWith(123456);
+  });
+
+  it('D-M2: typing "12.905" in pt-BR keeps 12,90 instead of regrouping to 12.905,00', async () => {
+    const { onChange, field } = await typeInto({ currency: 'BRL' }, '12.90', 'pt-BR');
+    expect(onChange).toHaveBeenLastCalledWith(1290);
+    onChange.mockClear();
+    await userEvent.keyboard('5');
+    await expect.element(field).toHaveValue('12.90');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('D-M2: no keystroke ever reports a larger order of magnitude while a fraction is typed', async () => {
+    const { onChange } = await typeInto({ currency: 'BRL' }, '12.9005', 'pt-BR');
+    const values = onChange.mock.calls.map(([value]) => value as number);
+    expect(Math.max(...values)).toBe(1290);
+  });
+
+  it('D-M2: the foreign mark keeps its reading in en-US too ("12,50" then "7")', async () => {
+    const { onChange, field } = await typeInto({}, '12,507');
+    await expect.element(field).toHaveValue('12,50');
+    expect(onChange).toHaveBeenLastCalledWith(1250);
   });
 
   it('JPY has no fraction', async () => {
@@ -561,5 +589,131 @@ describe('CurrencyInput amount entry mode', () => {
   it('has no axe violations while editing', async () => {
     const { screen } = await typeInto({ placeholder: '$0.00' }, '12.5');
     await expectNoA11yViolations(screen.container);
+  });
+});
+
+describe('CurrencyInput pointer and keyboard focus (QA-005)', () => {
+  const locales = [
+    { locale: 'en-US', currency: 'USD', typed: '300', amount: 30000 },
+    { locale: 'pt-BR', currency: 'BRL', typed: '300', amount: 30000 },
+  ] as const;
+
+  for (const { locale, currency, typed, amount } of locales) {
+    it(`amount mode (${locale}): a pointer click selects the value, so typing replaces it`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price entryMode="amount" currency={currency} defaultValue={123456} onChange={onChange} />,
+        { locale },
+      );
+      const field = screen.getByRole('textbox');
+      await userEvent.click(field);
+      const element = field.element() as HTMLInputElement;
+      expect([element.selectionStart, element.selectionEnd]).toEqual([0, element.value.length]);
+      await userEvent.keyboard(typed);
+      expect(onChange).toHaveBeenLastCalledWith(amount);
+    });
+
+    it(`amount mode (${locale}): keyboard focus selects the value too`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price entryMode="amount" currency={currency} defaultValue={123456} onChange={onChange} />,
+        { locale },
+      );
+      await userEvent.tab();
+      const element = screen.getByRole('textbox').element() as HTMLInputElement;
+      expect([element.selectionStart, element.selectionEnd]).toEqual([0, element.value.length]);
+      await userEvent.keyboard(typed);
+      expect(onChange).toHaveBeenLastCalledWith(amount);
+    });
+
+    it(`cents mode (${locale}): a pointer click keeps the caret at the end, so digits append`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price currency={currency} defaultValue={123456} onChange={onChange} />,
+        { locale },
+      );
+      const field = screen.getByRole('textbox');
+      await userEvent.click(field);
+      const element = field.element() as HTMLInputElement;
+      expect(element.selectionStart).toBe(element.value.length);
+      expect(element.selectionEnd).toBe(element.value.length);
+      await userEvent.keyboard('7');
+      expect(onChange).toHaveBeenLastCalledWith(1234567);
+    });
+
+    it(`cents mode (${locale}): clicking into the middle of the text still appends at the end`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price currency={currency} defaultValue={123456} onChange={onChange} />,
+        { locale },
+      );
+      const field = screen.getByRole('textbox');
+      await userEvent.click(field);
+      await userEvent.click(field, { position: { x: 4, y: 8 } });
+      await userEvent.keyboard('7');
+      expect(onChange).toHaveBeenLastCalledWith(1234567);
+    });
+  }
+
+  for (const { locale, currency, typed, amount } of locales) {
+    it(`amount mode (${locale}): clicking a field that is already focused keeps the amount selected`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price entryMode="amount" currency={currency} defaultValue={33333} onChange={onChange} />,
+        { locale },
+      );
+      const field = screen.getByRole('textbox');
+      await userEvent.tab();
+      // The left end of the box is blank (the text is right-aligned): the old caret landed at 0.
+      await userEvent.click(field, { position: { x: 2, y: 8 } });
+      const element = field.element() as HTMLInputElement;
+      expect([element.selectionStart, element.selectionEnd]).toEqual([0, element.value.length]);
+      await userEvent.keyboard(typed);
+      expect(element.value).toBe('300');
+      expect(onChange).toHaveBeenLastCalledWith(amount);
+    });
+
+    it(`cents mode (${locale}): clicking a field that is already focused still appends`, async () => {
+      const onChange = vi.fn();
+      const screen = await renderWithProvider(
+        <Price currency={currency} defaultValue={33333} onChange={onChange} />,
+        { locale },
+      );
+      const field = screen.getByRole('textbox');
+      await userEvent.tab();
+      await userEvent.click(field, { position: { x: 2, y: 8 } });
+      await userEvent.keyboard(typed);
+      expect(onChange).toHaveBeenLastCalledWith(33333300);
+    });
+  }
+
+  it('amount mode: after the first edit a click places the caret normally', async () => {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(
+      <Price entryMode="amount" defaultValue={123456} onChange={onChange} />,
+    );
+    const field = screen.getByRole('textbox');
+    await userEvent.click(field);
+    await userEvent.keyboard('12');
+    await userEvent.click(field, { position: { x: 2, y: 8 } });
+    const element = field.element() as HTMLInputElement;
+    expect(element.selectionStart).toBe(element.selectionEnd);
+    await userEvent.keyboard('9');
+    expect(element.value).toBe('912');
+  });
+
+  it('amount mode: a mouse selection made after focus is kept and typing replaces only it', async () => {
+    const onChange = vi.fn();
+    const screen = await renderWithProvider(
+      <Price entryMode="amount" defaultValue={123456} onChange={onChange} />,
+    );
+    const field = screen.getByRole('textbox');
+    await userEvent.click(field);
+    const element = field.element() as HTMLInputElement;
+    expect(element.value).toBe('1234.56');
+    element.setSelectionRange(0, 2);
+    await userEvent.keyboard('9');
+    expect(element.value).toBe('934.56');
+    expect(onChange).toHaveBeenLastCalledWith(93456);
   });
 });

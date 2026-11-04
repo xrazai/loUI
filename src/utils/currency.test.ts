@@ -122,6 +122,13 @@ describe('parseCurrencyInput (digits-only typing model)', () => {
     expect(parseCurrencyInput('$0.00', 'USD', 'en-US')).toBe(0);
   });
 
+  it('returns NaN above 15 digits instead of cutting the number (D-B2)', () => {
+    expect(parseCurrencyInput('9'.repeat(15), 'USD', 'en-US')).toBe(Number('9'.repeat(15)));
+    expect(parseCurrencyInput('1234567890123456', 'USD', 'en-US')).toBeNaN();
+    expect(parseCurrencyInput('9'.repeat(40), 'USD', 'en-US')).toBeNaN();
+    expect(parseCurrencyInput('0'.repeat(20) + '7', 'USD', 'en-US')).toBe(7);
+  });
+
   it('handles Backspace (the formatted text loses its last digit)', () => {
     expect(parseCurrencyInput('$12.3', 'USD', 'en-US')).toBe(123);
   });
@@ -136,10 +143,9 @@ describe('parseCurrencyInput (digits-only typing model)', () => {
     expect(parseCurrencyInput('²', 'USD', 'en-US')).toBe(0);
   });
 
-  it('caps the length so the result stays a safe integer', () => {
-    const result = parseCurrencyInput('9'.repeat(30), 'USD', 'en-US');
-    expect(Number.isSafeInteger(result)).toBe(true);
-    expect(result).toBe(999_999_999_999_999);
+  it('keeps 15 digits exactly and never cuts a longer text', () => {
+    expect(parseCurrencyInput('9'.repeat(15), 'USD', 'en-US')).toBe(999_999_999_999_999);
+    expect(parseCurrencyInput('9'.repeat(30), 'USD', 'en-US')).toBeNaN();
   });
 
   it('is independent of the currency exponent', () => {
@@ -192,6 +198,13 @@ describe('parseCurrencyAmount (whole-unit typing)', () => {
     expect(parseCurrencyAmount('R$ 1.234,50', 'BRL', 'pt-BR')).toBe(123450);
     expect(parseCurrencyAmount('-$5', 'USD', 'en-US')).toBe(500);
     expect(parseCurrencyAmount('９９', 'USD', 'en-US')).toBe(9900);
-    expect(parseCurrencyAmount('9'.repeat(30), 'USD', 'en-US')).toBe(10 ** 15 - 1);
+  });
+
+  it('returns NaN above 15 digits instead of cutting the number (D-B2)', () => {
+    expect(parseCurrencyAmount('9'.repeat(30), 'USD', 'en-US')).toBeNaN();
+    expect(parseCurrencyAmount('9'.repeat(14), 'USD', 'en-US')).toBeNaN();
+    expect(parseCurrencyAmount('9'.repeat(13), 'USD', 'en-US')).toBe(999999999999900);
+    expect(parseCurrencyAmount('12345678901234.56', 'USD', 'en-US')).toBeNaN();
+    expect(parseCurrencyAmount('0'.repeat(20) + '5', 'USD', 'en-US')).toBe(500);
   });
 });

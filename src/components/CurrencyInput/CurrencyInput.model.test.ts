@@ -1,6 +1,9 @@
+import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
+import { getCurrencyDigits, splitCurrencyAmount } from '../../utils/currency';
 import {
   formatMinorCurrency,
+  interpretAmountTyping,
   interpretPaste,
   interpretTyping,
   toDecimalString,
@@ -140,5 +143,79 @@ describe('interpretPaste', () => {
 
   it('is exact for large values', () => {
     expect(interpretPaste('9,999,999,999,999.99', usd)?.minorUnits).toBe(999_999_999_999_999);
+  });
+});
+
+describe('interpretAmountTyping decimal lock (D-M2)', () => {
+  it('refuses the digit that would regroup a typed decimal (pt-BR "12.90" then "5")', () => {
+    expect(interpretAmountTyping('12.90', brl, '12.9')?.typed.minorUnits).toBe(1290);
+    expect(interpretAmountTyping('12.905', brl, '12.90')).toBeUndefined();
+    // Without the previous draft (paste, fresh text) the smart reading still applies.
+    expect(interpretAmountTyping('12.905', brl)?.typed.minorUnits).toBe(1290500);
+  });
+
+  it('keeps the lock when digits are typed in the integer part', () => {
+    expect(interpretAmountTyping('112.90', brl, '12.90')?.typed.minorUnits).toBe(11290);
+  });
+
+  it('drops the lock once the mark is deleted', () => {
+    expect(interpretAmountTyping('1290', brl, '12.90')?.typed.minorUnits).toBe(129000);
+  });
+
+  it('refuses a second mark of the locked kind', () => {
+    expect(interpretAmountTyping('12.9.0', brl, '12.9')).toBeUndefined();
+  });
+});
+
+describe('D-B2 over-long input', () => {
+  it('ignores a paste with more than 15 digits instead of cutting it', () => {
+    expect(interpretPaste('1234567890123456', usd)).toBeUndefined();
+    expect(interpretPaste('99999999999999999999', usd)).toBeUndefined();
+    expect(interpretPaste('1000000000000000000000', usd)).toBeUndefined();
+    expect(interpretPaste('0000000000000000012.50', usd)?.minorUnits).toBe(1250);
+  });
+
+  it('ignores a typed digit past 15 digits', () => {
+    expect(interpretTyping('9999999999999999', usd)).toBeUndefined();
+    expect(interpretTyping('999999999999999', usd)?.minorUnits).toBe(999999999999999);
+  });
+});
+
+describe('interpretAmountTyping decimal lock (property)', () => {
+  const cases = fc.constantFrom(
+    { options: usd, minor: 2 },
+    { options: brl, minor: 2 },
+    { options: { ...usd, currency: 'KWD' }, minor: 3 },
+    { options: { ...brl, currency: 'KWD' }, minor: 3 },
+  );
+  const keystrokes = fc.array(fc.constantFrom(...'0123456789'.split(''), '.', ',', '.', ','), {
+    maxLength: 24,
+  });
+
+  it('once a prefix was read with a fraction, extending it never regroups into a larger order of magnitude', () => {
+    fc.assert(
+      fc.property(cases, keystrokes, ({ options }, keys) => {
+        const scale = 10 ** getCurrencyDigits(options.currency, options.locale);
+        let draft = '';
+        let previous = 0;
+        for (const key of keys) {
+          const result = interpretAmountTyping(draft + key, options, draft);
+          if (!result) continue;
+          const value = result.typed.minorUnits ?? 0;
+          const hadFraction = splitCurrencyAmount(
+            draft,
+            options.currency,
+            options.locale,
+          ).hasDecimalMark;
+          if (hadFraction) {
+            expect(Math.floor(value / scale)).toBe(Math.floor(previous / scale));
+            if (previous > 0) expect(value).toBeLessThan(previous * 10);
+          }
+          draft = result.draft;
+          previous = value;
+        }
+      }),
+      { numRuns: 500 },
+    );
   });
 });
