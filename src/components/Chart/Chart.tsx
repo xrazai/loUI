@@ -3,6 +3,7 @@ import type { ComponentPropsWithRef, CSSProperties, KeyboardEvent, PointerEvent 
 import { useDSLocale, useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
 import { formatNumber } from '../../utils/number';
+import { normalizeSearch } from '../../utils/text';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { createValueFormatters, joinList } from './a11y';
 import { ChartDataTable } from './ChartDataTable';
@@ -214,11 +215,16 @@ export function Chart({
   const hasNotes =
     (highlight !== undefined && Object.keys(highlight).length > 0) ||
     (notes !== undefined && Object.values(notes).some(Boolean));
-  const referenceTexts = references.map((line) => ({
-    ...line,
-    text: t.referenceLine(line.kind === 'average' ? t.average : t.target, line.label),
-    formatted: formatValue(line.value),
-  }));
+  const referenceTexts = references.map((line) => {
+    const kind = line.kind === 'average' ? t.average : t.target;
+    return {
+      ...line,
+      text: startsWithWord(line.label, kind)
+        ? line.label.trim()
+        : t.referenceLine(kind, line.label),
+      formatted: formatValue(line.value),
+    };
+  });
 
   const announcement =
     activeIndex !== null && activeDatum
@@ -541,4 +547,16 @@ export function Chart({
       />
     </div>
   );
+}
+
+/**
+ * True when `label` already starts with the word `kind` ("Average per open day" for the
+ * `average` kind), ignoring case and accents, so the spoken name does not repeat it.
+ */
+function startsWithWord(label: string, kind: string): boolean {
+  const text = normalizeSearch(label.trim());
+  const prefix = normalizeSearch(kind.trim());
+  if (prefix === '' || !text.startsWith(prefix)) return false;
+  const next = text.charAt(prefix.length);
+  return next === '' || !/[\p{L}\p{N}]/u.test(next);
 }

@@ -401,6 +401,43 @@ describe('Chart', () => {
       expect(screen.container.querySelector('tfoot th')?.textContent).toBe('Average');
     });
 
+    it('does not repeat the kind when the label starts with it (GAP-056)', async () => {
+      const english = await renderChart(
+        <Chart
+          data={week}
+          aria-label="Sales"
+          referenceLines={[
+            { kind: 'average', label: 'average per open day', value: 50 },
+            { kind: 'target', label: 'Targeted reach', value: 120 },
+          ]}
+        />,
+      );
+      const enId = plot(english).element().getAttribute('aria-describedby') ?? '';
+      expect(document.getElementById(enId)?.textContent).toMatch(
+        /^Reference lines: average per open day: 50 and Target, Targeted reach: 120\./,
+      );
+      await english.unmount();
+      const screen = await renderChart(
+        <Chart
+          data={week}
+          aria-label="Vendas"
+          referenceLines={[
+            { kind: 'average', label: 'Media por dia aberto', value: 50 },
+            { kind: 'target', label: 'Mediana da loja', value: 70 },
+          ]}
+        />,
+        { locale: 'pt-BR' },
+      );
+      const id =
+        screen.getByRole('img', { name: 'Vendas' }).element().getAttribute('aria-describedby') ??
+        '';
+      expect(document.getElementById(id)?.textContent).toMatch(
+        /^Linhas de referência: Media por dia aberto: 50 e Meta, Mediana da loja: 70\./,
+      );
+      const footer = [...screen.container.querySelectorAll('tfoot th')].map((th) => th.textContent);
+      expect(footer).toEqual(['Media por dia aberto', 'Meta, Mediana da loja']);
+    });
+
     it('adds no footer without lines, and uses the format prop and pt-BR names', async () => {
       const plain = await renderChart(<Chart data={week} aria-label="Sales" />);
       expect(plain.container.querySelector('tfoot')).toBeNull();
@@ -417,7 +454,7 @@ describe('Chart', () => {
       const image = screen.getByRole('img', { name: 'Vendas' });
       const id = image.element().getAttribute('aria-describedby') ?? '';
       expect(document.getElementById(id)?.textContent).toMatch(
-        /^Linhas de referência: Meta, Meta do mês: R\$ 90\./,
+        /^Linhas de referência: Meta do mês: R\$ 90\./,
       );
     });
   });
