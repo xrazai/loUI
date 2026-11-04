@@ -5,9 +5,11 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.7.0] - 2026-11-04
 ### Changed
 
-- (2026-11-03) Size budgets: `patterns (ESM)` 37 → 39 kB (38.2 kB with `ColorOptionGroup`, `MatrixGrid` async toggles and `ChatPanel` keys) and `styles.css` 24 → 25 kB (24.3 kB with `CardLink`, `AddCard`, `SplitLayout`, `ColorField`, chart and legend rules). No dead code or duplicated CSS found to cut instead.
+- (2026-11-03) Size budgets: `patterns (ESM)` 37 → 39 kB (38.2 kB with `ColorOptionGroup`, `MatrixGrid` async toggles and `ChatPanel` keys) and `styles.css` 24 → 25 kB (24.3 kB with `CardLink`, `AddCard`, `SplitLayout`, `ColorField`, chart and legend rules). The growth comes from these new components; no deeper size audit was done.
 
 ### Added
 
