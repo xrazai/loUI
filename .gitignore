@@ -24,3 +24,6 @@ examples/*/dist/
 examples/*/pnpm-lock.yaml
 examples/*/next-env.d.ts
 examples/*/*.tsbuildinfo
+
+# Release workflow output (CI only)
+release-out/

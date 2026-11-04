@@ -64,6 +64,7 @@ jobs:
           name: vitest-failures-${{ matrix.shard }}
           path: .vitest/attachments
           if-no-files-found: ignore
+          include-hidden-files: true # .vitest/attachments
   # Library build and everything that inspects it, plus the consumer examples (REL-001).
   package:
     runs-on: ubuntu-latest
@@ -123,3 +124,4 @@ jobs:
             tests/visual/__screenshots__/**/*-actual.png
             tests/visual/__screenshots__/**/*-diff.png
           if-no-files-found: ignore
+          include-hidden-files: true # .vitest/attachments

@@ -52,3 +52,4 @@ jobs:
             tests/visual/__screenshots__/**/*-actual.png
             tests/visual/__screenshots__/**/*-diff.png
           if-no-files-found: ignore
+          include-hidden-files: true # .vitest/attachments
