@@ -338,6 +338,10 @@ describe('Dialog', () => {
       // trigger on a loaded machine. Real users do not click within the first 150 ms; the test
       // waits for the entry to finish, which is the state it means to cover.
       await settled();
+      // The animation can end a tick before React Aria clears `isEntering` and focuses the Sheet;
+      // wait for that focus move too, so it cannot land after the click (flaky on CI shard 4).
+      const sheet = trigger.element().closest('[role="dialog"]');
+      await expect.poll(() => sheet?.contains(document.activeElement)).toBe(true);
       await trigger.click();
       await expect
         .element(screen.getByRole('dialog', { name: 'Delete order #1048?' }))
