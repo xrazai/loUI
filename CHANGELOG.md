@@ -7,6 +7,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 ## [Unreleased]
 ### Added
 
+- **D-A2** (2026-11-04) Linux visual baselines regenerated in the pinned container for every story (1116; 246 new since 0.6, 80 updated for the 0.6/0.7 layout changes, reviewed), and the CI `visual` job now runs on every push to `main`. A red visual job fails the CI run, so the release gate (D-A1) also blocks a tag with a visual regression. The release checklist (`docs/release/README.md`) keeps the local Windows run; `AGENTS.md` §10 and `tests/visual/README.md` describe the two platforms.
 - **D-A1** (2026-11-04) The release workflow refuses a tag whose commit is not on `origin/main` or has no successful CI run for that SHA, before it builds and packs.
 - **D-M4** (2026-11-04) Release actions are pinned by commit SHA (Dependabot keeps them current, `.github/dependabot.yml`); verify and pack run read-only and only the publish job has `id-token: write` and `contents: write`.
 - **D-B1** (2026-11-04) `pnpm changeset:version` dates the release with the local calendar day instead of UTC.

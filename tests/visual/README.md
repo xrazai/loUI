@@ -63,11 +63,11 @@ export const Ticking: Story = {
 
 Fonts and anti-aliasing differ between operating systems, so baselines carry the platform in their name (`-win32`, `-darwin`, `-linux`). Windows baselines are the local safety net. **Linux baselines are the ones CI compares against**, and they are generated only inside the pinned Playwright container (`mcr.microsoft.com/playwright:v1.64.1-noble`; the tag must match the `playwright` version in `package.json`). Never commit Linux PNGs rendered anywhere else.
 
-## Platform focus: Windows first
+## Platforms: Windows locally, Linux in CI
 
-For now visual regression is maintained on **Windows only**: `pnpm test:visual` (and `pnpm test:visual:update` after reviewing a change) on a Windows machine is the gate, run before every push. The `*-chromium-linux.png` files are **paused**: they are not regenerated and may be stale, and the CI `visual` job runs only when started by hand. Cross-platform baselines (Linux in CI, macOS) will be resumed as separate work; the procedure below stays documented for that moment.
+`pnpm test:visual` on Windows (and `pnpm test:visual:update` after reviewing a change) is run before every push. Since 2026-11-04 (D-A2) the CI `visual` job compares the `*-chromium-linux.png` baselines on every push to `main`, and a red visual job fails the CI run that the release requires. A change that moves pixels therefore needs both: the Windows baselines updated locally and the Linux baselines regenerated with the procedure below. macOS baselines are not kept.
 
-## Linux baselines in CI (TEST-019, paused)
+## Linux baselines in CI (TEST-019)
 
 | Piece                                      | Role                                                                                                                                                                                                                                                     |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

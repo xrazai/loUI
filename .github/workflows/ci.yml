@@ -1,7 +1,8 @@
-# CI gate: everything in `pnpm check:ci`, split into parallel jobs (static, 4 test shards, package). Visual regression
-# is Windows-first for now: run `pnpm test:visual` locally on Windows before pushing. The Linux
-# `visual` job only runs when started by hand (Actions > CI > Run workflow); cross-platform
-# baselines are paused (see tests/visual/README.md).
+# CI gate: everything in `pnpm check:ci`, split into parallel jobs (static, 4 test shards, package), plus
+# visual regression on Linux for every push to main (D-A2). The Linux baselines come from
+# .github/workflows/visual-baselines.yml (see tests/visual/README.md); Windows baselines are still
+# checked locally with `pnpm test:visual` before pushing. A red visual job fails the CI run, and the
+# release workflow refuses a tag without a green CI run.
 name: CI
 on:
   pull_request:
@@ -87,7 +88,7 @@ jobs:
   # Visual regression in the same pinned container that generated the Linux baselines
   # (.github/workflows/visual-baselines.yml). Skipped while no `*-chromium-linux.png` exists.
   visual:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     container:
