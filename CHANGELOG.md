@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.7.1] - 2026-11-04
 ### Fixed
 
 - **GAP-056** (2026-11-04) `Chart` reference lines no longer repeat their kind in the accessible name: when the label already starts with the kind as a whole word ("Média por dia aberto" for `average` in pt-BR), the description and the table footer read the label alone; the comparison ignores case and accents and works with overridden kind messages. `Chart.md` says how to write the label. Tested in en-US and pt-BR.
