@@ -334,6 +334,74 @@ describe('Chart', () => {
     });
   });
 
+  describe('reference label layout (GAP-057)', () => {
+    /** Daily sales with the tallest bar on the last day ("Today"), like a report opened today. */
+    const sales = (days: number): ChartDatum[] =>
+      Array.from({ length: days }, (_, index) => ({
+        label: String(index + 1),
+        value:
+          index === days - 1
+            ? 360000
+            : 70000 + ((index * 53) % 17) * 12000 + (index % 7 === 6 ? 0 : (index % 7) * 9000),
+      }));
+    const format = (value: number) =>
+      formatCurrency(value, 'USD', 'en-US', { notation: 'compact' });
+    const intersects = (a: DOMRect, b: DOMRect) =>
+      Math.min(a.right, b.right) > Math.max(a.left, b.left) &&
+      Math.min(a.bottom, b.bottom) > Math.max(a.top, b.top);
+
+    for (const width of [800, 1366]) {
+      for (const days of [30, 90]) {
+        for (const type of ['bar', 'line'] as const) {
+          it(`keeps the average text clear of "Today" and the marks (${type}, ${String(days)} days, ${String(width)} px)`, async () => {
+            const data = sales(days);
+            const average = Math.round(chartAverage(data.map((datum) => datum.value)));
+            const screen = await renderChart(
+              <div style={{ inlineSize: `${String(width)}px` }}>
+                <Chart
+                  type={type}
+                  data={data}
+                  format={format}
+                  aria-label="Sales"
+                  highlight={{ [days - 1]: 'Today' }}
+                  referenceLines={[{ kind: 'average', label: 'Average', value: average }]}
+                />
+              </div>,
+            );
+            await document.fonts.ready;
+            const svg = screen.container.querySelector('svg');
+            const label = screen.container.querySelector('svg text[class*="referenceLabel"]');
+            const today = [...screen.container.querySelectorAll('svg text[class*="note"]')].find(
+              (node) => node.textContent === 'Today',
+            );
+            if (!svg || !label || !today) throw new Error('chart did not draw');
+            const box = label.getBoundingClientRect();
+            const frame = svg.getBoundingClientRect();
+            expect(label.textContent).toBe(`Average ${format(average)}`);
+            expect(intersects(box, today.getBoundingClientRect())).toBe(false);
+            for (const bar of svg.querySelectorAll('rect')) {
+              expect(intersects(box, bar.getBoundingClientRect())).toBe(false);
+            }
+            for (const point of svg.querySelectorAll('circle')) {
+              expect(intersects(box, point.getBoundingClientRect())).toBe(false);
+            }
+            for (const category of svg.querySelectorAll('text[class*="category"]')) {
+              expect(intersects(box, category.getBoundingClientRect())).toBe(false);
+            }
+            expect(box.left).toBeGreaterThanOrEqual(frame.left);
+            expect(box.right).toBeLessThanOrEqual(frame.right);
+            expect(box.top).toBeGreaterThanOrEqual(frame.top);
+            // The name and the hidden table do not depend on where the text is printed.
+            expect(screen.container.querySelector('tfoot')?.textContent).toBe(
+              `Average${format(average)}`,
+            );
+            await screen.unmount();
+          });
+        }
+      }
+    }
+  });
+
   describe('reference lines', () => {
     const average = {
       kind: 'average' as const,

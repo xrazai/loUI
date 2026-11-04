@@ -11,11 +11,14 @@ import { messages } from './Chart.messages';
 import styles from './Chart.module.css';
 import {
   NOTE_MARKER_OFFSET,
-  computeLayout,
+  highlightLabelY,
+  layoutWithReferences,
   noteMarkerPath,
-  referenceLabelYs,
   tooltipPosition,
 } from './chartLayout';
+import type { ChartReferenceLabelPosition } from './chartLayout';
+
+export type { ChartReferenceLabelPosition } from './chartLayout';
 
 export type ChartType = 'bar' | 'line';
 export type ChartTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
@@ -32,6 +35,14 @@ export interface ChartReferenceLine {
    * color. The kind name ("Average" / "Target") is part of the spoken text.
    */
   kind: ChartReferenceKind;
+  /**
+   * Where the text is printed. `auto` (default): at the end of the line, above it, unless that
+   * covers a bar, the line, a highlight text, a note marker or another reference text; then at
+   * the start, then below the line, and when every place is taken, outside the plot on the end
+   * side (the plot gets narrower). `end` and `start` pin the text to that end of the line (above
+   * it, or below it when above is taken) and never move it outside.
+   */
+  labelPosition?: ChartReferenceLabelPosition;
 }
 
 export interface ChartDatum {
@@ -72,9 +83,9 @@ interface ChartBaseProps extends Omit<
    */
   notes?: Readonly<Record<number, string>>;
   /**
-   * Dashed lines across the plot, each with its label printed at the end side of the line.
-   * `average` and `target` differ by dash pattern and by name. Use `chartAverage(values)` for
-   * the average. The lines are listed in the description and in the last rows of the hidden
+   * Dashed lines across the plot, each with its label printed next to the line, where it does
+   * not cover bars or other texts (see `labelPosition`). `average` and `target` differ by dash
+   * pattern and by name. Use `chartAverage(values)` for the average. The lines are listed in the description and in the last rows of the hidden
    * table. A value outside the data range widens the axis.
    */
   referenceLines?: readonly ChartReferenceLine[];
@@ -187,22 +198,33 @@ export function Chart({
     () => (referenceLines ?? []).filter((line) => Number.isFinite(line.value)),
     [referenceLines],
   );
-  const referenceValues = useMemo(() => references.map((line) => line.value), [references]);
-
-  const layout = useMemo(
-    () =>
-      size && size.width > 0 && size.height > 0
-        ? computeLayout({
-            values: data.map((datum) => datum.value),
-            width: size.width,
-            height: size.height,
-            formatTick,
-            references: referenceValues,
-            ...(tickEvery === undefined ? {} : { tickEvery }),
-          })
-        : null,
-    [data, size, formatTick, referenceValues, tickEvery],
-  );
+  const placed = useMemo(() => {
+    if (!size || size.width <= 0 || size.height <= 0) return null;
+    const hasNote = (index: number) => Boolean(notes?.[index]);
+    const highlights = Object.entries(highlight ?? {}).flatMap(([key, text]) => {
+      const index = Number(key);
+      return Number.isInteger(index) && index >= 0 && index < data.length
+        ? [{ index, characters: text.length, hasNote: hasNote(index) }]
+        : [];
+    });
+    const noted = data.flatMap((_, index) => (hasNote(index) ? [index] : []));
+    return layoutWithReferences(
+      {
+        values: data.map((datum) => datum.value),
+        width: size.width,
+        height: size.height,
+        formatTick,
+        ...(tickEvery === undefined ? {} : { tickEvery }),
+      },
+      { type, highlights, notes: noted },
+      references.map((line) => ({
+        value: line.value,
+        characters: referenceText(line.label, formatValue(line.value)).length,
+        position: line.labelPosition ?? 'auto',
+      })),
+    );
+  }, [data, size, formatTick, formatValue, references, tickEvery, type, highlight, notes]);
+  const layout = placed?.layout ?? null;
 
   const activeIndex = active !== null && active < count ? active : null;
   const activeDatum = activeIndex === null ? undefined : data[activeIndex];
@@ -309,9 +331,6 @@ export function Chart({
         ),
       )
     : '';
-  const referenceLabelY = layout
-    ? referenceLabelYs(references.map((line) => layout.y(line.value)))
-    : [];
 
   return (
     <div
@@ -438,11 +457,12 @@ export function Chart({
                 />
                 <text
                   className={styles.referenceLabel}
-                  x={layout.right}
-                  y={referenceLabelY[index] ?? layout.y(line.value)}
-                  textAnchor="end"
+                  data-side={placed?.labels[index]?.side}
+                  x={placed?.labels[index]?.x ?? layout.right}
+                  y={placed?.labels[index]?.y ?? layout.y(line.value)}
+                  textAnchor={placed?.labels[index]?.anchor ?? 'end'}
                 >
-                  {`${line.label} ${referenceTexts[index]?.formatted ?? ''}`}
+                  {referenceText(line.label, referenceTexts[index]?.formatted ?? '')}
                 </text>
               </g>
             ))}
@@ -478,11 +498,10 @@ export function Chart({
                   key={`note-${String(index)}`}
                   className={styles.note}
                   x={layout.x(index)}
-                  y={
-                    Math.min(layout.y(datum.value), layout.baseline) -
-                    10 -
-                    (noteAt(index) ? NOTE_MARKER_OFFSET : 0)
-                  }
+                  y={highlightLabelY(
+                    Math.min(layout.y(datum.value), layout.baseline),
+                    Boolean(noteAt(index)),
+                  )}
                   textAnchor="middle"
                 >
                   {note}
@@ -547,6 +566,11 @@ export function Chart({
       />
     </div>
   );
+}
+
+/** The text printed next to a reference line: its label and its formatted value. */
+function referenceText(label: string, formatted: string): string {
+  return `${label} ${formatted}`;
 }
 
 /**

@@ -41,6 +41,9 @@
   .svg {
     display: block;
     overflow: visible;
+
+    /* The chart is never mirrored, so text anchors must not flip in a right-to-left page. */
+    direction: ltr;
   }
 
   .grid {

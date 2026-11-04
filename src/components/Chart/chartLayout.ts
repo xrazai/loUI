@@ -38,6 +38,17 @@ export const NOTE_MARKER_OFFSET = 8;
 /** Distance between a reference line and its text, and the minimum room between two such texts. */
 export const REFERENCE_LABEL_GAP = 4;
 const REFERENCE_LABEL_SPACING = 14;
+/** Caption text box around its baseline (ascent and descent), and the clear space kept around it. */
+const TEXT_ASCENT = 9;
+const TEXT_DESCENT = 3;
+const LABEL_CLEARANCE = 2;
+/** Distance of a highlight text above its point. */
+const HIGHLIGHT_LABEL_OFFSET = 10;
+/** Half-size of the box kept clear around a drawn point of a line chart. */
+const POINT_CLEARANCE = 5;
+/** Gap between the plot and a reference text printed outside it, and the widest share of the box it may take. */
+const OUTSIDE_LABEL_GAP = 6;
+const OUTSIDE_MAX_SHARE = 0.4;
 
 export interface ChartLayoutInput {
   /** Data values, in order. */
@@ -51,6 +62,8 @@ export interface ChartLayoutInput {
   references?: readonly number[];
   /** Show every nth category label. Without it (or when invalid) labels are skipped automatically. */
   tickEvery?: number;
+  /** Extra room on the end side of the plot, for reference texts printed outside it. Default 0. */
+  endMargin?: number;
 }
 
 export interface ChartLayout {
@@ -84,6 +97,7 @@ export function computeLayout({
   formatTick,
   references = [],
   tickEvery,
+  endMargin = 0,
 }: ChartLayoutInput): ChartLayout {
   const count = values.length;
   const plotHeight = Math.max(1, height - PLOT_PADDING_BOTTOM - PLOT_PADDING_TOP);
@@ -96,7 +110,7 @@ export function computeLayout({
   );
   const widest = Math.max(1, ...scale.ticks.map((tick) => formatTick(tick).length));
   const left = Math.max(AXIS_MIN_WIDTH, widest * CHAR_WIDTH + AXIS_GAP);
-  const right = Math.max(left + 1, width - PLOT_PADDING_END);
+  const right = Math.max(left + 1, width - PLOT_PADDING_END - Math.max(0, endMargin));
   const top = PLOT_PADDING_TOP;
   const bottom = Math.max(top + 1, height - PLOT_PADDING_BOTTOM);
   const band = (right - left) / Math.max(1, count);
@@ -130,20 +144,266 @@ export function noteMarkerPath(x: number, y: number): string {
   return `M${x.toFixed(1)} ${(y - r).toFixed(1)} L${(x + r).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y + r).toFixed(1)} L${(x - r).toFixed(1)} ${y.toFixed(1)} Z`;
 }
 
+/** Baseline Y of the highlight text of a point whose top is at `pointTop`. */
+export function highlightLabelY(pointTop: number, hasNote: boolean): number {
+  return pointTop - HIGHLIGHT_LABEL_OFFSET - (hasNote ? NOTE_MARKER_OFFSET : 0);
+}
+
+/** An axis-aligned box in SVG user units. */
+export interface ChartRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+/** Where the text of a reference line goes: `auto` (default) avoids marks, `end` and `start` pin the side. */
+export type ChartReferenceLabelPosition = 'auto' | 'end' | 'start';
+
+/** What is drawn in the plot, so reference texts can stay clear of it. */
+export interface ChartMarks {
+  type: 'bar' | 'line';
+  values: readonly number[];
+  /** Highlight texts: index of the point, length of the text, and whether the point also has a note marker. */
+  highlights?: readonly { index: number; characters: number; hasNote: boolean }[];
+  /** Indexes of points with a note marker. */
+  notes?: readonly number[];
+}
+
+export interface ChartReferenceLabelInput {
+  /** Value of the line. */
+  value: number;
+  /** Length of the printed text. */
+  characters: number;
+  position?: ChartReferenceLabelPosition;
+}
+
+export interface ChartReferenceLabelPlacement {
+  /** Anchor point of the text (`text-anchor` is `anchor`); `y` is the baseline. */
+  x: number;
+  y: number;
+  anchor: 'start' | 'end';
+  /** `end` or `start` of the line (above or below it), or `outside` the plot on the end side. */
+  side: 'end' | 'start' | 'outside';
+  /** Estimated box of the text, with clearance. */
+  box: ChartRect;
+  /** Overlap with marks, other texts and the edges; 0 means clear. */
+  overlap: number;
+}
+
+function textBox(x: number, baseline: number, width: number, anchor: 'start' | 'end'): ChartRect {
+  const left = anchor === 'end' ? x - width : x;
+  return {
+    left: left - LABEL_CLEARANCE,
+    right: left + width + LABEL_CLEARANCE,
+    top: baseline - TEXT_ASCENT - LABEL_CLEARANCE,
+    bottom: baseline + TEXT_DESCENT + LABEL_CLEARANCE,
+  };
+}
+
+function overlapArea(a: ChartRect, b: ChartRect): number {
+  const w = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+  const h = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+  return w > 0 && h > 0 ? w * h : 0;
+}
+
+/** How much of the polyline runs through `box` (straight segments, so the clipped ends are exact). */
+function polylineOverlap(points: readonly { x: number; y: number }[], box: ChartRect): number {
+  let total = 0;
+  for (let index = 1; index < points.length; index += 1) {
+    const a = points[index - 1];
+    const b = points[index];
+    if (!a || !b) continue;
+    const x0 = Math.max(Math.min(a.x, b.x), box.left);
+    const x1 = Math.min(Math.max(a.x, b.x), box.right);
+    if (x1 < x0) continue;
+    const at = (x: number) => a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
+    const yA = a.x === b.x ? Math.min(a.y, b.y) : at(x0);
+    const yB = a.x === b.x ? Math.max(a.y, b.y) : at(x1);
+    if (Math.max(yA, yB) < box.top || Math.min(yA, yB) > box.bottom) continue;
+    // Weighted like a 2-unit stroke so it compares with areas.
+    total += Math.max(1, x1 - x0) * 2;
+  }
+  return total;
+}
+
+/** Boxes (and, for a line chart, the line itself) that reference texts should not cover. */
+export function chartObstacles(
+  layout: ChartLayout,
+  marks: ChartMarks,
+): { boxes: ChartRect[]; line: { x: number; y: number }[] } {
+  const boxes: ChartRect[] = [];
+  const { values } = marks;
+  const pointTop = (index: number) => Math.min(layout.y(values[index] ?? 0), layout.baseline);
+  if (marks.type === 'bar') {
+    values.forEach((value, index) => {
+      const y = layout.y(value);
+      const top = Math.min(y, layout.baseline);
+      boxes.push({
+        left: layout.x(index) - layout.barWidth / 2,
+        right: layout.x(index) + layout.barWidth / 2,
+        top,
+        bottom: Math.max(y, layout.baseline, top + 1),
+      });
+    });
+  }
+  for (const { index, characters, hasNote } of marks.highlights ?? []) {
+    if (index < 0 || index >= values.length) continue;
+    const width = characters * CHAR_WIDTH;
+    const x = layout.x(index);
+    const baseline = highlightLabelY(pointTop(index), hasNote);
+    boxes.push({
+      left: x - width / 2,
+      right: x + width / 2,
+      top: baseline - TEXT_ASCENT,
+      bottom: baseline + TEXT_DESCENT,
+    });
+    if (marks.type === 'line') {
+      const y = layout.y(values[index] ?? 0);
+      boxes.push({
+        left: x - POINT_CLEARANCE,
+        right: x + POINT_CLEARANCE,
+        top: y - POINT_CLEARANCE,
+        bottom: y + POINT_CLEARANCE,
+      });
+    }
+  }
+  for (const index of marks.notes ?? []) {
+    if (index < 0 || index >= values.length) continue;
+    const x = layout.x(index);
+    const y = pointTop(index) - NOTE_MARKER_OFFSET;
+    boxes.push({
+      left: x - NOTE_MARKER_SIZE,
+      right: x + NOTE_MARKER_SIZE,
+      top: y - NOTE_MARKER_SIZE,
+      bottom: y + NOTE_MARKER_SIZE,
+    });
+  }
+  const line =
+    marks.type === 'line' && values.length > 1
+      ? values.map((value, index) => ({ x: layout.x(index), y: layout.y(value) }))
+      : [];
+  return { boxes, line };
+}
+
 /**
- * Where each reference line writes its text: just above the line, or just below it when a
- * previous text is closer than a line of text, so labels of nearby lines do not overprint.
- * Returns the baseline Y of the text for each entry of `ys` (in order).
+ * Places the text of each reference line inside the plot, clear of bars, the line, highlight
+ * texts, note markers and the texts of earlier reference lines. Candidates, in order: end of the
+ * line above it, start above, end below, start below (`end` and `start` keep their side). The
+ * first clear candidate wins; otherwise the one with the least overlap (see `overlap`).
+ * Labels with a value that is not finite are skipped (returned with `overlap` 0 at the end).
  */
-export function referenceLabelYs(ys: readonly number[]): number[] {
-  const placed: number[] = [];
-  return ys.map((y) => {
-    const above = y - REFERENCE_LABEL_GAP;
-    const crowded = placed.some((other) => Math.abs(other - above) < REFERENCE_LABEL_SPACING);
-    const text = crowded ? y + REFERENCE_LABEL_SPACING : above;
-    placed.push(text);
-    return text;
+export function placeReferenceLabels(
+  layout: ChartLayout,
+  marks: ChartMarks,
+  labels: readonly ChartReferenceLabelInput[],
+): ChartReferenceLabelPlacement[] {
+  const { boxes, line } = chartObstacles(layout, marks);
+  const placed: ChartRect[] = [];
+  return labels.map(({ value, characters, position = 'auto' }) => {
+    const width = characters * CHAR_WIDTH;
+    if (!Number.isFinite(value)) {
+      return {
+        x: layout.right,
+        y: layout.top,
+        anchor: 'end',
+        side: 'end',
+        box: textBox(layout.right, layout.top, width, 'end'),
+        overlap: 0,
+      };
+    }
+    const lineY = layout.y(value);
+    const above = lineY - REFERENCE_LABEL_GAP;
+    const below = lineY + REFERENCE_LABEL_SPACING;
+    const end = { x: layout.right, anchor: 'end' as const, side: 'end' as const };
+    const start = { x: layout.left, anchor: 'start' as const, side: 'start' as const };
+    const sides = position === 'end' ? [end] : position === 'start' ? [start] : [end, start];
+    const candidates = [
+      ...sides.map((side) => ({ ...side, y: above })),
+      ...sides.map((side) => ({ ...side, y: below })),
+    ];
+    let best: ChartReferenceLabelPlacement | null = null;
+    for (const candidate of candidates) {
+      const box = textBox(candidate.x, candidate.y, width, candidate.anchor);
+      let overlap = polylineOverlap(line, box);
+      for (const other of boxes) overlap += overlapArea(box, other);
+      for (const other of placed) overlap += overlapArea(box, other);
+      // Leaving the plot vertically runs into the category labels or the top edge.
+      overlap += Math.max(0, box.bottom - layout.bottom) * width;
+      overlap += Math.max(0, -box.top) * width;
+      if (!best || overlap < best.overlap) best = { ...candidate, box, overlap };
+      if (overlap === 0) break;
+    }
+    // `candidates` always has at least two entries, so `best` is set.
+    const chosen = best as ChartReferenceLabelPlacement;
+    placed.push(chosen.box);
+    return chosen;
   });
+}
+
+/**
+ * Lays the chart out and places the reference texts. When an `auto` text cannot be placed clear
+ * of the marks at either end of its line, the plot gives up room on the end side and that text
+ * is printed there, outside the plot and level with its line (texts of nearby lines are moved
+ * apart). A chart too narrow for that margin (it would take more than 40% of the width, or
+ * hide category labels that all fit before) keeps the least-overlapping place inside.
+ */
+export function layoutWithReferences(
+  input: Omit<ChartLayoutInput, 'references' | 'endMargin'>,
+  marks: Omit<ChartMarks, 'values'>,
+  labels: readonly ChartReferenceLabelInput[],
+): { layout: ChartLayout; labels: ChartReferenceLabelPlacement[] } {
+  const references = labels.map((label) => label.value);
+  const fullMarks = { ...marks, values: input.values };
+  const first = computeLayout({ ...input, references });
+  const inside = placeReferenceLabels(first, fullMarks, labels);
+  const outsideIndexes = inside.flatMap((placement, index) =>
+    placement.overlap > 0 && (labels[index]?.position ?? 'auto') === 'auto' ? [index] : [],
+  );
+  if (outsideIndexes.length === 0) return { layout: first, labels: inside };
+
+  const widest = Math.max(...outsideIndexes.map((index) => labels[index]?.characters ?? 0));
+  const margin = widest * CHAR_WIDTH + OUTSIDE_LABEL_GAP;
+  if (margin > input.width * OUTSIDE_MAX_SHARE) return { layout: first, labels: inside };
+
+  const layout = computeLayout({ ...input, references, endMargin: margin });
+  // Not when the narrower plot would start skipping category labels that all fit before.
+  if (first.labelStep === 1 && layout.labelStep > 1) return { layout: first, labels: inside };
+  const outside = new Set(outsideIndexes);
+  const placements = placeReferenceLabels(
+    layout,
+    fullMarks,
+    labels.map((label, index) => (outside.has(index) ? { ...label, value: Number.NaN } : label)),
+  );
+  // Texts outside the plot sit level with their lines, at least one line of text apart.
+  const order = [...outside].sort(
+    (a, b) => layout.y(labels[a]?.value ?? 0) - layout.y(labels[b]?.value ?? 0),
+  );
+  let previous = -Infinity;
+  for (const index of order) {
+    const label = labels[index];
+    if (!label) continue;
+    const centered = layout.y(label.value) + (TEXT_ASCENT - TEXT_DESCENT) / 2;
+    const y = Math.min(
+      Math.max(
+        centered,
+        previous + TEXT_ASCENT + TEXT_DESCENT + 2 * LABEL_CLEARANCE,
+        TEXT_ASCENT + LABEL_CLEARANCE,
+      ),
+      layout.bottom,
+    );
+    previous = y;
+    const x = layout.right + OUTSIDE_LABEL_GAP;
+    placements[index] = {
+      x,
+      y,
+      anchor: 'start',
+      side: 'outside',
+      box: textBox(x, y, label.characters * CHAR_WIDTH, 'start'),
+      overlap: 0,
+    };
+  }
+  return { layout, labels: placements };
 }
 
 /**

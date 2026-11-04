@@ -361,10 +361,14 @@ export type ChartProps = ChartBaseProps & ChartNaming;
 // @public (undocumented)
 export type ChartReferenceKind = 'average' | 'target';
 
+// @public
+export type ChartReferenceLabelPosition = 'auto' | 'end' | 'start';
+
 // @public (undocumented)
 export interface ChartReferenceLine {
     kind: ChartReferenceKind;
     label: string;
+    labelPosition?: ChartReferenceLabelPosition;
     value: number;
 }
 

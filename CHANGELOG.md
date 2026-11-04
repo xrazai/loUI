@@ -6,6 +6,10 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+### Fixed
+
+- **GAP-057** (2026-11-04) `Chart` reference line texts no longer overprint the highlight text, the bars, the line, note markers or each other, reported by the ERP (Reports, 30 and 90 days, at 800 and 1366 px). With the new default `labelPosition: 'auto'` the text keeps the end of the line, above it, when that is clear; otherwise it tries the start, then below the line, and when bars cross the line at both ends it is printed outside the plot on the end side, level with its line (the plot gives up the width of the text; skipped when that would take more than 40% of the width or hide category labels). `labelPosition: 'end' | 'start'` pins the side. Accessible name, description and hidden table unchanged. The chart SVG is now `direction: ltr`, so in a right-to-left page reference texts are no longer pushed off the end of the plot. New stories `ReferenceLabelAvoidsHighlight`, `ReferenceLabelOutside` and `ReferenceLabelPinned`; placement unit tests and browser layout tests (bar and line, 30 and 90 days, 800 and 1366 px) check that the text box intersects no bar, point, highlight or category text; `Chart.md` "Reference line labels". Baselines changed for `AverageLine` (text moved from over the Sat bar to the start) and `AnnotatedRtl` (texts were clipped).
+
 ## [0.7.2] - 2026-11-04
 ### Process
 

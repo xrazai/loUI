@@ -288,6 +288,7 @@ export type {
   ChartDatum,
   ChartProps,
   ChartReferenceKind,
+  ChartReferenceLabelPosition,
   ChartReferenceLine,
   ChartTone,
   ChartType,

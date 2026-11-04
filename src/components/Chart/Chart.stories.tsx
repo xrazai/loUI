@@ -182,6 +182,72 @@ export const TickEvery: Story = {
   },
 };
 
+/** Daily sales (minor units) whose last day is the tallest, as on a sales report opened today. */
+function salesEndingToday(days: number): ChartDatum[] {
+  return Array.from({ length: days }, (_, index) => ({
+    label: String(index + 1),
+    value:
+      index === days - 1
+        ? 360000
+        : 70000 + ((index * 53) % 17) * 12000 + (index % 7 === 6 ? 0 : (index % 7) * 9000),
+  }));
+}
+const salesFormat = (value: number) =>
+  formatCurrency(value, 'USD', 'en-US', { notation: 'compact' });
+function averageOf(data: readonly ChartDatum[]) {
+  return {
+    kind: 'average' as const,
+    label: 'Average',
+    value: Math.round(chartAverage(data.map((datum) => datum.value))),
+  };
+}
+const thirtySales = salesEndingToday(30);
+const ninetySales = salesEndingToday(90);
+
+/**
+ * GAP-057: a tall highlighted last bar ("Today") and an average line. The average text moves
+ * away from the end of the line when it would cover the highlight or a bar: to the start, below
+ * the line, or (when bars cross the line everywhere) outside the plot on the end side.
+ */
+export const ReferenceLabelAvoidsHighlight: Story = {
+  args: {
+    data: thirtySales,
+    format: salesFormat,
+    highlight: { 29: 'Today' },
+    referenceLines: [averageOf(thirtySales)],
+    'aria-label': 'Sales, last 30 days',
+  },
+  parameters: { visual: { width: 800 } },
+  play: async ({ canvasElement }) => {
+    await waitForDraw(canvasElement);
+    await expect(canvasElement.querySelector('svg')).toHaveTextContent('Today');
+  },
+};
+
+/** Ninety days: bars cross the average almost everywhere, so its text is printed outside the plot. */
+export const ReferenceLabelOutside: Story = {
+  args: {
+    data: ninetySales,
+    format: salesFormat,
+    highlight: { 89: 'Today' },
+    referenceLines: [averageOf(ninetySales)],
+    'aria-label': 'Sales, last 90 days',
+  },
+  parameters: { visual: { width: 1024 } },
+};
+
+/** `labelPosition: 'end'` pins the text to the end of the line (above it, or below when above is taken), even over bars. */
+export const ReferenceLabelPinned: Story = {
+  args: {
+    data: thirtySales,
+    format: salesFormat,
+    highlight: { 29: 'Today' },
+    referenceLines: [{ ...averageOf(thirtySales), labelPosition: 'end' }],
+    'aria-label': 'Sales, last 30 days',
+  },
+  parameters: { visual: { width: 800 } },
+};
+
 /** Notes, reference lines and a highlight together; the chart itself is not mirrored. */
 export const AnnotatedRtl: Story = {
   args: {
