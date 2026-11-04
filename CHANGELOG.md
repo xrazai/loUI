@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). If an upgrade can change what a consumer sees or compiles (a default, a layout or line-break change, a widened output type, a removed or renamed API), end the entry with `**Breaking:** <what the consumer does>`; `changes.json` turns the marker into `breaking: true` (see [versioning](docs/release/versioning.md)). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+
+## [0.7.2] - 2026-11-04
 ### Added
 
 - **D-A2** (2026-11-04) Linux visual baselines regenerated in the pinned container for every story (1116; 246 new since 0.6, 80 updated for the 0.6/0.7 layout changes, reviewed), and the CI `visual` job now runs on every push to `main`. A red visual job fails the CI run, so the release gate (D-A1) also blocks a tag with a visual regression. The release checklist (`docs/release/README.md`) keeps the local Windows run; `AGENTS.md` §10 and `tests/visual/README.md` describe the two platforms.
