@@ -15,13 +15,13 @@
   {
     "name": "patterns (ESM)",
     "path": "dist/patterns/index.js",
-    "limit": "40 kB",
+    "limit": "39 kB",
     "ignore": ["react", "react-dom"]
   },
   {
     "name": "styles.css",
     "path": "dist/styles.css",
-    "limit": "26 kB",
+    "limit": "25 kB",
     "rolldown": false
   }
 ]

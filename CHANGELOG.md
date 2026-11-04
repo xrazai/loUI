@@ -5,6 +5,10 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+### Changed
+
+- (2026-11-03) Size budgets: `patterns (ESM)` 37 → 39 kB (38.2 kB with `ColorOptionGroup`, `MatrixGrid` async toggles and `ChatPanel` keys) and `styles.css` 24 → 25 kB (24.3 kB with `CardLink`, `AddCard`, `SplitLayout`, `ColorField`, chart and legend rules). No dead code or duplicated CSS found to cut instead.
+
 ### Added
 
 - **GAP-018** (2026-11-03) New `CardLink` and `AddCard` (experimental), ADR-0011 (accepted by the owner): `Card` stays non-interactive. `CardLink` makes the whole card one real link (`href`) or button (`onPress`) through a stretched hit area on its title, which is the accessible name; description and meta are the accessible description; no nested interactive content (typed: no `children`, no `actions`); `target="_blank"` adds `rel` and a hidden "opens in a new tab". `AddCard` is the dashed "create new" tile with a plus icon and a verb + object label, stretching to the row height in a `Grid`.
