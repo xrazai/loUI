@@ -117,6 +117,12 @@ Goal: LLMs and coding agents can discover, use and validate the design system co
 
 The handoff inventory is missing common building blocks. Confirm which belong in the DS:
 
+
+Senior review of 0.7.1 (2026-11-04, read-only; owner rule: fixes, process, tests and docs only, no new features):
+
+- [ ] **D-A2** (P1 · M) Visual regression has no gate and Linux has no baselines for anything since 0.6. Generate the Linux baselines with `visual-baselines.yml` and run the `visual` job on push to `main`; otherwise a release checklist step that blocks the tag without a Windows visual run.
+- [ ] **PKG-021** (P3 · M) Per-entry CSS (deferred from D-M5, 2026-11-04): `loui-ds/styles.css` ships the CSS of every component (253 KB raw). Offer `loui-ds/patterns/styles.css` or CSS imported by each component so an app pays only for what it uses. A packaging change: needs a short ADR-0008 amendment and a migration note. Deferred because the owner's rule for this round is fixes only and the main consumer is a local app.
+
 Found by consumer agents building product screens (2026-11-03), each confirmed in the code:
 
 

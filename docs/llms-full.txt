@@ -1492,6 +1492,7 @@ React Aria turns a row into a pure selection toggle as soon as one row is select
 #### Accessibility
 
 - `GridList` gives `role="grid"` with `row` and `gridcell` roles; rows are not a `list`/`listitem` pair because they are focusable and actionable.
+- Each selection checkbox is named "Select {title}" (pt-BR "Selecionar {title}"): the `select` message plus the row's plain-text name, never the meta. A `title` that is not a string needs `textValue`; without it the name falls back to the row `id` and a development warning says so.
 - Keyboard: `Tab` enters the list on one row (one tab stop); Arrow Up/Down, Home and End move between rows; Arrow Right moves from the row to its menu button (Arrow Left back); `Enter` on a row runs `onAction`; the menu button follows the Menu contract (`Enter`/`Space`/`Arrow Down` opens, `Escape` closes and focus returns to the button).
 - With `selectionMode="multiple"`: `Space` on the focused row (or on its checkbox) toggles it, `Enter` and a click on the row content run `onAction`, a click on the checkbox toggles. Each checkbox is named "Select {title}" (React Aria composes the message `select` with the row text). `Tab`/`ArrowRight` moves from the row to its checkbox and menu button.
 - Every menu button has its own name ("More actions for Price list 2026") so a screen reader user can tell them apart.
@@ -4908,14 +4909,15 @@ Two models were considered:
 - Digits are whole units until a decimal mark. The mark is the **last** `.` or `,` (or the locale's own decimal mark) when it is the only one of its kind and either it is the locale's decimal mark or it is followed by at most as many digits as the currency has (2 for USD/BRL, 3 for KWD). A mark followed by more digits is grouping and ignored, so users can mix habits: `12.5` and `12,5` both mean 12.50; `1,234.56` (en-US) and `1.234,56` (pt-BR) both mean 1234.56; `1,234` in USD is 1234.00.
 - At most as many fraction digits as the currency has, and `maxDigits` counts minor-unit digits (`maxDigits: 5` allows up to 999.99). After the locale's decimal mark, extra digits are ignored while typing (`12.567` stays `12.56`), and a second locale decimal mark is ignored. JPY (0 digits) has no fraction: marks are ignored.
 - Examples en-US USD: `200` is 20000, `12.5` is 1250, `12,50` is 1250. pt-BR BRL: `200` is 20000, `12,5` is 1250, `1.234,56` is 123456. JPY: `1500` is 1500. KWD en-US: `1.5` is 1500.
-- Limitation: a foreign mark followed by a full fraction and one more digit is regrouped (en-US `12,50` then `7` becomes 12507), the same reading as paste.
-- While focused the box edits **plain text** (no symbol) with normal caret editing, and keeps what you typed readable: `200,` stays `200,`. The existing amount is selected on focus so typing replaces it. On blur the box shows the full currency format (`R$ 200,00`). `Backspace` edits the text, select all + `Delete` gives `null`, and a lone `-` (with `allowNegative`) is negative zero as in `cents` mode. The mobile keyboard is `decimal` (`text` with `allowNegative`).
+- **One reading per edit.** While you type, a mark that was read as the decimal mark keeps that reading until you delete it: pt-BR `12.90` stays 12,90 and one more digit is refused (the text stays `12.90`), instead of turning the `.` into a thousands mark and jumping to 12.905,00. The same holds for a foreign mark in either locale (en-US `12,50` then `7` is refused). So a consumer that saves on every keystroke never sees the order of magnitude change. Type grouped numbers without separators, or paste them: **paste** keeps the smart reading (`1.234,56` in pt-BR pastes as 1234.56). A second decimal mark is ignored.
+- Digits beyond 15 are never cut: typing past the limit is ignored and a paste with more than 15 digits is ignored (the value stays as it was), because shortening it would change the amount.
+- While focused the box edits **plain text** (no symbol) with normal caret editing, and keeps what you typed readable: `200,` stays `200,`. The existing amount is selected on focus, by keyboard or by a mouse click, so typing replaces it; while nothing has been edited yet a click on the already focused field keeps it selected (a lone caret at the start would put digits before the amount). After the first edit clicks place the caret normally and the mouse can select text. On blur the box shows the full currency format (`R$ 200,00`). `Backspace` edits the text, select all + `Delete` gives `null`, and a lone `-` (with `allowNegative`) is negative zero as in `cents` mode. The mobile keyboard is `decimal` (`text` with `allowNegative`).
 
 #### Behavior
 
 - `value` / `defaultValue` / `onChange` are **integer minor units** or `null` (empty, which is not `0`). `onChange` receives `null` when the field is emptied (select all, then `Delete`).
 - Display: the currency's own format with the symbol where the locale puts it (`$1,234.56`, `R$ 1.234,56`, `1.234,56 €`, `¥1,234`), mono, tabular, right-aligned. The symbol is part of the text, so screen readers announce it with the amount.
-- Caret: always moved to the end after every edit and whenever you click or arrow into the text. A range selection (Ctrl+A) is allowed so you can clear the field.
+- Caret (`cents` mode): always moved to the end after every edit and whenever you click or arrow into the text, so a click anywhere never lets digits land at the start. A range selection (Ctrl+A) is allowed so you can clear the field.
 - `allowNegative`: type `-` anywhere to flip the sign; a lone `-` shows `-$0.00` (negative zero) and the next digit keeps the sign. Without it, minus signs are ignored.
 - `maxDigits` (default and maximum 15, the largest count that is always a safe integer): typing beyond it is ignored. Large amounts are exact (`$9,999,999,999,999.99` is `999999999999999`).
 - **Paste** reads the text against the locale: `12.50` and `12,50` both paste as 12.50; `1,234.56` in en-US and `1.234,56` in pt-BR are grouped thousands; a lone separator followed by exactly three digits is a thousands group (`1.234` is 1234 in pt-BR but 1.23 in en-US because `.` is the en-US decimal mark); extra fraction digits are rounded half up; symbols and spaces are dropped; text without digits is ignored.
@@ -5108,7 +5110,7 @@ div.root
 
 - Both sizes go through CSS custom properties on the header cell (`--ds-data-table-col-w`, `--ds-data-table-col-min-w`). Browsers ignore `min-width` on cells in a fixed table layout, so when any column has a `minWidth` the table gets a minimum width (`--ds-data-table-min-w`): the sum of every column's own minimum (fixed columns at the larger of `width` and `minWidth`, flexible columns at their `minWidth`, a flexible column without `minWidth` at 0). Without any `minWidth` the layout is unchanged.
 - **Flexible columns keep their own minimum.** Each flexible column is its `minWidth` plus an equal share of the space left after all minimums. Example in a 1000px container with `Order` (`width: 100px`), `Customer` (`minWidth: 240px`), `Status` (`minWidth: 80px`) and `Total` (no `minWidth`): 580px is left, so the widths are 100, 433, 273 and 193px. In a 200px container the table is 420px wide and scrolls: 100, 240, 80 and just the cell padding for `Total`. Give every flexible column that must stay readable a `minWidth`.
-- Use fixed units (`px`, `rem`) for `width` and `minWidth` in a table with a `minWidth` column; percentages are not part of the minimum calculation. The scroll area is a size container (`container-type: inline-size`) because browsers treat a `calc()` mixing a percentage as `auto` in a fixed table layout; a container unit is a plain length.
+- Use fixed units (`px`, `rem`) for `width` and `minWidth` in a table with a `minWidth` column; percentages are not part of the minimum calculation, so in development the table logs one console warning (per table) naming the first column that has a `%` `width` or `minWidth` while any column has a `minWidth`. The scroll area is a size container (`container-type: inline-size`) because browsers treat a `calc()` mixing a percentage as `auto` in a fixed table layout; a container unit is a plain length.
 - An empty table (no rows, not loading) drops the table minimum width, so the empty state never scrolls sideways. The header stays visible and its labels are cut with an ellipsis.
 - A table with a `minWidth` column scrolls horizontally inside its own area (`overflow-x: auto`). A sticky header then sticks to that area, so also set `maxHeight` when using `stickyHeader`.
 - Use `minWidth` for content that breaks when squeezed: a row of swatches, a badge, a code. A column with both `width` and `minWidth` is as wide as the larger of the two.
@@ -15687,8 +15689,9 @@ Rules, applied with string manipulation only (no floats):
   grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
 - Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
   0 minor digits (JPY) have no fraction: every mark is ignored.
-- A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
-  15 digits so it is always a safe integer. The sign is not handled here.
+- A missing fraction is padded with zeros. Text without digits is `0`. More than 15 digits
+  (leading zeros excluded) returns `NaN`, never a shortened number; any other result is a safe
+  integer. The sign is not handled here.
 
 ```ts
 parseCurrencyAmount(text: string, currency: string, locale: string): number
@@ -15702,7 +15705,8 @@ other character (separators, symbols, spaces, a sign) is ignored. Typing
 `1`, `2`, `3` into a USD field yields `1`, `12`, `123`, shown as `$0.01`,
 `$0.12`, `$1.23`. Digits of the locale's numbering system (e.g. Arabic-Indic)
 and full-width digits count as digits. Empty input is `0`. Input longer than
-15 digits is cut, so the result is always a safe integer.
+15 digits (leading zeros do not count) returns `NaN` rather than a silently shorter number,
+so a result that is not `NaN` is always a safe integer.
 
 `currency` is validated through `Intl` (throws `RangeError` for an invalid code).
 Pasting `12` into a USD field means `$0.12` by this model; callers that want

@@ -499,8 +499,9 @@ Rules, applied with string manipulation only (no floats):
   grouping and ignored: `1.234,56` and `1,234.56` are both 1234.56; `1,234` is 1234 in USD.
 - Fraction digits beyond the currency's minor digits are cut (not rounded). Currencies with
   0 minor digits (JPY) have no fraction: every mark is ignored.
-- A missing fraction is padded with zeros. Text without digits is `0`. The result is cut to
-  15 digits so it is always a safe integer. The sign is not handled here.
+- A missing fraction is padded with zeros. Text without digits is `0`. More than 15 digits
+  (leading zeros excluded) returns `NaN`, never a shortened number; any other result is a safe
+  integer. The sign is not handled here.
 
 ```ts
 parseCurrencyAmount(text: string, currency: string, locale: string): number
@@ -514,7 +515,8 @@ other character (separators, symbols, spaces, a sign) is ignored. Typing
 `1`, `2`, `3` into a USD field yields `1`, `12`, `123`, shown as `$0.01`,
 `$0.12`, `$1.23`. Digits of the locale's numbering system (e.g. Arabic-Indic)
 and full-width digits count as digits. Empty input is `0`. Input longer than
-15 digits is cut, so the result is always a safe integer.
+15 digits (leading zeros do not count) returns `NaN` rather than a silently shorter number,
+so a result that is not `NaN` is always a safe integer.
 
 `currency` is validated through `Intl` (throws `RangeError` for an invalid code).
 Pasting `12` into a USD field means `$0.12` by this model; callers that want

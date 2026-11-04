@@ -143,6 +143,7 @@ React Aria turns a row into a pure selection toggle as soon as one row is select
 ## Accessibility
 
 - `GridList` gives `role="grid"` with `row` and `gridcell` roles; rows are not a `list`/`listitem` pair because they are focusable and actionable.
+- Each selection checkbox is named "Select {title}" (pt-BR "Selecionar {title}"): the `select` message plus the row's plain-text name, never the meta. A `title` that is not a string needs `textValue`; without it the name falls back to the row `id` and a development warning says so.
 - Keyboard: `Tab` enters the list on one row (one tab stop); Arrow Up/Down, Home and End move between rows; Arrow Right moves from the row to its menu button (Arrow Left back); `Enter` on a row runs `onAction`; the menu button follows the Menu contract (`Enter`/`Space`/`Arrow Down` opens, `Escape` closes and focus returns to the button).
 - With `selectionMode="multiple"`: `Space` on the focused row (or on its checkbox) toggles it, `Enter` and a click on the row content run `onAction`, a click on the checkbox toggles. Each checkbox is named "Select {title}" (React Aria composes the message `select` with the row text). `Tab`/`ArrowRight` moves from the row to its checkbox and menu button.
 - Every menu button has its own name ("More actions for Price list 2026") so a screen reader user can tell them apart.

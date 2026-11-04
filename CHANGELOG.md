@@ -5,6 +5,22 @@ All notable changes to this project are documented here. Format based on [Keep a
 **Workflow:** when a task from [TODO.md](TODO.md) is finished, remove it from the TODO and add an entry below under `[Unreleased]` (keeping the task ID). If an upgrade can change what a consumer sees or compiles (a default, a layout or line-break change, a widened output type, a removed or renamed API), end the entry with `**Breaking:** <what the consumer does>`; `changes.json` turns the marker into `breaking: true` (see [versioning](docs/release/versioning.md)). On release, `[Unreleased]` is renamed to the version and date by the release process.
 
 ## [Unreleased]
+### Added
+
+- **D-A1** (2026-11-04) The release workflow refuses a tag whose commit is not on `origin/main` or has no successful CI run for that SHA, before it builds and packs.
+- **D-M4** (2026-11-04) Release actions are pinned by commit SHA (Dependabot keeps them current, `.github/dependabot.yml`); verify and pack run read-only and only the publish job has `id-token: write` and `contents: write`.
+- **D-B1** (2026-11-04) `pnpm changeset:version` dates the release with the local calendar day instead of UTC.
+- **D-M1** (2026-11-04) `changes.json` entries carry `breaking: boolean`, read from a `**Breaking:**` marker in the CHANGELOG entry; changesets for a changed default, a moved layout or a widened output type need a Breaking paragraph (`docs/release/versioning.md`, `.changeset/README.md`). Marked retroactively: GAP-016, 017, 025 (0.6.0) and GAP-037, 042, 047, 048, 050, 055 (0.7.0), also in the consumer release notes.
+- **D-B3** (2026-11-04) The widened output types of 0.6/0.7 (`ChatMessage.id` optional, `TextTone`, `DividerVariant`, `SidebarStatus.tone`, `ChoiceTiles` `meta`, the `DueIndicatorProps` union) are documented as breaking (with D-M1).
+- **D-M2** (2026-11-04) `CurrencyInput` `entryMode="amount"` keeps one reading of the decimal mark per edit: pt-BR `12.90` stays 12,90 and one more digit is refused instead of regrouping to 12.905,00, so saving on every keystroke never changes the order of magnitude. Paste keeps its smart reading. Property-tested.
+- **D-B2** (2026-11-04) `parseCurrencyAmount` and the paste path return `NaN` / ignore input above 15 digits instead of cutting the left digits, which changed the amount silently.
+- **QA-005** (2026-11-04) `CurrencyInput` with a value: a mouse click no longer drops the caret before the amount. In `amount` mode the value stays selected on pointer focus until the first edit, so typing replaces it; in `cents` mode the caret always returns to the end. Tested for both modes, pointer and keyboard focus, en-US and pt-BR.
+- **D-M3** (2026-11-04) Verified: clicking a checkbox row with `onAction` focuses that row, with or without selected rows, and the keyboard continues from it (tests added). Checkbox names are "Select {title}" from the row's plain text, never its meta; a node `title` without `textValue` now warns in development instead of silently naming the checkbox by the row id (en-US and pt-BR tests).
+- **D-B4** (2026-11-04) Toasts return to the centre as soon as a `Sheet` starts closing (the placement rule ignores a sheet with `data-exiting`); tested at 800 px with a large sheet.
+- **D-B5** (2026-11-04) The feedback keyboard suite and the Toast tests use fake timers instead of real sleeps (`sleep(1400)` and others). Short quiet-period waits in the live-region, FileUpload and Tooltip tests stay, since there is no timer to fake.
+- **D-B6** (2026-11-04) `DataTable` warns once in development when a `%` `width` or `minWidth` is combined with a `minWidth` column, naming the column.
+- **D-B7** (2026-11-04) An invalid `ColorOptionGroup` in `single` mode (`radiogroup`) sets `aria-invalid="true"`; `multiple` mode (toolbar) does not allow it, documented.
+- **D-M5** (2026-11-04) Reason for the 0.7.0 size budget raises, measured as compressed source growth since 0.5.0 (`size-limit --why` needs a plugin that is not installed): patterns +4.1 kB, mostly `ColorOptionGroup` (+2.1 kB), `MatrixGrid` async toggles and sticky headers (+1.0 kB) and `ChatPanel` keys (+0.6 kB); CSS modules +6.7 kB, mostly `CardLink` (+1.0 kB), `SplitLayout` (+0.9 kB), `AddCard` (+0.6 kB) and `ColorField` (+0.4 kB). Per-entry CSS is deferred (PKG-021).
 
 ## [0.7.1] - 2026-11-04
 ### Fixed
