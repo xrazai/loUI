@@ -2,7 +2,7 @@
 
 > Loui DS is a dark, minimal, functional React design system (React 19, React Aria Components, CSS Modules, DTCG tokens) for internal tools, dashboards and apps. It is built to be operated by humans and AI agents.
 
-Package loui-ds@0.7.3. Entry points: `loui-ds`, `loui-ds/patterns`, `loui-ds/styles.css`. All component and token names below are exact; do not invent others.
+Package loui-ds@0.7.4. Entry points: `loui-ds`, `loui-ds/patterns`, `loui-ds/styles.css`. All component and token names below are exact; do not invent others.
 
 Rules for generated UI:
 

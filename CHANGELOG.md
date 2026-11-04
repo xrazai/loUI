@@ -6,6 +6,7 @@ All notable changes to this project are documented here. Format based on [Keep a
 
 ## [Unreleased]
 
+## [0.7.4] - 2026-11-04
 ### Fixed
 
 - **GAP-057** (2026-11-04, reopened after 0.7.3) `Chart` reference texts with `labelPosition: 'auto'` no longer cover anything in narrow charts. The ERP report in an 800 px window (chart box about 470 px, 30 days) still printed "Média por dia aberto R$ 1.572,23" over "Hoje": the end margin was skipped (over 40% of the width) and the text stayed at the least-overlapping place inside. New last step: a row above the plot, end-aligned, after a short sample of the line in its dash pattern; the plot gives up the row height, several texts sit side by side and wrap. The end margin is now also rejected when a highlight text of the last point reaches into it. Text boxes use the measured caption metrics (12 px above the baseline, 4 below, was 9 and 3). New stories `ReferenceLabelTopRow` (470 px, pt-BR, closed Sundays, "Melhor" and "Hoje") and `ReferenceLabelReport800`; browser layout tests now cover 470, 800 and 1366 px, 30 and 90 points, bar and line, with that report data and checking ticks too. Baselines changed for `AverageLine`, `AverageAndTarget` and `AnnotatedRtl` (their texts grazed a bar or the line; now in the row).
