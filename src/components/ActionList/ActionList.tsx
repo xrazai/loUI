@@ -4,6 +4,7 @@ import { GridList, GridListItem } from 'react-aria-components';
 import type { GridListProps, Key, Selection } from 'react-aria-components';
 import { useMessages } from '../../i18n';
 import { classNames } from '../../utils/classNames';
+import { isDev } from '../../utils/env';
 import { EmptyState } from '../EmptyState';
 import { Checkbox } from '../Checkbox';
 import { MoreActionsMenu } from '../Menu';
@@ -17,8 +18,9 @@ export interface ActionListItem {
   /** Main text of the row. Truncated with an ellipsis when it does not fit. */
   title: ReactNode;
   /**
-   * Plain text that names the row for typeahead and for the "More actions for {title}" button.
-   * Required when `title` is not a string.
+   * Plain text that names the row for typeahead, for the "More actions for {title}" button and
+   * for the selection checkbox ("Select {title}"). Required when `title` is not a string: without
+   * it those names fall back to the row `id`, and a development warning says so.
    */
   textValue?: string;
   /** Secondary line under the title, in `text-2`. */
@@ -119,9 +121,18 @@ type ActionListNaming =
 
 export type ActionListProps = ActionListBaseProps & ActionListNaming;
 
+const warnedIds = new Set<string>();
+
 function nameOf(item: ActionListItem): string {
   if (item.textValue !== undefined) return item.textValue;
-  return typeof item.title === 'string' ? item.title : item.id;
+  if (typeof item.title === 'string') return item.title;
+  if (isDev() && !warnedIds.has(item.id)) {
+    warnedIds.add(item.id);
+    console.warn(
+      `ActionList: row "${item.id}" has a non-string title and no textValue, so its checkbox, menu button and typeahead are named by the id. Pass textValue.`,
+    );
+  }
+  return item.id;
 }
 
 /** How long after closing the menu we wait for React Aria to focus the row. */

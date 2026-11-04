@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { expectNoA11yViolations } from '../../test/axe';
 import { renderWithProvider } from '../../test/render';
 import { ActionList } from './ActionList';
-import { createDocuments } from './ActionList.fixtures';
+import { createDocuments, createTasks } from './ActionList.fixtures';
 
 const items = createDocuments();
 
@@ -336,6 +336,57 @@ describe('ActionList', () => {
       );
       const box = screen.getByRole('checkbox', { name: 'Select Price list 2026' }).element();
       expect((box as HTMLInputElement).disabled).toBe(true);
+    });
+
+    it('names each checkbox with the row title only, not its meta, in en-US and pt-BR', async () => {
+      const english = await renderWithProvider(
+        <ActionList items={createTasks()} aria-label="Tasks" selectionMode="multiple" />,
+      );
+      await expect
+        .element(
+          english.getByRole('checkbox', {
+            name: 'Select Call the supplier about the delayed rolls',
+            exact: true,
+          }),
+        )
+        .toBeInTheDocument();
+      await english.unmount();
+      const portuguese = await renderWithProvider(
+        <ActionList
+          items={[
+            {
+              id: 'pick',
+              title: <strong>Separar 3 pedidos</strong>,
+              textValue: 'Separar 3 pedidos',
+              meta: 'Vendas',
+            },
+          ]}
+          aria-label="Tarefas"
+          selectionMode="multiple"
+        />,
+        { locale: 'pt-BR' },
+      );
+      await expect
+        .element(
+          portuguese.getByRole('checkbox', { name: 'Selecionar Separar 3 pedidos', exact: true }),
+        )
+        .toBeInTheDocument();
+    });
+
+    it('warns in development when a node title has no textValue (the names fall back to the id)', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      const screen = await renderWithProvider(
+        <ActionList
+          items={[{ id: 'node-title-row', title: <strong>Pick 3 orders</strong> }]}
+          aria-label="Tasks"
+          selectionMode="multiple"
+        />,
+      );
+      await expect
+        .element(screen.getByRole('checkbox', { name: 'Select node-title-row', exact: true }))
+        .toBeInTheDocument();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('"node-title-row"'));
+      warn.mockRestore();
     });
 
     it('translates the checkbox name to pt-BR', async () => {
