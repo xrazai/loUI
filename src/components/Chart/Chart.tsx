@@ -38,8 +38,9 @@ export interface ChartReferenceLine {
   /**
    * Where the text is printed. `auto` (default): at the end of the line, above it, unless that
    * covers a bar, the line, a highlight text, a note marker or another reference text; then at
-   * the start, then below the line, and when every place is taken, outside the plot on the end
-   * side (the plot gets narrower). `end` and `start` pin the text to that end of the line (above
+   * the start, then below the line; when every place is taken, outside the plot on the end side
+   * (the plot gets narrower), or, when that margin would be too wide, in a row above the plot
+   * after a short sample of the line (the plot gets shorter). It never covers marks or texts. `end` and `start` pin the text to that end of the line (above
    * it, or below it when above is taken) and never move it outside.
    */
   labelPosition?: ChartReferenceLabelPosition;
@@ -455,6 +456,16 @@ export function Chart({
                   y1={layout.y(line.value)}
                   y2={layout.y(line.value)}
                 />
+                {placed?.labels[index]?.swatch ? (
+                  <line
+                    className={styles.reference}
+                    data-kind={line.kind}
+                    x1={placed.labels[index].swatch.x1}
+                    x2={placed.labels[index].swatch.x2}
+                    y1={placed.labels[index].swatch.y}
+                    y2={placed.labels[index].swatch.y}
+                  />
+                ) : null}
                 <text
                   className={styles.referenceLabel}
                   data-side={placed?.labels[index]?.side}

@@ -39,8 +39,8 @@ export const NOTE_MARKER_OFFSET = 8;
 export const REFERENCE_LABEL_GAP = 4;
 const REFERENCE_LABEL_SPACING = 14;
 /** Caption text box around its baseline (ascent and descent), and the clear space kept around it. */
-const TEXT_ASCENT = 9;
-const TEXT_DESCENT = 3;
+const TEXT_ASCENT = 12;
+const TEXT_DESCENT = 4;
 const LABEL_CLEARANCE = 2;
 /** Distance of a highlight text above its point. */
 const HIGHLIGHT_LABEL_OFFSET = 10;
@@ -49,6 +49,12 @@ const POINT_CLEARANCE = 5;
 /** Gap between the plot and a reference text printed outside it, and the widest share of the box it may take. */
 const OUTSIDE_LABEL_GAP = 6;
 const OUTSIDE_MAX_SHARE = 0.4;
+/** Row above the plot for reference texts that fit nowhere else: height, gap to the plot, line sample. */
+const TOP_ROW_HEIGHT = 20;
+const TOP_ROW_GAP = 4;
+const TOP_ROW_SWATCH = 20;
+const TOP_ROW_SWATCH_GAP = 6;
+const TOP_ROW_ITEM_GAP = 16;
 
 export interface ChartLayoutInput {
   /** Data values, in order. */
@@ -64,6 +70,8 @@ export interface ChartLayoutInput {
   tickEvery?: number;
   /** Extra room on the end side of the plot, for reference texts printed outside it. Default 0. */
   endMargin?: number;
+  /** Extra room above the plot, for reference texts printed in a row there. Default 0. */
+  topMargin?: number;
 }
 
 export interface ChartLayout {
@@ -98,9 +106,11 @@ export function computeLayout({
   references = [],
   tickEvery,
   endMargin = 0,
+  topMargin = 0,
 }: ChartLayoutInput): ChartLayout {
+  const paddingTop = PLOT_PADDING_TOP + Math.max(0, topMargin);
   const count = values.length;
-  const plotHeight = Math.max(1, height - PLOT_PADDING_BOTTOM - PLOT_PADDING_TOP);
+  const plotHeight = Math.max(1, height - PLOT_PADDING_BOTTOM - paddingTop);
   const tickCount = Math.min(MAX_TICKS, Math.max(2, Math.floor(plotHeight / TICK_MIN_SPACING) + 1));
   const domain = [...values, ...references].filter(Number.isFinite);
   const scale = niceScale(
@@ -111,7 +121,7 @@ export function computeLayout({
   const widest = Math.max(1, ...scale.ticks.map((tick) => formatTick(tick).length));
   const left = Math.max(AXIS_MIN_WIDTH, widest * CHAR_WIDTH + AXIS_GAP);
   const right = Math.max(left + 1, width - PLOT_PADDING_END - Math.max(0, endMargin));
-  const top = PLOT_PADDING_TOP;
+  const top = paddingTop;
   const bottom = Math.max(top + 1, height - PLOT_PADDING_BOTTOM);
   const band = (right - left) / Math.max(1, count);
   const span = scale.max - scale.min;
@@ -183,12 +193,17 @@ export interface ChartReferenceLabelPlacement {
   x: number;
   y: number;
   anchor: 'start' | 'end';
-  /** `end` or `start` of the line (above or below it), or `outside` the plot on the end side. */
-  side: 'end' | 'start' | 'outside';
+  /**
+   * `end` or `start` of the line (above or below it), `outside` the plot on the end side, or
+   * `top`: in a row above the plot, after a short sample of the line (`swatch`).
+   */
+  side: 'end' | 'start' | 'outside' | 'top';
   /** Estimated box of the text, with clearance. */
   box: ChartRect;
   /** Overlap with marks, other texts and the edges; 0 means clear. */
   overlap: number;
+  /** Short sample of the line drawn before a text in the row above the plot. */
+  swatch?: { x1: number; x2: number; y: number };
 }
 
 function textBox(x: number, baseline: number, width: number, anchor: 'start' | 'end'): ChartRect {
@@ -342,40 +357,99 @@ export function placeReferenceLabels(
 }
 
 /**
- * Lays the chart out and places the reference texts. When an `auto` text cannot be placed clear
- * of the marks at either end of its line, the plot gives up room on the end side and that text
- * is printed there, outside the plot and level with its line (texts of nearby lines are moved
- * apart). A chart too narrow for that margin (it would take more than 40% of the width, or
- * hide category labels that all fit before) keeps the least-overlapping place inside.
+ * Lays the chart out and places the reference texts. An `auto` text that cannot be placed clear
+ * of the marks at either end of its line goes, in order:
+ *
+ * 1. outside the plot on the end side, level with its line (the plot gives up the width of the
+ *    text; texts of nearby lines are moved apart). Skipped when that margin would take more
+ *    than 40% of the width or hide category labels that all fit before;
+ * 2. otherwise into a row above the plot, end-aligned, after a short sample of its line (the
+ *    plot gives up the height of the row). Nothing else is drawn there, so it is always clear.
  */
 export function layoutWithReferences(
-  input: Omit<ChartLayoutInput, 'references' | 'endMargin'>,
+  input: Omit<ChartLayoutInput, 'references' | 'endMargin' | 'topMargin'>,
   marks: Omit<ChartMarks, 'values'>,
   labels: readonly ChartReferenceLabelInput[],
 ): { layout: ChartLayout; labels: ChartReferenceLabelPlacement[] } {
   const references = labels.map((label) => label.value);
   const fullMarks = { ...marks, values: input.values };
+  const isAuto = (index: number) => (labels[index]?.position ?? 'auto') === 'auto';
+  const blockedIn = (placements: readonly ChartReferenceLabelPlacement[]) =>
+    placements.flatMap((placement, index) =>
+      placement.overlap > 0 && placement.side !== 'top' && isAuto(index) ? [index] : [],
+    );
+  /** Places the texts not in `moved` inside `layout`; `moved` ones get a placeholder. */
+  const placeRest = (layout: ChartLayout, moved: ReadonlySet<number>) =>
+    placeReferenceLabels(
+      layout,
+      fullMarks,
+      labels.map((label, index) => (moved.has(index) ? { ...label, value: Number.NaN } : label)),
+    );
+
   const first = computeLayout({ ...input, references });
   const inside = placeReferenceLabels(first, fullMarks, labels);
-  const outsideIndexes = inside.flatMap((placement, index) =>
-    placement.overlap > 0 && (labels[index]?.position ?? 'auto') === 'auto' ? [index] : [],
-  );
-  if (outsideIndexes.length === 0) return { layout: first, labels: inside };
+  const blocked = blockedIn(inside);
+  if (blocked.length === 0) return { layout: first, labels: inside };
 
-  const widest = Math.max(...outsideIndexes.map((index) => labels[index]?.characters ?? 0));
+  // 1. Outside the plot on the end side.
+  const widest = Math.max(...blocked.map((index) => labels[index]?.characters ?? 0));
   const margin = widest * CHAR_WIDTH + OUTSIDE_LABEL_GAP;
-  if (margin > input.width * OUTSIDE_MAX_SHARE) return { layout: first, labels: inside };
+  if (margin <= input.width * OUTSIDE_MAX_SHARE) {
+    const layout = computeLayout({ ...input, references, endMargin: margin });
+    if (!(first.labelStep === 1 && layout.labelStep > 1)) {
+      const outside = new Set(blocked);
+      const placements = placeRest(layout, outside);
+      placeOutside(layout, chartObstacles(layout, fullMarks).boxes, labels, outside, placements);
+      if (blockedIn(placements).length === 0) return { layout, labels: placements };
+    }
+  }
 
-  const layout = computeLayout({ ...input, references, endMargin: margin });
-  // Not when the narrower plot would start skipping category labels that all fit before.
-  if (first.labelStep === 1 && layout.labelStep > 1) return { layout: first, labels: inside };
-  const outside = new Set(outsideIndexes);
-  const placements = placeReferenceLabels(
-    layout,
-    fullMarks,
-    labels.map((label, index) => (outside.has(index) ? { ...label, value: Number.NaN } : label)),
-  );
-  // Texts outside the plot sit level with their lines, at least one line of text apart.
+  // 2. A row above the plot. Moving texts there changes the plot height, so a text that was
+  // clear may become blocked: it joins the row and the layout is computed again.
+  const moved = new Set(blocked);
+  for (;;) {
+    const rows = packTopRows(input.width - PLOT_PADDING_END, labels, moved);
+    const layout = computeLayout({
+      ...input,
+      references,
+      topMargin: rows.count * TOP_ROW_HEIGHT + TOP_ROW_GAP,
+    });
+    const placements = placeRest(layout, moved);
+    for (const [index, slot] of rows.slots) {
+      const width = (labels[index]?.characters ?? 0) * CHAR_WIDTH;
+      const box = textBox(slot.right, slot.baseline, width, 'end');
+      const swatchEnd = slot.right - width - TOP_ROW_SWATCH_GAP;
+      placements[index] = {
+        x: slot.right,
+        y: slot.baseline,
+        anchor: 'end',
+        side: 'top',
+        box: { ...box, left: swatchEnd - TOP_ROW_SWATCH - LABEL_CLEARANCE },
+        overlap: 0,
+        swatch: {
+          x1: swatchEnd - TOP_ROW_SWATCH,
+          x2: swatchEnd,
+          y: slot.baseline - (TEXT_ASCENT - TEXT_DESCENT) / 2,
+        },
+      };
+    }
+    const more = blockedIn(placements).filter((index) => !moved.has(index));
+    if (more.length === 0) return { layout, labels: placements };
+    for (const index of more) moved.add(index);
+  }
+}
+
+/**
+ * Puts the `outside` texts right of the plot, level with their lines, one text line apart, and
+ * records any overlap with `obstacles`.
+ */
+function placeOutside(
+  layout: ChartLayout,
+  obstacles: readonly ChartRect[],
+  labels: readonly ChartReferenceLabelInput[],
+  outside: ReadonlySet<number>,
+  placements: ChartReferenceLabelPlacement[],
+): void {
   const order = [...outside].sort(
     (a, b) => layout.y(labels[a]?.value ?? 0) - layout.y(labels[b]?.value ?? 0),
   );
@@ -394,16 +468,40 @@ export function layoutWithReferences(
     );
     previous = y;
     const x = layout.right + OUTSIDE_LABEL_GAP;
-    placements[index] = {
-      x,
-      y,
-      anchor: 'start',
-      side: 'outside',
-      box: textBox(x, y, label.characters * CHAR_WIDTH, 'start'),
-      overlap: 0,
-    };
+    const box = textBox(x, y, label.characters * CHAR_WIDTH, 'start');
+    // A highlight text of the last point can reach past the plot: then this place is taken too.
+    const overlap = obstacles.reduce((sum, other) => sum + overlapArea(box, other), 0);
+    placements[index] = { x, y, anchor: 'start', side: 'outside', box, overlap };
   }
-  return { layout, labels: placements };
+}
+
+/**
+ * Packs the `moved` texts (each after its line sample) into rows above the plot, from the end
+ * side towards the start, in the order of `labels`. A text wider than a row gets a row of its
+ * own. Returns the number of rows and, per text, the right edge and baseline of its slot.
+ */
+function packTopRows(
+  right: number,
+  labels: readonly ChartReferenceLabelInput[],
+  moved: ReadonlySet<number>,
+): { count: number; slots: Map<number, { right: number; baseline: number }> } {
+  const slots = new Map<number, { right: number; baseline: number }>();
+  let row = 0;
+  let cursor = right;
+  labels.forEach((label, index) => {
+    if (!moved.has(index)) return;
+    const width = label.characters * CHAR_WIDTH + TOP_ROW_SWATCH_GAP + TOP_ROW_SWATCH;
+    if (slots.size > 0 && cursor - width < 0) {
+      row += 1;
+      cursor = right;
+    }
+    slots.set(index, {
+      right: cursor,
+      baseline: LABEL_CLEARANCE + TEXT_ASCENT + row * TOP_ROW_HEIGHT,
+    });
+    cursor -= width + TOP_ROW_ITEM_GAP;
+  });
+  return { count: slots.size > 0 ? row + 1 : 0, slots };
 }
 
 /**

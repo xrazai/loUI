@@ -344,59 +344,93 @@ describe('Chart', () => {
             ? 360000
             : 70000 + ((index * 53) % 17) * 12000 + (index % 7 === 6 ? 0 : (index % 7) * 9000),
       }));
-    const format = (value: number) =>
+    /** The ERP report: closed Sundays, a best day a week ago and today near the average. */
+    const store = (days: number): ChartDatum[] =>
+      Array.from({ length: days }, (_, index) => ({
+        label: String(index + 1),
+        value:
+          index === days - 1
+            ? 150000
+            : index === days - 7
+              ? 297340
+              : index % 7 === 2
+                ? 0
+                : 60000 + ((index * 53) % 17) * 13000,
+      }));
+    const compact = (value: number) =>
       formatCurrency(value, 'USD', 'en-US', { notation: 'compact' });
+    const brl = (value: number) => formatCurrency(value, 'BRL', 'pt-BR');
+    const cases = [
+      {
+        name: 'tall last bar',
+        make: sales,
+        format: compact,
+        label: 'Average',
+        highlight: (days: number) => ({ [days - 1]: 'Today' }),
+        average: (data: ChartDatum[]) => chartAverage(data.map((datum) => datum.value)),
+      },
+      {
+        name: 'ERP report',
+        make: store,
+        format: brl,
+        label: 'Média por dia aberto',
+        highlight: (days: number) => ({ [days - 7]: 'Melhor', [days - 1]: 'Hoje' }),
+        average: (data: ChartDatum[]) =>
+          chartAverage(data.map((datum) => datum.value).filter((value) => value > 0)),
+      },
+    ];
     const intersects = (a: DOMRect, b: DOMRect) =>
       Math.min(a.right, b.right) > Math.max(a.left, b.left) &&
       Math.min(a.bottom, b.bottom) > Math.max(a.top, b.top);
 
-    for (const width of [800, 1366]) {
+    // 470 px is the chart box of the ERP report in an 800 px window (sidebar and card padding).
+    for (const width of [470, 800, 1366]) {
       for (const days of [30, 90]) {
         for (const type of ['bar', 'line'] as const) {
-          it(`keeps the average text clear of "Today" and the marks (${type}, ${String(days)} days, ${String(width)} px)`, async () => {
-            const data = sales(days);
-            const average = Math.round(chartAverage(data.map((datum) => datum.value)));
-            const screen = await renderChart(
-              <div style={{ inlineSize: `${String(width)}px` }}>
-                <Chart
-                  type={type}
-                  data={data}
-                  format={format}
-                  aria-label="Sales"
-                  highlight={{ [days - 1]: 'Today' }}
-                  referenceLines={[{ kind: 'average', label: 'Average', value: average }]}
-                />
-              </div>,
-            );
-            await document.fonts.ready;
-            const svg = screen.container.querySelector('svg');
-            const label = screen.container.querySelector('svg text[class*="referenceLabel"]');
-            const today = [...screen.container.querySelectorAll('svg text[class*="note"]')].find(
-              (node) => node.textContent === 'Today',
-            );
-            if (!svg || !label || !today) throw new Error('chart did not draw');
-            const box = label.getBoundingClientRect();
-            const frame = svg.getBoundingClientRect();
-            expect(label.textContent).toBe(`Average ${format(average)}`);
-            expect(intersects(box, today.getBoundingClientRect())).toBe(false);
-            for (const bar of svg.querySelectorAll('rect')) {
-              expect(intersects(box, bar.getBoundingClientRect())).toBe(false);
-            }
-            for (const point of svg.querySelectorAll('circle')) {
-              expect(intersects(box, point.getBoundingClientRect())).toBe(false);
-            }
-            for (const category of svg.querySelectorAll('text[class*="category"]')) {
-              expect(intersects(box, category.getBoundingClientRect())).toBe(false);
-            }
-            expect(box.left).toBeGreaterThanOrEqual(frame.left);
-            expect(box.right).toBeLessThanOrEqual(frame.right);
-            expect(box.top).toBeGreaterThanOrEqual(frame.top);
-            // The name and the hidden table do not depend on where the text is printed.
-            expect(screen.container.querySelector('tfoot')?.textContent).toBe(
-              `Average${format(average)}`,
-            );
-            await screen.unmount();
-          });
+          for (const sample of cases) {
+            it(`keeps the average text clear of marks and highlights (${sample.name}, ${type}, ${String(days)} days, ${String(width)} px)`, async () => {
+              const data = sample.make(days);
+              const average = Math.round(sample.average(data));
+              const screen = await renderChart(
+                <div style={{ inlineSize: `${String(width)}px` }}>
+                  <Chart
+                    type={type}
+                    data={data}
+                    format={sample.format}
+                    aria-label="Sales"
+                    highlight={sample.highlight(days)}
+                    referenceLines={[{ kind: 'average', label: sample.label, value: average }]}
+                  />
+                </div>,
+              );
+              await document.fonts.ready;
+              const svg = screen.container.querySelector('svg');
+              const label = screen.container.querySelector('svg text[class*="referenceLabel"]');
+              const highlights = [...screen.container.querySelectorAll('svg text[class*="note"]')];
+              if (!svg || !label) throw new Error('chart did not draw');
+              expect(highlights).toHaveLength(Object.keys(sample.highlight(days)).length);
+              const box = label.getBoundingClientRect();
+              const frame = svg.getBoundingClientRect();
+              expect(label.textContent).toBe(`${sample.label} ${sample.format(average)}`);
+              const others = [
+                ...highlights,
+                ...svg.querySelectorAll(
+                  'rect, circle, text[class*="category"], text[class*="tick"]',
+                ),
+              ];
+              for (const other of others) {
+                expect(intersects(box, other.getBoundingClientRect())).toBe(false);
+              }
+              expect(box.left).toBeGreaterThanOrEqual(frame.left);
+              expect(box.right).toBeLessThanOrEqual(frame.right);
+              expect(box.top).toBeGreaterThanOrEqual(frame.top);
+              // The hidden table does not depend on where the text is printed.
+              expect(screen.container.querySelector('tfoot')?.textContent).toContain(
+                sample.format(average),
+              );
+              await screen.unmount();
+            });
+          }
         }
       }
     }

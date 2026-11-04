@@ -228,7 +228,7 @@ describe('layoutWithReferences', () => {
     expect(layout.right).toBeLessThan(plain.right);
     expect(label?.x).toBeGreaterThan(layout.right);
     expect(label?.box.right).toBeLessThanOrEqual(input.width);
-    expect(Math.abs((label?.y ?? 0) - 3 - layout.y(60))).toBeLessThan(1);
+    expect(Math.abs((label?.y ?? 0) - 4 - layout.y(60))).toBeLessThan(1);
     for (const obstacle of chartObstacles(layout, { ...marks, values }).boxes) {
       expect(overlaps(label?.box as ChartRect, obstacle)).toBe(false);
     }
@@ -261,11 +261,32 @@ describe('layoutWithReferences', () => {
     expect(overlaps(first?.box as ChartRect, second?.box as ChartRect)).toBe(false);
   });
 
-  it('stays inside a narrow chart rather than squeezing the plot', () => {
-    const { labels } = layoutWithReferences({ ...input, width: 120 }, marks, [
-      { value: 60, characters: 12 },
+  it('uses a row above the plot when the end margin would be too wide', () => {
+    const narrow = { ...input, width: 470 };
+    const plain = computeLayout({ ...narrow, references: [60] });
+    const { layout, labels } = layoutWithReferences(narrow, marks, [{ value: 60, characters: 32 }]);
+    const [label] = labels;
+    expect(label?.side).toBe('top');
+    expect(layout.right).toBe(plain.right);
+    expect(layout.top).toBeGreaterThan(plain.top);
+    expect(label?.box.bottom).toBeLessThanOrEqual(layout.top - 20);
+    expect(label?.swatch?.x2).toBeLessThan(label?.box.right ?? 0);
+    for (const obstacle of chartObstacles(layout, { ...marks, values }).boxes) {
+      expect(overlaps(label?.box as ChartRect, obstacle)).toBe(false);
+    }
+  });
+
+  it('puts several texts side by side in the row, then on more rows', () => {
+    const { labels } = layoutWithReferences({ ...input, width: 300 }, marks, [
+      { value: 60, characters: 20 },
+      { value: 58, characters: 20 },
     ]);
-    expect(labels[0]?.side).not.toBe('outside');
+    const [first, second] = labels;
+    expect(first?.side).toBe('top');
+    // Two 20-character texts do not fit one 300 px row: the second goes on a row below.
+    expect(second?.y).toBeGreaterThan(first?.y ?? 0);
+    expect(second?.side).toBe('top');
+    expect(overlaps(first?.box as ChartRect, second?.box as ChartRect)).toBe(false);
   });
 });
 

@@ -248,6 +248,59 @@ export const ReferenceLabelPinned: Story = {
   parameters: { visual: { width: 800 } },
 };
 
+/** Daily sales in BRL cents like the ERP report: closed Sundays (0), a best day and today. */
+function storeSales(days: number): ChartDatum[] {
+  return Array.from({ length: days }, (_, index) => ({
+    label: String(index + 1),
+    value:
+      index === days - 1
+        ? 150000
+        : index === days - 7
+          ? 297340
+          : index % 7 === 2
+            ? 0
+            : 60000 + ((index * 53) % 17) * 13000,
+  }));
+}
+const brlFormat = (value: number) => formatCurrency(value, 'BRL', 'pt-BR');
+function openDayAverage(data: readonly ChartDatum[]) {
+  return {
+    kind: 'average' as const,
+    label: 'Média por dia aberto',
+    value: Math.round(chartAverage(data.map((datum) => datum.value).filter((value) => value > 0))),
+  };
+}
+const storeThirty = storeSales(30);
+
+/**
+ * GAP-057 (0.7.4): the ERP report in an 800 px window, where the chart box is about 470 px
+ * wide. The long average text fits neither end of the line nor the end margin, so it goes to a
+ * row above the plot after a short sample of the line, clear of "Melhor" and "Hoje".
+ */
+export const ReferenceLabelTopRow: Story = {
+  args: {
+    data: storeThirty,
+    format: brlFormat,
+    highlight: { 23: 'Melhor', 29: 'Hoje' },
+    referenceLines: [openDayAverage(storeThirty)],
+    'aria-label': 'Vendas por dia, últimos 30 dias',
+  },
+  decorators: [
+    (Story) => (
+      <DSProvider locale="pt-BR">
+        <Story />
+      </DSProvider>
+    ),
+  ],
+  parameters: { visual: { width: 470 } },
+};
+
+/** The same report at 800 px: the text fits in the end margin, level with its line. */
+export const ReferenceLabelReport800: Story = {
+  ...ReferenceLabelTopRow,
+  parameters: { visual: { width: 800 } },
+};
+
 /** Notes, reference lines and a highlight together; the chart itself is not mirrored. */
 export const AnnotatedRtl: Story = {
   args: {

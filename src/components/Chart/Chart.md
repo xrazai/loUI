@@ -70,13 +70,14 @@ The text of a reference line ("Average $1.8K") is placed where it does not cover
 1. the end of the line, above it (the usual place, used whenever it is clear);
 2. the start of the line, above it;
 3. the end, then the start, below the line;
-4. outside the plot, on the end side, level with its line: the plot gives up the width of the text. This happens when bars cross the line at both ends, as in a 90-day report whose last bar is the tallest. Texts of nearby lines are moved apart there.
+4. outside the plot, on the end side, level with its line: the plot gives up the width of the text. This happens when bars cross the line at both ends, as in a 90-day report whose last bar is the tallest. Texts of nearby lines are moved apart there. Skipped when the margin would take more than 40% of the chart width, would hide category labels that all fit before, or would touch a highlight text that reaches past the last bar;
+5. in a row above the plot, aligned to the end side, after a short sample of the line in its dash pattern (like a legend): the plot gives up the height of the row. Nothing else is drawn there, so the text never covers anything. Several texts sit side by side and wrap onto more rows. This is the usual result for a long label in a narrow chart, such as "Média por dia aberto R$ 1.611,98" in a 470 px report.
 
-Step 4 is skipped when the margin would take more than 40% of the chart width or would hide category labels that all fit before; then the text stays at the place with the least overlap (the background-colored halo keeps it readable).
+With `auto` the text never covers a bar, the line, a point, a highlight text or another reference text.
 
 `labelPosition: 'end'` or `'start'` pins the text to that end of the line: above it, or below it when above is taken, and never outside. Use it only when the position must stay fixed across data, since the text may then cover bars.
 
-The accessible name, the description and the hidden table are the same wherever the text is printed. The placement uses estimated text widths (caption mono), measured in the browser at 800 and 1366 px in the tests.
+The accessible name, the description and the hidden table are the same wherever the text is printed. The placement uses estimated text boxes (caption mono); the browser tests measure the real boxes at 470, 800 and 1366 px with 30 and 90 points.
 
 ## Content rules
 
@@ -89,7 +90,7 @@ The accessible name, the description and the hidden table are the same wherever 
 
 - One series per chart. For two series use two charts side by side.
 - Categories are spaced evenly (no time scale); labels are skipped when crowded unless `tickEvery` is set (the table and the keyboard still reach every point).
-- Reference lines are horizontal only. Their labels avoid marks (see "Reference line labels"), except in a narrow chart or with a pinned `labelPosition`, where they can cross bars (they carry a background-colored halo).
+- Reference lines are horizontal only. Their labels avoid marks (see "Reference line labels"); only a pinned `labelPosition` can cross bars (the text carries a background-colored halo).
 - The value axis always includes zero, and reference line values (a target far above the data, for example) widen it. Up to about 100 ticks are generated at most (usually 4 to 7).
 - Geometry (padding, bar width, label spacing) lives in `chartLayout.ts` as SVG units; every color, stroke, radius and font is a token.
 
