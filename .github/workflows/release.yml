@@ -125,7 +125,7 @@ jobs:
             echo "loui-ds@${VERSION} is already on npm; skipping."
             exit 0
           fi
-          npm publish release-out/loui-ds-${VERSION}.tgz --access public --provenance ${{ contains(env.TAG, '-') && '--tag next' || '' }}
+          npm publish ./release-out/loui-ds-${VERSION}.tgz --access public --provenance ${{ contains(env.TAG, '-') && '--tag next' || '' }}
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
