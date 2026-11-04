@@ -3,6 +3,10 @@
 # Release with the tarball attached. npm authenticates the workflow with Trusted Publishing (OIDC,
 # configured on npmjs.com for xrazai/loUI + release.yml): no npm token is stored anywhere.
 # To retry a failed release, run this workflow by hand with the tag; steps already done are skipped.
+#
+# Gate (D-A1): the tagged commit must be on origin/main and have a green CI run. Only the publish
+# job gets `id-token: write` and `contents: write` (D-M4). Actions are pinned by commit SHA;
+# Dependabot (.github/dependabot.yml) proposes updates.
 name: Release
 on:
   push:
@@ -13,33 +17,59 @@ on:
         description: Existing tag to release again, for example v0.2.1
         required: true
 permissions:
-  contents: write
-  id-token: write # npm Trusted Publishing (OIDC) and provenance
+  contents: read
+env:
+  TAG: ${{ inputs.tag || github.ref_name }}
 jobs:
-  release:
+  verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      TAG: ${{ inputs.tag || github.ref_name }}
+    permissions:
+      contents: read
+      actions: read # read the CI runs of the tagged commit
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ env.TAG }}
-      - uses: pnpm/action-setup@v4
+          fetch-depth: 0
+      - name: Tagged commit is on main
+        run: |
+          sha=$(git rev-parse HEAD)
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$sha" origin/main; then
+            echo "$TAG ($sha) is not on origin/main. Tag a commit that was pushed to main." >&2
+            exit 1
+          fi
+          echo "SHA=$sha" >> "$GITHUB_ENV"
+      - name: CI passed on the tagged commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          conclusion=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --commit "$SHA" \
+            --json conclusion,status --jq '[.[] | select(.status == "completed")][0].conclusion')
+          if [ "$conclusion" != "success" ]; then
+            echo "No successful CI run for $SHA (latest completed: ${conclusion:-none}). Wait for CI or fix it first." >&2
+            exit 1
+          fi
+          echo "CI passed on $SHA."
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       # No registry-url: it writes a placeholder token that hides Trusted Publishing errors.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Tag matches package.json
+        id: version
         run: |
           version=$(node -p "require('./package.json').version")
           if [ "v$version" != "$TAG" ]; then
             echo "Tag $TAG does not match package.json version $version" >&2
             exit 1
           fi
-          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
       - run: pnpm build
       - run: pnpm publint
       - run: pnpm attw
@@ -50,6 +80,8 @@ jobs:
           pnpm pack --pack-destination .release
           ls -l .release
       - name: Release notes for this version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           awk -v v="## $VERSION" '$0==v {on=1; next} /^## / && on {exit} on' docs/release/CHANGELOG.md > .release/notes.md
           {
@@ -61,6 +93,30 @@ jobs:
             echo '```'
           } >> .release/notes.md
           cat .release/notes.md
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release
+          path: .release/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # GitHub Release
+      id-token: write # npm Trusted Publishing (OIDC) and provenance
+    env:
+      VERSION: ${{ needs.verify.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release
+          path: .release
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
       - name: Publish to npm
         # Trusted Publishing needs npm 11.5.1 or later (Node 24 ships it).
         run: |
@@ -74,11 +130,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view "$TAG" > /dev/null 2>&1; then
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             echo "GitHub Release $TAG already exists; skipping."
             exit 0
           fi
           gh release create "$TAG" .release/*.tgz \
+            --repo "$GITHUB_REPOSITORY" \
             --title "Loui DS $TAG" \
             --notes-file .release/notes.md \
             ${{ contains(env.TAG, '-') && '--prerelease' || '' }}

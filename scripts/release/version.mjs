@@ -52,7 +52,8 @@ if (status !== 0) process.exit(status);
 
 const after = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
 if (after !== before && existsSync(taskLog)) {
-  const date = new Date().toISOString().slice(0, 10);
+  // Local calendar date (D-B1): `toISOString()` is UTC and dated an evening release a day late.
+  const date = new Date().toLocaleDateString('en-CA');
   const log = readFileSync(taskLog, 'utf8').replace(
     /^## \[Unreleased\]\s*$/m,
     `## [Unreleased]\n\n## [${after}] - ${date}`,
