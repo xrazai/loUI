@@ -375,7 +375,11 @@ describe('Sheet', () => {
       );
     }
     const screen = await renderWithProvider(<Controlled />);
-    await expect.element(screen.getByRole('dialog')).toBeVisible();
+    const dialog = screen.getByRole('dialog');
+    await expect.element(dialog).toBeVisible();
+    // React Aria handles Escape only once focus is inside the overlay, which happens after the
+    // entry animation; pressing it earlier was lost on a loaded CI shard.
+    await expect.poll(() => dialog.element().contains(document.activeElement)).toBe(true);
     await userEvent.keyboard('{Escape}');
     await expect.poll(() => onOpenChange).toHaveBeenCalledWith(false);
     await expect.poll(none).toBe(true);

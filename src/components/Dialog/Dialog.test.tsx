@@ -343,9 +343,10 @@ describe('Dialog', () => {
       const sheet = trigger.element().closest('[role="dialog"]');
       await expect.poll(() => sheet?.contains(document.activeElement)).toBe(true);
       await trigger.click();
-      await expect
-        .element(screen.getByRole('dialog', { name: 'Delete order #1048?' }))
-        .toBeVisible();
+      const nested = screen.getByRole('dialog', { name: 'Delete order #1048?' });
+      await expect.element(nested).toBeVisible();
+      // Same race for the nested Dialog: Escape only reaches it once focus has moved inside.
+      await expect.poll(() => nested.element().contains(document.activeElement)).toBe(true);
 
       await userEvent.keyboard('{Escape}');
       await expect.poll(() => screen.getByRole('dialog').elements().length).toBe(1);
